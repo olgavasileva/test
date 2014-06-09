@@ -1,0 +1,28 @@
+# Ignore bundler config.
+/.bundle
+
+# Ignore the default SQLite database.
+/db/*.sqlite3
+/db/*.sqlite3-journal
+
+# Ignore all logfiles and tempfiles.
+/log
+/tmp
+
+# Ignore other unneeded files.
+config/application.yml
+config/database.yml
+doc/
+*.swp
+.project
+.DS_Store
+.idea
+.secret
+
+# Ignore sublime project files
+*.sublime-project
+*.sublime-workspace
+
+.rspec
+.rvmrc
+.sass-cache

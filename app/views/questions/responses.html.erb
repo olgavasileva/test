@@ -1,0 +1,51 @@
+<% provide(:title, @question.title) %>
+
+<div class="row">
+
+<aside class="span2">
+		<section>
+			<h1>
+				<br /><br />
+				<%= image_tag("2centsIcon100.png", size: "75x75", alt: "2cents") %>
+			</h1>
+		</section>
+</aside>
+
+<section>
+<h1>
+	<%= @question.title %>
+</h1>
+
+<center>
+	<h3>Responses (<%= @response_count %>)</h3>
+</center>
+<br />
+
+<% @all_results.each do |result| %>
+	<center>
+		<% choice = Choice.find(result[:id]) %>
+
+		<%= image_tag(choice.image_url) %>
+		<h2><%= choice.label %></h2>
+
+		<h2><b>
+			<% if @question.question_type == 1 %>
+				Order: <%= result[:order_average] %>
+			<% elsif @question.question_type == 2 %>
+				Value: <%= result[:slider_average] %>
+			<% elsif @question.question_type == 3 %>
+				Star: <%= result[:star_average] %>
+			<% elsif @question.question_type == 4 %>
+				Percent: <%= result[:percent_average] %>
+			<% elsif @question.question_type == 5 %>
+				Value: <%= result[:star_average] %>
+			<% end %>
+		</b></h2>
+		
+		<br /><br />
+	</center>
+<% end %>
+
+</section>
+
+</div>

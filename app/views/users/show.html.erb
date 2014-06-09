@@ -1,0 +1,44 @@
+<% provide(:title, @user.name) %>
+<div class="row">
+	<aside class="span4">
+		<section>
+			<h1>
+				<%= gravatar_for @user, size: 50 %>
+				<%= @user.name %>
+			</h1>
+		</section>
+
+		<!-- Hide micropost legacy stuff for now with if false statement -->
+		<% if false %>
+			<section>
+				<%= render 'shared/stats' %>
+			</section>
+		<% end %>
+		<!-- End of hiding micropost legacy stuff -->
+
+	</aside>
+	
+	<!-- Hide micropost legacy stuff for now with if false statement -->
+	<% if false %>
+		<div class="span8">
+			<%= render 'follow_form' if signed_in? %>
+			<% if @user.microposts.any? %>
+			<h3>Microposts (<%= @user.microposts.count %>)</h3>
+			<ol class="microposts">
+				<%= render @microposts %>
+			</ol>
+			<%= will_paginate @microposts %>
+			<% end %>
+		</div>
+	<% end %>
+	<!-- End of hiding micropost legacy stuff -->
+	
+
+	<div class="span8">
+		<h3>Questions Answered</h3>
+		<ol class="questions">
+			<%= render @questions %>
+		</ol>
+	</div>
+
+</div>

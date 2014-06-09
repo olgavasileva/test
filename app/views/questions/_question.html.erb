@@ -1,0 +1,11 @@
+<li>
+	<%= question.id %>.
+	<%= link_to question.title, question %>
+	<% if question.hidden %>
+		(hidden) | <%= link_to "show", toggle_hidden_question_path(question), method: :post,
+																		data: { confirm: "Are you sure you want to make this question visible?" } %>
+	<% else %>
+		(visible) | <%= link_to "hide", toggle_hidden_question_path(question), method: :post,
+																		data: { confirm: "Are you sure you want to make this question hidden?" } %>
+	<% end %>
+</li>
