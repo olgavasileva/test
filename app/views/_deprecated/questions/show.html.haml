@@ -1,0 +1,77 @@
+- provide(:title, @question.title)
+:javascript
+  var userAgent = window.navigator.userAgent;
+  if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i)) {
+  
+  <haml:silent>	 unless params[:mobilereload] 
+  </haml:silent><haml:block>  
+  		var now = new Date().valueOf();
+  		setTimeout(function () {
+  			if (new Date().valueOf() - now > 100) return;
+  			
+  <haml:silent>			 if @user 
+  </haml:silent><haml:block>				window.location = "/questions/#{@question.id}?sender=#{@user.id}&mobilereload=yes"
+  </haml:block><haml:silent>			 else 
+  </haml:silent><haml:block>				window.location = "/questions/#{@question.id}&mobilereload=yes"
+  </haml:block>		}, 100);
+  		
+  		setTimeout(function() {
+  			window.location = "twocents://q=1"
+  		}, 10);
+    	
+  </haml:block>}
+:javascript
+  $(function() {
+    $( "#slider" ).slider({
+      value:50,
+      min: 0,
+      max: 100,
+      step: 5,
+      slide: function( event, ui ) {
+        $( "#slider_amount_1" ).val( ui.value );
+        $( "#slider_amount_2" ).val( 100 - ui.value );
+      }
+    });
+    $( "#slider_amount_1" ).val( $( "#slider" ).slider( "value" ) );
+    $( "#slider_amount_2" ).val( $( "#slider" ).slider( "value" ) );
+  });
+.row
+  %aside.span2
+    %section
+      %h1
+        %br/
+        %br/
+        = image_tag("2centsIcon100.png", size: "75x75", alt: "2cents")
+  %section
+    %h2
+      - if @user
+        Shared by: #{link_to @user.name + " ( " + @user.username + " )", @user}
+        %hr/
+    %h1
+      = @question.title
+    - if @question.question_type == 2
+      - unless @answer
+        #slider{:style => "margin: 20px;"}
+        = form_for(@question, url: submit_answer_question_path, :method => :POST) do |f|
+          %center
+            - slider_counter = 1
+            - @question.choices.each do |choice|
+              = image_tag(choice.image_url)
+              %h2= choice.label
+              = hidden_field_tag "choice_id_#{slider_counter}", choice.id
+              = text_field_tag "slider_amount_#{slider_counter}", nil, readonly: true
+              - slider_counter += 1
+          = f.submit "Answer Question", class: "btn btn-large btn-primary"
+      - else
+        %center
+          %h3
+            You've already answered this question | #{link_to "See Responses", responses_question_path(@question)}
+          %br/
+          - @question.choices.each do |choice|
+            = image_tag(choice.image_url)
+            %h2= choice.label
+    - else
+      %center
+        - @question.choices.each do |choice|
+          = image_tag(choice.image_url)
+          %h2= choice.label

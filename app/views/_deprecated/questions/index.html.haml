@@ -1,0 +1,6 @@
+- provide(:title, 'All questions')
+%h1 All questions
+= will_paginate
+%ul.questions
+  = render @questions
+= will_paginate

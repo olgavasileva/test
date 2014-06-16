@@ -1,0 +1,27 @@
+- provide(:title, @user.name)
+.row
+  %aside.span4
+    %section
+      %h1
+        = gravatar_for @user, size: 50
+        = @user.name
+    / Hide micropost legacy stuff for now with if false statement
+    - if false
+      %section
+        = render 'shared/stats'
+    / End of hiding micropost legacy stuff
+  / Hide micropost legacy stuff for now with if false statement
+  - if false
+    .span8
+      = render 'follow_form' if signed_in?
+      - if @user.microposts.any?
+        %h3
+          Microposts (#{@user.microposts.count})
+        %ol.microposts
+          = render @microposts
+        = will_paginate @microposts
+  / End of hiding micropost legacy stuff
+  .span8
+    %h3 Questions Answered
+    %ol.questions
+      = render @questions

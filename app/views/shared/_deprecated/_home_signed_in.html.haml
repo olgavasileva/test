@@ -1,0 +1,23 @@
+.row
+  %aside.span4
+    %section
+      = render 'shared/user_info'
+    / Hide micropost legacy stuff for now with if false statement
+    - if false
+      %section
+        = render 'shared/stats'
+      %section
+        = render 'shared/micropost_form'
+    / End of hiding micropost legacy stuff
+  / Hide micropost legacy stuff for now with if false statement
+  - if false
+    .span8
+      %h3 Micropost Feed
+      = render 'shared/feed'
+  / End of hiding micropost legacy stuff
+  .span8
+    %h3 Questions Answered
+    - if @questions_answered.any?
+      %ol.questions
+        = render @questions_answered
+      = will_paginate @questions_answered
