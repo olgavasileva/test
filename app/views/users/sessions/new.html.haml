@@ -26,6 +26,7 @@
         Learn About Yourself
   .signin-form
     = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+      = devise_error_messages!
       .signin-text
         %span Sign In to your account
       .form-group.w-icon

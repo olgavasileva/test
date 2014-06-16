@@ -33,10 +33,10 @@
         %span.fa.fa-lock.signup-form-icon
       .form-group{:style => "margin-top: 20px;margin-bottom: 20px;"}
         %label.checkbox-inline
-          %input#confirm_id.px{:name => "signup_confirm", :type => "checkbox"}/
+          = f.check_box :terms_and_conditions
           %span.lbl
             I agree with the
-            %a{:href => "#", :target => "_blank"} Terms and Conditions
+            = link_to "Terms and Conditions", "#"
       .form-actions
         = f.submit "SIGN UP", class:%w{signup-btn bg-primary}
     .signup-with

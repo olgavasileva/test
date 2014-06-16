@@ -1,5 +1,7 @@
 - if user_signed_in?
-  %h1 Hi #{current_user}
+  %h1 Hi #{current_user.name}
+  %h2 Welcome to CrashMob
+  = link_to "Sign Out", destroy_user_session_path, method: :delete
 - else
   = link_to "Sign In", new_user_session_path
   |
