@@ -1,0 +1,1612 @@
+!!!
+/
+  TABLE OF CONTENTS.
+  
+  Use search to find needed section.
+  
+  \===============================================================================
+  
+  |  1. $BODY                             |  Body                               |
+  |  2. $MAIN_NAVIGATION                  |  Main navigation                    |
+  |  3. $NAVBAR_ICON_BUTTONS              |  Navbar Icon Buttons                |
+  |  4. $MAIN_MENU                        |  Main menu                          |
+  |  5. $PROFILE_WIDGET_LINKS_EXAMPLE     |  Profile widget - Links example     |
+  |  6. $PROFILE_WIDGET_COUNTERS_EXAMPLE  |  Profile widget - Counters example  |
+  |  7. $PROFILE_WIDGET_CENTERED_EXAMPLE  |  Profile widget - Centered example  |
+  |  8. $MESSAGES_LIST_ALT                |  Alt messages list                  |
+  |  9. $MESSAGES_LIST                    |  Messages list                      |
+  |  10. $SUPPORT_TICKETS                 |  Support tickets                    |
+  |  11. $THREADS                         |  Threads                            |
+  |  12. $CHAT                            |  Chat                               |
+  |  13. $NOTIFICATIONS                   |  Notifications                      |
+  |  14. $TASKS                           |  Tasks                              |
+  |  15. $RATING                          |  Rating                             |
+  |  16. $COMMENTS                        |  Comments                           |
+  |  17. $ARTICLE_COMMENTS                |  Article comments                   |
+  |  18. $FOLLOWERS                       |  Followers                          |
+  |  19. $GOOGLE_MAPS_WIDGET              |  Google maps widget                 |
+  
+  \===============================================================================
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+/ [if gt IE 9]><!
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title Widgets - PixelAdmin
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0", :name => "viewport"}/
+    / Open Sans font from Google CDN
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
+    / Pixel Admin's stylesheets
+    %link{:href => "assets/stylesheets/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pixel-admin.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/widgets.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/rtl.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/themes.min.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+  /
+    1. $BODY ======================================================================================
+    
+    Body
+    
+    Classes:
+    * 'theme-{THEME NAME}'
+    * 'right-to-left'      - Sets text direction to right-to-left
+    * 'main-menu-right'    - Places the main menu on the right side
+    * 'no-main-menu'       - Hides the main menu
+    * 'main-navbar-fixed'  - Fixes the main navigation
+    * 'main-menu-fixed'    - Fixes the main menu
+    * 'main-menu-animated' - Animate main menu
+  %body.theme-default.main-menu-animated
+    :javascript
+      var init = [];
+    / Demo script
+    %script{:src => "assets/demo/demo.js"}
+    / / Demo script
+    #main-wrapper
+      /
+        2. $MAIN_NAVIGATION ===========================================================================
+        
+        Main navigation
+      #main-navbar.navbar.navbar-inverse{:role => "navigation"}
+        / Main menu toggle
+        %button#main-menu-toggle{:type => "button"}
+          %i.navbar-icon.fa.fa-bars.icon
+          %span.hide-menu-text HIDE MENU
+        .navbar-inner
+          / Main navbar header
+          .navbar-header
+            / Logo
+            %a.navbar-brand{:href => "index.html"}
+            %div
+              %img{:alt => "Pixel Admin", :src => "assets/images/pixel-admin/main-navbar-logo.png"}/
+            PixelAdmin
+            / Main navbar toggle
+            %button.navbar-toggle.collapsed{"data-target" => "#main-navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+              %i.navbar-icon.fa.fa-bars
+          / / .navbar-header
+          #main-navbar-collapse.collapse.navbar-collapse.main-navbar-collapse
+            %div
+              %ul.nav.navbar-nav
+                %li
+                  %a{:href => "#"} Home
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Dropdown
+                  %ul.dropdown-menu
+                    %li
+                      %a{:href => "#"} First item
+                    %li
+                      %a{:href => "#"} Second item
+                    %li.divider
+                    %li
+                      %a{:href => "#"} Third item
+              / / .navbar-nav
+              .right.clearfix
+                %ul.nav.navbar-nav.pull-right.right-navbar-nav
+                  /
+                    3. $NAVBAR_ICON_BUTTONS =======================================================================
+                    
+                    Navbar Icon Buttons
+                    
+                    NOTE: .nav-icon-btn triggers a dropdown menu on desktop screens only. On small screens .nav-icon-btn acts like a hyperlink.
+                    
+                    Classes:
+                    * 'nav-icon-btn-info'
+                    * 'nav-icon-btn-success'
+                    * 'nav-icon-btn-warning'
+                    * 'nav-icon-btn-danger'
+                  %li.nav-icon-btn.nav-icon-btn-danger.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#notifications"}
+                      %span.label 5
+                      %i.nav-icon.fa.fa-bullhorn
+                      %span.small-screen-text Notifications
+                    / NOTIFICATIONS
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-notifications').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-notifications.no-padding{:style => "width: 300px"}
+                      #main-navbar-notifications.notifications-list
+                        .notification
+                          .notification-title.text-danger SYSTEM
+                          .notification-description
+                            %strong> Error 500
+                            \: Syntax error in index.php at line
+                            = succeed "." do
+                              %strong 461
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-danger
+                        / / .notification
+                        .notification
+                          .notification-title.text-info STORE
+                          .notification-description
+                            You have
+                            %strong 9
+                            new orders.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-truck.bg-info
+                        / / .notification
+                        .notification
+                          .notification-title.text-default CRON DAEMON
+                          .notification-description
+                            Job
+                            %strong "Clean DB"
+                            has been completed.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-clock-o.bg-default
+                        / / .notification
+                        .notification
+                          .notification-title.text-success SYSTEM
+                          .notification-description
+                            Server
+                            = succeed "." do
+                              %strong up
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-success
+                        / / .notification
+                        .notification
+                          .notification-title.text-warning SYSTEM
+                          .notification-description
+                            %strong> Warning
+                            \: Processor load
+                            = succeed "." do
+                              %strong 92%
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-warning
+                        / / .notification
+                      / / .notifications-list
+                      %a.notifications-link{:href => "#"} MORE NOTIFICATIONS
+                    / / .dropdown-menu
+                  %li.nav-icon-btn.nav-icon-btn-success.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#messages"}
+                      %span.label 10
+                      %i.nav-icon.fa.fa-envelope
+                      %span.small-screen-text Income messages
+                    / MESSAGES
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-messages').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-messages-alt.no-padding{:style => "width: 300px;"}
+                      #main-navbar-messages.messages-list
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                      / / .messages-list
+                      %a.messages-link{:href => "#"} MORE MESSAGES
+                    / / .dropdown-menu
+                  / /3. $END_NAVBAR_ICON_BUTTONS
+                  %li
+                    %form.navbar-form.pull-left
+                      %input.form-control{:placeholder => "Search", :type => "text"}/
+                  %li.dropdown
+                    %a.dropdown-toggle.user-menu{"data-toggle" => "dropdown", :href => "#"}
+                      %img{:src => "assets/demo/avatars/1.jpg"}/
+                      %span John Doe
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"}
+                          %span.label.label-warning.pull-right> New
+                          Profile
+                      %li
+                        %a{:href => "#"}
+                          %span.badge.badge-primary.pull-right> New
+                          Account
+                      %li
+                        %a{:href => "#"}
+                          %i.dropdown-icon.fa.fa-cog>
+                          \&nbsp;&nbsp;Settings
+                      %li.divider
+                      %li
+                        %a{:href => "pages-signin.html"}
+                          %i.dropdown-icon.fa.fa-power-off>
+                          \&nbsp;&nbsp;Log Out
+                / / .navbar-nav
+              / / .right
+          / / #main-navbar-collapse
+        / / .navbar-inner
+      / / #main-navbar
+      / /2. $END_MAIN_NAVIGATION
+      /
+        4. $MAIN_MENU =================================================================================
+        
+        Main menu
+        
+        Notes:
+        * to make the menu item active, add a class 'active' to the <li>
+        example: <li class="active">...</li>
+        * multilevel submenu example:
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 1</span></a>
+        <ul>
+        <li>...</li>
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 2</span></a>
+        <ul>
+        <li>...</li>
+        \...
+        </ul>
+        </li>
+        \...
+        </ul>
+        </li>
+      #main-menu{:role => "navigation"}
+        #main-menu-inner
+          #menu-content-demo.menu-content.top
+            /
+              Menu custom content demo
+              CSS:        styles/pixel-admin-less/demo.less or styles/pixel-admin-scss/_demo.scss
+              Javascript: html/assets/demo/demo.js
+            %div
+              .text-bg
+                %span.text-slim Welcome,
+                %span.text-semibold John
+              %img{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+              .btn-group
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-envelope
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-user
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-cog
+                %a.btn.btn-xs.btn-danger.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-power-off
+              %a.close{:href => "#"} &times;
+          %ul.navigation
+            %li
+              %a{:href => "index.html"}
+                %i.menu-icon.fa.fa-dashboard
+                %span.mm-text Dashboard
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-th
+                %span.mm-text Layouts
+                %span.label.label-warning Updated
+              %ul
+                %li
+                  %a{:href => "layouts-grid.html", :tabindex => "-1"}
+                    %span.mm-text Grid
+                %li
+                  %a{:href => "layouts-main-menu.html", :tabindex => "-1"}
+                    %i.menu-icon.fa.fa-th-list
+                    %span.mm-text Main menu
+                    %span.label.label-warning Updated
+            %li
+              %a{:href => "stat-panels.html"}
+                %i.menu-icon.fa.fa-tasks
+                %span.mm-text Stat panels
+            %li
+              %a{:href => "widgets.html"}
+                %i.menu-icon.fa.fa-flask
+                %span.mm-text Widgets
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-desktop
+                %span.mm-text UI elements
+              %ul
+                %li
+                  %a{:href => "ui-buttons.html", :tabindex => "-1"}
+                    %span.mm-text Buttons
+                %li
+                  %a{:href => "ui-typography.html", :tabindex => "-1"}
+                    %span.mm-text Typography
+                %li
+                  %a{:href => "ui-tabs.html", :tabindex => "-1"}
+                    %span.mm-text Tabs &amp; Accordions
+                %li
+                  %a{:href => "ui-modals.html", :tabindex => "-1"}
+                    %span.mm-text Modals
+                %li
+                  %a{:href => "ui-alerts.html", :tabindex => "-1"}
+                    %span.mm-text Alerts &amp; Tooltips
+                %li
+                  %a{:href => "ui-components.html", :tabindex => "-1"}
+                    %span.mm-text Components
+                %li
+                  %a{:href => "ui-panels.html", :tabindex => "-1"}
+                    %span.mm-text Panels
+                %li
+                  %a{:href => "ui-jqueryui.html", :tabindex => "-1"}
+                    %span.mm-text jQuery UI
+                %li
+                  %a{:href => "ui-icons.html", :tabindex => "-1"}
+                    %span.mm-text Icons
+                %li
+                  %a{:href => "ui-utility-classes.html", :tabindex => "-1"}
+                    %span.mm-text Utility classes
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-check-square
+                %span.mm-text Form components
+              %ul
+                %li
+                  %a{:href => "forms-layouts.html", :tabindex => "-1"}
+                    %span.mm-text Layouts
+                %li
+                  %a{:href => "forms-general.html", :tabindex => "-1"}
+                    %span.mm-text General
+                %li
+                  %a{:href => "forms-advanced.html", :tabindex => "-1"}
+                    %span.mm-text Advanced
+                %li
+                  %a{:href => "forms-pickers.html", :tabindex => "-1"}
+                    %span.mm-text Pickers
+                %li
+                  %a{:href => "forms-validation.html", :tabindex => "-1"}
+                    %span.mm-text Validation
+                %li
+                  %a{:href => "forms-editors.html", :tabindex => "-1"}
+                    %span.mm-text Editors
+            %li
+              %a{:href => "tables.html"}
+                %i.menu-icon.fa.fa-table
+                %span.mm-text Tables
+            %li
+              %a{:href => "charts.html"}
+                %i.menu-icon.fa.fa-bar-chart-o
+                %span.mm-text Charts
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-files-o
+                %span.mm-text Pages
+                %span.label.label-success 16
+              %ul
+                %li
+                  %a{:href => "pages-search.html", :tabindex => "-1"}
+                    %span.mm-text Search results
+                %li
+                  %a{:href => "pages-pricing.html", :tabindex => "-1"}
+                    %span.mm-text Plans &amp; pricing
+                %li
+                  %a{:href => "pages-faq.html", :tabindex => "-1"}
+                    %span.mm-text FAQ
+                %li
+                  %a{:href => "pages-profile.html", :tabindex => "-1"}
+                    %span.mm-text Profile
+                %li
+                  %a{:href => "pages-timeline.html", :tabindex => "-1"}
+                    %span.mm-text Timeline
+                %li
+                  %a{:href => "pages-signin.html", :tabindex => "-1"}
+                    %span.mm-text Sign In
+                %li
+                  %a{:href => "pages-signup.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up
+                %li
+                  %a{:href => "pages-signin-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign In Alt
+                %li
+                  %a{:href => "pages-signup-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up Alt
+                %li
+                  %a{:href => "pages-invoice.html", :tabindex => "-1"}
+                    %span.mm-text Invoice
+                %li
+                  %a{:href => "pages-404.html", :tabindex => "-1"}
+                    %span.mm-text Error 404
+                %li
+                  %a{:href => "pages-500.html", :tabindex => "-1"}
+                    %span.mm-text Error 500
+                %li.mm-dropdown
+                  %a{:href => "#"}
+                    %i.menu-icon.fa.fa-envelope
+                    %span.mm-text Messages
+                  %ul
+                    %li
+                      %a{:href => "pages-inbox.html", :tabindex => "-1"}
+                        %span.mm-text Inbox
+                    %li
+                      %a{:href => "pages-show-email.html", :tabindex => "-1"}
+                        %span.mm-text Show message
+                    %li
+                      %a{:href => "pages-new-email.html", :tabindex => "-1"}
+                        %span.mm-text New message
+                %li
+                  %a{:href => "pages-blank.html", :tabindex => "-1"}
+                    %span.mm-text Blank page
+            %li
+              %a{:href => "complete-ui.html"}
+                %i.menu-icon.fa.fa-briefcase
+                %span.mm-text Complete UI
+            %li
+              %a{:href => "color-builder.html"}
+                %i.menu-icon.fa.fa-tint
+                %span.mm-text Color Builder
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-sitemap
+                %span.mm-text Menu levels
+                %span.badge.badge-primary 6
+              %ul
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.1
+                    %span.badge.badge-danger 12
+                    %span.label.label-info 21
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.2
+                %li.mm-dropdown
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.3
+                    %span.label.label-warning 5
+                  %ul
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.1
+                    %li.mm-dropdown
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+                      %ul
+                        %li.mm-dropdown
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.1
+                          %ul
+                            %li
+                              %a{:href => "#", :tabindex => "-1"}
+                                %span.mm-text Menu level 4.1
+                        %li
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.2
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+          / / .navigation
+          .menu-content
+            %a.btn.btn-primary.btn-block.btn-outline.dark{:href => "pages-invoice.html"} Create Invoice
+        / / #main-menu-inner
+      / / #main-menu
+      / /4. $MAIN_MENU
+      #content-wrapper
+        .page-header
+          %h1
+            %i.fa.fa-th-large.page-header-icon>
+            \&nbsp;&nbsp;Widgets
+        / / .page-header
+        .row
+          .col-md-4
+            /
+              5. $PROFILE_WIDGET_LINKS_EXAMPLE ==============================================================
+              
+              Profile widget - Links example
+            .panel.panel-success.panel-dark.widget-profile
+              .panel-heading
+                .widget-profile-bg-icon
+                  %i.fa.fa-flask
+                %img.widget-profile-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                .widget-profile-header
+                  %span Robert Jang
+                  %br/
+                  email@example.com
+              / / .panel-heading
+              .list-group
+                %a.list-group-item{:href => "#"}
+                  %i.fa.fa-envelope-o.list-group-icon>
+                  Inbox messages
+                  %span.badge.badge-info 14
+                %a.list-group-item{:href => "#"}
+                  %i.fa.fa-tasks.list-group-icon>
+                  Uncompleted tasks
+                  %span.badge.badge-warning 7
+                %a.list-group-item{:href => "#"}
+                  %i.fa.fa-bell-o.list-group-icon>
+                  New notifications
+                  %span.badge.badge-danger 11
+                %a.list-group-item{:href => "#"} Account settings
+            / / .panel
+            / /5. $PROFILE_WIDGET_LINKS_EXAMPLE
+          .col-md-4
+            /
+              6. $PROFILE_WIDGET_COUNTERS_EXAMPLE ===========================================================
+              
+              Profile widget - Counters example
+            .panel.panel-info.panel-dark.widget-profile
+              .panel-heading
+                .widget-profile-bg-icon
+                  %i.fa.fa-twitter
+                %img.widget-profile-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                .widget-profile-header
+                  %span Michelle Bortz
+                  %br/
+                  %a{:href => "https://twitter.com/test"} https://twitter.com/test
+              / / .panel-heading
+              .widget-profile-counters
+                .col-xs-4
+                  %span 131
+                  = succeed "TWEETS" do
+                    %br/
+                .col-xs-4
+                  %span 230
+                  = succeed "FOLLOWERS" do
+                    %br/
+                .col-xs-4
+                  %span 56
+                  = succeed "FOLLOWING" do
+                    %br/
+              %input.form-control.input-lg.widget-profile-input{:placeholder => "Write your tweet", :type => "text"}/
+              .widget-profile-text
+                Lorem ipsum dolor sit amet
+            / / .panel
+            / /6. $PROFILE_WIDGET_COUNTERS_EXAMPLE
+          .col-md-4
+            /
+              7. $PROFILE_WIDGET_CENTERED_EXAMPLE ===========================================================
+              
+              Profile widget - Centered example
+            .panel.panel-danger.panel-dark.panel-body-colorful.widget-profile.widget-profile-centered
+              .panel-heading
+                %img.widget-profile-avatar{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+                .widget-profile-header
+                  %span John Doe
+                  %br/
+                  %a{:href => "https://twitter.com/test"} https://twitter.com/test
+              / / .panel-heading
+              .panel-body
+                .widget-profile-text{:style => "padding: 0;"}
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            / / .panel
+            / /7. $PROFILE_WIDGET_CENTERED_EXAMPLE
+        / / .row
+        .row
+          .col-md-6
+            /
+              8. $MESSAGES_LIST_ALT =========================================================================
+              
+              Alt messages list
+            .panel.widget-messages-alt
+              .panel-heading
+                %span.panel-title
+                  %i.panel-title-icon.fa.fa-envelope>
+                  Alt Messages List
+              / / .panel-heading
+              .panel-body.padding-sm
+                .messages-list
+                  .message
+                    %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                    %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    .message-description
+                      from
+                      %a{:href => "#"} Robert Jang
+                      \&nbsp;&nbsp;·&nbsp;&nbsp;
+                      2h ago
+                    / / .message-description
+                  / / .message
+                  .message
+                    %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                    %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    .message-description
+                      from
+                      %a{:href => "#"} Michelle Bortz
+                      \&nbsp;&nbsp;·&nbsp;&nbsp;
+                      2h ago
+                    / / .message-description
+                  / / .message
+                  .message
+                    %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                    %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                    .message-description
+                      from
+                      %a{:href => "#"} Timothy Owens
+                      \&nbsp;&nbsp;·&nbsp;&nbsp;
+                      2h ago
+                    / / .message-description
+                  / / .message
+                  .message
+                    %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                    %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    .message-description
+                      from
+                      %a{:href => "#"} Denise Steiner
+                      \&nbsp;&nbsp;·&nbsp;&nbsp;
+                      2h ago
+                    / / .message-description
+                  / / .message
+                  .message
+                    %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                    %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                    .message-description
+                      from
+                      %a{:href => "#"} Robert Jang
+                      \&nbsp;&nbsp;·&nbsp;&nbsp;
+                      2h ago
+                    / / .message-description
+                  / / .message
+                  .message
+                    %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                    %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    .message-description
+                      from
+                      %a{:href => "#"} Michelle Bortz
+                      \&nbsp;&nbsp;·&nbsp;&nbsp;
+                      2h ago
+                    / / .message-description
+                  / / .message
+                / / .messages-list
+                %a.messages-link{:href => "#"} MORE MESSAGES
+              / / .panel-body
+            / / .panel
+            / /8. $MESSAGES_LIST_ALT
+            /
+              9. $MESSAGES_LIST =============================================================================
+              
+              Messages list
+            .panel.widget-messages
+              .panel-heading
+                %span.panel-title
+                  %i.panel-title-icon.fa.fa-envelope-o>
+                  Messages
+              / / .panel-heading
+              .panel-body
+                .message.unread
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:checked => "checked", :name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.from{:href => "#", :title => ""} Robert Jang
+                  %a.title{:href => "#", :title => ""} Message Title 1
+                  .date
+                    18 jan
+                / / .message
+                .message.unread
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.from{:href => "#", :title => ""} Michelle Bortz
+                  %a.title{:href => "#", :title => ""}
+                    %i.message-title-icon.fa.fa-paperclip>
+                    Message Title 2
+                  .date
+                    18 jan
+                / / .message
+                .message
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:checked => "checked", :name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.from{:href => "#", :title => ""} Timothy Owens
+                  %a.title{:href => "#", :title => ""} Message Title 3
+                  .date
+                    18 jan
+                / / .message
+                .message
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.from{:href => "#", :title => ""} Denise Steiner
+                  %a.title{:href => "#", :title => ""} Message Title 4
+                  .date
+                    18 jan
+                / / .message
+                .message
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.from{:href => "#", :title => ""} Robert Jang
+                  %a.title{:href => "#", :title => ""} Message Title 5
+                  .date
+                    18 jan
+                / / .message
+                .message
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.from{:href => "#", :title => ""} Michelle Bortz
+                  %a.title{:href => "#", :title => ""} Message Title 6
+                  .date
+                    18 jan
+                / / .message
+                .message
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.from{:href => "#", :title => ""} Timothy Owens
+                  %a.title{:href => "#", :title => ""} Message Title 7
+                  .date
+                    18 jan
+                / / .message
+                .message
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.from{:href => "#", :title => ""} Denise Steiner
+                  %a.title{:href => "#", :title => ""} Message Title 8
+                  .date
+                    18 jan
+                / / .message
+                .message
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.from{:href => "#", :title => ""} Robert Jang
+                  %a.title{:href => "#", :title => ""} Message Title 9
+                  .date
+                    18 jan
+                / / .message
+              / / .panel-body
+            / / .panel
+            / /9. $MESSAGES_LIST
+            /
+              10. $SUPPORT_TICKETS ==========================================================================
+              
+              Support tickets
+            .panel.widget-support-tickets
+              .panel-heading
+                %span.panel-title
+                  %i.panel-title-icon.fa.fa-bullhorn>
+                  Support Tickets
+              / / .panel-heading
+              .panel-body
+                .ticket
+                  %span.label.label-success.ticket-label Completed
+                  %a.ticket-title{:href => "#", :title => ""}
+                    Server unavaible
+                    %span [#201798]
+                  %span.ticket-info
+                    Opened by
+                    %a{:href => "#", :title => ""} Timothy Owens
+                    today
+                / / .ticket
+                .ticket
+                  %span.label.label-warning.ticket-label Pending
+                  %a.ticket-title{:href => "#", :title => ""}
+                    Mobile App Problem
+                    %span [#201797]
+                  %span.ticket-info
+                    Opened by
+                    %a{:href => "#"} Denise Steiner
+                    2 days ago
+                / / .ticket
+                .ticket
+                  %span.label.label-info.ticket-label In progress
+                  %a.ticket-title{:href => "#", :title => ""}
+                    %i.fa.fa-warning.text-danger>
+                    PayPal issue
+                    %span [#201796]
+                  %span.ticket-info
+                    Opened by
+                    %a{:href => "#"} Robert Jang
+                    3 days ago
+                / / .ticket
+                .ticket
+                  %span.label.label-danger.ticket-label Rejected
+                  %a.ticket-title{:href => "#", :title => ""}
+                    IE8 problem
+                    %span [#201795]
+                  %span.ticket-info
+                    Opened by
+                    %a{:href => "#"} Robert Jang
+                    4 days ago
+                / / .ticket
+                .ticket
+                  %span.label.label-success.ticket-label Completed
+                  %a.ticket-title{:href => "#", :title => ""}
+                    Server unavaible
+                    %span [#201794]
+                  %span.ticket-info
+                    Opened by
+                    %a{:href => "#"} Timothy Owens
+                    5 days ago
+                / / .ticket
+              / / .panel-body
+            / / .panel
+            / /10. $SUPPORT_TICKETS
+            /
+              11. $THREADS ==================================================================================
+              
+              Threads
+            .panel.widget-threads
+              .panel-heading
+                %span.panel-title
+                  %i.panel-title-icon.fa.fa-comments-o>
+                  Last threads
+              / / .panel-heading
+              .panel-body
+                .thread
+                  %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                  .thread-body
+                    %span.thread-time 14h
+                    %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                    .thread-info
+                      started by
+                      %a{:href => "#", :title => ""} Robert Jang
+                      in
+                      %a{:href => "#", :title => ""} Forum name
+                  / / .thread-body
+                / / .thread
+                .thread
+                  %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                  .thread-body
+                    %span.thread-time 14h
+                    %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                    .thread-info
+                      started by
+                      %a{:href => "#", :title => ""} Michelle Bortz
+                      in
+                      %a{:href => "#", :title => ""} Forum name
+                  / / .thread-body
+                / / .thread
+                .thread
+                  %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                  .thread-body
+                    %span.thread-time 14h
+                    %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                    .thread-info
+                      started by
+                      %a{:href => "#", :title => ""} Timothy Owens
+                      in
+                      %a{:href => "#", :title => ""} Forum name
+                  / / .thread-body
+                / / .thread
+                .thread
+                  %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                  .thread-body
+                    %span.thread-time 14h
+                    %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                    .thread-info
+                      started by
+                      %a{:href => "#", :title => ""} Denise Steiner
+                      in
+                      %a{:href => "#", :title => ""} Forum name
+                  / / .thread-body
+                / / .thread
+                .thread
+                  %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                  .thread-body
+                    %span.thread-time 14h
+                    %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                    .thread-info
+                      started by
+                      %a{:href => "#", :title => ""} Robert Jang
+                      in
+                      %a{:href => "#", :title => ""} Forum name
+                  / / .thread-body
+                / / .thread
+                .thread
+                  %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                  .thread-body
+                    %span.thread-time 14h
+                    %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                    .thread-info
+                      started by
+                      %a{:href => "#", :title => ""} Michelle Bortz
+                      in
+                      %a{:href => "#", :title => ""} Forum name
+                  / / .thread-body
+                / / .thread
+                .thread
+                  %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                  .thread-body
+                    %span.thread-time 14h
+                    %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                    .thread-info
+                      started by
+                      %a{:href => "#", :title => ""} Timothy Owens
+                      in
+                      %a{:href => "#", :title => ""} Forum name
+                  / / .thread-body
+                / / .thread
+              / / .panel-body
+            / / .panel
+            / /11. $THREADS
+            /
+              12. $CHAT =====================================================================================
+              
+              Chat
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$(".chat-controls-input .form-control").autosize();
+              });
+            / / Javascript
+            .panel.widget-chat
+              .panel-heading
+                %span.panel-title
+                  %i.panel-title-icon.fa.fa-comments-o>
+                  Chat
+              / / .panel-heading
+              .panel-body
+                .message
+                  %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                  .message-body
+                    .message-heading
+                      %a{:href => "#", :title => ""} Denise Steiner
+                      says:
+                      %span.pull-right 2 minutes ago
+                    .message-text
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                  / / .message-body
+                / / .message
+                .message.right
+                  %img.message-avatar{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+                  .message-body
+                    .message-heading
+                      %a{:href => "#", :title => ""} John Doe
+                      says:
+                      %span.pull-right 2 minutes ago
+                    .message-text
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                  / / .message-body
+                / / .message
+                .message.right
+                  %img.message-avatar{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+                  .message-body
+                    .message-heading
+                      %a{:href => "#", :title => ""} John Doe
+                      says:
+                      %span.pull-right 2 minutes ago
+                    .message-text
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                  / / .message-body
+                / / .message
+                .message
+                  %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                  .message-body
+                    .message-heading
+                      %a{:href => "#", :title => ""} Denise Steiner
+                      says:
+                      %span.pull-right 2 minutes ago
+                    .message-text
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                  / / .message-body
+                / / .message
+                .message.right
+                  %img.message-avatar{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+                  .message-body
+                    .message-heading
+                      %a{:href => "#", :title => ""} John Doe
+                      says:
+                      %span.pull-right 2 minutes ago
+                    .message-text
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                  / / .message-body
+                / / .message
+              / / .panel-body
+              %form.panel-footer.chat-controls
+                .chat-controls-input
+                  %textarea.form-control{:rows => "1"}
+                %button.btn.btn-primary.chat-controls-btn Send
+              / / .panel-footer
+            / / .panel
+            / /12. $CHAT
+          .col-md-6
+            /
+              13. $NOTIFICATIONS ============================================================================
+              
+              Notifications
+            .panel.widget-notifications
+              .panel-heading
+                %span.panel-title
+                  %i.panel-title-icon.fa.fa-fire>
+                  Notifications
+              / / .panel-heading
+              .panel-body.padding-sm
+                .notifications-list
+                  .notification
+                    .notification-title.text-danger SYSTEM
+                    .notification-description
+                      %strong> Error 500
+                      \: Syntax error in index.php at line
+                      = succeed "." do
+                        %strong 461
+                    .notification-ago 12h ago
+                    .notification-icon.fa.fa-hdd-o.bg-danger
+                  / / .notification
+                  .notification
+                    .notification-title.text-info STORE
+                    .notification-description
+                      You have
+                      %strong 9
+                      new orders.
+                    .notification-ago 12h ago
+                    .notification-icon.fa.fa-truck.bg-info
+                  / / .notification
+                  .notification
+                    .notification-title.text-default CRON DAEMON
+                    .notification-description
+                      Job
+                      %strong "Clean DB"
+                      has been completed.
+                    .notification-ago 12h ago
+                    .notification-icon.fa.fa-clock-o.bg-default
+                  / / .notification
+                  .notification
+                    .notification-title.text-success SYSTEM
+                    .notification-description
+                      Server
+                      = succeed "." do
+                        %strong up
+                    .notification-ago 12h ago
+                    .notification-icon.fa.fa-hdd-o.bg-success
+                  / / .notification
+                  .notification
+                    .notification-title.text-warning SYSTEM
+                    .notification-description
+                      %strong> Warning
+                      \: Processor load
+                      = succeed "." do
+                        %strong 92%
+                    .notification-ago 12h ago
+                    .notification-icon.fa.fa-hdd-o.bg-warning
+                  / / .notification
+                %a.notifications-link{:href => "#"} MORE NOTIFICATIONS
+              / / .panel-body
+            / / .panel
+            / /13. $NOTIFICATIONS
+            /
+              14. $TASKS ====================================================================================
+              
+              Tasks
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$('.widget-tasks .panel-body').pixelTasks().sortable({
+              		axis: "y",
+              		handle: ".task-sort-icon",
+              		stop: function( event, ui ) {
+              			// IE doesn't register the blur when sorting
+              			// so trigger focusout handlers to remove .ui-state-focus
+              			ui.item.children( ".task-sort-icon" ).triggerHandler( "focusout" );
+              		}
+              	});
+              	$('#clear-completed-tasks').click(function () {
+              		$('.widget-tasks .panel-body').pixelTasks('clearCompletedTasks');
+              	});
+              });
+            / / Javascript
+            .panel.widget-tasks
+              .panel-heading
+                %span.panel-title
+                  %i.panel-title-icon.fa.fa-tasks>
+                  Tasks
+              / / .panel-heading
+              .panel-body
+                .task
+                  %span.label.label-warning.pull-right High
+                  .fa.fa-arrows-v.task-sort-icon
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.task-title{:href => "#"}
+                    A very important task
+                    %span 1 hour left
+                / / .task
+                .task.completed
+                  %span.label.label-warning.pull-right High
+                  .fa.fa-arrows-v.task-sort-icon
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:checked => "checked", :name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.task-title{:href => "#"}
+                    A very important task
+                    %span 58 minutes left
+                / / .task
+                .task.completed
+                  .fa.fa-arrows-v.task-sort-icon
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:checked => "checked", :name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.task-title{:href => "#"} A regular task
+                / / .task
+                .task
+                  .fa.fa-arrows-v.task-sort-icon
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.task-title{:href => "#"} A regular task
+                / / .task
+                .task
+                  .fa.fa-arrows-v.task-sort-icon
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.task-title{:href => "#"} A regular task
+                / / .task
+                .task
+                  %span.label.pull-right Low
+                  .fa.fa-arrows-v.task-sort-icon
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.task-title{:href => "#"} An unimportant task
+                / / .task
+                .task
+                  %span.label.pull-right Low
+                  .fa.fa-arrows-v.task-sort-icon
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.task-title{:href => "#"} An unimportant task
+                / / .task
+              / / .panel-body
+              .panel-footer.clearfix
+                .pull-right
+                  %button#clear-completed-tasks.btn.btn-xs
+                    %i.fa.fa-eraser.text-success
+                    Clear completed tasks
+              / / .panel-body
+            / / .panel
+            / /14. $TASKS
+            /
+              15. $RATING ===================================================================================
+              
+              Rating
+            / Javascript
+            :javascript
+              init.push(function () {
+              	var current_rating = 3.4;
+              	$('#current-rating-example').text(current_rating);
+
+              	$('#stars-rating-example').pixelRating({
+              		rating: current_rating,
+              		onRatingChange: function (value) {
+              			$('#your-rating-example').text(value);
+              		}
+              	});
+
+              	$('#set-rating-example').click(function(){
+              		$('#stars-rating-example').pixelRating('setRating', 2.3);
+              		$('#current-rating-example').text(2.3);
+              	});
+              });
+            / / Javascript
+            .panel.widget-tasks
+              .panel-heading
+                %span.panel-title
+                  %i.panel-title-icon.fa.fa-star-o>
+                  Rating
+              / / .panel-heading
+              .panel-body
+                %span#stars-rating-example>
+                \&nbsp;&nbsp;&nbsp;
+                Current rating:
+                = succeed "&amp;nbsp;&amp;nbsp;&amp;nbsp;" do
+                  %strong#current-rating-example 0
+                Your rating:
+                %strong#your-rating-example 0
+                %br/
+                %br/
+                %button#set-rating-example.btn.btn-xs Set current rating = 2.3
+              / / .panel-body
+            / / .panel
+            / /15. $RATING
+            /
+              16. $COMMENTS =================================================================================
+              
+              Comments
+            .panel.widget-comments
+              .panel-heading
+                %span.panel-title
+                  %i.panel-title-icon.fa.fa-comment-o>
+                  Last comments
+              / / .panel-heading
+              .panel-body
+                .comment
+                  %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                  .comment-body
+                    .comment-by
+                      %a{:href => "#", :title => ""} Denise Steiner
+                      commented on
+                      %a{:href => "#", :title => ""} Article Name
+                    .comment-text
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                    .comment-actions
+                      %a{:href => "#"}
+                        %i.fa.fa-pencil>
+                        Edit
+                      %a{:href => "#"}
+                        %i.fa.fa-times>
+                        Remove
+                      %span.pull-right 2 hours ago
+                  / / .comment-body
+                / / .comment
+                .comment
+                  %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                  .comment-body
+                    .comment-by
+                      %a{:href => "#", :title => ""} Michelle Bortz
+                      commented on
+                      %a{:href => "#", :title => ""} Article Name
+                    .comment-text
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                    .comment-actions
+                      %a{:href => "#"}
+                        %i.fa.fa-pencil>
+                        Edit
+                      %a{:href => "#"}
+                        %i.fa.fa-times>
+                        Remove
+                      %span.pull-right 2 hours ago
+                  / / .comment-body
+                / / .comment
+                .comment
+                  %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                  .comment-body
+                    .comment-by
+                      %a{:href => "#", :title => ""} Robert Jang
+                      commented on
+                      %a{:href => "#", :title => ""} Article Name
+                    .comment-text
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                    .comment-actions
+                      %a{:href => "#"}
+                        %i.fa.fa-pencil>
+                        Edit
+                      %a{:href => "#"}
+                        %i.fa.fa-times>
+                        Remove
+                      %span.pull-right 2 hours ago
+                  / / .comment-body
+                / / .comment
+                .comment
+                  %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                  .comment-body
+                    .comment-by
+                      %a{:href => "#", :title => ""} Timothy Owens
+                      commented on
+                      %a{:href => "#", :title => ""} Article Name
+                    .comment-text
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                    .comment-actions
+                      %a{:href => "#"}
+                        %i.fa.fa-pencil>
+                        Edit
+                      %a{:href => "#"}
+                        %i.fa.fa-times>
+                        Remove
+                      %span.pull-right 2 hours ago
+                  / / .comment-body
+                / / .comment
+              / / .panel-body
+            / / .panel
+            / /16. $COMMENTS
+            /
+              17. $ARTICLE_COMMENTS =========================================================================
+              
+              Article comments
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$(".article-comments-add").expandingInput({
+              		target: 'textarea',
+              		hidden_content: '> div',
+              		placeholder: 'Write comment',
+              		onAfterExpand: function () {
+              			this.$target.attr('rows', 2);
+              			this.$target.removeClass('input-sm');
+              			this.$target.autosize();
+              		}
+              	});
+              });
+            / / Javascript
+            .panel.widget-article-comments
+              .panel-heading
+                %span.panel-title
+                  %i.panel-title-icon.fa.fa-comment>
+                  Article comments
+              / / .panel-heading
+              .panel-body
+                .comment
+                  %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                  .comment-body
+                    .comment-text
+                      .comment-heading
+                        %a{:href => "#", :title => ""} Robert Jang
+                        %span 14 hours ago
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                    .comment-footer
+                      %a{:href => "#"}>
+                        %i.fa.fa-thumbs-o-up
+                      \&nbsp;&nbsp;
+                      %a{:href => "#"}
+                        %i.fa.fa-thumbs-o-down
+                      \&nbsp;&nbsp;·&nbsp;&nbsp;
+                      %a{:href => "#"} Reply
+                  / / .comment-body
+                  .comment
+                    %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                    .comment-body
+                      .comment-text
+                        .comment-heading
+                          %a{:href => "#", :title => ""} Timothy Owens
+                          %span 14 hours ago
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                      .comment-footer
+                        %a{:href => "#"}>
+                          %i.fa.fa-thumbs-o-up
+                        \&nbsp;&nbsp;
+                        %a{:href => "#"}
+                          %i.fa.fa-thumbs-o-down
+                        \&nbsp;&nbsp;·&nbsp;&nbsp;
+                        %a{:href => "#"} Reply
+                    / / .comment-body
+                  / / .comment
+                  .comment
+                    %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                    .comment-body
+                      .comment-text
+                        .comment-heading
+                          %a{:href => "#", :title => ""} Denise Steiner
+                          %span 14 hours ago
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                      .comment-footer
+                        %a{:href => "#"}>
+                          %i.fa.fa-thumbs-o-up
+                        \&nbsp;&nbsp;
+                        %a{:href => "#"}
+                          %i.fa.fa-thumbs-o-down
+                        \&nbsp;&nbsp;·&nbsp;&nbsp;
+                        %a{:href => "#"} Reply
+                    / / .comment-body
+                    .comment
+                      %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+                      .comment-body
+                        .comment-text
+                          .comment-heading
+                            %a{:href => "#", :title => ""} John Doe
+                            %span 14 hours ago
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                        .comment-footer
+                          %a{:href => "#"}>
+                            %i.fa.fa-thumbs-o-up
+                          \&nbsp;&nbsp;
+                          %a{:href => "#"}
+                            %i.fa.fa-thumbs-o-down
+                          \&nbsp;&nbsp;·&nbsp;&nbsp;
+                          %a{:href => "#"} Reply
+                      / / .comment-body
+                    / / .comment
+                  / / .comment
+                / / .comment
+                .comment
+                  %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                  .comment-body
+                    .comment-text
+                      .comment-heading
+                        %a{:href => "#", :title => ""} Michelle Bortz
+                        %span 14 hours ago
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                    .comment-footer
+                      %a{:href => "#"}>
+                        %i.fa.fa-thumbs-o-up
+                      \&nbsp;&nbsp;
+                      %a{:href => "#"}
+                        %i.fa.fa-thumbs-o-down
+                      \&nbsp;&nbsp;·&nbsp;&nbsp;
+                      %a{:href => "#"} Reply
+                  / / .comment-body
+                / / .comment
+              / / .panel-body
+              .panel-footer.clearfix
+                .article-comments-add
+                  %textarea.form-control.input-sm{:rows => "1"}
+                  .expanding-input-hidden{:style => "margin-top: 10px;"}
+                    %button.btn.btn-sm.btn-primary.pull-right Post comment
+              / / .panel-footer
+            / / .panel
+            / /17. $ARTICLE_COMMENTS
+            /
+              18. $FOLLOWERS ================================================================================
+              
+              Followers
+            .panel.widget-followers
+              .panel-heading
+                %span.panel-title
+                  %i.panel-title-icon.fa.fa-check>
+                  Followers
+              / / .panel-heading
+              .panel-body
+                .follower
+                  %img.follower-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                  .body
+                    .follower-controls
+                      %a.btn.btn-sm.btn-success{:href => "#"}
+                        %i.fa.fa-check
+                        %span &nbsp;&nbsp;Following
+                    %a.follower-name{:href => "#"} Robert Jang
+                    %br/
+                    %a.follower-username{:href => "#"} @rjang
+                .follower
+                  %img.follower-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                  .body
+                    .follower-controls
+                      %a.btn.btn-sm.btn-outline{:href => "#"} Follow
+                    %a.follower-name{:href => "#"} Michelle Bortz
+                    %br/
+                    %a.follower-username{:href => "#"} @mbortz
+                .follower
+                  %img.follower-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                  .body
+                    .follower-controls
+                      %a.btn.btn-sm.btn-outline{:href => "#"} Follow
+                    %a.follower-name{:href => "#"} Timothy Owens
+                    %br/
+                    %a.follower-username{:href => "#"} @towens
+                .follower
+                  %img.follower-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                  .body
+                    .follower-controls
+                      %a.btn.btn-sm.btn-outline{:href => "#"} Follow
+                    %a.follower-name{:href => "#"} Denise Steiner
+                    %br/
+                    %a.follower-username{:href => "#"} @dsteiner
+              / / .panel-body
+            / / .panel
+            / /18. $FOLLOWERS
+        / / .row
+        .row
+          .col-xs-12
+            /
+              19. $GOOGLE_MAPS_WIDGET =======================================================================
+              
+              Google maps widget
+            / Javascript
+            :javascript
+              init.push(function () {
+              	// Google Maps docs - https://developers.google.com/maps/documentation/javascript/examples/map-simple
+              	var map = new google.maps.Map(document.getElementById('widget-maps-example'), {
+              		zoom: 8,
+              		center: new google.maps.LatLng(-34.397, 150.644),
+              		mapTypeId: google.maps.MapTypeId.ROADMAP
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title
+                  %i.panel-title-icon.fa.fa-map-marker>
+                  Google Maps
+              / / .panel-heading
+              .panel-body{:style => "position:relative;height: 300px;"}
+                #widget-maps-example.widget-maps
+              / / .panel-body
+            / / .panel
+            / /19. $GOOGLE_MAPS_WIDGET
+        / / .row
+      / / #content-wrapper
+      #main-menu-bg
+    / / #main-wrapper
+    / Get jQuery from Google CDN
+    / [if !IE]>
+    :javascript
+      window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">'+"<"+"/script>");
+    / <![endif]
+    /[if lte IE 9]
+      <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">'+"<"+"/script>"); </script>
+    / Pixel Admin's javascripts
+    %script{:src => "assets/javascripts/bootstrap.min.js"}
+    %script{:src => "assets/javascripts/pixel-admin.min.js"}
+    / Google Maps
+    %script{:src => "https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"}
+    :javascript
+      init.push(function () {
+      	// Javascript code here
+      })
+      window.PixelAdmin.start(init);

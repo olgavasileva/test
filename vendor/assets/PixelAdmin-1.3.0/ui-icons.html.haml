@@ -1,0 +1,1996 @@
+!!!
+/
+  TABLE OF CONTENTS.
+  
+  Use search to find needed section.
+  
+  \=====================================================
+  
+  |  1. $BODY                 |  Body                 |
+  |  2. $MAIN_NAVIGATION      |  Main navigation      |
+  |  3. $NAVBAR_ICON_BUTTONS  |  Navbar Icon Buttons  |
+  |  4. $MAIN_MENU            |  Main menu            |
+  |  5. $FONT_AWESOME_ICONS   |  Font-Awesome Icons   |
+  
+  \=====================================================
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+/ [if gt IE 9]><!
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title Icons - UI Elements - PixelAdmin
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0", :name => "viewport"}/
+    / Open Sans font from Google CDN
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
+    / Pixel Admin's stylesheets
+    %link{:href => "assets/stylesheets/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pixel-admin.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/widgets.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/rtl.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/themes.min.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+  /
+    1. $BODY ======================================================================================
+    
+    Body
+    
+    Classes:
+    * 'theme-{THEME NAME}'
+    * 'right-to-left'      - Sets text direction to right-to-left
+    * 'main-menu-right'    - Places the main menu on the right side
+    * 'no-main-menu'       - Hides the main menu
+    * 'main-navbar-fixed'  - Fixes the main navigation
+    * 'main-menu-fixed'    - Fixes the main menu
+    * 'main-menu-animated' - Animate main menu
+  %body.theme-default.main-menu-animated
+    :javascript
+      var init = [];
+    / Demo script
+    %script{:src => "assets/demo/demo.js"}
+    / / Demo script
+    #main-wrapper
+      /
+        2. $MAIN_NAVIGATION ===========================================================================
+        
+        Main navigation
+      #main-navbar.navbar.navbar-inverse{:role => "navigation"}
+        / Main menu toggle
+        %button#main-menu-toggle{:type => "button"}
+          %i.navbar-icon.fa.fa-bars.icon
+          %span.hide-menu-text HIDE MENU
+        .navbar-inner
+          / Main navbar header
+          .navbar-header
+            / Logo
+            %a.navbar-brand{:href => "index.html"}
+            %div
+              %img{:alt => "Pixel Admin", :src => "assets/images/pixel-admin/main-navbar-logo.png"}/
+            PixelAdmin
+            / Main navbar toggle
+            %button.navbar-toggle.collapsed{"data-target" => "#main-navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+              %i.navbar-icon.fa.fa-bars
+          / / .navbar-header
+          #main-navbar-collapse.collapse.navbar-collapse.main-navbar-collapse
+            %div
+              %ul.nav.navbar-nav
+                %li
+                  %a{:href => "#"} Home
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Dropdown
+                  %ul.dropdown-menu
+                    %li
+                      %a{:href => "#"} First item
+                    %li
+                      %a{:href => "#"} Second item
+                    %li.divider
+                    %li
+                      %a{:href => "#"} Third item
+              / / .navbar-nav
+              .right.clearfix
+                %ul.nav.navbar-nav.pull-right.right-navbar-nav
+                  /
+                    3. $NAVBAR_ICON_BUTTONS =======================================================================
+                    
+                    Navbar Icon Buttons
+                    
+                    NOTE: .nav-icon-btn triggers a dropdown menu on desktop screens only. On small screens .nav-icon-btn acts like a hyperlink.
+                    
+                    Classes:
+                    * 'nav-icon-btn-info'
+                    * 'nav-icon-btn-success'
+                    * 'nav-icon-btn-warning'
+                    * 'nav-icon-btn-danger'
+                  %li.nav-icon-btn.nav-icon-btn-danger.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#notifications"}
+                      %span.label 5
+                      %i.nav-icon.fa.fa-bullhorn
+                      %span.small-screen-text Notifications
+                    / NOTIFICATIONS
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-notifications').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-notifications.no-padding{:style => "width: 300px"}
+                      #main-navbar-notifications.notifications-list
+                        .notification
+                          .notification-title.text-danger SYSTEM
+                          .notification-description
+                            %strong> Error 500
+                            \: Syntax error in index.php at line
+                            = succeed "." do
+                              %strong 461
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-danger
+                        / / .notification
+                        .notification
+                          .notification-title.text-info STORE
+                          .notification-description
+                            You have
+                            %strong 9
+                            new orders.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-truck.bg-info
+                        / / .notification
+                        .notification
+                          .notification-title.text-default CRON DAEMON
+                          .notification-description
+                            Job
+                            %strong "Clean DB"
+                            has been completed.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-clock-o.bg-default
+                        / / .notification
+                        .notification
+                          .notification-title.text-success SYSTEM
+                          .notification-description
+                            Server
+                            = succeed "." do
+                              %strong up
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-success
+                        / / .notification
+                        .notification
+                          .notification-title.text-warning SYSTEM
+                          .notification-description
+                            %strong> Warning
+                            \: Processor load
+                            = succeed "." do
+                              %strong 92%
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-warning
+                        / / .notification
+                      / / .notifications-list
+                      %a.notifications-link{:href => "#"} MORE NOTIFICATIONS
+                    / / .dropdown-menu
+                  %li.nav-icon-btn.nav-icon-btn-success.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#messages"}
+                      %span.label 10
+                      %i.nav-icon.fa.fa-envelope
+                      %span.small-screen-text Income messages
+                    / MESSAGES
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-messages').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-messages-alt.no-padding{:style => "width: 300px;"}
+                      #main-navbar-messages.messages-list
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                      / / .messages-list
+                      %a.messages-link{:href => "#"} MORE MESSAGES
+                    / / .dropdown-menu
+                  / /3. $END_NAVBAR_ICON_BUTTONS
+                  %li
+                    %form.navbar-form.pull-left
+                      %input.form-control{:placeholder => "Search", :type => "text"}/
+                  %li.dropdown
+                    %a.dropdown-toggle.user-menu{"data-toggle" => "dropdown", :href => "#"}
+                      %img{:src => "assets/demo/avatars/1.jpg"}/
+                      %span John Doe
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"}
+                          %span.label.label-warning.pull-right> New
+                          Profile
+                      %li
+                        %a{:href => "#"}
+                          %span.badge.badge-primary.pull-right> New
+                          Account
+                      %li
+                        %a{:href => "#"}
+                          %i.dropdown-icon.fa.fa-cog>
+                          \&nbsp;&nbsp;Settings
+                      %li.divider
+                      %li
+                        %a{:href => "pages-signin.html"}
+                          %i.dropdown-icon.fa.fa-power-off>
+                          \&nbsp;&nbsp;Log Out
+                / / .navbar-nav
+              / / .right
+          / / #main-navbar-collapse
+        / / .navbar-inner
+      / / #main-navbar
+      / /2. $END_MAIN_NAVIGATION
+      /
+        4. $MAIN_MENU =================================================================================
+        
+        Main menu
+        
+        Notes:
+        * to make the menu item active, add a class 'active' to the <li>
+        example: <li class="active">...</li>
+        * multilevel submenu example:
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 1</span></a>
+        <ul>
+        <li>...</li>
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 2</span></a>
+        <ul>
+        <li>...</li>
+        \...
+        </ul>
+        </li>
+        \...
+        </ul>
+        </li>
+      #main-menu{:role => "navigation"}
+        #main-menu-inner
+          #menu-content-demo.menu-content.top
+            /
+              Menu custom content demo
+              CSS:        styles/pixel-admin-less/demo.less or styles/pixel-admin-scss/_demo.scss
+              Javascript: html/assets/demo/demo.js
+            %div
+              .text-bg
+                %span.text-slim Welcome,
+                %span.text-semibold John
+              %img{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+              .btn-group
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-envelope
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-user
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-cog
+                %a.btn.btn-xs.btn-danger.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-power-off
+              %a.close{:href => "#"} &times;
+          %ul.navigation
+            %li
+              %a{:href => "index.html"}
+                %i.menu-icon.fa.fa-dashboard
+                %span.mm-text Dashboard
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-th
+                %span.mm-text Layouts
+                %span.label.label-warning Updated
+              %ul
+                %li
+                  %a{:href => "layouts-grid.html", :tabindex => "-1"}
+                    %span.mm-text Grid
+                %li
+                  %a{:href => "layouts-main-menu.html", :tabindex => "-1"}
+                    %i.menu-icon.fa.fa-th-list
+                    %span.mm-text Main menu
+                    %span.label.label-warning Updated
+            %li
+              %a{:href => "stat-panels.html"}
+                %i.menu-icon.fa.fa-tasks
+                %span.mm-text Stat panels
+            %li
+              %a{:href => "widgets.html"}
+                %i.menu-icon.fa.fa-flask
+                %span.mm-text Widgets
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-desktop
+                %span.mm-text UI elements
+              %ul
+                %li
+                  %a{:href => "ui-buttons.html", :tabindex => "-1"}
+                    %span.mm-text Buttons
+                %li
+                  %a{:href => "ui-typography.html", :tabindex => "-1"}
+                    %span.mm-text Typography
+                %li
+                  %a{:href => "ui-tabs.html", :tabindex => "-1"}
+                    %span.mm-text Tabs &amp; Accordions
+                %li
+                  %a{:href => "ui-modals.html", :tabindex => "-1"}
+                    %span.mm-text Modals
+                %li
+                  %a{:href => "ui-alerts.html", :tabindex => "-1"}
+                    %span.mm-text Alerts &amp; Tooltips
+                %li
+                  %a{:href => "ui-components.html", :tabindex => "-1"}
+                    %span.mm-text Components
+                %li
+                  %a{:href => "ui-panels.html", :tabindex => "-1"}
+                    %span.mm-text Panels
+                %li
+                  %a{:href => "ui-jqueryui.html", :tabindex => "-1"}
+                    %span.mm-text jQuery UI
+                %li
+                  %a{:href => "ui-icons.html", :tabindex => "-1"}
+                    %span.mm-text Icons
+                %li
+                  %a{:href => "ui-utility-classes.html", :tabindex => "-1"}
+                    %span.mm-text Utility classes
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-check-square
+                %span.mm-text Form components
+              %ul
+                %li
+                  %a{:href => "forms-layouts.html", :tabindex => "-1"}
+                    %span.mm-text Layouts
+                %li
+                  %a{:href => "forms-general.html", :tabindex => "-1"}
+                    %span.mm-text General
+                %li
+                  %a{:href => "forms-advanced.html", :tabindex => "-1"}
+                    %span.mm-text Advanced
+                %li
+                  %a{:href => "forms-pickers.html", :tabindex => "-1"}
+                    %span.mm-text Pickers
+                %li
+                  %a{:href => "forms-validation.html", :tabindex => "-1"}
+                    %span.mm-text Validation
+                %li
+                  %a{:href => "forms-editors.html", :tabindex => "-1"}
+                    %span.mm-text Editors
+            %li
+              %a{:href => "tables.html"}
+                %i.menu-icon.fa.fa-table
+                %span.mm-text Tables
+            %li
+              %a{:href => "charts.html"}
+                %i.menu-icon.fa.fa-bar-chart-o
+                %span.mm-text Charts
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-files-o
+                %span.mm-text Pages
+                %span.label.label-success 16
+              %ul
+                %li
+                  %a{:href => "pages-search.html", :tabindex => "-1"}
+                    %span.mm-text Search results
+                %li
+                  %a{:href => "pages-pricing.html", :tabindex => "-1"}
+                    %span.mm-text Plans &amp; pricing
+                %li
+                  %a{:href => "pages-faq.html", :tabindex => "-1"}
+                    %span.mm-text FAQ
+                %li
+                  %a{:href => "pages-profile.html", :tabindex => "-1"}
+                    %span.mm-text Profile
+                %li
+                  %a{:href => "pages-timeline.html", :tabindex => "-1"}
+                    %span.mm-text Timeline
+                %li
+                  %a{:href => "pages-signin.html", :tabindex => "-1"}
+                    %span.mm-text Sign In
+                %li
+                  %a{:href => "pages-signup.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up
+                %li
+                  %a{:href => "pages-signin-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign In Alt
+                %li
+                  %a{:href => "pages-signup-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up Alt
+                %li
+                  %a{:href => "pages-invoice.html", :tabindex => "-1"}
+                    %span.mm-text Invoice
+                %li
+                  %a{:href => "pages-404.html", :tabindex => "-1"}
+                    %span.mm-text Error 404
+                %li
+                  %a{:href => "pages-500.html", :tabindex => "-1"}
+                    %span.mm-text Error 500
+                %li.mm-dropdown
+                  %a{:href => "#"}
+                    %i.menu-icon.fa.fa-envelope
+                    %span.mm-text Messages
+                  %ul
+                    %li
+                      %a{:href => "pages-inbox.html", :tabindex => "-1"}
+                        %span.mm-text Inbox
+                    %li
+                      %a{:href => "pages-show-email.html", :tabindex => "-1"}
+                        %span.mm-text Show message
+                    %li
+                      %a{:href => "pages-new-email.html", :tabindex => "-1"}
+                        %span.mm-text New message
+                %li
+                  %a{:href => "pages-blank.html", :tabindex => "-1"}
+                    %span.mm-text Blank page
+            %li
+              %a{:href => "complete-ui.html"}
+                %i.menu-icon.fa.fa-briefcase
+                %span.mm-text Complete UI
+            %li
+              %a{:href => "color-builder.html"}
+                %i.menu-icon.fa.fa-tint
+                %span.mm-text Color Builder
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-sitemap
+                %span.mm-text Menu levels
+                %span.badge.badge-primary 6
+              %ul
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.1
+                    %span.badge.badge-danger 12
+                    %span.label.label-info 21
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.2
+                %li.mm-dropdown
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.3
+                    %span.label.label-warning 5
+                  %ul
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.1
+                    %li.mm-dropdown
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+                      %ul
+                        %li.mm-dropdown
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.1
+                          %ul
+                            %li
+                              %a{:href => "#", :tabindex => "-1"}
+                                %span.mm-text Menu level 4.1
+                        %li
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.2
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+          / / .navigation
+          .menu-content
+            %a.btn.btn-primary.btn-block.btn-outline.dark{:href => "pages-invoice.html"} Create Invoice
+        / / #main-menu-inner
+      / / #main-menu
+      / /4. $MAIN_MENU
+      #content-wrapper
+        .page-header
+          %h1
+            %span.text-light-gray> UI Elements /
+            Icons
+        / / .page-header
+        /
+          5. $FONT_AWESOME_ICONS =============================================================================
+          
+          Font-Awesome Icons
+        / Styles
+        :css
+          #font-awesome-icons [class*="col-"] {
+          	padding-bottom: 8px;
+          	padding-top: 8px;
+          }
+          #font-awesome-icons [class*="col-"]:hover {
+          	color: #000 !important;
+          }
+          #font-awesome-icons .fa {
+          	font-size: 14px;
+          	width: 20px;
+          	text-align: center;
+          }
+          #font-awesome-icons h4 {
+          	font-weight: 300;
+          	margin-bottom: 25px;
+          }
+        / / Styles
+        #font-awesome-icons.panel
+          .panel-heading
+            %span.panel-title Font-Awesome Icons
+          .panel-body
+            %h4 Web Application Icons
+            .row
+              .col-md-3.col-sm-4
+                %i.fa.fa-adjust>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-adjust
+              .col-md-3.col-sm-4
+                %i.fa.fa-anchor>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-anchor
+              .col-md-3.col-sm-4
+                %i.fa.fa-archive>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-archive
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrows>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrows
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrows-h>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrows-h
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrows-v>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrows-v
+              .col-md-3.col-sm-4
+                %i.fa.fa-asterisk>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-asterisk
+              .col-md-3.col-sm-4
+                %i.fa.fa-ban>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-ban
+              .col-md-3.col-sm-4
+                %i.fa.fa-bar-chart-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-bar-chart-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-barcode>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-barcode
+              .col-md-3.col-sm-4
+                %i.fa.fa-bars>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-bars
+              .col-md-3.col-sm-4
+                %i.fa.fa-beer>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-beer
+              .col-md-3.col-sm-4
+                %i.fa.fa-bell>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-bell
+              .col-md-3.col-sm-4
+                %i.fa.fa-bell-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-bell-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-bolt>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-bolt
+              .col-md-3.col-sm-4
+                %i.fa.fa-book>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-book
+              .col-md-3.col-sm-4
+                %i.fa.fa-bookmark>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-bookmark
+              .col-md-3.col-sm-4
+                %i.fa.fa-bookmark-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-bookmark-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-briefcase>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-briefcase
+              .col-md-3.col-sm-4
+                %i.fa.fa-bug>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-bug
+              .col-md-3.col-sm-4
+                %i.fa.fa-building-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-building-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-bullhorn>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-bullhorn
+              .col-md-3.col-sm-4
+                %i.fa.fa-bullseye>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-bullseye
+              .col-md-3.col-sm-4
+                %i.fa.fa-calendar>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-calendar
+              .col-md-3.col-sm-4
+                %i.fa.fa-calendar-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-calendar-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-camera>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-camera
+              .col-md-3.col-sm-4
+                %i.fa.fa-camera-retro>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-camera-retro
+              .col-md-3.col-sm-4
+                %i.fa.fa-caret-square-o-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-caret-square-o-down
+              .col-md-3.col-sm-4
+                %i.fa.fa-caret-square-o-left>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-caret-square-o-left
+              .col-md-3.col-sm-4
+                %i.fa.fa-caret-square-o-right>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-caret-square-o-right
+              .col-md-3.col-sm-4
+                %i.fa.fa-caret-square-o-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-caret-square-o-up
+              .col-md-3.col-sm-4
+                %i.fa.fa-certificate>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-certificate
+              .col-md-3.col-sm-4
+                %i.fa.fa-check>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-check
+              .col-md-3.col-sm-4
+                %i.fa.fa-check-circle>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-check-circle
+              .col-md-3.col-sm-4
+                %i.fa.fa-check-circle-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-check-circle-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-check-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-check-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-check-square-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-check-square-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-circle>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-circle
+              .col-md-3.col-sm-4
+                %i.fa.fa-circle-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-circle-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-clock-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-clock-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-cloud>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-cloud
+              .col-md-3.col-sm-4
+                %i.fa.fa-cloud-download>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-cloud-download
+              .col-md-3.col-sm-4
+                %i.fa.fa-cloud-upload>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-cloud-upload
+              .col-md-3.col-sm-4
+                %i.fa.fa-code>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-code
+              .col-md-3.col-sm-4
+                %i.fa.fa-code-fork>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-code-fork
+              .col-md-3.col-sm-4
+                %i.fa.fa-coffee>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-coffee
+              .col-md-3.col-sm-4
+                %i.fa.fa-cog>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-cog
+              .col-md-3.col-sm-4
+                %i.fa.fa-cogs>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-cogs
+              .col-md-3.col-sm-4
+                %i.fa.fa-comment>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-comment
+              .col-md-3.col-sm-4
+                %i.fa.fa-comment-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-comment-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-comments>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-comments
+              .col-md-3.col-sm-4
+                %i.fa.fa-comments-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-comments-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-compass>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-compass
+              .col-md-3.col-sm-4
+                %i.fa.fa-credit-card>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-credit-card
+              .col-md-3.col-sm-4
+                %i.fa.fa-crop>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-crop
+              .col-md-3.col-sm-4
+                %i.fa.fa-crosshairs>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-crosshairs
+              .col-md-3.col-sm-4
+                %i.fa.fa-cutlery>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-cutlery
+              .col-md-3.col-sm-4
+                %i.fa.fa-dashboard>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-dashboard
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-desktop>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-desktop
+              .col-md-3.col-sm-4
+                %i.fa.fa-dot-circle-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-dot-circle-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-download>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-download
+              .col-md-3.col-sm-4
+                %i.fa.fa-edit>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-edit
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-ellipsis-h>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-ellipsis-h
+              .col-md-3.col-sm-4
+                %i.fa.fa-ellipsis-v>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-ellipsis-v
+              .col-md-3.col-sm-4
+                %i.fa.fa-envelope>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-envelope
+              .col-md-3.col-sm-4
+                %i.fa.fa-envelope-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-envelope-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-eraser>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-eraser
+              .col-md-3.col-sm-4
+                %i.fa.fa-exchange>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-exchange
+              .col-md-3.col-sm-4
+                %i.fa.fa-exclamation>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-exclamation
+              .col-md-3.col-sm-4
+                %i.fa.fa-exclamation-circle>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-exclamation-circle
+              .col-md-3.col-sm-4
+                %i.fa.fa-exclamation-triangle>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-exclamation-triangle
+              .col-md-3.col-sm-4
+                %i.fa.fa-external-link>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-external-link
+              .col-md-3.col-sm-4
+                %i.fa.fa-external-link-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-external-link-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-eye>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-eye
+              .col-md-3.col-sm-4
+                %i.fa.fa-eye-slash>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-eye-slash
+              .col-md-3.col-sm-4
+                %i.fa.fa-female>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-female
+              .col-md-3.col-sm-4
+                %i.fa.fa-fighter-jet>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-fighter-jet
+              .col-md-3.col-sm-4
+                %i.fa.fa-film>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-film
+              .col-md-3.col-sm-4
+                %i.fa.fa-filter>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-filter
+              .col-md-3.col-sm-4
+                %i.fa.fa-fire>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-fire
+              .col-md-3.col-sm-4
+                %i.fa.fa-fire-extinguisher>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-fire-extinguisher
+              .col-md-3.col-sm-4
+                %i.fa.fa-flag>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-flag
+              .col-md-3.col-sm-4
+                %i.fa.fa-flag-checkered>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-flag-checkered
+              .col-md-3.col-sm-4
+                %i.fa.fa-flag-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-flag-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-flash>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-flash
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-flask>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-flask
+              .col-md-3.col-sm-4
+                %i.fa.fa-folder>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-folder
+              .col-md-3.col-sm-4
+                %i.fa.fa-folder-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-folder-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-folder-open>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-folder-open
+              .col-md-3.col-sm-4
+                %i.fa.fa-folder-open-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-folder-open-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-frown-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-frown-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-gamepad>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-gamepad
+              .col-md-3.col-sm-4
+                %i.fa.fa-gavel>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-gavel
+              .col-md-3.col-sm-4
+                %i.fa.fa-gear>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-gear
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-gears>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-gears
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-gift>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-gift
+              .col-md-3.col-sm-4
+                %i.fa.fa-glass>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-glass
+              .col-md-3.col-sm-4
+                %i.fa.fa-globe>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-globe
+              .col-md-3.col-sm-4
+                %i.fa.fa-group>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-group
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-hdd-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-hdd-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-headphones>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-headphones
+              .col-md-3.col-sm-4
+                %i.fa.fa-heart>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-heart
+              .col-md-3.col-sm-4
+                %i.fa.fa-heart-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-heart-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-home>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-home
+              .col-md-3.col-sm-4
+                %i.fa.fa-inbox>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-inbox
+              .col-md-3.col-sm-4
+                %i.fa.fa-info>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-info
+              .col-md-3.col-sm-4
+                %i.fa.fa-info-circle>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-info-circle
+              .col-md-3.col-sm-4
+                %i.fa.fa-key>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-key
+              .col-md-3.col-sm-4
+                %i.fa.fa-keyboard-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-keyboard-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-laptop>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-laptop
+              .col-md-3.col-sm-4
+                %i.fa.fa-leaf>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-leaf
+              .col-md-3.col-sm-4
+                %i.fa.fa-legal>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-legal
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-lemon-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-lemon-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-level-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-level-down
+              .col-md-3.col-sm-4
+                %i.fa.fa-level-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-level-up
+              .col-md-3.col-sm-4
+                %i.fa.fa-lightbulb-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-lightbulb-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-location-arrow>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-location-arrow
+              .col-md-3.col-sm-4
+                %i.fa.fa-lock>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-lock
+              .col-md-3.col-sm-4
+                %i.fa.fa-magic>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-magic
+              .col-md-3.col-sm-4
+                %i.fa.fa-magnet>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-magnet
+              .col-md-3.col-sm-4
+                %i.fa.fa-mail-forward>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-mail-forward
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-mail-reply>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-mail-reply
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-mail-reply-all>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-mail-reply-all
+              .col-md-3.col-sm-4
+                %i.fa.fa-male>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-male
+              .col-md-3.col-sm-4
+                %i.fa.fa-map-marker>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-map-marker
+              .col-md-3.col-sm-4
+                %i.fa.fa-meh-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-meh-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-microphone>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-microphone
+              .col-md-3.col-sm-4
+                %i.fa.fa-microphone-slash>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-microphone-slash
+              .col-md-3.col-sm-4
+                %i.fa.fa-minus>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-minus
+              .col-md-3.col-sm-4
+                %i.fa.fa-minus-circle>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-minus-circle
+              .col-md-3.col-sm-4
+                %i.fa.fa-minus-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-minus-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-minus-square-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-minus-square-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-mobile>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-mobile
+              .col-md-3.col-sm-4
+                %i.fa.fa-mobile-phone>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-mobile-phone
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-money>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-money
+              .col-md-3.col-sm-4
+                %i.fa.fa-moon-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-moon-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-music>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-music
+              .col-md-3.col-sm-4
+                %i.fa.fa-pencil>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-pencil
+              .col-md-3.col-sm-4
+                %i.fa.fa-pencil-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-pencil-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-pencil-square-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-pencil-square-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-phone>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-phone
+              .col-md-3.col-sm-4
+                %i.fa.fa-phone-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-phone-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-picture-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-picture-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-plane>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-plane
+              .col-md-3.col-sm-4
+                %i.fa.fa-plus>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-plus
+              .col-md-3.col-sm-4
+                %i.fa.fa-plus-circle>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-plus-circle
+              .col-md-3.col-sm-4
+                %i.fa.fa-plus-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-plus-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-plus-square-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-plus-square-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-power-off>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-power-off
+              .col-md-3.col-sm-4
+                %i.fa.fa-print>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-print
+              .col-md-3.col-sm-4
+                %i.fa.fa-puzzle-piece>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-puzzle-piece
+              .col-md-3.col-sm-4
+                %i.fa.fa-qrcode>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-qrcode
+              .col-md-3.col-sm-4
+                %i.fa.fa-question>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-question
+              .col-md-3.col-sm-4
+                %i.fa.fa-question-circle>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-question-circle
+              .col-md-3.col-sm-4
+                %i.fa.fa-quote-left>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-quote-left
+              .col-md-3.col-sm-4
+                %i.fa.fa-quote-right>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-quote-right
+              .col-md-3.col-sm-4
+                %i.fa.fa-random>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-random
+              .col-md-3.col-sm-4
+                %i.fa.fa-refresh>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-refresh
+              .col-md-3.col-sm-4
+                %i.fa.fa-reply>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-reply
+              .col-md-3.col-sm-4
+                %i.fa.fa-reply-all>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-reply-all
+              .col-md-3.col-sm-4
+                %i.fa.fa-retweet>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-retweet
+              .col-md-3.col-sm-4
+                %i.fa.fa-road>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-road
+              .col-md-3.col-sm-4
+                %i.fa.fa-rocket>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-rocket
+              .col-md-3.col-sm-4
+                %i.fa.fa-rss>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-rss
+              .col-md-3.col-sm-4
+                %i.fa.fa-rss-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-rss-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-search>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-search
+              .col-md-3.col-sm-4
+                %i.fa.fa-search-minus>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-search-minus
+              .col-md-3.col-sm-4
+                %i.fa.fa-search-plus>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-search-plus
+              .col-md-3.col-sm-4
+                %i.fa.fa-share>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-share
+              .col-md-3.col-sm-4
+                %i.fa.fa-share-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-share-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-share-square-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-share-square-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-shield>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-shield
+              .col-md-3.col-sm-4
+                %i.fa.fa-shopping-cart>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-shopping-cart
+              .col-md-3.col-sm-4
+                %i.fa.fa-sign-in>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-sign-in
+              .col-md-3.col-sm-4
+                %i.fa.fa-sign-out>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-sign-out
+              .col-md-3.col-sm-4
+                %i.fa.fa-signal>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-signal
+              .col-md-3.col-sm-4
+                %i.fa.fa-sitemap>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-sitemap
+              .col-md-3.col-sm-4
+                %i.fa.fa-smile-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-smile-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-sort>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-sort
+              .col-md-3.col-sm-4
+                %i.fa.fa-sort-alpha-asc>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-sort-alpha-asc
+              .col-md-3.col-sm-4
+                %i.fa.fa-sort-alpha-desc>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-sort-alpha-desc
+              .col-md-3.col-sm-4
+                %i.fa.fa-sort-amount-asc>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-sort-amount-asc
+              .col-md-3.col-sm-4
+                %i.fa.fa-sort-amount-desc>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-sort-amount-desc
+              .col-md-3.col-sm-4
+                %i.fa.fa-sort-asc>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-sort-asc
+              .col-md-3.col-sm-4
+                %i.fa.fa-sort-desc>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-sort-desc
+              .col-md-3.col-sm-4
+                %i.fa.fa-sort-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-sort-down
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-sort-numeric-asc>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-sort-numeric-asc
+              .col-md-3.col-sm-4
+                %i.fa.fa-sort-numeric-desc>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-sort-numeric-desc
+              .col-md-3.col-sm-4
+                %i.fa.fa-sort-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-sort-up
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-spinner>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-spinner
+              .col-md-3.col-sm-4
+                %i.fa.fa-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-square-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-square-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-star>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-star
+              .col-md-3.col-sm-4
+                %i.fa.fa-star-half>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-star-half
+              .col-md-3.col-sm-4
+                %i.fa.fa-star-half-empty>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-star-half-empty
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-star-half-full>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-star-half-full
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-star-half-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-star-half-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-star-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-star-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-subscript>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-subscript
+              .col-md-3.col-sm-4
+                %i.fa.fa-suitcase>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-suitcase
+              .col-md-3.col-sm-4
+                %i.fa.fa-sun-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-sun-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-superscript>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-superscript
+              .col-md-3.col-sm-4
+                %i.fa.fa-tablet>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-tablet
+              .col-md-3.col-sm-4
+                %i.fa.fa-tachometer>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-tachometer
+              .col-md-3.col-sm-4
+                %i.fa.fa-tag>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-tag
+              .col-md-3.col-sm-4
+                %i.fa.fa-tags>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-tags
+              .col-md-3.col-sm-4
+                %i.fa.fa-tasks>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-tasks
+              .col-md-3.col-sm-4
+                %i.fa.fa-terminal>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-terminal
+              .col-md-3.col-sm-4
+                %i.fa.fa-thumb-tack>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-thumb-tack
+              .col-md-3.col-sm-4
+                %i.fa.fa-thumbs-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-thumbs-down
+              .col-md-3.col-sm-4
+                %i.fa.fa-thumbs-o-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-thumbs-o-down
+              .col-md-3.col-sm-4
+                %i.fa.fa-thumbs-o-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-thumbs-o-up
+              .col-md-3.col-sm-4
+                %i.fa.fa-thumbs-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-thumbs-up
+              .col-md-3.col-sm-4
+                %i.fa.fa-ticket>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-ticket
+              .col-md-3.col-sm-4
+                %i.fa.fa-times>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-times
+              .col-md-3.col-sm-4
+                %i.fa.fa-times-circle>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-times-circle
+              .col-md-3.col-sm-4
+                %i.fa.fa-times-circle-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-times-circle-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-tint>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-tint
+              .col-md-3.col-sm-4
+                %i.fa.fa-toggle-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-toggle-down
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-toggle-left>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-toggle-left
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-toggle-right>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-toggle-right
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-toggle-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-toggle-up
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-trash-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-trash-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-trophy>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-trophy
+              .col-md-3.col-sm-4
+                %i.fa.fa-truck>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-truck
+              .col-md-3.col-sm-4
+                %i.fa.fa-umbrella>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-umbrella
+              .col-md-3.col-sm-4
+                %i.fa.fa-unlock>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-unlock
+              .col-md-3.col-sm-4
+                %i.fa.fa-unlock-alt>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-unlock-alt
+              .col-md-3.col-sm-4
+                %i.fa.fa-unsorted>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-unsorted
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-upload>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-upload
+              .col-md-3.col-sm-4
+                %i.fa.fa-user>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-user
+              .col-md-3.col-sm-4
+                %i.fa.fa-users>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-users
+              .col-md-3.col-sm-4
+                %i.fa.fa-video-camera>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-video-camera
+              .col-md-3.col-sm-4
+                %i.fa.fa-volume-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-volume-down
+              .col-md-3.col-sm-4
+                %i.fa.fa-volume-off>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-volume-off
+              .col-md-3.col-sm-4
+                %i.fa.fa-volume-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-volume-up
+              .col-md-3.col-sm-4
+                %i.fa.fa-warning>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-warning
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-wheelchair>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-wheelchair
+              .col-md-3.col-sm-4
+                %i.fa.fa-wrench>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-wrench
+            %hr.panel-wide/
+            %h4 Form Control Icons
+            .row
+              .col-md-3.col-sm-4
+                %i.fa.fa-check-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-check-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-check-square-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-check-square-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-circle>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-circle
+              .col-md-3.col-sm-4
+                %i.fa.fa-circle-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-circle-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-dot-circle-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-dot-circle-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-minus-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-minus-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-minus-square-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-minus-square-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-plus-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-plus-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-plus-square-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-plus-square-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-square-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-square-o
+            %hr.panel-wide/
+            %h4 Currency Icons
+            .row
+              .col-md-3.col-sm-4
+                %i.fa.fa-bitcoin>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-bitcoin
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-btc>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-btc
+              .col-md-3.col-sm-4
+                %i.fa.fa-cny>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-cny
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-dollar>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-dollar
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-eur>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-eur
+              .col-md-3.col-sm-4
+                %i.fa.fa-euro>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-euro
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-gbp>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-gbp
+              .col-md-3.col-sm-4
+                %i.fa.fa-inr>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-inr
+              .col-md-3.col-sm-4
+                %i.fa.fa-jpy>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-jpy
+              .col-md-3.col-sm-4
+                %i.fa.fa-krw>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-krw
+              .col-md-3.col-sm-4
+                %i.fa.fa-money>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-money
+              .col-md-3.col-sm-4
+                %i.fa.fa-rmb>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-rmb
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-rouble>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-rouble
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-rub>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-rub
+              .col-md-3.col-sm-4
+                %i.fa.fa-ruble>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-ruble
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-rupee>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-rupee
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-try>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-try
+              .col-md-3.col-sm-4
+                %i.fa.fa-turkish-lira>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-turkish-lira
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-usd>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-usd
+              .col-md-3.col-sm-4
+                %i.fa.fa-won>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-won
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-yen>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-yen
+                %span.text-muted (alias)
+            %hr.panel-wide/
+            %h4 Text Editor Icons
+            .row
+              .col-md-3.col-sm-4
+                %i.fa.fa-align-center>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-align-center
+              .col-md-3.col-sm-4
+                %i.fa.fa-align-justify>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-align-justify
+              .col-md-3.col-sm-4
+                %i.fa.fa-align-left>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-align-left
+              .col-md-3.col-sm-4
+                %i.fa.fa-align-right>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-align-right
+              .col-md-3.col-sm-4
+                %i.fa.fa-bold>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-bold
+              .col-md-3.col-sm-4
+                %i.fa.fa-chain>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-chain
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-chain-broken>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-chain-broken
+              .col-md-3.col-sm-4
+                %i.fa.fa-clipboard>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-clipboard
+              .col-md-3.col-sm-4
+                %i.fa.fa-columns>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-columns
+              .col-md-3.col-sm-4
+                %i.fa.fa-copy>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-copy
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-cut>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-cut
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-dedent>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-dedent
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-eraser>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-eraser
+              .col-md-3.col-sm-4
+                %i.fa.fa-file>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-file
+              .col-md-3.col-sm-4
+                %i.fa.fa-file-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-file-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-file-text>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-file-text
+              .col-md-3.col-sm-4
+                %i.fa.fa-file-text-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-file-text-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-files-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-files-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-floppy-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-floppy-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-font>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-font
+              .col-md-3.col-sm-4
+                %i.fa.fa-indent>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-indent
+              .col-md-3.col-sm-4
+                %i.fa.fa-italic>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-italic
+              .col-md-3.col-sm-4
+                %i.fa.fa-link>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-link
+              .col-md-3.col-sm-4
+                %i.fa.fa-list>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-list
+              .col-md-3.col-sm-4
+                %i.fa.fa-list-alt>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-list-alt
+              .col-md-3.col-sm-4
+                %i.fa.fa-list-ol>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-list-ol
+              .col-md-3.col-sm-4
+                %i.fa.fa-list-ul>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-list-ul
+              .col-md-3.col-sm-4
+                %i.fa.fa-outdent>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-outdent
+              .col-md-3.col-sm-4
+                %i.fa.fa-paperclip>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-paperclip
+              .col-md-3.col-sm-4
+                %i.fa.fa-paste>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-paste
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-repeat>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-repeat
+              .col-md-3.col-sm-4
+                %i.fa.fa-rotate-left>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-rotate-left
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-rotate-right>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-rotate-right
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-save>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-save
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-scissors>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-scissors
+              .col-md-3.col-sm-4
+                %i.fa.fa-strikethrough>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-strikethrough
+              .col-md-3.col-sm-4
+                %i.fa.fa-table>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-table
+              .col-md-3.col-sm-4
+                %i.fa.fa-text-height>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-text-height
+              .col-md-3.col-sm-4
+                %i.fa.fa-text-width>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-text-width
+              .col-md-3.col-sm-4
+                %i.fa.fa-th>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-th
+              .col-md-3.col-sm-4
+                %i.fa.fa-th-large>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-th-large
+              .col-md-3.col-sm-4
+                %i.fa.fa-th-list>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-th-list
+              .col-md-3.col-sm-4
+                %i.fa.fa-underline>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-underline
+              .col-md-3.col-sm-4
+                %i.fa.fa-undo>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-undo
+              .col-md-3.col-sm-4
+                %i.fa.fa-unlink>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-unlink
+                %span.text-muted (alias)
+            %hr.panel-wide/
+            %h4 Directional Icons
+            .row
+              .col-md-3.col-sm-4
+                %i.fa.fa-angle-double-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-angle-double-down
+              .col-md-3.col-sm-4
+                %i.fa.fa-angle-double-left>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-angle-double-left
+              .col-md-3.col-sm-4
+                %i.fa.fa-angle-double-right>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-angle-double-right
+              .col-md-3.col-sm-4
+                %i.fa.fa-angle-double-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-angle-double-up
+              .col-md-3.col-sm-4
+                %i.fa.fa-angle-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-angle-down
+              .col-md-3.col-sm-4
+                %i.fa.fa-angle-left>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-angle-left
+              .col-md-3.col-sm-4
+                %i.fa.fa-angle-right>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-angle-right
+              .col-md-3.col-sm-4
+                %i.fa.fa-angle-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-angle-up
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrow-circle-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrow-circle-down
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrow-circle-left>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrow-circle-left
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrow-circle-o-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrow-circle-o-down
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrow-circle-o-left>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrow-circle-o-left
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrow-circle-o-right>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrow-circle-o-right
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrow-circle-o-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrow-circle-o-up
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrow-circle-right>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrow-circle-right
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrow-circle-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrow-circle-up
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrow-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrow-down
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrow-left>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrow-left
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrow-right>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrow-right
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrow-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrow-up
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrows>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrows
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrows-alt>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrows-alt
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrows-h>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrows-h
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrows-v>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrows-v
+              .col-md-3.col-sm-4
+                %i.fa.fa-caret-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-caret-down
+              .col-md-3.col-sm-4
+                %i.fa.fa-caret-left>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-caret-left
+              .col-md-3.col-sm-4
+                %i.fa.fa-caret-right>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-caret-right
+              .col-md-3.col-sm-4
+                %i.fa.fa-caret-square-o-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-caret-square-o-down
+              .col-md-3.col-sm-4
+                %i.fa.fa-caret-square-o-left>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-caret-square-o-left
+              .col-md-3.col-sm-4
+                %i.fa.fa-caret-square-o-right>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-caret-square-o-right
+              .col-md-3.col-sm-4
+                %i.fa.fa-caret-square-o-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-caret-square-o-up
+              .col-md-3.col-sm-4
+                %i.fa.fa-caret-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-caret-up
+              .col-md-3.col-sm-4
+                %i.fa.fa-chevron-circle-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-chevron-circle-down
+              .col-md-3.col-sm-4
+                %i.fa.fa-chevron-circle-left>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-chevron-circle-left
+              .col-md-3.col-sm-4
+                %i.fa.fa-chevron-circle-right>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-chevron-circle-right
+              .col-md-3.col-sm-4
+                %i.fa.fa-chevron-circle-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-chevron-circle-up
+              .col-md-3.col-sm-4
+                %i.fa.fa-chevron-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-chevron-down
+              .col-md-3.col-sm-4
+                %i.fa.fa-chevron-left>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-chevron-left
+              .col-md-3.col-sm-4
+                %i.fa.fa-chevron-right>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-chevron-right
+              .col-md-3.col-sm-4
+                %i.fa.fa-chevron-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-chevron-up
+              .col-md-3.col-sm-4
+                %i.fa.fa-hand-o-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-hand-o-down
+              .col-md-3.col-sm-4
+                %i.fa.fa-hand-o-left>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-hand-o-left
+              .col-md-3.col-sm-4
+                %i.fa.fa-hand-o-right>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-hand-o-right
+              .col-md-3.col-sm-4
+                %i.fa.fa-hand-o-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-hand-o-up
+              .col-md-3.col-sm-4
+                %i.fa.fa-long-arrow-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-long-arrow-down
+              .col-md-3.col-sm-4
+                %i.fa.fa-long-arrow-left>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-long-arrow-left
+              .col-md-3.col-sm-4
+                %i.fa.fa-long-arrow-right>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-long-arrow-right
+              .col-md-3.col-sm-4
+                %i.fa.fa-long-arrow-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-long-arrow-up
+              .col-md-3.col-sm-4
+                %i.fa.fa-toggle-down>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-toggle-down
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-toggle-left>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-toggle-left
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-toggle-right>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-toggle-right
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-toggle-up>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-toggle-up
+                %span.text-muted (alias)
+            %hr.panel-wide/
+            %h4 Video Player Icons
+            .row
+              .col-md-3.col-sm-4
+                %i.fa.fa-arrows-alt>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-arrows-alt
+              .col-md-3.col-sm-4
+                %i.fa.fa-backward>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-backward
+              .col-md-3.col-sm-4
+                %i.fa.fa-compress>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-compress
+              .col-md-3.col-sm-4
+                %i.fa.fa-eject>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-eject
+              .col-md-3.col-sm-4
+                %i.fa.fa-expand>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-expand
+              .col-md-3.col-sm-4
+                %i.fa.fa-fast-backward>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-fast-backward
+              .col-md-3.col-sm-4
+                %i.fa.fa-fast-forward>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-fast-forward
+              .col-md-3.col-sm-4
+                %i.fa.fa-forward>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-forward
+              .col-md-3.col-sm-4
+                %i.fa.fa-pause>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-pause
+              .col-md-3.col-sm-4
+                %i.fa.fa-play>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-play
+              .col-md-3.col-sm-4
+                %i.fa.fa-play-circle>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-play-circle
+              .col-md-3.col-sm-4
+                %i.fa.fa-play-circle-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-play-circle-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-step-backward>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-step-backward
+              .col-md-3.col-sm-4
+                %i.fa.fa-step-forward>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-step-forward
+              .col-md-3.col-sm-4
+                %i.fa.fa-stop>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-stop
+              .col-md-3.col-sm-4
+                %i.fa.fa-youtube-play>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-youtube-play
+            %hr.panel-wide/
+            %h4 Brand Icons
+            .row
+              .col-md-3.col-sm-4
+                %i.fa.fa-adn>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-adn
+              .col-md-3.col-sm-4
+                %i.fa.fa-android>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-android
+              .col-md-3.col-sm-4
+                %i.fa.fa-apple>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-apple
+              .col-md-3.col-sm-4
+                %i.fa.fa-bitbucket>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-bitbucket
+              .col-md-3.col-sm-4
+                %i.fa.fa-bitbucket-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-bitbucket-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-bitcoin>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-bitcoin
+                %span.text-muted (alias)
+              .col-md-3.col-sm-4
+                %i.fa.fa-btc>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-btc
+              .col-md-3.col-sm-4
+                %i.fa.fa-css3>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-css3
+              .col-md-3.col-sm-4
+                %i.fa.fa-dribbble>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-dribbble
+              .col-md-3.col-sm-4
+                %i.fa.fa-dropbox>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-dropbox
+              .col-md-3.col-sm-4
+                %i.fa.fa-facebook>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-facebook
+              .col-md-3.col-sm-4
+                %i.fa.fa-facebook-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-facebook-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-flickr>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-flickr
+              .col-md-3.col-sm-4
+                %i.fa.fa-foursquare>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-foursquare
+              .col-md-3.col-sm-4
+                %i.fa.fa-github>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-github
+              .col-md-3.col-sm-4
+                %i.fa.fa-github-alt>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-github-alt
+              .col-md-3.col-sm-4
+                %i.fa.fa-github-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-github-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-gittip>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-gittip
+              .col-md-3.col-sm-4
+                %i.fa.fa-google-plus>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-google-plus
+              .col-md-3.col-sm-4
+                %i.fa.fa-google-plus-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-google-plus-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-html5>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-html5
+              .col-md-3.col-sm-4
+                %i.fa.fa-instagram>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-instagram
+              .col-md-3.col-sm-4
+                %i.fa.fa-linkedin>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-linkedin
+              .col-md-3.col-sm-4
+                %i.fa.fa-linkedin-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-linkedin-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-linux>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-linux
+              .col-md-3.col-sm-4
+                %i.fa.fa-maxcdn>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-maxcdn
+              .col-md-3.col-sm-4
+                %i.fa.fa-pagelines>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-pagelines
+              .col-md-3.col-sm-4
+                %i.fa.fa-pinterest>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-pinterest
+              .col-md-3.col-sm-4
+                %i.fa.fa-pinterest-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-pinterest-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-renren>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-renren
+              .col-md-3.col-sm-4
+                %i.fa.fa-skype>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-skype
+              .col-md-3.col-sm-4
+                %i.fa.fa-stack-exchange>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-stack-exchange
+              .col-md-3.col-sm-4
+                %i.fa.fa-stack-overflow>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-stack-overflow
+              .col-md-3.col-sm-4
+                %i.fa.fa-trello>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-trello
+              .col-md-3.col-sm-4
+                %i.fa.fa-tumblr>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-tumblr
+              .col-md-3.col-sm-4
+                %i.fa.fa-tumblr-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-tumblr-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-twitter>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-twitter
+              .col-md-3.col-sm-4
+                %i.fa.fa-twitter-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-twitter-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-vimeo-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-vimeo-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-vk>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-vk
+              .col-md-3.col-sm-4
+                %i.fa.fa-weibo>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-weibo
+              .col-md-3.col-sm-4
+                %i.fa.fa-windows>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-windows
+              .col-md-3.col-sm-4
+                %i.fa.fa-xing>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-xing
+              .col-md-3.col-sm-4
+                %i.fa.fa-xing-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-xing-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-youtube>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-youtube
+              .col-md-3.col-sm-4
+                %i.fa.fa-youtube-play>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-youtube-play
+              .col-md-3.col-sm-4
+                %i.fa.fa-youtube-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-youtube-square
+            %hr.panel-wide/
+            %h4 Medical Icons
+            .row
+              .col-md-3.col-sm-4
+                %i.fa.fa-ambulance>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-ambulance
+              .col-md-3.col-sm-4
+                %i.fa.fa-h-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-h-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-hospital-o>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-hospital-o
+              .col-md-3.col-sm-4
+                %i.fa.fa-medkit>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-medkit
+              .col-md-3.col-sm-4
+                %i.fa.fa-plus-square>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-plus-square
+              .col-md-3.col-sm-4
+                %i.fa.fa-stethoscope>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-stethoscope
+              .col-md-3.col-sm-4
+                %i.fa.fa-user-md>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-user-md
+              .col-md-3.col-sm-4
+                %i.fa.fa-wheelchair>
+                \&nbsp;&nbsp;&nbsp;&nbsp;fa-wheelchair
+        / /5. $FONT_AWESOME_ICONS
+      / / #content-wrapper
+      #main-menu-bg
+    / / #main-wrapper
+    / Get jQuery from Google CDN
+    / [if !IE]>
+    :javascript
+      window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">'+"<"+"/script>");
+    / <![endif]
+    /[if lte IE 9]
+      <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">'+"<"+"/script>"); </script>
+    / Pixel Admin's javascripts
+    %script{:src => "assets/javascripts/bootstrap.min.js"}
+    %script{:src => "assets/javascripts/pixel-admin.min.js"}
+    :javascript
+      init.push(function () {
+      	// Javascript code here
+      })
+      window.PixelAdmin.start(init);

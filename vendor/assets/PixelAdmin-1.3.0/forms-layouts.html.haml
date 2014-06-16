@@ -1,0 +1,769 @@
+!!!
+/
+  TABLE OF CONTENTS.
+  
+  Use search to find needed section.
+  
+  \=====================================================
+  
+  |  1. $BODY                 |  Body                 |
+  |  2. $MAIN_NAVIGATION      |  Main navigation      |
+  |  3. $NAVBAR_ICON_BUTTONS  |  Navbar Icon Buttons  |
+  |  4. $MAIN_MENU            |  Main menu            |
+  |  5. $INLINE_FORM          |  Inline form          |
+  |  6. $HORIZONTAL_FORM      |  Horizontal form      |
+  |  7. $NO_LABEL_FORM        |  No label form        |
+  |  8. $BORDERED_FORM        |  Bordered form        |
+  |  9. $BLOCK_STYLED_FORM    |  Block styled form    |
+  |  10. $FORM_EXAMPLE        |  Form example         |
+  
+  \=====================================================
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+/ [if gt IE 9]><!
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title Layouts - Form components - PixelAdmin
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0", :name => "viewport"}/
+    / Open Sans font from Google CDN
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
+    / Pixel Admin's stylesheets
+    %link{:href => "assets/stylesheets/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pixel-admin.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/widgets.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/rtl.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/themes.min.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+  /
+    1. $BODY ======================================================================================
+    
+    Body
+    
+    Classes:
+    * 'theme-{THEME NAME}'
+    * 'right-to-left'      - Sets text direction to right-to-left
+    * 'main-menu-right'    - Places the main menu on the right side
+    * 'no-main-menu'       - Hides the main menu
+    * 'main-navbar-fixed'  - Fixes the main navigation
+    * 'main-menu-fixed'    - Fixes the main menu
+    * 'main-menu-animated' - Animate main menu
+  %body.theme-default.main-menu-animated
+    :javascript
+      var init = [];
+    / Demo script
+    %script{:src => "assets/demo/demo.js"}
+    / / Demo script
+    #main-wrapper
+      /
+        2. $MAIN_NAVIGATION ===========================================================================
+        
+        Main navigation
+      #main-navbar.navbar.navbar-inverse{:role => "navigation"}
+        / Main menu toggle
+        %button#main-menu-toggle{:type => "button"}
+          %i.navbar-icon.fa.fa-bars.icon
+          %span.hide-menu-text HIDE MENU
+        .navbar-inner
+          / Main navbar header
+          .navbar-header
+            / Logo
+            %a.navbar-brand{:href => "index.html"}
+            %div
+              %img{:alt => "Pixel Admin", :src => "assets/images/pixel-admin/main-navbar-logo.png"}/
+            PixelAdmin
+            / Main navbar toggle
+            %button.navbar-toggle.collapsed{"data-target" => "#main-navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+              %i.navbar-icon.fa.fa-bars
+          / / .navbar-header
+          #main-navbar-collapse.collapse.navbar-collapse.main-navbar-collapse
+            %div
+              %ul.nav.navbar-nav
+                %li
+                  %a{:href => "#"} Home
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Dropdown
+                  %ul.dropdown-menu
+                    %li
+                      %a{:href => "#"} First item
+                    %li
+                      %a{:href => "#"} Second item
+                    %li.divider
+                    %li
+                      %a{:href => "#"} Third item
+              / / .navbar-nav
+              .right.clearfix
+                %ul.nav.navbar-nav.pull-right.right-navbar-nav
+                  /
+                    3. $NAVBAR_ICON_BUTTONS =======================================================================
+                    
+                    Navbar Icon Buttons
+                    
+                    NOTE: .nav-icon-btn triggers a dropdown menu on desktop screens only. On small screens .nav-icon-btn acts like a hyperlink.
+                    
+                    Classes:
+                    * 'nav-icon-btn-info'
+                    * 'nav-icon-btn-success'
+                    * 'nav-icon-btn-warning'
+                    * 'nav-icon-btn-danger'
+                  %li.nav-icon-btn.nav-icon-btn-danger.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#support-notifications"}
+                      %span.label 5
+                      %i.nav-icon.fa.fa-bullhorn
+                      %span.small-screen-text Notifications
+                    / NOTIFICATIONS
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-notifications').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-notifications.no-padding{:style => "width: 300px"}
+                      #main-navbar-notifications.notifications-list
+                        .notification
+                          .notification-title.text-danger SYSTEM
+                          .notification-description
+                            %strong> Error 500
+                            \: Syntax error in index.php at line
+                            = succeed "." do
+                              %strong 461
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-danger
+                        / / .notification
+                        .notification
+                          .notification-title.text-info STORE
+                          .notification-description
+                            You have
+                            %strong 9
+                            new orders.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-truck.bg-info
+                        / / .notification
+                        .notification
+                          .notification-title.text-default CRON DAEMON
+                          .notification-description
+                            Job
+                            %strong "Clean DB"
+                            has been completed.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-clock-o.bg-default
+                        / / .notification
+                        .notification
+                          .notification-title.text-success SYSTEM
+                          .notification-description
+                            Server
+                            = succeed "." do
+                              %strong up
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-success
+                        / / .notification
+                        .notification
+                          .notification-title.text-warning SYSTEM
+                          .notification-description
+                            %strong> Warning
+                            \: Processor load
+                            = succeed "." do
+                              %strong 92%
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-warning
+                        / / .notification
+                      / / .notifications-list
+                      %a.notifications-link{:href => "#"} MORE NOTIFICATIONS
+                    / / .dropdown-menu
+                  %li.nav-icon-btn.nav-icon-btn-success.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#messages"}
+                      %span.label 10
+                      %i.nav-icon.fa.fa-envelope
+                      %span.small-screen-text Income messages
+                    / MESSAGES
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-messages').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-messages-alt.no-padding{:style => "width: 300px;"}
+                      #main-navbar-messages.messages-list
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                      / / .messages-list
+                      %a.messages-link{:href => "#"} MORE MESSAGES
+                    / / .dropdown-menu
+                  / /3. $END_NAVBAR_ICON_BUTTONS
+                  %li
+                    %form.navbar-form.pull-left
+                      %input.form-control{:placeholder => "Search", :type => "text"}/
+                  %li.dropdown
+                    %a.dropdown-toggle.user-menu{"data-toggle" => "dropdown", :href => "#"}
+                      %img{:src => "assets/demo/avatars/1.jpg"}/
+                      %span John Doe
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"}
+                          %span.label.label-warning.pull-right> New
+                          Profile
+                      %li
+                        %a{:href => "#"}
+                          %span.badge.badge-primary.pull-right> New
+                          Account
+                      %li
+                        %a{:href => "#"}
+                          %i.dropdown-icon.fa.fa-cog>
+                          \&nbsp;&nbsp;Settings
+                      %li.divider
+                      %li
+                        %a{:href => "pages-signin.html"}
+                          %i.dropdown-icon.fa.fa-power-off>
+                          \&nbsp;&nbsp;Log Out
+                / / .navbar-nav
+              / / .right
+          / / #main-navbar-collapse
+        / / .navbar-inner
+      / / #main-navbar
+      / /2. $END_MAIN_NAVIGATION
+      /
+        4. $MAIN_MENU =================================================================================
+        
+        Main menu
+        
+        Notes:
+        * to make the menu item active, add a class 'active' to the <li>
+        example: <li class="active">...</li>
+        * multilevel submenu example:
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 1</span></a>
+        <ul>
+        <li>...</li>
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 2</span></a>
+        <ul>
+        <li>...</li>
+        \...
+        </ul>
+        </li>
+        \...
+        </ul>
+        </li>
+      #main-menu{:role => "navigation"}
+        #main-menu-inner
+          #menu-content-demo.menu-content.top
+            /
+              Menu custom content demo
+              CSS:        styles/pixel-admin-less/demo.less or styles/pixel-admin-scss/_demo.scss
+              Javascript: html/assets/demo/demo.js
+            %div
+              .text-bg
+                %span.text-slim Welcome,
+                %span.text-semibold John
+              %img{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+              .btn-group
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-envelope
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-user
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-cog
+                %a.btn.btn-xs.btn-danger.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-power-off
+              %a.close{:href => "#"} &times;
+          %ul.navigation
+            %li
+              %a{:href => "index.html"}
+                %i.menu-icon.fa.fa-dashboard
+                %span.mm-text Dashboard
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-th
+                %span.mm-text Layouts
+                %span.label.label-warning Updated
+              %ul
+                %li
+                  %a{:href => "layouts-grid.html", :tabindex => "-1"}
+                    %span.mm-text Grid
+                %li
+                  %a{:href => "layouts-main-menu.html", :tabindex => "-1"}
+                    %i.menu-icon.fa.fa-th-list
+                    %span.mm-text Main menu
+                    %span.label.label-warning Updated
+            %li
+              %a{:href => "stat-panels.html"}
+                %i.menu-icon.fa.fa-tasks
+                %span.mm-text Stat panels
+            %li
+              %a{:href => "widgets.html"}
+                %i.menu-icon.fa.fa-flask
+                %span.mm-text Widgets
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-desktop
+                %span.mm-text UI elements
+              %ul
+                %li
+                  %a{:href => "ui-buttons.html", :tabindex => "-1"}
+                    %span.mm-text Buttons
+                %li
+                  %a{:href => "ui-typography.html", :tabindex => "-1"}
+                    %span.mm-text Typography
+                %li
+                  %a{:href => "ui-tabs.html", :tabindex => "-1"}
+                    %span.mm-text Tabs &amp; Accordions
+                %li
+                  %a{:href => "ui-modals.html", :tabindex => "-1"}
+                    %span.mm-text Modals
+                %li
+                  %a{:href => "ui-alerts.html", :tabindex => "-1"}
+                    %span.mm-text Alerts &amp; Tooltips
+                %li
+                  %a{:href => "ui-components.html", :tabindex => "-1"}
+                    %span.mm-text Components
+                %li
+                  %a{:href => "ui-panels.html", :tabindex => "-1"}
+                    %span.mm-text Panels
+                %li
+                  %a{:href => "ui-jqueryui.html", :tabindex => "-1"}
+                    %span.mm-text jQuery UI
+                %li
+                  %a{:href => "ui-icons.html", :tabindex => "-1"}
+                    %span.mm-text Icons
+                %li
+                  %a{:href => "ui-utility-classes.html", :tabindex => "-1"}
+                    %span.mm-text Utility classes
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-check-square
+                %span.mm-text Form components
+              %ul
+                %li
+                  %a{:href => "forms-layouts.html", :tabindex => "-1"}
+                    %span.mm-text Layouts
+                %li
+                  %a{:href => "forms-general.html", :tabindex => "-1"}
+                    %span.mm-text General
+                %li
+                  %a{:href => "forms-advanced.html", :tabindex => "-1"}
+                    %span.mm-text Advanced
+                %li
+                  %a{:href => "forms-pickers.html", :tabindex => "-1"}
+                    %span.mm-text Pickers
+                %li
+                  %a{:href => "forms-validation.html", :tabindex => "-1"}
+                    %span.mm-text Validation
+                %li
+                  %a{:href => "forms-editors.html", :tabindex => "-1"}
+                    %span.mm-text Editors
+            %li
+              %a{:href => "tables.html"}
+                %i.menu-icon.fa.fa-table
+                %span.mm-text Tables
+            %li
+              %a{:href => "charts.html"}
+                %i.menu-icon.fa.fa-bar-chart-o
+                %span.mm-text Charts
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-files-o
+                %span.mm-text Pages
+                %span.label.label-success 16
+              %ul
+                %li
+                  %a{:href => "pages-search.html", :tabindex => "-1"}
+                    %span.mm-text Search results
+                %li
+                  %a{:href => "pages-pricing.html", :tabindex => "-1"}
+                    %span.mm-text Plans &amp; pricing
+                %li
+                  %a{:href => "pages-faq.html", :tabindex => "-1"}
+                    %span.mm-text FAQ
+                %li
+                  %a{:href => "pages-profile.html", :tabindex => "-1"}
+                    %span.mm-text Profile
+                %li
+                  %a{:href => "pages-timeline.html", :tabindex => "-1"}
+                    %span.mm-text Timeline
+                %li
+                  %a{:href => "pages-signin.html", :tabindex => "-1"}
+                    %span.mm-text Sign In
+                %li
+                  %a{:href => "pages-signup.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up
+                %li
+                  %a{:href => "pages-signin-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign In Alt
+                %li
+                  %a{:href => "pages-signup-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up Alt
+                %li
+                  %a{:href => "pages-invoice.html", :tabindex => "-1"}
+                    %span.mm-text Invoice
+                %li
+                  %a{:href => "pages-404.html", :tabindex => "-1"}
+                    %span.mm-text Error 404
+                %li
+                  %a{:href => "pages-500.html", :tabindex => "-1"}
+                    %span.mm-text Error 500
+                %li.mm-dropdown
+                  %a{:href => "#"}
+                    %i.menu-icon.fa.fa-envelope
+                    %span.mm-text Messages
+                  %ul
+                    %li
+                      %a{:href => "pages-inbox.html", :tabindex => "-1"}
+                        %span.mm-text Inbox
+                    %li
+                      %a{:href => "pages-show-email.html", :tabindex => "-1"}
+                        %span.mm-text Show message
+                    %li
+                      %a{:href => "pages-new-email.html", :tabindex => "-1"}
+                        %span.mm-text New message
+                %li
+                  %a{:href => "pages-blank.html", :tabindex => "-1"}
+                    %span.mm-text Blank page
+            %li
+              %a{:href => "complete-ui.html"}
+                %i.menu-icon.fa.fa-briefcase
+                %span.mm-text Complete UI
+            %li
+              %a{:href => "color-builder.html"}
+                %i.menu-icon.fa.fa-tint
+                %span.mm-text Color Builder
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-sitemap
+                %span.mm-text Menu levels
+                %span.badge.badge-primary 6
+              %ul
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.1
+                    %span.badge.badge-danger 12
+                    %span.label.label-info 21
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.2
+                %li.mm-dropdown
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.3
+                    %span.label.label-warning 5
+                  %ul
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.1
+                    %li.mm-dropdown
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+                      %ul
+                        %li.mm-dropdown
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.1
+                          %ul
+                            %li
+                              %a{:href => "#", :tabindex => "-1"}
+                                %span.mm-text Menu level 4.1
+                        %li
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.2
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+          / / .navigation
+          .menu-content
+            %a.btn.btn-primary.btn-block.btn-outline.dark{:href => "pages-invoice.html"} Create Invoice
+        / / #main-menu-inner
+      / / #main-menu
+      / /4. $MAIN_MENU
+      #content-wrapper
+        .page-header
+          %h1
+            %span.text-light-gray> Form components /
+            Layouts
+        / / .page-header
+        .row
+          .col-sm-12
+            /
+              5. $INLINE_FORM ===============================================================================
+              
+              Inline form
+            .panel
+              .panel-heading
+                %span.panel-title Inline form
+              .panel-body
+                %form.form-inline
+                  .form-group
+                    %label.sr-only{:for => "exampleInputEmail2"} Email address
+                    %input#exampleInputEmail2.form-control{:placeholder => "Enter email", :type => "email"}/
+                  .form-group
+                    %label.sr-only{:for => "exampleInputPassword2"} Password
+                    %input#exampleInputPassword2.form-control{:placeholder => "Password", :type => "password"}/
+                  .checkbox
+                    %label
+                      %input.px{:type => "checkbox"}/
+                      %span.lbl Remember me
+                  %button.btn.btn-primary{:type => "submit"} Sign In
+            / /5. $INLINE_FORM
+        .row
+          .col-sm-6
+            /
+              6. $HORIZONTAL_FORM ===========================================================================
+              
+              Horizontal form
+            %form.panel.form-horizontal{:action => ""}
+              .panel-heading
+                %span.panel-title Horizontal form
+              .panel-body
+                .row.form-group
+                  %label.col-sm-4.control-label Name:
+                  .col-sm-8
+                    %input.form-control{:name => "name", :type => "text"}/
+                .row.form-group
+                  %label.col-sm-4.control-label Email:
+                  .col-sm-8
+                    %input.form-control{:name => "email", :type => "email"}/
+              .panel-footer.text-right
+                %button.btn.btn-primary Submit
+            / /6. $HORIZONTAL_FORM
+            /
+              7. $NO_LABEL_FORM =============================================================================
+              
+              No label form
+            %form.panel.form-horizontal{:action => ""}
+              .panel-heading
+                %span.panel-title No label form
+              .panel-body
+                .row
+                  .col-md-4
+                    %input.form-control.form-group-margin{:name => "name", :placeholder => "Name", :type => "text"}/
+                  .col-md-4
+                    %input.form-control.form-group-margin{:name => "email", :placeholder => "Email", :type => "email"}/
+                  .col-md-4
+                    %input.form-control.form-group-margin{:name => "website", :placeholder => "Website", :type => "url"}/
+                / row
+                %textarea.form-control{:placeholder => "Message", :rows => "5"}
+              .panel-footer.text-right
+                %button.btn.btn-primary Send message
+            / /7. $NO_LABEL_FORM
+          .col-sm-6
+            /
+              8. $BORDERED_FORM =============================================================================
+              
+              Bordered form
+            %form.panel.form-horizontal.form-bordered{:action => ""}
+              .panel-heading
+                %span.panel-title Bordered form
+              .panel-body.no-padding-hr
+                .form-group.no-margin-hr.panel-padding-h.no-padding-t.no-border-t
+                  .row
+                    %label.col-sm-4.control-label Name:
+                    .col-sm-8
+                      %input.form-control{:name => "name", :type => "text"}/
+                .form-group.no-margin-hr.no-margin-b.panel-padding-h
+                  .row
+                    %label.col-sm-4.control-label Email:
+                    .col-sm-8
+                      %input.form-control{:name => "email", :type => "email"}/
+              .panel-footer.text-right
+                %button.btn.btn-primary Submit
+            / /8. $BORDERED_FORM
+            /
+              9. $BLOCK_STYLED_FORM =============================================================================
+              
+              Block styled form
+            %form.panel.form-horizontal{:action => ""}
+              .panel-heading
+                %span.panel-title Block styled form
+              .panel-body
+                .row
+                  .col-sm-6
+                    .form-group.no-margin-hr
+                      %label.control-label Firstname
+                      %input.form-control{:name => "firstname", :type => "text"}/
+                  / col-sm-6
+                  .col-sm-6
+                    .form-group.no-margin-hr
+                      %label.control-label Lastname
+                      %input.form-control{:name => "lastname", :type => "text"}/
+                  / col-sm-6
+                / row
+                .row
+                  .col-sm-6
+                    .form-group.no-margin-hr
+                      %label.control-label Email
+                      %input.form-control{:name => "email", :type => "email"}/
+                  / col-sm-6
+                  .col-sm-6
+                    .form-group.no-margin-hr
+                      %label.control-label Website
+                      %input.form-control{:name => "website", :type => "url"}/
+                  / col-sm-6
+                / row
+              .panel-footer.text-right
+                %button.btn.btn-primary Send
+            / /9. $BLOCK_STYLED_FORM
+        .row
+          .col-sm-12
+            /
+              10. $FORM_EXAMPLE =============================================================================
+              
+              Form example
+            %form.panel.form-horizontal
+              .panel-heading
+                %span.panel-title Form example
+              .panel-body
+                .form-group
+                  %label.col-sm-2.control-label{:for => "inputEmail2"} Email
+                  .col-sm-10
+                    %input#inputEmail2.form-control{:placeholder => "Email", :type => "text"}/
+                / / .form-group
+                .form-group
+                  %label.col-sm-2.control-label{:for => "inputPassword"} Password
+                  .col-sm-10
+                    %input#inputPassword.form-control{:placeholder => "Password", :type => "password"}/
+                    %p.help-block Example block-level help text here.
+                / / .form-group
+                .form-group
+                  %label.col-sm-2.control-label{:for => "asdasdas"} Text
+                  .col-sm-10
+                    %textarea.form-control
+                    %p.help-block Example block-level help text here.
+                / / .form-group
+                .form-group
+                  %label.col-sm-2.control-label Text
+                  .col-sm-10
+                    .radio
+                      %label
+                        %input#optionsRadios1.px{:checked => "", :name => "optionsRadios", :type => "radio", :value => "option1"}/
+                        %span.lbl Option one is this and that—be sure to include why it's great
+                    / / .radio
+                    .radio
+                      %label
+                        %input#optionsRadios2.px{:name => "optionsRadios", :type => "radio", :value => "option2"}/
+                        %span.lbl Option two can be something else and selecting it will deselect option one
+                    / / .radio
+                    .radio
+                      %label
+                        %input#optionsRadios2-2.px{:name => "optionsRadios", :type => "radio", :value => "option2"}/
+                        %span.lbl Option three
+                    / / .radio
+                  / / .col-sm-10
+                / / .form-group
+                .form-group
+                  .col-sm-offset-2.col-sm-10
+                    .checkbox
+                      %label
+                        %input.px{:type => "checkbox"}/
+                        %span.lbl Remember me
+                    / / .checkbox
+                / / .form-group
+                .form-group{:style => "margin-bottom: 0;"}
+                  .col-sm-offset-2.col-sm-10
+                    %button.btn.btn-primary{:type => "submit"} Sign in
+                / / .form-group
+            / /10. $FORM_EXAMPLE
+      / / #content-wrapper
+      #main-menu-bg
+    / / #main-wrapper
+    / Get jQuery from Google CDN
+    / [if !IE]>
+    :javascript
+      window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">'+"<"+"/script>");
+    / <![endif]
+    /[if lte IE 9]
+      <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">'+"<"+"/script>"); </script>
+    / Pixel Admin's javascripts
+    %script{:src => "assets/javascripts/bootstrap.min.js"}
+    %script{:src => "assets/javascripts/pixel-admin.min.js"}
+    :javascript
+      init.push(function () {
+      	// Javascript code here
+      })
+      window.PixelAdmin.start(init);

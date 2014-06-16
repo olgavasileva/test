@@ -1,0 +1,46 @@
+- content_for :body_class, "theme-default page-signin"
+
+#page-signin-bg
+  .overlay
+  = image_tag "assets/demo/signin-bg-1.jpg"
+.signin-container
+  .signin-info
+    = link_to root_path, class: :logo, style: "margin-top: -5px;" do
+      = image_tag "assets/demo/logo-big.png"
+      \&nbsp;
+      CrashMob
+    .slogan
+      Siss. Boom. Baa.
+    %ul
+      %li
+        %i.fa.fa-sitemap.signin-icon
+        Interesting Questions
+      %li
+        %i.fa.fa-file-text-o.signin-icon
+        Wild Answers
+      %li
+        %i.fa.fa-outdent.signin-icon
+        Learn About Your Friends
+      %li
+        %i.fa.fa-heart.signin-icon
+        Learn About Yourself
+  .signin-form
+    = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+      .signin-text
+        %span Sign In to your account
+      .form-group.w-icon
+        = f.text_field :login, autofocus: true, placeholder:"Username or email", class:%w{form-control input-lg}
+        %span.fa.fa-user.signin-form-icon
+      .form-group.w-icon
+        = f.password_field :password, autocomplete: "off", placeholder: "Password", class:%w{form-control input-lg}
+        %span.fa.fa-lock.signin-form-icon
+      .form-actions
+        = f.submit "SIGN IN", class:%w{signin-btn bg-primary}
+        = link_to "Forgot your password?", new_user_password_path, class: "forgot-password"
+    .signin-with
+      %a.signin-with-btn{:href => "index.html", :style => "background:#4f6faa;background:rgba(79, 111, 170, .8);"}
+        Sign In with
+        %span Facebook
+.not-a-member
+  Not a member?
+  =link_to "Sign up now", new_user_registration_path

@@ -1,0 +1,118 @@
+!!!
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+/ [if gt IE 9]><!
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title Sign Up - PixelAdmin
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0", :name => "viewport"}/
+    / Open Sans font from Google CDN
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
+    / Pixel Admin's stylesheets
+    %link{:href => "assets/stylesheets/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pixel-admin.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pages.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/rtl.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/themes.min.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+  /
+    1. $BODY ======================================================================================
+    
+    Body
+    
+    Classes:
+    * 'theme-{THEME NAME}'
+    * 'right-to-left'     - Sets text direction to right-to-left
+  %body.theme-default.page-signup-alt
+    / Demo script
+    %script{:src => "assets/demo/demo.js"}
+    / / Demo script
+    .signup-header
+      %a.logo{:href => "index.html"}
+      = succeed "&amp;nbsp;" do
+        .demo-logo.bg-primary
+          %img{:alt => "", :src => "assets/demo/logo-big.png", :style => "margin-top: -4px;"}/
+      = succeed "Admin" do
+        %strong Pixel
+      / / .logo
+      %a.btn.btn-primary{:href => "pages-signin-alt.html"} Sign In
+    / / .header
+    %h1.form-header Create your Account
+    / Form
+    %form#signup-form_id.panel{:action => "index.html"}
+      .form-group
+        %input#name_id.form-control.input-lg{:name => "signup_name", :placeholder => "Full name", :type => "text"}/
+      .form-group
+        %input#email_id.form-control.input-lg{:name => "signup_email", :placeholder => "E-mail", :type => "text"}/
+      .form-group
+        %input#username_id.form-control.input-lg{:name => "signup_username", :placeholder => "Username", :type => "text"}/
+      .form-group
+        %input#password_id.form-control.input-lg{:name => "signup_password", :placeholder => "Password", :type => "password"}/
+      .form-group{:style => "margin-top: 20px;margin-bottom: 20px;"}
+        %label.checkbox-inline
+          %input#confirm_id.px{:name => "signup_confirm", :type => "checkbox"}/
+          %span.lbl
+            I agree with the
+            %a{:href => "#", :target => "_blank"} Terms and Conditions
+      .form-actions
+        %input.btn.btn-primary.btn-lg.btn-block{:type => "submit", :value => "Create an account"}/
+    / / Form
+    .signup-with
+      .header or sign up with
+      = succeed "&amp;nbsp;&amp;nbsp;" do
+        %a.btn.btn-lg.btn-facebook.rounded{:href => "index.html"}
+          %i.fa.fa-facebook
+      = succeed "&amp;nbsp;&amp;nbsp;" do
+        %a.btn.btn-lg.btn-info.rounded{:href => "index.html"}
+          %i.fa.fa-twitter
+      %a.btn.btn-lg.btn-danger.rounded{:href => "index.html"}
+        %i.fa.fa-google-plus
+    / Get jQuery from Google CDN
+    / [if !IE]>
+    :javascript
+      window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">'+"<"+"/script>");
+    / <![endif]
+    /[if lte IE 9]
+      <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">'+"<"+"/script>"); </script>
+    / Pixel Admin's javascripts
+    %script{:src => "assets/javascripts/bootstrap.min.js"}
+    %script{:src => "assets/javascripts/pixel-admin.min.js"}
+    :javascript
+      window.PixelAdmin.start([
+      	function () {
+      		$("#signup-form_id").validate({ focusInvalid: true, errorPlacement: function () {} });
+
+      		// Validate name
+      		$("#name_id").rules("add", {
+      			required: true,
+      			minlength: 1
+      		});
+
+      		// Validate email
+      		$("#email_id").rules("add", {
+      			required: true,
+      			email: true
+      		});
+      		
+      		// Validate username
+      		$("#username_id").rules("add", {
+      			required: true,
+      			minlength: 3
+      		});
+
+      		// Validate password
+      		$("#password_id").rules("add", {
+      			required: true,
+      			minlength: 6
+      		});
+
+      		// Validate confirm checkbox
+      		$("#confirm_id").rules("add", {
+      			required: true
+      		});
+      	}
+      ]);

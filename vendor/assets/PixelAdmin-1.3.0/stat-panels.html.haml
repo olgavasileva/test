@@ -1,0 +1,990 @@
+!!!
+/
+  TABLE OF CONTENTS.
+  
+  Use search to find needed section.
+  
+  \==================================================================
+  
+  |  1. $BODY                        |  Body                       |
+  |  2. $MAIN_NAVIGATION             |  Main navigation            |
+  |  3. $NAVBAR_ICON_BUTTONS         |  Navbar Icon Buttons        |
+  |  4. $MAIN_MENU                   |  Main menu                  |
+  |  5. $EXAMPLE_NOTIFICATIONS       |  Notifications example      |
+  |  6. $EXAMPLE_COMMENTS_COUNT      |  Comments count example     |
+  |  7. $EXAMPLE_ICON_PANEL          |  Icon panel example         |
+  |  8. $EXAMPLE_VISITORS_CHART      |  Visitors chart example     |
+  |  9. $EXAMPLE_RETWEETS_GRAPH      |  Retweets graph example     |
+  |  10. $EXAMPLE_EARNINGS_GRAPH     |  Earnings graph example     |
+  |  11. $EXAMPLE_ACCOUNT_OVERVIEW   |  Account overview example   |
+  |  12. $EXAMPLE_UPLOAD_STATISTICS  |  Upload statistics example  |
+  
+  \==================================================================
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+/ [if gt IE 9]><!
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title Stat Panels - PixelAdmin
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0", :name => "viewport"}/
+    / Open Sans font from Google CDN
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
+    / Pixel Admin's stylesheets
+    %link{:href => "assets/stylesheets/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pixel-admin.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/widgets.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/rtl.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/themes.min.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+  /
+    1. $BODY ======================================================================================
+    
+    Body
+    
+    Classes:
+    * 'theme-{THEME NAME}'
+    * 'right-to-left'      - Sets text direction to right-to-left
+    * 'main-menu-right'    - Places the main menu on the right side
+    * 'no-main-menu'       - Hides the main menu
+    * 'main-navbar-fixed'  - Fixes the main navigation
+    * 'main-menu-fixed'    - Fixes the main menu
+    * 'main-menu-animated' - Animate main menu
+  %body.theme-default.main-menu-animated
+    :javascript
+      var init = [];
+    / Demo script
+    %script{:src => "assets/demo/demo.js"}
+    / / Demo script
+    #main-wrapper
+      /
+        2. $MAIN_NAVIGATION ===========================================================================
+        
+        Main navigation
+      #main-navbar.navbar.navbar-inverse{:role => "navigation"}
+        / Main menu toggle
+        %button#main-menu-toggle{:type => "button"}
+          %i.navbar-icon.fa.fa-bars.icon
+          %span.hide-menu-text HIDE MENU
+        .navbar-inner
+          / Main navbar header
+          .navbar-header
+            / Logo
+            %a.navbar-brand{:href => "index.html"}
+            %div
+              %img{:alt => "Pixel Admin", :src => "assets/images/pixel-admin/main-navbar-logo.png"}/
+            PixelAdmin
+            / Main navbar toggle
+            %button.navbar-toggle.collapsed{"data-target" => "#main-navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+              %i.navbar-icon.fa.fa-bars
+          / / .navbar-header
+          #main-navbar-collapse.collapse.navbar-collapse.main-navbar-collapse
+            %div
+              %ul.nav.navbar-nav
+                %li
+                  %a{:href => "#"} Home
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Dropdown
+                  %ul.dropdown-menu
+                    %li
+                      %a{:href => "#"} First item
+                    %li
+                      %a{:href => "#"} Second item
+                    %li.divider
+                    %li
+                      %a{:href => "#"} Third item
+              / / .navbar-nav
+              .right.clearfix
+                %ul.nav.navbar-nav.pull-right.right-navbar-nav
+                  /
+                    3. $NAVBAR_ICON_BUTTONS =======================================================================
+                    
+                    Navbar Icon Buttons
+                    
+                    NOTE: .nav-icon-btn triggers a dropdown menu on desktop screens only. On small screens .nav-icon-btn acts like a hyperlink.
+                    
+                    Classes:
+                    * 'nav-icon-btn-info'
+                    * 'nav-icon-btn-success'
+                    * 'nav-icon-btn-warning'
+                    * 'nav-icon-btn-danger'
+                  %li.nav-icon-btn.nav-icon-btn-danger.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#notifications"}
+                      %span.label 5
+                      %i.nav-icon.fa.fa-bullhorn
+                      %span.small-screen-text Notifications
+                    / NOTIFICATIONS
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-notifications').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-notifications.no-padding{:style => "width: 300px"}
+                      #main-navbar-notifications.notifications-list
+                        .notification
+                          .notification-title.text-danger SYSTEM
+                          .notification-description
+                            %strong> Error 500
+                            \: Syntax error in index.php at line
+                            = succeed "." do
+                              %strong 461
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-danger
+                        / / .notification
+                        .notification
+                          .notification-title.text-info STORE
+                          .notification-description
+                            You have
+                            %strong 9
+                            new orders.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-truck.bg-info
+                        / / .notification
+                        .notification
+                          .notification-title.text-default CRON DAEMON
+                          .notification-description
+                            Job
+                            %strong "Clean DB"
+                            has been completed.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-clock-o.bg-default
+                        / / .notification
+                        .notification
+                          .notification-title.text-success SYSTEM
+                          .notification-description
+                            Server
+                            = succeed "." do
+                              %strong up
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-success
+                        / / .notification
+                        .notification
+                          .notification-title.text-warning SYSTEM
+                          .notification-description
+                            %strong> Warning
+                            \: Processor load
+                            = succeed "." do
+                              %strong 92%
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-warning
+                        / / .notification
+                      / / .notifications-list
+                      %a.notifications-link{:href => "#"} MORE NOTIFICATIONS
+                    / / .dropdown-menu
+                  %li.nav-icon-btn.nav-icon-btn-success.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#messages"}
+                      %span.label 10
+                      %i.nav-icon.fa.fa-envelope
+                      %span.small-screen-text Income messages
+                    / MESSAGES
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-messages').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-messages-alt.no-padding{:style => "width: 300px;"}
+                      #main-navbar-messages.messages-list
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                      / / .messages-list
+                      %a.messages-link{:href => "#"} MORE MESSAGES
+                    / / .dropdown-menu
+                  / /3. $END_NAVBAR_ICON_BUTTONS
+                  %li
+                    %form.navbar-form.pull-left
+                      %input.form-control{:placeholder => "Search", :type => "text"}/
+                  %li.dropdown
+                    %a.dropdown-toggle.user-menu{"data-toggle" => "dropdown", :href => "#"}
+                      %img{:src => "assets/demo/avatars/1.jpg"}/
+                      %span John Doe
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"}
+                          %span.label.label-warning.pull-right> New
+                          Profile
+                      %li
+                        %a{:href => "#"}
+                          %span.badge.badge-primary.pull-right> New
+                          Account
+                      %li
+                        %a{:href => "#"}
+                          %i.dropdown-icon.fa.fa-cog>
+                          \&nbsp;&nbsp;Settings
+                      %li.divider
+                      %li
+                        %a{:href => "pages-signin.html"}
+                          %i.dropdown-icon.fa.fa-power-off>
+                          \&nbsp;&nbsp;Log Out
+                / / .navbar-nav
+              / / .right
+          / / #main-navbar-collapse
+        / / .navbar-inner
+      / / #main-navbar
+      / /2. $END_MAIN_NAVIGATION
+      /
+        4. $MAIN_MENU =================================================================================
+        
+        Main menu
+        
+        Notes:
+        * to make the menu item active, add a class 'active' to the <li>
+        example: <li class="active">...</li>
+        * multilevel submenu example:
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 1</span></a>
+        <ul>
+        <li>...</li>
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 2</span></a>
+        <ul>
+        <li>...</li>
+        \...
+        </ul>
+        </li>
+        \...
+        </ul>
+        </li>
+      #main-menu{:role => "navigation"}
+        #main-menu-inner
+          #menu-content-demo.menu-content.top
+            /
+              Menu custom content demo
+              CSS:        styles/pixel-admin-less/demo.less or styles/pixel-admin-scss/_demo.scss
+              Javascript: html/assets/demo/demo.js
+            %div
+              .text-bg
+                %span.text-slim Welcome,
+                %span.text-semibold John
+              %img{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+              .btn-group
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-envelope
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-user
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-cog
+                %a.btn.btn-xs.btn-danger.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-power-off
+              %a.close{:href => "#"} &times;
+          %ul.navigation
+            %li
+              %a{:href => "index.html"}
+                %i.menu-icon.fa.fa-dashboard
+                %span.mm-text Dashboard
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-th
+                %span.mm-text Layouts
+                %span.label.label-warning Updated
+              %ul
+                %li
+                  %a{:href => "layouts-grid.html", :tabindex => "-1"}
+                    %span.mm-text Grid
+                %li
+                  %a{:href => "layouts-main-menu.html", :tabindex => "-1"}
+                    %i.menu-icon.fa.fa-th-list
+                    %span.mm-text Main menu
+                    %span.label.label-warning Updated
+            %li
+              %a{:href => "stat-panels.html"}
+                %i.menu-icon.fa.fa-tasks
+                %span.mm-text Stat panels
+            %li
+              %a{:href => "widgets.html"}
+                %i.menu-icon.fa.fa-flask
+                %span.mm-text Widgets
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-desktop
+                %span.mm-text UI elements
+              %ul
+                %li
+                  %a{:href => "ui-buttons.html", :tabindex => "-1"}
+                    %span.mm-text Buttons
+                %li
+                  %a{:href => "ui-typography.html", :tabindex => "-1"}
+                    %span.mm-text Typography
+                %li
+                  %a{:href => "ui-tabs.html", :tabindex => "-1"}
+                    %span.mm-text Tabs &amp; Accordions
+                %li
+                  %a{:href => "ui-modals.html", :tabindex => "-1"}
+                    %span.mm-text Modals
+                %li
+                  %a{:href => "ui-alerts.html", :tabindex => "-1"}
+                    %span.mm-text Alerts &amp; Tooltips
+                %li
+                  %a{:href => "ui-components.html", :tabindex => "-1"}
+                    %span.mm-text Components
+                %li
+                  %a{:href => "ui-panels.html", :tabindex => "-1"}
+                    %span.mm-text Panels
+                %li
+                  %a{:href => "ui-jqueryui.html", :tabindex => "-1"}
+                    %span.mm-text jQuery UI
+                %li
+                  %a{:href => "ui-icons.html", :tabindex => "-1"}
+                    %span.mm-text Icons
+                %li
+                  %a{:href => "ui-utility-classes.html", :tabindex => "-1"}
+                    %span.mm-text Utility classes
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-check-square
+                %span.mm-text Form components
+              %ul
+                %li
+                  %a{:href => "forms-layouts.html", :tabindex => "-1"}
+                    %span.mm-text Layouts
+                %li
+                  %a{:href => "forms-general.html", :tabindex => "-1"}
+                    %span.mm-text General
+                %li
+                  %a{:href => "forms-advanced.html", :tabindex => "-1"}
+                    %span.mm-text Advanced
+                %li
+                  %a{:href => "forms-pickers.html", :tabindex => "-1"}
+                    %span.mm-text Pickers
+                %li
+                  %a{:href => "forms-validation.html", :tabindex => "-1"}
+                    %span.mm-text Validation
+                %li
+                  %a{:href => "forms-editors.html", :tabindex => "-1"}
+                    %span.mm-text Editors
+            %li
+              %a{:href => "tables.html"}
+                %i.menu-icon.fa.fa-table
+                %span.mm-text Tables
+            %li
+              %a{:href => "charts.html"}
+                %i.menu-icon.fa.fa-bar-chart-o
+                %span.mm-text Charts
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-files-o
+                %span.mm-text Pages
+                %span.label.label-success 16
+              %ul
+                %li
+                  %a{:href => "pages-search.html", :tabindex => "-1"}
+                    %span.mm-text Search results
+                %li
+                  %a{:href => "pages-pricing.html", :tabindex => "-1"}
+                    %span.mm-text Plans &amp; pricing
+                %li
+                  %a{:href => "pages-faq.html", :tabindex => "-1"}
+                    %span.mm-text FAQ
+                %li
+                  %a{:href => "pages-profile.html", :tabindex => "-1"}
+                    %span.mm-text Profile
+                %li
+                  %a{:href => "pages-timeline.html", :tabindex => "-1"}
+                    %span.mm-text Timeline
+                %li
+                  %a{:href => "pages-signin.html", :tabindex => "-1"}
+                    %span.mm-text Sign In
+                %li
+                  %a{:href => "pages-signup.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up
+                %li
+                  %a{:href => "pages-signin-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign In Alt
+                %li
+                  %a{:href => "pages-signup-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up Alt
+                %li
+                  %a{:href => "pages-invoice.html", :tabindex => "-1"}
+                    %span.mm-text Invoice
+                %li
+                  %a{:href => "pages-404.html", :tabindex => "-1"}
+                    %span.mm-text Error 404
+                %li
+                  %a{:href => "pages-500.html", :tabindex => "-1"}
+                    %span.mm-text Error 500
+                %li.mm-dropdown
+                  %a{:href => "#"}
+                    %i.menu-icon.fa.fa-envelope
+                    %span.mm-text Messages
+                  %ul
+                    %li
+                      %a{:href => "pages-inbox.html", :tabindex => "-1"}
+                        %span.mm-text Inbox
+                    %li
+                      %a{:href => "pages-show-email.html", :tabindex => "-1"}
+                        %span.mm-text Show message
+                    %li
+                      %a{:href => "pages-new-email.html", :tabindex => "-1"}
+                        %span.mm-text New message
+                %li
+                  %a{:href => "pages-blank.html", :tabindex => "-1"}
+                    %span.mm-text Blank page
+            %li
+              %a{:href => "complete-ui.html"}
+                %i.menu-icon.fa.fa-briefcase
+                %span.mm-text Complete UI
+            %li
+              %a{:href => "color-builder.html"}
+                %i.menu-icon.fa.fa-tint
+                %span.mm-text Color Builder
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-sitemap
+                %span.mm-text Menu levels
+                %span.badge.badge-primary 6
+              %ul
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.1
+                    %span.badge.badge-danger 12
+                    %span.label.label-info 21
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.2
+                %li.mm-dropdown
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.3
+                    %span.label.label-warning 5
+                  %ul
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.1
+                    %li.mm-dropdown
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+                      %ul
+                        %li.mm-dropdown
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.1
+                          %ul
+                            %li
+                              %a{:href => "#", :tabindex => "-1"}
+                                %span.mm-text Menu level 4.1
+                        %li
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.2
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+          / / .navigation
+          .menu-content
+            %a.btn.btn-primary.btn-block.btn-outline.dark{:href => "pages-invoice.html"} Create Invoice
+        / / #main-menu-inner
+      / / #main-menu
+      / /4. $MAIN_MENU
+      #content-wrapper
+        .page-header
+          %h1
+            %i.fa.fa-bar-chart-o.page-header-icon>
+            \&nbsp;&nbsp;Stat Panels
+        / / .page-header
+        .note.note-info.padding-xs-vr
+          PixelAdmin's
+          %strong stat panels
+          are flexible tool to visualize data sets. You can create panels without writing any extra styles. Also you can define height of panels via css (all sub blocks will stretch automatically). See source code.
+          %br/
+          %br/
+          %strong NOTE:
+          This examples uses utility classes defined in the utils.less file.
+          %br/
+          %br/
+          %button#equal-height.btn.btn-xs Equalize heights
+        / / .note
+        .row
+          .col-sm-5
+            /
+              5. $EXAMPLE_NOTIFICATIONS =====================================================================
+              
+              Notifications example
+            .stat-panel
+              / Success background, bordered, without top and bottom borders, without left border, without padding, vertically and horizontally centered text, large text
+              %a.stat-cell.col-xs-5.bg-success.bordered.no-border-vr.no-border-l.no-padding.valign-middle.text-center.text-lg{:href => "#"}
+                %i.fa.fa-calendar>
+                \&nbsp;&nbsp;
+                %strong 11
+              / /.stat-cell
+              / Without padding, extra small text
+              .stat-cell.col-xs-7.no-padding.valign-middle
+                / Add parent div.stat-rows if you want build nested rows
+                .stat-rows
+                  .stat-row
+                    / Success background, small padding, vertically aligned text
+                    %a.stat-cell.bg-success.padding-sm.valign-middle{:href => "#"}
+                      32 messages
+                      %i.fa.fa-envelope-o.pull-right
+                  .stat-row
+                    / Success darken background, small padding, vertically aligned text
+                    %a.stat-cell.bg-success.darken.padding-sm.valign-middle{:href => "#"}
+                      9 issues
+                      %i.fa.fa-bug.pull-right
+                  .stat-row
+                    / Success darker background, small padding, vertically aligned text
+                    %a.stat-cell.bg-success.darker.padding-sm.valign-middle{:href => "#"}
+                      47 new users
+                      %i.fa.fa-users.pull-right
+                / /.stat-rows
+              / /.stat-cell
+            / /.stat-panel
+            / /5. $EXAMPLE_NOTIFICATIONS
+          .col-sm-4
+            /
+              6. $EXAMPLE_COMMENTS_COUNT ====================================================================
+              
+              Comments count example
+            .stat-panel
+              / Success background. vertically centered text
+              .stat-cell.bg-danger.valign-middle
+                / Stat panel bg icon
+                %i.fa.fa-comments.bg-icon
+                / Extra large text
+                %span.text-xlg
+                  %strong 124
+                %br/
+                / Big text
+                %span.text-bg Comments
+                %br/
+                / Small text
+                %span.text-sm New comments today
+              / /.stat-cell
+            / /.stat-panel
+            / /6. $EXAMPLE_COMMENTS_COUNT
+          .col-sm-3
+            /
+              7. $EXAMPLE_ICON_PANEL ========================================================================
+              
+              Icon panel example
+            .stat-panel
+              .stat-row
+                / Info background, without padding, horizontally centered text, super large text
+                .stat-cell.bg-info.no-padding.text-center.text-slg
+                  %i.fa.fa-clock-o
+              / /.stat-row
+              .stat-row
+                / Bordered, without top border, horizontally centered text, large text
+                .stat-cell.bordered.no-border-t.text-center.text-lg
+                  %strong 4:50
+                  %small
+                    %small PM
+              / /.stat-row
+            / /.stat-panel
+            / /7. $EXAMPLE_ICON_PANEL
+        / / .row
+        .row
+          .col-sm-3
+            /
+              8. $EXAMPLE_VISITORS_CHART ====================================================================
+              
+              Visitors chart example
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$("#stats-sparklines-2").pixelSparkline(
+              		[275,490,397,487,339,403,402,312,300,294,411,367,319,416,355,416,371,479,279,361,312,269,402,327,474,422,375,283,384,372], {
+              		type: 'bar',
+              		height: '50px',
+              		width: '100%',
+              		barSpacing: 2,
+              		zeroAxis: false,
+              		barColor: '#ffffff'
+              	});
+              });
+            / / Javascript
+            .stat-panel
+              .stat-row
+                / Warning background
+                .stat-cell.bg-warning
+                  / Big text
+                  %span.text-bg 15% more
+                  %br/
+                  / Small text
+                  %span.text-sm Monthly visitor statistics
+              / /.stat-row
+              .stat-row
+                / Warning background, small padding, without top padding, horizontally centered text
+                .stat-cell.bg-warning.padding-sm.no-padding-t.text-center
+                  #stats-sparklines-2.stats-sparklines{:style => "width: 100%"}
+              / /.stat-row
+            / /.stat-panel
+            / /8. $EXAMPLE_VISITORS_CHART
+          .col-sm-4
+            /
+              9. $EXAMPLE_RETWEETS_GRAPH ====================================================================
+              
+              Retweets graph example
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$("#stats-sparklines-3").pixelSparkline([275,490,397,487,339,403,402,312,300], {
+              		type: 'line',
+              		width: '100%',
+              		height: '50px',
+              		fillColor: '',
+              		lineColor: '#fff',
+              		lineWidth: 2,
+              		spotColor: '#ffffff',
+              		minSpotColor: '#ffffff',
+              		maxSpotColor: '#ffffff',
+              		highlightSpotColor: '#ffffff',
+              		highlightLineColor: '#ffffff',
+              		spotRadius: 4,
+              		highlightLineColor: '#ffffff'
+              	});
+              });
+            / / Javascript
+            .stat-panel
+              .stat-row
+                / Info background, small padding
+                .stat-cell.bg-info.padding-sm
+                  / Extra small text
+                  .text-xs{:style => "margin-bottom: 5px;"} RETWEETS GRAPH
+                  #stats-sparklines-3.stats-sparklines{:style => "width: 100%"}
+              / /.stat-row
+              .stat-row
+                / Bordered, without top border, horizontally centered text
+                .stat-counters.bordered.no-border-t.text-center
+                  / Small padding, without horizontal padding
+                  .stat-cell.col-xs-4.padding-sm.no-padding-hr
+                    / Big text
+                    %span.text-bg
+                      %strong 312
+                    %br/
+                    / Extra small text
+                    %span.text-xs TWEETS
+                  / Small padding, without horizontal padding
+                  .stat-cell.col-xs-4.padding-sm.no-padding-hr
+                    / Big text
+                    %span.text-bg
+                      %strong 1000
+                    %br/
+                    / Extra small text
+                    %span.text-xs FOLLOWERS
+                  / Small padding, without horizontal padding
+                  .stat-cell.col-xs-4.padding-sm.no-padding-hr
+                    / Big text
+                    %span.text-bg
+                      %strong 523
+                    %br/
+                    / Extra small text
+                    %span.text-xs FOLLOWING
+                / /.stat-counters
+              / /.stat-row
+            / /.stat-panel
+            / /9. $EXAMPLE_RETWEETS_GRAPH
+          .col-sm-5
+            /
+              10. $EXAMPLE_EARNINGS_GRAPH ===================================================================
+              
+              Earnings graph example
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$("#stats-sparklines-1").pixelSparkline(
+              		[210,244,210,221,205,217,213,246,234,236,225,242,216,205,233,233,221,201,235,237,224,247,200,245,216,204,205,216,218,247], {
+              		type: 'line',
+              		width: '100%',
+              		height: '80px',
+              		lineColor: 'rgba(0,0,0,0)',
+              		fillColor: 'rgba(0,0,0,.18)',
+              		lineWidth: 0,
+              		spotColor: '',
+              		minSpotColor: '',
+              		maxSpotColor: '',
+              		highlightSpotColor: '',
+              		highlightLineColor: '#ffffff',
+              		spotRadius: 1.8,
+              		chartRangeMin: 150
+              	});
+              });
+            / / Javascript
+            .stat-panel
+              / Bordered, without right border, right aligned text
+              .stat-cell.col-xs-5.bordered.no-border-r.text-right
+                / Stat panel bg icon
+                %i.fa.fa-trophy.bg-icon.bg-icon-left
+                / Extra small text
+                %span.text-xs TODAY'S EARNINGS
+                %br/
+                / Extra large text
+                %span.text-xlg
+                  %small
+                    %small $
+                  %strong 247
+              / /.stat-cell
+              / Success darken background, without padding, vertically centered text
+              .stat-cell.col-xs-7.bg-success.no-padding.valign-bottom
+                #stats-sparklines-1.stats-sparklines{:style => "width: 100%"}
+            / /.stat-panel
+            / /10. $EXAMPLE_EARNINGS_GRAPH
+        / / .row
+        .row
+          .col-sm-4
+            /
+              11. $EXAMPLE_ACCOUNT_OVERVIEW =================================================================
+              
+              Account overview example
+            .stat-panel
+              .stat-row
+                / Success darker background
+                .stat-cell.bg-success.darker
+                  / Stat panel bg icon
+                  %i.fa.fa-lightbulb-o.bg-icon{:style => "font-size:60px;line-height:80px;height:80px;"}
+                  / Big text
+                  %span.text-bg Overview
+                  %br/
+                  / Small text
+                  %span.text-sm Your account statistics
+              / /.stat-row
+              .stat-row
+                / Success background, without bottom border, without padding, horizontally centered text
+                .stat-counters.bg-success.no-border-b.no-padding.text-center
+                  / Small padding, without horizontal padding
+                  .stat-cell.col-xs-4.padding-sm.no-padding-hr
+                    / Big text
+                    %span.text-bg
+                      %strong 12
+                    %br/
+                    / Extra small text
+                    %span.text-xs PURCHASES
+                  / Small padding, without horizontal padding
+                  .stat-cell.col-xs-4.padding-sm.no-padding-hr
+                    / Big text
+                    %span.text-bg
+                      %strong 17
+                    %br/
+                    / Extra small text
+                    %span.text-xs REVIEWS
+                  / Small padding, without horizontal padding
+                  .stat-cell.col-xs-4.padding-sm.no-padding-hr
+                    / Big text
+                    %span.text-bg
+                      %strong 49
+                    %br/
+                    / Extra small text
+                    %span.text-xs LIKES
+                / /.stat-counters
+              / /.stat-row
+              .stat-row
+                / Success background, without bottom border, without padding, horizontally centered text
+                .stat-counters.bg-success.no-border-b.no-padding.text-center
+                  / Small padding, without horizontal padding
+                  .stat-cell.col-xs-4.padding-sm.no-padding-hr
+                    / Big text
+                    %span.text-bg
+                      %strong 203
+                    %br/
+                    / Extra small text
+                    %span.text-xs FRIENDS
+                  .stat-cell.col-xs-4.padding-sm.no-padding-hr
+                    / Big text
+                    %span.text-bg
+                      %strong 1056
+                    %br/
+                    / Extra small text
+                    %span.text-xs POINTS
+                  / Success background, small padding, without left and right padding, vertically centered text
+                  %a.stat-cell.col-xs-4.bg-success.padding-sm.no-padding-hr.valign-middle{:href => "#"}
+                    / Extra small text
+                    %span.text-xs
+                      MORE&nbsp;&nbsp;
+                      %i.fa.fa-caret-right
+                / /.stat-counters
+              / /.stat-row
+            / /.stat-panel
+            / /11. $EXAMPLE_ACCOUNT_OVERVIEW
+          .col-sm-8
+            /
+              12. $EXAMPLE_UPLOAD_STATISTICS ================================================================
+              
+              Upload statistics example
+            / Javascript
+            :javascript
+              init.push(function () {
+              	var uploads_data = [
+              		{ day: '2014-03-10', v: 20 },
+              		{ day: '2014-03-11', v: 10 },
+              		{ day: '2014-03-12', v: 15 },
+              		{ day: '2014-03-13', v: 12 },
+              		{ day: '2014-03-14', v: 5  },
+              		{ day: '2014-03-15', v: 5  },
+              		{ day: '2014-03-16', v: 20 }
+              	];
+              	Morris.Line({
+              		element: 'hero-graph',
+              		data: uploads_data,
+              		xkey: 'day',
+              		ykeys: ['v'],
+              		labels: ['Value'],
+              		lineColors: ['#fff'],
+              		lineWidth: 2,
+              		pointSize: 4,
+              		gridLineColor: 'rgba(255,255,255,.5)',
+              		resize: true,
+              		gridTextColor: '#fff',
+              		xLabels: "day",
+              		xLabelFormat: function(d) {
+              			return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov', 'Dec'][d.getMonth()] + ' ' + d.getDate(); 
+              		},
+              	});
+              });
+            / / Javascript
+            .stat-panel
+              .stat-row
+                / Bordered, without right border, top aligned text
+                .stat-cell.col-sm-4.bordered.no-border-r.padding-sm-hr.valign-top
+                  / Small padding, without top padding, extra small horizontal padding
+                  %h4.padding-sm.no-padding-t.padding-xs-hr
+                    %i.fa.fa-cloud-upload.text-primary>
+                    \&nbsp;&nbsp;Uploads
+                  / Without margin
+                  %ul.list-group.no-margin
+                    / Without left and right borders, extra small horizontal padding
+                    %li.list-group-item.no-border-hr.padding-xs-hr
+                      Documents
+                      %span.label.pull-right 34
+                    / / .list-group-item
+                    / Without left and right borders, extra small horizontal padding
+                    %li.list-group-item.no-border-hr.padding-xs-hr
+                      Audio
+                      %span.label.pull-right 128
+                    / / .list-group-item
+                    / Without left and right borders, without bottom border, extra small horizontal padding
+                    %li.list-group-item.no-border-hr.no-border-b.padding-xs-hr
+                      Videos
+                      %span.label.pull-right 12
+                    / / .list-group-item
+                / /.stat-cell
+                / Primary background, small padding, vertically centered text
+                .stat-cell.col-sm-8.bg-primary.padding-sm.valign-middle
+                  #hero-graph.graph{:style => "height: 180px;"}
+            / /.stat-panel
+            / /12. $EXAMPLE_UPLOAD_STATISTICS
+        / / .row
+      / / #content-wrapper
+      #main-menu-bg
+    / / #main-wrapper
+    / Get jQuery from Google CDN
+    / [if !IE]>
+    :javascript
+      window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">'+"<"+"/script>");
+    / <![endif]
+    /[if lte IE 9]
+      <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">'+"<"+"/script>"); </script>
+    / Pixel Admin's javascripts
+    %script{:src => "assets/javascripts/bootstrap.min.js"}
+    %script{:src => "assets/javascripts/pixel-admin.min.js"}
+    :javascript
+      init.push(function () {
+      	var setEqHeight = function () {
+      		$('#content-wrapper .row').each(function () {
+      			var $p = $(this).find('.stat-panel');
+      			if (! $p.length) return;
+      			$p.attr('style', '');
+      			var h = $p.first().height(), max_h = h;
+      			$p.each(function () {
+      				h = $(this).height();
+      				if (max_h < h) max_h = h;
+      			});
+      			$p.css('height', max_h);
+      		});
+      	};
+      	$('#equal-height').click(function () {
+      		if ($(this).hasClass('disabled')) return;
+      		$(this).addClass('disabled');
+      		setEqHeight();
+      		$(window).on('pa.resize', setEqHeight);
+      		$(window).resize();
+      	});
+      });
+      window.PixelAdmin.start(init);

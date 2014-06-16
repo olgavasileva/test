@@ -527,11 +527,13 @@ html body.page-signin {
   transition: all 0.3s;
 }
 .page-signin .form-group.w-icon input[type="text"],
+.page-signin .form-group.w-icon input[type="email"],
 .page-signin .form-group.w-icon input[type="password"] {
   font-size: 15px;
   padding-left: 56px;
 }
 .page-signin .form-group.w-icon input[type="text"]:focus + .signin-form-icon,
+.page-signin .form-group.w-icon input[type="email"]:focus + .signin-form-icon,
 .page-signin .form-group.w-icon input[type="password"]:focus + .signin-form-icon {
   color: #888;
 }
@@ -771,11 +773,13 @@ html body.page-signup {
   transition: all 0.3s;
 }
 .page-signup .form-group.w-icon input[type="text"],
+.page-signup .form-group.w-icon input[type="email"],
 .page-signup .form-group.w-icon input[type="password"] {
   font-size: 15px;
   padding-left: 56px;
 }
 .page-signup .form-group.w-icon input[type="text"]:focus + .signup-form-icon,
+.page-signup .form-group.w-icon input[type="email"]:focus + .signup-form-icon,
 .page-signup .form-group.w-icon input[type="password"]:focus + .signup-form-icon {
   color: #888;
 }
@@ -1066,7 +1070,8 @@ html body.page-signup {
   border-left-width: 0;
   border-top-width: 0;
 }
-.page-search .search-form input[type="text"] {
+.page-search .search-form input[type="text"],
+.page-search .search-form input[type="email"] {
   border-bottom-width: 0;
   border-top-width: 0;
 }

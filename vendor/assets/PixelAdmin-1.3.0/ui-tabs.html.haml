@@ -1,0 +1,1306 @@
+!!!
+/
+  TABLE OF CONTENTS.
+  
+  Use search to find needed section.
+  
+  \=====================================================
+  
+  |  1. $BODY                 |  Body                 |
+  |  2. $MAIN_NAVIGATION      |  Main navigation      |
+  |  3. $NAVBAR_ICON_BUTTONS  |  Navbar Icon Buttons  |
+  |  4. $MAIN_MENU            |  Main menu            |
+  |  5. $DEFAULT_TABS         |  Default tabs         |
+  |  6. $SIMPLE_TABS          |  Simple tabs          |
+  |  7. $DEFAULT_PILLS        |  Default pills        |
+  |  8. $TAB_SIZES            |  Tab sizes            |
+  |  9. $JUSTIFIED_TABS       |  Justified tabs       |
+  |  10. $STACKED_PILLS       |  Stacked pills        |
+  |  11. $BOOTSTRAP_TAB_DROP  |  Stacked pills        |
+  |  12. $DEFAULT_ACCORDIONS  |  Default accordions   |
+  |  13. $ACCORDION_COLORS    |  Accordion colors     |
+  
+  \=====================================================
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+/ [if gt IE 9]><!
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title Tabs &amp; Accordions - UI Elements - PixelAdmin
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0", :name => "viewport"}/
+    / Open Sans font from Google CDN
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
+    / Pixel Admin's stylesheets
+    %link{:href => "assets/stylesheets/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pixel-admin.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/widgets.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/rtl.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/themes.min.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+  /
+    1. $BODY ======================================================================================
+    
+    Body
+    
+    Classes:
+    * 'theme-{THEME NAME}'
+    * 'right-to-left'      - Sets text direction to right-to-left
+    * 'main-menu-right'    - Places the main menu on the right side
+    * 'no-main-menu'       - Hides the main menu
+    * 'main-navbar-fixed'  - Fixes the main navigation
+    * 'main-menu-fixed'    - Fixes the main menu
+    * 'main-menu-animated' - Animate main menu
+  %body.theme-default.main-menu-animated
+    :javascript
+      var init = [];
+    / Demo script
+    %script{:src => "assets/demo/demo.js"}
+    / / Demo script
+    #main-wrapper
+      /
+        2. $MAIN_NAVIGATION ===========================================================================
+        
+        Main navigation
+      #main-navbar.navbar.navbar-inverse{:role => "navigation"}
+        / Main menu toggle
+        %button#main-menu-toggle{:type => "button"}
+          %i.navbar-icon.fa.fa-bars.icon
+          %span.hide-menu-text HIDE MENU
+        .navbar-inner
+          / Main navbar header
+          .navbar-header
+            / Logo
+            %a.navbar-brand{:href => "index.html"}
+            %div
+              %img{:alt => "Pixel Admin", :src => "assets/images/pixel-admin/main-navbar-logo.png"}/
+            PixelAdmin
+            / Main navbar toggle
+            %button.navbar-toggle.collapsed{"data-target" => "#main-navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+              %i.navbar-icon.fa.fa-bars
+          / / .navbar-header
+          #main-navbar-collapse.collapse.navbar-collapse.main-navbar-collapse
+            %div
+              %ul.nav.navbar-nav
+                %li
+                  %a{:href => "#"} Home
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Dropdown
+                  %ul.dropdown-menu
+                    %li
+                      %a{:href => "#"} First item
+                    %li
+                      %a{:href => "#"} Second item
+                    %li.divider
+                    %li
+                      %a{:href => "#"} Third item
+              / / .navbar-nav
+              .right.clearfix
+                %ul.nav.navbar-nav.pull-right.right-navbar-nav
+                  /
+                    3. $NAVBAR_ICON_BUTTONS =======================================================================
+                    
+                    Navbar Icon Buttons
+                    
+                    NOTE: .nav-icon-btn triggers a dropdown menu on desktop screens only. On small screens .nav-icon-btn acts like a hyperlink.
+                    
+                    Classes:
+                    * 'nav-icon-btn-info'
+                    * 'nav-icon-btn-success'
+                    * 'nav-icon-btn-warning'
+                    * 'nav-icon-btn-danger'
+                  %li.nav-icon-btn.nav-icon-btn-danger.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#notifications"}
+                      %span.label 5
+                      %i.nav-icon.fa.fa-bullhorn
+                      %span.small-screen-text Notifications
+                    / NOTIFICATIONS
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-notifications').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-notifications.no-padding{:style => "width: 300px"}
+                      #main-navbar-notifications.notifications-list
+                        .notification
+                          .notification-title.text-danger SYSTEM
+                          .notification-description
+                            %strong> Error 500
+                            \: Syntax error in index.php at line
+                            = succeed "." do
+                              %strong 461
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-danger
+                        / / .notification
+                        .notification
+                          .notification-title.text-info STORE
+                          .notification-description
+                            You have
+                            %strong 9
+                            new orders.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-truck.bg-info
+                        / / .notification
+                        .notification
+                          .notification-title.text-default CRON DAEMON
+                          .notification-description
+                            Job
+                            %strong "Clean DB"
+                            has been completed.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-clock-o.bg-default
+                        / / .notification
+                        .notification
+                          .notification-title.text-success SYSTEM
+                          .notification-description
+                            Server
+                            = succeed "." do
+                              %strong up
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-success
+                        / / .notification
+                        .notification
+                          .notification-title.text-warning SYSTEM
+                          .notification-description
+                            %strong> Warning
+                            \: Processor load
+                            = succeed "." do
+                              %strong 92%
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-warning
+                        / / .notification
+                      / / .notifications-list
+                      %a.notifications-link{:href => "#"} MORE NOTIFICATIONS
+                    / / .dropdown-menu
+                  %li.nav-icon-btn.nav-icon-btn-success.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#messages"}
+                      %span.label 10
+                      %i.nav-icon.fa.fa-envelope
+                      %span.small-screen-text Income messages
+                    / MESSAGES
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-messages').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-messages-alt.no-padding{:style => "width: 300px;"}
+                      #main-navbar-messages.messages-list
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                      / / .messages-list
+                      %a.messages-link{:href => "#"} MORE MESSAGES
+                    / / .dropdown-menu
+                  / /3. $END_NAVBAR_ICON_BUTTONS
+                  %li
+                    %form.navbar-form.pull-left
+                      %input.form-control{:placeholder => "Search", :type => "text"}/
+                  %li.dropdown
+                    %a.dropdown-toggle.user-menu{"data-toggle" => "dropdown", :href => "#"}
+                      %img{:src => "assets/demo/avatars/1.jpg"}/
+                      %span John Doe
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"}
+                          %span.label.label-warning.pull-right> New
+                          Profile
+                      %li
+                        %a{:href => "#"}
+                          %span.badge.badge-primary.pull-right> New
+                          Account
+                      %li
+                        %a{:href => "#"}
+                          %i.dropdown-icon.fa.fa-cog>
+                          \&nbsp;&nbsp;Settings
+                      %li.divider
+                      %li
+                        %a{:href => "pages-signin.html"}
+                          %i.dropdown-icon.fa.fa-power-off>
+                          \&nbsp;&nbsp;Log Out
+                / / .navbar-nav
+              / / .right
+          / / #main-navbar-collapse
+        / / .navbar-inner
+      / / #main-navbar
+      / /2. $END_MAIN_NAVIGATION
+      /
+        4. $MAIN_MENU =================================================================================
+        
+        Main menu
+        
+        Notes:
+        * to make the menu item active, add a class 'active' to the <li>
+        example: <li class="active">...</li>
+        * multilevel submenu example:
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 1</span></a>
+        <ul>
+        <li>...</li>
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 2</span></a>
+        <ul>
+        <li>...</li>
+        \...
+        </ul>
+        </li>
+        \...
+        </ul>
+        </li>
+      #main-menu{:role => "navigation"}
+        #main-menu-inner
+          #menu-content-demo.menu-content.top
+            /
+              Menu custom content demo
+              CSS:        styles/pixel-admin-less/demo.less or styles/pixel-admin-scss/_demo.scss
+              Javascript: html/assets/demo/demo.js
+            %div
+              .text-bg
+                %span.text-slim Welcome,
+                %span.text-semibold John
+              %img{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+              .btn-group
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-envelope
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-user
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-cog
+                %a.btn.btn-xs.btn-danger.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-power-off
+              %a.close{:href => "#"} &times;
+          %ul.navigation
+            %li
+              %a{:href => "index.html"}
+                %i.menu-icon.fa.fa-dashboard
+                %span.mm-text Dashboard
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-th
+                %span.mm-text Layouts
+                %span.label.label-warning Updated
+              %ul
+                %li
+                  %a{:href => "layouts-grid.html", :tabindex => "-1"}
+                    %span.mm-text Grid
+                %li
+                  %a{:href => "layouts-main-menu.html", :tabindex => "-1"}
+                    %i.menu-icon.fa.fa-th-list
+                    %span.mm-text Main menu
+                    %span.label.label-warning Updated
+            %li
+              %a{:href => "stat-panels.html"}
+                %i.menu-icon.fa.fa-tasks
+                %span.mm-text Stat panels
+            %li
+              %a{:href => "widgets.html"}
+                %i.menu-icon.fa.fa-flask
+                %span.mm-text Widgets
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-desktop
+                %span.mm-text UI elements
+              %ul
+                %li
+                  %a{:href => "ui-buttons.html", :tabindex => "-1"}
+                    %span.mm-text Buttons
+                %li
+                  %a{:href => "ui-typography.html", :tabindex => "-1"}
+                    %span.mm-text Typography
+                %li
+                  %a{:href => "ui-tabs.html", :tabindex => "-1"}
+                    %span.mm-text Tabs &amp; Accordions
+                %li
+                  %a{:href => "ui-modals.html", :tabindex => "-1"}
+                    %span.mm-text Modals
+                %li
+                  %a{:href => "ui-alerts.html", :tabindex => "-1"}
+                    %span.mm-text Alerts &amp; Tooltips
+                %li
+                  %a{:href => "ui-components.html", :tabindex => "-1"}
+                    %span.mm-text Components
+                %li
+                  %a{:href => "ui-panels.html", :tabindex => "-1"}
+                    %span.mm-text Panels
+                %li
+                  %a{:href => "ui-jqueryui.html", :tabindex => "-1"}
+                    %span.mm-text jQuery UI
+                %li
+                  %a{:href => "ui-icons.html", :tabindex => "-1"}
+                    %span.mm-text Icons
+                %li
+                  %a{:href => "ui-utility-classes.html", :tabindex => "-1"}
+                    %span.mm-text Utility classes
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-check-square
+                %span.mm-text Form components
+              %ul
+                %li
+                  %a{:href => "forms-layouts.html", :tabindex => "-1"}
+                    %span.mm-text Layouts
+                %li
+                  %a{:href => "forms-general.html", :tabindex => "-1"}
+                    %span.mm-text General
+                %li
+                  %a{:href => "forms-advanced.html", :tabindex => "-1"}
+                    %span.mm-text Advanced
+                %li
+                  %a{:href => "forms-pickers.html", :tabindex => "-1"}
+                    %span.mm-text Pickers
+                %li
+                  %a{:href => "forms-validation.html", :tabindex => "-1"}
+                    %span.mm-text Validation
+                %li
+                  %a{:href => "forms-editors.html", :tabindex => "-1"}
+                    %span.mm-text Editors
+            %li
+              %a{:href => "tables.html"}
+                %i.menu-icon.fa.fa-table
+                %span.mm-text Tables
+            %li
+              %a{:href => "charts.html"}
+                %i.menu-icon.fa.fa-bar-chart-o
+                %span.mm-text Charts
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-files-o
+                %span.mm-text Pages
+                %span.label.label-success 16
+              %ul
+                %li
+                  %a{:href => "pages-search.html", :tabindex => "-1"}
+                    %span.mm-text Search results
+                %li
+                  %a{:href => "pages-pricing.html", :tabindex => "-1"}
+                    %span.mm-text Plans &amp; pricing
+                %li
+                  %a{:href => "pages-faq.html", :tabindex => "-1"}
+                    %span.mm-text FAQ
+                %li
+                  %a{:href => "pages-profile.html", :tabindex => "-1"}
+                    %span.mm-text Profile
+                %li
+                  %a{:href => "pages-timeline.html", :tabindex => "-1"}
+                    %span.mm-text Timeline
+                %li
+                  %a{:href => "pages-signin.html", :tabindex => "-1"}
+                    %span.mm-text Sign In
+                %li
+                  %a{:href => "pages-signup.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up
+                %li
+                  %a{:href => "pages-signin-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign In Alt
+                %li
+                  %a{:href => "pages-signup-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up Alt
+                %li
+                  %a{:href => "pages-invoice.html", :tabindex => "-1"}
+                    %span.mm-text Invoice
+                %li
+                  %a{:href => "pages-404.html", :tabindex => "-1"}
+                    %span.mm-text Error 404
+                %li
+                  %a{:href => "pages-500.html", :tabindex => "-1"}
+                    %span.mm-text Error 500
+                %li.mm-dropdown
+                  %a{:href => "#"}
+                    %i.menu-icon.fa.fa-envelope
+                    %span.mm-text Messages
+                  %ul
+                    %li
+                      %a{:href => "pages-inbox.html", :tabindex => "-1"}
+                        %span.mm-text Inbox
+                    %li
+                      %a{:href => "pages-show-email.html", :tabindex => "-1"}
+                        %span.mm-text Show message
+                    %li
+                      %a{:href => "pages-new-email.html", :tabindex => "-1"}
+                        %span.mm-text New message
+                %li
+                  %a{:href => "pages-blank.html", :tabindex => "-1"}
+                    %span.mm-text Blank page
+            %li
+              %a{:href => "complete-ui.html"}
+                %i.menu-icon.fa.fa-briefcase
+                %span.mm-text Complete UI
+            %li
+              %a{:href => "color-builder.html"}
+                %i.menu-icon.fa.fa-tint
+                %span.mm-text Color Builder
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-sitemap
+                %span.mm-text Menu levels
+                %span.badge.badge-primary 6
+              %ul
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.1
+                    %span.badge.badge-danger 12
+                    %span.label.label-info 21
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.2
+                %li.mm-dropdown
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.3
+                    %span.label.label-warning 5
+                  %ul
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.1
+                    %li.mm-dropdown
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+                      %ul
+                        %li.mm-dropdown
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.1
+                          %ul
+                            %li
+                              %a{:href => "#", :tabindex => "-1"}
+                                %span.mm-text Menu level 4.1
+                        %li
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.2
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+          / / .navigation
+          .menu-content
+            %a.btn.btn-primary.btn-block.btn-outline.dark{:href => "pages-invoice.html"} Create Invoice
+        / / #main-menu-inner
+      / / #main-menu
+      / /4. $MAIN_MENU
+      #content-wrapper
+        .page-header
+          %h1
+            %span.text-light-gray> UI Elements /
+            Tabs &amp; Accordions
+        / / .page-header
+        .row
+          .col-sm-6
+            /
+              5. $DEFAULT_TABS ==============================================================================
+              
+              Default tabs
+            .panel
+              .panel-heading
+                %span.panel-title Default tabs
+              .panel-body
+                %ul#uidemo-tabs-default-demo.nav.nav-tabs
+                  %li.active
+                    %a{"data-toggle" => "tab", :href => "#uidemo-tabs-default-demo-home"}
+                      Home
+                      %span.label.label-success 12
+                  %li
+                    %a{"data-toggle" => "tab", :href => "#uidemo-tabs-default-demo-profile"}
+                      Profile
+                      %span.badge.badge-primary 12
+                  %li.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      Dropdown&nbsp;&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#uidemo-tabs-default-demo-dropdown1"} @fat
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#uidemo-tabs-default-demo-dropdown2"} @mdo
+                  / / .dropdown
+                .tab-content.tab-content-bordered
+                  #uidemo-tabs-default-demo-home.tab-pane.fade.active.in
+                    %p Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
+                  / / .tab-pane
+                  #uidemo-tabs-default-demo-profile.tab-pane.fade
+                    %p Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.
+                  / / .tab-pane
+                  #uidemo-tabs-default-demo-dropdown1.tab-pane.fade
+                    %p Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.
+                  / / .tab-pane
+                  #uidemo-tabs-default-demo-dropdown2.tab-pane.fade
+                    %p Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park vegan.
+                  / / .tab-pane
+                / / .tab-content
+            / /5. $DEFAULT_TABS
+            /
+              6. $SIMPLE_TABS ===============================================================================
+              
+              Simple tabs
+            .panel
+              .panel-heading
+                %span.panel-title Simple tabs
+              .panel-body
+                / Default tabs
+                %ul.nav.nav-tabs.nav-tabs-simple
+                  %li.active
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Home
+                      %span.label.label-success 12
+                  %li
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Profile
+                      %span.badge.badge-info 12
+                  %li.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      Dropdown&nbsp;&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @fat
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @mdo
+                  / / .dropdown
+                / / .nav
+                / / Default tabs
+                / Small tabs
+                %ul.nav.nav-tabs.nav-tabs-simple.nav-tabs-sm{:style => "margin-top: 20px"}
+                  %li.active
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Home
+                      %span.label.label-success 12
+                  %li
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Profile
+                      %span.badge.badge-info 12
+                  %li.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      Dropdown&nbsp;&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @fat
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @mdo
+                  / / .dropdown
+                / / .nav
+                / / Small tabs
+                / Extra small tabs
+                %ul.nav.nav-tabs.nav-tabs-simple.nav-tabs-xs{:style => "margin-top: 20px"}
+                  %li.active
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Home
+                      %span.label.label-warning 12
+                  %li
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Profile
+                      %span.badge.badge-danger 12
+                  %li.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      Dropdown&nbsp;&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @fat
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @mdo
+                  / / .dropdown
+                / / .nav
+                / / Extra small tabs
+            / /6. $SIMPLE_TABS
+            /
+              7. $DEFAULT_PILLS =============================================================================
+              
+              Default pills
+            .panel
+              .panel-heading
+                %span.panel-title Default pills
+              .panel-body
+                %ul.nav.nav-pills
+                  %li.active
+                    %a{:href => "#"}
+                      Home
+                      %span.label.label-warning 14
+                  %li
+                    %a{:href => "#"}
+                      Help
+                      %span.badge.badge-danger 16
+                  %li.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      Dropdown&nbsp;&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"} Action
+                      %li
+                        %a{:href => "#"} Another action
+                      %li
+                        %a{:href => "#"} Something else here
+                      %li.divider
+                      %li
+                        %a{:href => "#"} Separated link
+                    / / .dropdown-menu
+                  / / .dropdown
+            / /7. $DEFAULT_PILLS
+          .col-sm-6
+            /
+              8. $TAB_SIZES =================================================================================
+              
+              Tab sizes
+            .panel
+              .panel-heading
+                %span.panel-title Tab sizes
+              .panel-body
+                / Small tabs
+                %ul.nav.nav-tabs.nav-tabs-sm
+                  %li.active
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Home
+                      %span.label.label-success 12
+                  %li
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Profile
+                      %span.badge.badge-info 12
+                  %li.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      Dropdown&nbsp;&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @fat
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @mdo
+                  / / .dropdown
+                / / .nav
+                / / Small tabs
+                / Extra small tabs
+                %ul.nav.nav-tabs.nav-tabs-xs{:style => "margin-top: 20px"}
+                  %li.active
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Home
+                      %span.label.label-warning 12
+                  %li
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Profile
+                      %span.badge.badge-danger 12
+                  %li.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      Dropdown&nbsp;&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @fat
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @mdo
+                  / / .dropdown
+                / / .nav
+                / / Extra small tabs
+            / /8. $TAB_SIZES
+            /
+              9. $JUSTIFIED_TABS ============================================================================
+              
+              Justified tabs
+            .panel
+              .panel-heading
+                %span.panel-title Justified tabs
+              .panel-body
+                / Default tabs ==============================================================
+                %ul.nav.nav-tabs.nav-justified
+                  %li.active
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Home
+                      %span.label.label-success 12
+                  %li
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Profile
+                      %span.badge.badge-info 12
+                  %li.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      Dropdown&nbsp;&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @fat
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @mdo
+                  / / .dropdown
+                / / .nav
+                / Small tabs
+                %ul.nav.nav-tabs.nav-tabs-sm.nav-justified{:style => "margin-top: 20px"}
+                  %li.active
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Home
+                      %span.label.label-success 12
+                  %li
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Profile
+                      %span.badge.badge-info 12
+                  %li.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      Dropdown&nbsp;&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @fat
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @mdo
+                  / / .dropdown
+                / / .nav
+                / / Small tabs
+                / Extra small tabs
+                %ul.nav.nav-tabs.nav-tabs-xs.nav-justified{:style => "margin-top: 20px"}
+                  %li.active
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Home
+                      %span.label.label-warning 12
+                  %li
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Profile
+                      %span.badge.badge-danger 12
+                  %li.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      Dropdown&nbsp;&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @fat
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @mdo
+                  / / .dropdown
+                / / .nav
+                / / Extra small tabs
+                / Simple tabs ==============================================================
+                %ul.nav.nav-tabs.nav-tabs-simple.nav-justified{:style => "margin-top: 20px"}
+                  %li.active
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Home
+                      %span.label.label-success 12
+                  %li
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Profile
+                      %span.badge.badge-info 12
+                  %li.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      Dropdown&nbsp;&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @fat
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @mdo
+                  / / .dropdown
+                / / .nav
+                / Small tabs
+                %ul.nav.nav-tabs.nav-tabs-simple.nav-tabs-sm.nav-justified{:style => "margin-top: 20px"}
+                  %li.active
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Home
+                      %span.label.label-success 12
+                  %li
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Profile
+                      %span.badge.badge-info 12
+                  %li.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      Dropdown&nbsp;&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @fat
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @mdo
+                  / / .dropdown
+                / / .nav
+                / / Small tabs
+                / Extra small tabs
+                %ul.nav.nav-tabs.nav-tabs-simple.nav-tabs-xs.nav-justified{:style => "margin-top: 20px"}
+                  %li.active
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Home
+                      %span.label.label-warning 12
+                  %li
+                    %a{"data-toggle" => "tab", :href => "#"}
+                      Profile
+                      %span.badge.badge-danger 12
+                  %li.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      Dropdown&nbsp;&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @fat
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#"} @mdo
+                  / / .dropdown
+                / / .nav
+            / /9. $JUSTIFIED_TABS
+            /
+              10. $STACKED_PILLS ============================================================================
+              
+              Stacked pills
+            .panel
+              .panel-heading
+                %span.panel-title Stacked pills
+              .panel-body
+                %ul.nav.nav-pills.nav-stacked
+                  %li.active
+                    %a{:href => "#"}
+                      Home
+                      %span.label.label-warning 14
+                  %li
+                    %a{:href => "#"}
+                      Help
+                      %span.badge.badge-danger 16
+                  %li.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      Dropdown&nbsp;&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"} Action
+                      %li
+                        %a{:href => "#"} Another action
+                      %li
+                        %a{:href => "#"} Something else here
+                      %li.divider
+                      %li
+                        %a{:href => "#"} Separated link
+                    / / .dropdown-menu
+                  / / .dropdown
+            / /10. $STACKED_PILLS
+        .row
+          .col-sm-12
+            /
+              11. $BOOTSTRAP_TAB_DROP =======================================================================
+              
+              Stacked pills
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$('ul.bs-tabdrop-example').tabdrop();
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Bootstrap Tab Drop
+              .panel-body
+                .note.note-info
+                  More info and examples at
+                  %a{:href => "http://www.eyecon.ro/bootstrap-tabdrop/", :target => "_blank"} http://www.eyecon.ro/bootstrap-tabdrop/
+                .row
+                  .col-sm-6
+                    / Tabs
+                    %ul.nav.nav-tabs.bs-tabdrop-example
+                      %li.active
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-tab1"} Section 1
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-tab2"} Section 2
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-tab3"} Section 3
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-tab4"} Section 4
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-tab5"} Section 5
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-tab6"} Section 6
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-tab7"} Section 7
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-tab8"} Section 8
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-tab9"} Section 9
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-tab10"} Section 10
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-tab11"} Section 11
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-tab12"} Section 12
+                    .tab-content.tab-content-bordered
+                      #bs-tabdrop-tab1.tab-pane.active
+                        %p I'm in Section 1.
+                      #bs-tabdrop-tab2.tab-pane
+                        %p Howdy, I'm in Section 2.
+                      #bs-tabdrop-tab3.tab-pane
+                        %p Howdy, I'm in Section 3.
+                      #bs-tabdrop-tab4.tab-pane
+                        %p Howdy, I'm in Section 4.
+                      #bs-tabdrop-tab5.tab-pane
+                        %p Howdy, I'm in Section 5.
+                      #bs-tabdrop-tab6.tab-pane
+                        %p Howdy, I'm in Section 6.
+                      #bs-tabdrop-tab7.tab-pane
+                        %p Howdy, I'm in Section 7.
+                      #bs-tabdrop-tab8.tab-pane
+                        %p Howdy, I'm in Section 8.
+                      #bs-tabdrop-tab9.tab-pane
+                        %p Howdy, I'm in Section 9.
+                      #bs-tabdrop-tab10.tab-pane
+                        %p Howdy, I'm in Section 10.
+                      #bs-tabdrop-tab11.tab-pane
+                        %p Howdy, I'm in Section 11.
+                      #bs-tabdrop-tab12.tab-pane
+                        %p Howdy, I'm in Section 12.
+                  .col-sm-6
+                    / Pills
+                    %ul.nav.nav-pills.bs-tabdrop-example
+                      %li.active
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-pill1"} Section 1
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-pill2"} Section 2
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-pill3"} Section 3
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-pill4"} Section 4
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-pill5"} Section 5
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-pill6"} Section 6
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-pill7"} Section 7
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-pill8"} Section 8
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-pill9"} Section 9
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-pill10"} Section 10
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-pill11"} Section 11
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#bs-tabdrop-pill12"} Section 12
+                    .tab-content
+                      #bs-tabdrop-pill1.tab-pane.active
+                        %p I'm in Section 1.
+                      #bs-tabdrop-pill2.tab-pane
+                        %p Howdy, I'm in Section 2.
+                      #bs-tabdrop-pill3.tab-pane
+                        %p Howdy, I'm in Section 3.
+                      #bs-tabdrop-pill4.tab-pane
+                        %p Howdy, I'm in Section 4.
+                      #bs-tabdrop-pill5.tab-pane
+                        %p Howdy, I'm in Section 5.
+                      #bs-tabdrop-pill6.tab-pane
+                        %p Howdy, I'm in Section 6.
+                      #bs-tabdrop-pill7.tab-pane
+                        %p Howdy, I'm in Section 7.
+                      #bs-tabdrop-pill8.tab-pane
+                        %p Howdy, I'm in Section 8.
+                      #bs-tabdrop-pill9.tab-pane
+                        %p Howdy, I'm in Section 9.
+                      #bs-tabdrop-pill10.tab-pane
+                        %p Howdy, I'm in Section 10.
+                      #bs-tabdrop-pill11.tab-pane
+                        %p Howdy, I'm in Section 11.
+                      #bs-tabdrop-pill12.tab-pane
+                        %p Howdy, I'm in Section 12.
+            / /11. $BOOTSTRAP_TAB_DROP
+        .row
+          .col-sm-12
+            /
+              12. $DEFAULT_ACCORDIONS =======================================================================
+              
+              Default accordions
+            .panel
+              .panel-heading
+                %span.panel-title Default accordions
+              .panel-body
+                #accordion-example.panel-group
+                  .panel
+                    .panel-heading
+                      %a.accordion-toggle{"data-parent" => "#accordion-example", "data-toggle" => "collapse", :href => "#collapseOne"}
+                        Collapsible Group Item #1
+                    / / .panel-heading
+                    #collapseOne.panel-collapse.in
+                      .panel-body
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                      / / .panel-body
+                    / / .collapse
+                  / / .panel
+                  .panel
+                    .panel-heading
+                      %a.accordion-toggle.collapsed{"data-parent" => "#accordion-example", "data-toggle" => "collapse", :href => "#collapseTwo"}
+                        Collapsible Group Item #2
+                    / / .panel-heading
+                    #collapseTwo.panel-collapse.collapse
+                      .panel-body
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                      / / .panel-body
+                    / / .collapse
+                  / / .panel
+                  .panel
+                    .panel-heading
+                      %a.accordion-toggle.collapsed{"data-parent" => "#accordion-example", "data-toggle" => "collapse", :href => "#collapseThree"}
+                        Collapsible Group Item #3
+                    / / .panel-heading
+                    #collapseThree.panel-collapse.collapse
+                      .panel-body
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                      / / .panel-body
+                    / / .collapse
+                  / / .panel
+                / / .panel-group
+            / /12. $DEFAULT_ACCORDIONS
+        .row
+          .col-sm-12
+            /
+              13. $ACCORDION_COLORS =========================================================================
+              
+              Accordion colors
+            .panel
+              .panel-heading
+                %span.panel-title Accordion colors
+              .panel-body
+                .row
+                  .col-sm-6
+                    / Success
+                    #accordion-success-example.panel-group.panel-group-success
+                      .panel
+                        .panel-heading
+                          %a.accordion-toggle{"data-parent" => "#accordion-success-example", "data-toggle" => "collapse", :href => "#collapseOne-success"}
+                            Collapsible Group Item #1
+                        / / .panel-heading
+                        #collapseOne-success.panel-collapse.in
+                          .panel-body
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                          / / .panel-body
+                        / / .collapse
+                      / / .panel
+                      .panel
+                        .panel-heading
+                          %a.accordion-toggle.collapsed{"data-parent" => "#accordion-success-example", "data-toggle" => "collapse", :href => "#collapseTwo-success"}
+                            Collapsible Group Item #2
+                        / / .panel-heading
+                        #collapseTwo-success.panel-collapse.collapse
+                          .panel-body
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                          / / .panel-body
+                        / / .collapse
+                      / / .panel
+                      .panel
+                        .panel-heading
+                          %a.accordion-toggle.collapsed{"data-parent" => "#accordion-success-example", "data-toggle" => "collapse", :href => "#collapseThree-success"}
+                            Collapsible Group Item #3
+                        / / .panel-heading
+                        #collapseThree-success.panel-collapse.collapse
+                          .panel-body
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                          / / .panel-body
+                        / / .collapse
+                      / / .panel
+                    / / .panel-group
+                    / / Success
+                  .col-sm-6
+                    / Danger
+                    #accordion-danger-example.panel-group.panel-group-danger
+                      .panel
+                        .panel-heading
+                          %a.accordion-toggle{"data-parent" => "#accordion-danger-example", "data-toggle" => "collapse", :href => "#collapseOne-danger"}
+                            Collapsible Group Item #1
+                        / / .panel-heading
+                        #collapseOne-danger.panel-collapse.in
+                          .panel-body
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                          / / .panel-body
+                        / / .collapse
+                      / / .panel
+                      .panel
+                        .panel-heading
+                          %a.accordion-toggle.collapsed{"data-parent" => "#accordion-danger-example", "data-toggle" => "collapse", :href => "#collapseTwo-danger"}
+                            Collapsible Group Item #2
+                        / / .panel-heading
+                        #collapseTwo-danger.panel-collapse.collapse
+                          .panel-body
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                          / / .panel-body
+                        / / .collapse
+                      / / .panel
+                      .panel
+                        .panel-heading
+                          %a.accordion-toggle.collapsed{"data-parent" => "#accordion-danger-example", "data-toggle" => "collapse", :href => "#collapseThree-danger"}
+                            Collapsible Group Item #3
+                        / / .panel-heading
+                        #collapseThree-danger.panel-collapse.collapse
+                          .panel-body
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                          / / .panel-body
+                        / / .collapse
+                      / / .panel
+                    / / .panel-group
+                    / / Danger
+                .row
+                  .col-sm-6
+                    / Warning
+                    #accordion-warning-example.panel-group.panel-group-warning
+                      .panel
+                        .panel-heading
+                          %a.accordion-toggle{"data-parent" => "#accordion-warning-example", "data-toggle" => "collapse", :href => "#collapseOne-warning"}
+                            Collapsible Group Item #1
+                        / / .panel-heading
+                        #collapseOne-warning.panel-collapse.in
+                          .panel-body
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                          / / .panel-body
+                        / / .collapse
+                      / / .panel
+                      .panel
+                        .panel-heading
+                          %a.accordion-toggle.collapsed{"data-parent" => "#accordion-warning-example", "data-toggle" => "collapse", :href => "#collapseTwo-warning"}
+                            Collapsible Group Item #2
+                        / / .panel-heading
+                        #collapseTwo-warning.panel-collapse.collapse
+                          .panel-body
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                          / / .panel-body
+                        / / .collapse
+                      / / .panel
+                      .panel
+                        .panel-heading
+                          %a.accordion-toggle.collapsed{"data-parent" => "#accordion-warning-example", "data-toggle" => "collapse", :href => "#collapseThree-warning"}
+                            Collapsible Group Item #3
+                        / / .panel-heading
+                        #collapseThree-warning.panel-collapse.collapse
+                          .panel-body
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                          / / .panel-body
+                        / / .collapse
+                      / / .panel
+                    / / .panel-group
+                    / / Warning
+                  .col-sm-6
+                    / Info
+                    #accordion-info-example.panel-group.panel-group-info
+                      .panel
+                        .panel-heading
+                          %a.accordion-toggle{"data-parent" => "#accordion-info-example", "data-toggle" => "collapse", :href => "#collapseOne-info"}
+                            Collapsible Group Item #1
+                        / / .panel-heading
+                        #collapseOne-info.panel-collapse.in
+                          .panel-body
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                          / / .panel-body
+                        / / .collapse
+                      / / .panel
+                      .panel
+                        .panel-heading
+                          %a.accordion-toggle.collapsed{"data-parent" => "#accordion-info-example", "data-toggle" => "collapse", :href => "#collapseTwo-info"}
+                            Collapsible Group Item #2
+                        / / .panel-heading
+                        #collapseTwo-info.panel-collapse.collapse
+                          .panel-body
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                          / / .panel-body
+                        / / .collapse
+                      / / .panel
+                      .panel
+                        .panel-heading
+                          %a.accordion-toggle.collapsed{"data-parent" => "#accordion-info-example", "data-toggle" => "collapse", :href => "#collapseThree-info"}
+                            Collapsible Group Item #3
+                        / / .panel-heading
+                        #collapseThree-info.panel-collapse.collapse
+                          .panel-body
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                          / / .panel-body
+                        / / .collapse
+                      / / .panel
+                    / / .panel-group
+                    / / Info
+            / /13. $ACCORDION_COLORS
+      / / #content-wrapper
+      #main-menu-bg
+    / / #main-wrapper
+    / Get jQuery from Google CDN
+    / [if !IE]>
+    :javascript
+      window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">'+"<"+"/script>");
+    / <![endif]
+    /[if lte IE 9]
+      <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">'+"<"+"/script>"); </script>
+    / Pixel Admin's javascripts
+    %script{:src => "assets/javascripts/bootstrap.min.js"}
+    %script{:src => "assets/javascripts/pixel-admin.min.js"}
+    :javascript
+      init.push(function () {
+      	// Javascript code here
+      })
+      window.PixelAdmin.start(init);

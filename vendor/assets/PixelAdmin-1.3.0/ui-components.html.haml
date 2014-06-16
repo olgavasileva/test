@@ -1,0 +1,1131 @@
+!!!
+/
+  TABLE OF CONTENTS.
+  
+  Use search to find needed section.
+  
+  \==========================================================
+  
+  |  1. $BODY                    |  Body                   |
+  |  2. $MAIN_NAVIGATION         |  Main navigation        |
+  |  3. $NAVBAR_ICON_BUTTONS     |  Navbar Icon Buttons    |
+  |  4. $MAIN_MENU               |  Main menu              |
+  |  5. $LABELS_BADGES_AND_TAGS  |  Labels, badges &amp; tags  |
+  |  6. $PROGRESS_BARS           |  Progress bars          |
+  |  7. $COUNTERS                |  Counters               |
+  |  8. $BREADCRUMB              |  Breadcrumb             |
+  |  9. $PAGINATION              |  Pagination             |
+  |  10. $DROPDOWNS              |  Dropdowns              |
+  |  11. $WIZARDS                |  Wizards                |
+  
+  \==========================================================
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+/ [if gt IE 9]><!
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title Components - UI Elements - PixelAdmin
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0", :name => "viewport"}/
+    / Open Sans font from Google CDN
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
+    / Pixel Admin's stylesheets
+    %link{:href => "assets/stylesheets/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pixel-admin.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/widgets.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/rtl.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/themes.min.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+    :css
+      .with-margins > .btn,
+      .with-margins > .label,
+      .with-margins > .badge {
+      	margin-bottom: 10px;
+      }
+  /
+    1. $BODY ======================================================================================
+    
+    Body
+    
+    Classes:
+    * 'theme-{THEME NAME}'
+    * 'right-to-left'      - Sets text direction to right-to-left
+    * 'main-menu-right'    - Places the main menu on the right side
+    * 'no-main-menu'       - Hides the main menu
+    * 'main-navbar-fixed'  - Fixes the main navigation
+    * 'main-menu-fixed'    - Fixes the main menu
+    * 'main-menu-animated' - Animate main menu
+  %body.theme-default.main-menu-animated
+    :javascript
+      var init = [];
+    / Demo script
+    %script{:src => "assets/demo/demo.js"}
+    / / Demo script
+    #main-wrapper
+      /
+        2. $MAIN_NAVIGATION ===========================================================================
+        
+        Main navigation
+      #main-navbar.navbar.navbar-inverse{:role => "navigation"}
+        / Main menu toggle
+        %button#main-menu-toggle{:type => "button"}
+          %i.navbar-icon.fa.fa-bars.icon
+          %span.hide-menu-text HIDE MENU
+        .navbar-inner
+          / Main navbar header
+          .navbar-header
+            / Logo
+            %a.navbar-brand{:href => "index.html"}
+            %div
+              %img{:alt => "Pixel Admin", :src => "assets/images/pixel-admin/main-navbar-logo.png"}/
+            PixelAdmin
+            / Main navbar toggle
+            %button.navbar-toggle.collapsed{"data-target" => "#main-navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+              %i.navbar-icon.fa.fa-bars
+          / / .navbar-header
+          #main-navbar-collapse.collapse.navbar-collapse.main-navbar-collapse
+            %div
+              %ul.nav.navbar-nav
+                %li
+                  %a{:href => "#"} Home
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Dropdown
+                  %ul.dropdown-menu
+                    %li
+                      %a{:href => "#"} First item
+                    %li
+                      %a{:href => "#"} Second item
+                    %li.divider
+                    %li
+                      %a{:href => "#"} Third item
+              / / .navbar-nav
+              .right.clearfix
+                %ul.nav.navbar-nav.pull-right.right-navbar-nav
+                  /
+                    3. $NAVBAR_ICON_BUTTONS =======================================================================
+                    
+                    Navbar Icon Buttons
+                    
+                    NOTE: .nav-icon-btn triggers a dropdown menu on desktop screens only. On small screens .nav-icon-btn acts like a hyperlink.
+                    
+                    Classes:
+                    * 'nav-icon-btn-info'
+                    * 'nav-icon-btn-success'
+                    * 'nav-icon-btn-warning'
+                    * 'nav-icon-btn-danger'
+                  %li.nav-icon-btn.nav-icon-btn-danger.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#notifications"}
+                      %span.label 5
+                      %i.nav-icon.fa.fa-bullhorn
+                      %span.small-screen-text Notifications
+                    / NOTIFICATIONS
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-notifications').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-notifications.no-padding{:style => "width: 300px"}
+                      #main-navbar-notifications.notifications-list
+                        .notification
+                          .notification-title.text-danger SYSTEM
+                          .notification-description
+                            %strong> Error 500
+                            \: Syntax error in index.php at line
+                            = succeed "." do
+                              %strong 461
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-danger
+                        / / .notification
+                        .notification
+                          .notification-title.text-info STORE
+                          .notification-description
+                            You have
+                            %strong 9
+                            new orders.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-truck.bg-info
+                        / / .notification
+                        .notification
+                          .notification-title.text-default CRON DAEMON
+                          .notification-description
+                            Job
+                            %strong "Clean DB"
+                            has been completed.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-clock-o.bg-default
+                        / / .notification
+                        .notification
+                          .notification-title.text-success SYSTEM
+                          .notification-description
+                            Server
+                            = succeed "." do
+                              %strong up
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-success
+                        / / .notification
+                        .notification
+                          .notification-title.text-warning SYSTEM
+                          .notification-description
+                            %strong> Warning
+                            \: Processor load
+                            = succeed "." do
+                              %strong 92%
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-warning
+                        / / .notification
+                      / / .notifications-list
+                      %a.notifications-link{:href => "#"} MORE NOTIFICATIONS
+                    / / .dropdown-menu
+                  %li.nav-icon-btn.nav-icon-btn-success.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#messages"}
+                      %span.label 10
+                      %i.nav-icon.fa.fa-envelope
+                      %span.small-screen-text Income messages
+                    / MESSAGES
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-messages').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-messages-alt.no-padding{:style => "width: 300px;"}
+                      #main-navbar-messages.messages-list
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                      / / .messages-list
+                      %a.messages-link{:href => "#"} MORE MESSAGES
+                    / / .dropdown-menu
+                  / /3. $END_NAVBAR_ICON_BUTTONS
+                  %li
+                    %form.navbar-form.pull-left
+                      %input.form-control{:placeholder => "Search", :type => "text"}/
+                  %li.dropdown
+                    %a.dropdown-toggle.user-menu{"data-toggle" => "dropdown", :href => "#"}
+                      %img{:src => "assets/demo/avatars/1.jpg"}/
+                      %span John Doe
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"}
+                          %span.label.label-warning.pull-right> New
+                          Profile
+                      %li
+                        %a{:href => "#"}
+                          %span.badge.badge-primary.pull-right> New
+                          Account
+                      %li
+                        %a{:href => "#"}
+                          %i.dropdown-icon.fa.fa-cog>
+                          \&nbsp;&nbsp;Settings
+                      %li.divider
+                      %li
+                        %a{:href => "pages-signin.html"}
+                          %i.dropdown-icon.fa.fa-power-off>
+                          \&nbsp;&nbsp;Log Out
+                / / .navbar-nav
+              / / .right
+          / / #main-navbar-collapse
+        / / .navbar-inner
+      / / #main-navbar
+      / /2. $END_MAIN_NAVIGATION
+      /
+        4. $MAIN_MENU =================================================================================
+        
+        Main menu
+        
+        Notes:
+        * to make the menu item active, add a class 'active' to the <li>
+        example: <li class="active">...</li>
+        * multilevel submenu example:
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 1</span></a>
+        <ul>
+        <li>...</li>
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 2</span></a>
+        <ul>
+        <li>...</li>
+        \...
+        </ul>
+        </li>
+        \...
+        </ul>
+        </li>
+      #main-menu{:role => "navigation"}
+        #main-menu-inner
+          #menu-content-demo.menu-content.top
+            /
+              Menu custom content demo
+              CSS:        styles/pixel-admin-less/demo.less or styles/pixel-admin-scss/_demo.scss
+              Javascript: html/assets/demo/demo.js
+            %div
+              .text-bg
+                %span.text-slim Welcome,
+                %span.text-semibold John
+              %img{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+              .btn-group
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-envelope
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-user
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-cog
+                %a.btn.btn-xs.btn-danger.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-power-off
+              %a.close{:href => "#"} &times;
+          %ul.navigation
+            %li
+              %a{:href => "index.html"}
+                %i.menu-icon.fa.fa-dashboard
+                %span.mm-text Dashboard
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-th
+                %span.mm-text Layouts
+                %span.label.label-warning Updated
+              %ul
+                %li
+                  %a{:href => "layouts-grid.html", :tabindex => "-1"}
+                    %span.mm-text Grid
+                %li
+                  %a{:href => "layouts-main-menu.html", :tabindex => "-1"}
+                    %i.menu-icon.fa.fa-th-list
+                    %span.mm-text Main menu
+                    %span.label.label-warning Updated
+            %li
+              %a{:href => "stat-panels.html"}
+                %i.menu-icon.fa.fa-tasks
+                %span.mm-text Stat panels
+            %li
+              %a{:href => "widgets.html"}
+                %i.menu-icon.fa.fa-flask
+                %span.mm-text Widgets
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-desktop
+                %span.mm-text UI elements
+              %ul
+                %li
+                  %a{:href => "ui-buttons.html", :tabindex => "-1"}
+                    %span.mm-text Buttons
+                %li
+                  %a{:href => "ui-typography.html", :tabindex => "-1"}
+                    %span.mm-text Typography
+                %li
+                  %a{:href => "ui-tabs.html", :tabindex => "-1"}
+                    %span.mm-text Tabs &amp; Accordions
+                %li
+                  %a{:href => "ui-modals.html", :tabindex => "-1"}
+                    %span.mm-text Modals
+                %li
+                  %a{:href => "ui-alerts.html", :tabindex => "-1"}
+                    %span.mm-text Alerts &amp; Tooltips
+                %li
+                  %a{:href => "ui-components.html", :tabindex => "-1"}
+                    %span.mm-text Components
+                %li
+                  %a{:href => "ui-panels.html", :tabindex => "-1"}
+                    %span.mm-text Panels
+                %li
+                  %a{:href => "ui-jqueryui.html", :tabindex => "-1"}
+                    %span.mm-text jQuery UI
+                %li
+                  %a{:href => "ui-icons.html", :tabindex => "-1"}
+                    %span.mm-text Icons
+                %li
+                  %a{:href => "ui-utility-classes.html", :tabindex => "-1"}
+                    %span.mm-text Utility classes
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-check-square
+                %span.mm-text Form components
+              %ul
+                %li
+                  %a{:href => "forms-layouts.html", :tabindex => "-1"}
+                    %span.mm-text Layouts
+                %li
+                  %a{:href => "forms-general.html", :tabindex => "-1"}
+                    %span.mm-text General
+                %li
+                  %a{:href => "forms-advanced.html", :tabindex => "-1"}
+                    %span.mm-text Advanced
+                %li
+                  %a{:href => "forms-pickers.html", :tabindex => "-1"}
+                    %span.mm-text Pickers
+                %li
+                  %a{:href => "forms-validation.html", :tabindex => "-1"}
+                    %span.mm-text Validation
+                %li
+                  %a{:href => "forms-editors.html", :tabindex => "-1"}
+                    %span.mm-text Editors
+            %li
+              %a{:href => "tables.html"}
+                %i.menu-icon.fa.fa-table
+                %span.mm-text Tables
+            %li
+              %a{:href => "charts.html"}
+                %i.menu-icon.fa.fa-bar-chart-o
+                %span.mm-text Charts
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-files-o
+                %span.mm-text Pages
+                %span.label.label-success 16
+              %ul
+                %li
+                  %a{:href => "pages-search.html", :tabindex => "-1"}
+                    %span.mm-text Search results
+                %li
+                  %a{:href => "pages-pricing.html", :tabindex => "-1"}
+                    %span.mm-text Plans &amp; pricing
+                %li
+                  %a{:href => "pages-faq.html", :tabindex => "-1"}
+                    %span.mm-text FAQ
+                %li
+                  %a{:href => "pages-profile.html", :tabindex => "-1"}
+                    %span.mm-text Profile
+                %li
+                  %a{:href => "pages-timeline.html", :tabindex => "-1"}
+                    %span.mm-text Timeline
+                %li
+                  %a{:href => "pages-signin.html", :tabindex => "-1"}
+                    %span.mm-text Sign In
+                %li
+                  %a{:href => "pages-signup.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up
+                %li
+                  %a{:href => "pages-signin-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign In Alt
+                %li
+                  %a{:href => "pages-signup-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up Alt
+                %li
+                  %a{:href => "pages-invoice.html", :tabindex => "-1"}
+                    %span.mm-text Invoice
+                %li
+                  %a{:href => "pages-404.html", :tabindex => "-1"}
+                    %span.mm-text Error 404
+                %li
+                  %a{:href => "pages-500.html", :tabindex => "-1"}
+                    %span.mm-text Error 500
+                %li.mm-dropdown
+                  %a{:href => "#"}
+                    %i.menu-icon.fa.fa-envelope
+                    %span.mm-text Messages
+                  %ul
+                    %li
+                      %a{:href => "pages-inbox.html", :tabindex => "-1"}
+                        %span.mm-text Inbox
+                    %li
+                      %a{:href => "pages-show-email.html", :tabindex => "-1"}
+                        %span.mm-text Show message
+                    %li
+                      %a{:href => "pages-new-email.html", :tabindex => "-1"}
+                        %span.mm-text New message
+                %li
+                  %a{:href => "pages-blank.html", :tabindex => "-1"}
+                    %span.mm-text Blank page
+            %li
+              %a{:href => "complete-ui.html"}
+                %i.menu-icon.fa.fa-briefcase
+                %span.mm-text Complete UI
+            %li
+              %a{:href => "color-builder.html"}
+                %i.menu-icon.fa.fa-tint
+                %span.mm-text Color Builder
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-sitemap
+                %span.mm-text Menu levels
+                %span.badge.badge-primary 6
+              %ul
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.1
+                    %span.badge.badge-danger 12
+                    %span.label.label-info 21
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.2
+                %li.mm-dropdown
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.3
+                    %span.label.label-warning 5
+                  %ul
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.1
+                    %li.mm-dropdown
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+                      %ul
+                        %li.mm-dropdown
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.1
+                          %ul
+                            %li
+                              %a{:href => "#", :tabindex => "-1"}
+                                %span.mm-text Menu level 4.1
+                        %li
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.2
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+          / / .navigation
+          .menu-content
+            %a.btn.btn-primary.btn-block.btn-outline.dark{:href => "pages-invoice.html"} Create Invoice
+        / / #main-menu-inner
+      / / #main-menu
+      / /4. $MAIN_MENU
+      #content-wrapper
+        .page-header
+          %h1
+            %span.text-light-gray> UI Elements /
+            Components
+        / / .page-header
+        .row
+          .col-md-6
+            /
+              5. $LABELS_BADGES_AND_TAGS ====================================================================
+              
+              Labels, badges &amp; tags
+            .panel
+              .panel-heading
+                %span.panel-title Labels, badges &amp; tags
+              .panel-body.no-padding-t.with-margins
+                / Labels
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} LABELS
+                %a.label{:href => "#"} Default
+                %a.label.label-primary{:href => "#"} Primary
+                %a.label.label-success{:href => "#"} Success
+                %a.label.label-warning{:href => "#"} Warning
+                %a.label.label-danger{:href => "#"} Danger
+                %a.label.label-info{:href => "#"} Info
+                %hr.panel-wide/
+                / Badges
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} BADGES
+                %a.badge{:href => "#"} Default
+                %a.badge.badge-primary{:href => "#"} Primary
+                %a.badge.badge-success{:href => "#"} Success
+                %a.badge.badge-warning{:href => "#"} Warning
+                %a.badge.badge-danger{:href => "#"} Danger
+                %a.badge.badge-info{:href => "#"} Info
+                %hr.panel-wide/
+                / Tags
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} TAGS
+                %a.label.label-tag{:href => "#"} Default
+                %a.label.label-primary.label-tag{:href => "#"} Primary
+                %a.label.label-success.label-tag{:href => "#"} Success
+                %a.label.label-warning.label-tag{:href => "#"} Warning
+                %a.label.label-danger.label-tag{:href => "#"} Danger
+                %a.label.label-info.label-tag{:href => "#"} Info
+            / /5. $LABELS_BADGES_AND_TAGS
+            /
+              6. $PROGRESS_BARS =============================================================================
+              
+              Progress bars
+            .panel
+              .panel-heading
+                %span.panel-title Progress bars
+              .panel-body.no-padding-t
+                / Default
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} DEFAULT
+                .progress
+                  .progress-bar{:style => "width: 60%;"}
+                .progress
+                  .progress-bar.progress-bar-info{:style => "width: 60%;"}
+                .progress
+                  .progress-bar.progress-bar-success{:style => "width: 60%;"}
+                .progress
+                  .progress-bar.progress-bar-warning{:style => "width: 60%;"}
+                .progress
+                  .progress-bar.progress-bar-danger{:style => "width: 60%;"}
+                %hr.panel-wide/
+                / Striped
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} STRIPED
+                .progress.progress-striped
+                  .progress-bar{:style => "width: 60%;"}
+                .progress.progress-striped
+                  .progress-bar.progress-bar-info{:style => "width: 60%;"}
+                .progress.progress-striped
+                  .progress-bar.progress-bar-success{:style => "width: 60%;"}
+                .progress.progress-striped
+                  .progress-bar.progress-bar-warning{:style => "width: 60%;"}
+                .progress.progress-striped
+                  .progress-bar.progress-bar-danger{:style => "width: 60%;"}
+                %hr.panel-wide/
+                / Animated
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} ANIMATED
+                .progress.progress-striped.active
+                  .progress-bar{:style => "width: 60%;"}
+                .progress.progress-striped.active
+                  .progress-bar.progress-bar-info{:style => "width: 60%;"}
+                .progress.progress-striped.active
+                  .progress-bar.progress-bar-success{:style => "width: 60%;"}
+                .progress.progress-striped.active
+                  .progress-bar.progress-bar-warning{:style => "width: 60%;"}
+                .progress.progress-striped.active
+                  .progress-bar.progress-bar-danger{:style => "width: 60%;"}
+                %hr.panel-wide/
+                / Stacked
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} STACKED
+                .progress
+                  .progress-bar.progress-bar-success{:style => "width: 35%"}
+                  .progress-bar.progress-bar-warning{:style => "width: 20%"}
+                  .progress-bar.progress-bar-danger{:style => "width: 10%"}
+            / /6. $PROGRESS_BARS
+            /
+              7. $COUNTERS ==================================================================================
+              
+              Counters
+            .panel
+              .panel-heading
+                %span.panel-title Counters
+              .panel-body
+                .counter.counter-lg
+                  %span 765
+                \&nbsp;&nbsp;&nbsp;
+                .counter-separated.counter-lg
+                  %span 0
+                  %span 0
+                  %span 7
+                  %span 6
+                  %span 5
+                %br/
+                %br/
+                .counter
+                  %span 765
+                \&nbsp;&nbsp;&nbsp;
+                .counter-separated
+                  %span 0
+                  %span 0
+                  %span 7
+                  %span 6
+                  %span 5
+                %br/
+                %br/
+                .counter.counter-sm
+                  %span 765
+                \&nbsp;&nbsp;&nbsp;
+                .counter-separated.counter-sm
+                  %span 0
+                  %span 0
+                  %span 7
+                  %span 6
+                  %span 5
+            / /7. $COUNTERS
+          .col-md-6
+            /
+              8. $BREADCRUMB ================================================================================
+              
+              Breadcrumb
+            / Javascript
+            :javascript
+              init.push(function () {
+              	var self = this;
+              	$('#page-breadcrumb-demo-btn').on('click', function () {
+              		var $b = $('#page-breadcrumb-demo');
+              		if ($b.is(':visible')) {
+              			$b.css('display', 'none');
+              			$(this).text('Add page breadcrumb');
+              		} else {
+              			// Display breadcrumb after alerts
+              			var $cont = $('#' + self.plugins.alerts.getContainerId());
+              			if ($cont.length) {
+              				$cont.after($b);
+              			} else {
+              				$('#content-wrapper').prepend($b);
+              			}
+              			$b.css('display', 'block');
+              			$(this).text('Remove page breadcrumb');
+              			$('html,body').animate({ scrollTop: 0 }, 500);
+              		}
+              	});
+              });
+            / / Javascript
+            / Page breadcrumb template
+            %ul#page-breadcrumb-demo.breadcrumb.breadcrumb-page{:style => "display: none;"}
+              %li
+                %a{:href => "#"} Home
+              %li
+                %a{:href => "#"} Library
+              %li.active
+                %a{:href => "#"} Data
+            / / Page breadcrumb template
+            .panel
+              .panel-heading
+                %span.panel-title Breadcrumb
+              .panel-body.no-padding-t
+                / Default
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} DEFAULT
+                %ul.breadcrumb
+                  %li
+                    %a{:href => "#"} Home
+                  %li
+                    %a{:href => "#"} Library
+                  %li.active Data
+                %hr.panel-wide/
+                / Dark background
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} DARK BACKGROUND
+                %ul.breadcrumb.breadcrumb-dark{:style => "background: #478e9e"}
+                  %li
+                    %a{:href => "#"} Home
+                  %li
+                    %a{:href => "#"} Library
+                  %li.active
+                    %a{:href => "#"} Data
+                %hr.panel-wide/
+                /
+                  Page breadcrumb
+                  
+                  To use page breadcrumbs just append breadcrumb to the start of the #content-wrapper and add class .breadcrumb-page to the .breadcrumb
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} PAGE BREADCRUMB
+                %button#page-breadcrumb-demo-btn.btn.btn-small.btn-primary Add page breadcrumb
+            / /8. $BREADCRUMB
+            /
+              9. $PAGINATION ================================================================================
+              
+              Pagination
+            .panel
+              .panel-heading
+                %span.panel-title Pagination
+              .panel-body.no-padding-t
+                / Default
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} DEFAULT
+                %ul.pagination
+                  %li.disabled
+                    %a{:href => "#"} «
+                  %li.active
+                    %a{:href => "#"}
+                      1
+                      %span.sr-only (current)
+                  %li
+                    %a{:href => "#"} 2
+                  %li
+                    %a{:href => "#"} 3
+                  %li
+                    %a{:href => "#"} 4
+                  %li
+                    %a{:href => "#"} 5
+                  %li
+                    %a{:href => "#"} »
+                %hr.panel-wide/
+                / Sizes
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} SIZES
+                %div
+                  %ul.pagination.pagination-lg
+                    %li
+                      %a{:href => "#"} «
+                    %li
+                      %a{:href => "#"} 1
+                    %li
+                      %a{:href => "#"} 2
+                    %li
+                      %a{:href => "#"} 3
+                    %li
+                      %a{:href => "#"} 4
+                    %li
+                      %a{:href => "#"} 5
+                    %li
+                      %a{:href => "#"} »
+                %div
+                  %ul.pagination
+                    %li
+                      %a{:href => "#"} «
+                    %li
+                      %a{:href => "#"} 1
+                    %li
+                      %a{:href => "#"} 2
+                    %li
+                      %a{:href => "#"} 3
+                    %li
+                      %a{:href => "#"} 4
+                    %li
+                      %a{:href => "#"} 5
+                    %li
+                      %a{:href => "#"} »
+                %div
+                  %ul.pagination.pagination-sm
+                    %li
+                      %a{:href => "#"} «
+                    %li
+                      %a{:href => "#"} 1
+                    %li
+                      %a{:href => "#"} 2
+                    %li
+                      %a{:href => "#"} 3
+                    %li
+                      %a{:href => "#"} 4
+                    %li
+                      %a{:href => "#"} 5
+                    %li
+                      %a{:href => "#"} »
+                %div
+                  %ul.pagination.pagination-xs
+                    %li
+                      %a{:href => "#"} «
+                    %li
+                      %a{:href => "#"} 1
+                    %li
+                      %a{:href => "#"} 2
+                    %li
+                      %a{:href => "#"} 3
+                    %li
+                      %a{:href => "#"} 4
+                    %li
+                      %a{:href => "#"} 5
+                    %li
+                      %a{:href => "#"} »
+                %hr.panel-wide/
+                / Pager
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} PAGER
+                %ul.pager
+                  %li.disabled
+                    %a{:href => "#"} ← Older
+                  %li
+                    %a{:href => "#"} Newer →
+                %hr.panel-wide/
+                / Aligned pager links
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} ALIGNED PAGER LINKS
+                %ul.pager
+                  %li.previous
+                    %a{:href => "#"} ← Older
+                  %li.next
+                    %a{:href => "#"} Newer →
+            / /9. $PAGINATION
+            /
+              10. $DROPDOWNS ================================================================================
+              
+              Dropdowns
+            .panel
+              .panel-heading
+                %span.panel-title Dropdowns
+              .panel-body
+                .row
+                  .col-md-6
+                    %ul.dropdown-menu.dropdowns-demo{:style => "display: block; position: relative;"}
+                      %li
+                        %a{:href => "#"} Action
+                      %li
+                        %a{:href => "#"} Another action
+                      %li
+                        %a{:href => "#"} Something else here
+                  .col-md-6
+                    %ul.dropdown-menu.dropdowns-demo{:style => "display: block; position: relative;"}
+                      %li
+                        %a{:href => "#"}
+                          Action
+                          %span.label.label-success.pull-right 34
+                      %li
+                        %a{:href => "#"}
+                          Another action
+                          %span.badge.badge-info.pull-right 16
+                      %li
+                        %a{:href => "#"} Something else here
+                      %li.divider
+                      %li.dropdown-header Dropdown header
+                      %li
+                        %a{:href => "#"}
+                          %i.dropdown-icon.fa.fa-cloud>
+                          \&nbsp;&nbsp;With icon
+                      %li
+                        %a{:href => "#"} Last action
+            / /10. $DROPDOWNS
+        .row
+          .col-lg-12
+            /
+              11. $WIZARDS ==================================================================================
+              
+              Wizards
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$('.ui-wizard-example').pixelWizard({
+              		onChange: function () {
+              			console.log('Current step: ' + this.currentStep());
+              		},
+              		onFinish: function () {
+              			// Disable changing step. To enable changing step just call this.unfreeze()
+              			this.freeze();
+              			console.log('Wizard is freezed');
+              			console.log('Finished!');
+              		}
+              	});
+
+              	$('.wizard-next-step-btn').click(function () {
+              		$(this).parents('.ui-wizard-example').pixelWizard('nextStep');
+              	});
+
+              	$('.wizard-prev-step-btn').click(function () {
+              		$(this).parents('.ui-wizard-example').pixelWizard('prevStep');
+              	});
+
+              	$('.wizard-go-to-step-btn').click(function () {
+              		$(this).parents('.ui-wizard-example').pixelWizard('setCurrentStep', 2);
+              	});
+
+              	$('#ui-wizard-modal').on('show.bs.modal', function (e) {
+              		var $modal = $(this),
+              		    $wizard = $modal.find('.ui-wizard-example'),
+              		    timer = null,
+              		    callback = function() {
+              		    	if (timer) clearTimeout(timer);
+              		    	if ($modal.hasClass('in')) {
+              		    		$wizard.pixelWizard('resizeSteps');
+              		    	} else {
+              		    		timer = setTimeout(callback, 10);
+              		    	}
+              		    };
+              		callback();
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Wizards
+              .panel-body
+                .wizard.ui-wizard-example
+                  .wizard-wrapper
+                    %ul.wizard-steps
+                      %li{"data-target" => "#wizard-example-step1"}
+                        %span.wizard-step-number 1
+                        %span.wizard-step-caption
+                          Step 1
+                          %span.wizard-step-description First step description
+                      %li{"data-target" => "#wizard-example-step2"}
+                        / ! Remove space between elements by dropping close angle
+                        %span.wizard-step-number 2
+                        %span.wizard-step-caption
+                          Step 2
+                          %span.wizard-step-description Second step description
+                      %li{"data-target" => "#wizard-example-step3"}
+                        / ! Remove space between elements by dropping close angle
+                        %span.wizard-step-number 3
+                        %span.wizard-step-caption
+                          Step 3
+                          %span.wizard-step-description Third step with long description. Lorem ipsum dolor sit amet
+                      %li{"data-target" => "#wizard-example-step4"}
+                        / ! Remove space between elements by dropping close angle
+                        %span.wizard-step-number 4
+                        %span.wizard-step-caption
+                          Finish
+                    / / .wizard-steps
+                  / / .wizard-wrapper
+                  .wizard-content.panel
+                    #wizard-example-step1.wizard-pane
+                      This is step 1
+                      %br/
+                      %br/
+                      %button.btn.btn-primary.wizard-next-step-btn Next
+                    / / .wizard-pane
+                    #wizard-example-step2.wizard-pane{:style => "display: none;"}
+                      This is step 2
+                      %br/
+                      %br/
+                      %button.btn.wizard-prev-step-btn Prev
+                      %button.btn.btn-primary.wizard-next-step-btn Next
+                    / / .wizard-pane
+                    #wizard-example-step3.wizard-pane{:style => "display: none;"}
+                      This is step 3
+                      %br/
+                      %br/
+                      %button.btn.wizard-prev-step-btn Prev
+                      %button.btn.btn-primary.wizard-next-step-btn Next
+                    / / .wizard-pane
+                    #wizard-example-step4.wizard-pane{:style => "display: none;"}
+                      Finish
+                      %br/
+                      %br/
+                      %button.btn.wizard-prev-step-btn Prev
+                      %button.btn.btn-success.wizard-go-to-step-btn Go to Step 2
+                      %button.btn.btn-primary.wizard-next-step-btn Finish
+                    / / .wizard-pane
+                  / / .wizard-content
+                / / .wizard
+            / /11. $WIZARDS
+            /
+              12. $WIZARD IN MODAL ==========================================================================
+              
+              Wizard in modal
+            / Modal
+            #ui-wizard-modal.modal.fade{:role => "dialog", :style => "display: none;", :tabindex => "-1"}
+              .modal-dialog
+                .modal-content
+                  .wizard.ui-wizard-example
+                    .wizard-wrapper
+                      %ul.wizard-steps
+                        %li{"data-target" => "#wizard-example-step21"}
+                          %span.wizard-step-number 1
+                          %span.wizard-step-caption
+                            Step 1
+                            %span.wizard-step-description First step description
+                        %li{"data-target" => "#wizard-example-step22"}
+                          / ! Remove space between elements by dropping close angle
+                          %span.wizard-step-number 2
+                          %span.wizard-step-caption
+                            Step 2
+                            %span.wizard-step-description Second step description
+                        %li{"data-target" => "#wizard-example-step23"}
+                          / ! Remove space between elements by dropping close angle
+                          %span.wizard-step-number 3
+                          %span.wizard-step-caption
+                            Step 3
+                            %span.wizard-step-description Third step description
+                        %li{"data-target" => "#wizard-example-step24"}
+                          / ! Remove space between elements by dropping close angle
+                          %span.wizard-step-number 4
+                          %span.wizard-step-caption
+                            Finish
+                      / / .wizard-steps
+                    / / .wizard-wrapper
+                    .wizard-content
+                      #wizard-example-step21.wizard-pane
+                        This is step 1
+                        %br/
+                        %br/
+                        %button.btn.btn-primary.wizard-next-step-btn Next
+                      / / .wizard-pane
+                      #wizard-example-step22.wizard-pane
+                        This is step 2
+                        %br/
+                        %br/
+                        %button.btn.wizard-prev-step-btn Prev
+                        %button.btn.btn-primary.wizard-next-step-btn Next
+                      / / .wizard-pane
+                      #wizard-example-step23.wizard-pane
+                        This is step 3
+                        %br/
+                        %br/
+                        %button.btn.wizard-prev-step-btn Prev
+                        %button.btn.btn-primary.wizard-next-step-btn Next
+                      / / .wizard-pane
+                      #wizard-example-step24.wizard-pane
+                        Finish
+                        %br/
+                        %br/
+                        %button.btn.wizard-prev-step-btn Prev
+                        %button.btn.btn-success.wizard-go-to-step-btn Go to Step 2
+                        %button.btn.btn-primary.wizard-next-step-btn Finish
+                      / / .wizard-pane
+                    / / .wizard-content
+                  / / .wizard
+                / / .modal-content
+              / / .modal-dialog
+            / /.modal
+            / / Modal
+            .panel
+              .panel-heading
+                %span.panel-title Wizard in modal
+              .panel-body
+                %button.btn.btn-info{"data-target" => "#ui-wizard-modal", "data-toggle" => "modal"} Launch modal with wizard
+            / /12. $WIZARD IN MODAL
+      / / #content-wrapper
+      #main-menu-bg
+    / / #main-wrapper
+    / Get jQuery from Google CDN
+    / [if !IE]>
+    :javascript
+      window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">'+"<"+"/script>");
+    / <![endif]
+    /[if lte IE 9]
+      <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">'+"<"+"/script>"); </script>
+    / Pixel Admin's javascripts
+    %script{:src => "assets/javascripts/bootstrap.min.js"}
+    %script{:src => "assets/javascripts/pixel-admin.min.js"}
+    :javascript
+      init.push(function () {
+      	// Javascript code here
+      })
+      window.PixelAdmin.start(init);

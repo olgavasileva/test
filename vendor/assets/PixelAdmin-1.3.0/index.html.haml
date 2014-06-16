@@ -1,0 +1,1692 @@
+!!!
+/
+  TABLE OF CONTENTS.
+  
+  Use search to find needed section.
+  
+  \===================================================================
+  
+  |  1. $BODY                        |  Body                        |
+  |  2. $MAIN_NAVIGATION             |  Main navigation             |
+  |  3. $NAVBAR_ICON_BUTTONS         |  Navbar Icon Buttons         |
+  |  4. $MAIN_MENU                   |  Main menu                   |
+  |  5. $UPLOADS_CHART               |  Uploads chart               |
+  |  6. $EASY_PIE_CHARTS             |  Easy Pie charts             |
+  |  7. $EARNED_TODAY_STAT_PANEL     |  Earned today stat panel     |
+  |  8. $RETWEETS_GRAPH_STAT_PANEL   |  Retweets graph stat panel   |
+  |  9. $UNIQUE_VISITORS_STAT_PANEL  |  Unique visitors stat panel  |
+  |  10. $SUPPORT_TICKETS            |  Support tickets             |
+  |  11. $RECENT_ACTIVITY            |  Recent activity             |
+  |  12. $NEW_USERS_TABLE            |  New users table             |
+  |  13. $RECENT_TASKS               |  Recent tasks                |
+  
+  \===================================================================
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+/ [if gt IE 9]><!
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title Dashboard - PixelAdmin
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0", :name => "viewport"}/
+    / Open Sans font from Google CDN
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
+    / Pixel Admin's stylesheets
+    %link{:href => "assets/stylesheets/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pixel-admin.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/widgets.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/rtl.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/themes.min.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+  /
+    1. $BODY ======================================================================================
+    
+    Body
+    
+    Classes:
+    * 'theme-{THEME NAME}'
+    * 'right-to-left'      - Sets text direction to right-to-left
+    * 'main-menu-right'    - Places the main menu on the right side
+    * 'no-main-menu'       - Hides the main menu
+    * 'main-navbar-fixed'  - Fixes the main navigation
+    * 'main-menu-fixed'    - Fixes the main menu
+    * 'main-menu-animated' - Animate main menu
+  %body.theme-default.main-menu-animated
+    :javascript
+      var init = [];
+    / Demo script
+    %script{:src => "assets/demo/demo.js"}
+    / / Demo script
+    #main-wrapper
+      /
+        2. $MAIN_NAVIGATION ===========================================================================
+        
+        Main navigation
+      #main-navbar.navbar.navbar-inverse{:role => "navigation"}
+        / Main menu toggle
+        %button#main-menu-toggle{:type => "button"}
+          %i.navbar-icon.fa.fa-bars.icon
+          %span.hide-menu-text HIDE MENU
+        .navbar-inner
+          / Main navbar header
+          .navbar-header
+            / Logo
+            %a.navbar-brand{:href => "index.html"}
+            %div
+              %img{:alt => "Pixel Admin", :src => "assets/images/pixel-admin/main-navbar-logo.png"}/
+            PixelAdmin
+            / Main navbar toggle
+            %button.navbar-toggle.collapsed{"data-target" => "#main-navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+              %i.navbar-icon.fa.fa-bars
+          / / .navbar-header
+          #main-navbar-collapse.collapse.navbar-collapse.main-navbar-collapse
+            %div
+              %ul.nav.navbar-nav
+                %li
+                  %a{:href => "#"} Home
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Dropdown
+                  %ul.dropdown-menu
+                    %li
+                      %a{:href => "#"} First item
+                    %li
+                      %a{:href => "#"} Second item
+                    %li.divider
+                    %li
+                      %a{:href => "#"} Third item
+              / / .navbar-nav
+              .right.clearfix
+                %ul.nav.navbar-nav.pull-right.right-navbar-nav
+                  /
+                    3. $NAVBAR_ICON_BUTTONS =======================================================================
+                    
+                    Navbar Icon Buttons
+                    
+                    NOTE: .nav-icon-btn triggers a dropdown menu on desktop screens only. On small screens .nav-icon-btn acts like a hyperlink.
+                    
+                    Classes:
+                    * 'nav-icon-btn-info'
+                    * 'nav-icon-btn-success'
+                    * 'nav-icon-btn-warning'
+                    * 'nav-icon-btn-danger'
+                  %li.nav-icon-btn.nav-icon-btn-danger.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#notifications"}
+                      %span.label 5
+                      %i.nav-icon.fa.fa-bullhorn
+                      %span.small-screen-text Notifications
+                    / NOTIFICATIONS
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-notifications').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-notifications.no-padding{:style => "width: 300px"}
+                      #main-navbar-notifications.notifications-list
+                        .notification
+                          .notification-title.text-danger SYSTEM
+                          .notification-description
+                            %strong> Error 500
+                            \: Syntax error in index.php at line
+                            = succeed "." do
+                              %strong 461
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-danger
+                        / / .notification
+                        .notification
+                          .notification-title.text-info STORE
+                          .notification-description
+                            You have
+                            %strong 9
+                            new orders.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-truck.bg-info
+                        / / .notification
+                        .notification
+                          .notification-title.text-default CRON DAEMON
+                          .notification-description
+                            Job
+                            %strong "Clean DB"
+                            has been completed.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-clock-o.bg-default
+                        / / .notification
+                        .notification
+                          .notification-title.text-success SYSTEM
+                          .notification-description
+                            Server
+                            = succeed "." do
+                              %strong up
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-success
+                        / / .notification
+                        .notification
+                          .notification-title.text-warning SYSTEM
+                          .notification-description
+                            %strong> Warning
+                            \: Processor load
+                            = succeed "." do
+                              %strong 92%
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-warning
+                        / / .notification
+                      / / .notifications-list
+                      %a.notifications-link{:href => "#"} MORE NOTIFICATIONS
+                    / / .dropdown-menu
+                  %li.nav-icon-btn.nav-icon-btn-success.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#messages"}
+                      %span.label 10
+                      %i.nav-icon.fa.fa-envelope
+                      %span.small-screen-text Income messages
+                    / MESSAGES
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-messages').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-messages-alt.no-padding{:style => "width: 300px;"}
+                      #main-navbar-messages.messages-list
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                      / / .messages-list
+                      %a.messages-link{:href => "#"} MORE MESSAGES
+                    / / .dropdown-menu
+                  / /3. $END_NAVBAR_ICON_BUTTONS
+                  %li
+                    %form.navbar-form.pull-left
+                      %input.form-control{:placeholder => "Search", :type => "text"}/
+                  %li.dropdown
+                    %a.dropdown-toggle.user-menu{"data-toggle" => "dropdown", :href => "#"}
+                      %img{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+                      %span John Doe
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"}
+                          %span.label.label-warning.pull-right> New
+                          Profile
+                      %li
+                        %a{:href => "#"}
+                          %span.badge.badge-primary.pull-right> New
+                          Account
+                      %li
+                        %a{:href => "#"}
+                          %i.dropdown-icon.fa.fa-cog>
+                          \&nbsp;&nbsp;Settings
+                      %li.divider
+                      %li
+                        %a{:href => "pages-signin.html"}
+                          %i.dropdown-icon.fa.fa-power-off>
+                          \&nbsp;&nbsp;Log Out
+                / / .navbar-nav
+              / / .right
+          / / #main-navbar-collapse
+        / / .navbar-inner
+      / / #main-navbar
+      / /2. $END_MAIN_NAVIGATION
+      /
+        4. $MAIN_MENU =================================================================================
+        
+        Main menu
+        
+        Notes:
+        * to make the menu item active, add a class 'active' to the <li>
+        example: <li class="active">...</li>
+        * multilevel submenu example:
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 1</span></a>
+        <ul>
+        <li>...</li>
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 2</span></a>
+        <ul>
+        <li>...</li>
+        \...
+        </ul>
+        </li>
+        \...
+        </ul>
+        </li>
+      #main-menu{:role => "navigation"}
+        #main-menu-inner
+          #menu-content-demo.menu-content.top
+            /
+              Menu custom content demo
+              CSS:        styles/pixel-admin-less/demo.less or styles/pixel-admin-scss/_demo.scss
+              Javascript: html/assets/demo/demo.js
+            %div
+              .text-bg
+                %span.text-slim Welcome,
+                %span.text-semibold John
+              %img{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+              .btn-group
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-envelope
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-user
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-cog
+                %a.btn.btn-xs.btn-danger.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-power-off
+              %a.close{:href => "#"} &times;
+          %ul.navigation
+            %li
+              %a{:href => "index.html"}
+                %i.menu-icon.fa.fa-dashboard
+                %span.mm-text Dashboard
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-th
+                %span.mm-text Layouts
+                %span.label.label-warning Updated
+              %ul
+                %li
+                  %a{:href => "layouts-grid.html", :tabindex => "-1"}
+                    %span.mm-text Grid
+                %li
+                  %a{:href => "layouts-main-menu.html", :tabindex => "-1"}
+                    %i.menu-icon.fa.fa-th-list
+                    %span.mm-text Main menu
+                    %span.label.label-warning Updated
+            %li
+              %a{:href => "stat-panels.html"}
+                %i.menu-icon.fa.fa-tasks
+                %span.mm-text Stat panels
+            %li
+              %a{:href => "widgets.html"}
+                %i.menu-icon.fa.fa-flask
+                %span.mm-text Widgets
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-desktop
+                %span.mm-text UI elements
+              %ul
+                %li
+                  %a{:href => "ui-buttons.html", :tabindex => "-1"}
+                    %span.mm-text Buttons
+                %li
+                  %a{:href => "ui-typography.html", :tabindex => "-1"}
+                    %span.mm-text Typography
+                %li
+                  %a{:href => "ui-tabs.html", :tabindex => "-1"}
+                    %span.mm-text Tabs &amp; Accordions
+                %li
+                  %a{:href => "ui-modals.html", :tabindex => "-1"}
+                    %span.mm-text Modals
+                %li
+                  %a{:href => "ui-alerts.html", :tabindex => "-1"}
+                    %span.mm-text Alerts &amp; Tooltips
+                %li
+                  %a{:href => "ui-components.html", :tabindex => "-1"}
+                    %span.mm-text Components
+                %li
+                  %a{:href => "ui-panels.html", :tabindex => "-1"}
+                    %span.mm-text Panels
+                %li
+                  %a{:href => "ui-jqueryui.html", :tabindex => "-1"}
+                    %span.mm-text jQuery UI
+                %li
+                  %a{:href => "ui-icons.html", :tabindex => "-1"}
+                    %span.mm-text Icons
+                %li
+                  %a{:href => "ui-utility-classes.html", :tabindex => "-1"}
+                    %span.mm-text Utility classes
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-check-square
+                %span.mm-text Form components
+              %ul
+                %li
+                  %a{:href => "forms-layouts.html", :tabindex => "-1"}
+                    %span.mm-text Layouts
+                %li
+                  %a{:href => "forms-general.html", :tabindex => "-1"}
+                    %span.mm-text General
+                %li
+                  %a{:href => "forms-advanced.html", :tabindex => "-1"}
+                    %span.mm-text Advanced
+                %li
+                  %a{:href => "forms-pickers.html", :tabindex => "-1"}
+                    %span.mm-text Pickers
+                %li
+                  %a{:href => "forms-validation.html", :tabindex => "-1"}
+                    %span.mm-text Validation
+                %li
+                  %a{:href => "forms-editors.html", :tabindex => "-1"}
+                    %span.mm-text Editors
+            %li
+              %a{:href => "tables.html"}
+                %i.menu-icon.fa.fa-table
+                %span.mm-text Tables
+            %li
+              %a{:href => "charts.html"}
+                %i.menu-icon.fa.fa-bar-chart-o
+                %span.mm-text Charts
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-files-o
+                %span.mm-text Pages
+                %span.label.label-success 16
+              %ul
+                %li
+                  %a{:href => "pages-search.html", :tabindex => "-1"}
+                    %span.mm-text Search results
+                %li
+                  %a{:href => "pages-pricing.html", :tabindex => "-1"}
+                    %span.mm-text Plans &amp; pricing
+                %li
+                  %a{:href => "pages-faq.html", :tabindex => "-1"}
+                    %span.mm-text FAQ
+                %li
+                  %a{:href => "pages-profile.html", :tabindex => "-1"}
+                    %span.mm-text Profile
+                %li
+                  %a{:href => "pages-timeline.html", :tabindex => "-1"}
+                    %span.mm-text Timeline
+                %li
+                  %a{:href => "pages-signin.html", :tabindex => "-1"}
+                    %span.mm-text Sign In
+                %li
+                  %a{:href => "pages-signup.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up
+                %li
+                  %a{:href => "pages-signin-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign In Alt
+                %li
+                  %a{:href => "pages-signup-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up Alt
+                %li
+                  %a{:href => "pages-invoice.html", :tabindex => "-1"}
+                    %span.mm-text Invoice
+                %li
+                  %a{:href => "pages-404.html", :tabindex => "-1"}
+                    %span.mm-text Error 404
+                %li
+                  %a{:href => "pages-500.html", :tabindex => "-1"}
+                    %span.mm-text Error 500
+                %li.mm-dropdown
+                  %a{:href => "#"}
+                    %i.menu-icon.fa.fa-envelope
+                    %span.mm-text Messages
+                  %ul
+                    %li
+                      %a{:href => "pages-inbox.html", :tabindex => "-1"}
+                        %span.mm-text Inbox
+                    %li
+                      %a{:href => "pages-show-email.html", :tabindex => "-1"}
+                        %span.mm-text Show message
+                    %li
+                      %a{:href => "pages-new-email.html", :tabindex => "-1"}
+                        %span.mm-text New message
+                %li
+                  %a{:href => "pages-blank.html", :tabindex => "-1"}
+                    %span.mm-text Blank page
+            %li
+              %a{:href => "complete-ui.html"}
+                %i.menu-icon.fa.fa-briefcase
+                %span.mm-text Complete UI
+            %li
+              %a{:href => "color-builder.html"}
+                %i.menu-icon.fa.fa-tint
+                %span.mm-text Color Builder
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-sitemap
+                %span.mm-text Menu levels
+                %span.badge.badge-primary 6
+              %ul
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.1
+                    %span.badge.badge-danger 12
+                    %span.label.label-info 21
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.2
+                %li.mm-dropdown
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.3
+                    %span.label.label-warning 5
+                  %ul
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.1
+                    %li.mm-dropdown
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+                      %ul
+                        %li.mm-dropdown
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.1
+                          %ul
+                            %li
+                              %a{:href => "#", :tabindex => "-1"}
+                                %span.mm-text Menu level 4.1
+                        %li
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.2
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+          / / .navigation
+          .menu-content
+            %a.btn.btn-primary.btn-block.btn-outline.dark{:href => "pages-invoice.html"} Create Invoice
+        / / #main-menu-inner
+      / / #main-menu
+      / /4. $MAIN_MENU
+      #content-wrapper
+        %ul.breadcrumb.breadcrumb-page
+        .breadcrumb-label.text-light-gray You are here:
+        %li
+          %a{:href => "#"} Home
+        %li.active
+          %a{:href => "#"} Dashboard
+        .page-header
+          .row
+            / Page header, center on small screens
+            %h1.col-xs-12.col-sm-4.text-center.text-left-sm
+              %i.fa.fa-dashboard.page-header-icon>
+              \&nbsp;&nbsp;Dashboard
+            .col-xs-12.col-sm-8
+              .row
+                %hr.visible-xs.no-grid-gutter-h/
+                / "Create project" button, width=auto on desktops
+                .pull-right.col-xs-12.col-sm-auto
+                  %a.btn.btn-primary.btn-labeled{:href => "#", :style => "width: 100%;"}
+                    %span.btn-label.icon.fa.fa-plus>
+                    Create project
+                / Margin
+                .visible-xs.clearfix.form-group-margin
+                / Search field
+                %form.pull-right.col-xs-12.col-sm-6{:action => ""}
+                  .input-group.no-margin
+                    %span.input-group-addon{:style => "border:none;background: #fff;background: rgba(0,0,0,.05);"}
+                      %i.fa.fa-search
+                    %input.form-control.no-padding-hr{:placeholder => "Search...", :style => "border:none;background: #fff;background: rgba(0,0,0,.05);", :type => "text"}/
+        / / .page-header
+        .row
+          .col-md-8
+            /
+              5. $UPLOADS_CHART =============================================================================
+              
+              Uploads chart
+            / Javascript
+            :javascript
+              init.push(function () {
+              	var uploads_data = [
+              		{ day: '2014-03-10', v: 20 },
+              		{ day: '2014-03-11', v: 10 },
+              		{ day: '2014-03-12', v: 15 },
+              		{ day: '2014-03-13', v: 12 },
+              		{ day: '2014-03-14', v: 5  },
+              		{ day: '2014-03-15', v: 5  },
+              		{ day: '2014-03-16', v: 20 }
+              	];
+              	Morris.Line({
+              		element: 'hero-graph',
+              		data: uploads_data,
+              		xkey: 'day',
+              		ykeys: ['v'],
+              		labels: ['Value'],
+              		lineColors: ['#fff'],
+              		lineWidth: 2,
+              		pointSize: 4,
+              		gridLineColor: 'rgba(255,255,255,.5)',
+              		resize: true,
+              		gridTextColor: '#fff',
+              		xLabels: "day",
+              		xLabelFormat: function(d) {
+              			return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov', 'Dec'][d.getMonth()] + ' ' + d.getDate(); 
+              		},
+              	});
+              });
+            / / Javascript
+            .stat-panel
+              .stat-row
+                / Small horizontal padding, bordered, without right border, top aligned text
+                .stat-cell.col-sm-4.padding-sm-hr.bordered.no-border-r.valign-top
+                  / Small padding, without top padding, extra small horizontal padding
+                  %h4.padding-sm.no-padding-t.padding-xs-hr
+                    %i.fa.fa-cloud-upload.text-primary>
+                    \&nbsp;&nbsp;Uploads
+                  / Without margin
+                  %ul.list-group.no-margin
+                    / Without left and right borders, extra small horizontal padding, without background, no border radius
+                    %li.list-group-item.no-border-hr.padding-xs-hr.no-bg.no-border-radius
+                      Documents
+                      %span.label.label-pa-purple.pull-right 34
+                    / / .list-group-item
+                    / Without left and right borders, extra small horizontal padding, without background
+                    %li.list-group-item.no-border-hr.padding-xs-hr.no-bg
+                      Audio
+                      %span.label.label-danger.pull-right 128
+                    / / .list-group-item
+                    / Without left and right borders, without bottom border, extra small horizontal padding, without background
+                    %li.list-group-item.no-border-hr.no-border-b.padding-xs-hr.no-bg
+                      Videos
+                      %span.label.label-success.pull-right 12
+                    / / .list-group-item
+                / /.stat-cell
+                / Primary background, small padding, vertically centered text
+                .stat-cell.col-sm-8.bg-primary.padding-sm.valign-middle
+                  #hero-graph.graph{:style => "height: 230px;"}
+            / /.stat-panel
+            / /5. $UPLOADS_CHART
+            /
+              6. $EASY_PIE_CHARTS ===========================================================================
+              
+              Easy Pie charts
+            / Javascript
+            :javascript
+              init.push(function () {
+              	// Easy Pie Charts
+              	var easyPieChartDefaults = {
+              		animate: 2000,
+              		scaleColor: false,
+              		lineWidth: 6,
+              		lineCap: 'square',
+              		size: 90,
+              		trackColor: '#e5e5e5'
+              	}
+              	$('#easy-pie-chart-1').easyPieChart($.extend({}, easyPieChartDefaults, {
+              		barColor: PixelAdmin.settings.consts.COLORS[1]
+              	}));
+              	$('#easy-pie-chart-2').easyPieChart($.extend({}, easyPieChartDefaults, {
+              		barColor: PixelAdmin.settings.consts.COLORS[1]
+              	}));
+              	$('#easy-pie-chart-3').easyPieChart($.extend({}, easyPieChartDefaults, {
+              		barColor: PixelAdmin.settings.consts.COLORS[1]
+              	}));
+              });
+            / / Javascript
+            .row
+              .col-xs-4
+                / Centered text
+                .stat-panel.text-center
+                  .stat-row
+                    / Dark gray background, small padding, extra small text, semibold text
+                    .stat-cell.bg-dark-gray.padding-sm.text-xs.text-semibold
+                      %i.fa.fa-globe>
+                      \&nbsp;&nbsp;BANDWIDTH
+                  / /.stat-row
+                  .stat-row
+                    / Bordered, without top border, without horizontal padding
+                    .stat-cell.bordered.no-border-t.no-padding-hr
+                      #easy-pie-chart-1.pie-chart{"data-percent" => "43"}
+                        .pie-chart-label 12.3TB
+                  / /.stat-row
+                / /.stat-panel
+              .col-xs-4
+                .stat-panel.text-center
+                  .stat-row
+                    / Dark gray background, small padding, extra small text, semibold text
+                    .stat-cell.bg-dark-gray.padding-sm.text-xs.text-semibold
+                      %i.fa.fa-flash>
+                      \&nbsp;&nbsp;PICK LOAD
+                  / /.stat-row
+                  .stat-row
+                    / Bordered, without top border, without horizontal padding
+                    .stat-cell.bordered.no-border-t.no-padding-hr
+                      #easy-pie-chart-2.pie-chart{"data-percent" => "93"}
+                        .pie-chart-label 93%
+                  / /.stat-row
+                / /.stat-panel
+              .col-xs-4
+                .stat-panel.text-center
+                  .stat-row
+                    / Dark gray background, small padding, extra small text, semibold text
+                    .stat-cell.bg-dark-gray.padding-sm.text-xs.text-semibold
+                      %i.fa.fa-cloud>
+                      \&nbsp;&nbsp;USED RAM
+                  / /.stat-row
+                  .stat-row
+                    / Bordered, without top border, without horizontal padding
+                    .stat-cell.bordered.no-border-t.no-padding-hr
+                      #easy-pie-chart-3.pie-chart{"data-percent" => "75"}
+                        .pie-chart-label 12GB
+                  / /.stat-row
+                / /.stat-panel
+          / /6. $EASY_PIE_CHARTS
+          .col-md-4
+            .row
+              /
+                7. $EARNED_TODAY_STAT_PANEL ===================================================================
+                
+                Earned today stat panel
+              .col-sm-4.col-md-12
+                .stat-panel
+                  / Danger background, vertically centered text
+                  .stat-cell.bg-danger.valign-middle
+                    / Stat panel bg icon
+                    %i.fa.fa-trophy.bg-icon
+                    / Extra large text
+                    %span.text-xlg
+                      %span.text-lg.text-slim $
+                      %strong 147
+                    %br/
+                    / Big text
+                    %span.text-bg Earned today
+                    %br/
+                    / Small text
+                    %span.text-sm
+                      %a{:href => "#"} See details in your profile
+                  / /.stat-cell
+                / /.stat-panel
+              / /7. $EARNED_TODAY_STAT_PANEL
+              /
+                8. $RETWEETS_GRAPH_STAT_PANEL =================================================================
+                
+                Retweets graph stat panel
+              .col-sm-4.col-md-12
+                / Javascript
+                :javascript
+                  init.push(function () {
+                  	$("#stats-sparklines-3").pixelSparkline([275,490,397,487,339,403,402,312,300], {
+                  		type: 'line',
+                  		width: '100%',
+                  		height: '45px',
+                  		fillColor: '',
+                  		lineColor: '#fff',
+                  		lineWidth: 2,
+                  		spotColor: '#ffffff',
+                  		minSpotColor: '#ffffff',
+                  		maxSpotColor: '#ffffff',
+                  		highlightSpotColor: '#ffffff',
+                  		highlightLineColor: '#ffffff',
+                  		spotRadius: 4,
+                  		highlightLineColor: '#ffffff'
+                  	});
+                  });
+                / / Javascript
+                .stat-panel
+                  .stat-row
+                    / Purple background, small padding
+                    .stat-cell.bg-pa-purple.padding-sm
+                      / Extra small text
+                      .text-xs{:style => "margin-bottom: 5px;"} RETWEETS GRAPH
+                      #stats-sparklines-3.stats-sparklines{:style => "width: 100%"}
+                  / /.stat-row
+                  .stat-row
+                    / Bordered, without top border, horizontally centered text
+                    .stat-counters.bordered.no-border-t.text-center
+                      / Small padding, without horizontal padding
+                      .stat-cell.col-xs-4.padding-sm.no-padding-hr
+                        / Big text
+                        %span.text-bg
+                          %strong 312
+                        %br/
+                        / Extra small text
+                        %span.text-xs.text-muted TWEETS
+                      / Small padding, without horizontal padding
+                      .stat-cell.col-xs-4.padding-sm.no-padding-hr
+                        / Big text
+                        %span.text-bg
+                          %strong 1000
+                        %br/
+                        / Extra small text
+                        %span.text-xs.text-muted FOLLOWERS
+                      / Small padding, without horizontal padding
+                      .stat-cell.col-xs-4.padding-sm.no-padding-hr
+                        / Big text
+                        %span.text-bg
+                          %strong 523
+                        %br/
+                        / Extra small text
+                        %span.text-xs.text-muted FOLLOWING
+                    / /.stat-counters
+                  / /.stat-row
+                / /.stat-panel
+              / /8. $RETWEETS_GRAPH_STAT_PANEL
+              /
+                9. $UNIQUE_VISITORS_STAT_PANEL ================================================================
+                
+                Unique visitors stat panel
+              .col-sm-4.col-md-12
+                / Javascript
+                :javascript
+                  init.push(function () {
+                  	$("#stats-sparklines-2").pixelSparkline(
+                  		[275,490,397,487,339,403,402,312,300,294,411,367,319,416,355,416,371,479,279,361,312,269,402,327,474,422,375,283,384,372], {
+                  		type: 'bar',
+                  		height: '36px',
+                  		width: '100%',
+                  		barSpacing: 2,
+                  		zeroAxis: false,
+                  		barColor: '#ffffff'
+                  	});
+                  });
+                / / Javascript
+                .stat-panel
+                  .stat-row
+                    / Warning background
+                    .stat-cell.bg-warning
+                      / Big text
+                      %span.text-bg 11% more
+                      %br/
+                      / Small text
+                      %span.text-sm Unique visitors today
+                  / /.stat-row
+                  .stat-row
+                    / Warning background, small padding, without top padding, horizontally centered text
+                    .stat-cell.bg-warning.padding-sm.no-padding-t.text-center
+                      #stats-sparklines-2.stats-sparklines{:style => "width: 100%"}
+                  / /.stat-row
+                / /.stat-panel
+        / /9. $UNIQUE_VISITORS_STAT_PANEL
+        / Page wide horizontal line
+        %hr.no-grid-gutter-h.grid-gutter-margin-b.no-margin-t/
+        .row
+          /
+            10. $SUPPORT_TICKETS ==========================================================================
+            
+            Support tickets
+          / Javascript
+          :javascript
+            init.push(function () {
+            	$('#dashboard-support-tickets .panel-body > div').slimScroll({ height: 300, alwaysVisible: true, color: '#888',allowPageScroll: true });
+            })
+          / / Javascript
+          .col-md-6
+            #dashboard-support-tickets.panel.panel-success.widget-support-tickets
+              .panel-heading
+                %span.panel-title
+                  %i.panel-title-icon.fa.fa-bullhorn>
+                  Support Tickets
+                .panel-heading-controls
+                  .panel-heading-text
+                    %a{:href => "#"} 15 new tickets
+              / / .panel-heading
+              .panel-body.tab-content-padding
+                / Panel padding, without vertical padding
+                .panel-padding.no-padding-vr
+                  .ticket
+                    %span.label.label-success.ticket-label Completed
+                    %a.ticket-title{:href => "#", :title => ""}
+                      Server unavaible
+                      %span [#201798]
+                    %span.ticket-info
+                      Opened by
+                      %a{:href => "#", :title => ""} Timothy Owens
+                      today
+                  / / .ticket
+                  .ticket
+                    %span.label.label-warning.ticket-label Pending
+                    %a.ticket-title{:href => "#", :title => ""}
+                      Mobile App Problem
+                      %span [#201797]
+                    %span.ticket-info
+                      Opened by
+                      %a{:href => "#"} Denise Steiner
+                      2 days ago
+                  / / .ticket
+                  .ticket
+                    %span.label.label-info.ticket-label In progress
+                    %a.ticket-title{:href => "#", :title => ""}
+                      %i.fa.fa-warning.text-danger>
+                      PayPal issue
+                      %span [#201796]
+                    %span.ticket-info
+                      Opened by
+                      %a{:href => "#"} Robert Jang
+                      3 days ago
+                  / / .ticket
+                  .ticket
+                    %span.label.label-danger.ticket-label Rejected
+                    %a.ticket-title{:href => "#", :title => ""}
+                      IE8 problem
+                      %span [#201795]
+                    %span.ticket-info
+                      Opened by
+                      %a{:href => "#"} Robert Jang
+                      4 days ago
+                  / / .ticket
+                  .ticket
+                    %span.label.label-success.ticket-label Completed
+                    %a.ticket-title{:href => "#", :title => ""}
+                      Server unavaible
+                      %span [#201794]
+                    %span.ticket-info
+                      Opened by
+                      %a{:href => "#"} Timothy Owens
+                      5 days ago
+                  / / .ticket
+                  .ticket
+                    %span.label.label-success.ticket-label Completed
+                    %a.ticket-title{:href => "#", :title => ""}
+                      Server unavaible
+                      %span [#201798]
+                    %span.ticket-info
+                      Opened by
+                      %a{:href => "#", :title => ""} Timothy Owens
+                      today
+                  / / .ticket
+                  .ticket
+                    %span.label.label-warning.ticket-label Pending
+                    %a.ticket-title{:href => "#", :title => ""}
+                      Mobile App Problem
+                      %span [#201797]
+                    %span.ticket-info
+                      Opened by
+                      %a{:href => "#"} Denise Steiner
+                      2 days ago
+                  / / .ticket
+                  .ticket
+                    %span.label.label-info.ticket-label In progress
+                    %a.ticket-title{:href => "#", :title => ""}
+                      %i.fa.fa-warning.text-danger>
+                      PayPal issue
+                      %span [#201796]
+                    %span.ticket-info
+                      Opened by
+                      %a{:href => "#"} Robert Jang
+                      3 days ago
+                  / / .ticket
+                  .ticket
+                    %span.label.label-danger.ticket-label Rejected
+                    %a.ticket-title{:href => "#", :title => ""}
+                      IE8 problem
+                      %span [#201795]
+                    %span.ticket-info
+                      Opened by
+                      %a{:href => "#"} Robert Jang
+                      4 days ago
+                  / / .ticket
+                  .ticket
+                    %span.label.label-success.ticket-label Completed
+                    %a.ticket-title{:href => "#", :title => ""}
+                      Server unavaible
+                      %span [#201794]
+                    %span.ticket-info
+                      Opened by
+                      %a{:href => "#"} Timothy Owens
+                      5 days ago
+                  / / .ticket
+                  .ticket
+                    %span.label.label-success.ticket-label Completed
+                    %a.ticket-title{:href => "#", :title => ""}
+                      Server unavaible
+                      %span [#201798]
+                    %span.ticket-info
+                      Opened by
+                      %a{:href => "#", :title => ""} Timothy Owens
+                      today
+                  / / .ticket
+                  .ticket
+                    %span.label.label-warning.ticket-label Pending
+                    %a.ticket-title{:href => "#", :title => ""}
+                      Mobile App Problem
+                      %span [#201797]
+                    %span.ticket-info
+                      Opened by
+                      %a{:href => "#"} Denise Steiner
+                      2 days ago
+                  / / .ticket
+                  .ticket
+                    %span.label.label-info.ticket-label In progress
+                    %a.ticket-title{:href => "#", :title => ""}
+                      %i.fa.fa-warning.text-danger>
+                      PayPal issue
+                      %span [#201796]
+                    %span.ticket-info
+                      Opened by
+                      %a{:href => "#"} Robert Jang
+                      3 days ago
+                  / / .ticket
+                  .ticket
+                    %span.label.label-danger.ticket-label Rejected
+                    %a.ticket-title{:href => "#", :title => ""}
+                      IE8 problem
+                      %span [#201795]
+                    %span.ticket-info
+                      Opened by
+                      %a{:href => "#"} Robert Jang
+                      4 days ago
+                  / / .ticket
+                  .ticket
+                    %span.label.label-success.ticket-label Completed
+                    %a.ticket-title{:href => "#", :title => ""}
+                      Server unavaible
+                      %span [#201794]
+                    %span.ticket-info
+                      Opened by
+                      %a{:href => "#"} Timothy Owens
+                      5 days ago
+                  / / .ticket
+              / / .panel-body
+            / / .panel
+          / /10. $SUPPORT_TICKETS
+          /
+            11. $RECENT_ACTIVITY ==========================================================================
+            
+            Recent activity
+          / Javascript
+          :javascript
+            init.push(function () {
+            	$('#dashboard-recent .panel-body > div').slimScroll({ height: 300, alwaysVisible: true, color: '#888',allowPageScroll: true });
+            })
+          / / Javascript
+          .col-md-6
+            #dashboard-recent.panel.panel-warning
+              .panel-heading
+                %span.panel-title
+                  %i.panel-title-icon.fa.fa-fire.text-danger>
+                  Recent
+                %ul.nav.nav-tabs.nav-tabs-xs
+                  %li.active
+                    %a{"data-toggle" => "tab", :href => "#dashboard-recent-comments"} Comments
+                  %li
+                    %a{"data-toggle" => "tab", :href => "#dashboard-recent-threads"} Forum threads
+              / / .panel-heading
+              .tab-content
+                / Comments widget
+                / Without padding
+                #dashboard-recent-comments.widget-comments.panel-body.tab-pane.no-padding.fade.active.in
+                  / Panel padding, without vertical padding
+                  .panel-padding.no-padding-vr
+                    .comment
+                      %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                      .comment-body
+                        .comment-by
+                          %a{:href => "#", :title => ""} Denise Steiner
+                          commented on
+                          %a{:href => "#", :title => ""} Article Name
+                        .comment-text
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                        .comment-actions
+                          %a{:href => "#"}
+                            %i.fa.fa-pencil>
+                            Edit
+                          %a{:href => "#"}
+                            %i.fa.fa-times>
+                            Remove
+                          %span.pull-right 2 hours ago
+                      / / .comment-body
+                    / / .comment
+                    .comment
+                      %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                      .comment-body
+                        .comment-by
+                          %a{:href => "#", :title => ""} Michelle Bortz
+                          commented on
+                          %a{:href => "#", :title => ""} Article Name
+                        .comment-text
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                        .comment-actions
+                          %a{:href => "#"}
+                            %i.fa.fa-pencil>
+                            Edit
+                          %a{:href => "#"}
+                            %i.fa.fa-times>
+                            Remove
+                          %span.pull-right 2 hours ago
+                      / / .comment-body
+                    / / .comment
+                    .comment
+                      %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                      .comment-body
+                        .comment-by
+                          %a{:href => "#", :title => ""} Robert Jang
+                          commented on
+                          %a{:href => "#", :title => ""} Article Name
+                        .comment-text
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                        .comment-actions
+                          %a{:href => "#"}
+                            %i.fa.fa-pencil>
+                            Edit
+                          %a{:href => "#"}
+                            %i.fa.fa-times>
+                            Remove
+                          %span.pull-right 2 hours ago
+                      / / .comment-body
+                    / / .comment
+                    .comment
+                      %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                      .comment-body
+                        .comment-by
+                          %a{:href => "#", :title => ""} Timothy Owens
+                          commented on
+                          %a{:href => "#", :title => ""} Article Name
+                        .comment-text
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                        .comment-actions
+                          %a{:href => "#"}
+                            %i.fa.fa-pencil>
+                            Edit
+                          %a{:href => "#"}
+                            %i.fa.fa-times>
+                            Remove
+                          %span.pull-right 2 hours ago
+                      / / .comment-body
+                    / / .comment
+                    .comment
+                      %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                      .comment-body
+                        .comment-by
+                          %a{:href => "#", :title => ""} Denise Steiner
+                          commented on
+                          %a{:href => "#", :title => ""} Article Name
+                        .comment-text
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                        .comment-actions
+                          %a{:href => "#"}
+                            %i.fa.fa-pencil>
+                            Edit
+                          %a{:href => "#"}
+                            %i.fa.fa-times>
+                            Remove
+                          %span.pull-right 2 hours ago
+                      / / .comment-body
+                    / / .comment
+                    .comment
+                      %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                      .comment-body
+                        .comment-by
+                          %a{:href => "#", :title => ""} Michelle Bortz
+                          commented on
+                          %a{:href => "#", :title => ""} Article Name
+                        .comment-text
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                        .comment-actions
+                          %a{:href => "#"}
+                            %i.fa.fa-pencil>
+                            Edit
+                          %a{:href => "#"}
+                            %i.fa.fa-times>
+                            Remove
+                          %span.pull-right 2 hours ago
+                      / / .comment-body
+                    / / .comment
+                    .comment
+                      %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                      .comment-body
+                        .comment-by
+                          %a{:href => "#", :title => ""} Robert Jang
+                          commented on
+                          %a{:href => "#", :title => ""} Article Name
+                        .comment-text
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                        .comment-actions
+                          %a{:href => "#"}
+                            %i.fa.fa-pencil>
+                            Edit
+                          %a{:href => "#"}
+                            %i.fa.fa-times>
+                            Remove
+                          %span.pull-right 2 hours ago
+                      / / .comment-body
+                    / / .comment
+                    .comment
+                      %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                      .comment-body
+                        .comment-by
+                          %a{:href => "#", :title => ""} Timothy Owens
+                          commented on
+                          %a{:href => "#", :title => ""} Article Name
+                        .comment-text
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                        .comment-actions
+                          %a{:href => "#"}
+                            %i.fa.fa-pencil>
+                            Edit
+                          %a{:href => "#"}
+                            %i.fa.fa-times>
+                            Remove
+                          %span.pull-right 2 hours ago
+                      / / .comment-body
+                    / / .comment
+                    .comment
+                      %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                      .comment-body
+                        .comment-by
+                          %a{:href => "#", :title => ""} Robert Jang
+                          commented on
+                          %a{:href => "#", :title => ""} Article Name
+                        .comment-text
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                        .comment-actions
+                          %a{:href => "#"}
+                            %i.fa.fa-pencil>
+                            Edit
+                          %a{:href => "#"}
+                            %i.fa.fa-times>
+                            Remove
+                          %span.pull-right 2 hours ago
+                      / / .comment-body
+                    / / .comment
+                    .comment
+                      %img.comment-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                      .comment-body
+                        .comment-by
+                          %a{:href => "#", :title => ""} Timothy Owens
+                          commented on
+                          %a{:href => "#", :title => ""} Article Name
+                        .comment-text
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                        .comment-actions
+                          %a{:href => "#"}
+                            %i.fa.fa-pencil>
+                            Edit
+                          %a{:href => "#"}
+                            %i.fa.fa-times>
+                            Remove
+                          %span.pull-right 2 hours ago
+                      / / .comment-body
+                    / / .comment
+                / / .widget-comments
+                / Threads widget
+                / Without padding
+                #dashboard-recent-threads.widget-threads.panel-body.tab-pane.no-padding.fade
+                  .panel-padding.no-padding-vr
+                    .thread
+                      %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                      .thread-body
+                        %span.thread-time 14h
+                        %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                        .thread-info
+                          started by
+                          %a{:href => "#", :title => ""} Robert Jang
+                          in
+                          %a{:href => "#", :title => ""} Forum name
+                      / / .thread-body
+                    / / .thread
+                    .thread
+                      %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                      .thread-body
+                        %span.thread-time 14h
+                        %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                        .thread-info
+                          started by
+                          %a{:href => "#", :title => ""} Michelle Bortz
+                          in
+                          %a{:href => "#", :title => ""} Forum name
+                      / / .thread-body
+                    / / .thread
+                    .thread
+                      %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                      .thread-body
+                        %span.thread-time 14h
+                        %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                        .thread-info
+                          started by
+                          %a{:href => "#", :title => ""} Timothy Owens
+                          in
+                          %a{:href => "#", :title => ""} Forum name
+                      / / .thread-body
+                    / / .thread
+                    .thread
+                      %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                      .thread-body
+                        %span.thread-time 14h
+                        %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                        .thread-info
+                          started by
+                          %a{:href => "#", :title => ""} Denise Steiner
+                          in
+                          %a{:href => "#", :title => ""} Forum name
+                      / / .thread-body
+                    / / .thread
+                    .thread
+                      %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                      .thread-body
+                        %span.thread-time 14h
+                        %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                        .thread-info
+                          started by
+                          %a{:href => "#", :title => ""} Robert Jang
+                          in
+                          %a{:href => "#", :title => ""} Forum name
+                      / / .thread-body
+                    / / .thread
+                    .thread
+                      %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                      .thread-body
+                        %span.thread-time 14h
+                        %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                        .thread-info
+                          started by
+                          %a{:href => "#", :title => ""} Robert Jang
+                          in
+                          %a{:href => "#", :title => ""} Forum name
+                      / / .thread-body
+                    / / .thread
+                    .thread
+                      %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                      .thread-body
+                        %span.thread-time 14h
+                        %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                        .thread-info
+                          started by
+                          %a{:href => "#", :title => ""} Michelle Bortz
+                          in
+                          %a{:href => "#", :title => ""} Forum name
+                      / / .thread-body
+                    / / .thread
+                    .thread
+                      %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                      .thread-body
+                        %span.thread-time 14h
+                        %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                        .thread-info
+                          started by
+                          %a{:href => "#", :title => ""} Timothy Owens
+                          in
+                          %a{:href => "#", :title => ""} Forum name
+                      / / .thread-body
+                    / / .thread
+                    .thread
+                      %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                      .thread-body
+                        %span.thread-time 14h
+                        %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                        .thread-info
+                          started by
+                          %a{:href => "#", :title => ""} Denise Steiner
+                          in
+                          %a{:href => "#", :title => ""} Forum name
+                      / / .thread-body
+                    / / .thread
+                    .thread
+                      %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                      .thread-body
+                        %span.thread-time 14h
+                        %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                        .thread-info
+                          started by
+                          %a{:href => "#", :title => ""} Robert Jang
+                          in
+                          %a{:href => "#", :title => ""} Forum name
+                      / / .thread-body
+                    / / .thread
+                    .thread
+                      %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                      .thread-body
+                        %span.thread-time 14h
+                        %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                        .thread-info
+                          started by
+                          %a{:href => "#", :title => ""} Robert Jang
+                          in
+                          %a{:href => "#", :title => ""} Forum name
+                      / / .thread-body
+                    / / .thread
+                    .thread
+                      %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                      .thread-body
+                        %span.thread-time 14h
+                        %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                        .thread-info
+                          started by
+                          %a{:href => "#", :title => ""} Michelle Bortz
+                          in
+                          %a{:href => "#", :title => ""} Forum name
+                      / / .thread-body
+                    / / .thread
+                    .thread
+                      %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                      .thread-body
+                        %span.thread-time 14h
+                        %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                        .thread-info
+                          started by
+                          %a{:href => "#", :title => ""} Timothy Owens
+                          in
+                          %a{:href => "#", :title => ""} Forum name
+                      / / .thread-body
+                    / / .thread
+                    .thread
+                      %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                      .thread-body
+                        %span.thread-time 14h
+                        %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                        .thread-info
+                          started by
+                          %a{:href => "#", :title => ""} Denise Steiner
+                          in
+                          %a{:href => "#", :title => ""} Forum name
+                      / / .thread-body
+                    / / .thread
+                    .thread
+                      %img.thread-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                      .thread-body
+                        %span.thread-time 14h
+                        %a.thread-title{:href => "#"} Lorem ipsum dolor sit amet
+                        .thread-info
+                          started by
+                          %a{:href => "#", :title => ""} Robert Jang
+                          in
+                          %a{:href => "#", :title => ""} Forum name
+                      / / .thread-body
+                    / / .thread
+                / / .panel-body
+            / / .widget-threads
+          / /11. $RECENT_ACTIVITY
+        / Page wide horizontal line
+        %hr.no-grid-gutter-h.grid-gutter-margin-b.no-margin-t/
+        .row
+          /
+            12. $NEW_USERS_TABLE ==========================================================================
+            
+            New users table
+          .col-md-7
+            .panel.panel-dark.panel-light-green
+              .panel-heading
+                %span.panel-title
+                  %i.panel-title-icon.fa.fa-smile-o>
+                  New users
+                .panel-heading-controls
+                  %ul.pagination.pagination-xs
+                    %li
+                      %a{:href => "#"} «
+                    %li.active
+                      %a{:href => "#"} 1
+                    %li
+                      %a{:href => "#"} 2
+                    %li
+                      %a{:href => "#"} 3
+                    %li
+                      %a{:href => "#"} »
+                  / / .pagination
+                / / .panel-heading-controls
+              / / .panel-heading
+              %table.table
+                %thead
+                  %tr
+                    %th #
+                    %th Username
+                    %th Full Name
+                    %th E-mail
+                    %th
+                %tbody.valign-middle
+                  %tr
+                    %td 1
+                    %td
+                      %img.rounded{:alt => "", :src => "assets/demo/avatars/2.jpg", :style => "width:26px;height:26px;"}>/
+                      \&nbsp;&nbsp;
+                      %a{:href => "#", :title => ""} @rjang
+                    %td Robert Jang
+                    %td rjang@example.com
+                    %td
+                  %tr
+                    %td 2
+                    %td
+                      %img.rounded{:alt => "", :src => "assets/demo/avatars/3.jpg", :style => "width:26px;height:26px;"}>/
+                      \&nbsp;&nbsp;
+                      %a{:href => "#", :title => ""} @mbortz
+                    %td Michelle Bortz
+                    %td mbortz@example.com
+                    %td
+                  %tr
+                    %td 3
+                    %td
+                      %img.rounded{:alt => "", :src => "assets/demo/avatars/4.jpg", :style => "width:26px;height:26px;"}>/
+                      \&nbsp;&nbsp;
+                      %a{:href => "#", :title => ""} @towens
+                    %td Timothy Owens
+                    %td towens@example.com
+                    %td
+                  %tr
+                    %td 4
+                    %td
+                      %img.rounded{:alt => "", :src => "assets/demo/avatars/5.jpg", :style => "width:26px;height:26px;"}>/
+                      \&nbsp;&nbsp;
+                      %a{:href => "#", :title => ""} @dsteiner
+                    %td Denise Steiner
+                    %td dsteiner@example.com
+                    %td
+                  %tr
+                    %td 5
+                    %td
+                      %img.rounded{:alt => "", :src => "assets/demo/avatars/2.jpg", :style => "width:26px;height:26px;"}>/
+                      \&nbsp;&nbsp;
+                      %a{:href => "#", :title => ""} @rjang
+                    %td Robert Jang
+                    %td rjang@example.com
+                    %td
+                  %tr
+                    %td 6
+                    %td
+                      %img.rounded{:alt => "", :src => "assets/demo/avatars/3.jpg", :style => "width:26px;height:26px;"}>/
+                      \&nbsp;&nbsp;
+                      %a{:href => "#", :title => ""} @mbortz
+                    %td Michelle Bortz
+                    %td mbortz@example.com
+                    %td
+                  %tr
+                    %td 7
+                    %td
+                      %img.rounded{:alt => "", :src => "assets/demo/avatars/4.jpg", :style => "width:26px;height:26px;"}>/
+                      \&nbsp;&nbsp;
+                      %a{:href => "#", :title => ""} @towens
+                    %td Timothy Owens
+                    %td towens@example.com
+                    %td
+            / / .panel
+          / /12. $NEW_USERS_TABLE
+          /
+            13. $RECENT_TASKS =============================================================================
+            
+            Recent tasks
+          .col-md-5
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$('.widget-tasks .panel-body').pixelTasks().sortable({
+              		axis: "y",
+              		handle: ".task-sort-icon",
+              		stop: function( event, ui ) {
+              			// IE doesn't register the blur when sorting
+              			// so trigger focusout handlers to remove .ui-state-focus
+              			ui.item.children( ".task-sort-icon" ).triggerHandler( "focusout" );
+              		}
+              	});
+              	$('#clear-completed-tasks').click(function () {
+              		$('.widget-tasks .panel-body').pixelTasks('clearCompletedTasks');
+              	});
+              });
+            / / Javascript
+            .panel.widget-tasks.panel-dark-gray
+              .panel-heading
+                %span.panel-title
+                  %i.panel-title-icon.fa.fa-tasks>
+                  Recent tasks
+                .panel-heading-controls
+                  %button#clear-completed-tasks.btn.btn-xs.btn-primary.btn-outline.dark
+                    %i.fa.fa-eraser.text-success
+                    Clear completed tasks
+              / / .panel-heading
+              / Without vertical padding
+              .panel-body.no-padding-vr
+                .task
+                  %span.label.label-warning.pull-right High
+                  .fa.fa-arrows-v.task-sort-icon
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.task-title{:href => "#"}
+                    A very important task
+                    %span 1 hour left
+                / / .task
+                .task.completed
+                  %span.label.label-warning.pull-right High
+                  .fa.fa-arrows-v.task-sort-icon
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:checked => "checked", :name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.task-title{:href => "#"}
+                    A very important task
+                    %span 58 minutes left
+                / / .task
+                .task.completed
+                  .fa.fa-arrows-v.task-sort-icon
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:checked => "checked", :name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.task-title{:href => "#"} A regular task
+                / / .task
+                .task
+                  .fa.fa-arrows-v.task-sort-icon
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.task-title{:href => "#"} A regular task
+                / / .task
+                .task
+                  .fa.fa-arrows-v.task-sort-icon
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.task-title{:href => "#"} A regular task
+                / / .task
+                .task
+                  %span.label.pull-right Low
+                  .fa.fa-arrows-v.task-sort-icon
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.task-title{:href => "#"} An unimportant task
+                / / .task
+                .task
+                  %span.label.pull-right Low
+                  .fa.fa-arrows-v.task-sort-icon
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.task-title{:href => "#"} An unimportant task
+                / / .task
+                .task
+                  .fa.fa-arrows-v.task-sort-icon
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.task-title{:href => "#"} A regular task
+                / / .task
+                .task
+                  %span.label.pull-right Low
+                  .fa.fa-arrows-v.task-sort-icon
+                  .action-checkbox
+                    %label.px-single
+                      %input.px{:name => "", :type => "checkbox", :value => ""}/
+                      %span.lbl
+                  %a.task-title{:href => "#"} An unimportant task
+                / / .task
+              / / .panel-body
+            / / .panel
+          / /13. $RECENT_TASKS
+      / / #content-wrapper
+      #main-menu-bg
+    / / #main-wrapper
+    / Get jQuery from Google CDN
+    / [if !IE]>
+    :javascript
+      window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">'+"<"+"/script>");
+    / <![endif]
+    /[if lte IE 9]
+      <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">'+"<"+"/script>"); </script>
+    / Pixel Admin's javascripts
+    %script{:src => "assets/javascripts/bootstrap.min.js"}
+    %script{:src => "assets/javascripts/pixel-admin.min.js"}
+    :javascript
+      init.push(function () {
+      	// Javascript code here
+      })
+      window.PixelAdmin.start(init);

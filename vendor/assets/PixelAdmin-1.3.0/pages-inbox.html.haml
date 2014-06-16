@@ -1,0 +1,988 @@
+!!!
+/
+  TABLE OF CONTENTS.
+  
+  Use search to find needed section.
+  
+  \=====================================================
+  
+  |  1. $BODY                 |  Body                 |
+  |  2. $MAIN_NAVIGATION      |  Main navigation      |
+  |  3. $NAVBAR_ICON_BUTTONS  |  Navbar Icon Buttons  |
+  |  4. $MAIN_MENU            |  Main menu            |
+  |  5. $CONTENT              |  Content              |
+  
+  \=====================================================
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+/ [if gt IE 9]><!
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title Inbox - Pages - PixelAdmin
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0", :name => "viewport"}/
+    / Open Sans font from Google CDN
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
+    / Pixel Admin's stylesheets
+    %link{:href => "assets/stylesheets/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pixel-admin.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/widgets.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pages.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/rtl.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/themes.min.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+    :css
+      .page-header .pull-right {
+      	padding-top: 5px;
+      }
+      .page-header .pull-right > * {
+      	display: inline-block;
+      	vertical-align:middle;
+      }
+  /
+    1. $BODY ======================================================================================
+    
+    Body
+    
+    Classes:
+    * 'theme-{THEME NAME}'
+    * 'right-to-left'      - Sets text direction to right-to-left
+    * 'main-menu-right'    - Places the main menu on the right side
+    * 'no-main-menu'       - Hides the main menu
+    * 'main-navbar-fixed'  - Fixes the main navigation
+    * 'main-menu-fixed'    - Fixes the main menu
+    * 'main-menu-animated' - Animate main menu
+  %body.theme-default.main-menu-animated.page-mail
+    :javascript
+      var init = [];
+      init.push(function () {
+      	$('body').addClass('mmc');
+      });
+    / Demo script
+    %script{:src => "assets/demo/demo.js"}
+    / / Demo script
+    #main-wrapper
+      /
+        2. $MAIN_NAVIGATION ===========================================================================
+        
+        Main navigation
+      #main-navbar.navbar.navbar-inverse{:role => "navigation"}
+        / Main menu toggle
+        %button#main-menu-toggle{:type => "button"}
+          %i.navbar-icon.fa.fa-bars.icon
+          %span.hide-menu-text HIDE MENU
+        .navbar-inner
+          / Main navbar header
+          .navbar-header
+            / Logo
+            %a.navbar-brand{:href => "index.html"}
+            %div
+              %img{:alt => "Pixel Admin", :src => "assets/images/pixel-admin/main-navbar-logo.png"}/
+            PixelAdmin
+            / Main navbar toggle
+            %button.navbar-toggle.collapsed{"data-target" => "#main-navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+              %i.navbar-icon.fa.fa-bars
+          / / .navbar-header
+          #main-navbar-collapse.collapse.navbar-collapse.main-navbar-collapse
+            %div
+              %ul.nav.navbar-nav
+                %li
+                  %a{:href => "#"} Home
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Dropdown
+                  %ul.dropdown-menu
+                    %li
+                      %a{:href => "#"} First item
+                    %li
+                      %a{:href => "#"} Second item
+                    %li.divider
+                    %li
+                      %a{:href => "#"} Third item
+              / / .navbar-nav
+              .right.clearfix
+                %ul.nav.navbar-nav.pull-right.right-navbar-nav
+                  /
+                    3. $NAVBAR_ICON_BUTTONS =======================================================================
+                    
+                    Navbar Icon Buttons
+                    
+                    NOTE: .nav-icon-btn triggers a dropdown menu on desktop screens only. On small screens .nav-icon-btn acts like a hyperlink.
+                    
+                    Classes:
+                    * 'nav-icon-btn-info'
+                    * 'nav-icon-btn-success'
+                    * 'nav-icon-btn-warning'
+                    * 'nav-icon-btn-danger'
+                  %li.nav-icon-btn.nav-icon-btn-danger.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#notifications"}
+                      %span.label 5
+                      %i.nav-icon.fa.fa-bullhorn
+                      %span.small-screen-text Notifications
+                    / NOTIFICATIONS
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-notifications').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-notifications.no-padding{:style => "width: 300px"}
+                      #main-navbar-notifications.notifications-list
+                        .notification
+                          .notification-title.text-danger SYSTEM
+                          .notification-description
+                            %strong> Error 500
+                            \: Syntax error in index.php at line
+                            = succeed "." do
+                              %strong 461
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-danger
+                        / / .notification
+                        .notification
+                          .notification-title.text-info STORE
+                          .notification-description
+                            You have
+                            %strong 9
+                            new orders.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-truck.bg-info
+                        / / .notification
+                        .notification
+                          .notification-title.text-default CRON DAEMON
+                          .notification-description
+                            Job
+                            %strong "Clean DB"
+                            has been completed.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-clock-o.bg-default
+                        / / .notification
+                        .notification
+                          .notification-title.text-success SYSTEM
+                          .notification-description
+                            Server
+                            = succeed "." do
+                              %strong up
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-success
+                        / / .notification
+                        .notification
+                          .notification-title.text-warning SYSTEM
+                          .notification-description
+                            %strong> Warning
+                            \: Processor load
+                            = succeed "." do
+                              %strong 92%
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-warning
+                        / / .notification
+                      / / .notifications-list
+                      %a.notifications-link{:href => "#"} MORE NOTIFICATIONS
+                    / / .dropdown-menu
+                  %li.nav-icon-btn.nav-icon-btn-success.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#messages"}
+                      %span.label 10
+                      %i.nav-icon.fa.fa-envelope
+                      %span.small-screen-text Income messages
+                    / MESSAGES
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-messages').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-messages-alt.no-padding{:style => "width: 300px;"}
+                      #main-navbar-messages.messages-list
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                      / / .messages-list
+                      %a.messages-link{:href => "#"} MORE MESSAGES
+                    / / .dropdown-menu
+                  / /3. $END_NAVBAR_ICON_BUTTONS
+                  %li
+                    %form.navbar-form.pull-left
+                      %input.form-control{:placeholder => "Search", :type => "text"}/
+                  %li.dropdown
+                    %a.dropdown-toggle.user-menu{"data-toggle" => "dropdown", :href => "#"}
+                      %img{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+                      %span John Doe
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"}
+                          %span.label.label-warning.pull-right> New
+                          Profile
+                      %li
+                        %a{:href => "#"}
+                          %span.badge.badge-primary.pull-right> New
+                          Account
+                      %li
+                        %a{:href => "#"}
+                          %i.dropdown-icon.fa.fa-cog>
+                          \&nbsp;&nbsp;Settings
+                      %li.divider
+                      %li
+                        %a{:href => "pages-signin.html"}
+                          %i.dropdown-icon.fa.fa-power-off>
+                          \&nbsp;&nbsp;Log Out
+                / / .navbar-nav
+              / / .right
+          / / #main-navbar-collapse
+        / / .navbar-inner
+      / / #main-navbar
+      / /2. $END_MAIN_NAVIGATION
+      /
+        4. $MAIN_MENU =================================================================================
+        
+        Main menu
+        
+        Notes:
+        * to make the menu item active, add a class 'active' to the <li>
+        example: <li class="active">...</li>
+        * multilevel submenu example:
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 1</span></a>
+        <ul>
+        <li>...</li>
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 2</span></a>
+        <ul>
+        <li>...</li>
+        \...
+        </ul>
+        </li>
+        \...
+        </ul>
+        </li>
+      #main-menu{:role => "navigation"}
+        #main-menu-inner
+          #menu-content-demo.menu-content.top
+            /
+              Menu custom content demo
+              CSS:        styles/pixel-admin-less/demo.less or styles/pixel-admin-scss/_demo.scss
+              Javascript: html/assets/demo/demo.js
+            %div
+              .text-bg
+                %span.text-slim Welcome,
+                %span.text-semibold John
+              %img{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+              .btn-group
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-envelope
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-user
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-cog
+                %a.btn.btn-xs.btn-danger.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-power-off
+              %a.close{:href => "#"} &times;
+          %ul.navigation
+            %li
+              %a{:href => "index.html"}
+                %i.menu-icon.fa.fa-dashboard
+                %span.mm-text Dashboard
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-th
+                %span.mm-text Layouts
+                %span.label.label-warning Updated
+              %ul
+                %li
+                  %a{:href => "layouts-grid.html", :tabindex => "-1"}
+                    %span.mm-text Grid
+                %li
+                  %a{:href => "layouts-main-menu.html", :tabindex => "-1"}
+                    %i.menu-icon.fa.fa-th-list
+                    %span.mm-text Main menu
+                    %span.label.label-warning Updated
+            %li
+              %a{:href => "stat-panels.html"}
+                %i.menu-icon.fa.fa-tasks
+                %span.mm-text Stat panels
+            %li
+              %a{:href => "widgets.html"}
+                %i.menu-icon.fa.fa-flask
+                %span.mm-text Widgets
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-desktop
+                %span.mm-text UI elements
+              %ul
+                %li
+                  %a{:href => "ui-buttons.html", :tabindex => "-1"}
+                    %span.mm-text Buttons
+                %li
+                  %a{:href => "ui-typography.html", :tabindex => "-1"}
+                    %span.mm-text Typography
+                %li
+                  %a{:href => "ui-tabs.html", :tabindex => "-1"}
+                    %span.mm-text Tabs &amp; Accordions
+                %li
+                  %a{:href => "ui-modals.html", :tabindex => "-1"}
+                    %span.mm-text Modals
+                %li
+                  %a{:href => "ui-alerts.html", :tabindex => "-1"}
+                    %span.mm-text Alerts &amp; Tooltips
+                %li
+                  %a{:href => "ui-components.html", :tabindex => "-1"}
+                    %span.mm-text Components
+                %li
+                  %a{:href => "ui-panels.html", :tabindex => "-1"}
+                    %span.mm-text Panels
+                %li
+                  %a{:href => "ui-jqueryui.html", :tabindex => "-1"}
+                    %span.mm-text jQuery UI
+                %li
+                  %a{:href => "ui-icons.html", :tabindex => "-1"}
+                    %span.mm-text Icons
+                %li
+                  %a{:href => "ui-utility-classes.html", :tabindex => "-1"}
+                    %span.mm-text Utility classes
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-check-square
+                %span.mm-text Form components
+              %ul
+                %li
+                  %a{:href => "forms-layouts.html", :tabindex => "-1"}
+                    %span.mm-text Layouts
+                %li
+                  %a{:href => "forms-general.html", :tabindex => "-1"}
+                    %span.mm-text General
+                %li
+                  %a{:href => "forms-advanced.html", :tabindex => "-1"}
+                    %span.mm-text Advanced
+                %li
+                  %a{:href => "forms-pickers.html", :tabindex => "-1"}
+                    %span.mm-text Pickers
+                %li
+                  %a{:href => "forms-validation.html", :tabindex => "-1"}
+                    %span.mm-text Validation
+                %li
+                  %a{:href => "forms-editors.html", :tabindex => "-1"}
+                    %span.mm-text Editors
+            %li
+              %a{:href => "tables.html"}
+                %i.menu-icon.fa.fa-table
+                %span.mm-text Tables
+            %li
+              %a{:href => "charts.html"}
+                %i.menu-icon.fa.fa-bar-chart-o
+                %span.mm-text Charts
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-files-o
+                %span.mm-text Pages
+                %span.label.label-success 16
+              %ul
+                %li
+                  %a{:href => "pages-search.html", :tabindex => "-1"}
+                    %span.mm-text Search results
+                %li
+                  %a{:href => "pages-pricing.html", :tabindex => "-1"}
+                    %span.mm-text Plans &amp; pricing
+                %li
+                  %a{:href => "pages-faq.html", :tabindex => "-1"}
+                    %span.mm-text FAQ
+                %li
+                  %a{:href => "pages-profile.html", :tabindex => "-1"}
+                    %span.mm-text Profile
+                %li
+                  %a{:href => "pages-timeline.html", :tabindex => "-1"}
+                    %span.mm-text Timeline
+                %li
+                  %a{:href => "pages-signin.html", :tabindex => "-1"}
+                    %span.mm-text Sign In
+                %li
+                  %a{:href => "pages-signup.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up
+                %li
+                  %a{:href => "pages-signin-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign In Alt
+                %li
+                  %a{:href => "pages-signup-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up Alt
+                %li
+                  %a{:href => "pages-invoice.html", :tabindex => "-1"}
+                    %span.mm-text Invoice
+                %li
+                  %a{:href => "pages-404.html", :tabindex => "-1"}
+                    %span.mm-text Error 404
+                %li
+                  %a{:href => "pages-500.html", :tabindex => "-1"}
+                    %span.mm-text Error 500
+                %li.mm-dropdown
+                  %a{:href => "#"}
+                    %i.menu-icon.fa.fa-envelope
+                    %span.mm-text Messages
+                  %ul
+                    %li
+                      %a{:href => "pages-inbox.html", :tabindex => "-1"}
+                        %span.mm-text Inbox
+                    %li
+                      %a{:href => "pages-show-email.html", :tabindex => "-1"}
+                        %span.mm-text Show message
+                    %li
+                      %a{:href => "pages-new-email.html", :tabindex => "-1"}
+                        %span.mm-text New message
+                %li
+                  %a{:href => "pages-blank.html", :tabindex => "-1"}
+                    %span.mm-text Blank page
+            %li
+              %a{:href => "complete-ui.html"}
+                %i.menu-icon.fa.fa-briefcase
+                %span.mm-text Complete UI
+            %li
+              %a{:href => "color-builder.html"}
+                %i.menu-icon.fa.fa-tint
+                %span.mm-text Color Builder
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-sitemap
+                %span.mm-text Menu levels
+                %span.badge.badge-primary 6
+              %ul
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.1
+                    %span.badge.badge-danger 12
+                    %span.label.label-info 21
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.2
+                %li.mm-dropdown
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.3
+                    %span.label.label-warning 5
+                  %ul
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.1
+                    %li.mm-dropdown
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+                      %ul
+                        %li.mm-dropdown
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.1
+                          %ul
+                            %li
+                              %a{:href => "#", :tabindex => "-1"}
+                                %span.mm-text Menu level 4.1
+                        %li
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.2
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+          / / .navigation
+          .menu-content
+            %a.btn.btn-primary.btn-block.btn-outline.dark{:href => "pages-invoice.html"} Create Invoice
+        / / #main-menu-inner
+      / / #main-menu
+      / /4. $MAIN_MENU
+      #content-wrapper
+        /
+          5. $CONTENT ===================================================================================
+          
+          Content
+        .mail-nav
+          .compose-btn
+            %a.btn.btn-primary.btn-labeled.btn-block{:href => "pages-new-email.html"}
+              %i.btn-label.fa.fa-pencil-square-o>
+              New Email
+          .navigation
+            %ul.sections
+              %li.active
+                %a{:href => "#"}
+                  %i.m-nav-icon.fa.fa-inbox>
+                  Inbox
+                  %span.label.pull-right 20
+              %li
+                %a{:href => "#"}
+                  %i.m-nav-icon.fa.fa-star>
+                  Starred
+                  %span.label.pull-right 43
+              %li
+                %a{:href => "#"}
+                  %i.m-nav-icon.fa.fa-envelope>
+                  Sent mail
+              %li
+                %a{:href => "#"}
+                  %i.m-nav-icon.fa.fa-exclamation>
+                  Important
+              %li
+                %a{:href => "#"}
+                  %i.m-nav-icon.fa.fa-file-text-o>
+                  Drafts
+                  %span.label.pull-right 11
+              %li
+                %a{:href => "#"}
+                  %i.m-nav-icon.fa.fa-trash-o>
+                  Trash
+              %li.divider
+              %li.add-more
+                %a{:href => "#"} + Add More
+            .mail-nav-header LABELS
+            %ul.sections
+              %li
+                %a{:href => "#"}/
+                = succeed "Client" do
+                  .mail-nav-lbl.bg-success
+              %li
+                %a{:href => "#"}/
+                = succeed "Social" do
+                  .mail-nav-lbl.bg-danger
+              %li
+                %a{:href => "#"}/
+                = succeed "Family" do
+                  .mail-nav-lbl.bg-info
+              %li
+                %a{:href => "#"}/
+                = succeed "Friends" do
+                  .mail-nav-lbl.bg-warning
+              %li
+                %a{:href => "#"}/
+                = succeed "Work" do
+                  .mail-nav-lbl.bg-pa-purple
+              %li.divider
+              %li.add-more
+                %a{:href => "#"} + Add More
+        .mail-container
+          .mail-container-header
+            Inbox
+            %form.pull-right{:action => "", :style => "width: 200px;margin-top: 3px;"}
+              .form-group.input-group-sm.has-feedback.no-margin
+                %input.form-control{:placeholder => "Search...", :type => "text"}/
+                %span.fa.fa-search.form-control-feedback{:style => "top: -1px"}
+          .mail-controls.clearfix
+            .btn-toolbar.wide-btns.pull-left{:role => "toolbar"}
+              .btn-group
+                .btn-group
+                  %button.btn.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                    %i.fa.fa-check-square-o>
+                    \&nbsp;
+                    %i.fa.fa-caret-down
+                  %ul.dropdown-menu{:role => "menu"}
+                    %li
+                      %a{:href => "#"} Check all
+                    %li
+                      %a{:href => "#"} Check read
+                    %li
+                      %a{:href => "#"} Check unread
+                    %li.divider
+                    %li
+                      %a{:href => "#"} Uncheck all
+                    %li
+                      %a{:href => "#"} Uncheck read
+                    %li
+                      %a{:href => "#"} Uncheck unread
+                %button.btn{:type => "button"}
+                  %i.fa.fa-repeat
+              .btn-group
+                %button.btn{:type => "button"}
+                  %i.fa.fa.fa-file-text-o
+                %button.btn{:type => "button"}
+                  %i.fa.fa-exclamation-circle
+                %button.btn{:type => "button"}
+                  %i.fa.fa-trash-o
+            .btn-toolbar.pull-right{:role => "toolbar"}
+              .btn-group
+                %button.btn{:type => "button"}
+                  %i.fa.fa-chevron-left
+                %button.btn{:type => "button"}
+                  %i.fa.fa-chevron-right
+            .pages.pull-right
+              1-50 of 825
+          %ul.mail-list
+            %li.mail-item.unread
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} Facebook
+              .m-subject
+                %span.label.label-danger> Social
+                \&nbsp;&nbsp;
+                %a{:href => "pages-show-email.html"} Reset your account password
+              .m-date 3:25 PM
+            %li.mail-item.starred
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} Dropbox
+              .m-subject
+                %a{:href => "pages-show-email.html"} Complete your Dropbox setup!
+              .m-date Yesterday, 1:15 PM
+            %li.mail-item.unread
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} Michelle Bortz
+              .m-subject
+                %span.label.label-pa-purple> Work
+                \&nbsp;&nbsp;
+                %a{:href => "pages-show-email.html"}> New design concepts
+                \&nbsp;&nbsp;
+                %i.fa.fa-paperclip
+              .m-date Mar 28
+            %li.mail-item
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} TaskManager
+              .m-subject
+                %a{:href => "pages-show-email.html"} You have 5 uncompleted tasks!
+              .m-date Mar 27
+            %li.mail-item
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} GitHub
+              .m-subject
+                %a{:href => "pages-show-email.html"} [GitHub] Your password has changed
+              .m-date Mar 26
+            %li.mail-item.starred
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} Timothy Owens
+              .m-subject
+                %span.label.label-warning> Friends
+                \&nbsp;&nbsp;
+                %a{:href => "pages-show-email.html"} Hi John! How are you?
+              .m-date Mar 25
+            %li.mail-item.starred.unread
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} Master Yoda
+              .m-subject
+                %a{:href => "pages-show-email.html"} You're ready, young padawan.
+              .m-date Mar 24
+            %li.mail-item
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} Facebook
+              .m-subject
+                %a{:href => "pages-show-email.html"} Reset your account password
+              .m-date Mar 23
+            %li.mail-item
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} Dropbox
+              .m-subject
+                %a{:href => "pages-show-email.html"} Complete your Dropbox setup!
+              .m-date Mar 22
+            %li.mail-item.unread
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} Michelle Bortz
+              .m-subject
+                %span.label.label-pa-purple> Work
+                \&nbsp;&nbsp;
+                %a{:href => "pages-show-email.html"}> New design concepts
+                \&nbsp;&nbsp;
+                %i.fa.fa-paperclip
+              .m-date Mar 21
+            %li.mail-item
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} TaskManager
+              .m-subject
+                %a{:href => "pages-show-email.html"} You have 5 uncompleted tasks!
+              .m-date Mar 20
+            %li.mail-item
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} GitHub
+              .m-subject
+                %a{:href => "pages-show-email.html"} [GitHub] Your password has changed
+              .m-date Mar 19
+            %li.mail-item
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} Timothy Owens
+              .m-subject
+                %a{:href => "pages-show-email.html"} Hi John! How are you?
+              .m-date Mar 18
+            %li.mail-item.starred
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} Master Yoda
+              .m-subject
+                %a{:href => "pages-show-email.html"} You're ready, young padawan.
+              .m-date Mar 17
+            %li.mail-item
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} Facebook
+              .m-subject
+                %span.label.label-danger> Social
+                \&nbsp;&nbsp;
+                %a{:href => "pages-show-email.html"} Reset your account password
+              .m-date Mar 16
+            %li.mail-item.starred
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} Dropbox
+              .m-subject
+                %a{:href => "pages-show-email.html"} Complete your Dropbox setup!
+              .m-date Mar 15
+            %li.mail-item
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} Michelle Bortz
+              .m-subject
+                %a{:href => "pages-show-email.html"}> New design concepts
+                \&nbsp;&nbsp;
+                %i.fa.fa-paperclip
+              .m-date Mar 14
+            %li.mail-item.starred.unread
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} Master Yoda
+              .m-subject
+                %a{:href => "pages-show-email.html"} You're ready, young padawan.
+              .m-date Mar 13
+            %li.mail-item
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} TaskManager
+              .m-subject
+                %a{:href => "pages-show-email.html"} You have 5 uncompleted tasks!
+              .m-date Mar 11
+            %li.mail-item
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} GitHub
+              .m-subject
+                %a{:href => "pages-show-email.html"} [GitHub] Your password has changed
+              .m-date Mar 10
+            %li.mail-item.starred
+              .m-chck
+                %label.px-single
+                  %input.px{:name => "", :type => "checkbox", :value => ""}/
+                  %span.lbl
+              .m-star
+                %a{:href => "#"}
+              .m-from
+                %a{:href => "#"} Timothy Owens
+              .m-subject
+                %span.label.label-warning> Friends
+                \&nbsp;&nbsp;
+                %a{:href => "pages-show-email.html"} Hi John! How are you?
+              .m-date Mar 10
+      / / #content-wrapper
+      #main-menu-bg
+    / / #main-wrapper
+    / Get jQuery from Google CDN
+    / [if !IE]>
+    :javascript
+      window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">'+"<"+"/script>");
+    / <![endif]
+    /[if lte IE 9]
+      <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">'+"<"+"/script>"); </script>
+    / Pixel Admin's javascripts
+    %script{:src => "assets/javascripts/bootstrap.min.js"}
+    %script{:src => "assets/javascripts/pixel-admin.min.js"}
+    :javascript
+      init.push(function () {
+      	// Open nav on mobile
+      	$('.mail-nav .navigation li.active a').click(function () {
+      		$('.mail-nav .navigation').toggleClass('open');
+      		return false;
+      	});
+
+      	// Make message starred/unstarred
+      	$('body').on('click', '.m-star', function () {
+      		$(this).parents('.mail-item').toggleClass('starred');
+      		return false;
+      	});
+
+      	// Fix navigation if main menu is fixed
+      	if ($('body').hasClass('main-menu-fixed')) {
+      		$('.mail-nav').addClass('fixed');
+      	}
+      })
+      window.PixelAdmin.start(init);

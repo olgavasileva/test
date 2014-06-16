@@ -1,0 +1,95 @@
+!!!
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+/ [if gt IE 9]><!
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title Invoice (Print version) - Pages - PixelAdmin
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0", :name => "viewport"}/
+    / Open Sans font from Google CDN
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
+    / Pixel Admin's stylesheets
+    %link{:href => "assets/stylesheets/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pixel-admin.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pages.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/rtl.min.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+  %body.page-invoice.page-invoice-print
+    :javascript
+      window.onload = function () {
+      	window.print();
+      };
+    .invoice
+      .invoice-header
+        %h3
+        %div
+          %small
+            %strong> Pixel
+            Admin
+          %br/
+          INVOICE #244
+        %address
+          PixelAdmin Ltd.
+          %br/
+          Los Angeles, Hoover Street, 32
+          %br/
+          90080 CA, USA
+        .invoice-date
+          %small
+            %strong Date
+          %br/
+          February 21, 2013
+      / / .invoice-header
+      .invoice-info
+        .invoice-recipient
+          %strong Mr. John Smith
+          %br/
+          New York, Pass Avenue, 109
+          %br/
+          10012 NY, USA
+        / / .invoice-recipient
+        .invoice-total
+          %span $4,657.75
+          TOTAL:
+        / / .invoice-total
+      / / .invoice-info
+      %hr/
+      .invoice-table
+        %table
+          %thead
+            %tr
+              %th
+                Task description
+              %th
+                Rate
+              %th
+                Hours
+              %th
+                Line total
+          %tbody
+            %tr
+              %td
+                Website design and development
+                .invoice-description Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+              %td
+                $50.00
+              %td
+                50
+              %td
+                $2,500.00
+            %tr
+              %td
+                Branding
+                .invoice-description Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+              %td
+                $47.95
+              %td
+                45
+              %td
+                $2,157.75
+      / / .invoice-table
+    / / .invoice

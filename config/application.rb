@@ -27,5 +27,10 @@ module LinkchatApp
     I18n.enforce_available_locales = true
 
     config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
+    config.assets.precompile += %w(clean-canvas.js clean-canvas.css)
+    config.assets.precompile += %w(pixel_admin.js pixel_admin.css)
+    config.generators do |g|
+      g.assets false   # Don't generate per-controller coffeescript files
+    end
   end
 end

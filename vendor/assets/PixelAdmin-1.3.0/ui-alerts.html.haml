@@ -1,0 +1,980 @@
+!!!
+/
+  TABLE OF CONTENTS.
+  
+  Use search to find needed section.
+  
+  \===================================================================
+  
+  |  1. $BODY                        |  Body                        |
+  |  2. $MAIN_NAVIGATION             |  Main navigation             |
+  |  3. $NAVBAR_ICON_BUTTONS         |  Navbar Icon Buttons         |
+  |  4. $MAIN_MENU                   |  Main menu                   |
+  |  5. $ALERTS                      |  Alerts                      |
+  |  6. $DARK_ALERTS                 |  Dark alerts                 |
+  |  7. $PAGE_ALERTS                 |  Page alerts                 |
+  |  8. $PAGE_DARK_ALERTS            |  Page dark alerts            |
+  |  9. $JQUERY_GROWL_NOTIFICATIONS  |  jQuery Growl notifications  |
+  |  10. $TOOLTIPS                   |  Tooltips                    |
+  |  11. $COLORFUL_TOOLTIPS          |  Colorful tooltips           |
+  |  12. $POPOVERS                   |  Popovers                    |
+  |  13. $COLORFUL_POPOVERS          |  Colorful popovers           |
+  
+  \===================================================================
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+/ [if gt IE 9]><!
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title Alerts &amp; Tooltips - UI Elements - PixelAdmin
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0", :name => "viewport"}/
+    / Open Sans font from Google CDN
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
+    / Pixel Admin's stylesheets
+    %link{:href => "assets/stylesheets/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pixel-admin.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/widgets.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/rtl.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/themes.min.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+    :css
+      .buttons-with-margins .btn {
+      	margin-bottom: 10px;
+      }
+  /
+    1. $BODY ======================================================================================
+    
+    Body
+    
+    Classes:
+    * 'theme-{THEME NAME}'
+    * 'right-to-left'      - Sets text direction to right-to-left
+    * 'main-menu-right'    - Places the main menu on the right side
+    * 'no-main-menu'       - Hides the main menu
+    * 'main-navbar-fixed'  - Fixes the main navigation
+    * 'main-menu-fixed'    - Fixes the main menu
+    * 'main-menu-animated' - Animate main menu
+  %body.theme-default.main-menu-animated
+    :javascript
+      var init = [];
+    / Demo script
+    %script{:src => "assets/demo/demo.js"}
+    / / Demo script
+    #main-wrapper
+      /
+        2. $MAIN_NAVIGATION ===========================================================================
+        
+        Main navigation
+      #main-navbar.navbar.navbar-inverse{:role => "navigation"}
+        / Main menu toggle
+        %button#main-menu-toggle{:type => "button"}
+          %i.navbar-icon.fa.fa-bars.icon
+          %span.hide-menu-text HIDE MENU
+        .navbar-inner
+          / Main navbar header
+          .navbar-header
+            / Logo
+            %a.navbar-brand{:href => "index.html"}
+            %div
+              %img{:alt => "Pixel Admin", :src => "assets/images/pixel-admin/main-navbar-logo.png"}/
+            PixelAdmin
+            / Main navbar toggle
+            %button.navbar-toggle.collapsed{"data-target" => "#main-navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+              %i.navbar-icon.fa.fa-bars
+          / / .navbar-header
+          #main-navbar-collapse.collapse.navbar-collapse.main-navbar-collapse
+            %div
+              %ul.nav.navbar-nav
+                %li
+                  %a{:href => "#"} Home
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Dropdown
+                  %ul.dropdown-menu
+                    %li
+                      %a{:href => "#"} First item
+                    %li
+                      %a{:href => "#"} Second item
+                    %li.divider
+                    %li
+                      %a{:href => "#"} Third item
+              / / .navbar-nav
+              .right.clearfix
+                %ul.nav.navbar-nav.pull-right.right-navbar-nav
+                  /
+                    3. $NAVBAR_ICON_BUTTONS =======================================================================
+                    
+                    Navbar Icon Buttons
+                    
+                    NOTE: .nav-icon-btn triggers a dropdown menu on desktop screens only. On small screens .nav-icon-btn acts like a hyperlink.
+                    
+                    Classes:
+                    * 'nav-icon-btn-info'
+                    * 'nav-icon-btn-success'
+                    * 'nav-icon-btn-warning'
+                    * 'nav-icon-btn-danger'
+                  %li.nav-icon-btn.nav-icon-btn-danger.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#notifications"}
+                      %span.label 5
+                      %i.nav-icon.fa.fa-bullhorn
+                      %span.small-screen-text Notifications
+                    / NOTIFICATIONS
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-notifications').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-notifications.no-padding{:style => "width: 300px"}
+                      #main-navbar-notifications.notifications-list
+                        .notification
+                          .notification-title.text-danger SYSTEM
+                          .notification-description
+                            %strong> Error 500
+                            \: Syntax error in index.php at line
+                            = succeed "." do
+                              %strong 461
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-danger
+                        / / .notification
+                        .notification
+                          .notification-title.text-info STORE
+                          .notification-description
+                            You have
+                            %strong 9
+                            new orders.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-truck.bg-info
+                        / / .notification
+                        .notification
+                          .notification-title.text-default CRON DAEMON
+                          .notification-description
+                            Job
+                            %strong "Clean DB"
+                            has been completed.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-clock-o.bg-default
+                        / / .notification
+                        .notification
+                          .notification-title.text-success SYSTEM
+                          .notification-description
+                            Server
+                            = succeed "." do
+                              %strong up
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-success
+                        / / .notification
+                        .notification
+                          .notification-title.text-warning SYSTEM
+                          .notification-description
+                            %strong> Warning
+                            \: Processor load
+                            = succeed "." do
+                              %strong 92%
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-warning
+                        / / .notification
+                      / / .notifications-list
+                      %a.notifications-link{:href => "#"} MORE NOTIFICATIONS
+                    / / .dropdown-menu
+                  %li.nav-icon-btn.nav-icon-btn-success.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#messages"}
+                      %span.label 10
+                      %i.nav-icon.fa.fa-envelope
+                      %span.small-screen-text Income messages
+                    / MESSAGES
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-messages').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-messages-alt.no-padding{:style => "width: 300px;"}
+                      #main-navbar-messages.messages-list
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                      / / .messages-list
+                      %a.messages-link{:href => "#"} MORE MESSAGES
+                    / / .dropdown-menu
+                  / /3. $END_NAVBAR_ICON_BUTTONS
+                  %li
+                    %form.navbar-form.pull-left
+                      %input.form-control{:placeholder => "Search", :type => "text"}/
+                  %li.dropdown
+                    %a.dropdown-toggle.user-menu{"data-toggle" => "dropdown", :href => "#"}
+                      %img{:src => "assets/demo/avatars/1.jpg"}/
+                      %span John Doe
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"}
+                          %span.label.label-warning.pull-right> New
+                          Profile
+                      %li
+                        %a{:href => "#"}
+                          %span.badge.badge-primary.pull-right> New
+                          Account
+                      %li
+                        %a{:href => "#"}
+                          %i.dropdown-icon.fa.fa-cog>
+                          \&nbsp;&nbsp;Settings
+                      %li.divider
+                      %li
+                        %a{:href => "pages-signin.html"}
+                          %i.dropdown-icon.fa.fa-power-off>
+                          \&nbsp;&nbsp;Log Out
+                / / .navbar-nav
+              / / .right
+          / / #main-navbar-collapse
+        / / .navbar-inner
+      / / #main-navbar
+      / /2. $END_MAIN_NAVIGATION
+      /
+        4. $MAIN_MENU =================================================================================
+        
+        Main menu
+        
+        Notes:
+        * to make the menu item active, add a class 'active' to the <li>
+        example: <li class="active">...</li>
+        * multilevel submenu example:
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 1</span></a>
+        <ul>
+        <li>...</li>
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 2</span></a>
+        <ul>
+        <li>...</li>
+        \...
+        </ul>
+        </li>
+        \...
+        </ul>
+        </li>
+      #main-menu{:role => "navigation"}
+        #main-menu-inner
+          #menu-content-demo.menu-content.top
+            /
+              Menu custom content demo
+              CSS:        styles/pixel-admin-less/demo.less or styles/pixel-admin-scss/_demo.scss
+              Javascript: html/assets/demo/demo.js
+            %div
+              .text-bg
+                %span.text-slim Welcome,
+                %span.text-semibold John
+              %img{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+              .btn-group
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-envelope
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-user
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-cog
+                %a.btn.btn-xs.btn-danger.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-power-off
+              %a.close{:href => "#"} &times;
+          %ul.navigation
+            %li
+              %a{:href => "index.html"}
+                %i.menu-icon.fa.fa-dashboard
+                %span.mm-text Dashboard
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-th
+                %span.mm-text Layouts
+                %span.label.label-warning Updated
+              %ul
+                %li
+                  %a{:href => "layouts-grid.html", :tabindex => "-1"}
+                    %span.mm-text Grid
+                %li
+                  %a{:href => "layouts-main-menu.html", :tabindex => "-1"}
+                    %i.menu-icon.fa.fa-th-list
+                    %span.mm-text Main menu
+                    %span.label.label-warning Updated
+            %li
+              %a{:href => "stat-panels.html"}
+                %i.menu-icon.fa.fa-tasks
+                %span.mm-text Stat panels
+            %li
+              %a{:href => "widgets.html"}
+                %i.menu-icon.fa.fa-flask
+                %span.mm-text Widgets
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-desktop
+                %span.mm-text UI elements
+              %ul
+                %li
+                  %a{:href => "ui-buttons.html", :tabindex => "-1"}
+                    %span.mm-text Buttons
+                %li
+                  %a{:href => "ui-typography.html", :tabindex => "-1"}
+                    %span.mm-text Typography
+                %li
+                  %a{:href => "ui-tabs.html", :tabindex => "-1"}
+                    %span.mm-text Tabs &amp; Accordions
+                %li
+                  %a{:href => "ui-modals.html", :tabindex => "-1"}
+                    %span.mm-text Modals
+                %li
+                  %a{:href => "ui-alerts.html", :tabindex => "-1"}
+                    %span.mm-text Alerts &amp; Tooltips
+                %li
+                  %a{:href => "ui-components.html", :tabindex => "-1"}
+                    %span.mm-text Components
+                %li
+                  %a{:href => "ui-panels.html", :tabindex => "-1"}
+                    %span.mm-text Panels
+                %li
+                  %a{:href => "ui-jqueryui.html", :tabindex => "-1"}
+                    %span.mm-text jQuery UI
+                %li
+                  %a{:href => "ui-icons.html", :tabindex => "-1"}
+                    %span.mm-text Icons
+                %li
+                  %a{:href => "ui-utility-classes.html", :tabindex => "-1"}
+                    %span.mm-text Utility classes
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-check-square
+                %span.mm-text Form components
+              %ul
+                %li
+                  %a{:href => "forms-layouts.html", :tabindex => "-1"}
+                    %span.mm-text Layouts
+                %li
+                  %a{:href => "forms-general.html", :tabindex => "-1"}
+                    %span.mm-text General
+                %li
+                  %a{:href => "forms-advanced.html", :tabindex => "-1"}
+                    %span.mm-text Advanced
+                %li
+                  %a{:href => "forms-pickers.html", :tabindex => "-1"}
+                    %span.mm-text Pickers
+                %li
+                  %a{:href => "forms-validation.html", :tabindex => "-1"}
+                    %span.mm-text Validation
+                %li
+                  %a{:href => "forms-editors.html", :tabindex => "-1"}
+                    %span.mm-text Editors
+            %li
+              %a{:href => "tables.html"}
+                %i.menu-icon.fa.fa-table
+                %span.mm-text Tables
+            %li
+              %a{:href => "charts.html"}
+                %i.menu-icon.fa.fa-bar-chart-o
+                %span.mm-text Charts
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-files-o
+                %span.mm-text Pages
+                %span.label.label-success 16
+              %ul
+                %li
+                  %a{:href => "pages-search.html", :tabindex => "-1"}
+                    %span.mm-text Search results
+                %li
+                  %a{:href => "pages-pricing.html", :tabindex => "-1"}
+                    %span.mm-text Plans &amp; pricing
+                %li
+                  %a{:href => "pages-faq.html", :tabindex => "-1"}
+                    %span.mm-text FAQ
+                %li
+                  %a{:href => "pages-profile.html", :tabindex => "-1"}
+                    %span.mm-text Profile
+                %li
+                  %a{:href => "pages-timeline.html", :tabindex => "-1"}
+                    %span.mm-text Timeline
+                %li
+                  %a{:href => "pages-signin.html", :tabindex => "-1"}
+                    %span.mm-text Sign In
+                %li
+                  %a{:href => "pages-signup.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up
+                %li
+                  %a{:href => "pages-signin-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign In Alt
+                %li
+                  %a{:href => "pages-signup-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up Alt
+                %li
+                  %a{:href => "pages-invoice.html", :tabindex => "-1"}
+                    %span.mm-text Invoice
+                %li
+                  %a{:href => "pages-404.html", :tabindex => "-1"}
+                    %span.mm-text Error 404
+                %li
+                  %a{:href => "pages-500.html", :tabindex => "-1"}
+                    %span.mm-text Error 500
+                %li.mm-dropdown
+                  %a{:href => "#"}
+                    %i.menu-icon.fa.fa-envelope
+                    %span.mm-text Messages
+                  %ul
+                    %li
+                      %a{:href => "pages-inbox.html", :tabindex => "-1"}
+                        %span.mm-text Inbox
+                    %li
+                      %a{:href => "pages-show-email.html", :tabindex => "-1"}
+                        %span.mm-text Show message
+                    %li
+                      %a{:href => "pages-new-email.html", :tabindex => "-1"}
+                        %span.mm-text New message
+                %li
+                  %a{:href => "pages-blank.html", :tabindex => "-1"}
+                    %span.mm-text Blank page
+            %li
+              %a{:href => "complete-ui.html"}
+                %i.menu-icon.fa.fa-briefcase
+                %span.mm-text Complete UI
+            %li
+              %a{:href => "color-builder.html"}
+                %i.menu-icon.fa.fa-tint
+                %span.mm-text Color Builder
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-sitemap
+                %span.mm-text Menu levels
+                %span.badge.badge-primary 6
+              %ul
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.1
+                    %span.badge.badge-danger 12
+                    %span.label.label-info 21
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.2
+                %li.mm-dropdown
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.3
+                    %span.label.label-warning 5
+                  %ul
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.1
+                    %li.mm-dropdown
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+                      %ul
+                        %li.mm-dropdown
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.1
+                          %ul
+                            %li
+                              %a{:href => "#", :tabindex => "-1"}
+                                %span.mm-text Menu level 4.1
+                        %li
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.2
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+          / / .navigation
+          .menu-content
+            %a.btn.btn-primary.btn-block.btn-outline.dark{:href => "pages-invoice.html"} Create Invoice
+        / / #main-menu-inner
+      / / #main-menu
+      / /4. $MAIN_MENU
+      #content-wrapper
+        .page-header
+          %h1
+            %span.text-light-gray> UI Elements /
+            Alerts &amp; Tooltips
+        / / .page-header
+        .row
+          .col-sm-6
+            /
+              5. $ALERTS ====================================================================================
+              
+              Alerts
+            .panel
+              .panel-heading
+                %span.panel-title Alerts
+              .panel-body
+                .alert
+                  %button.close{"data-dismiss" => "alert", :type => "button"} ×
+                  %strong Warning!
+                  Best check yo self, you're not looking too good.
+                .alert.alert-danger
+                  %button.close{"data-dismiss" => "alert", :type => "button"} ×
+                  %strong Oh snap!
+                  Change a few things up and try submitting again.
+                .alert.alert-success
+                  %button.close{"data-dismiss" => "alert", :type => "button"} ×
+                  %strong Well done!
+                  You successfully read this important alert message.
+                .alert.alert-info
+                  %button.close{"data-dismiss" => "alert", :type => "button"} ×
+                  %strong Heads up!
+                  This alert needs your attention, but it's not super important.
+            / /5. $ALERTS
+          .col-sm-6
+            /
+              6. $DARK_ALERTS ===============================================================================
+              
+              Dark alerts
+            .panel
+              .panel-heading
+                %span.panel-title Dark alerts
+              .panel-body
+                .alert.alert-dark
+                  %button.close{"data-dismiss" => "alert", :type => "button"} ×
+                  %strong Warning!
+                  Best check yo self, you're not looking too good.
+                .alert.alert-danger.alert-dark
+                  %button.close{"data-dismiss" => "alert", :type => "button"} ×
+                  %strong Oh snap!
+                  Change a few things up and try submitting again.
+                .alert.alert-success.alert-dark
+                  %button.close{"data-dismiss" => "alert", :type => "button"} ×
+                  %strong Well done!
+                  You successfully read this important alert message.
+                .alert.alert-info.alert-dark
+                  %button.close{"data-dismiss" => "alert", :type => "button"} ×
+                  %strong Heads up!
+                  This alert needs your attention, but it's not super important.
+            / /6. $DARK_ALERTS
+        .row
+          .col-sm-6
+            /
+              7. $PAGE_ALERTS ===============================================================================
+              
+              Page alerts
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$('#page-alerts-demo').on('click', 'button', function () {
+              		var $this = $(this);
+              		// Go to the top
+              		$('html,body').animate({ scrollTop: 0 }, 500);
+              		// Wait while page is scrolling
+              		setTimeout(function () {
+              			if ($this.hasClass('page-alerts-clear-btn')) {
+              				PixelAdmin.plugins.alerts.clear(
+              					true, // animate
+              					'pa_page_alerts_default' // namespace
+              				);
+              			} else {
+              				var options = {
+              					type: $this.attr('data-type'),
+              					namespace: 'pa_page_alerts_default'
+              				};
+              				if ($this.hasClass('auto-close-alert'))
+              					options['auto_close'] = 3; // seconds
+              				PixelAdmin.plugins.alerts.add($this.attr('data-text'), options);
+              			}
+              		}, 800);
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Page alerts
+              #page-alerts-demo.panel-body.buttons-with-margins
+                %button.btn.btn-small.btn-warning{"data-text" => "<strong>Warning!</strong> Best check yo self, you're not looking too good.", "data-type" => "warning"}> Add warning
+                \&nbsp;&nbsp;
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-small.btn-danger{"data-text" => "<strong>Oh snap!</strong> Change a few things up and try submitting again.", "data-type" => "danger"} Add error
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-small.btn-success{"data-text" => "<strong>Well done!</strong> You successfully read this important alert message.", "data-type" => "success"} Add success
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-small.btn-info{"data-text" => "<strong>Heads up!</strong> This alert needs your attention, but it's not super important.", "data-type" => "info"} Add info
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-small.btn-primary.auto-close-alert{"data-text" => "<strong>Warning!</strong> Best check yo self, you're not looking too good.", "data-type" => "warning"} Auto closing alert
+                %button.btn.btn-small.page-alerts-clear-btn Clear alerts
+            / /7. $PAGE_ALERTS
+          .col-sm-6
+            /
+              8. $PAGE_DARK_ALERTS ==========================================================================
+              
+              Page dark alerts
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$('#page-alerts-dark-demo').on('click', 'button', function () {
+              		var $this = $(this);
+              		// Go to the top
+              		$('html,body').animate({ scrollTop: 0 }, 500);
+              		// Wait while page is scrolling
+              		setTimeout(function () {
+              			if ($this.hasClass('page-alerts-clear-btn')) {
+              				PixelAdmin.plugins.alerts.clear(
+              					true, // animate
+              					'pa_page_alerts_dark' // namespace
+              				);
+              			} else {
+              				var options = {
+              					type: $this.attr('data-type'),
+              					namespace: 'pa_page_alerts_dark',
+              					classes: 'alert-dark' // add custom classes
+              				};
+              				if ($this.hasClass('auto-close-alert'))
+              					options['auto_close'] = 3; // seconds
+              				PixelAdmin.plugins.alerts.add($this.attr('data-text'), options);
+              			}
+              		}, 800);
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Page dark alerts
+              #page-alerts-dark-demo.panel-body.buttons-with-margins
+                %button.btn.btn-small.btn-warning{"data-text" => "<strong>Warning!</strong> Best check yo self, you're not looking too good.", "data-type" => "warning"}> Add warning
+                \&nbsp;&nbsp;
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-small.btn-danger{"data-text" => "<strong>Oh snap!</strong> Change a few things up and try submitting again.", "data-type" => "danger"} Add error
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-small.btn-success{"data-text" => "<strong>Well done!</strong> You successfully read this important alert message.", "data-type" => "success"} Add success
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-small.btn-info{"data-text" => "<strong>Heads up!</strong> This alert needs your attention, but it's not super important.", "data-type" => "info"} Add info
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-small.btn-primary.auto-close-alert{"data-text" => "<strong>Warning!</strong> Best check yo self, you're not looking too good.", "data-type" => "warning"} Auto closing alert
+                %button.btn.btn-small.page-alerts-clear-btn Clear alerts
+            / /8. $PAGE_DARK_ALERTS
+        .row
+          .col-sm-12
+            /
+              9. $JQUERY_GROWL_NOTIFICATIONS ================================================================
+              
+              jQuery Growl notifications
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$('#jq-growl-default').click(function () {
+              		$.growl({ title: "Growl", message: "The kitten is awake!" });
+              	});
+              	$('#jq-growl-error').click(function () {
+              		$.growl.error({ message: "The kitten is attacking!" });
+              	});
+              	$('#jq-growl-notice').click(function () {
+              		$.growl.notice({ message: "The kitten is cute!" });
+              	});
+              	$('#jq-growl-warning').click(function () {
+              		$.growl.warning({ message: "The kitten is ugly!" });
+              	});
+              	$('#jq-growl-small').click(function () {
+              		$.growl({ title: "Growl", message: "The kitten is awake!", size: 'small' });
+              	});
+              	$('#jq-growl-large').click(function () {
+              		$.growl({ title: "Growl", message: "The kitten is awake!", size: 'large' });
+              	});
+              	$('#jq-growl-static').click(function () {
+              		$.growl({ title: "Growl", message: "The kitten is awake!", duration: 9999*9999 });
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title jQuery Growl notifications
+              .panel-body.buttons-with-margins
+                %button#jq-growl-default.btn> Default
+                \&nbsp;&nbsp;&nbsp;
+                = succeed "&amp;nbsp;&amp;nbsp;&amp;nbsp;" do
+                  %button#jq-growl-error.btn.btn-danger Error
+                = succeed "&amp;nbsp;&amp;nbsp;&amp;nbsp;" do
+                  %button#jq-growl-notice.btn.btn-success Notice
+                = succeed "&amp;nbsp;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&amp;nbsp;" do
+                  %button#jq-growl-warning.btn.btn-warning Warning
+                = succeed "&amp;nbsp;&amp;nbsp;&amp;nbsp;" do
+                  %button#jq-growl-small.btn Small
+                = succeed "&amp;nbsp;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&amp;nbsp;" do
+                  %button#jq-growl-large.btn Large
+                = succeed "&amp;nbsp;&amp;nbsp;&amp;nbsp;" do
+                  %button#jq-growl-static.btn Static
+            / /9. $PAGE_DARK_ALERTS
+        .row
+          .col-sm-6
+            /
+              10. $TOOLTIPS =================================================================================
+              
+              Tooltips
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$('#tooltips-demo button').tooltip();
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Tooltips
+              #tooltips-demo.panel-body.buttons-with-margins
+                / On the left
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn{"data-original-title" => "Tooltip on left", "data-placement" => "left", "data-toggle" => "tooltip", :title => "", :type => "button"} Tooltip on left
+                / On the top
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn{"data-original-title" => "Tooltip on top", "data-placement" => "top", "data-toggle" => "tooltip", :title => "", :type => "button"} Tooltip on top
+                / On the bottom
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn{"data-original-title" => "Tooltip on bottom", "data-placement" => "bottom", "data-toggle" => "tooltip", :title => "", :type => "button"} Tooltip on bottom
+                / On the right
+                %button.btn{"data-original-title" => "Tooltip on right", "data-placement" => "right", "data-toggle" => "tooltip", :title => "", :type => "button"} Tooltip on right
+            / /10. $TOOLTIPS
+          .col-sm-6
+            /
+              11. $COLORFUL_TOOLTIPS ========================================================================
+              
+              Colorful tooltips
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$('#c-tooltips-demo button').tooltip();
+              });
+            / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Colorful tooltips
+              #c-tooltips-demo.panel-body.buttons-with-margins
+                / Success
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-success.tooltip-success{"data-original-title" => "Tooltip on left", "data-placement" => "left", "data-toggle" => "tooltip", :title => "", :type => "button"} Success Tooltip
+                / Danger
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-danger.tooltip-danger{"data-original-title" => "Tooltip on top", "data-placement" => "top", "data-toggle" => "tooltip", :title => "", :type => "button"} Danger Tooltip
+                / Warning
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-warning.tooltip-warning{"data-original-title" => "Tooltip on bottom", "data-placement" => "bottom", "data-toggle" => "tooltip", :title => "", :type => "button"} Warning Tooltip
+                / Info
+                %button.btn.btn-info.tooltip-info{"data-original-title" => "Tooltip on right", "data-placement" => "right", "data-toggle" => "tooltip", :title => "", :type => "button"} Info Tooltip
+            / /11. $COLORFUL_TOOLTIPS
+        .row
+          .col-sm-6
+            /
+              12. $POPOVERS =================================================================================
+              
+              Popovers
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$('#popovers-demo button').popover();
+              });
+            / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Popovers
+              #popovers-demo.panel-body.buttons-with-margins
+                / On the right
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn{"data-content" => "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "right", "data-title" => "Popover title", "data-toggle" => "popover", :title => "", :type => "button"}
+                    Popover on right
+                / On the top
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn{"data-content" => "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "top", "data-title" => "Popover title", "data-toggle" => "popover", :title => "", :type => "button"}
+                    Popover on top
+                / On the bottom
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn{"data-content" => "Vivamus\r\n\t\t\t\t\t\tsagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "bottom", "data-title" => "Popover title", "data-toggle" => "popover", :title => "", :type => "button"}
+                    Popover on bottom
+                / On the left
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn{"data-content" => "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "left", "data-title" => "Popover title", "data-toggle" => "popover", :title => "", :type => "button"}
+                    Popover on left
+                / Without title
+                %button.btn{"data-content" => "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "top", "data-toggle" => "popover", :title => "", :type => "button"}
+                  Without title
+            / /12. $POPOVERS
+          .col-sm-6
+            /
+              13. $COLORFUL_POPOVERS ========================================================================
+              
+              Colorful popovers
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$('#s-popovers-demo button').popover();
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Colorful popovers
+              #s-popovers-demo.panel-body.buttons-with-margins
+                / Light popovers
+                .row
+                  .col-md-12
+                    / Success
+                    = succeed "&amp;nbsp;&amp;nbsp;" do
+                      %button.btn.btn-success.popover-success{"data-content" => "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "right", "data-title" => "Success default", "data-toggle" => "popover", :title => "", :type => "button"}
+                        Success
+                    / Danger
+                    = succeed "&amp;nbsp;&amp;nbsp;" do
+                      %button.btn.btn-danger.popover-danger{"data-content" => "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "top", "data-title" => "Danger default", "data-toggle" => "popover", :title => "", :type => "button"}
+                        Danger
+                    / Warning
+                    = succeed "&amp;nbsp;&amp;nbsp;" do
+                      %button.btn.btn-warning.popover-warning{"data-content" => "Vivamus\r\n\t\t\t\t\t\t\t\tsagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "bottom", "data-title" => "Warning default", "data-toggle" => "popover", :title => "", :type => "button"}
+                        Warning
+                    / Info
+                    %button.btn.btn-info.popover-info{"data-content" => "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "left", "data-title" => "Info default", "data-toggle" => "popover", :title => "", :type => "button"}
+                      Info
+                / / Light popovers
+                / Dark popovers
+                .row
+                  .col-md-12
+                    / Success
+                    = succeed "&amp;nbsp;&amp;nbsp;" do
+                      %button.btn.btn-success.popover-success.popover-dark{"data-content" => "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "right", "data-title" => "Success dark", "data-toggle" => "popover", :title => "", :type => "button"}
+                        Success dark
+                    / Danger
+                    = succeed "&amp;nbsp;&amp;nbsp;" do
+                      %button.btn.btn-danger.popover-danger.popover-dark{"data-content" => "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "top", "data-title" => "Danger dark", "data-toggle" => "popover", :title => "", :type => "button"}
+                        Danger dark
+                    / Warning
+                    = succeed "&amp;nbsp;&amp;nbsp;" do
+                      %button.btn.btn-warning.popover-warning.popover-dark{"data-content" => "Vivamus\r\n\t\t\t\t\t\t\t\tsagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "bottom", "data-title" => "Warning dark", "data-toggle" => "popover", :title => "", :type => "button"}
+                        Warning dark
+                    / Info
+                    %button.btn.btn-info.popover-info.popover-dark{"data-content" => "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "left", "data-title" => "Info dark", "data-toggle" => "popover", :title => "", :type => "button"}
+                      Info dark
+                / / Dark popovers
+                / Light colorful popovers
+                .row
+                  .col-md-12
+                    / Success
+                    = succeed "&amp;nbsp;&amp;nbsp;" do
+                      %button.btn.btn-success.popover-success.popover-colorful{"data-content" => "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "right", "data-title" => "Success default - Colorful", "data-toggle" => "popover", :title => "", :type => "button"}
+                        Success - Colorful
+                    / Danger
+                    = succeed "&amp;nbsp;&amp;nbsp;" do
+                      %button.btn.btn-danger.popover-danger.popover-colorful{"data-content" => "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "top", "data-title" => "Danger default - Colorful", "data-toggle" => "popover", :title => "", :type => "button"}
+                        Danger - Colorful
+                    / Warning
+                    = succeed "&amp;nbsp;&amp;nbsp;" do
+                      %button.btn.btn-warning.popover-warning.popover-colorful{"data-content" => "Vivamus\r\n\t\t\t\t\t\t\t\tsagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "bottom", "data-title" => "Warning default - Colorful", "data-toggle" => "popover", :title => "", :type => "button"}
+                        Warning - Colorful
+                    / Info
+                    %button.btn.btn-info.popover-info.popover-colorful{"data-content" => "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "left", "data-title" => "Info default - Colorful", "data-toggle" => "popover", :title => "", :type => "button"}
+                      Info - Colorful
+                / / Light colorful popovers
+                / Dark colorful popovers
+                .row
+                  .col-md-12
+                    / Success
+                    = succeed "&amp;nbsp;&amp;nbsp;" do
+                      %button.btn.btn-success.popover-success.popover-dark.popover-colorful{"data-content" => "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "right", "data-title" => "Success dark - Colorful", "data-toggle" => "popover", :title => "", :type => "button"}
+                        Success dark - Colorful
+                    / Danger
+                    = succeed "&amp;nbsp;&amp;nbsp;" do
+                      %button.btn.btn-danger.popover-danger.popover-dark.popover-colorful{"data-content" => "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "top", "data-title" => "Danger dark - Colorful", "data-toggle" => "popover", :title => "", :type => "button"}
+                        Danger dark - Colorful
+                    / Warning
+                    = succeed "&amp;nbsp;&amp;nbsp;" do
+                      %button.btn.btn-warning.popover-warning.popover-dark.popover-colorful{"data-content" => "Vivamus\r\n\t\t\t\t\t\t\t\tsagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "bottom", "data-title" => "Warning dark - Colorful", "data-toggle" => "popover", :title => "", :type => "button"}
+                        Warning dark - Colorful
+                    / Info
+                    %button.btn.btn-info.popover-info.popover-dark.popover-colorful{"data-content" => "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.", "data-original-title" => "", "data-placement" => "left", "data-title" => "Info dark - Colorful", "data-toggle" => "popover", :title => "", :type => "button"}
+                      Info dark - Colorful
+                / / Dark colorful popovers
+            / /13. $COLORFUL_POPOVERS
+      / / #content-wrapper
+      #main-menu-bg
+    / / #main-wrapper
+    / Get jQuery from Google CDN
+    / [if !IE]>
+    :javascript
+      window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">'+"<"+"/script>");
+    / <![endif]
+    /[if lte IE 9]
+      <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">'+"<"+"/script>"); </script>
+    / Pixel Admin's javascripts
+    %script{:src => "assets/javascripts/bootstrap.min.js"}
+    %script{:src => "assets/javascripts/pixel-admin.min.js"}
+    :javascript
+      init.push(function () {
+      	// Javascript code here
+      })
+      window.PixelAdmin.start(init);

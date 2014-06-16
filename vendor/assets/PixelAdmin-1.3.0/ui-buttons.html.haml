@@ -1,0 +1,1243 @@
+!!!
+/
+  TABLE OF CONTENTS.
+  
+  Use search to find needed section.
+  
+  \============================================================
+  
+  |  1. $BODY                     |  Body                    |
+  |  2. $MAIN_NAVIGATION          |  Main navigation         |
+  |  3. $NAVBAR_ICON_BUTTONS      |  Navbar Icon Buttons     |
+  |  4. $MAIN_MENU                |  Main menu               |
+  |  5. $DEFAULT_BUTTONS          |  Default buttons         |
+  |  6. $ROUNDED_BUTTONS          |  Rounded buttons         |
+  |  7. $FLAT_BUTTONS             |  Flat buttons            |
+  |  8. $BUTTONS_WITH_LABELS      |  Buttons with labels     |
+  |  9. $BUTTON_DROPDOWNS         |  Button dropdowns        |
+  |  10. $SPLIT_BUTTON_DROPDOWNS  |  Split button dropdowns  |
+  |  11. $BOOTSTRAP_BUTTONS       |  Bootstrap buttons       |
+  |  12. $BUTTON_SIZES            |  Button sizes            |
+  |  13. $OUTLINE_BUTTONS         |  Outline buttons         |
+  |  14. $DISABLED_BUTTONS        |  Disabled buttons        |
+  |  15. $BUTTON_GROUPS           |  Button groups           |
+  
+  \============================================================
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+/ [if gt IE 9]><!
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title Buttons - UI Elements - PixelAdmin
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0", :name => "viewport"}/
+    / Open Sans font from Google CDN
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
+    / Pixel Admin's stylesheets
+    %link{:href => "assets/stylesheets/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pixel-admin.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/widgets.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/rtl.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/themes.min.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+    :css
+      .buttons-with-margins .btn {
+      	margin-bottom: 10px;
+      }
+  /
+    1. $BODY ======================================================================================
+    
+    Body
+    
+    Classes:
+    * 'theme-{THEME NAME}'
+    * 'right-to-left'      - Sets text direction to right-to-left
+    * 'main-menu-right'    - Places the main menu on the right side
+    * 'no-main-menu'       - Hides the main menu
+    * 'main-navbar-fixed'  - Fixes the main navigation
+    * 'main-menu-fixed'    - Fixes the main menu
+    * 'main-menu-animated' - Animate main menu
+  %body.theme-default.main-menu-animated
+    :javascript
+      var init = [];
+    / Demo script
+    %script{:src => "assets/demo/demo.js"}
+    / / Demo script
+    #main-wrapper
+      /
+        2. $MAIN_NAVIGATION ===========================================================================
+        
+        Main navigation
+      #main-navbar.navbar.navbar-inverse{:role => "navigation"}
+        / Main menu toggle
+        %button#main-menu-toggle{:type => "button"}
+          %i.navbar-icon.fa.fa-bars.icon
+          %span.hide-menu-text HIDE MENU
+        .navbar-inner
+          / Main navbar header
+          .navbar-header
+            / Logo
+            %a.navbar-brand{:href => "index.html"}
+            %div
+              %img{:alt => "Pixel Admin", :src => "assets/images/pixel-admin/main-navbar-logo.png"}/
+            PixelAdmin
+            / Main navbar toggle
+            %button.navbar-toggle.collapsed{"data-target" => "#main-navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+              %i.navbar-icon.fa.fa-bars
+          / / .navbar-header
+          #main-navbar-collapse.collapse.navbar-collapse.main-navbar-collapse
+            %div
+              %ul.nav.navbar-nav
+                %li
+                  %a{:href => "#"} Home
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Dropdown
+                  %ul.dropdown-menu
+                    %li
+                      %a{:href => "#"} First item
+                    %li
+                      %a{:href => "#"} Second item
+                    %li.divider
+                    %li
+                      %a{:href => "#"} Third item
+              / / .navbar-nav
+              .right.clearfix
+                %ul.nav.navbar-nav.pull-right.right-navbar-nav
+                  /
+                    3. $NAVBAR_ICON_BUTTONS =======================================================================
+                    
+                    Navbar Icon Buttons
+                    
+                    NOTE: .nav-icon-btn triggers a dropdown menu on desktop screens only. On small screens .nav-icon-btn acts like a hyperlink.
+                    
+                    Classes:
+                    * 'nav-icon-btn-info'
+                    * 'nav-icon-btn-success'
+                    * 'nav-icon-btn-warning'
+                    * 'nav-icon-btn-danger'
+                  %li.nav-icon-btn.nav-icon-btn-danger.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#notifications"}
+                      %span.label 5
+                      %i.nav-icon.fa.fa-bullhorn
+                      %span.small-screen-text Notifications
+                    / NOTIFICATIONS
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-notifications').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-notifications.no-padding{:style => "width: 300px"}
+                      #main-navbar-notifications.notifications-list
+                        .notification
+                          .notification-title.text-danger SYSTEM
+                          .notification-description
+                            %strong> Error 500
+                            \: Syntax error in index.php at line
+                            = succeed "." do
+                              %strong 461
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-danger
+                        / / .notification
+                        .notification
+                          .notification-title.text-info STORE
+                          .notification-description
+                            You have
+                            %strong 9
+                            new orders.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-truck.bg-info
+                        / / .notification
+                        .notification
+                          .notification-title.text-default CRON DAEMON
+                          .notification-description
+                            Job
+                            %strong "Clean DB"
+                            has been completed.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-clock-o.bg-default
+                        / / .notification
+                        .notification
+                          .notification-title.text-success SYSTEM
+                          .notification-description
+                            Server
+                            = succeed "." do
+                              %strong up
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-success
+                        / / .notification
+                        .notification
+                          .notification-title.text-warning SYSTEM
+                          .notification-description
+                            %strong> Warning
+                            \: Processor load
+                            = succeed "." do
+                              %strong 92%
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-warning
+                        / / .notification
+                      / / .notifications-list
+                      %a.notifications-link{:href => "#"} MORE NOTIFICATIONS
+                    / / .dropdown-menu
+                  %li.nav-icon-btn.nav-icon-btn-success.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#messages"}
+                      %span.label 10
+                      %i.nav-icon.fa.fa-envelope
+                      %span.small-screen-text Income messages
+                    / MESSAGES
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-messages').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-messages-alt.no-padding{:style => "width: 300px;"}
+                      #main-navbar-messages.messages-list
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                      / / .messages-list
+                      %a.messages-link{:href => "#"} MORE MESSAGES
+                    / / .dropdown-menu
+                  / /3. $END_NAVBAR_ICON_BUTTONS
+                  %li
+                    %form.navbar-form.pull-left
+                      %input.form-control{:placeholder => "Search", :type => "text"}/
+                  %li.dropdown
+                    %a.dropdown-toggle.user-menu{"data-toggle" => "dropdown", :href => "#"}
+                      %img{:src => "assets/demo/avatars/1.jpg"}/
+                      %span John Doe
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"}
+                          %span.label.label-warning.pull-right> New
+                          Profile
+                      %li
+                        %a{:href => "#"}
+                          %span.badge.badge-primary.pull-right> New
+                          Account
+                      %li
+                        %a{:href => "#"}
+                          %i.dropdown-icon.fa.fa-cog>
+                          \&nbsp;&nbsp;Settings
+                      %li.divider
+                      %li
+                        %a{:href => "pages-signin.html"}
+                          %i.dropdown-icon.fa.fa-power-off>
+                          \&nbsp;&nbsp;Log Out
+                / / .navbar-nav
+              / / .right
+          / / #main-navbar-collapse
+        / / .navbar-inner
+      / / #main-navbar
+      / /2. $END_MAIN_NAVIGATION
+      /
+        4. $MAIN_MENU =================================================================================
+        
+        Main menu
+        
+        Notes:
+        * to make the menu item active, add a class 'active' to the <li>
+        example: <li class="active">...</li>
+        * multilevel submenu example:
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 1</span></a>
+        <ul>
+        <li>...</li>
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 2</span></a>
+        <ul>
+        <li>...</li>
+        \...
+        </ul>
+        </li>
+        \...
+        </ul>
+        </li>
+      #main-menu{:role => "navigation"}
+        #main-menu-inner
+          #menu-content-demo.menu-content.top
+            /
+              Menu custom content demo
+              CSS:        styles/pixel-admin-less/demo.less or styles/pixel-admin-scss/_demo.scss
+              Javascript: html/assets/demo/demo.js
+            %div
+              .text-bg
+                %span.text-slim Welcome,
+                %span.text-semibold John
+              %img{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+              .btn-group
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-envelope
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-user
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-cog
+                %a.btn.btn-xs.btn-danger.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-power-off
+              %a.close{:href => "#"} &times;
+          %ul.navigation
+            %li
+              %a{:href => "index.html"}
+                %i.menu-icon.fa.fa-dashboard
+                %span.mm-text Dashboard
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-th
+                %span.mm-text Layouts
+                %span.label.label-warning Updated
+              %ul
+                %li
+                  %a{:href => "layouts-grid.html", :tabindex => "-1"}
+                    %span.mm-text Grid
+                %li
+                  %a{:href => "layouts-main-menu.html", :tabindex => "-1"}
+                    %i.menu-icon.fa.fa-th-list
+                    %span.mm-text Main menu
+                    %span.label.label-warning Updated
+            %li
+              %a{:href => "stat-panels.html"}
+                %i.menu-icon.fa.fa-tasks
+                %span.mm-text Stat panels
+            %li
+              %a{:href => "widgets.html"}
+                %i.menu-icon.fa.fa-flask
+                %span.mm-text Widgets
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-desktop
+                %span.mm-text UI elements
+              %ul
+                %li
+                  %a{:href => "ui-buttons.html", :tabindex => "-1"}
+                    %span.mm-text Buttons
+                %li
+                  %a{:href => "ui-typography.html", :tabindex => "-1"}
+                    %span.mm-text Typography
+                %li
+                  %a{:href => "ui-tabs.html", :tabindex => "-1"}
+                    %span.mm-text Tabs &amp; Accordions
+                %li
+                  %a{:href => "ui-modals.html", :tabindex => "-1"}
+                    %span.mm-text Modals
+                %li
+                  %a{:href => "ui-alerts.html", :tabindex => "-1"}
+                    %span.mm-text Alerts &amp; Tooltips
+                %li
+                  %a{:href => "ui-components.html", :tabindex => "-1"}
+                    %span.mm-text Components
+                %li
+                  %a{:href => "ui-panels.html", :tabindex => "-1"}
+                    %span.mm-text Panels
+                %li
+                  %a{:href => "ui-jqueryui.html", :tabindex => "-1"}
+                    %span.mm-text jQuery UI
+                %li
+                  %a{:href => "ui-icons.html", :tabindex => "-1"}
+                    %span.mm-text Icons
+                %li
+                  %a{:href => "ui-utility-classes.html", :tabindex => "-1"}
+                    %span.mm-text Utility classes
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-check-square
+                %span.mm-text Form components
+              %ul
+                %li
+                  %a{:href => "forms-layouts.html", :tabindex => "-1"}
+                    %span.mm-text Layouts
+                %li
+                  %a{:href => "forms-general.html", :tabindex => "-1"}
+                    %span.mm-text General
+                %li
+                  %a{:href => "forms-advanced.html", :tabindex => "-1"}
+                    %span.mm-text Advanced
+                %li
+                  %a{:href => "forms-pickers.html", :tabindex => "-1"}
+                    %span.mm-text Pickers
+                %li
+                  %a{:href => "forms-validation.html", :tabindex => "-1"}
+                    %span.mm-text Validation
+                %li
+                  %a{:href => "forms-editors.html", :tabindex => "-1"}
+                    %span.mm-text Editors
+            %li
+              %a{:href => "tables.html"}
+                %i.menu-icon.fa.fa-table
+                %span.mm-text Tables
+            %li
+              %a{:href => "charts.html"}
+                %i.menu-icon.fa.fa-bar-chart-o
+                %span.mm-text Charts
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-files-o
+                %span.mm-text Pages
+                %span.label.label-success 16
+              %ul
+                %li
+                  %a{:href => "pages-search.html", :tabindex => "-1"}
+                    %span.mm-text Search results
+                %li
+                  %a{:href => "pages-pricing.html", :tabindex => "-1"}
+                    %span.mm-text Plans &amp; pricing
+                %li
+                  %a{:href => "pages-faq.html", :tabindex => "-1"}
+                    %span.mm-text FAQ
+                %li
+                  %a{:href => "pages-profile.html", :tabindex => "-1"}
+                    %span.mm-text Profile
+                %li
+                  %a{:href => "pages-timeline.html", :tabindex => "-1"}
+                    %span.mm-text Timeline
+                %li
+                  %a{:href => "pages-signin.html", :tabindex => "-1"}
+                    %span.mm-text Sign In
+                %li
+                  %a{:href => "pages-signup.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up
+                %li
+                  %a{:href => "pages-signin-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign In Alt
+                %li
+                  %a{:href => "pages-signup-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up Alt
+                %li
+                  %a{:href => "pages-invoice.html", :tabindex => "-1"}
+                    %span.mm-text Invoice
+                %li
+                  %a{:href => "pages-404.html", :tabindex => "-1"}
+                    %span.mm-text Error 404
+                %li
+                  %a{:href => "pages-500.html", :tabindex => "-1"}
+                    %span.mm-text Error 500
+                %li.mm-dropdown
+                  %a{:href => "#"}
+                    %i.menu-icon.fa.fa-envelope
+                    %span.mm-text Messages
+                  %ul
+                    %li
+                      %a{:href => "pages-inbox.html", :tabindex => "-1"}
+                        %span.mm-text Inbox
+                    %li
+                      %a{:href => "pages-show-email.html", :tabindex => "-1"}
+                        %span.mm-text Show message
+                    %li
+                      %a{:href => "pages-new-email.html", :tabindex => "-1"}
+                        %span.mm-text New message
+                %li
+                  %a{:href => "pages-blank.html", :tabindex => "-1"}
+                    %span.mm-text Blank page
+            %li
+              %a{:href => "complete-ui.html"}
+                %i.menu-icon.fa.fa-briefcase
+                %span.mm-text Complete UI
+            %li
+              %a{:href => "color-builder.html"}
+                %i.menu-icon.fa.fa-tint
+                %span.mm-text Color Builder
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-sitemap
+                %span.mm-text Menu levels
+                %span.badge.badge-primary 6
+              %ul
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.1
+                    %span.badge.badge-danger 12
+                    %span.label.label-info 21
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.2
+                %li.mm-dropdown
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.3
+                    %span.label.label-warning 5
+                  %ul
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.1
+                    %li.mm-dropdown
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+                      %ul
+                        %li.mm-dropdown
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.1
+                          %ul
+                            %li
+                              %a{:href => "#", :tabindex => "-1"}
+                                %span.mm-text Menu level 4.1
+                        %li
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.2
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+          / / .navigation
+          .menu-content
+            %a.btn.btn-primary.btn-block.btn-outline.dark{:href => "pages-invoice.html"} Create Invoice
+        / / #main-menu-inner
+      / / #main-menu
+      / /4. $MAIN_MENU
+      #content-wrapper
+        .page-header
+          %h1
+            %span.text-light-gray> UI Elements /
+            Buttons
+        / / .page-header
+        .row
+          .col-sm-6
+            /
+              5. $DEFAULT_BUTTONS ===========================================================================
+              
+              Default buttons
+            .panel
+              .panel-heading
+                %span.panel-title Default buttons
+              .panel-body.buttons-with-margins
+                %button.btn Default
+                \&nbsp;&nbsp;
+                %button.btn.btn-primary Primary
+                \&nbsp;&nbsp;
+                %button.btn.btn-info Info
+                \&nbsp;&nbsp;
+                %button.btn.btn-success Success
+                \&nbsp;&nbsp;
+                %button.btn.btn-warning Warning
+                \&nbsp;&nbsp;
+                %button.btn.btn-danger Danger
+            / /5. $DEFAULT_BUTTONS
+            /
+              6. $ROUNDED_BUTTONS ===========================================================================
+              
+              Rounded buttons
+            .panel
+              .panel-heading
+                %span.panel-title Rounded buttons
+              .panel-body.buttons-with-margins
+                %button.btn.btn-rounded Default
+                \&nbsp;&nbsp;
+                %button.btn.btn-primary.btn-rounded Primary
+                \&nbsp;&nbsp;
+                %button.btn.btn-info.btn-rounded Info
+                \&nbsp;&nbsp;
+                %button.btn.btn-success.btn-rounded Success
+                \&nbsp;&nbsp;
+                %button.btn.btn-warning.btn-rounded Warning
+                \&nbsp;&nbsp;
+                %button.btn.btn-danger.btn-rounded Danger
+            / /6. $ROUNDED_BUTTONS
+            /
+              7. $FLAT_BUTTONS ==============================================================================
+              
+              Flat buttons
+            .panel
+              .panel-heading
+                %span.panel-title Flat buttons
+              .panel-body.buttons-with-margins
+                %button.btn.btn-flat Default
+                \&nbsp;&nbsp;
+                %button.btn.btn-primary.btn-flat Primary
+                \&nbsp;&nbsp;
+                %button.btn.btn-info.btn-flat Info
+                \&nbsp;&nbsp;
+                %button.btn.btn-success.btn-flat Success
+                \&nbsp;&nbsp;
+                %button.btn.btn-warning.btn-flat Warning
+                \&nbsp;&nbsp;
+                %button.btn.btn-danger.btn-flat Danger
+            / /7. $FLAT_BUTTONS
+            /
+              8. $BUTTONS_WITH_LABELS =======================================================================
+              
+              Buttons with labels
+            .panel
+              .panel-heading
+                %span.panel-title Buttons with labels
+              .panel-body.buttons-with-margins
+                / Default buttons
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-lg.btn-labeled
+                    %span.btn-label.icon.fa.fa-camera-retro>
+                    Large
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-labeled.btn-primary
+                    %span.btn-label.icon.fa.fa-camera-retro>
+                    Default
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-sm.btn-labeled.btn-success
+                    %span.btn-label.icon.fa.fa-camera-retro>
+                    Small
+                %button.btn.btn-xs.btn-labeled.btn-danger
+                  %span.btn-label.icon.fa.fa-camera-retro>
+                  Extra small
+                %br/
+                %br/
+                / Outline buttons
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-outline.btn-lg.btn-labeled
+                    %span.btn-label.icon.fa.fa-camera-retro>
+                    Large
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-outline.btn-labeled.btn-primary
+                    %span.btn-label.icon.fa.fa-camera-retro>
+                    Default
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-outline.btn-sm.btn-labeled.btn-success
+                    %span.btn-label.icon.fa.fa-camera-retro>
+                    Small
+                %button.btn.btn-outline.btn-xs.btn-labeled.btn-danger
+                  %span.btn-label.icon.fa.fa-camera-retro>
+                  Extra small
+                %br/
+                %br/
+                / Flat buttons
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-flat.btn-lg.btn-labeled
+                    %span.btn-label.icon.fa.fa-camera-retro>
+                    Large
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-flat.btn-labeled.btn-primary
+                    %span.btn-label.icon.fa.fa-camera-retro>
+                    Default
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-flat.btn-sm.btn-labeled.btn-success
+                    %span.btn-label.icon.fa.fa-camera-retro>
+                    Small
+                %button.btn.btn-flat.btn-xs.btn-labeled.btn-danger
+                  %span.btn-label.icon.fa.fa-camera-retro>
+                  Extra small
+                %br/
+                %br/
+                / Rounded buttons
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-rounded.btn-lg.btn-labeled
+                    %span.btn-label.icon.fa.fa-camera-retro>
+                    Large
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-rounded.btn-labeled.btn-primary
+                    %span.btn-label.icon.fa.fa-camera-retro>
+                    Default
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-rounded.btn-sm.btn-labeled.btn-success
+                    %span.btn-label.icon.fa.fa-camera-retro>
+                    Small
+                %button.btn.btn-rounded.btn-xs.btn-labeled.btn-danger
+                  %span.btn-label.icon.fa.fa-camera-retro>
+                  Extra small
+                %br/
+                %br/
+                / Block buttons
+                %button.btn.btn-labeled.btn-block
+                  %span.btn-label> Text label
+                  Block button
+            / /8. $BUTTONS_WITH_LABELS
+            /
+              9. $BUTTON_DROPDOWNS ==========================================================================
+              
+              Button dropdowns
+            .panel
+              .panel-heading
+                %span.panel-title Button dropdowns
+              .panel-body
+                / Large
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  .btn-group
+                    %button.btn.btn-lg.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                      Large&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"} Action
+                      %li
+                        %a{:href => "#"} Another action
+                      %li
+                        %a{:href => "#"} Something else here
+                      %li.divider
+                      %li
+                        %a{:href => "#"} Separated link
+                / Default
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  .btn-group
+                    %button.btn.btn-primary.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                      Default&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"} Action
+                      %li
+                        %a{:href => "#"} Another action
+                      %li
+                        %a{:href => "#"} Something else here
+                      %li.divider
+                      %li
+                        %a{:href => "#"} Separated link
+                / Small
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  .btn-group
+                    %button.btn.btn-sm.btn-danger.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                      Small&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"} Action
+                      %li
+                        %a{:href => "#"} Another action
+                      %li
+                        %a{:href => "#"} Something else here
+                      %li.divider
+                      %li
+                        %a{:href => "#"} Separated link
+                / Extra small
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  .btn-group
+                    %button.btn.btn-xs.btn-success.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                      Extra small&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"} Action
+                      %li
+                        %a{:href => "#"} Another action
+                      %li
+                        %a{:href => "#"} Something else here
+                      %li.divider
+                      %li
+                        %a{:href => "#"} Separated link
+            / /9. $BUTTON_DROPDOWNS
+            /
+              10. $SPLIT_BUTTON_DROPDOWNS ===================================================================
+              
+              Split button dropdowns
+            .panel
+              .panel-heading
+                %span.panel-title Split button dropdowns
+              .panel-body
+                / Large
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  .btn-group.btn-group-lg
+                    %button.btn{:type => "button"} Large
+                    %button.btn.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"} Action
+                      %li
+                        %a{:href => "#"} Another action
+                      %li
+                        %a{:href => "#"} Something else here
+                      %li.divider
+                      %li
+                        %a{:href => "#"} Separated link
+                / Default
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  .btn-group
+                    %button.btn.btn-primary{:type => "button"} Default
+                    %button.btn.btn-primary.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"} Action
+                      %li
+                        %a{:href => "#"} Another action
+                      %li
+                        %a{:href => "#"} Something else here
+                      %li.divider
+                      %li
+                        %a{:href => "#"} Separated link
+                / Small
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  .btn-group.btn-group-sm
+                    %button.btn.btn-danger{:type => "button"} Small
+                    %button.btn.btn-danger.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"} Action
+                      %li
+                        %a{:href => "#"} Another action
+                      %li
+                        %a{:href => "#"} Something else here
+                      %li.divider
+                      %li
+                        %a{:href => "#"} Separated link
+                / Extra small
+                = succeed "&amp;nbsp;&amp;nbsp;" do
+                  .btn-group.btn-group-xs
+                    %button.btn.btn-success{:type => "button"} Extra small
+                    %button.btn.btn-success.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"} Action
+                      %li
+                        %a{:href => "#"} Another action
+                      %li
+                        %a{:href => "#"} Something else here
+                      %li.divider
+                      %li
+                        %a{:href => "#"} Separated link
+            / /10. $SPLIT_BUTTON_DROPDOWNS
+            /
+              11. $BOOTSTRAP_BUTTONS ========================================================================
+              
+              Bootstrap buttons
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$('#loading-example-btn').click(function () {
+              		var btn = $(this);
+              		btn.button('loading');
+              		setTimeout(function () {
+              			btn.button('reset');
+              		}, 1500);
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Bootstrap buttons
+              .panel-body.no-padding-t
+                / State buttons
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} STATE BUTTONS
+                %button#loading-example-btn.btn.btn-primary{"data-loading-text" => "Loading...", :type => "button"} Loading state
+                %hr.panel-wide/
+                / Single toggle buttons
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} SINGLE TOGGLE BUTTONS
+                %button.btn.btn-danger{"data-toggle" => "button", :type => "button"} Single toggle
+                %hr.panel-wide/
+                / Checkbox buttons
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} CHECKBOX BUTTONS
+                .btn-group{"data-toggle" => "buttons"}
+                  %label.btn.btn-info
+                    %input{:type => "checkbox"}/
+                    Option 1
+                  %label.btn.btn-info
+                    %input{:type => "checkbox"}/
+                    Option 2
+                  %label.btn.btn-info
+                    %input{:type => "checkbox"}/
+                    Option 3
+                / / .btn-group
+                %hr.panel-wide/
+                / Radio buttons
+                %h6.text-light-gray.text-semibold.text-xs{:style => "margin:20px 0 10px 0;"} RADIO BUTTONS
+                .btn-group{"data-toggle" => "buttons"}
+                  %label.btn.btn-success
+                    %input#option1{:name => "options", :type => "radio"}/
+                    Option 1
+                  %label.btn.btn-success
+                    %input#option2{:name => "options", :type => "radio"}/
+                    Option 2
+                  %label.btn.btn-success
+                    %input#option3{:name => "options", :type => "radio"}/
+                    Option 3
+                / / .btn-group
+            / /11. $BOOTSTRAP_BUTTONS
+          .col-sm-6
+            /
+              12. $BUTTON_SIZES =============================================================================
+              
+              Button sizes
+            .panel
+              .panel-heading
+                %span.panel-title Button sizes
+              .panel-body.buttons-with-margins
+                %button.btn.btn-lg Large
+                \&nbsp;&nbsp;
+                %button.btn.btn-primary Default
+                \&nbsp;&nbsp;
+                %button.btn.btn-info.btn-sm Small
+                \&nbsp;&nbsp;
+                %button.btn.btn-success.btn-xs Extra small
+            / /12. $BUTTON_SIZES
+            /
+              13. $OUTLINE_BUTTONS ==========================================================================
+              
+              Outline buttons
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$('#outline-switcher').switcher({
+              		on_state_content: '<span class="fa fa-check" style="font-size:11px;"></span>',
+              		off_state_content: '<span class="fa fa-times" style="font-size:11px;"></span>'
+              	});
+              	$('#outline-switcher').on($('html').hasClass('ie8') ? "propertychange" : "change", function () {
+              		var $panel = $(this).parents('.panel');
+              		if ($(this).is(':checked')) {
+              			$panel.addClass('panel-danger panel-dark panel-body-colorful');
+              			$panel.find('.panel-body .btn').addClass('dark');
+              		} else {
+              			$panel.removeClass('panel-danger panel-dark panel-body-colorful');
+              			$panel.find('.panel-body .btn').removeClass('dark');
+              		}
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Outline buttons
+                .panel-heading-controls
+                  %span.panel-heading-text{:style => "font-size:11px;font-weight:600;"} DARK&nbsp;&nbsp;
+                  %input#outline-switcher{"data-class" => "switcher-sm", :type => "checkbox"}/
+                / / .panel-heading-controls
+              .panel-body.buttons-with-margins
+                / Default
+                %button.btn.btn-lg.btn-outline Large
+                \&nbsp;&nbsp;
+                %button.btn.btn-primary.btn-outline Default
+                \&nbsp;&nbsp;
+                %button.btn.btn-info.btn-sm.btn-outline Small
+                \&nbsp;&nbsp;
+                %button.btn.btn-success.btn-xs.btn-outline Extra small
+                %br/
+                / Rounded
+                %button.btn.btn-lg.btn-outline.btn-rounded Large
+                \&nbsp;&nbsp;
+                %button.btn.btn-primary.btn-outline.btn-rounded Default
+                \&nbsp;&nbsp;
+                %button.btn.btn-info.btn-sm.btn-outline.btn-rounded Small
+                \&nbsp;&nbsp;
+                %button.btn.btn-success.btn-xs.btn-outline.btn-rounded Extra small
+                %br/
+                / Flat
+                %button.btn.btn-lg.btn-outline.btn-flat Large
+                \&nbsp;&nbsp;
+                %button.btn.btn-primary.btn-outline.btn-flat Default
+                \&nbsp;&nbsp;
+                %button.btn.btn-info.btn-sm.btn-outline.btn-flat Small
+                \&nbsp;&nbsp;
+                %button.btn.btn-success.btn-xs.btn-outline.btn-flat Extra small
+                %br/
+                / Flat rounded
+                %button.btn.btn-lg.btn-outline.btn-flat.btn-rounded Large
+                \&nbsp;&nbsp;
+                %button.btn.btn-primary.btn-outline.btn-flat.btn-rounded Default
+                \&nbsp;&nbsp;
+                %button.btn.btn-info.btn-sm.btn-outline.btn-flat.btn-rounded Small
+                \&nbsp;&nbsp;
+                %button.btn.btn-success.btn-xs.btn-outline.btn-flat.btn-rounded Extra small
+            / /13. $OUTLINE_BUTTONS
+            /
+              14. $DISABLED_BUTTONS =========================================================================
+              
+              Disabled buttons
+            .panel
+              .panel-heading
+                %span.panel-title Disabled buttons
+              .panel-body.buttons-with-margins
+                %button.btn.disabled Default
+                \&nbsp;&nbsp;
+                %button.btn.btn-primary.disabled Primary
+                \&nbsp;&nbsp;
+                %button.btn.btn-info.disabled Info
+                \&nbsp;&nbsp;
+                %button.btn.btn-success.disabled Success
+                \&nbsp;&nbsp;
+                %button.btn.btn-warning.disabled Warning
+                \&nbsp;&nbsp;
+                %button.btn.btn-danger.disabled Danger
+                %br/
+                %button.btn.btn-rounded.disabled Default
+                \&nbsp;&nbsp;
+                %button.btn.btn-primary.btn-rounded.disabled Primary
+                \&nbsp;&nbsp;
+                %button.btn.btn-info.btn-rounded.disabled Info
+                \&nbsp;&nbsp;
+                %button.btn.btn-success.btn-rounded.disabled Success
+                \&nbsp;&nbsp;
+                %button.btn.btn-warning.btn-rounded.disabled Warning
+                \&nbsp;&nbsp;
+                %button.btn.btn-danger.btn-rounded.disabled Danger
+                %br/
+                %button.btn.btn-outline.disabled Default
+                \&nbsp;&nbsp;
+                %button.btn.btn-primary.btn-outline.disabled Primary
+                \&nbsp;&nbsp;
+                %button.btn.btn-info.btn-outline.disabled Info
+                \&nbsp;&nbsp;
+                %button.btn.btn-success.btn-outline.disabled Success
+                \&nbsp;&nbsp;
+                %button.btn.btn-warning.btn-outline.disabled Warning
+                \&nbsp;&nbsp;
+                %button.btn.btn-danger.btn-outline.disabled Danger
+                %br/
+                %button.btn.btn-outline.btn-rounded.disabled Default
+                \&nbsp;&nbsp;
+                %button.btn.btn-primary.btn-outline.btn-rounded.disabled Primary
+                \&nbsp;&nbsp;
+                %button.btn.btn-info.btn-outline.btn-rounded.disabled Info
+                \&nbsp;&nbsp;
+                %button.btn.btn-success.btn-outline.btn-rounded.disabled Success
+                \&nbsp;&nbsp;
+                %button.btn.btn-warning.btn-outline.btn-rounded.disabled Warning
+                \&nbsp;&nbsp;
+                %button.btn.btn-danger.btn-outline.btn-rounded.disabled Danger
+                %br/
+                %button.btn.btn-flat.disabled Default
+                \&nbsp;&nbsp;
+                %button.btn.btn-primary.btn-flat.disabled Primary
+                \&nbsp;&nbsp;
+                %button.btn.btn-info.btn-flat.disabled Info
+                \&nbsp;&nbsp;
+                %button.btn.btn-success.btn-flat.disabled Success
+                \&nbsp;&nbsp;
+                %button.btn.btn-warning.btn-flat.disabled Warning
+                \&nbsp;&nbsp;
+                %button.btn.btn-danger.btn-flat.disabled Danger
+                %br/
+                %button.btn.btn-flat.btn-rounded.disabled Default
+                \&nbsp;&nbsp;
+                %button.btn.btn-primary.btn-flat.btn-rounded.disabled Primary
+                \&nbsp;&nbsp;
+                %button.btn.btn-info.btn-flat.btn-rounded.disabled Info
+                \&nbsp;&nbsp;
+                %button.btn.btn-success.btn-flat.btn-rounded.disabled Success
+                \&nbsp;&nbsp;
+                %button.btn.btn-warning.btn-flat.btn-rounded.disabled Warning
+                \&nbsp;&nbsp;
+                %button.btn.btn-danger.btn-flat.btn-rounded.disabled Danger
+                %br/
+                %button.btn.btn-flat.btn-outline.disabled Default
+                \&nbsp;&nbsp;
+                %button.btn.btn-primary.btn-flat.btn-outline.disabled Primary
+                \&nbsp;&nbsp;
+                %button.btn.btn-info.btn-flat.btn-outline.disabled Info
+                \&nbsp;&nbsp;
+                %button.btn.btn-success.btn-flat.btn-outline.disabled Success
+                \&nbsp;&nbsp;
+                %button.btn.btn-warning.btn-flat.btn-outline.disabled Warning
+                \&nbsp;&nbsp;
+                %button.btn.btn-danger.btn-flat.btn-outline.disabled Danger
+                %br/
+                %button.btn.btn-flat.btn-outline.btn-rounded.disabled Default
+                \&nbsp;&nbsp;
+                %button.btn.btn-primary.btn-flat.btn-outline.btn-rounded.disabled Primary
+                \&nbsp;&nbsp;
+                %button.btn.btn-info.btn-flat.btn-outline.btn-rounded.disabled Info
+                \&nbsp;&nbsp;
+                %button.btn.btn-success.btn-flat.btn-outline.btn-rounded.disabled Success
+                \&nbsp;&nbsp;
+                %button.btn.btn-warning.btn-flat.btn-outline.btn-rounded.disabled Warning
+                \&nbsp;&nbsp;
+                %button.btn.btn-danger.btn-flat.btn-outline.btn-rounded.disabled Danger
+            / /14. $DISABLED_BUTTONS
+            /
+              15. $BUTTON_GROUPS ============================================================================
+              
+              Button groups
+            .panel
+              .panel-heading
+                %span.panel-title Button groups
+              .panel-body
+                / Default button group
+                .btn-group
+                  %button.btn{:type => "button"} Left
+                  %button.btn{:type => "button"} Middle
+                  %button.btn{:type => "button"} Right
+                  .btn-group
+                    %button.btn.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                      Dropdown&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"} Dropdown link
+                      %li
+                        %a{:href => "#"} Dropdown link
+                %br/
+                %br/
+                / Outlined button group
+                .btn-toolbar{:role => "toolbar"}
+                  .btn-group
+                    %button.btn.btn-outline{:type => "button"} Left
+                    %button.btn.btn-outline{:type => "button"} Middle
+                    %button.btn.btn-outline{:type => "button"} Right
+                    .btn-group
+                      %button.btn.btn-outline.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                        Dropdown&nbsp;
+                        %i.fa.fa-caret-down
+                      %ul.dropdown-menu
+                        %li
+                          %a{:href => "#"} Dropdown link
+                        %li
+                          %a{:href => "#"} Dropdown link
+                  / / .btn-group
+                %br/
+                / Large button group
+                .btn-group.btn-group-lg
+                  %button.btn.btn-primary{:type => "button"} Left
+                  %button.btn.btn-primary{:type => "button"} Middle
+                  %button.btn.btn-primary{:type => "button"} Right
+                  .btn-group
+                    %button.btn.btn-primary.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                      Dropdown&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"} Dropdown link
+                      %li
+                        %a{:href => "#"} Dropdown link
+                %br/
+                %br/
+                / Small button group
+                .btn-group.btn-group-sm
+                  %button.btn.btn-success{:type => "button"} Left
+                  %button.btn.btn-success{:type => "button"} Middle
+                  %button.btn.btn-success{:type => "button"} Right
+                  .btn-group
+                    %button.btn.btn-success.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                      Dropdown&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"} Dropdown link
+                      %li
+                        %a{:href => "#"} Dropdown link
+                %br/
+                %br/
+                / Extra small button group
+                .btn-group.btn-group-xs
+                  %button.btn.btn-info{:type => "button"} Left
+                  %button.btn.btn-info{:type => "button"} Middle
+                  %button.btn.btn-info{:type => "button"} Right
+                  .btn-group
+                    %button.btn.btn-info.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                      Dropdown&nbsp;
+                      %i.fa.fa-caret-down
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"} Dropdown link
+                      %li
+                        %a{:href => "#"} Dropdown link
+                %br/
+                %br/
+                / Justified button group
+                .btn-group.btn-group-justified
+                  %a.btn{:href => "#"} Left
+                  %a.btn{:href => "#"} Middle
+                  %a.btn{:href => "#"} Right
+                %br/
+                / Toolbar
+                .btn-toolbar{:role => "toolbar"}
+                  .btn-group
+                    %button.btn{:type => "button"} 1
+                    %button.btn{:type => "button"} 2
+                    %button.btn{:type => "button"} 3
+                    %button.btn{:type => "button"} 4
+                  .btn-group
+                    %button.btn{:type => "button"} 5
+                    %button.btn{:type => "button"} 6
+                    %button.btn{:type => "button"} 7
+                  .btn-group
+                    %button.btn{:type => "button"} 8
+            / /15. $BUTTON_GROUPS
+      / / #content-wrapper
+      #main-menu-bg
+    / / #main-wrapper
+    / Get jQuery from Google CDN
+    / [if !IE]>
+    :javascript
+      window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">'+"<"+"/script>");
+    / <![endif]
+    /[if lte IE 9]
+      <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">'+"<"+"/script>"); </script>
+    / Pixel Admin's javascripts
+    %script{:src => "assets/javascripts/bootstrap.min.js"}
+    %script{:src => "assets/javascripts/pixel-admin.min.js"}
+    :javascript
+      init.push(function () {
+      	// Javascript code here
+      })
+      window.PixelAdmin.start(init);

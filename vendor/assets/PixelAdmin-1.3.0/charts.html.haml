@@ -1,0 +1,996 @@
+!!!
+/
+  TABLE OF CONTENTS.
+  
+  Use search to find needed section.
+  
+  \===========================================================
+  
+  |  1. $BODY                    |  Body                    |
+  |  2. $MAIN_NAVIGATION         |  Main navigation         |
+  |  3. $NAVBAR_ICON_BUTTONS     |  Navbar Icon Buttons     |
+  |  4. $MAIN_MENU               |  Main menu               |
+  |  5. $MORRISJS_GRAPH          |  Morris.js Graph         |
+  |  6. $MORRISJS_AREA           |  Morris.js Area          |
+  |  7. $MORRISJS_BARS           |  Morris.js Bars          |
+  |  8. $MORRISJS_DONUT          |  Morris.js Donut         |
+  |  9. $FLOTJS_GRAPH            |  Flot.js Graph           |
+  |  10. $FLOTJS_PIE             |  Flot.js Pie / Doughnut  |
+  |  11. $FLOTJS_BARS            |  Flot.js Bars            |
+  |  12. $JQUERY_SPARKLINES      |  jQuery Sparklines       |
+  |  13. $JQUERY_EASY_PIE_CHART  |  jQuery Easy Pie Chart   |
+  
+  \===========================================================
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+/ [if gt IE 9]><!
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title Charts - PixelAdmin
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0", :name => "viewport"}/
+    / Open Sans font from Google CDN
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
+    / Pixel Admin's stylesheets
+    %link{:href => "assets/stylesheets/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pixel-admin.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/widgets.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/rtl.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/themes.min.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+  /
+    1. $BODY ======================================================================================
+    
+    Body
+    
+    Classes:
+    * 'theme-{THEME NAME}'
+    * 'right-to-left'      - Sets text direction to right-to-left
+    * 'main-menu-right'    - Places the main menu on the right side
+    * 'no-main-menu'       - Hides the main menu
+    * 'main-navbar-fixed'  - Fixes the main navigation
+    * 'main-menu-fixed'    - Fixes the main menu
+    * 'main-menu-animated' - Animate main menu
+  %body.theme-default.main-menu-animated
+    :javascript
+      var init = [];
+    / Demo script
+    %script{:src => "assets/demo/demo.js"}
+    / / Demo script
+    #main-wrapper
+      /
+        2. $MAIN_NAVIGATION ===========================================================================
+        
+        Main navigation
+      #main-navbar.navbar.navbar-inverse{:role => "navigation"}
+        / Main menu toggle
+        %button#main-menu-toggle{:type => "button"}
+          %i.navbar-icon.fa.fa-bars.icon
+          %span.hide-menu-text HIDE MENU
+        .navbar-inner
+          / Main navbar header
+          .navbar-header
+            / Logo
+            %a.navbar-brand{:href => "index.html"}
+            %div
+              %img{:alt => "Pixel Admin", :src => "assets/images/pixel-admin/main-navbar-logo.png"}/
+            PixelAdmin
+            / Main navbar toggle
+            %button.navbar-toggle.collapsed{"data-target" => "#main-navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+              %i.navbar-icon.fa.fa-bars
+          / / .navbar-header
+          #main-navbar-collapse.collapse.navbar-collapse.main-navbar-collapse
+            %div
+              %ul.nav.navbar-nav
+                %li
+                  %a{:href => "#"} Home
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Dropdown
+                  %ul.dropdown-menu
+                    %li
+                      %a{:href => "#"} First item
+                    %li
+                      %a{:href => "#"} Second item
+                    %li.divider
+                    %li
+                      %a{:href => "#"} Third item
+              / / .navbar-nav
+              .right.clearfix
+                %ul.nav.navbar-nav.pull-right.right-navbar-nav
+                  /
+                    3. $NAVBAR_ICON_BUTTONS =======================================================================
+                    
+                    Navbar Icon Buttons
+                    
+                    NOTE: .nav-icon-btn triggers a dropdown menu on desktop screens only. On small screens .nav-icon-btn acts like a hyperlink.
+                    
+                    Classes:
+                    * 'nav-icon-btn-info'
+                    * 'nav-icon-btn-success'
+                    * 'nav-icon-btn-warning'
+                    * 'nav-icon-btn-danger'
+                  %li.nav-icon-btn.nav-icon-btn-danger.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#notifications"}
+                      %span.label 5
+                      %i.nav-icon.fa.fa-bullhorn
+                      %span.small-screen-text Notifications
+                    / NOTIFICATIONS
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-notifications').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-notifications.no-padding{:style => "width: 300px"}
+                      #main-navbar-notifications.notifications-list
+                        .notification
+                          .notification-title.text-danger SYSTEM
+                          .notification-description
+                            %strong> Error 500
+                            \: Syntax error in index.php at line
+                            = succeed "." do
+                              %strong 461
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-danger
+                        / / .notification
+                        .notification
+                          .notification-title.text-info STORE
+                          .notification-description
+                            You have
+                            %strong 9
+                            new orders.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-truck.bg-info
+                        / / .notification
+                        .notification
+                          .notification-title.text-default CRON DAEMON
+                          .notification-description
+                            Job
+                            %strong "Clean DB"
+                            has been completed.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-clock-o.bg-default
+                        / / .notification
+                        .notification
+                          .notification-title.text-success SYSTEM
+                          .notification-description
+                            Server
+                            = succeed "." do
+                              %strong up
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-success
+                        / / .notification
+                        .notification
+                          .notification-title.text-warning SYSTEM
+                          .notification-description
+                            %strong> Warning
+                            \: Processor load
+                            = succeed "." do
+                              %strong 92%
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-warning
+                        / / .notification
+                      / / .notifications-list
+                      %a.notifications-link{:href => "#"} MORE NOTIFICATIONS
+                    / / .dropdown-menu
+                  %li.nav-icon-btn.nav-icon-btn-success.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#messages"}
+                      %span.label 10
+                      %i.nav-icon.fa.fa-envelope
+                      %span.small-screen-text Income messages
+                    / MESSAGES
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-messages').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-messages-alt.no-padding{:style => "width: 300px;"}
+                      #main-navbar-messages.messages-list
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                      / / .messages-list
+                      %a.messages-link{:href => "#"} MORE MESSAGES
+                    / / .dropdown-menu
+                  / /3. $END_NAVBAR_ICON_BUTTONS
+                  %li
+                    %form.navbar-form.pull-left
+                      %input.form-control{:placeholder => "Search", :type => "text"}/
+                  %li.dropdown
+                    %a.dropdown-toggle.user-menu{"data-toggle" => "dropdown", :href => "#"}
+                      %img{:src => "assets/demo/avatars/1.jpg"}/
+                      %span John Doe
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"}
+                          %span.label.label-warning.pull-right> New
+                          Profile
+                      %li
+                        %a{:href => "#"}
+                          %span.badge.badge-primary.pull-right> New
+                          Account
+                      %li
+                        %a{:href => "#"}
+                          %i.dropdown-icon.fa.fa-cog>
+                          \&nbsp;&nbsp;Settings
+                      %li.divider
+                      %li
+                        %a{:href => "pages-signin.html"}
+                          %i.dropdown-icon.fa.fa-power-off>
+                          \&nbsp;&nbsp;Log Out
+                / / .navbar-nav
+              / / .right
+          / / #main-navbar-collapse
+        / / .navbar-inner
+      / / #main-navbar
+      / /2. $END_MAIN_NAVIGATION
+      /
+        4. $MAIN_MENU =================================================================================
+        
+        Main menu
+        
+        Notes:
+        * to make the menu item active, add a class 'active' to the <li>
+        example: <li class="active">...</li>
+        * multilevel submenu example:
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 1</span></a>
+        <ul>
+        <li>...</li>
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 2</span></a>
+        <ul>
+        <li>...</li>
+        \...
+        </ul>
+        </li>
+        \...
+        </ul>
+        </li>
+      #main-menu{:role => "navigation"}
+        #main-menu-inner
+          #menu-content-demo.menu-content.top
+            /
+              Menu custom content demo
+              CSS:        styles/pixel-admin-less/demo.less or styles/pixel-admin-scss/_demo.scss
+              Javascript: html/assets/demo/demo.js
+            %div
+              .text-bg
+                %span.text-slim Welcome,
+                %span.text-semibold John
+              %img{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+              .btn-group
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-envelope
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-user
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-cog
+                %a.btn.btn-xs.btn-danger.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-power-off
+              %a.close{:href => "#"} &times;
+          %ul.navigation
+            %li
+              %a{:href => "index.html"}
+                %i.menu-icon.fa.fa-dashboard
+                %span.mm-text Dashboard
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-th
+                %span.mm-text Layouts
+                %span.label.label-warning Updated
+              %ul
+                %li
+                  %a{:href => "layouts-grid.html", :tabindex => "-1"}
+                    %span.mm-text Grid
+                %li
+                  %a{:href => "layouts-main-menu.html", :tabindex => "-1"}
+                    %i.menu-icon.fa.fa-th-list
+                    %span.mm-text Main menu
+                    %span.label.label-warning Updated
+            %li
+              %a{:href => "stat-panels.html"}
+                %i.menu-icon.fa.fa-tasks
+                %span.mm-text Stat panels
+            %li
+              %a{:href => "widgets.html"}
+                %i.menu-icon.fa.fa-flask
+                %span.mm-text Widgets
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-desktop
+                %span.mm-text UI elements
+              %ul
+                %li
+                  %a{:href => "ui-buttons.html", :tabindex => "-1"}
+                    %span.mm-text Buttons
+                %li
+                  %a{:href => "ui-typography.html", :tabindex => "-1"}
+                    %span.mm-text Typography
+                %li
+                  %a{:href => "ui-tabs.html", :tabindex => "-1"}
+                    %span.mm-text Tabs &amp; Accordions
+                %li
+                  %a{:href => "ui-modals.html", :tabindex => "-1"}
+                    %span.mm-text Modals
+                %li
+                  %a{:href => "ui-alerts.html", :tabindex => "-1"}
+                    %span.mm-text Alerts &amp; Tooltips
+                %li
+                  %a{:href => "ui-components.html", :tabindex => "-1"}
+                    %span.mm-text Components
+                %li
+                  %a{:href => "ui-panels.html", :tabindex => "-1"}
+                    %span.mm-text Panels
+                %li
+                  %a{:href => "ui-jqueryui.html", :tabindex => "-1"}
+                    %span.mm-text jQuery UI
+                %li
+                  %a{:href => "ui-icons.html", :tabindex => "-1"}
+                    %span.mm-text Icons
+                %li
+                  %a{:href => "ui-utility-classes.html", :tabindex => "-1"}
+                    %span.mm-text Utility classes
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-check-square
+                %span.mm-text Form components
+              %ul
+                %li
+                  %a{:href => "forms-layouts.html", :tabindex => "-1"}
+                    %span.mm-text Layouts
+                %li
+                  %a{:href => "forms-general.html", :tabindex => "-1"}
+                    %span.mm-text General
+                %li
+                  %a{:href => "forms-advanced.html", :tabindex => "-1"}
+                    %span.mm-text Advanced
+                %li
+                  %a{:href => "forms-pickers.html", :tabindex => "-1"}
+                    %span.mm-text Pickers
+                %li
+                  %a{:href => "forms-validation.html", :tabindex => "-1"}
+                    %span.mm-text Validation
+                %li
+                  %a{:href => "forms-editors.html", :tabindex => "-1"}
+                    %span.mm-text Editors
+            %li
+              %a{:href => "tables.html"}
+                %i.menu-icon.fa.fa-table
+                %span.mm-text Tables
+            %li
+              %a{:href => "charts.html"}
+                %i.menu-icon.fa.fa-bar-chart-o
+                %span.mm-text Charts
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-files-o
+                %span.mm-text Pages
+                %span.label.label-success 16
+              %ul
+                %li
+                  %a{:href => "pages-search.html", :tabindex => "-1"}
+                    %span.mm-text Search results
+                %li
+                  %a{:href => "pages-pricing.html", :tabindex => "-1"}
+                    %span.mm-text Plans &amp; pricing
+                %li
+                  %a{:href => "pages-faq.html", :tabindex => "-1"}
+                    %span.mm-text FAQ
+                %li
+                  %a{:href => "pages-profile.html", :tabindex => "-1"}
+                    %span.mm-text Profile
+                %li
+                  %a{:href => "pages-timeline.html", :tabindex => "-1"}
+                    %span.mm-text Timeline
+                %li
+                  %a{:href => "pages-signin.html", :tabindex => "-1"}
+                    %span.mm-text Sign In
+                %li
+                  %a{:href => "pages-signup.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up
+                %li
+                  %a{:href => "pages-signin-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign In Alt
+                %li
+                  %a{:href => "pages-signup-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up Alt
+                %li
+                  %a{:href => "pages-invoice.html", :tabindex => "-1"}
+                    %span.mm-text Invoice
+                %li
+                  %a{:href => "pages-404.html", :tabindex => "-1"}
+                    %span.mm-text Error 404
+                %li
+                  %a{:href => "pages-500.html", :tabindex => "-1"}
+                    %span.mm-text Error 500
+                %li.mm-dropdown
+                  %a{:href => "#"}
+                    %i.menu-icon.fa.fa-envelope
+                    %span.mm-text Messages
+                  %ul
+                    %li
+                      %a{:href => "pages-inbox.html", :tabindex => "-1"}
+                        %span.mm-text Inbox
+                    %li
+                      %a{:href => "pages-show-email.html", :tabindex => "-1"}
+                        %span.mm-text Show message
+                    %li
+                      %a{:href => "pages-new-email.html", :tabindex => "-1"}
+                        %span.mm-text New message
+                %li
+                  %a{:href => "pages-blank.html", :tabindex => "-1"}
+                    %span.mm-text Blank page
+            %li
+              %a{:href => "complete-ui.html"}
+                %i.menu-icon.fa.fa-briefcase
+                %span.mm-text Complete UI
+            %li
+              %a{:href => "color-builder.html"}
+                %i.menu-icon.fa.fa-tint
+                %span.mm-text Color Builder
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-sitemap
+                %span.mm-text Menu levels
+                %span.badge.badge-primary 6
+              %ul
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.1
+                    %span.badge.badge-danger 12
+                    %span.label.label-info 21
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.2
+                %li.mm-dropdown
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.3
+                    %span.label.label-warning 5
+                  %ul
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.1
+                    %li.mm-dropdown
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+                      %ul
+                        %li.mm-dropdown
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.1
+                          %ul
+                            %li
+                              %a{:href => "#", :tabindex => "-1"}
+                                %span.mm-text Menu level 4.1
+                        %li
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.2
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+          / / .navigation
+          .menu-content
+            %a.btn.btn-primary.btn-block.btn-outline.dark{:href => "pages-invoice.html"} Create Invoice
+        / / #main-menu-inner
+      / / #main-menu
+      / /4. $MAIN_MENU
+      #content-wrapper
+        .page-header
+          %h1 Charts
+        / / .page-header
+        .row
+          .col-md-6
+            /
+              5. $MORRISJS_GRAPH ============================================================================
+              
+              Morris.js Graph
+            / Javascript
+            :javascript
+              init.push(function () {
+              	var tax_data = [
+              		{"period": "2011 Q3", "licensed": 3407, "sorned": 660},
+              		{"period": "2011 Q2", "licensed": 3351, "sorned": 629},
+              		{"period": "2011 Q1", "licensed": 3269, "sorned": 618},
+              		{"period": "2010 Q4", "licensed": 3246, "sorned": 661},
+              		{"period": "2009 Q4", "licensed": 3171, "sorned": 676},
+              		{"period": "2008 Q4", "licensed": 3155, "sorned": 681},
+              		{"period": "2007 Q4", "licensed": 3226, "sorned": 620},
+              		{"period": "2006 Q4", "licensed": 3245, "sorned": null},
+              		{"period": "2005 Q4", "licensed": 3289, "sorned": null}
+              	];
+              	Morris.Line({
+              		element: 'hero-graph',
+              		data: tax_data,
+              		xkey: 'period',
+              		ykeys: ['licensed', 'sorned'],
+              		labels: ['Licensed', 'Off the road'],
+              		lineColors: PixelAdmin.settings.consts.COLORS,
+              		lineWidth: 2,
+              		pointSize: 4,
+              		gridLineColor: '#cfcfcf',
+              		resize: true
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Morris.js Graph
+              .panel-body
+                .note.note-info
+                  More info and examples at
+                  %a{:href => "http://www.oesmith.co.uk/morris.js/", :target => "_blank"} http://www.oesmith.co.uk/morris.js/
+                .graph-container
+                  #hero-graph.graph
+            / /5. $MORRISJS_GRAPH
+            /
+              6. $MORRISJS_AREA =============================================================================
+              
+              Morris.js Area
+            / Javascript
+            :javascript
+              init.push(function () {
+              	Morris.Area({
+              		element: 'hero-area',
+              		data: [
+              			{ period: '2010 Q1', iphone: 2666, ipad: null, itouch: 2647 },
+              			{ period: '2010 Q2', iphone: 2778, ipad: 2294, itouch: 2441 },
+              			{ period: '2010 Q3', iphone: 4912, ipad: 1969, itouch: 2501 },
+              			{ period: '2010 Q4', iphone: 3767, ipad: 3597, itouch: 5689 },
+              			{ period: '2011 Q1', iphone: 6810, ipad: 1914, itouch: 2293 },
+              			{ period: '2011 Q2', iphone: 5670, ipad: 4293, itouch: 1881 },
+              			{ period: '2011 Q3', iphone: 4820, ipad: 3795, itouch: 1588 },
+              			{ period: '2011 Q4', iphone: 15073, ipad: 5967, itouch: 5175 },
+              			{ period: '2012 Q1', iphone: 10687, ipad: 4460, itouch: 2028 },
+              			{ period: '2012 Q2', iphone: 8432, ipad: 5713, itouch: 1791 }
+              		],
+              		xkey: 'period',
+              		ykeys: ['iphone', 'ipad', 'itouch'],
+              		labels: ['iPhone', 'iPad', 'iPod Touch'],
+              		hideHover: 'auto',
+              		lineColors: PixelAdmin.settings.consts.COLORS,
+              		fillOpacity: 0.3,
+              		behaveLikeLine: true,
+              		lineWidth: 2,
+              		pointSize: 4,
+              		gridLineColor: '#cfcfcf',
+              		resize: true
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Morris.js Area
+              .panel-body
+                .note.note-info
+                  More info and examples at
+                  %a{:href => "http://www.oesmith.co.uk/morris.js/", :target => "_blank"} http://www.oesmith.co.uk/morris.js/
+                .graph-container
+                  #hero-area.graph
+            / /6. $MORRISJS_AREA
+          .col-md-6
+            /
+              7. $MORRISJS_BARS =============================================================================
+              
+              Morris.js Bars
+            / Javascript
+            :javascript
+              init.push(function () {
+              	Morris.Bar({
+              		element: 'hero-bar',
+              		data: [
+              			{ device: 'iPhone', geekbench: 136 },
+              			{ device: 'iPhone 3G', geekbench: 137 },
+              			{ device: 'iPhone 3GS', geekbench: 275 },
+              			{ device: 'iPhone 4', geekbench: 380 },
+              			{ device: 'iPhone 4S', geekbench: 655 },
+              			{ device: 'iPhone 5', geekbench: 1571 }
+              		],
+              		xkey: 'device',
+              		ykeys: ['geekbench'],
+              		labels: ['Geekbench'],
+              		barRatio: 0.4,
+              		xLabelAngle: 35,
+              		hideHover: 'auto',
+              		barColors: PixelAdmin.settings.consts.COLORS,
+              		gridLineColor: '#cfcfcf',
+              		resize: true
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Morris.js Bars
+              .panel-body
+                .note.note-info
+                  More info and examples at
+                  %a{:href => "http://www.oesmith.co.uk/morris.js/", :target => "_blank"} http://www.oesmith.co.uk/morris.js/
+                .graph-container
+                  #hero-bar.graph
+            / /7. $MORRISJS_BARS
+            /
+              8. $MORRISJS_DONUT ============================================================================
+              
+              Morris.js Donut
+            / Javascript
+            :javascript
+              init.push(function () {
+              	Morris.Donut({
+              		element: 'hero-donut',
+              		data: [
+              			{ label: 'Jam', value: 25 },
+              			{ label: 'Frosted', value: 40 },
+              			{ label: 'Custard', value: 25 },
+              			{ label: 'Sugar', value: 10 }
+              		],
+              		colors: PixelAdmin.settings.consts.COLORS,
+              		resize: true,
+              		labelColor: '#888',
+              		formatter: function (y) { return y + "%" }
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Morris.js Donut
+              .panel-body
+                .note.note-info
+                  More info and examples at
+                  %a{:href => "http://www.oesmith.co.uk/morris.js/", :target => "_blank"} http://www.oesmith.co.uk/morris.js/
+                .graph-container
+                  #hero-donut.graph
+            / /8. $MORRISJS_DONUT
+        .row
+          .col-md-6
+            /
+              9. $FLOTJS_GRAPH ==============================================================================
+              
+              Flot.js Graph
+            / Javascript
+            :javascript
+              init.push(function () {
+              	// Visits Chart Data
+              	var visitsChartData = [{
+              		label: 'Visits',
+              		data: [
+              			[6, 1300], [7, 1600], [8, 1900], [9, 2100], [10, 2500], [11, 2200], [12, 2000], [13, 1950], [14, 1900], [15, 2000]
+              		]
+              	}, {
+              		label: 'Returning Visits',
+              		data: [
+              			[6, 500], [7, 600], [8, 550], [9, 600], [10, 800], [11, 900], [12, 800], [13, 850], [14, 830], [15, 1000]
+              		],
+              		filledPoints: true // Fill points
+              	}];
+
+              	// Init Chart
+              	$('#jq-flot-graph').pixelPlot(visitsChartData, {
+              		series: {
+              			points: {
+              				show: true
+              			},
+              			lines: {
+              				show: true
+              			}
+              		},
+              		xaxis: {
+              			tickDecimals: 2
+              		},
+              		yaxis: {
+              			tickSize: 1000
+              		}
+              	}, {
+              		height: 205,
+              		tooltipText: "y + ' visitors at ' + x + ':00'"
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Flot.js Graph
+              .panel-body
+                .note.note-info
+                  More info and examples at
+                  %a{:href => "http://www.flotcharts.org/", :target => "_blank"} http://www.flotcharts.org/
+                .graph-container
+                  #jq-flot-graph
+            / /9. $FLOTJS_GRAPH
+            /
+              10. $FLOTJS_PIE ===============================================================================
+              
+              Flot.js Pie / Doughnut
+            / Javascript
+            :javascript
+              init.push(function () {
+              	// Doughnut Chart Data
+              	var doughnutChartData = [{
+              		label: "Series1", data: 50
+              	}, {
+              		label: "Series2", data: 30
+              	}, {
+              		label: "Series3", data: 90
+              	}, {
+              		label: "Series4", data: 70
+              	}, {
+              		label: "Series5", data: 80
+              	}, {
+              		label: "Series6", data: 110
+              	}, {
+              		label: "Series9", data: 90
+              	}];
+
+              	// Init Chart
+              	$('#jq-flot-pie').pixelPlot(doughnutChartData, {
+              		series: {
+              			pie: {
+              				show: true,
+              				radius: 1,
+              				innerRadius: 0.5,
+              				label: {
+              					show: true,
+              					radius: 3 / 4,
+              					formatter: function (label, series) {
+              						return '<div style="font-size:14px;text-align:center;padding:2px;color:white;">' + Math.round(series.percent) + '%</div>';
+              					},
+              					background: { opacity: 0 }
+              				}
+              			}
+              		}
+              	}, {
+              		height: 205
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Flot.js Pie / Doughnut
+              .panel-body
+                .note.note-info
+                  More info and examples at
+                  %a{:href => "http://www.flotcharts.org/", :target => "_blank"} http://www.flotcharts.org/
+                .graph-container
+                  #jq-flot-pie
+            / /10. $FLOTJS_PIE
+          .col-md-6
+            /
+              11. $FLOTJS_BARS ==============================================================================
+              
+              Flot.js Bars
+            / Javascript
+            :javascript
+              init.push(function () {
+              	// Visits Chart Data
+              	var visitsChartData = [{
+              		label: 'Visits',
+              		data: [
+              			[6, 1300], [7, 1600], [8, 1900], [9, 2100], [10, 2500], [11, 2200], [12, 2000], [13, 1950], [14, 1900], [15, 2000]
+              		]
+              	}, {
+              		label: 'Returning Visits',
+              		data: [
+              			[6, 500], [7, 600], [8, 550], [9, 600], [10, 800], [11, 900], [12, 800], [13, 850], [14, 830], [15, 1000]
+              		],
+              		filledPoints: true // Fill points
+              	}];
+
+              	// Init Chart
+              	$('#jq-flot-bars').pixelPlot(visitsChartData, {
+              		series: {
+              			bars: {
+              				show: true,
+              				barWidth: .9,
+              				align: 'center'
+              			}
+              		},
+              		xaxis: { tickDecimals: 2 },
+              		yaxis: { tickSize: 1000 }
+              	}, {
+              		height: 205,
+              		tooltipText: "y + ' visitors at ' + x + '.00h'"
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Flot.js Bars
+              .panel-body
+                .note.note-info
+                  More info and examples at
+                  %a{:href => "http://www.flotcharts.org/", :target => "_blank"} http://www.flotcharts.org/
+                .graph-container
+                  #jq-flot-bars
+            / /11. $FLOTJS_BARS
+            /
+              12. $JQUERY_SPARKLINES ========================================================================
+              
+              jQuery Sparklines
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$('#sparkline-line').sparkline();
+
+              	// Bar charts using inline values
+              	$('.sparkline-bar').sparkline('html', {
+              		type: 'bar'
+              	});
+
+              	// Composite line charts, the second using values supplied via javascript
+              	$('#sparkline-compositeline').sparkline('html', {
+              		fillColor: false,
+              		changeRangeMin: 0,
+              		chartRangeMax: 10
+              	});
+              	$('#sparkline-compositeline').sparkline([4,1,5,7,9,9,8,7,6,6,4,7,8,4,3,2,2,5,6,7], {
+              		composite: true,
+              		fillColor: false,
+              		lineColor: 'red',
+              		changeRangeMin: 0,
+              		chartRangeMax: 10
+              	});
+
+              	// Discrete charts
+              	$('#sparkline-discrete').sparkline('html', {
+              		type: 'discrete',
+              		lineColor: 'blue',
+              		thresholdColor: 'red',
+              		thresholdValue: 4
+              	});
+
+              	// Tri-state charts using inline values
+              	$('#sparkline-tristate').sparkline('html', {
+              		type: 'tristate'
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title jQuery Sparklines
+              .panel-body
+                .note.note-info
+                  More info and examples at
+                  %a{:href => "http://omnipotent.net/jquery.sparkline/", :target => "_blank"} http://omnipotent.net/jquery.sparkline/
+                = succeed "&amp;nbsp;&amp;nbsp;&amp;nbsp;" do
+                  %span#sparkline-line 8,4,0,0,0,0,1,4,4,10,10,10,10,0,0,0,4,6,5,9,10
+                = succeed "&amp;nbsp;&amp;nbsp;&amp;nbsp;" do
+                  %span.sparkline-bar -3,1,2,0,3,-1
+                = succeed "&amp;nbsp;&amp;nbsp;&amp;nbsp;" do
+                  %span.sparkline-bar 0:2,2:4,4:2,4:1
+                = succeed "&amp;nbsp;&amp;nbsp;&amp;nbsp;" do
+                  %span#sparkline-compositeline 8,4,0,0,0,0,1,4,4,10,10,10,10,0,0,0,4,6,5,9,10
+                = succeed "&amp;nbsp;&amp;nbsp;&amp;nbsp;" do
+                  %span#sparkline-discrete 4,6,7,7,4,3,2,1,4,4,5,6,7,6,6,2,4,5
+                %span#sparkline-tristate 1,1,0,1,-1,-1,1,-1,0,0,1,1
+            / /12. $JQUERY_SPARKLINES
+            /
+              13. $JQUERY_EASY_PIE_CHART ====================================================================
+              
+              jQuery Easy Pie Chart
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$('#jq-epie-chart').easyPieChart({
+              		easing: 'easeOutBounce',
+              		onStep: function(from, to, percent) {
+              			$(this.el).find('.pie-chart-label').text(Math.round(percent) + '%');
+              		}
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title jQuery Easy Pie Chart
+              .panel-body
+                .note.note-info
+                  More info and examples at
+                  %a{:href => "http://rendro.github.io/easy-pie-chart/", :target => "_blank"} http://rendro.github.io/easy-pie-chart/
+                %span#jq-epie-chart.pie-chart{"data-percent" => "86"}
+                  %span.pie-chart-label
+            / /13. $JQUERY_EASY_PIE_CHART
+      / / #content-wrapper
+      #main-menu-bg
+    / / #main-wrapper
+    / Get jQuery from Google CDN
+    / [if !IE]>
+    :javascript
+      window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">'+"<"+"/script>");
+    / <![endif]
+    /[if lte IE 9]
+      <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">'+"<"+"/script>"); </script>
+    / Pixel Admin's javascripts
+    %script{:src => "assets/javascripts/bootstrap.min.js"}
+    %script{:src => "assets/javascripts/pixel-admin.min.js"}
+    :javascript
+      init.push(function () {
+      	// Javascript code here
+      });
+      window.PixelAdmin.start(init);

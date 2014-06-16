@@ -1,0 +1,944 @@
+!!!
+/
+  TABLE OF CONTENTS.
+  
+  Use search to find needed section.
+  
+  \=====================================================================
+  
+  |  1. $BODY                       |  Body                           |
+  |  2. $MAIN_NAVIGATION            |  Main navigation                |
+  |  3. $NAVBAR_ICON_BUTTONS        |  Navbar Icon Buttons            |
+  |  4. $MAIN_MENU                  |  Main menu                      |
+  |  5. $DEFAULT_MODAL              |  Default modal                  |
+  |  6. $MODALS_BLURRED_BACKGROUND  |  Modal with blurred background  |
+  |  7. $MODAL_SIZES                |  Modal sizes                    |
+  |  8. $MODALS_EFFECTS             |  Effects                        |
+  |  9. $MODAL_ALERTS               |  Modal alerts                   |
+  |  10. $JQUERY_BOOTBOX            |  jQuery Bootbox                 |
+  
+  \=====================================================================
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+/ [if gt IE 9]><!
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title Modals - UI Elements - PixelAdmin
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0", :name => "viewport"}/
+    / Open Sans font from Google CDN
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
+    / Pixel Admin's stylesheets
+    %link{:href => "assets/stylesheets/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pixel-admin.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/widgets.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/rtl.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/themes.min.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+  /
+    1. $BODY ======================================================================================
+    
+    Body
+    
+    Classes:
+    * 'theme-{THEME NAME}'
+    * 'right-to-left'      - Sets text direction to right-to-left
+    * 'main-menu-right'    - Places the main menu on the right side
+    * 'no-main-menu'       - Hides the main menu
+    * 'main-navbar-fixed'  - Fixes the main navigation
+    * 'main-menu-fixed'    - Fixes the main menu
+    * 'main-menu-animated' - Animate main menu
+  %body.theme-default.main-menu-animated
+    :javascript
+      var init = [];
+    / Demo script
+    %script{:src => "assets/demo/demo.js"}
+    / / Demo script
+    #main-wrapper
+      /
+        2. $MAIN_NAVIGATION ===========================================================================
+        
+        Main navigation
+      #main-navbar.navbar.navbar-inverse{:role => "navigation"}
+        / Main menu toggle
+        %button#main-menu-toggle{:type => "button"}
+          %i.navbar-icon.fa.fa-bars.icon
+          %span.hide-menu-text HIDE MENU
+        .navbar-inner
+          / Main navbar header
+          .navbar-header
+            / Logo
+            %a.navbar-brand{:href => "index.html"}
+            %div
+              %img{:alt => "Pixel Admin", :src => "assets/images/pixel-admin/main-navbar-logo.png"}/
+            PixelAdmin
+            / Main navbar toggle
+            %button.navbar-toggle.collapsed{"data-target" => "#main-navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+              %i.navbar-icon.fa.fa-bars
+          / / .navbar-header
+          #main-navbar-collapse.collapse.navbar-collapse.main-navbar-collapse
+            %div
+              %ul.nav.navbar-nav
+                %li
+                  %a{:href => "#"} Home
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Dropdown
+                  %ul.dropdown-menu
+                    %li
+                      %a{:href => "#"} First item
+                    %li
+                      %a{:href => "#"} Second item
+                    %li.divider
+                    %li
+                      %a{:href => "#"} Third item
+              / / .navbar-nav
+              .right.clearfix
+                %ul.nav.navbar-nav.pull-right.right-navbar-nav
+                  /
+                    3. $NAVBAR_ICON_BUTTONS =======================================================================
+                    
+                    Navbar Icon Buttons
+                    
+                    NOTE: .nav-icon-btn triggers a dropdown menu on desktop screens only. On small screens .nav-icon-btn acts like a hyperlink.
+                    
+                    Classes:
+                    * 'nav-icon-btn-info'
+                    * 'nav-icon-btn-success'
+                    * 'nav-icon-btn-warning'
+                    * 'nav-icon-btn-danger'
+                  %li.nav-icon-btn.nav-icon-btn-danger.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#notifications"}
+                      %span.label 5
+                      %i.nav-icon.fa.fa-bullhorn
+                      %span.small-screen-text Notifications
+                    / NOTIFICATIONS
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-notifications').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-notifications.no-padding{:style => "width: 300px"}
+                      #main-navbar-notifications.notifications-list
+                        .notification
+                          .notification-title.text-danger SYSTEM
+                          .notification-description
+                            %strong> Error 500
+                            \: Syntax error in index.php at line
+                            = succeed "." do
+                              %strong 461
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-danger
+                        / / .notification
+                        .notification
+                          .notification-title.text-info STORE
+                          .notification-description
+                            You have
+                            %strong 9
+                            new orders.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-truck.bg-info
+                        / / .notification
+                        .notification
+                          .notification-title.text-default CRON DAEMON
+                          .notification-description
+                            Job
+                            %strong "Clean DB"
+                            has been completed.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-clock-o.bg-default
+                        / / .notification
+                        .notification
+                          .notification-title.text-success SYSTEM
+                          .notification-description
+                            Server
+                            = succeed "." do
+                              %strong up
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-success
+                        / / .notification
+                        .notification
+                          .notification-title.text-warning SYSTEM
+                          .notification-description
+                            %strong> Warning
+                            \: Processor load
+                            = succeed "." do
+                              %strong 92%
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-warning
+                        / / .notification
+                      / / .notifications-list
+                      %a.notifications-link{:href => "#"} MORE NOTIFICATIONS
+                    / / .dropdown-menu
+                  %li.nav-icon-btn.nav-icon-btn-success.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#messages"}
+                      %span.label 10
+                      %i.nav-icon.fa.fa-envelope
+                      %span.small-screen-text Income messages
+                    / MESSAGES
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-messages').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-messages-alt.no-padding{:style => "width: 300px;"}
+                      #main-navbar-messages.messages-list
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                      / / .messages-list
+                      %a.messages-link{:href => "#"} MORE MESSAGES
+                    / / .dropdown-menu
+                  / /3. $END_NAVBAR_ICON_BUTTONS
+                  %li
+                    %form.navbar-form.pull-left
+                      %input.form-control{:placeholder => "Search", :type => "text"}/
+                  %li.dropdown
+                    %a.dropdown-toggle.user-menu{"data-toggle" => "dropdown", :href => "#"}
+                      %img{:src => "assets/demo/avatars/1.jpg"}/
+                      %span John Doe
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"}
+                          %span.label.label-warning.pull-right> New
+                          Profile
+                      %li
+                        %a{:href => "#"}
+                          %span.badge.badge-primary.pull-right> New
+                          Account
+                      %li
+                        %a{:href => "#"}
+                          %i.dropdown-icon.fa.fa-cog>
+                          \&nbsp;&nbsp;Settings
+                      %li.divider
+                      %li
+                        %a{:href => "pages-signin.html"}
+                          %i.dropdown-icon.fa.fa-power-off>
+                          \&nbsp;&nbsp;Log Out
+                / / .navbar-nav
+              / / .right
+          / / #main-navbar-collapse
+        / / .navbar-inner
+      / / #main-navbar
+      / /2. $END_MAIN_NAVIGATION
+      /
+        4. $MAIN_MENU =================================================================================
+        
+        Main menu
+        
+        Notes:
+        * to make the menu item active, add a class 'active' to the <li>
+        example: <li class="active">...</li>
+        * multilevel submenu example:
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 1</span></a>
+        <ul>
+        <li>...</li>
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 2</span></a>
+        <ul>
+        <li>...</li>
+        \...
+        </ul>
+        </li>
+        \...
+        </ul>
+        </li>
+      #main-menu{:role => "navigation"}
+        #main-menu-inner
+          #menu-content-demo.menu-content.top
+            /
+              Menu custom content demo
+              CSS:        styles/pixel-admin-less/demo.less or styles/pixel-admin-scss/_demo.scss
+              Javascript: html/assets/demo/demo.js
+            %div
+              .text-bg
+                %span.text-slim Welcome,
+                %span.text-semibold John
+              %img{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+              .btn-group
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-envelope
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-user
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-cog
+                %a.btn.btn-xs.btn-danger.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-power-off
+              %a.close{:href => "#"} &times;
+          %ul.navigation
+            %li
+              %a{:href => "index.html"}
+                %i.menu-icon.fa.fa-dashboard
+                %span.mm-text Dashboard
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-th
+                %span.mm-text Layouts
+                %span.label.label-warning Updated
+              %ul
+                %li
+                  %a{:href => "layouts-grid.html", :tabindex => "-1"}
+                    %span.mm-text Grid
+                %li
+                  %a{:href => "layouts-main-menu.html", :tabindex => "-1"}
+                    %i.menu-icon.fa.fa-th-list
+                    %span.mm-text Main menu
+                    %span.label.label-warning Updated
+            %li
+              %a{:href => "stat-panels.html"}
+                %i.menu-icon.fa.fa-tasks
+                %span.mm-text Stat panels
+            %li
+              %a{:href => "widgets.html"}
+                %i.menu-icon.fa.fa-flask
+                %span.mm-text Widgets
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-desktop
+                %span.mm-text UI elements
+              %ul
+                %li
+                  %a{:href => "ui-buttons.html", :tabindex => "-1"}
+                    %span.mm-text Buttons
+                %li
+                  %a{:href => "ui-typography.html", :tabindex => "-1"}
+                    %span.mm-text Typography
+                %li
+                  %a{:href => "ui-tabs.html", :tabindex => "-1"}
+                    %span.mm-text Tabs &amp; Accordions
+                %li
+                  %a{:href => "ui-modals.html", :tabindex => "-1"}
+                    %span.mm-text Modals
+                %li
+                  %a{:href => "ui-alerts.html", :tabindex => "-1"}
+                    %span.mm-text Alerts &amp; Tooltips
+                %li
+                  %a{:href => "ui-components.html", :tabindex => "-1"}
+                    %span.mm-text Components
+                %li
+                  %a{:href => "ui-panels.html", :tabindex => "-1"}
+                    %span.mm-text Panels
+                %li
+                  %a{:href => "ui-jqueryui.html", :tabindex => "-1"}
+                    %span.mm-text jQuery UI
+                %li
+                  %a{:href => "ui-icons.html", :tabindex => "-1"}
+                    %span.mm-text Icons
+                %li
+                  %a{:href => "ui-utility-classes.html", :tabindex => "-1"}
+                    %span.mm-text Utility classes
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-check-square
+                %span.mm-text Form components
+              %ul
+                %li
+                  %a{:href => "forms-layouts.html", :tabindex => "-1"}
+                    %span.mm-text Layouts
+                %li
+                  %a{:href => "forms-general.html", :tabindex => "-1"}
+                    %span.mm-text General
+                %li
+                  %a{:href => "forms-advanced.html", :tabindex => "-1"}
+                    %span.mm-text Advanced
+                %li
+                  %a{:href => "forms-pickers.html", :tabindex => "-1"}
+                    %span.mm-text Pickers
+                %li
+                  %a{:href => "forms-validation.html", :tabindex => "-1"}
+                    %span.mm-text Validation
+                %li
+                  %a{:href => "forms-editors.html", :tabindex => "-1"}
+                    %span.mm-text Editors
+            %li
+              %a{:href => "tables.html"}
+                %i.menu-icon.fa.fa-table
+                %span.mm-text Tables
+            %li
+              %a{:href => "charts.html"}
+                %i.menu-icon.fa.fa-bar-chart-o
+                %span.mm-text Charts
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-files-o
+                %span.mm-text Pages
+                %span.label.label-success 16
+              %ul
+                %li
+                  %a{:href => "pages-search.html", :tabindex => "-1"}
+                    %span.mm-text Search results
+                %li
+                  %a{:href => "pages-pricing.html", :tabindex => "-1"}
+                    %span.mm-text Plans &amp; pricing
+                %li
+                  %a{:href => "pages-faq.html", :tabindex => "-1"}
+                    %span.mm-text FAQ
+                %li
+                  %a{:href => "pages-profile.html", :tabindex => "-1"}
+                    %span.mm-text Profile
+                %li
+                  %a{:href => "pages-timeline.html", :tabindex => "-1"}
+                    %span.mm-text Timeline
+                %li
+                  %a{:href => "pages-signin.html", :tabindex => "-1"}
+                    %span.mm-text Sign In
+                %li
+                  %a{:href => "pages-signup.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up
+                %li
+                  %a{:href => "pages-signin-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign In Alt
+                %li
+                  %a{:href => "pages-signup-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up Alt
+                %li
+                  %a{:href => "pages-invoice.html", :tabindex => "-1"}
+                    %span.mm-text Invoice
+                %li
+                  %a{:href => "pages-404.html", :tabindex => "-1"}
+                    %span.mm-text Error 404
+                %li
+                  %a{:href => "pages-500.html", :tabindex => "-1"}
+                    %span.mm-text Error 500
+                %li.mm-dropdown
+                  %a{:href => "#"}
+                    %i.menu-icon.fa.fa-envelope
+                    %span.mm-text Messages
+                  %ul
+                    %li
+                      %a{:href => "pages-inbox.html", :tabindex => "-1"}
+                        %span.mm-text Inbox
+                    %li
+                      %a{:href => "pages-show-email.html", :tabindex => "-1"}
+                        %span.mm-text Show message
+                    %li
+                      %a{:href => "pages-new-email.html", :tabindex => "-1"}
+                        %span.mm-text New message
+                %li
+                  %a{:href => "pages-blank.html", :tabindex => "-1"}
+                    %span.mm-text Blank page
+            %li
+              %a{:href => "complete-ui.html"}
+                %i.menu-icon.fa.fa-briefcase
+                %span.mm-text Complete UI
+            %li
+              %a{:href => "color-builder.html"}
+                %i.menu-icon.fa.fa-tint
+                %span.mm-text Color Builder
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-sitemap
+                %span.mm-text Menu levels
+                %span.badge.badge-primary 6
+              %ul
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.1
+                    %span.badge.badge-danger 12
+                    %span.label.label-info 21
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.2
+                %li.mm-dropdown
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.3
+                    %span.label.label-warning 5
+                  %ul
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.1
+                    %li.mm-dropdown
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+                      %ul
+                        %li.mm-dropdown
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.1
+                          %ul
+                            %li
+                              %a{:href => "#", :tabindex => "-1"}
+                                %span.mm-text Menu level 4.1
+                        %li
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.2
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+          / / .navigation
+          .menu-content
+            %a.btn.btn-primary.btn-block.btn-outline.dark{:href => "pages-invoice.html"} Create Invoice
+        / / #main-menu-inner
+      / / #main-menu
+      / /4. $MAIN_MENU
+      #content-wrapper
+        .page-header
+          %h1
+            %span.text-light-gray> UI Elements /
+            Modals
+        / / .page-header
+        .row
+          .col-sm-6
+            /
+              5. $DEFAULT_MODAL =============================================================================
+              
+              Default modal
+            / Modal
+            #myModal.modal.fade{:role => "dialog", :style => "display: none;", :tabindex => "-1"}
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
+                    %h4#myModalLabel.modal-title Modal Heading
+                  .modal-body
+                    %h4 Text in a modal
+                    %p Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+                    %h4 Popover in a modal
+                    %p
+                      This
+                      %a.btn.btn-default.popover-test{"data-content" => "And here's some amazing content. It's very engaging. right?", "data-original-title" => "A Title", :href => "#", :role => "button", :title => ""} button
+                      should trigger a popover on click.
+                    %h4 Tooltips in a modal
+                    %p
+                      %a.tooltip-test{"data-original-title" => "Tooltip", :href => "#", :title => ""} This link
+                      and
+                      %a.tooltip-test{"data-original-title" => "Tooltip", :href => "#", :title => ""} that link
+                      should have tooltips on hover.
+                    %hr/
+                    %h4 Overflowing text to show scroll behavior
+                    %p Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+                    %p Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+                    %p Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+                    %p Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+                    %p Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+                    %p Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+                    %p Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+                    %p Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+                    %p Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+                  / / .modal-body
+                  .modal-footer
+                    %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+                    %button.btn.btn-primary{:type => "button"} Save changes
+                / / .modal-content
+              / / .modal-dialog
+            / /.modal
+            / / Modal
+            .panel
+              .panel-heading
+                %span.panel-title Default modal
+              .panel-body
+                / Button trigger modal
+                %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal"} Launch demo modal
+            / /5. $DEFAULT_MODAL
+            /
+              6. $MODALS_BLURRED_BACKGROUND =================================================================
+              
+              Modal with blurred background
+              
+              To enable blurred background effect just add class .modal-blur to the .modal
+            / Template
+            #modal-blurred-bg.modal.fade.modal-blur{:role => "dialog", :style => "display: none;", :tabindex => "-1"}
+              .modal-dialog.modal-sm
+                .modal-content
+                  .modal-header
+                    %button.close{"data-dismiss" => "modal", :type => "button"} ×
+                    %h4.modal-title Modal with blurred background
+                  .modal-body ...
+                / / .modal-content
+              / / .modal-dialog
+            / / .modal
+            / / Template
+            .panel
+              .panel-heading
+                %span.panel-title Modal with blurred background
+              .panel-body
+                .note.note-danger Use this feature with caution because it can be slow and buggy on large pages.
+                %button.btn.btn-success{"data-target" => "#modal-blurred-bg", "data-toggle" => "modal"} Modal with blurred background
+            / /6. $MODALS_BLURRED_BACKGROUND
+          .col-sm-6
+            /
+              7. $MODAL_SIZES ===============================================================================
+              
+              Modal sizes
+            / Small modal
+            #modal-sizes-1.modal.fade{:role => "dialog", :style => "display: none;", :tabindex => "-1"}
+              .modal-dialog.modal-sm
+                .modal-content
+                  .modal-header
+                    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
+                    %h4.modal-title Small modal
+                  .modal-body ...
+                / / .modal-content
+              / / .modal-dialog
+            / / .modal
+            / / Small modal
+            / Large modal
+            #modal-sizes-2.modal.fade{:role => "dialog", :style => "display: none;", :tabindex => "-1"}
+              .modal-dialog.modal-lg
+                .modal-content
+                  .modal-header
+                    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
+                    %h4.modal-title Large modal
+                  .modal-body ...
+                / / .modal-content
+              / / .modal-dialog
+            / / .modal
+            / / Large modal
+            .panel
+              .panel-heading
+                %span.panel-title Modal sizes
+              .panel-body
+                %button.btn{"data-target" => "#modal-sizes-1", "data-toggle" => "modal"}> Small modal
+                \&nbsp;&nbsp;&nbsp;
+                %button.btn{"data-target" => "#modal-sizes-2", "data-toggle" => "modal"} Large modal
+            / /7. $MODAL_SIZES
+            /
+              8. $MODALS_EFFECTS ============================================================================
+              
+              Effects
+              
+              To use custom modal animations just add classes .animated and .{ANIMATION NAME} to .modal-dialog
+            / Template
+            #uidemo-modals-effects-template.modal.fade{:role => "dialog", :style => "display: none;", :tabindex => "-1"}
+              %div
+                .modal-content
+                  .modal-header
+                    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
+                    %h4.modal-title Small modal
+                  .modal-body ...
+                / / .modal-content
+              / / .modal-dialog
+            / / Template
+            / Javascript
+            :javascript
+              init.push(function() {
+              	$('#uidemo-modals-effects-btn').on('click', function() {
+              		var $modal  = $('#uidemo-modals-effects-template').clone(true);
+              		$modal.find('> div').addClass('modal-dialog modal-sm animated ' + $('#uidemo-modals-effects-select').find(":selected").attr('value'));
+              		$modal.modal('show');
+              	})
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title Effects
+              .panel-body
+                .row
+                  .col-md-6
+                    %select#uidemo-modals-effects-select.form-control
+                      %optgroup{:label => "Attention Seekers"}
+                        %option{:value => "bounce"} bounce
+                        %option{:value => "flash"} flash
+                        %option{:value => "pulse"} pulse
+                        %option{:value => "shake"} shake
+                        %option{:value => "swing"} swing
+                        %option{:value => "tada"} tada
+                        %option{:value => "wobble"} wobble
+                      %optgroup{:label => "Bouncing Entrances"}
+                        %option{:value => "bounceIn"} bounceIn
+                        %option{:value => "bounceInDown"} bounceInDown
+                        %option{:value => "bounceInLeft"} bounceInLeft
+                        %option{:value => "bounceInRight"} bounceInRight
+                        %option{:value => "bounceInUp"} bounceInUp
+                      %optgroup{:label => "Fading Entrances"}
+                        %option{:value => "fadeIn"} fadeIn
+                        %option{:value => "fadeInDown"} fadeInDown
+                        %option{:value => "fadeInDownBig"} fadeInDownBig
+                        %option{:value => "fadeInLeft"} fadeInLeft
+                        %option{:value => "fadeInLeftBig"} fadeInLeftBig
+                        %option{:value => "fadeInRight"} fadeInRight
+                        %option{:value => "fadeInRightBig"} fadeInRightBig
+                        %option{:value => "fadeInUp"} fadeInUp
+                        %option{:value => "fadeInUpBig"} fadeInUpBig
+                      %optgroup{:label => "Flippers"}
+                        %option{:value => "flip"} flip
+                        %option{:value => "flipInX"} flipInX
+                        %option{:value => "flipInY"} flipInY
+                      %optgroup{:label => "Lightspeed"}
+                        %option{:value => "lightSpeedIn"} lightSpeedIn
+                      %optgroup{:label => "Rotating Entrances"}
+                        %option{:value => "rotateIn"} rotateIn
+                        %option{:value => "rotateInDownLeft"} rotateInDownLeft
+                        %option{:value => "rotateInDownRight"} rotateInDownRight
+                        %option{:value => "rotateInUpLeft"} rotateInUpLeft
+                        %option{:value => "rotateInUpRight"} rotateInUpRight
+                      %optgroup{:label => "Sliders"}
+                        %option{:value => "slideInDown"} slideInDown
+                        %option{:value => "slideInLeft"} slideInLeft
+                        %option{:value => "slideInRight"} slideInRight
+                      %optgroup{:label => "Specials"}
+                        %option{:value => "rollIn"} rollIn
+                  .col-md-6
+                    %button#uidemo-modals-effects-btn.btn Show Modal
+                %br/
+                %em
+                  see
+                  %a{:href => "http://daneden.github.io/animate.css/", :target => "_blank"} http://daneden.github.io/animate.css/
+            / /8. $MODALS_EFFECTS
+        .row
+          .col-sm-12
+            /
+              9. $MODAL_ALERTS ==============================================================================
+              
+              Modal alerts
+            / Success
+            #uidemo-modals-alerts-success.modal.modal-alert.modal-success.fade
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    %i.fa.fa-check-circle
+                  .modal-title Some alert title
+                  .modal-body Some alert text
+                  .modal-footer
+                    %button.btn.btn-success{"data-dismiss" => "modal", :type => "button"} OK
+                / / .modal-content
+              / / .modal-dialog
+            / / .modal
+            / / Success
+            / Danger
+            #uidemo-modals-alerts-danger.modal.modal-alert.modal-danger.fade
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    %i.fa.fa-times-circle
+                  .modal-title Some alert title
+                  .modal-body Some alert text
+                  .modal-footer
+                    %button.btn.btn-danger{"data-dismiss" => "modal", :type => "button"} OK
+                / / .modal-content
+              / / .modal-dialog
+            / / .modal
+            / / Danger
+            / Warning
+            #uidemo-modals-alerts-warning.modal.modal-alert.modal-warning.fade
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    %i.fa.fa-warning
+                  .modal-title Some alert title
+                  .modal-body Some alert text
+                  .modal-footer
+                    %button.btn.btn-warning{"data-dismiss" => "modal", :type => "button"} OK
+                / / .modal-content
+              / / .modal-dialog
+            / / .modal
+            / / Warning
+            / Info
+            #uidemo-modals-alerts-info.modal.modal-alert.modal-info.fade
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    %i.fa.fa-info-circle
+                  .modal-title Some alert title
+                  .modal-body Some alert text
+                  .modal-footer
+                    %button.btn.btn-info{"data-dismiss" => "modal", :type => "button"} OK
+                / / .modal-content
+              / / .modal-dialog
+            / / .modal
+            / / Info
+            .panel
+              .panel-heading
+                %span.panel-title Modal alerts
+              .panel-body
+                %button.btn.btn-success{"data-target" => "#uidemo-modals-alerts-success", "data-toggle" => "modal"}> Success
+                \&nbsp;&nbsp;&nbsp;
+                = succeed "&amp;nbsp;&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-danger{"data-target" => "#uidemo-modals-alerts-danger", "data-toggle" => "modal"} Danger
+                = succeed "&amp;nbsp;&amp;nbsp;&amp;nbsp;" do
+                  %button.btn.btn-warning{"data-target" => "#uidemo-modals-alerts-warning", "data-toggle" => "modal"} Warning
+                %button.btn.btn-info{"data-target" => "#uidemo-modals-alerts-info", "data-toggle" => "modal"} Info
+            / /9. $MODAL_ALERTS
+        .row
+          .col-sm-12
+            /
+              10. $JQUERY_BOOTBOX ===========================================================================
+              
+              jQuery Bootbox
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$('#ui-bootbox-alert').on('click', function () {
+              		bootbox.alert({
+              			message: "Hello world!",
+              			callback: function() {
+              				alert("Hello world callback");
+              			},
+              			className: "bootbox-sm"
+              		});
+              	});
+              	$('#ui-bootbox-confirm').on('click', function () {
+              		bootbox.confirm({
+              			message: "Are you sure?",
+              			callback: function(result) {
+              				alert("Confirm result: " + result);
+              			},
+              			className: "bootbox-sm"
+              		});
+              	});
+              	$('#ui-bootbox-prompt').on('click', function () {
+              		bootbox.prompt({
+              			title: "What is your name?",
+              			callback: function(result) {
+              				if (result === null) {
+              					alert("Prompt dismissed");
+              				} else {
+              					alert("Hi " + result + "!");
+              				}
+              			},
+              			className: "bootbox-sm"
+              		});
+              	});
+              	$('#ui-bootbox-custom').on('click', function () {
+              		bootbox.dialog({
+              			message: "I am a custom dialog",
+              			title: "Custom title",
+              			buttons: {
+              				success: {
+              					label: "Success!",
+              					className: "btn-success",
+              					callback: function() {
+              						alert("great success");
+              					}
+              				},
+              				danger: {
+              					label: "Danger!",
+              					className: "btn-danger",
+              					callback: function() {
+              						alert("uh oh, look out!");
+              					}
+              				},
+              				main: {
+              					label: "Click ME!",
+              					className: "btn-primary",
+              					callback: function() {
+              						alert("Primary button");
+              					}
+              				}
+              			},
+              			className: "bootbox-sm"
+              		});
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title jQuery Bootbox
+              .panel-body
+                %button#ui-bootbox-alert.btn.btn-lg.btn-warning> Alert
+                \&nbsp;&nbsp;&nbsp;
+                = succeed "&amp;nbsp;&amp;nbsp;&amp;nbsp;" do
+                  %button#ui-bootbox-confirm.btn.btn-lg.btn-danger Confirm
+                = succeed "&amp;nbsp;&amp;nbsp;&amp;nbsp;" do
+                  %button#ui-bootbox-prompt.btn.btn-lg.btn-success Prompt
+                %button#ui-bootbox-custom.btn.btn-lg.btn-info Custom Dialog
+            / /10. $JQUERY_BOOTBOX
+      / / #content-wrapper
+      #main-menu-bg
+    / / #main-wrapper
+    / Get jQuery from Google CDN
+    / [if !IE]>
+    :javascript
+      window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">'+"<"+"/script>");
+    / <![endif]
+    /[if lte IE 9]
+      <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">'+"<"+"/script>"); </script>
+    / Pixel Admin's javascripts
+    %script{:src => "assets/javascripts/bootstrap.min.js"}
+    %script{:src => "assets/javascripts/pixel-admin.min.js"}
+    :javascript
+      init.push(function () {
+      	// Javascript code here
+      })
+      window.PixelAdmin.start(init);

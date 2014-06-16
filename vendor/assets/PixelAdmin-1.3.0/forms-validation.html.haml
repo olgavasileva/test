@@ -1,0 +1,1587 @@
+!!!
+/
+  TABLE OF CONTENTS.
+  
+  Use search to find needed section.
+  
+  \=============================================================
+  
+  |  1. $BODY                     |  Body                     |
+  |  2. $MAIN_NAVIGATION          |  Main navigation          |
+  |  3. $NAVBAR_ICON_BUTTONS      |  Navbar Icon Buttons      |
+  |  4. $MAIN_MENU                |  Main menu                |
+  |  5. $JQUERY_VALIDATION        |  jQuery Validation        |
+  |  6. $WIZARD_FORMS_VALIDATION  |  Wizard forms validation  |
+  
+  \=============================================================
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+/ [if gt IE 9]><!
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title Validation - Form components - PixelAdmin
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0", :name => "viewport"}/
+    / Open Sans font from Google CDN
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
+    / Pixel Admin's stylesheets
+    %link{:href => "assets/stylesheets/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pixel-admin.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/widgets.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/rtl.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/themes.min.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+  /
+    1. $BODY ======================================================================================
+    
+    Body
+    
+    Classes:
+    * 'theme-{THEME NAME}'
+    * 'right-to-left'      - Sets text direction to right-to-left
+    * 'main-menu-right'    - Places the main menu on the right side
+    * 'no-main-menu'       - Hides the main menu
+    * 'main-navbar-fixed'  - Fixes the main navigation
+    * 'main-menu-fixed'    - Fixes the main menu
+    * 'main-menu-animated' - Animate main menu
+  %body.theme-default.main-menu-animated
+    :javascript
+      var init = [];
+    / Demo script
+    %script{:src => "assets/demo/demo.js"}
+    / / Demo script
+    #main-wrapper
+      /
+        2. $MAIN_NAVIGATION ===========================================================================
+        
+        Main navigation
+      #main-navbar.navbar.navbar-inverse{:role => "navigation"}
+        / Main menu toggle
+        %button#main-menu-toggle{:type => "button"}
+          %i.navbar-icon.fa.fa-bars.icon
+          %span.hide-menu-text HIDE MENU
+        .navbar-inner
+          / Main navbar header
+          .navbar-header
+            / Logo
+            %a.navbar-brand{:href => "index.html"}
+            %div
+              %img{:alt => "Pixel Admin", :src => "assets/images/pixel-admin/main-navbar-logo.png"}/
+            PixelAdmin
+            / Main navbar toggle
+            %button.navbar-toggle.collapsed{"data-target" => "#main-navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+              %i.navbar-icon.fa.fa-bars
+          / / .navbar-header
+          #main-navbar-collapse.collapse.navbar-collapse.main-navbar-collapse
+            %div
+              %ul.nav.navbar-nav
+                %li
+                  %a{:href => "#"} Home
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Dropdown
+                  %ul.dropdown-menu
+                    %li
+                      %a{:href => "#"} First item
+                    %li
+                      %a{:href => "#"} Second item
+                    %li.divider
+                    %li
+                      %a{:href => "#"} Third item
+              / / .navbar-nav
+              .right.clearfix
+                %ul.nav.navbar-nav.pull-right.right-navbar-nav
+                  /
+                    3. $NAVBAR_ICON_BUTTONS =======================================================================
+                    
+                    Navbar Icon Buttons
+                    
+                    NOTE: .nav-icon-btn triggers a dropdown menu on desktop screens only. On small screens .nav-icon-btn acts like a hyperlink.
+                    
+                    Classes:
+                    * 'nav-icon-btn-info'
+                    * 'nav-icon-btn-success'
+                    * 'nav-icon-btn-warning'
+                    * 'nav-icon-btn-danger'
+                  %li.nav-icon-btn.nav-icon-btn-danger.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#notifications"}
+                      %span.label 5
+                      %i.nav-icon.fa.fa-bullhorn
+                      %span.small-screen-text Notifications
+                    / NOTIFICATIONS
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-notifications').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-notifications.no-padding{:style => "width: 300px"}
+                      #main-navbar-notifications.notifications-list
+                        .notification
+                          .notification-title.text-danger SYSTEM
+                          .notification-description
+                            %strong> Error 500
+                            \: Syntax error in index.php at line
+                            = succeed "." do
+                              %strong 461
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-danger
+                        / / .notification
+                        .notification
+                          .notification-title.text-info STORE
+                          .notification-description
+                            You have
+                            %strong 9
+                            new orders.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-truck.bg-info
+                        / / .notification
+                        .notification
+                          .notification-title.text-default CRON DAEMON
+                          .notification-description
+                            Job
+                            %strong "Clean DB"
+                            has been completed.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-clock-o.bg-default
+                        / / .notification
+                        .notification
+                          .notification-title.text-success SYSTEM
+                          .notification-description
+                            Server
+                            = succeed "." do
+                              %strong up
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-success
+                        / / .notification
+                        .notification
+                          .notification-title.text-warning SYSTEM
+                          .notification-description
+                            %strong> Warning
+                            \: Processor load
+                            = succeed "." do
+                              %strong 92%
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-warning
+                        / / .notification
+                      / / .notifications-list
+                      %a.notifications-link{:href => "#"} MORE NOTIFICATIONS
+                    / / .dropdown-menu
+                  %li.nav-icon-btn.nav-icon-btn-success.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#messages"}
+                      %span.label 10
+                      %i.nav-icon.fa.fa-envelope
+                      %span.small-screen-text Income messages
+                    / MESSAGES
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-messages').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-messages-alt.no-padding{:style => "width: 300px;"}
+                      #main-navbar-messages.messages-list
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                      / / .messages-list
+                      %a.messages-link{:href => "#"} MORE MESSAGES
+                    / / .dropdown-menu
+                  / /3. $END_NAVBAR_ICON_BUTTONS
+                  %li
+                    %form.navbar-form.pull-left
+                      %input.form-control{:placeholder => "Search", :type => "text"}/
+                  %li.dropdown
+                    %a.dropdown-toggle.user-menu{"data-toggle" => "dropdown", :href => "#"}
+                      %img{:src => "assets/demo/avatars/1.jpg"}/
+                      %span John Doe
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"}
+                          %span.label.label-warning.pull-right> New
+                          Profile
+                      %li
+                        %a{:href => "#"}
+                          %span.badge.badge-primary.pull-right> New
+                          Account
+                      %li
+                        %a{:href => "#"}
+                          %i.dropdown-icon.fa.fa-cog>
+                          \&nbsp;&nbsp;Settings
+                      %li.divider
+                      %li
+                        %a{:href => "pages-signin.html"}
+                          %i.dropdown-icon.fa.fa-power-off>
+                          \&nbsp;&nbsp;Log Out
+                / / .navbar-nav
+              / / .right
+          / / #main-navbar-collapse
+        / / .navbar-inner
+      / / #main-navbar
+      / /2. $END_MAIN_NAVIGATION
+      /
+        4. $MAIN_MENU =================================================================================
+        
+        Main menu
+        
+        Notes:
+        * to make the menu item active, add a class 'active' to the <li>
+        example: <li class="active">...</li>
+        * multilevel submenu example:
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 1</span></a>
+        <ul>
+        <li>...</li>
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 2</span></a>
+        <ul>
+        <li>...</li>
+        \...
+        </ul>
+        </li>
+        \...
+        </ul>
+        </li>
+      #main-menu{:role => "navigation"}
+        #main-menu-inner
+          #menu-content-demo.menu-content.top
+            /
+              Menu custom content demo
+              CSS:        styles/pixel-admin-less/demo.less or styles/pixel-admin-scss/_demo.scss
+              Javascript: html/assets/demo/demo.js
+            %div
+              .text-bg
+                %span.text-slim Welcome,
+                %span.text-semibold John
+              %img{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+              .btn-group
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-envelope
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-user
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-cog
+                %a.btn.btn-xs.btn-danger.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-power-off
+              %a.close{:href => "#"} &times;
+          %ul.navigation
+            %li
+              %a{:href => "index.html"}
+                %i.menu-icon.fa.fa-dashboard
+                %span.mm-text Dashboard
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-th
+                %span.mm-text Layouts
+                %span.label.label-warning Updated
+              %ul
+                %li
+                  %a{:href => "layouts-grid.html", :tabindex => "-1"}
+                    %span.mm-text Grid
+                %li
+                  %a{:href => "layouts-main-menu.html", :tabindex => "-1"}
+                    %i.menu-icon.fa.fa-th-list
+                    %span.mm-text Main menu
+                    %span.label.label-warning Updated
+            %li
+              %a{:href => "stat-panels.html"}
+                %i.menu-icon.fa.fa-tasks
+                %span.mm-text Stat panels
+            %li
+              %a{:href => "widgets.html"}
+                %i.menu-icon.fa.fa-flask
+                %span.mm-text Widgets
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-desktop
+                %span.mm-text UI elements
+              %ul
+                %li
+                  %a{:href => "ui-buttons.html", :tabindex => "-1"}
+                    %span.mm-text Buttons
+                %li
+                  %a{:href => "ui-typography.html", :tabindex => "-1"}
+                    %span.mm-text Typography
+                %li
+                  %a{:href => "ui-tabs.html", :tabindex => "-1"}
+                    %span.mm-text Tabs &amp; Accordions
+                %li
+                  %a{:href => "ui-modals.html", :tabindex => "-1"}
+                    %span.mm-text Modals
+                %li
+                  %a{:href => "ui-alerts.html", :tabindex => "-1"}
+                    %span.mm-text Alerts &amp; Tooltips
+                %li
+                  %a{:href => "ui-components.html", :tabindex => "-1"}
+                    %span.mm-text Components
+                %li
+                  %a{:href => "ui-panels.html", :tabindex => "-1"}
+                    %span.mm-text Panels
+                %li
+                  %a{:href => "ui-jqueryui.html", :tabindex => "-1"}
+                    %span.mm-text jQuery UI
+                %li
+                  %a{:href => "ui-icons.html", :tabindex => "-1"}
+                    %span.mm-text Icons
+                %li
+                  %a{:href => "ui-utility-classes.html", :tabindex => "-1"}
+                    %span.mm-text Utility classes
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-check-square
+                %span.mm-text Form components
+              %ul
+                %li
+                  %a{:href => "forms-layouts.html", :tabindex => "-1"}
+                    %span.mm-text Layouts
+                %li
+                  %a{:href => "forms-general.html", :tabindex => "-1"}
+                    %span.mm-text General
+                %li
+                  %a{:href => "forms-advanced.html", :tabindex => "-1"}
+                    %span.mm-text Advanced
+                %li
+                  %a{:href => "forms-pickers.html", :tabindex => "-1"}
+                    %span.mm-text Pickers
+                %li
+                  %a{:href => "forms-validation.html", :tabindex => "-1"}
+                    %span.mm-text Validation
+                %li
+                  %a{:href => "forms-editors.html", :tabindex => "-1"}
+                    %span.mm-text Editors
+            %li
+              %a{:href => "tables.html"}
+                %i.menu-icon.fa.fa-table
+                %span.mm-text Tables
+            %li
+              %a{:href => "charts.html"}
+                %i.menu-icon.fa.fa-bar-chart-o
+                %span.mm-text Charts
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-files-o
+                %span.mm-text Pages
+                %span.label.label-success 16
+              %ul
+                %li
+                  %a{:href => "pages-search.html", :tabindex => "-1"}
+                    %span.mm-text Search results
+                %li
+                  %a{:href => "pages-pricing.html", :tabindex => "-1"}
+                    %span.mm-text Plans &amp; pricing
+                %li
+                  %a{:href => "pages-faq.html", :tabindex => "-1"}
+                    %span.mm-text FAQ
+                %li
+                  %a{:href => "pages-profile.html", :tabindex => "-1"}
+                    %span.mm-text Profile
+                %li
+                  %a{:href => "pages-timeline.html", :tabindex => "-1"}
+                    %span.mm-text Timeline
+                %li
+                  %a{:href => "pages-signin.html", :tabindex => "-1"}
+                    %span.mm-text Sign In
+                %li
+                  %a{:href => "pages-signup.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up
+                %li
+                  %a{:href => "pages-signin-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign In Alt
+                %li
+                  %a{:href => "pages-signup-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up Alt
+                %li
+                  %a{:href => "pages-invoice.html", :tabindex => "-1"}
+                    %span.mm-text Invoice
+                %li
+                  %a{:href => "pages-404.html", :tabindex => "-1"}
+                    %span.mm-text Error 404
+                %li
+                  %a{:href => "pages-500.html", :tabindex => "-1"}
+                    %span.mm-text Error 500
+                %li.mm-dropdown
+                  %a{:href => "#"}
+                    %i.menu-icon.fa.fa-envelope
+                    %span.mm-text Messages
+                  %ul
+                    %li
+                      %a{:href => "pages-inbox.html", :tabindex => "-1"}
+                        %span.mm-text Inbox
+                    %li
+                      %a{:href => "pages-show-email.html", :tabindex => "-1"}
+                        %span.mm-text Show message
+                    %li
+                      %a{:href => "pages-new-email.html", :tabindex => "-1"}
+                        %span.mm-text New message
+                %li
+                  %a{:href => "pages-blank.html", :tabindex => "-1"}
+                    %span.mm-text Blank page
+            %li
+              %a{:href => "complete-ui.html"}
+                %i.menu-icon.fa.fa-briefcase
+                %span.mm-text Complete UI
+            %li
+              %a{:href => "color-builder.html"}
+                %i.menu-icon.fa.fa-tint
+                %span.mm-text Color Builder
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-sitemap
+                %span.mm-text Menu levels
+                %span.badge.badge-primary 6
+              %ul
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.1
+                    %span.badge.badge-danger 12
+                    %span.label.label-info 21
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.2
+                %li.mm-dropdown
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.3
+                    %span.label.label-warning 5
+                  %ul
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.1
+                    %li.mm-dropdown
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+                      %ul
+                        %li.mm-dropdown
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.1
+                          %ul
+                            %li
+                              %a{:href => "#", :tabindex => "-1"}
+                                %span.mm-text Menu level 4.1
+                        %li
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.2
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+          / / .navigation
+          .menu-content
+            %a.btn.btn-primary.btn-block.btn-outline.dark{:href => "pages-invoice.html"} Create Invoice
+        / / #main-menu-inner
+      / / #main-menu
+      / /4. $MAIN_MENU
+      #content-wrapper
+        .page-header
+          %h1
+            %span.text-light-gray> Form components /
+            Validation
+        / / .page-header
+        .row
+          .col-sm-12
+            /
+              5. $JQUERY_VALIDATION =========================================================================
+              
+              jQuery Validation
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$("#jq-validation-phone").mask("(999) 999-9999");
+              	$('#jq-validation-select2').select2({ allowClear: true, placeholder: 'Select a country...' }).change(function(){
+              		$(this).valid();
+              	});
+              	$('#jq-validation-select2-multi').select2({ placeholder: 'Select gear...' }).change(function(){
+              		$(this).valid();
+              	});
+
+              	// Add phone validator
+              	$.validator.addMethod(
+              		"phone_format",
+              		function(value, element) {
+              			var check = false;
+              			return this.optional(element) || /^\(\d{3}\)[ ]\d{3}\-\d{4}$/.test(value);
+              		},
+              		"Invalid phone number."
+              	);
+
+              	// Setup validation
+              	$("#jq-validation-form").validate({
+              		ignore: '.ignore, .select2-input',
+              		focusInvalid: false,
+              		rules: {
+              			'jq-validation-email': {
+              			  required: true,
+              			  email: true
+              			},
+              			'jq-validation-password': {
+              				required: true,
+              				minlength: 6,
+              				maxlength: 20
+              			},
+              			'jq-validation-password-confirmation': {
+              				required: true,
+              				minlength: 6,
+              				equalTo: "#jq-validation-password"
+              			},
+              			'jq-validation-required': {
+              				required: true
+              			},
+              			'jq-validation-url': {
+              				required: true,
+              				url: true
+              			},
+              			'jq-validation-phone': {
+              				required: true,
+              				phone_format: true
+              			},
+              			'jq-validation-select': {
+              				required: true
+              			},
+              			'jq-validation-multiselect': {
+              				required: true,
+              				minlength: 2
+              			},
+              			'jq-validation-select2': {
+              				required: true
+              			},
+              			'jq-validation-select2-multi': {
+              				required: true,
+              				minlength: 2
+              			},
+              			'jq-validation-text': {
+              				required: true
+              			},
+              			'jq-validation-simple-error': {
+              				required: true
+              			},
+              			'jq-validation-dark-error': {
+              				required: true
+              			},
+              			'jq-validation-radios': {
+              				required: true
+              			},
+              			'jq-validation-checkbox1': {
+              				require_from_group: [1, 'input[name="jq-validation-checkbox1"], input[name="jq-validation-checkbox2"]']
+              			},
+              			'jq-validation-checkbox2': {
+              				require_from_group: [1, 'input[name="jq-validation-checkbox1"], input[name="jq-validation-checkbox2"]']
+              			},
+              			'jq-validation-policy': {
+              				required: true
+              			}
+              		},
+              		messages: {
+              			'jq-validation-policy': 'You must check it!'
+              		}
+              	});
+              });
+            / / Javascript
+            .panel
+              .panel-heading
+                %span.panel-title jQuery Validation
+              .panel-body
+                .note.note-info
+                  More info and examples at
+                  %a{:href => "http://bassistance.de/jquery-plugins/jquery-plugin-validation/", :target => "_blank"} http://bassistance.de/jquery-plugins/jquery-plugin-validation/
+                %form#jq-validation-form.form-horizontal
+                  .form-group
+                    %label.col-sm-3.control-label{:for => "jq-validation-email"} Email
+                    .col-sm-9
+                      %input#jq-validation-email.form-control{:name => "jq-validation-email", :placeholder => "Email", :type => "text"}/
+                  .form-group
+                    %label.col-sm-3.control-label{:for => "jq-validation-password"} Password
+                    .col-sm-9
+                      %input#jq-validation-password.form-control{:name => "jq-validation-password", :placeholder => "Password", :type => "password"}/
+                      %p.help-block Example block-level help text here.
+                  .form-group
+                    %label.col-sm-3.control-label{:for => "jq-validation-password-confirmation"} Confirm password
+                    .col-sm-9
+                      %input#jq-validation-password-confirmation.form-control{:name => "jq-validation-password-confirmation", :placeholder => "Confirm password", :type => "password"}/
+                      %p.help-block Example block-level help text here.
+                  .form-group
+                    %label.col-sm-3.control-label{:for => "jq-validation-required"} Required
+                    .col-sm-9
+                      %input#jq-validation-required.form-control{:name => "jq-validation-required", :placeholder => "Required", :type => "text"}/
+                  .form-group
+                    %label.col-sm-3.control-label{:for => "jq-validation-url"} URL
+                    .col-sm-9
+                      %input#jq-validation-url.form-control{:name => "jq-validation-url", :placeholder => "Url", :type => "text"}/
+                  .form-group
+                    %label.col-sm-3.control-label{:for => "jq-validation-phone"} Phone
+                    .col-sm-9
+                      %input#jq-validation-phone.form-control{:name => "jq-validation-phone", :placeholder => "Phone: (999) 999-9999", :type => "text"}/
+                  .form-group
+                    %label.col-sm-3.control-label{:for => "jq-validation-select"} Select Box
+                    .col-sm-9
+                      %select#jq-validation-select.form-control{:name => "jq-validation-select"}
+                        %option{:value => ""} Select gear...
+                        %optgroup{:label => "Climbing"}
+                          %option{:value => "pitons"} Pitons
+                          %option{:value => "cams"} Cams
+                          %option{:value => "nuts"} Nuts
+                          %option{:value => "bolts"} Bolts
+                          %option{:value => "stoppers"} Stoppers
+                          %option{:value => "sling"} Sling
+                        %optgroup{:label => "Skiing"}
+                          %option{:value => "skis"} Skis
+                          %option{:value => "skins"} Skins
+                          %option{:value => "poles"} Poles
+                  .form-group
+                    %label.col-sm-3.control-label{:for => "jq-validation-multiselect"} Multiselect
+                    .col-sm-9
+                      %select#jq-validation-multiselect.form-control{:multiple => "multiple", :name => "jq-validation-multiselect"}
+                        %optgroup{:label => "Climbing"}
+                          %option{:value => "pitons"} Pitons
+                          %option{:value => "cams"} Cams
+                          %option{:value => "nuts"} Nuts
+                          %option{:value => "bolts"} Bolts
+                          %option{:value => "stoppers"} Stoppers
+                          %option{:value => "sling"} Sling
+                        %optgroup{:label => "Skiing"}
+                          %option{:value => "skis"} Skis
+                          %option{:value => "skins"} Skins
+                          %option{:value => "poles"} Poles
+                  .form-group
+                    %label.col-sm-3.control-label{:for => "jq-validation-select2"} Select2
+                    .col-sm-9
+                      %select#jq-validation-select2.form-control{:name => "jq-validation-select2"}
+                        %option
+                        %option{:value => "AF"} Afghanistan
+                        %option{:value => "AX"} &Aring;land Islands
+                        %option{:value => "AL"} Albania
+                        %option{:value => "DZ"} Algeria
+                        %option{:value => "AS"} American Samoa
+                        %option{:value => "AD"} Andorra
+                        %option{:value => "AO"} Angola
+                        %option{:value => "AI"} Anguilla
+                        %option{:value => "AQ"} Antarctica
+                        %option{:value => "AG"} Antigua and Barbuda
+                        %option{:value => "AR"} Argentina
+                        %option{:value => "AM"} Armenia
+                        %option{:value => "AW"} Aruba
+                        %option{:value => "AU"} Australia
+                        %option{:value => "AT"} Austria
+                        %option{:value => "AZ"} Azerbaijan
+                        %option{:value => "BS"} Bahamas
+                        %option{:value => "BH"} Bahrain
+                        %option{:value => "BD"} Bangladesh
+                        %option{:value => "BB"} Barbados
+                        %option{:value => "BY"} Belarus
+                        %option{:value => "BE"} Belgium
+                        %option{:value => "BZ"} Belize
+                        %option{:value => "BJ"} Benin
+                        %option{:value => "BM"} Bermuda
+                        %option{:value => "BT"} Bhutan
+                        %option{:value => "BO"} Bolivia, Plurinational State of
+                        %option{:value => "BA"} Bosnia and Herzegovina
+                        %option{:value => "BW"} Botswana
+                        %option{:value => "BV"} Bouvet Island
+                        %option{:value => "BR"} Brazil
+                        %option{:value => "IO"} British Indian Ocean Territory
+                        %option{:value => "BN"} Brunei Darussalam
+                        %option{:value => "BG"} Bulgaria
+                        %option{:value => "BF"} Burkina Faso
+                        %option{:value => "BI"} Burundi
+                        %option{:value => "KH"} Cambodia
+                        %option{:value => "CM"} Cameroon
+                        %option{:value => "CA"} Canada
+                        %option{:value => "CV"} Cape Verde
+                        %option{:value => "KY"} Cayman Islands
+                        %option{:value => "CF"} Central African Republic
+                        %option{:value => "TD"} Chad
+                        %option{:value => "CL"} Chile
+                        %option{:value => "CN"} China
+                        %option{:value => "CX"} Christmas Island
+                        %option{:value => "CC"} Cocos (Keeling) Islands
+                        %option{:value => "CO"} Colombia
+                        %option{:value => "KM"} Comoros
+                        %option{:value => "CG"} Congo
+                        %option{:value => "CD"} Congo, the Democratic Republic of the
+                        %option{:value => "CK"} Cook Islands
+                        %option{:value => "CR"} Costa Rica
+                        %option{:value => "CI"} C&ocirc;te d'Ivoire
+                        %option{:value => "HR"} Croatia
+                        %option{:value => "CU"} Cuba
+                        %option{:value => "CY"} Cyprus
+                        %option{:value => "CZ"} Czech Republic
+                        %option{:value => "DK"} Denmark
+                        %option{:value => "DJ"} Djibouti
+                        %option{:value => "DM"} Dominica
+                        %option{:value => "DO"} Dominican Republic
+                        %option{:value => "EC"} Ecuador
+                        %option{:value => "EG"} Egypt
+                        %option{:value => "SV"} El Salvador
+                        %option{:value => "GQ"} Equatorial Guinea
+                        %option{:value => "ER"} Eritrea
+                        %option{:value => "EE"} Estonia
+                        %option{:value => "ET"} Ethiopia
+                        %option{:value => "FK"} Falkland Islands (Malvinas)
+                        %option{:value => "FO"} Faroe Islands
+                        %option{:value => "FJ"} Fiji
+                        %option{:value => "FI"} Finland
+                        %option{:value => "FR"} France
+                        %option{:value => "GF"} French Guiana
+                        %option{:value => "PF"} French Polynesia
+                        %option{:value => "TF"} French Southern Territories
+                        %option{:value => "GA"} Gabon
+                        %option{:value => "GM"} Gambia
+                        %option{:value => "GE"} Georgia
+                        %option{:value => "DE"} Germany
+                        %option{:value => "GH"} Ghana
+                        %option{:value => "GI"} Gibraltar
+                        %option{:value => "GR"} Greece
+                        %option{:value => "GL"} Greenland
+                        %option{:value => "GD"} Grenada
+                        %option{:value => "GP"} Guadeloupe
+                        %option{:value => "GU"} Guam
+                        %option{:value => "GT"} Guatemala
+                        %option{:value => "GG"} Guernsey
+                        %option{:value => "GN"} Guinea
+                        %option{:value => "GW"} Guinea-Bissau
+                        %option{:value => "GY"} Guyana
+                        %option{:value => "HT"} Haiti
+                        %option{:value => "HM"} Heard Island and McDonald Islands
+                        %option{:value => "VA"} Holy See (Vatican City State)
+                        %option{:value => "HN"} Honduras
+                        %option{:value => "HK"} Hong Kong
+                        %option{:value => "HU"} Hungary
+                        %option{:value => "IS"} Iceland
+                        %option{:value => "IN"} India
+                        %option{:value => "ID"} Indonesia
+                        %option{:value => "IR"} Iran, Islamic Republic of
+                        %option{:value => "IQ"} Iraq
+                        %option{:value => "IE"} Ireland
+                        %option{:value => "IM"} Isle of Man
+                        %option{:value => "IL"} Israel
+                        %option{:value => "IT"} Italy
+                        %option{:value => "JM"} Jamaica
+                        %option{:value => "JP"} Japan
+                        %option{:value => "JE"} Jersey
+                        %option{:value => "JO"} Jordan
+                        %option{:value => "KZ"} Kazakhstan
+                        %option{:value => "KE"} Kenya
+                        %option{:value => "KI"} Kiribati
+                        %option{:value => "KP"} Korea, Democratic People's Republic of
+                        %option{:value => "KR"} Korea, Republic of
+                        %option{:value => "KW"} Kuwait
+                        %option{:value => "KG"} Kyrgyzstan
+                        %option{:value => "LA"} Lao People's Democratic Republic
+                        %option{:value => "LV"} Latvia
+                        %option{:value => "LB"} Lebanon
+                        %option{:value => "LS"} Lesotho
+                        %option{:value => "LR"} Liberia
+                        %option{:value => "LY"} Libyan Arab Jamahiriya
+                        %option{:value => "LI"} Liechtenstein
+                        %option{:value => "LT"} Lithuania
+                        %option{:value => "LU"} Luxembourg
+                        %option{:value => "MO"} Macao
+                        %option{:value => "MK"} Macedonia, the former Yugoslav Republic of
+                        %option{:value => "MG"} Madagascar
+                        %option{:value => "MW"} Malawi
+                        %option{:value => "MY"} Malaysia
+                        %option{:value => "MV"} Maldives
+                        %option{:value => "ML"} Mali
+                        %option{:value => "MT"} Malta
+                        %option{:value => "MH"} Marshall Islands
+                        %option{:value => "MQ"} Martinique
+                        %option{:value => "MR"} Mauritania
+                        %option{:value => "MU"} Mauritius
+                        %option{:value => "YT"} Mayotte
+                        %option{:value => "MX"} Mexico
+                        %option{:value => "FM"} Micronesia, Federated States of
+                        %option{:value => "MD"} Moldova, Republic of
+                        %option{:value => "MC"} Monaco
+                        %option{:value => "MN"} Mongolia
+                        %option{:value => "ME"} Montenegro
+                        %option{:value => "MS"} Montserrat
+                        %option{:value => "MA"} Morocco
+                        %option{:value => "MZ"} Mozambique
+                        %option{:value => "MM"} Myanmar
+                        %option{:value => "NA"} Namibia
+                        %option{:value => "NR"} Nauru
+                        %option{:value => "NP"} Nepal
+                        %option{:value => "NL"} Netherlands
+                        %option{:value => "AN"} Netherlands Antilles
+                        %option{:value => "NC"} New Caledonia
+                        %option{:value => "NZ"} New Zealand
+                        %option{:value => "NI"} Nicaragua
+                        %option{:value => "NE"} Niger
+                        %option{:value => "NG"} Nigeria
+                        %option{:value => "NU"} Niue
+                        %option{:value => "NF"} Norfolk Island
+                        %option{:value => "MP"} Northern Mariana Islands
+                        %option{:value => "NO"} Norway
+                        %option{:value => "OM"} Oman
+                        %option{:value => "PK"} Pakistan
+                        %option{:value => "PW"} Palau
+                        %option{:value => "PS"} Palestinian Territory, Occupied
+                        %option{:value => "PA"} Panama
+                        %option{:value => "PG"} Papua New Guinea
+                        %option{:value => "PY"} Paraguay
+                        %option{:value => "PE"} Peru
+                        %option{:value => "PH"} Philippines
+                        %option{:value => "PN"} Pitcairn
+                        %option{:value => "PL"} Poland
+                        %option{:value => "PT"} Portugal
+                        %option{:value => "PR"} Puerto Rico
+                        %option{:value => "QA"} Qatar
+                        %option{:value => "RE"} R&eacute;union
+                        %option{:value => "RO"} Romania
+                        %option{:value => "RU"} Russian Federation
+                        %option{:value => "RW"} Rwanda
+                        %option{:value => "BL"} Saint Barth&eacute;lemy
+                        %option{:value => "SH"} Saint Helena, Ascension and Tristan da Cunha
+                        %option{:value => "KN"} Saint Kitts and Nevis
+                        %option{:value => "LC"} Saint Lucia
+                        %option{:value => "MF"} Saint Martin (French part)
+                        %option{:value => "PM"} Saint Pierre and Miquelon
+                        %option{:value => "VC"} Saint Vincent and the Grenadines
+                        %option{:value => "WS"} Samoa
+                        %option{:value => "SM"} San Marino
+                        %option{:value => "ST"} Sao Tome and Principe
+                        %option{:value => "SA"} Saudi Arabia
+                        %option{:value => "SN"} Senegal
+                        %option{:value => "RS"} Serbia
+                        %option{:value => "SC"} Seychelles
+                        %option{:value => "SL"} Sierra Leone
+                        %option{:value => "SG"} Singapore
+                        %option{:value => "SK"} Slovakia
+                        %option{:value => "SI"} Slovenia
+                        %option{:value => "SB"} Solomon Islands
+                        %option{:value => "SO"} Somalia
+                        %option{:value => "ZA"} South Africa
+                        %option{:value => "GS"} South Georgia and the South Sandwich Islands
+                        %option{:value => "ES"} Spain
+                        %option{:value => "LK"} Sri Lanka
+                        %option{:value => "SD"} Sudan
+                        %option{:value => "SR"} Suriname
+                        %option{:value => "SJ"} Svalbard and Jan Mayen
+                        %option{:value => "SZ"} Swaziland
+                        %option{:value => "SE"} Sweden
+                        %option{:value => "CH"} Switzerland
+                        %option{:value => "SY"} Syrian Arab Republic
+                        %option{:value => "TW"} Taiwan, Province of China
+                        %option{:value => "TJ"} Tajikistan
+                        %option{:value => "TZ"} Tanzania, United Republic of
+                        %option{:value => "TH"} Thailand
+                        %option{:value => "TL"} Timor-Leste
+                        %option{:value => "TG"} Togo
+                        %option{:value => "TK"} Tokelau
+                        %option{:value => "TO"} Tonga
+                        %option{:value => "TT"} Trinidad and Tobago
+                        %option{:value => "TN"} Tunisia
+                        %option{:value => "TR"} Turkey
+                        %option{:value => "TM"} Turkmenistan
+                        %option{:value => "TC"} Turks and Caicos Islands
+                        %option{:value => "TV"} Tuvalu
+                        %option{:value => "UG"} Uganda
+                        %option{:value => "UA"} Ukraine
+                        %option{:value => "AE"} United Arab Emirates
+                        %option{:value => "GB"} United Kingdom
+                        %option{:value => "US"} United States
+                        %option{:value => "UM"} United States Minor Outlying Islands
+                        %option{:value => "UY"} Uruguay
+                        %option{:value => "UZ"} Uzbekistan
+                        %option{:value => "VU"} Vanuatu
+                        %option{:value => "VE"} Venezuela, Bolivarian Republic of
+                        %option{:value => "VN"} Viet Nam
+                        %option{:value => "VG"} Virgin Islands, British
+                        %option{:value => "VI"} Virgin Islands, U.S.
+                        %option{:value => "WF"} Wallis and Futuna
+                        %option{:value => "EH"} Western Sahara
+                        %option{:value => "YE"} Yemen
+                        %option{:value => "ZM"} Zambia
+                        %option{:value => "ZW"} Zimbabwe
+                  .form-group
+                    %label.col-sm-3.control-label{:for => "jq-validation-select2-multi"} Select2 Multiple
+                    .col-sm-9
+                      %select#jq-validation-select2-multi.form-control{:multiple => "multiple", :name => "jq-validation-select2-multi"}
+                        %optgroup{:label => "Climbing"}
+                          %option{:value => "pitons"} Pitons
+                          %option{:value => "cams"} Cams
+                          %option{:value => "nuts"} Nuts
+                          %option{:value => "bolts"} Bolts
+                          %option{:value => "stoppers"} Stoppers
+                          %option{:value => "sling"} Sling
+                        %optgroup{:label => "Skiing"}
+                          %option{:value => "skis"} Skis
+                          %option{:value => "skins"} Skins
+                          %option{:value => "poles"} Poles
+                  .form-group
+                    %label.col-sm-3.control-label{:for => "jq-validation-text"} Text
+                    .col-sm-9
+                      %textarea#jq-validation-text.form-control{:name => "jq-validation-text"}
+                      %p.help-block Example block-level help text here.
+                  / To use simple error template, just add '.simple' class to the .form-group
+                  .form-group.simple
+                    %label.col-sm-3.control-label{:for => "jq-validation-simple-error"} Simple error
+                    .col-sm-9
+                      %input#jq-validation-simple-error.form-control{:name => "jq-validation-simple-error", :placeholder => "Required", :type => "text"}/
+                  / To use dark error template, just add '.dark' class to the .form-group
+                  .form-group.dark
+                    %label.col-sm-3.control-label{:for => "jq-validation-dark-error"} Dark error
+                    .col-sm-9
+                      %input#jq-validation-dark-error.form-control{:name => "jq-validation-dark-error", :placeholder => "Required", :type => "text"}/
+                  .form-group
+                    %label.col-sm-3.control-label Radios
+                    .col-sm-9
+                      .radio
+                        %label
+                          %input.px{:name => "jq-validation-radios", :type => "radio", :value => "1"}/
+                          %span.lbl Option one is this and that—be sure to include why it's great
+                      .radio
+                        %label
+                          %input.px{:name => "jq-validation-radios", :type => "radio", :value => "2"}/
+                          %span.lbl Option two can be something else and selecting it will deselect option one
+                  .form-group
+                    .col-sm-offset-3.col-sm-9
+                      .checkbox
+                        %label
+                          %input.px{:name => "jq-validation-checkbox1", :type => "checkbox"}/
+                          %span.lbl Checkbox 1
+                      .checkbox
+                        %label
+                          %input.px{:name => "jq-validation-checkbox2", :type => "checkbox"}/
+                          %span.lbl Checkbox 2
+                  %hr.panel-wide/
+                  .form-group
+                    .col-sm-offset-3.col-sm-9
+                      .checkbox
+                        %label
+                          %input#jq-validation-policy.px{:name => "jq-validation-policy", :type => "checkbox"}/
+                          %span.lbl Confirm policy
+                  .form-group
+                    .col-sm-offset-3.col-sm-9
+                      %button.btn.btn-primary{:type => "submit"} Sign in
+            / /5. $JQUERY_VALIDATION
+            /
+              6. $WIZARD_FORMS_VALIDATION ===================================================================
+              
+              Wizard forms validation
+            / Javascript
+            :javascript
+              init.push(function () {
+              	$('#wizard-forms').pixelWizard({
+              		onFinish: function () {
+              			// Disable changing step. To enable changing step just call this.unfreeze()
+              			this.freeze();
+              		}
+              	});
+              	$('#wizard-forms .wizard-prev-step-btn').on('click', function () {
+              		$('#wizard-forms').pixelWizard('prevStep');
+              		return false;
+              	});
+
+              	// Account page
+
+              	$("#wizard-account").validate({
+              		ignore: '.ignore',
+              		focusInvalid: true,
+              		rules: {
+              			'username': {
+              				required: true,
+              				minlength: 3,
+              				maxlength: 20
+              			},
+              			'password': {
+              				required: true,
+              				minlength: 6,
+              				maxlength: 20
+              			},
+              			'repeat-password': {
+              				required: true,
+              				minlength: 6,
+              				equalTo: 'input[name="password"]'
+              			},
+              			'email': {
+              			  required: true,
+              			  email: true
+              			},
+              		}
+              	});
+              	$('#wizard-account').on('submit', function () {
+              		if ($(this).valid()) {
+              			$('#wizard-forms').pixelWizard('nextStep');
+              		}
+              		return false;
+              	});
+
+              	// Profile page
+
+              	$('#country').select2({ allowClear: true, placeholder: 'Select a country...' }).change(function(){
+              		$(this).valid();
+              	});
+              	$("#wizard-profile").validate({
+              		ignore: '.ignore, .select2-input',
+              		focusInvalid: true,
+              		rules: {
+              			'full_name': {
+              				required: true
+              			},
+              			'country': {
+              				required: true
+              			},
+              			'subscription': {
+              				required: true
+              			},
+              			'gender1': {
+              				require_from_group: [1, 'input[name="gender1"], input[name="gender2"]']
+              			},
+              			'gender2': {
+              				require_from_group: [1, 'input[name="gender1"], input[name="gender2"]']
+              			}
+              		}
+              	});
+              	$('#wizard-profile').on('submit', function () {
+              		if ($(this).valid()) {
+              			$('#wizard-forms').pixelWizard('nextStep');
+              		}
+              		return false;
+              	});
+
+              	// Credit card page
+
+              	var $wcc = $('#wizard-credit-card')
+              	$wcc.find('[data-toggle="tooltip"]').tooltip();
+              	$wcc.find('input[name="postal_code"]').mask("999999");
+              	$wcc.find('input[name="credit_card_number"]').mask("9999 9999 9999 9999");
+              	$wcc.find('input[name="csv"]').mask("999");
+              	$wcc.validate({
+              		ignore: '.ignore, .select2-input',
+              		focusInvalid: true,
+              		rules: {
+              			'postal_code': {
+              				required: true,
+              				digits: true,
+              				rangelength: [6, 6]
+              			},
+              			'credit_card_number': {
+              				required: true,
+              				creditcard: true
+              			},
+              			'csv': {
+              				required: true,
+              				digits: true,
+              				rangelength: [3, 3]
+              			}
+              		}
+              	});
+              	$wcc.on('submit', function () {
+              		if ($(this).valid()) {
+              			$('#wizard-forms').pixelWizard('nextStep');
+              		}
+              		return false;
+              	});
+
+              	// Finish page
+
+              	$('#wizard-finish button').click(function () {
+              		$(this).parent().find('.text-lg').text('THANK YOU!');
+              		$(this).parent().find('.fa-check').removeClass('fa-check').addClass('fa-check-circle');
+              		$(this).remove();
+              		$('#wizard-forms').pixelWizard('nextStep');
+              		return false;
+              	});
+
+              });
+            / / Javascript
+            / Styles
+            :css
+              #wizard-credit-card .tooltip {
+              	left: auto !important;
+              	right: 36px !important;
+              	width: 200px !important;
+              }
+            / / Styles
+            .panel
+              .panel-heading
+                %span.panel-title Wizard forms validation
+              .panel-body.no-padding
+                #wizard-forms.wizard.no-margin
+                  / Steps
+                  .wizard-wrapper.no-border
+                    %ul.wizard-steps
+                      %li{"data-target" => "#wizard-account"}
+                        %span.wizard-step-number 1
+                        %span.wizard-step-caption
+                          Account
+                          %span.wizard-step-description Setup your account
+                      %li{"data-target" => "#wizard-profile"}
+                        / ! Remove space between elements by dropping close angle
+                        %span.wizard-step-number 2
+                        %span.wizard-step-caption
+                          Profile
+                          %span.wizard-step-description Configure profile
+                      %li{"data-target" => "#wizard-credit-card"}
+                        / ! Remove space between elements by dropping close angle
+                        %span.wizard-step-number 3
+                        %span.wizard-step-caption
+                          Credit Card
+                          %span.wizard-step-description Credit card info
+                      %li{"data-target" => "#wizard-finish"}
+                        / ! Remove space between elements by dropping close angle
+                        %span.wizard-step-number 4
+                        %span.wizard-step-caption
+                          Finish
+                    / / .wizard-steps
+                  / / .wizard-wrapper
+                  / / Steps
+                  / Pages
+                  .wizard-content.panel.no-margin.no-border-hr.no-border-b.no-padding-hr
+                    / Account page
+                    %form#wizard-account.wizard-pane.form-bordered
+                      .form-group.no-padding-t.no-border-t.panel-padding-h
+                        .has-feedback
+                          %input.form-control{:name => "username", :placeholder => "Username", :type => "text"}/
+                          %i.fa.fa-user.form-control-feedback
+                      .border-t
+                        .row.panel-padding-h
+                          .col-xs-6
+                            .form-group.no-border
+                              .has-feedback
+                                %input.form-control{:name => "password", :placeholder => "Password", :type => "password"}/
+                                %i.fa.fa-asterisk.form-control-feedback
+                          .col-xs-6
+                            .form-group.no-border
+                              .has-feedback
+                                %input.form-control{:name => "repeat-password", :placeholder => "Repeat password", :type => "password"}/
+                                %i.fa.fa-asterisk.form-control-feedback
+                      .form-group.panel-padding-h
+                        .has-feedback
+                          %input.form-control{:name => "email", :placeholder => "Email", :type => "text"}/
+                          %i.fa.fa-envelope.form-control-feedback
+                      %hr/
+                      .panel-padding-h
+                        %button.btn.btn-primary.pull-right{:type => "submit"} Next step
+                    / / .wizard-pane
+                    / / Account page
+                    / Profile page
+                    %form#wizard-profile.wizard-pane.form-bordered{:style => "display: none;"}
+                      .form-group.no-padding-t.no-border-t.panel-padding-h
+                        %label.col-md-3.control-label{:for => "full_name"} Full name
+                        .col-md-9
+                          %input.form-control{:name => "full_name", :placeholder => "Full name", :type => "text"}/
+                      .form-group.panel-padding-h
+                        %label.col-sm-3.control-label Gender
+                        .col-sm-9
+                          .radio
+                            %label
+                              %input.px{:name => "gender1", :type => "radio", :value => "1"}/
+                              %span.lbl Male
+                          .radio.no-margin-b
+                            %label
+                              %input.px{:name => "gender2", :type => "radio", :value => "2"}/
+                              %span.lbl Female
+                      .form-group.panel-padding-h
+                        %label.col-sm-3 Subscribe to
+                        .col-sm-9
+                          .checkbox
+                            %label
+                              %input.px{:name => "subscription", :type => "checkbox", :value => "1"}/
+                              %span.lbl Latest news and announcements
+                          .checkbox.no-margin-b
+                            %label
+                              %input.px{:name => "subscription", :type => "checkbox", :value => "2"}/
+                              %span.lbl Product offers and discounts
+                      .form-group.panel-padding-h
+                        %label.col-sm-3.control-label{:for => "country"} Country
+                        .col-sm-9
+                          %select#country.form-control{:name => "country"}
+                            %option
+                            %option{:value => "AF"} Afghanistan
+                            %option{:value => "AX"} &Aring;land Islands
+                            %option{:value => "AL"} Albania
+                            %option{:value => "DZ"} Algeria
+                            %option{:value => "AS"} American Samoa
+                            %option{:value => "AD"} Andorra
+                            %option{:value => "AO"} Angola
+                            %option{:value => "AI"} Anguilla
+                            %option{:value => "AQ"} Antarctica
+                            %option{:value => "AG"} Antigua and Barbuda
+                            %option{:value => "AR"} Argentina
+                            %option{:value => "AM"} Armenia
+                            %option{:value => "AW"} Aruba
+                            %option{:value => "AU"} Australia
+                            %option{:value => "AT"} Austria
+                            %option{:value => "AZ"} Azerbaijan
+                            %option{:value => "BS"} Bahamas
+                            %option{:value => "BH"} Bahrain
+                            %option{:value => "BD"} Bangladesh
+                            %option{:value => "BB"} Barbados
+                            %option{:value => "BY"} Belarus
+                            %option{:value => "BE"} Belgium
+                            %option{:value => "BZ"} Belize
+                            %option{:value => "BJ"} Benin
+                            %option{:value => "BM"} Bermuda
+                            %option{:value => "BT"} Bhutan
+                            %option{:value => "BO"} Bolivia, Plurinational State of
+                            %option{:value => "BA"} Bosnia and Herzegovina
+                            %option{:value => "BW"} Botswana
+                            %option{:value => "BV"} Bouvet Island
+                            %option{:value => "BR"} Brazil
+                            %option{:value => "IO"} British Indian Ocean Territory
+                            %option{:value => "BN"} Brunei Darussalam
+                            %option{:value => "BG"} Bulgaria
+                            %option{:value => "BF"} Burkina Faso
+                            %option{:value => "BI"} Burundi
+                            %option{:value => "KH"} Cambodia
+                            %option{:value => "CM"} Cameroon
+                            %option{:value => "CA"} Canada
+                            %option{:value => "CV"} Cape Verde
+                            %option{:value => "KY"} Cayman Islands
+                            %option{:value => "CF"} Central African Republic
+                            %option{:value => "TD"} Chad
+                            %option{:value => "CL"} Chile
+                            %option{:value => "CN"} China
+                            %option{:value => "CX"} Christmas Island
+                            %option{:value => "CC"} Cocos (Keeling) Islands
+                            %option{:value => "CO"} Colombia
+                            %option{:value => "KM"} Comoros
+                            %option{:value => "CG"} Congo
+                            %option{:value => "CD"} Congo, the Democratic Republic of the
+                            %option{:value => "CK"} Cook Islands
+                            %option{:value => "CR"} Costa Rica
+                            %option{:value => "CI"} C&ocirc;te d'Ivoire
+                            %option{:value => "HR"} Croatia
+                            %option{:value => "CU"} Cuba
+                            %option{:value => "CY"} Cyprus
+                            %option{:value => "CZ"} Czech Republic
+                            %option{:value => "DK"} Denmark
+                            %option{:value => "DJ"} Djibouti
+                            %option{:value => "DM"} Dominica
+                            %option{:value => "DO"} Dominican Republic
+                            %option{:value => "EC"} Ecuador
+                            %option{:value => "EG"} Egypt
+                            %option{:value => "SV"} El Salvador
+                            %option{:value => "GQ"} Equatorial Guinea
+                            %option{:value => "ER"} Eritrea
+                            %option{:value => "EE"} Estonia
+                            %option{:value => "ET"} Ethiopia
+                            %option{:value => "FK"} Falkland Islands (Malvinas)
+                            %option{:value => "FO"} Faroe Islands
+                            %option{:value => "FJ"} Fiji
+                            %option{:value => "FI"} Finland
+                            %option{:value => "FR"} France
+                            %option{:value => "GF"} French Guiana
+                            %option{:value => "PF"} French Polynesia
+                            %option{:value => "TF"} French Southern Territories
+                            %option{:value => "GA"} Gabon
+                            %option{:value => "GM"} Gambia
+                            %option{:value => "GE"} Georgia
+                            %option{:value => "DE"} Germany
+                            %option{:value => "GH"} Ghana
+                            %option{:value => "GI"} Gibraltar
+                            %option{:value => "GR"} Greece
+                            %option{:value => "GL"} Greenland
+                            %option{:value => "GD"} Grenada
+                            %option{:value => "GP"} Guadeloupe
+                            %option{:value => "GU"} Guam
+                            %option{:value => "GT"} Guatemala
+                            %option{:value => "GG"} Guernsey
+                            %option{:value => "GN"} Guinea
+                            %option{:value => "GW"} Guinea-Bissau
+                            %option{:value => "GY"} Guyana
+                            %option{:value => "HT"} Haiti
+                            %option{:value => "HM"} Heard Island and McDonald Islands
+                            %option{:value => "VA"} Holy See (Vatican City State)
+                            %option{:value => "HN"} Honduras
+                            %option{:value => "HK"} Hong Kong
+                            %option{:value => "HU"} Hungary
+                            %option{:value => "IS"} Iceland
+                            %option{:value => "IN"} India
+                            %option{:value => "ID"} Indonesia
+                            %option{:value => "IR"} Iran, Islamic Republic of
+                            %option{:value => "IQ"} Iraq
+                            %option{:value => "IE"} Ireland
+                            %option{:value => "IM"} Isle of Man
+                            %option{:value => "IL"} Israel
+                            %option{:value => "IT"} Italy
+                            %option{:value => "JM"} Jamaica
+                            %option{:value => "JP"} Japan
+                            %option{:value => "JE"} Jersey
+                            %option{:value => "JO"} Jordan
+                            %option{:value => "KZ"} Kazakhstan
+                            %option{:value => "KE"} Kenya
+                            %option{:value => "KI"} Kiribati
+                            %option{:value => "KP"} Korea, Democratic People's Republic of
+                            %option{:value => "KR"} Korea, Republic of
+                            %option{:value => "KW"} Kuwait
+                            %option{:value => "KG"} Kyrgyzstan
+                            %option{:value => "LA"} Lao People's Democratic Republic
+                            %option{:value => "LV"} Latvia
+                            %option{:value => "LB"} Lebanon
+                            %option{:value => "LS"} Lesotho
+                            %option{:value => "LR"} Liberia
+                            %option{:value => "LY"} Libyan Arab Jamahiriya
+                            %option{:value => "LI"} Liechtenstein
+                            %option{:value => "LT"} Lithuania
+                            %option{:value => "LU"} Luxembourg
+                            %option{:value => "MO"} Macao
+                            %option{:value => "MK"} Macedonia, the former Yugoslav Republic of
+                            %option{:value => "MG"} Madagascar
+                            %option{:value => "MW"} Malawi
+                            %option{:value => "MY"} Malaysia
+                            %option{:value => "MV"} Maldives
+                            %option{:value => "ML"} Mali
+                            %option{:value => "MT"} Malta
+                            %option{:value => "MH"} Marshall Islands
+                            %option{:value => "MQ"} Martinique
+                            %option{:value => "MR"} Mauritania
+                            %option{:value => "MU"} Mauritius
+                            %option{:value => "YT"} Mayotte
+                            %option{:value => "MX"} Mexico
+                            %option{:value => "FM"} Micronesia, Federated States of
+                            %option{:value => "MD"} Moldova, Republic of
+                            %option{:value => "MC"} Monaco
+                            %option{:value => "MN"} Mongolia
+                            %option{:value => "ME"} Montenegro
+                            %option{:value => "MS"} Montserrat
+                            %option{:value => "MA"} Morocco
+                            %option{:value => "MZ"} Mozambique
+                            %option{:value => "MM"} Myanmar
+                            %option{:value => "NA"} Namibia
+                            %option{:value => "NR"} Nauru
+                            %option{:value => "NP"} Nepal
+                            %option{:value => "NL"} Netherlands
+                            %option{:value => "AN"} Netherlands Antilles
+                            %option{:value => "NC"} New Caledonia
+                            %option{:value => "NZ"} New Zealand
+                            %option{:value => "NI"} Nicaragua
+                            %option{:value => "NE"} Niger
+                            %option{:value => "NG"} Nigeria
+                            %option{:value => "NU"} Niue
+                            %option{:value => "NF"} Norfolk Island
+                            %option{:value => "MP"} Northern Mariana Islands
+                            %option{:value => "NO"} Norway
+                            %option{:value => "OM"} Oman
+                            %option{:value => "PK"} Pakistan
+                            %option{:value => "PW"} Palau
+                            %option{:value => "PS"} Palestinian Territory, Occupied
+                            %option{:value => "PA"} Panama
+                            %option{:value => "PG"} Papua New Guinea
+                            %option{:value => "PY"} Paraguay
+                            %option{:value => "PE"} Peru
+                            %option{:value => "PH"} Philippines
+                            %option{:value => "PN"} Pitcairn
+                            %option{:value => "PL"} Poland
+                            %option{:value => "PT"} Portugal
+                            %option{:value => "PR"} Puerto Rico
+                            %option{:value => "QA"} Qatar
+                            %option{:value => "RE"} R&eacute;union
+                            %option{:value => "RO"} Romania
+                            %option{:value => "RU"} Russian Federation
+                            %option{:value => "RW"} Rwanda
+                            %option{:value => "BL"} Saint Barth&eacute;lemy
+                            %option{:value => "SH"} Saint Helena, Ascension and Tristan da Cunha
+                            %option{:value => "KN"} Saint Kitts and Nevis
+                            %option{:value => "LC"} Saint Lucia
+                            %option{:value => "MF"} Saint Martin (French part)
+                            %option{:value => "PM"} Saint Pierre and Miquelon
+                            %option{:value => "VC"} Saint Vincent and the Grenadines
+                            %option{:value => "WS"} Samoa
+                            %option{:value => "SM"} San Marino
+                            %option{:value => "ST"} Sao Tome and Principe
+                            %option{:value => "SA"} Saudi Arabia
+                            %option{:value => "SN"} Senegal
+                            %option{:value => "RS"} Serbia
+                            %option{:value => "SC"} Seychelles
+                            %option{:value => "SL"} Sierra Leone
+                            %option{:value => "SG"} Singapore
+                            %option{:value => "SK"} Slovakia
+                            %option{:value => "SI"} Slovenia
+                            %option{:value => "SB"} Solomon Islands
+                            %option{:value => "SO"} Somalia
+                            %option{:value => "ZA"} South Africa
+                            %option{:value => "GS"} South Georgia and the South Sandwich Islands
+                            %option{:value => "ES"} Spain
+                            %option{:value => "LK"} Sri Lanka
+                            %option{:value => "SD"} Sudan
+                            %option{:value => "SR"} Suriname
+                            %option{:value => "SJ"} Svalbard and Jan Mayen
+                            %option{:value => "SZ"} Swaziland
+                            %option{:value => "SE"} Sweden
+                            %option{:value => "CH"} Switzerland
+                            %option{:value => "SY"} Syrian Arab Republic
+                            %option{:value => "TW"} Taiwan, Province of China
+                            %option{:value => "TJ"} Tajikistan
+                            %option{:value => "TZ"} Tanzania, United Republic of
+                            %option{:value => "TH"} Thailand
+                            %option{:value => "TL"} Timor-Leste
+                            %option{:value => "TG"} Togo
+                            %option{:value => "TK"} Tokelau
+                            %option{:value => "TO"} Tonga
+                            %option{:value => "TT"} Trinidad and Tobago
+                            %option{:value => "TN"} Tunisia
+                            %option{:value => "TR"} Turkey
+                            %option{:value => "TM"} Turkmenistan
+                            %option{:value => "TC"} Turks and Caicos Islands
+                            %option{:value => "TV"} Tuvalu
+                            %option{:value => "UG"} Uganda
+                            %option{:value => "UA"} Ukraine
+                            %option{:value => "AE"} United Arab Emirates
+                            %option{:value => "GB"} United Kingdom
+                            %option{:value => "US"} United States
+                            %option{:value => "UM"} United States Minor Outlying Islands
+                            %option{:value => "UY"} Uruguay
+                            %option{:value => "UZ"} Uzbekistan
+                            %option{:value => "VU"} Vanuatu
+                            %option{:value => "VE"} Venezuela, Bolivarian Republic of
+                            %option{:value => "VN"} Viet Nam
+                            %option{:value => "VG"} Virgin Islands, British
+                            %option{:value => "VI"} Virgin Islands, U.S.
+                            %option{:value => "WF"} Wallis and Futuna
+                            %option{:value => "EH"} Western Sahara
+                            %option{:value => "YE"} Yemen
+                            %option{:value => "ZM"} Zambia
+                            %option{:value => "ZW"} Zimbabwe
+                      %hr/
+                      .pull-right.panel-padding-h
+                        %button.btn.wizard-prev-step-btn{:type => "button"}> Go back
+                        \&nbsp;&nbsp;
+                        %button.btn.btn-primary{:type => "submit"} Next step
+                    / / .wizard-pane
+                    / / Profile page
+                    / Credit card page
+                    %form#wizard-credit-card.wizard-pane.panel-padding-h{:style => "display: none;"}
+                      .row
+                        .col-md-5
+                          .form-group
+                            .input-group
+                              %span.input-group-addon
+                                %i.fa.fa-envelope-o
+                              %input.form-control{:name => "postal_code", :placeholder => "Postal code: 999999", :type => "text"}/
+                        .col-md-5
+                          .form-group
+                            .input-group
+                              %span.input-group-addon
+                                %i.fa.fa-credit-card
+                              %input.form-control{:name => "credit_card_number", :placeholder => "Credit card number: 9999 9999 9999 9999", :type => "text"}/
+                        .col-md-2
+                          .form-group
+                            .has-feedback
+                              %input.form-control{:name => "csv", :placeholder => "CSV: 999", :type => "text"}/
+                              %i.fa.fa-question-circle.form-control-feedback{"data-placement" => "left", "data-toggle" => "tooltip", :title => "The credit code security code is a three-digit number printed on the back of your card, at the top of the signature field"}
+                      %hr.panel-wide/
+                      .pull-right
+                        %button.btn.wizard-prev-step-btn Prev
+                        %button.btn.btn-primary.wizard-next-step-btn Next
+                    / / .wizard-pane
+                    / / Credit card page
+                    / Finish page
+                    #wizard-finish.wizard-pane.text-center.panel-padding{:style => "display: none;"}
+                      %i.fa.fa-check.text-success.text-slg
+                      %br/
+                      %br/
+                      %span.text-lg.text-slim.text-muted WE'VE ALMOST DONE!
+                      %button.btn.btn-primary{:style => "margin: 25px auto;display: block;"} Finish
+                    / / .wizard-pane
+                    / / Finish page
+                  / / .wizard-content
+                  / / Pages
+                / / .wizard
+            / /6. $WIZARD_FORMS_VALIDATION
+      / / #content-wrapper
+      #main-menu-bg
+    / / #main-wrapper
+    / Get jQuery from Google CDN
+    / [if !IE]>
+    :javascript
+      window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">'+"<"+"/script>");
+    / <![endif]
+    /[if lte IE 9]
+      <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">'+"<"+"/script>"); </script>
+    / Pixel Admin's javascripts
+    %script{:src => "assets/javascripts/bootstrap.min.js"}
+    %script{:src => "assets/javascripts/pixel-admin.min.js"}
+    :javascript
+      init.push(function () {
+      	// Javascript code here
+      })
+      window.PixelAdmin.start(init);

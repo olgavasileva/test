@@ -1,0 +1,1123 @@
+!!!
+/
+  TABLE OF CONTENTS.
+  
+  Use search to find needed section.
+  
+  \========================================================================
+  
+  |  1. $BODY                           |  Body                          |
+  |  2. $MAIN_NAVIGATION                |  Main navigation               |
+  |  3. $NAVBAR_ICON_BUTTONS            |  Navbar Icon Buttons           |
+  |  4. $MAIN_MENU                      |  Main menu                     |
+  |  5. $PANEL_BODY                     |  Panel body                    |
+  |  6. $SIMPLE_PANEL                   |  Simple panel                  |
+  |  7. $PANEL_WITH_TABLE               |  Panel with table              |
+  |  8. $PANEL_TITLE_WITH_ICON          |  Panel title with icon         |
+  |  9. $PANEL_WITH_LIST_GROUPS         |  Panel with list groups        |
+  |  10. $PANEL_WITH_TABS               |  Panel with tabs               |
+  |  11. $PANEL_WITH_PROGRESS_BAR       |  Panel with progress bar       |
+  |  12. $PANEL_WITH_PAGINATION         |  Panel with pagination         |
+  |  13. $PANEL_WITH_TEXT               |  Panel with text               |
+  |  14. $PANEL_WITH_INPUT_GROUP        |  Panel with input group        |
+  |  15. $PANEL_WITH_SWITCHER           |  Panel with switcher           |
+  |  16. $PANEL_WITH_BUTTONS            |  Panel with buttons            |
+  |  17. $PANEL_WITH_LABELS_AND_BADGES  |  Panel with labels and badges  |
+  |  18. $PANEL_WITH_PAGER              |  Panel with pager              |
+  |  19. $PANEL_WITH_SELECT_BOX         |  Panel with select box         |
+  |  20. $PANEL_WITH_ICON               |  Panel with icon               |
+  |  21. $PANEL_COLORS                  |  Panel colors                  |
+  
+  \========================================================================
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+/ [if gt IE 9]><!
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title Panels - UI Elements - PixelAdmin
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0", :name => "viewport"}/
+    / Open Sans font from Google CDN
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
+    / Pixel Admin's stylesheets
+    %link{:href => "assets/stylesheets/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/pixel-admin.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/widgets.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/rtl.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/stylesheets/themes.min.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+    :css
+      .page-header .pull-right {
+      	padding-top: 5px;
+      }
+      .page-header .pull-right > * {
+      	display: inline-block;
+      	vertical-align:middle;
+      }
+  /
+    1. $BODY ======================================================================================
+    
+    Body
+    
+    Classes:
+    * 'theme-{THEME NAME}'
+    * 'right-to-left'      - Sets text direction to right-to-left
+    * 'main-menu-right'    - Places the main menu on the right side
+    * 'no-main-menu'       - Hides the main menu
+    * 'main-navbar-fixed'  - Fixes the main navigation
+    * 'main-menu-fixed'    - Fixes the main menu
+    * 'main-menu-animated' - Animate main menu
+  %body.theme-default.main-menu-animated
+    :javascript
+      var init = [];
+      init.push(function () {
+      	$('#panel-color-switcher').switcher();
+      	$('#panel-color-switcher').on($('html').hasClass('ie8') ? "propertychange" : "change", function () {
+      		var turn_on = $(this).is(':checked');
+      		$('.colourable').each(function () {
+      			if (turn_on) {
+      				$(this).addClass('panel-success panel-dark panel-body-colorful')
+      				       .find('.btn-outline').addClass('dark');
+      			} else {
+      				$(this).removeClass('panel-success panel-dark panel-body-colorful')
+      				       .find('.btn-outline').removeClass('dark');
+      			}
+      		});
+      	});
+      });
+    / Demo script
+    %script{:src => "assets/demo/demo.js"}
+    / / Demo script
+    #main-wrapper
+      /
+        2. $MAIN_NAVIGATION ===========================================================================
+        
+        Main navigation
+      #main-navbar.navbar.navbar-inverse{:role => "navigation"}
+        / Main menu toggle
+        %button#main-menu-toggle{:type => "button"}
+          %i.navbar-icon.fa.fa-bars.icon
+          %span.hide-menu-text HIDE MENU
+        .navbar-inner
+          / Main navbar header
+          .navbar-header
+            / Logo
+            %a.navbar-brand{:href => "index.html"}
+            %div
+              %img{:alt => "Pixel Admin", :src => "assets/images/pixel-admin/main-navbar-logo.png"}/
+            PixelAdmin
+            / Main navbar toggle
+            %button.navbar-toggle.collapsed{"data-target" => "#main-navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+              %i.navbar-icon.fa.fa-bars
+          / / .navbar-header
+          #main-navbar-collapse.collapse.navbar-collapse.main-navbar-collapse
+            %div
+              %ul.nav.navbar-nav
+                %li
+                  %a{:href => "#"} Home
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Dropdown
+                  %ul.dropdown-menu
+                    %li
+                      %a{:href => "#"} First item
+                    %li
+                      %a{:href => "#"} Second item
+                    %li.divider
+                    %li
+                      %a{:href => "#"} Third item
+              / / .navbar-nav
+              .right.clearfix
+                %ul.nav.navbar-nav.pull-right.right-navbar-nav
+                  /
+                    3. $NAVBAR_ICON_BUTTONS =======================================================================
+                    
+                    Navbar Icon Buttons
+                    
+                    NOTE: .nav-icon-btn triggers a dropdown menu on desktop screens only. On small screens .nav-icon-btn acts like a hyperlink.
+                    
+                    Classes:
+                    * 'nav-icon-btn-info'
+                    * 'nav-icon-btn-success'
+                    * 'nav-icon-btn-warning'
+                    * 'nav-icon-btn-danger'
+                  %li.nav-icon-btn.nav-icon-btn-danger.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#notifications"}
+                      %span.label 5
+                      %i.nav-icon.fa.fa-bullhorn
+                      %span.small-screen-text Notifications
+                    / NOTIFICATIONS
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-notifications').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-notifications.no-padding{:style => "width: 300px"}
+                      #main-navbar-notifications.notifications-list
+                        .notification
+                          .notification-title.text-danger SYSTEM
+                          .notification-description
+                            %strong> Error 500
+                            \: Syntax error in index.php at line
+                            = succeed "." do
+                              %strong 461
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-danger
+                        / / .notification
+                        .notification
+                          .notification-title.text-info STORE
+                          .notification-description
+                            You have
+                            %strong 9
+                            new orders.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-truck.bg-info
+                        / / .notification
+                        .notification
+                          .notification-title.text-default CRON DAEMON
+                          .notification-description
+                            Job
+                            %strong "Clean DB"
+                            has been completed.
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-clock-o.bg-default
+                        / / .notification
+                        .notification
+                          .notification-title.text-success SYSTEM
+                          .notification-description
+                            Server
+                            = succeed "." do
+                              %strong up
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-success
+                        / / .notification
+                        .notification
+                          .notification-title.text-warning SYSTEM
+                          .notification-description
+                            %strong> Warning
+                            \: Processor load
+                            = succeed "." do
+                              %strong 92%
+                          .notification-ago 12h ago
+                          .notification-icon.fa.fa-hdd-o.bg-warning
+                        / / .notification
+                      / / .notifications-list
+                      %a.notifications-link{:href => "#"} MORE NOTIFICATIONS
+                    / / .dropdown-menu
+                  %li.nav-icon-btn.nav-icon-btn-success.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#messages"}
+                      %span.label 10
+                      %i.nav-icon.fa.fa-envelope
+                      %span.small-screen-text Income messages
+                    / MESSAGES
+                    / Javascript
+                    :javascript
+                      init.push(function () {
+                      	$('#main-navbar-messages').slimScroll({ height: 250 });
+                      });
+                    / / Javascript
+                    .dropdown-menu.widget-messages-alt.no-padding{:style => "width: 300px;"}
+                      #main-navbar-messages.messages-list
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/3.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Michelle Bortz
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/4.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Timothy Owens
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/5.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          .message-description
+                            from
+                            %a{:href => "#"} Denise Steiner
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                        .message
+                          %img.message-avatar{:alt => "", :src => "assets/demo/avatars/2.jpg"}/
+                          %a.message-subject{:href => "#"} Lorem ipsum dolor sit amet.
+                          .message-description
+                            from
+                            %a{:href => "#"} Robert Jang
+                            \&nbsp;&nbsp;·&nbsp;&nbsp;
+                            2h ago
+                        / / .message
+                      / / .messages-list
+                      %a.messages-link{:href => "#"} MORE MESSAGES
+                    / / .dropdown-menu
+                  / /3. $END_NAVBAR_ICON_BUTTONS
+                  %li
+                    %form.navbar-form.pull-left
+                      %input.form-control{:placeholder => "Search", :type => "text"}/
+                  %li.dropdown
+                    %a.dropdown-toggle.user-menu{"data-toggle" => "dropdown", :href => "#"}
+                      %img{:src => "assets/demo/avatars/1.jpg"}/
+                      %span John Doe
+                    %ul.dropdown-menu
+                      %li
+                        %a{:href => "#"}
+                          %span.label.label-warning.pull-right> New
+                          Profile
+                      %li
+                        %a{:href => "#"}
+                          %span.badge.badge-primary.pull-right> New
+                          Account
+                      %li
+                        %a{:href => "#"}
+                          %i.dropdown-icon.fa.fa-cog>
+                          \&nbsp;&nbsp;Settings
+                      %li.divider
+                      %li
+                        %a{:href => "pages-signin.html"}
+                          %i.dropdown-icon.fa.fa-power-off>
+                          \&nbsp;&nbsp;Log Out
+                / / .navbar-nav
+              / / .right
+          / / #main-navbar-collapse
+        / / .navbar-inner
+      / / #main-navbar
+      / /2. $END_MAIN_NAVIGATION
+      /
+        4. $MAIN_MENU =================================================================================
+        
+        Main menu
+        
+        Notes:
+        * to make the menu item active, add a class 'active' to the <li>
+        example: <li class="active">...</li>
+        * multilevel submenu example:
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 1</span></a>
+        <ul>
+        <li>...</li>
+        <li class="mm-dropdown">
+        <a href="#"><span class="mm-text">Submenu item text 2</span></a>
+        <ul>
+        <li>...</li>
+        \...
+        </ul>
+        </li>
+        \...
+        </ul>
+        </li>
+      #main-menu{:role => "navigation"}
+        #main-menu-inner
+          #menu-content-demo.menu-content.top
+            /
+              Menu custom content demo
+              CSS:        styles/pixel-admin-less/demo.less or styles/pixel-admin-scss/_demo.scss
+              Javascript: html/assets/demo/demo.js
+            %div
+              .text-bg
+                %span.text-slim Welcome,
+                %span.text-semibold John
+              %img{:alt => "", :src => "assets/demo/avatars/1.jpg"}/
+              .btn-group
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-envelope
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-user
+                %a.btn.btn-xs.btn-primary.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-cog
+                %a.btn.btn-xs.btn-danger.btn-outline.dark{:href => "#"}
+                  %i.fa.fa-power-off
+              %a.close{:href => "#"} &times;
+          %ul.navigation
+            %li
+              %a{:href => "index.html"}
+                %i.menu-icon.fa.fa-dashboard
+                %span.mm-text Dashboard
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-th
+                %span.mm-text Layouts
+                %span.label.label-warning Updated
+              %ul
+                %li
+                  %a{:href => "layouts-grid.html", :tabindex => "-1"}
+                    %span.mm-text Grid
+                %li
+                  %a{:href => "layouts-main-menu.html", :tabindex => "-1"}
+                    %i.menu-icon.fa.fa-th-list
+                    %span.mm-text Main menu
+                    %span.label.label-warning Updated
+            %li
+              %a{:href => "stat-panels.html"}
+                %i.menu-icon.fa.fa-tasks
+                %span.mm-text Stat panels
+            %li
+              %a{:href => "widgets.html"}
+                %i.menu-icon.fa.fa-flask
+                %span.mm-text Widgets
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-desktop
+                %span.mm-text UI elements
+              %ul
+                %li
+                  %a{:href => "ui-buttons.html", :tabindex => "-1"}
+                    %span.mm-text Buttons
+                %li
+                  %a{:href => "ui-typography.html", :tabindex => "-1"}
+                    %span.mm-text Typography
+                %li
+                  %a{:href => "ui-tabs.html", :tabindex => "-1"}
+                    %span.mm-text Tabs &amp; Accordions
+                %li
+                  %a{:href => "ui-modals.html", :tabindex => "-1"}
+                    %span.mm-text Modals
+                %li
+                  %a{:href => "ui-alerts.html", :tabindex => "-1"}
+                    %span.mm-text Alerts &amp; Tooltips
+                %li
+                  %a{:href => "ui-components.html", :tabindex => "-1"}
+                    %span.mm-text Components
+                %li
+                  %a{:href => "ui-panels.html", :tabindex => "-1"}
+                    %span.mm-text Panels
+                %li
+                  %a{:href => "ui-jqueryui.html", :tabindex => "-1"}
+                    %span.mm-text jQuery UI
+                %li
+                  %a{:href => "ui-icons.html", :tabindex => "-1"}
+                    %span.mm-text Icons
+                %li
+                  %a{:href => "ui-utility-classes.html", :tabindex => "-1"}
+                    %span.mm-text Utility classes
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-check-square
+                %span.mm-text Form components
+              %ul
+                %li
+                  %a{:href => "forms-layouts.html", :tabindex => "-1"}
+                    %span.mm-text Layouts
+                %li
+                  %a{:href => "forms-general.html", :tabindex => "-1"}
+                    %span.mm-text General
+                %li
+                  %a{:href => "forms-advanced.html", :tabindex => "-1"}
+                    %span.mm-text Advanced
+                %li
+                  %a{:href => "forms-pickers.html", :tabindex => "-1"}
+                    %span.mm-text Pickers
+                %li
+                  %a{:href => "forms-validation.html", :tabindex => "-1"}
+                    %span.mm-text Validation
+                %li
+                  %a{:href => "forms-editors.html", :tabindex => "-1"}
+                    %span.mm-text Editors
+            %li
+              %a{:href => "tables.html"}
+                %i.menu-icon.fa.fa-table
+                %span.mm-text Tables
+            %li
+              %a{:href => "charts.html"}
+                %i.menu-icon.fa.fa-bar-chart-o
+                %span.mm-text Charts
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-files-o
+                %span.mm-text Pages
+                %span.label.label-success 16
+              %ul
+                %li
+                  %a{:href => "pages-search.html", :tabindex => "-1"}
+                    %span.mm-text Search results
+                %li
+                  %a{:href => "pages-pricing.html", :tabindex => "-1"}
+                    %span.mm-text Plans &amp; pricing
+                %li
+                  %a{:href => "pages-faq.html", :tabindex => "-1"}
+                    %span.mm-text FAQ
+                %li
+                  %a{:href => "pages-profile.html", :tabindex => "-1"}
+                    %span.mm-text Profile
+                %li
+                  %a{:href => "pages-timeline.html", :tabindex => "-1"}
+                    %span.mm-text Timeline
+                %li
+                  %a{:href => "pages-signin.html", :tabindex => "-1"}
+                    %span.mm-text Sign In
+                %li
+                  %a{:href => "pages-signup.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up
+                %li
+                  %a{:href => "pages-signin-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign In Alt
+                %li
+                  %a{:href => "pages-signup-alt.html", :tabindex => "-1"}
+                    %span.mm-text Sign Up Alt
+                %li
+                  %a{:href => "pages-invoice.html", :tabindex => "-1"}
+                    %span.mm-text Invoice
+                %li
+                  %a{:href => "pages-404.html", :tabindex => "-1"}
+                    %span.mm-text Error 404
+                %li
+                  %a{:href => "pages-500.html", :tabindex => "-1"}
+                    %span.mm-text Error 500
+                %li.mm-dropdown
+                  %a{:href => "#"}
+                    %i.menu-icon.fa.fa-envelope
+                    %span.mm-text Messages
+                  %ul
+                    %li
+                      %a{:href => "pages-inbox.html", :tabindex => "-1"}
+                        %span.mm-text Inbox
+                    %li
+                      %a{:href => "pages-show-email.html", :tabindex => "-1"}
+                        %span.mm-text Show message
+                    %li
+                      %a{:href => "pages-new-email.html", :tabindex => "-1"}
+                        %span.mm-text New message
+                %li
+                  %a{:href => "pages-blank.html", :tabindex => "-1"}
+                    %span.mm-text Blank page
+            %li
+              %a{:href => "complete-ui.html"}
+                %i.menu-icon.fa.fa-briefcase
+                %span.mm-text Complete UI
+            %li
+              %a{:href => "color-builder.html"}
+                %i.menu-icon.fa.fa-tint
+                %span.mm-text Color Builder
+            %li.mm-dropdown
+              %a{:href => "#"}
+                %i.menu-icon.fa.fa-sitemap
+                %span.mm-text Menu levels
+                %span.badge.badge-primary 6
+              %ul
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.1
+                    %span.badge.badge-danger 12
+                    %span.label.label-info 21
+                %li
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.2
+                %li.mm-dropdown
+                  %a{:href => "#", :tabindex => "-1"}
+                    %span.mm-text Menu level 1.3
+                    %span.label.label-warning 5
+                  %ul
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.1
+                    %li.mm-dropdown
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+                      %ul
+                        %li.mm-dropdown
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.1
+                          %ul
+                            %li
+                              %a{:href => "#", :tabindex => "-1"}
+                                %span.mm-text Menu level 4.1
+                        %li
+                          %a{:href => "#", :tabindex => "-1"}
+                            %span.mm-text Menu level 3.2
+                    %li
+                      %a{:href => "#", :tabindex => "-1"}
+                        %span.mm-text Menu level 2.2
+          / / .navigation
+          .menu-content
+            %a.btn.btn-primary.btn-block.btn-outline.dark{:href => "pages-invoice.html"} Create Invoice
+        / / #main-menu-inner
+      / / #main-menu
+      / /4. $MAIN_MENU
+      #content-wrapper
+        .page-header
+          %h1
+            %span.text-light-gray> UI Elements /
+            Panels
+          .pull-right
+            .text-semibold.text-light-gray.text-sm DARK PANELS&nbsp;&nbsp;&nbsp;
+            %input#panel-color-switcher{"data-class" => "switcher-success", :type => "checkbox"}/
+        / / .page-header
+        .row
+          .col-md-6
+            /
+              5. $PANEL_BODY ================================================================================
+              
+              Panel body
+            .panel.colourable
+              .panel-body
+                Panel body content
+            / /5. $PANEL_BODY
+            /
+              6. $SIMPLE_PANEL ==============================================================================
+              
+              Simple panel
+            .panel.colourable
+              .panel-heading
+                %span.panel-title Simple header
+              .panel-body
+                Panel body content
+            / /6. $SIMPLE_PANEL
+            /
+              7. $PANEL_WITH_TABLE ==========================================================================
+              
+              Panel with table
+            .panel.colourable
+              / Default panel contents
+              .panel-heading
+                %span.panel-title With table
+              / Table
+              %table.table
+                %thead
+                  %tr
+                    %th #
+                    %th First Name
+                    %th Last Name
+                    %th Username
+                %tbody
+                  %tr
+                    %td 1
+                    %td Mark
+                    %td Otto
+                    %td @mdo
+                  %tr
+                    %td 2
+                    %td Jacob
+                    %td Thornton
+                    %td @fat
+                  %tr
+                    %td 3
+                    %td Larry
+                    %td the Bird
+                    %td @twitter
+            / /7. $PANEL_WITH_TABLE
+          .col-md-6
+            /
+              8. $PANEL_TITLE_WITH_ICON =====================================================================
+              
+              Panel title with icon
+            .panel.colourable
+              .panel-heading
+                %span.panel-title
+                  %i.panel-title-icon.fa.fa-flask>
+                  With icon
+              .panel-body
+                Panel body content
+              .panel-footer Panel footer
+            / /8. $PANEL_TITLE_WITH_ICON
+            /
+              9. $PANEL_WITH_LIST_GROUPS ====================================================================
+              
+              Panel with list groups
+            .panel.colourable
+              / Default panel contents
+              .panel-heading
+                %span.panel-title With list groups
+              .panel-body
+                Panel body content
+              / List group
+              %ul.list-group
+                %li.list-group-item Cras justo odio
+                %li.list-group-item Dapibus ac facilisis in
+                %li.list-group-item Morbi leo risus
+            / /9. $PANEL_WITH_LIST_GROUPS
+        .row
+          .col-md-6
+            /
+              10. $PANEL_WITH_TABS ==========================================================================
+              
+              Panel with tabs
+            .panel.colourable
+              .panel-heading
+                %span.panel-title With tabs
+                %ul.nav.nav-tabs.nav-tabs-xs
+                  %li.active
+                    %a{"data-toggle" => "tab", :href => "#"} Home
+                  %li
+                    %a{"data-toggle" => "tab", :href => "#"} Profile
+                  %li
+                    %a{"data-toggle" => "tab", :href => "#"} More
+                / / .nav
+              / / .panel-heading
+              .panel-body
+                Panel body content
+            / / .panel
+            / /10. $PANEL_WITH_TABS
+            /
+              11. $PANEL_WITH_PROGRESS_BAR ==================================================================
+              
+              Panel with progress bar
+            .panel.colourable
+              .panel-heading
+                %span.panel-title With progress bar
+                .panel-heading-controls{:style => "width: 30%"}
+                  .progress.progress-striped.active{:style => "width: 100%"}
+                    .progress-bar.progress-bar-danger{:style => "width: 60%;"}
+                / / .panel-heading-controls
+              / / .panel-heading
+              .panel-body
+                Panel body content
+            / / .panel
+            / /11. $PANEL_WITH_PROGRESS_BAR
+            /
+              12. $PANEL_WITH_PAGINATION ====================================================================
+              
+              Panel with pagination
+            .panel.colourable
+              .panel-heading
+                %span.panel-title With pagination
+                .panel-heading-controls
+                  %ul.pagination.pagination-xs
+                    %li
+                      %a{:href => "#"} «
+                    %li.active
+                      %a{:href => "#"} 1
+                    %li
+                      %a{:href => "#"} 2
+                    %li
+                      %a{:href => "#"} 3
+                    %li
+                      %a{:href => "#"} »
+                  / / .panel-heading-controls
+                / / .panel-heading-controls
+              / / .panel-heading
+              .panel-body
+                Panel body content
+            / / .panel
+            / /12. $PANEL_WITH_PAGINATION
+            /
+              13. $PANEL_WITH_TEXT ==========================================================================
+              
+              Panel with text
+            .panel.colourable
+              .panel-heading
+                %span.panel-title With text
+                .panel-heading-controls
+                  %span.panel-heading-text
+                    %em>
+                      Just some text with
+                      %a{:href => "#"} link
+                    \&nbsp;&nbsp;
+                    %span{:style => "color: #ccc"}> |
+                    \&nbsp;&nbsp;
+                  %button.btn.btn-xs Button
+              / / .panel-heading
+              .panel-body
+                Panel body content
+            / / .panel
+            / /13. $PANEL_WITH_TEXT
+            /
+              14. $PANEL_WITH_INPUT_GROUP ===================================================================
+              
+              Panel with input group
+            .panel.colourable
+              .panel-heading
+                %span.panel-title With input group
+                .panel-heading-controls{:style => "width:30%"}
+                  %form{:action => ""}
+                    .input-group.input-group-sm
+                      %input.form-control{:name => "s", :placeholder => "Search...", :type => "text"}/
+                      %span.input-group-btn
+                        %button.btn{:type => "submit"}
+                          %span.fa.fa-search
+                    / / .input-group
+                / / .panel-heading-controls
+              / / .panel-heading
+              .panel-body
+                Panel body content
+            / / .panel
+            / /14. $PANEL_WITH_INPUT_GROUP
+            /
+              15. $PANEL_WITH_SWITCHER ======================================================================
+              
+              Panel with switcher
+            / Javascript
+            :javascript
+              init.push(function () { $('#panel-switcher').switcher(); });
+            / / Javascript
+            .panel.colourable
+              .panel-heading
+                %span.panel-title With switcher
+                .panel-heading-controls
+                  %input#panel-switcher{:checked => "checked", "data-class" => "switcher-sm switcher-primary", :type => "checkbox"}/
+                / / .panel-heading-controls
+              / / .panel-heading
+              .panel-body
+                Panel body content
+            / / .panel
+            / /15. $PANEL_WITH_SWITCHER
+          .col-md-6
+            /
+              16. $PANEL_WITH_BUTTONS =======================================================================
+              
+              Panel with buttons
+            .panel.colourable
+              .panel-heading
+                %span.panel-title With buttons
+                .panel-heading-controls
+                  %button.btn.btn-xs.btn-warning.btn-outline
+                    %span.fa.fa-refresh>
+                    \&nbsp;&nbsp;Refresh
+                  %button.btn.btn-xs.btn-danger.btn-outline
+                    %span.fa.fa-paperclip
+                  .btn-group.btn-group-xs
+                    %button.btn.btn-info.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                      %span.fa.fa-cog>
+                      \&nbsp;
+                      %span.fa.fa-caret-down
+                    %ul.dropdown-menu.dropdown-menu-right
+                      %li
+                        %a{:href => "#"} Action
+                      %li
+                        %a{:href => "#"} Another action
+                      %li
+                        %a{:href => "#"} Something else here
+                      %li.divider
+                      %li.dropdown-header Some header
+                      %li
+                        %a{:href => "#"} Separated link
+                    / / .dropdown-menu
+                  / / .btn-group
+                / / .panel-heading-controls
+              / / .panel-heading
+              .panel-body
+                Panel body content
+            / / .panel
+            / /16. $PANEL_WITH_BUTTONS
+            /
+              17. $PANEL_WITH_LABELS_AND_BADGES =============================================================
+              
+              Panel with labels and badges
+            .panel.colourable
+              .panel-heading
+                %span.panel-title With labels and badges
+                .panel-heading-controls
+                  %span.label.label-tag.label-warning Tag
+                  %span.label.label-danger Label
+                  %span.badge.badge-info Badge
+              / / .panel-heading
+              .alert.alert-page.alert-danger.alert-dark
+                %button.close{"data-dismiss" => "alert", :type => "button"} ×
+                %strong Well done!
+                You successfully read this important alert message.
+              / / .alert
+              .panel-body
+                Panel body content
+            / / .panel
+            / /17. $PANEL_WITH_LABELS_AND_BADGES
+            /
+              18. $PANEL_WITH_PAGER =========================================================================
+              
+              Panel with pager
+            .panel.colourable
+              .panel-heading
+                %span.panel-title With pager
+                .panel-heading-controls
+                  %ul.pager.pager-xs
+                    %li.disabled
+                      %a{:href => "#"} ← Older
+                    %li
+                      %a{:href => "#"} Newer →
+              / / .panel-heading
+              .panel-body
+                Panel body content
+            / / .panel
+            / /18. $PANEL_WITH_PAGER
+            /
+              19. $PANEL_WITH_SELECT_BOX ====================================================================
+              
+              Panel with select box
+            .panel.colourable
+              .panel-heading
+                %span.panel-title With select box
+                .panel-heading-controls
+                  %select.form-control.input-sm
+                    %option{:value => "1"} Option 1
+                    %option{:value => "2"} Option 2
+                    %option{:value => "3"} Option 3
+                / / .panel-heading-controls
+              / / .panel-heading
+              .panel-body
+                Panel body content
+            / / .panel
+            / /19. $PANEL_WITH_SELECT_BOX
+            /
+              20. $PANEL_WITH_ICON ==========================================================================
+              
+              Panel with icon
+            .panel.colourable
+              .panel-heading
+                %span.panel-title With icon
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              / / .panel-heading
+              .panel-body
+                Panel body content
+            / / .panel
+            / /20. $PANEL_WITH_ICON
+        %hr.no-grid-gutter-h/
+        %h4.text-slim{:style => "margin-bottom: 20px;"} Colors
+        /
+          21. $PANEL_COLORS =============================================================================
+          
+          Panel colors
+        .row
+          .col-md-6
+            / Light danger
+            .panel.panel-danger
+              .panel-heading
+                %span.panel-title Panel - Danger
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              .panel-body
+                Panel body content
+            / / .panel
+            / Light colorful danger
+            .panel.panel-danger.panel-body-colorful
+              .panel-heading
+                %span.panel-title Panel - Danger
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              .panel-body
+                Panel body content
+            / / .panel
+            / Light success
+            .panel.panel-success
+              .panel-heading
+                %span.panel-title Panel - Success
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              .panel-body
+                Panel body content
+            / / .panel
+            / Light colorful success
+            .panel.panel-success.panel-body-colorful
+              .panel-heading
+                %span.panel-title Panel - Success
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              .panel-body
+                Panel body content
+            / / .panel
+            / Light warning
+            .panel.panel-warning
+              .panel-heading
+                %span.panel-title Panel - Warning
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              .panel-body
+                Panel body content
+            / / .panel
+            / Light colorful warning
+            .panel.panel-warning.panel-body-colorful
+              .panel-heading
+                %span.panel-title Panel - Warning
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              .panel-body
+                Panel body content
+            / / .panel
+            / Light info
+            .panel.panel-info
+              .panel-heading
+                %span.panel-title Panel - Info
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              .panel-body
+                Panel body content
+            / / .panel
+            / Light colorful ingo
+            .panel.panel-info.panel-body-colorful
+              .panel-heading
+                %span.panel-title Panel - Info
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              .panel-body
+                Panel body content
+            / / .panel
+            / Transparent
+            .panel.panel-transparent
+              .panel-heading
+                %span.panel-title Panel - Transparent
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              .panel-body
+                Panel body content
+            / / .panel
+          .col-md-6
+            / Dark danger
+            .panel.panel-danger.panel-dark
+              .panel-heading
+                %span.panel-title Panel - Danger
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              .panel-body
+                Panel body content
+            / / .panel
+            / Dark colorful danger
+            .panel.panel-danger.panel-dark.panel-body-colorful
+              .panel-heading
+                %span.panel-title Panel - Danger
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              .panel-body
+                Panel body content
+            / / .panel
+            / Dark success
+            .panel.panel-success.panel-dark
+              .panel-heading
+                %span.panel-title Panel - Success
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              .panel-body
+                Panel body content
+            / / .panel
+            / Dark colorful success
+            .panel.panel-success.panel-dark.panel-body-colorful
+              .panel-heading
+                %span.panel-title Panel - Success
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              .panel-body
+                Panel body content
+            / / .panel
+            / Dark warning
+            .panel.panel-warning.panel-dark
+              .panel-heading
+                %span.panel-title Panel - Warning
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              .panel-body
+                Panel body content
+            / / .panel
+            / Dark colorful warning
+            .panel.panel-warning.panel-dark.panel-body-colorful
+              .panel-heading
+                %span.panel-title Panel - Warning
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              .panel-body
+                Panel body content
+            / / .panel
+            / Dark info
+            .panel.panel-info.panel-dark
+              .panel-heading
+                %span.panel-title Panel - Info
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              .panel-body
+                Panel body content
+            / / .panel
+            / Dark colorful info
+            .panel.panel-info.panel-dark.panel-body-colorful
+              .panel-heading
+                %span.panel-title Panel - Info
+                .panel-heading-controls
+                  .panel-heading-icon
+                    %i.fa.fa-inbox
+              .panel-body
+                Panel body content
+            / / .panel
+        / /21. $PANEL_COLORS
+      / / #content-wrapper
+      #main-menu-bg
+    / / #main-wrapper
+    / Get jQuery from Google CDN
+    / [if !IE]>
+    :javascript
+      window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">'+"<"+"/script>");
+    / <![endif]
+    /[if lte IE 9]
+      <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">'+"<"+"/script>"); </script>
+    / Pixel Admin's javascripts
+    %script{:src => "assets/javascripts/bootstrap.min.js"}
+    %script{:src => "assets/javascripts/pixel-admin.min.js"}
+    :javascript
+      init.push(function () {
+      	// Javascript code here
+      })
+      window.PixelAdmin.start(init);
