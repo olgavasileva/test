@@ -1,22 +1,23 @@
-#portfolio
-  .container
-    .row
-      .col-md-12
-        #filters_container
-          %ul#filters
-            %li
-              %a.active{"data-filter" => "*", :href => "#"} All
-            - @canned_categories.each do |category|
-              %li.separator /
+#undertop.container
+  #portfolio
+    .container
+      .row
+        .col-md-12
+          #filters_container
+            %ul#filters
               %li
-                %a{"data-filter" => ".#{category}", :href => "#"}= category.titleize
-    .row
-      .col-md-12
-        #gallery_container
-          - @canned_feed.each do |feed|
-            .photo{class: feed[:categories]}
-              = image_tag feed[:image_url], class: "img-responsive"
-              = link_to feed[:url], class: :mask do
-                %h3=feed[:title]
-                %small=feed[:primary_category]
-                .more +
+                %a.active{"data-filter" => "*", :href => "#"} All
+              - @canned_categories.each do |category|
+                %li.separator /
+                %li
+                  %a{"data-filter" => ".#{category}", :href => "#"}= category.titleize
+      .row
+        .col-md-12
+          #gallery_container
+            - @canned_feed.each do |feed|
+              .photo{class: feed[:categories]}
+                = image_tag feed[:image_url], class: "img-responsive"
+                = link_to feed[:url], class: :mask do
+                  %h3=feed[:title]
+                  %small=feed[:primary_category]
+                  .more +

@@ -17,10 +17,9 @@
 
   %body#clean-canvas.pull_top{class: yield(:body_class)}
     = render 'layouts/clean_canvas/header'
-    #undertop.container
-      - flash.each do |key, value|
-        = content_tag(:div, value, class: "alert alert-#{key}")
-      = yield
+    - flash.each do |key, value|
+      = content_tag(:div, value, class: "alert alert-#{key}")
+    = yield
     = render 'layouts/clean_canvas/footer'
     = javascript_include_tag "application", "data-turbolinks-track" => true
     = debug(params) if Rails.env.development?

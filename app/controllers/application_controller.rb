@@ -2,12 +2,14 @@ class ApplicationController < ActionController::Base
   before_filter :configure_permitted_parameters, if: :devise_controller?
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
 
+  before_filter :build_canned_values
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
   # layout "clean_canvas"
-  layout "pixel_admin"
+  layout "clean_canvas"
 
   protected
 
@@ -29,5 +31,26 @@ class ApplicationController < ActionController::Base
         |u| u.permit(registration_params) 
       }
     end
+  end
+
+  private
+
+  def build_canned_values
+    @canned_categories = %w{art illustration print web}
+    @canned_feed = [
+        {categories: %w{art web}, image_url: "b3/img/portfolio1.png", url:"portfolio-item.html", title: "Awesome portfolio item", primary_category: "Art"},
+        {categories: %w{illustration}, image_url: "b3/img/portfolio2.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Web Design"}, 
+        {categories: %w{print}, image_url: "b3/img/portfolio3.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Print"}, 
+        {categories: %w{art web}, image_url: "b3/img/portfolio2.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Web design"}, 
+        {categories: %w{art illustration}, image_url: "b3/img/portfolio1.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Illustration"}, 
+        {categories: %w{print}, image_url: "b3/img/portfolio3.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Print"}, 
+        {categories: %w{web}, image_url: "b3/img/portfolio2.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Web Design"}, 
+        {categories: %w{art.illustration web}, image_url: "b3/img/portfolio3.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Art"}, 
+        {categories: %w{print}, image_url: "b3/img/portfolio1.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Illustration"}
+      ]
+    @canned_recent_questions = [
+      {image_url: "b3/img/portfolio1.png", date: Date.today - 2.days, title: "Randomized words which don't look embarrasing hidden."},
+      {image_url: "b3/img/portfolio1.png", date: Date.today - 1.day, title: "Randomized words which don't look embarrasing hidden."}
+    ]
   end
 end
