@@ -1,0 +1,238 @@
+!!!
+%html
+  %head
+    %title Business Template
+    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+    / Styles
+    %link{:href => "css/bootstrap/bootstrap.min.css", :rel => "stylesheet"}/
+    %link{:href => "css/compiled/bootstrap-overrides.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "css/compiled/theme.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "css/compiled/about.css", :media => "screen", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "css/lib/animate.css", :media => "screen, projection", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "css/lib/flexslider.css", :media => "screen", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  %body
+    .navbar.navbar-inverse.navbar-static-top{:role => "navigation"}
+      .container
+        .navbar-header
+          %button.navbar-toggle{"data-target" => ".navbar-ex1-collapse", "data-toggle" => "collapse", :type => "button"}
+            %span.sr-only Toggle navigation
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+          %a.navbar-brand{:href => "index.html"}
+            %strong CLEAN CANVAS
+        .collapse.navbar-collapse.navbar-ex1-collapse{:role => "navigation"}
+          %ul.nav.navbar-nav.navbar-right
+            %li
+              %a{:href => "index.html"} HOME
+            %li.active
+              %a{:href => "about-us.html"} ABOUT US
+            %li.dropdown
+              %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                PAGES
+                %b.caret
+              %ul.dropdown-menu
+                %li
+                  %a{:href => "features.html"} Features
+                %li
+                  %a{:href => "services.html"} Services
+                %li
+                  %a{:href => "portfolio.html"} Portfolio
+                %li
+                  %a{:href => "portfolio-item.html"} Portfolio Item
+                %li
+                  %a{:href => "coming-soon.html"} Coming Soon
+                %li
+                  %a{:href => "sign-in.html"} Sign in
+                %li
+                  %a{:href => "sign-up.html"} Sign up
+                %li
+                  %a{:href => "backgrounds.html"} Backgrounds
+            %li
+              %a{:href => "pricing.html"} PRICING
+            %li
+              %a{:href => "contact.html"} CONTACT US
+            %li
+              %a{:href => "blog.html"} BLOG
+            %li
+              %a{:href => "sign-up.html"} Sign up
+            %li
+              %a{:href => "sign-in.html"} Sign in
+    #aboutus
+      .container
+        .section_header
+          %h3 About Us
+        .row
+          .col-sm-6.intro
+            %h6 There are many variations of passages Lorem Ipsum available, injected generators on the hidden.
+            %p
+              There are many variations of passages of Lorem Ipsum available, injected
+              generators on the  embarrassing hidden in the middle all the dictionary making it look like readable English. Many desktop publishing packages and web page editors.
+              %br/
+              %br/
+              There are many variations of passages of Lorem Ipsum available, but the ndictionary of over 200 Latin words, combined with a handful of models The generated Lorem Ipsum is therefore always free from repetition, the injected humour, or non-characteristic words etc.
+          .col-sm-6
+            .flexslider
+              %ul.slides
+                %li
+                  %img{:src => "img/about_slide1.jpg"}/
+                %li
+                  %img{:src => "img/about_slide1.jpg"}/
+                %li
+                  %img{:src => "img/about_slide1.jpg"}/
+    #team
+      .container
+        .section_header
+          %h3 Meet our Team
+        .row.people
+          .row.row1
+            .col-sm-6.bio_box
+              %img{:alt => "", :src => "img/ale.png"}/
+              .info
+                %p.name Alejandra Galvan Castillo
+                %p.area Creative Director
+                %a.facebook{:href => "#"}
+                  %span.socialicons.ico1
+                  %span.socialicons_h.ico1h
+                %a.twitter{:href => "#"}
+                  %span.socialicons.ico2
+                  %span.socialicons_h.ico2h
+                %a.flickr{:href => "#"}
+                  %span.socialicons.ico4
+                  %span.socialicons_h.ico4h
+                %a.dribble{:href => "#"}
+                  %span.socialicons.ico6
+                  %span.socialicons_h.ico6h
+            .col-sm-6.bio_box.bio_boxr
+              %img{:alt => "", :src => "img/ale.png"}/
+              .info
+                %p.name Alejandra Galvan Castillo
+                %p.area Creative Director
+                %a.facebook{:href => "#"}
+                  %span.socialicons.ico1
+                  %span.socialicons_h.ico1h
+                %a.twitter{:href => "#"}
+                  %span.socialicons.ico2
+                  %span.socialicons_h.ico2h
+                %a.flickr{:href => "#"}
+                  %span.socialicons.ico4
+                  %span.socialicons_h.ico4h
+                %a.dribble{:href => "#"}
+                  %span.socialicons.ico6
+                  %span.socialicons_h.ico6h
+          .row.row1
+            .col-sm-6.bio_box
+              %img{:alt => "", :src => "img/ale.png"}/
+              .info
+                %p.name Alejandra Galvan Castillo
+                %p.area Creative Director
+                %a.facebook{:href => "#"}
+                  %span.socialicons.ico1
+                  %span.socialicons_h.ico1h
+                %a.twitter{:href => "#"}
+                  %span.socialicons.ico2
+                  %span.socialicons_h.ico2h
+                %a.flickr{:href => "#"}
+                  %span.socialicons.ico4
+                  %span.socialicons_h.ico4h
+                %a.dribble{:href => "#"}
+                  %span.socialicons.ico6
+                  %span.socialicons_h.ico6h
+            .col-sm-6.bio_box.bio_boxr
+              %img{:alt => "", :src => "img/ale.png"}/
+              .info
+                %p.name Alejandra Galvan Castillo
+                %p.area Creative Director
+                %a.facebook{:href => "#"}
+                  %span.socialicons.ico1
+                  %span.socialicons_h.ico1h
+                %a.twitter{:href => "#"}
+                  %span.socialicons.ico2
+                  %span.socialicons_h.ico2h
+                %a.flickr{:href => "#"}
+                  %span.socialicons.ico4
+                  %span.socialicons_h.ico4h
+                %a.dribble{:href => "#"}
+                  %span.socialicons.ico6
+                  %span.socialicons_h.ico6h
+    #process
+      .container
+        .section_header
+          %h3 Our Process
+        .row.services_circles
+          .col-sm-4.description
+            .text.active
+              %h4 Plan what you need.
+              %p
+                There are many variations of passages of  this suffered alteration in some form, by injected look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to making this the first true generator  Internet.
+            .text
+              %h4 Develop your product or service.
+              %p
+                There are many variations of passages of  this suffered alteration in some form, by injected look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to
+                making this the first true generator  Internet.
+            .text
+              %h4 Design this theme to your needs.
+              %p
+                There are many variations of passages of  this suffered alteration in some form, by injected look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to making this the first true generator  Internet.
+          .col-sm-7.areas
+            .circle.active
+              %img{:src => "img/plan.png"}/
+              %span Plan
+            .circle
+              %img{:src => "img/develop.png"}/
+              %span Develop
+            .circle.last_circle
+              %img{:src => "img/design.png"}/
+              %span Design
+    / starts footer
+    %footer#footer
+      .container
+        .row.info
+          .col-sm-6.residence
+            %ul
+              %li 2301 East Lamar Blvd. Suite 140. City, Arlington.
+              %li United States, Zip Code TX 76006.
+          .col-sm-5.touch
+            %ul
+              %li
+                %strong P.
+                1 817 274 2933
+              %li
+                %strong E.
+                %a{:href => "#"} bootstrap@twitter.com
+        .row.credits
+          .col-md-12
+            .row.social
+              .col-md-12
+                %a.facebook{:href => "#"}
+                  %span.socialicons.ico1
+                  %span.socialicons_h.ico1h
+                %a.twitter{:href => "#"}
+                  %span.socialicons.ico2
+                  %span.socialicons_h.ico2h
+                %a.gplus{:href => "#"}
+                  %span.socialicons.ico3
+                  %span.socialicons_h.ico3h
+                %a.flickr{:href => "#"}
+                  %span.socialicons.ico4
+                  %span.socialicons_h.ico4h
+                %a.pinterest{:href => "#"}
+                  %span.socialicons.ico5
+                  %span.socialicons_h.ico5h
+                %a.dribble{:href => "#"}
+                  %span.socialicons.ico6
+                  %span.socialicons_h.ico6h
+                %a.behance{:href => "#"}
+                  %span.socialicons.ico7
+                  %span.socialicons_h.ico7h
+            .row.copyright
+              .col-md-12
+                © 2013 Clean Canvas. All rights reserved. Theme by Detail Canvas.
+    %script{:src => "http://code.jquery.com/jquery-latest.js"}
+    %script{:src => "js/bootstrap.min.js"}
+    %script{:src => "js/theme.js"}
+    %script{:src => "js/flexslider.js", :type => "text/javascript"}

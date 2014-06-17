@@ -1,0 +1,339 @@
+!!!
+%html
+  %head
+    %title Business Template
+    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+    / Styles
+    %link{:href => "css/bootstrap/bootstrap.min.css", :rel => "stylesheet"}/
+    %link{:href => "css/compiled/bootstrap-overrides.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "css/compiled/theme.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "css/compiled/index.css", :media => "screen", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "css/lib/animate.css", :media => "screen, projection", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  %body.pull_top
+    .navbar.navbar-inverse.navbar-fixed-top{:role => "navigation"}
+      .container
+        .navbar-header
+          %button.navbar-toggle.pull-right{"data-target" => ".navbar-ex1-collapse", "data-toggle" => "collapse", :type => "button"}
+            %span.sr-only Toggle navigation
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+          %a.navbar-brand{:href => "index.html"}
+            %strong CLEAN CANVAS
+        .collapse.navbar-collapse.navbar-ex1-collapse{:role => "navigation"}
+          %ul.nav.navbar-nav.navbar-right
+            %li.active
+              %a{:href => "index.html"} HOME
+            %li
+              %a{:href => "about-us.html"} ABOUT US
+            %li.dropdown
+              %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                PAGES
+                %b.caret
+              %ul.dropdown-menu
+                %li
+                  %a{:href => "features.html"} Features
+                %li
+                  %a{:href => "services.html"} Services
+                %li
+                  %a{:href => "portfolio.html"} Portfolio
+                %li
+                  %a{:href => "portfolio-item.html"} Portfolio Item
+                %li
+                  %a{:href => "coming-soon.html"} Coming Soon
+                %li
+                  %a{:href => "sign-in.html"} Sign in
+                %li
+                  %a{:href => "sign-up.html"} Sign up
+                %li
+                  %a{:href => "backgrounds.html"} Backgrounds
+            %li
+              %a{:href => "pricing.html"} PRICING
+            %li
+              %a{:href => "contact.html"} CONTACT US
+            %li
+              %a{:href => "blog.html"} BLOG
+            %li
+              %a{:href => "sign-up.html"} Sign up
+            %li
+              %a{:href => "sign-in.html"} Sign in
+    %section#feature_slider.lol
+      /
+        Each slide is composed by <img> and .info
+        \- .info's position is customized with css in index.css
+        \- each <img> parallax effect is declared by the following params inside its class:
+        
+        example: class="asset left-472 sp600 t120 z3"
+        left-472 means left: -472px from the center
+        sp600 is speed transition
+        t120 is top to 120px
+        z3 is z-index to 3
+        Note: Maintain this order of params
+        
+        For the backgrounds, you can combine from the bgs folder :D
+      %article#showcasing.slide{:style => "background: url('img/backgrounds/landscape.png') repeat-x top center;"}
+        %img.asset.left-30.sp600.t120.z1{:src => "img/slides/scene1/macbook.png"}/
+        .info
+          %h2 Beautiful theme for showcasing your works.
+      %article#ideas.slide{:style => "background: url('img/backgrounds/aqua.jpg') repeat-x top center;"}
+        .info
+          %h2 We love to turn ideas into beautiful things.
+        %img.asset.left-480.sp600.t260.z1{:src => "img/slides/scene2/left.png"}/
+        %img.asset.left-210.sp600.t213.z2{:src => "img/slides/scene2/middle.png"}/
+        %img.asset.left60.sp600.t260.z1{:src => "img/slides/scene2/right.png"}/
+      %article#tour.slide{:style => "background: url('img/backgrounds/color-splash.jpg') repeat-x top center;"}
+        %img.asset.left-472.sp650.t210.z3{:src => "img/slides/scene3/ipad.png"}/
+        %img.asset.left-365.sp600.t270.z4{:src => "img/slides/scene3/iphone.png"}/
+        %img.asset.left-350.sp450.t135.z2{:src => "img/slides/scene3/desktop.png"}/
+        %img.asset.left-185.sp550.t220.z1{:src => "img/slides/scene3/macbook.png"}/
+        .info
+          %h2 Fully Responsive theme
+          %a{:href => "features.html"} TOUR THE PRODUCT
+      %article#responsive.slide{:style => "background: url('img/backgrounds/indigo.jpg') repeat-x top center;"}
+        %img.asset.left-472.sp600.t120.z3{:src => "img/slides/scene4/html5.png"}/
+        %img.asset.left-190.sp500.t120.z2{:src => "img/slides/scene4/css3.png"}/
+        .info
+          %h2
+            Responsive
+            %strong HTML5 & CSS3
+            Theme
+    #showcase
+      .container
+        .section_header
+          %h3 Our Services
+        .row.feature_wrapper
+          / Features Row
+          .features_op1_row
+            / Feature
+            .col-sm-4.feature.first
+              .img_box
+                %a{:href => "services.html"}
+                  %img{:src => "img/service1.png"}/
+                  %span.circle
+                    %span.plus +
+              .text
+                %h6 Responsive theme
+                %p
+                  There are many variations of passages of generators on the  embarrassing hidden in   content here making it look like.
+            / Feature
+            .col-sm-4.feature
+              .img_box
+                %a{:href => "services.html"}
+                  %img{:src => "img/service2.png"}/
+                  %span.circle
+                    %span.plus +
+              .text
+                %h6 Easy customization
+                %p
+                  There are many variations of passages of generators on the  embarrassing hidden in   content here making it look like.
+            / Feature
+            .col-sm-4.feature.last
+              .img_box
+                %a{:href => "services.html"}
+                  %img{:src => "img/service3.png"}/
+                  %span.circle
+                    %span.plus +
+              .text
+                %h6 Made with love
+                %p
+                  There are many variations of passages of generators on the  embarrassing hidden in   content here making it look like.
+    #features
+      .container
+        .section_header
+          %h3 Features
+        .row.feature
+          .col-sm-6
+            %img.img-responsive{:src => "img/showcase1.png"}/
+          .col-sm-6.info
+            %h3
+              %img{:src => "img/features-ico1.png"}/
+              Beautiful on all devices
+            %p
+              There are many variations of passages of Lorem Ipsum available, but the randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.
+        .row.feature
+          .col-sm-6.pic-right
+            %img.pull-right.img-responsive{:src => "img/showcase2.png"}/
+          .col-sm-6.info.info-left
+            %h3
+              %img{:src => "img/features-ico2.png"}/
+              Blog page included
+            %p
+              There are many variations of passages of Lorem Ipsum available, but the randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.
+        .row.feature
+          .col-sm-6
+            %img.img-responsive{:src => "img/showcase3.png"}/
+          .col-sm-6.info
+            %h3
+              %img{:src => "img/features-ico3.png"}/
+              Simple and clean coming soon page
+            %p
+              There are many variations of passages of Lorem Ipsum available, but the randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.
+    / Pricing Option
+    #in_pricing
+      .container
+        .section_header
+          %h3 Pricing
+        .row.charts_wrapp
+          / Plan Box
+          .col-sm-4
+            .plan
+              .wrapper
+                %h3 Lite
+                .price
+                  %span.dollar $
+                  %span.qty 35
+                  %span.month /month
+                .features
+                  %p
+                    %strong 10
+                    Shared Projects
+                  %p
+                    %strong 4
+                    Team Members
+                  %p
+                    %strong 10
+                    Storage
+                %a.order{:href => "pricing.html"} ORDER NOW
+          / Plan Box
+          .col-sm-4.pro
+            .plan
+              .wrapper
+                %img.ribbon{:src => "img/badge.png"}/
+                %h3 Pro
+                .price
+                  %span.dollar $
+                  %span.qty 99
+                  %span.month /month
+                .features
+                  %p
+                    %strong 10
+                    Shared Projects
+                  %p
+                    %strong 25
+                    Team Members
+                  %p
+                    %strong Unlimited
+                    Storage
+                  %p
+                    %strong Plus
+                    Phone Support
+                %a.order{:href => "pricing.html"} ORDER NOW
+          / Plan Box
+          .col-sm-4.standar
+            .plan
+              .wrapper
+                %h3 Standard
+                .price
+                  %span.dollar $
+                  %span.qty 65
+                  %span.month /month
+                .features
+                  %p
+                    %strong 10
+                    Shared Projects
+                  %p
+                    %strong 4
+                    Team Members
+                  %p
+                    %strong 10
+                    Storage
+                %a.order{:href => "pricing.html"} ORDER NOW
+        .start
+          %p Start your free, no-risk, 14 day trial!
+          %a{:href => "pricing.html"} Start Now!
+    #clients
+      .container
+        .section_header
+          %h3 Clients
+        .row
+          .col-md-2.col-sm-4.client
+            .img.client1
+          .col-md-2.col-sm-4.client
+            .img.client2
+          .col-md-2.col-sm-4.client
+            .img.client3
+          .col-md-2.col-sm-4.client
+            .img.client1
+          .col-md-2.col-sm-4.client
+            .img.client2
+          .col-md-2.col-sm-4.client
+            .img.client3
+    / starts footer
+    %footer#footer
+      .container
+        .row.sections
+          .col-sm-4.recent_posts
+            %h3.footer_header
+              Recent Posts
+            .post
+              %a{:href => "blogpost.html"}
+                %img.img-circle{:src => "img/recent_post1.png"}/
+              .date
+                Wed, 12 Dec
+              %a.title{:href => "blogpost.html"}
+                Randomised words which don't look embarrasing hidden.
+            .post
+              %a{:href => "blogpost.html"}
+                %img.img-circle{:src => "img/recent_post2.png"}/
+              .date
+                Mon, 12 Dec
+              %a.title{:href => "blogpost.html"}
+                Randomised words which don't look embarrasing hidden.
+          .col-sm-4.testimonials
+            %h3.footer_header
+              Testimonials
+            .wrapper
+              .quote
+                %span “
+                There are many variations of passages of randomised words which don't look even slightly believable. You need to be sure there isn't anything embarrassing of text.
+                %span
+              .author
+                %img{:src => "img/user-display.png"}/
+                .name Alejandra Galvan Castillo
+                .info
+                  Details Canvas
+          .col-sm-4.contact
+            %h3.footer_header
+              Contact
+            %form{:action => "#", :method => "post"}
+              %input{:placeholder => "Your name", :type => "text"}/
+              %input{:placeholder => "Your email", :type => "text"}/
+              %textarea{:placeholder => "Message", :rows => "3"}
+              %input{:type => "submit", :value => "Send"}/
+        .row.credits
+          .col-md-12
+            .row.social
+              .col-md-12
+                %a.facebook{:href => "#"}
+                  %span.socialicons.ico1
+                  %span.socialicons_h.ico1h
+                %a.twitter{:href => "#"}
+                  %span.socialicons.ico2
+                  %span.socialicons_h.ico2h
+                %a.gplus{:href => "#"}
+                  %span.socialicons.ico3
+                  %span.socialicons_h.ico3h
+                %a.flickr{:href => "#"}
+                  %span.socialicons.ico4
+                  %span.socialicons_h.ico4h
+                %a.pinterest{:href => "#"}
+                  %span.socialicons.ico5
+                  %span.socialicons_h.ico5h
+                %a.dribble{:href => "#"}
+                  %span.socialicons.ico6
+                  %span.socialicons_h.ico6h
+                %a.behance{:href => "#"}
+                  %span.socialicons.ico7
+                  %span.socialicons_h.ico7h
+            .row.copyright
+              .col-md-12
+                © 2013 Clean Canvas. All rights reserved. Theme by Detail Canvas.
+    / Scripts
+    %script{:src => "http://code.jquery.com/jquery-latest.js"}
+    %script{:src => "js/bootstrap.min.js"}
+    %script{:src => "js/theme.js"}
+    %script{:src => "js/index-slider.js", :type => "text/javascript"}

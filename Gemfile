@@ -18,6 +18,8 @@ gem 'activeadmin', github: 'gregbell/active_admin'
 gem 'devise'
 gem 'haml'
 
+gem "simple-navigation"
+
 group :development, :test do
   gem 'pry'
   gem 'pry-nav'

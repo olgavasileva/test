@@ -2,7 +2,7 @@
 /[if IE 8] <html class="ie8">
 /[if IE 9] <html class="ie9 gt-ie8">
 / [if gt IE 9]><!
-%html.gt-ie8.gt-ie9.not-ie
+%html#pixel-admin.gt-ie8.gt-ie9.not-ie
   / <![endif]
   %head
     %meta{:charset => "utf-8"}/
@@ -13,7 +13,7 @@
     / Open Sans font from Google CDN
     %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
 
-    = stylesheet_link_tag "pixel_admin", media: "all", "data-turbolinks-track" => true
+    = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true
 
     %title= full_title(yield(:title))
 
@@ -25,5 +25,5 @@
     - flash.each do |key, value|
       = content_tag(:div, value, class: "alert alert-#{key}")
     = yield
-    = javascript_include_tag "pixel_admin", "data-turbolinks-track" => true
+    = javascript_include_tag "application", "data-turbolinks-track" => true
     = debug(params) if Rails.env.development?

@@ -1,20 +1,26 @@
 !!!
 %html
   %head
-    = stylesheet_link_tag "clean-canvas", media: "all", "data-turbolinks-track" => true
-
     %title= full_title(yield(:title))
 
     %meta{"http-equiv" => "Content-Type", content: "text/html; charset=utf-8"}
     %meta{name: :viewport, content:"width=device-width, initial-scale=1.0"}
     = csrf_meta_tags
 
-  %body
-    = render 'layouts/shared/header'
-    .container
+    / Open Sans font from Google CDN
+    %link{href: "http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic", rel: "stylesheet", type: "text/css"}/
+
+    = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true
+
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+
+  %body#clean-canvas.pull_top{class: yield(:body_class)}
+    = render 'layouts/clean_canvas/header'
+    #undertop.container
       - flash.each do |key, value|
         = content_tag(:div, value, class: "alert alert-#{key}")
       = yield
-      = render 'layouts/shared/footer'
-      = javascript_include_tag "clean-canvas", "data-turbolinks-track" => true
-      = debug(params) if Rails.env.development?
+    = render 'layouts/clean_canvas/footer'
+    = javascript_include_tag "application", "data-turbolinks-track" => true
+    = debug(params) if Rails.env.development?

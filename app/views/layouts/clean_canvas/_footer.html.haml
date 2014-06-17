@@ -1,0 +1,30 @@
+%footer#footer
+  .container
+    .row.recent-questions
+      .col-md-4
+        - @canned_recent_questions.each do |q|
+          .row
+            .col-md-2.thumb= image_tag q[:image_url]
+            .col-md-10 
+              .date= q[:date].strftime("%a, %d %b")
+              .title= q[:title]
+              %br
+
+    .row.info
+      .col-md-6.residence
+        %ul
+          %li 2301 East Lamar Blvd. Suite 140. City, Arlington.
+          %li United States, Zip Code TX 76006.
+      .col-md-5.touch
+        %ul
+          %li
+            %strong P.
+            1 817 274 2933
+          %li
+            %strong E.
+            %a{:href => "#"} bootstrap@twitter.com
+    .row.credits
+      .col-md-12
+        .row.copyright
+          .col-md-12
+            © 2014 Crashmob. All rights reserved.

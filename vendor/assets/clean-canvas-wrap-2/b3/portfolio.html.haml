@@ -1,0 +1,217 @@
+!!!
+%html
+  %head
+    %title Clean Canvas - Portfolio
+    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+    / Styles
+    %link{:href => "css/bootstrap/bootstrap.min.css", :rel => "stylesheet"}/
+    %link{:href => "css/compiled/bootstrap-overrides.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "css/compiled/theme.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "css/compiled/portfolio.css", :media => "screen", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "css/lib/animate.css", :media => "screen, projection", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "css/lib/isotope.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  %body
+    .navbar.navbar-inverse.navbar-static-top{:role => "navigation"}
+      .container
+        .navbar-header
+          %button.navbar-toggle{"data-target" => ".navbar-ex1-collapse", "data-toggle" => "collapse", :type => "button"}
+            %span.sr-only Toggle navigation
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+          %a.navbar-brand{:href => "index.html"}
+            %strong CLEAN CANVAS
+        .collapse.navbar-collapse.navbar-ex1-collapse{:role => "navigation"}
+          %ul.nav.navbar-nav.navbar-right
+            %li
+              %a{:href => "index.html"} HOME
+            %li
+              %a{:href => "about-us.html"} ABOUT US
+            %li.dropdown.active
+              %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                PAGES
+                %b.caret
+              %ul.dropdown-menu
+                %li
+                  %a{:href => "features.html"} Features
+                %li
+                  %a{:href => "services.html"} Services
+                %li
+                  %a{:href => "portfolio.html"} Portfolio
+                %li
+                  %a{:href => "portfolio-item.html"} Portfolio Item
+                %li
+                  %a{:href => "coming-soon.html"} Coming Soon
+                %li
+                  %a{:href => "sign-in.html"} Sign in
+                %li
+                  %a{:href => "sign-up.html"} Sign up
+                %li
+                  %a{:href => "backgrounds.html"} Backgrounds
+            %li
+              %a{:href => "pricing.html"} PRICING
+            %li
+              %a{:href => "contact.html"} CONTACT US
+            %li
+              %a{:href => "blog.html"} BLOG
+            %li
+              %a{:href => "sign-up.html"} Sign up
+            %li
+              %a{:href => "sign-in.html"} Sign in
+    #portfolio
+      .container
+        .section_header
+          %h3 Portfolio
+        .row
+          .col-md-12
+            #filters_container
+              %ul#filters
+                %li
+                  %a.active{"data-filter" => "*", :href => "#"} All
+                %li.separator /
+                %li
+                  %a{"data-filter" => ".art", :href => "#"} Art
+                %li.separator /
+                %li
+                  %a{"data-filter" => ".ilustration", :href => "#"} Illustration
+                %li.separator /
+                %li
+                  %a{"data-filter" => ".print", :href => "#"} Print
+                %li.separator /
+                %li
+                  %a{"data-filter" => ".web", :href => "#"} Web
+        .row
+          .col-md-12
+            #gallery_container
+              .photo.art.web
+                %img.img-responsive{:src => "img/portfolio1.png"}/
+                %a.mask{:href => "portfolio-item.html"}
+                %h3 Awesome portfolio item
+                %small Art
+                .more +
+              .photo.ilustration
+                %img.img-responsive{:src => "img/portfolio2.png"}/
+                %a.mask{:href => "portfolio-item.html"}
+                %h3 Awesome portfolio item
+                %small Web Design
+                .more +
+              .photo.print
+                %img.img-responsive{:src => "img/portfolio3.png"}/
+                %a.mask{:href => "portfolio-item.html"}
+                %h3 Awesome portfolio item
+                %small Print
+                .more +
+              .photo.art.web
+                %img.img-responsive{:src => "img/portfolio2.png"}/
+                %a.mask{:href => "portfolio-item.html"}
+                %h3 Awesome portfolio item
+                %small Web design
+                .more +
+              .photo.art.ilustration
+                %img.img-responsive{:src => "img/portfolio1.png"}/
+                %a.mask{:href => "portfolio-item.html"}
+                %h3 Awesome portfolio item
+                %small Ilustration
+                .more +
+              .photo.print
+                %img.img-responsive{:src => "img/portfolio3.png"}/
+                %a.mask{:href => "portfolio-item.html"}
+                %h3 Awesome portfolio item
+                %small Print
+                .more +
+              .photo.web
+                %img.img-responsive{:src => "img/portfolio2.png"}/
+                %a.mask{:href => "portfolio-item.html"}
+                %h3 Awesome portfolio item
+                %small Web Design
+                .more +
+              .photo.art.ilustration.web
+                %img.img-responsive{:src => "img/portfolio3.png"}/
+                %a.mask{:href => "portfolio-item.html"}
+                %h3 Awesome portfolio item
+                %small Art
+                .more +
+              .photo.print
+                %img.img-responsive{:src => "img/portfolio1.png"}/
+                %a.mask{:href => "portfolio-item.html"}
+                %h3 Awesome portfolio item
+                %small Ilustration
+                .more +
+    / starts footer
+    %footer#footer
+      .container
+        .row.info
+          .col-md-6.residence
+            %ul
+              %li 2301 East Lamar Blvd. Suite 140. City, Arlington.
+              %li United States, Zip Code TX 76006.
+          .col-md-5.touch
+            %ul
+              %li
+                %strong P.
+                1 817 274 2933
+              %li
+                %strong E.
+                %a{:href => "#"} bootstrap@twitter.com
+        .row.credits
+          .col-md-12
+            .row.social
+              .col-md-12
+                %a.facebook{:href => "#"}
+                  %span.socialicons.ico1
+                  %span.socialicons_h.ico1h
+                %a.twitter{:href => "#"}
+                  %span.socialicons.ico2
+                  %span.socialicons_h.ico2h
+                %a.gplus{:href => "#"}
+                  %span.socialicons.ico3
+                  %span.socialicons_h.ico3h
+                %a.flickr{:href => "#"}
+                  %span.socialicons.ico4
+                  %span.socialicons_h.ico4h
+                %a.pinterest{:href => "#"}
+                  %span.socialicons.ico5
+                  %span.socialicons_h.ico5h
+                %a.dribble{:href => "#"}
+                  %span.socialicons.ico6
+                  %span.socialicons_h.ico6h
+                %a.behance{:href => "#"}
+                  %span.socialicons.ico7
+                  %span.socialicons_h.ico7h
+            .row.copyright
+              .col-md-12
+                © 2013 Clean Canvas. All rights reserved. Theme by Detail Canvas.
+    %script{:src => "http://code.jquery.com/jquery-latest.js"}
+    %script{:src => "js/bootstrap.min.js"}
+    %script{:src => "js/theme.js"}
+    %script{:src => "js/jquery.isotope.min.js"}
+    :javascript
+      $(function(){
+
+          var $container = $('#gallery_container'),
+                $filters = $("#filters a");
+      
+          $container.imagesLoaded( function(){
+              $container.isotope({
+                  itemSelector : '.photo',
+                  masonry: {
+                      columnWidth: 100
+                  }
+              });
+          });
+
+          // filter items when filter link is clicked
+          $filters.click(function() {
+              $filters.removeClass("active");
+              $(this).addClass("active");
+              var selector = $(this).data('filter');
+              $container.isotope({ filter: selector });
+              return false;
+          });
+      
+      
+      });
