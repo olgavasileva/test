@@ -1,4 +1,5 @@
 set :branch, "master"
+set :deploy_to, "/app/#{fetch :application}/production"
 
 # Simple Role Syntax
 # ==================

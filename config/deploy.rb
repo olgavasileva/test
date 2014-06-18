@@ -15,7 +15,7 @@ set :rvm_autolibs_flag, "read-only"       # more info: rvm help autolibs
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
 # Default deploy_to directory is /var/www/my_app
-set :deploy_to, "/app/#{fetch :application}/#{fetch :branch}"
+set :deploy_to, "/app/#{fetch :application}"
 
 # Default value for :scm is :git
 # set :scm, :git
