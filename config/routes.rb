@@ -5,6 +5,8 @@ LinkchatApp::Application.routes.draw do
 
   root 'static_pages#home'
 
+  resources :inquiries
+
   namespace :api, :defaults => { :format => :json } do
     resources :users do
       member do

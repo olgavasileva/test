@@ -110,6 +110,8 @@ GEM
     ffi (1.9.3)
     formtastic (2.3.0.rc3)
       actionpack (>= 3.0)
+    formtastic-bootstrap (3.0.0)
+      formtastic (>= 2.2)
     haml (4.0.5)
       tilt
     has_scope (0.6.0.rc)
@@ -281,6 +283,8 @@ DEPENDENCIES
   devise
   factory_girl_rails
   faker
+  formtastic
+  formtastic-bootstrap
   haml
   jbuilder
   jquery-rails

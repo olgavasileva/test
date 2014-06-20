@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140620041622) do
+ActiveRecord::Schema.define(version: 20140620045428) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -117,6 +117,14 @@ ActiveRecord::Schema.define(version: 20140620041622) do
   add_index "inclusions", ["pack_id", "question_id"], name: "index_inclusions_on_pack_id_and_question_id", unique: true
   add_index "inclusions", ["pack_id"], name: "index_inclusions_on_pack_id"
   add_index "inclusions", ["question_id"], name: "index_inclusions_on_question_id"
+
+  create_table "inquiries", force: true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.text     "message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "microposts", force: true do |t|
     t.string   "content"

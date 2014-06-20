@@ -1,8 +1,16 @@
 class ApplicationController < ActionController::Base
-  before_filter :configure_permitted_parameters, if: :devise_controller?
+  before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
 
-  before_filter :build_canned_values
+  before_action :build_canned_values
+
+  # Apply strong_parameters filtering before CanCan authorization
+  # See https://github.com/ryanb/cancan/issues/571#issuecomment-10753675
+  before_action do
+    resource = controller_path.singularize.gsub('/', '_').to_sym
+    method = "#{resource}_params"
+    params[resource] &&= send(method) if respond_to?(method, true)
+  end
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.

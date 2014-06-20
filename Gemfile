@@ -18,6 +18,10 @@ gem 'activeadmin', github: 'gregbell/active_admin'
 gem 'devise'
 gem 'rolify'
 gem 'cancan'
+
+gem 'formtastic'
+gem 'formtastic-bootstrap'
+
 gem 'haml'
 
 gem "simple-navigation"

@@ -1,0 +1,6 @@
+= semantic_form_for @inquiry || Inquiry.new, remote: true do |f|
+  = f.input :name, placeholder: "Your Name", label: false
+  = f.input :email, placeholder: "Your Email", label: false
+  = f.input :message, placeholder: "Message", label: false, rows: 5
+  = f.actions do
+    .pull-right= f.action :submit, label:"Send"
