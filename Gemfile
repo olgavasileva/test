@@ -16,6 +16,8 @@ gem 'jquery-ui-rails'
 
 gem 'activeadmin', github: 'gregbell/active_admin'
 gem 'devise'
+gem 'rolify'
+gem 'cancan'
 gem 'haml'
 
 gem "simple-navigation"
