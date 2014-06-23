@@ -27,3 +27,10 @@
 #= require b3/js/theme
 #= require b3/js/jquery.isotope.min
 #= require clean-canvas/portfolio
+
+
+#
+# Swagger (API docs)
+#
+
+#= require swagger-ui

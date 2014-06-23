@@ -11,6 +11,8 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder'
 
+gem 'will_paginate'
+
 gem 'bcrypt-ruby'
 gem 'jquery-ui-rails'
 
@@ -26,6 +28,13 @@ gem 'haml'
 
 gem "simple-navigation"
 
+gem 'grape'             # API Framework
+gem 'grape-swagger'     # API docs" >> Gemfile
+gem 'swagger-ui_rails'  # API docs hosting" >> Gemfile
+
+gem 'hirb'
+gem 'wirble'
+
 group :development do
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
@@ -38,6 +47,7 @@ end
 group :development, :test do
   gem 'pry'
   gem 'pry-nav'
+  gem 'pry-rails'
   gem 'spring'
 end
 

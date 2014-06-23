@@ -7,6 +7,9 @@ LinkchatApp::Application.routes.draw do
 
   resources :inquiries
 
+  mount TwoCents::API =>'/'
+  get "/docs" => 'docs#index'
+
   namespace :api, :defaults => { :format => :json } do
     resources :users do
       member do

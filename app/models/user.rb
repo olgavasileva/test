@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
 
 	before_create :create_remember_token
 	
-	VALID_USERNAME_REGEX = /\A[a-z0-9\-_]+\z/i
+	VALID_USERNAME_REGEX ||= /\A[a-z0-9\-_]{4,50}\z/i
 	validates :username, presence: true, 
 						format: { with: VALID_USERNAME_REGEX },
 						length: { maximum: 50 }, 
