@@ -1,0 +1,21 @@
+!!!
+%html
+  %head
+    %title= full_title(yield(:title))
+
+    %meta{"http-equiv" => "Content-Type", content: "text/html; charset=utf-8"}
+    %meta{name: :viewport, content:"width=device-width, initial-scale=1.0"}
+    = csrf_meta_tags
+
+    / Open Sans font from Google CDN
+    %link{href: "http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic", rel: "stylesheet", type: "text/css"}/
+
+    = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true
+    = javascript_include_tag "application", "data-turbolinks-track" => true
+
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+
+  %body#clean-canvas.pull_top{class: yield(:body_class)}
+    = yield
+    = debug(params) if Rails.env.development?
