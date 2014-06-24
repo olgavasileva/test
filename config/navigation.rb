@@ -59,7 +59,7 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :get_app, 'Get the App', '#'
 
     if user_signed_in?
-      primary.itme :logout, 'Logout', destroy_user_session_path, method: :delete if user_signed_in?
+      primary.item :logout, 'Logout', destroy_user_session_path, method: :delete if user_signed_in?
     else
       primary.item :sign_up, 'Sign Up', new_user_registration_path unless user_signed_in?
       primary.item :sign_in, 'Sign In', new_user_session_path unless user_signed_in?
