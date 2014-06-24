@@ -22,22 +22,20 @@ class TwoCents::API < Grape::API
     end
 
     def fail! code, message
-      error!({error:message, error_code:code}, 400)
+      error!({error_code:code, error:message}, 401)
     end
   end
 
+  rescue_from Grape::Exceptions::ValidationErrors do |e|
+    Rack::Response.new({error_code: 1000, error_message: e.message}.to_json, 400).finish
+  end
+
   rescue_from ActiveRecord::RecordNotFound do |e|
-    Rack::Response.new({
-                         error_code: 404,
-                         error_message: e.message
-    }.to_json, 404).finish
+    Rack::Response.new({error_code: 1001, error_message: e.message}.to_json, 404).finish
   end
 
   rescue_from :all do |e|
-    Rack::Response.new({
-                         error_code: 500,
-                         error_message: e.message
-    }.to_json, 500).finish
+    Rack::Response.new({error_code: 1002, error_message: e.message}.to_json, 500).finish
   end
 
   mount Users

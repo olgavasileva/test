@@ -1,27 +1,29 @@
 class TwoCents::Users < Grape::API
   resource :users do
 
-    desc 'Register a new user'
+    desc 'Register a new user', {
+      notes: <<-END
+      END
+    }
     params do
-      optional :id, type: Integer
-      optional :user, type: Hash do
-        requires :username, type: String, regexp:User::VALID_USERNAME_REGEX
-        requires :name, type: String, regexp:/\A.{1,50}\z/
-        requires :email, type: String, regexp: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$.?/i, desc:'e.g. oscar@madisononline.com'
-        requires :password, type: String
-        requires :password_confirmation, type: String
-      end
-      optional :device, type: Hash do
-        requires :udid, type: String
-        requires :device_type, type: String
-        requires :os_version, type: String
-      end
+      requires :username, type: String, regexp:User::VALID_USERNAME_REGEX
+      requires :name, type: String, regexp:/\A.{1,50}\z/
+      requires :email, type: String, regexp: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$.?/i, desc:'e.g. oscar@madisononline.com'
+      requires :password, type: String
+      requires :password_confirmation, type: String
+      requires :udid, type: String
+      requires :device_type, type: String
+      requires :os_version, type: String
     end
-    post ':id/register' do
+    post 'register', http_codes:[
+      [400, "1000 - Invalid params"],
+      [404, "1001 - Record not found"],
+      [500, "1002 - Server error"]
+    ] do
       ActiveRecord::Base.transaction do
-        user = User.create! declared_params[:user]
-        device = Device.where(udid: declared_params[:device][:udid]).first_or_create declared_params[:device]
-        device.update_attributes! declared_params[:device]
+        user = User.create! declared_params.slice(:username, :name, :email, :password, :password_confirmation)
+        device = Device.where(udid: declared_params[:udid]).first_or_create declared_params.slice(:device_type, :os_version)
+        device.update_attributes! declared_params.slice(:device_type, :os_version)
         ownership = Ownership.find_by(device_id: device.id, user_id: user.id) || user.own!(device)
 
         {success:ownership}
@@ -32,37 +34,31 @@ class TwoCents::Users < Grape::API
     # Is this API used?  Seems like register is more appropriate
     desc "Create a new user - Is this API used?  Seems like register is more appropriate"
     params do
-      optional :user, type: Hash do
-        requires :username, type: String, regexp:User::VALID_USERNAME_REGEX
-        requires :name, type: String, regexp:/\A.{1,50}\z/
-        requires :email, type: String, regexp: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$.?/i, desc:'e.g. oscar@madisononline.com'
-        requires :password, type: String
-        requires :password_confirmation, type: String
-      end
+      requires :username, type: String, regexp:User::VALID_USERNAME_REGEX
+      requires :name, type: String, regexp:/\A.{1,50}\z/
+      requires :email, type: String, regexp: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$.?/i, desc:'e.g. oscar@madisononline.com'
+      requires :password, type: String
+      requires :password_confirmation, type: String
     end
     post do
-      {success:User.create!(declared_params[:user])}
+      {success:User.create!(declared_params)}
     end
 
 
     desc 'Log in a user'
     params do
       optional :id, type: Integer
-      optional :user, type: Hash do
-        requires :username, type: String, regexp:User::VALID_USERNAME_REGEX
-        requires :password, type: String
-      end
-      optional :device do
-        requires :udid, type: String
-        requires :device_type, type: String
-        requires :os_version, type: String
-      end
+      requires :username, type: String, regexp:User::VALID_USERNAME_REGEX
+      requires :password, type: String
+      requires :udid, type: String
+      requires :device_type, type: String
+      requires :os_version, type: String
     end
     post ':id/login' do
-      user = User.find_by(username: declared_params[:user][:username].downcase)
+      user = User.find_by(username: declared_params[:username].downcase)
       fail! 403, "forbidden: invalid username and password combination, access denied" unless user && user.authenticate(params[:user][:password])
-      device = Device.find_by(udid: declared_params[:device][:udid]) || Device.create!(declared_params[:device])
-      device.update_attributes! declared_params[:device]
+      device = Device.find_by(udid: declared_params[:udid]) || Device.create!(declared_params.slice(:udid, :device_type, :os_version))
+      device.update_attributes! declared_params.slice(:device_type, :os_version)
       ownership = Ownership.find_by(device_id: device.id, user_id: user.id)
 
       if !ownership
