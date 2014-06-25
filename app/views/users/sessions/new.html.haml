@@ -1,31 +1,44 @@
-#sign_in1
+#sign_in2
   .container
-    .row
-      .col-md-12.header
+    .section_header
+      %h3
+        Sign in
+    .row.login
+      .col-sm-5.left_box
         %h4 Log in to your account
-        %p
-          There are many variations of passages of Lorem alteration in some form  injected humour these randomised words .
-        .col-md-4.social
-          = link_to image_tag("b3/img/face.png"), '#', class:%w(circle facebook)
-          = link_to image_tag("b3/img/twt.png"), '#', class:%w(circle twitter)
-          = link_to image_tag("b3/img/gplus.png"), '#', class:%w(circle gplus)
-      .col-sm-3.division
-        .line.l
-        %span or
-        .line.r
-      .col-md-12.footer
-        = form_for resource, as: resource_name, url: session_path(resource_name), class: "form-inline" do |f|
-          = devise_error_messages!
-          = f.text_field :login, autofocus: true, placeholder:"Username or email", class:%w{form-control}
-          = f.password_field :password, autocomplete: "off", placeholder: "Password", class:%w{form-control}
-          = f.submit "sign in"
-      .col-md-12.proof
-        .col-md-6.remember
-          %label.checkbox
-            %input{:type => "checkbox"}/
-            Remember me
-          = link_to "Forgot password?", new_user_password_path
-        .col-md-6
-          .dosnt
-            %span Don’t have an account?
-            =link_to "Sign up", new_user_registration_path
+        .perk_box
+          .perk
+            %span.icos.ico1
+            %p
+              %strong Lorem alteration
+              in some form  injected humour these randomised words .
+          .perk
+            %span.icos.ico2
+            %p
+              %strong There are many variations
+              of passages of Lorem alteration in some form  injected humour these randomised words.
+          .perk
+            %span.icos.ico3
+            %p
+              %strong Alteration in some form
+              injected humour these randomised words.
+      .col-sm-6.signin_box
+        .box
+          .box_cont
+            .social
+            = link_to image_tag("b3/img/face.png"), '#', class:%w(circle facebook)
+            = link_to image_tag("b3/img/twt.png"), '#', class:%w(circle twitter)
+            = link_to image_tag("b3/img/gplus.png"), '#', class:%w(circle gplus)
+            .division
+              .line.l
+              %span or
+              .line.r
+            .form
+              = form_for resource, as: resource_name, url: session_path(resource_name), class: "form-inline" do |f|
+                = devise_error_messages!
+                = f.text_field :login, autofocus: true, placeholder:"Username or Email", class:%w{form-control}
+                = f.password_field :password, autocomplete: "off", placeholder: "Password", class:%w{form-control}
+                = f.submit "sign in"
+                .forgot
+                  %span Don’t have an account?
+                  =link_to "Sign up", new_user_registration_path
