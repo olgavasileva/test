@@ -30,7 +30,7 @@ SimpleNavigation::Configuration.run do |navigation|
   # The auto highlight feature is turned on by default.
   # This turns it off globally (for the whole plugin)
   # navigation.auto_highlight = false
-  
+
   # If this option is set to true, all item names will be considered as safe (passed through html_safe). Defaults to false.
   # navigation.consider_item_names_as_safe = false
 
@@ -59,7 +59,7 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :get_app, 'Get the App', '#'
 
     if user_signed_in?
-      primary.itme :logout, 'Logout', destroy_user_session_path, method: :delete if user_signed_in?
+      primary.item :logout, 'Logout', destroy_user_session_path, method: :delete if user_signed_in?
     else
       primary.item :sign_up, 'Sign Up', new_user_registration_path unless user_signed_in?
       primary.item :sign_in, 'Sign In', new_user_session_path unless user_signed_in?
