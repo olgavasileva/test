@@ -39,6 +39,7 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
+  gem 'thin'
 
   gem 'better_errors'               # More useful error pages in development
   gem 'binding_of_caller'           # Enables advanced features of better_errors
