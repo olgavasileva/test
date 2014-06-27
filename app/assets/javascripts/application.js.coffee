@@ -28,3 +28,7 @@
 #= require b3/js/jquery.isotope.min
 #= require clean-canvas/portfolio
 
+#
+# Other
+#
+
