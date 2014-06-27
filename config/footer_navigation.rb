@@ -6,7 +6,7 @@ SimpleNavigation::Configuration.run do |navigation|
     footer.item :tos, 'Terms of Service', '#'
     footer.item :privacy, 'Privacy Policy', '#'
     footer.item :business, 'Partners & Advertisers', '#'
-    footer.item :business_signin, 'Business Sign Up', '#'
-    footer.item :business_signin, 'Business Sign In', '#'
+    footer.item :business_signin, 'Business Sign Up', session_path(:partner)
+    footer.item :business_signin, 'Business Sign In', registration_path(:partner)
   end
 end

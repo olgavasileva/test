@@ -1,0 +1,78 @@
+- content_for :body_class, "theme-default page-signin"
+
+#page-signin-bg
+  .overlay
+  =image_tag "assets/demo/signin-bg-1.jpg"
+.signin-container
+  .signin-info
+    =link_to root_path, class: "logo" do
+      =image_tag "assets/demo/logo-big.png", style: "margin-top: -5px;"
+      &nbsp; Crashmob
+    .slogan Simple. Flexible. Powerful.
+    %ul
+      %li
+        %i.fa.fa-sitemap.signin-icon
+        Flexible modular structure
+      %li
+        %i.fa.fa-file-text-o.signin-icon
+        LESS &amp; SCSS source files
+      %li
+        %i.fa.fa-outdent.signin-icon
+        RTL direction support
+      %li
+        %i.fa.fa-heart.signin-icon
+        Crafted with love
+  .signin-form
+    = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+      = devise_error_messages!
+      .signin-text
+        %span Sign In to your enterprise account
+      .form-group.w-icon
+        = f.email_field :email, placeholder: "E-mail", class:%w{form-control input-lg}
+        %span.fa.fa-user.signin-form-icon
+      .form-group.w-icon
+        = f.password_field :password, autocomplete: "off", placeholder: "Password", class:%w{form-control input-lg}
+        %span.fa.fa-lock.signin-form-icon
+      .form-actions
+        = f.submit "SIGN IN", class:%w{signin-btn bg-primary}
+        = link_to "Forgot your password?", new_user_password_path, class:%w{forgot-password-link forgot-password}, id:"forgot-password-link"
+    .signin-with
+      = link_to '#', style:"background:#4f6faa;background:rgba(79, 111, 170, .8);", class: %w{signin-with-btn} do
+        Sign In with
+        %span Facebook
+    #password-reset-form.password-reset-form
+      .header
+        .signin-text
+          %span Password reset
+          .close &times;
+      %form#password-reset-form_id{:action => "index.html"}
+        .form-group.w-icon
+          %input#p_email_id.form-control.input-lg{:name => "password_reset_email", :placeholder => "Enter your email", :type => "text"}/
+          %span.fa.fa-envelope.signin-form-icon
+        .form-actions
+          %input.signin-btn.bg-primary{:type => "submit", :value => "SEND PASSWORD RESET LINK"}/
+.not-a-member
+  Not a member?
+  =link_to "Sign up now", new_registration_path(resource_name)
+
+:coffee
+  $ ->
+    # Resize BG
+    $ph  = $('#page-signin-bg')
+    $img = $ph.find('> img')
+
+    $(window).on 'resize', ->
+      $img.attr('style', '')
+      if $img.height() < $ph.height()
+        $img.css
+          height: '100%'
+          width: 'auto'
+
+    # Show/Hide password reset form on click
+    $('#forgot-password-link').click ->
+      $('#password-reset-form').fadeIn(400)
+      false
+
+    $('#password-reset-form .close').click ->
+      $('#password-reset-form').fadeOut(400)
+      false

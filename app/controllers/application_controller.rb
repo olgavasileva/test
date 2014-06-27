@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   # layout "clean_canvas"
-  layout "clean_canvas"
+  layout :layout_by_resource
 
   protected
 
@@ -31,29 +31,40 @@ class ApplicationController < ActionController::Base
     registration_params = [:name, :email, :username, :password, :password_confirmation, :terms_and_conditions]
 
     if params[:action] == 'update'
-      devise_parameter_sanitizer.for(:account_update) { 
+      devise_parameter_sanitizer.for(:account_update) {
         |u| u.permit(registration_params << :current_password)
       }
     elsif params[:action] == 'create'
-      devise_parameter_sanitizer.for(:sign_up) { 
-        |u| u.permit(registration_params) 
+      devise_parameter_sanitizer.for(:sign_up) {
+        |u| u.permit(registration_params)
       }
     end
   end
 
   private
 
+  def layout_by_resource
+    if devise_controller?
+      case resource_name
+      when :user
+        "clean_canvas"
+      when :partner
+        "pixel_admin"
+      end
+    end || "clean_canvas"
+  end
+
   def build_canned_values
     @canned_categories = %w{art illustration print web}
     @canned_feed = [
         {categories: %w{art web}, image_url: "b3/img/portfolio1.png", url:"portfolio-item.html", title: "Awesome portfolio item", primary_category: "Art"},
-        {categories: %w{illustration}, image_url: "b3/img/portfolio2.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Web Design"}, 
-        {categories: %w{print}, image_url: "b3/img/portfolio3.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Print"}, 
-        {categories: %w{art web}, image_url: "b3/img/portfolio2.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Web design"}, 
-        {categories: %w{art illustration}, image_url: "b3/img/portfolio1.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Illustration"}, 
-        {categories: %w{print}, image_url: "b3/img/portfolio3.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Print"}, 
-        {categories: %w{web}, image_url: "b3/img/portfolio2.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Web Design"}, 
-        {categories: %w{art.illustration web}, image_url: "b3/img/portfolio3.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Art"}, 
+        {categories: %w{illustration}, image_url: "b3/img/portfolio2.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Web Design"},
+        {categories: %w{print}, image_url: "b3/img/portfolio3.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Print"},
+        {categories: %w{art web}, image_url: "b3/img/portfolio2.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Web design"},
+        {categories: %w{art illustration}, image_url: "b3/img/portfolio1.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Illustration"},
+        {categories: %w{print}, image_url: "b3/img/portfolio3.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Print"},
+        {categories: %w{web}, image_url: "b3/img/portfolio2.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Web Design"},
+        {categories: %w{art.illustration web}, image_url: "b3/img/portfolio3.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Art"},
         {categories: %w{print}, image_url: "b3/img/portfolio1.png", url: "portfolio-item.html", title: "Awesome portfolio item", primary_category: "Illustration"}
       ]
     @canned_recent_questions = [

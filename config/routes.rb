@@ -1,6 +1,8 @@
 LinkchatApp::Application.routes.draw do
   devise_for :users
+  devise_for :partners
   devise_for :admin_users, ActiveAdmin::Devise.config
+
   ActiveAdmin.routes(self)
 
   root 'static_pages#home'
@@ -57,5 +59,5 @@ LinkchatApp::Application.routes.draw do
     match 'answers/answer_question_type_3', to: "answers#answer_question_type_3", :via => 'post'
     match 'answers/answer_question_type_4', to: "answers#answer_question_type_4", :via => 'post'
     match 'answers/answer_question_type_5', to: "answers#answer_question_type_5", :via => 'post'
-  end 
+  end
 end
