@@ -17,7 +17,18 @@
             - @canned_feed.each do |feed|
               .photo{class: feed[:categories]}
                 = image_tag feed[:image_url], class: "img-responsive"
-                = link_to feed[:url], class: :mask do
+                = link_to '#modal-blurred-bg',:remote => true, "data-toggle" => "modal", :role => "dialog", "data-a" => feed[:title], "data-b" => feed[:image_url], id:"open", class: :mask do
                   %h3=feed[:title]
                   %small=feed[:primary_category]
                   .more +
+
+
+          #modal-blurred-bg.modal.fade.modal-blur{:role => "dialog", :style => "display: none;", :tabindex => "-1"}
+            .modal-dialog.modal-sm
+              .modal-content
+                .modal-header
+                  %button.close{"data-dismiss" => "modal", :type => "button"} ×
+                  %h4.modal-title#myName
+                .modal-body
+
+
