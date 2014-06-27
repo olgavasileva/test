@@ -1,48 +1,55 @@
-- content_for :body_class, "theme-default page-signup"
+#sign_up2
+  .container
+    .section_header
+      %h3
+        Sign up
+        %span (option 2)
+    .row.login
+      .col-sm-5.left_box
+        %h4 Create your account
+        .perk_box
+          .perk
+            %span.icos.ico1
+            %p
+              %strong Lorem alteration
+              in some form  injected humour these randomised words .
+          .perk
+            %span.icos.ico2
+            %p
+              %strong There are many variations
+              of passages of Lorem alteration in some form  injected humour these randomised words.
+          .perk
+            %span.icos.ico3
+            %p
+              %strong Alteration in some form
+              injected humour these randomised words.
+      .col-sm-6.signin_box
+        .box
+          .box_cont
+            .social
+              = link_to image_tag("b3/img/face.png"), '#', class:%w(circle facebook)
+              = link_to image_tag("b3/img/twt.png"), '#', class:%w(circle twitter)
+              = link_to image_tag("b3/img/gplus.png"), '#', class:%w(circle gplus)
+            .division
+              .line.l
+              %span or
+              .line.r
+            .form
+              = form_for resource, as: resource_name, url: registration_path(resource_name), class: "form-inline" do |f|
+                = devise_error_messages!
+                .form-group.w-icon
+                  = f.text_field :name, placeholder: "Full name", class:%w{form-control input-lg}
+                .form-group.w-icon
+                  = f.text_field :username, placeholder: "Username", class:%w{form-control input-lg}
+                .form-group.w-icon
+                  = f.email_field :email, placeholder: "E-mail", class:%w{form-control input-lg}
+                .form-group.w-icon
+                  = f.password_field :password, autocomplete: "off", placeholder: "Password", class:%w{form-control input-lg}
+                .form-group.w-icon
+                  = f.password_field :password_confirmation, autocomplete: "off", placeholder: "Repeat Password", class:%w{form-control input-lg}
+                .forgot
+                  %span Already have an account?
+                  = link_to "Sign In", new_user_session_path
+                .form-group.w-icon
+                  = f.submit "sign up"
 
-#page-signup-bg
-  .overlay
-  = image_tag "assets/demo/signin-bg-1.jpg"
-.signup-container
-  .signup-header
-    =link_to root_path, class: :logo, style: "margin-top: -5px;" do
-      = image_tag "assets/demo/logo-big.png", style: "margin-top: -5px;"
-      \&nbsp;
-      CrashMob
-    .slogan
-      Siss. Boom. Baa.
-  .signup-form
-    = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-      = devise_error_messages!
-      .signup-text
-        %span Create an account
-      .form-group.w-icon
-        = f.text_field :name, placeholder: "Full name", class:%w{form-control input-lg}
-        %span.fa.fa-info.signup-form-icon
-      .form-group.w-icon
-        = f.email_field :email, placeholder: "E-mail", class:%w{form-control input-lg}
-        %span.fa.fa-envelope.signup-form-icon
-      .form-group.w-icon
-        = f.text_field :username, placeholder: "Username", class:%w{form-control input-lg}
-        %span.fa.fa-user.signup-form-icon
-      .form-group.w-icon
-        = f.password_field :password, autocomplete: "off", placeholder: "Password", class:%w{form-control input-lg}
-        %span.fa.fa-lock.signup-form-icon
-      .form-group.w-icon
-        = f.password_field :password_confirmation, autocomplete: "off", placeholder: "Repeat Password", class:%w{form-control input-lg}
-        %span.fa.fa-lock.signup-form-icon
-      .form-group{:style => "margin-top: 20px;margin-bottom: 20px;"}
-        %label.checkbox-inline
-          = f.check_box :terms_and_conditions
-          %span.lbl
-            I agree with the
-            = link_to "Terms and Conditions", "#"
-      .form-actions
-        = f.submit "SIGN UP", class:%w{signup-btn bg-primary}
-    .signup-with
-      %a.signup-with-btn{:href => "index.html", :style => "background:#4f6faa;background:rgba(79, 111, 170, .8);"}
-        Sign Up with
-        %span Facebook
-.have-account
-  Already have an account?
-  = link_to "Sign In", new_user_session_path
