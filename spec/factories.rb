@@ -22,41 +22,6 @@ FactoryGirl.define do
     os_version "7.0.3"
   end
 
-  factory :question do
-    title "Lorem ipsum dolor sit amet, consectetur adipisicing elit." 
-    info "Perferendis, mollitia, atque, ipsa suscipit nemo praesentium laboriosam iste ex minima quisquam repellat unde reiciendis doloribus."
-    question_type 1
-    image_url "http://example.com/test.png"
-    min_value -100
-    max_value 100
-    interval 2
-    units "hr"
-    user
-    category
-  end
-
-  factory :choice do
-    label "Lorem ipsum"
-    image_url "http://example.com/test.png"
-    description "consectetur adipisicing elit"
-    question
-  end
-
-  factory :answer do
-    agree true
-    user
-    question
-  end
-
-  factory :response do
-    order 1
-    percent 0.5
-    star 3
-    slider 50
-    choice
-    answer
-  end
-
   factory :category do
     name "a test category"
   end

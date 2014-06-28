@@ -1,16 +1,15 @@
 class Question < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :category
-	has_many :choices, dependent: :destroy
-	has_many :answers, dependent: :destroy
 	has_many :inclusions, dependent: :destroy
 	has_many :packs, through: :inclusions
 	has_many :comments, dependent: :destroy
 	has_many :sharings, dependent: :destroy
 
-	validates :user_id, presence: true
-	validates :category_id, presence: true
+	validates :user, presence: true
+	validates :category, presence: true
 	validates :title, presence: true
+  validates :description, presence: true
 
 	def included_by?(pack)
 		self.inclusions.find_by(pack_id: pack.id)
