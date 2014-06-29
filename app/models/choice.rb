@@ -4,5 +4,5 @@ class Choice < ActiveRecord::Base
 
 	validates :question, presence: true
   validates :title, presence: true
-  validates :rotate, inclusion:{in:[true,false]}
+  validates :rotate, inclusion:{in:[true,false], allow_nil:true}
 end

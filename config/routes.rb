@@ -5,7 +5,8 @@ LinkchatApp::Application.routes.draw do
 
   ActiveAdmin.routes(self)
 
-  root 'static_pages#home'
+  root 'pages#home'
+  get '/test' => 'pages#test' if Rails.env.development?
 
   resources :inquiries
 

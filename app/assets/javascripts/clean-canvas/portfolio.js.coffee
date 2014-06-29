@@ -4,13 +4,13 @@ $ ->
   $opendialog = $("#portfolio #open")
 
   $opendialog.click ->
-   myName.innerHTML = $(this).data('a')
-   myUrl = $(this).data('b')
+   myName.innerHTML = $(this).data('id')
+   myUrl = $(this).data('id')
    $('#modal-blurred-bg img').attr('src', 'assets/'+myUrl)
-   myCategory.innerHTML = $(this).data('c')
+   myCategory.innerHTML = $(this).data('id')
 
 
-  $container.imagesLoaded -> 
+  $container.imagesLoaded ->
     $container.isotope
       itemSelector: '.photo'
       masonry:

@@ -20,6 +20,8 @@ class CompletelyChangeQuestion < ActiveRecord::Migration
       t.integer  :min_responses
       t.integer  :max_responses
       t.integer  :max_stars
+
+      t.timestamps
     end
 
     add_index :questions, :user_id
@@ -43,6 +45,8 @@ class CompletelyChangeQuestion < ActiveRecord::Migration
       t.boolean  :hidden,        default: false
       t.boolean  :special_case,  default: false
       t.boolean  :sponsored,     default: false
+
+      t.timestamps
     end
 
     add_index :questions, :category_id

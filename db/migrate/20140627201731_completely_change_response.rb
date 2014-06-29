@@ -13,6 +13,8 @@ class CompletelyChangeResponse < ActiveRecord::Migration
       t.integer  :stars
       t.float    :percent
       t.integer  :position
+
+      t.timestamps
     end
 
     add_index :responses, :choice_id
@@ -30,6 +32,8 @@ class CompletelyChangeResponse < ActiveRecord::Migration
       t.integer  :choice_id
       t.integer  :answer_id
       t.integer  :slider
+
+      t.timestamps
     end
 
     add_index :responses, :answer_id
@@ -40,6 +44,8 @@ class CompletelyChangeResponse < ActiveRecord::Migration
       t.integer  :user_id
       t.integer  :question_id
       t.boolean  :agree
+
+      t.timestamps
     end
 
     add_index :answers, :question_id

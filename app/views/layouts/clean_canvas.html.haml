@@ -1,5 +1,10 @@
 !!!
-%html
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+:plain
+  <!--[if gt IE 9] -->
+%html#pixel-admin.gt-ie8.gt-ie9.not-ie
+  / <![endif]
   %head
     %title= full_title(yield(:title))
 
@@ -12,14 +17,20 @@
 
     = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true
     = javascript_include_tag "application", "data-turbolinks-track" => true
+    :sass
+      #main-wrapper,
+      #content-wrapper
+        padding: 0
 
     /[if lt IE 9]
       <script src="assets/javascripts/ie.min.js"></script>
 
   %body#clean-canvas.pull_top{class: yield(:body_class)}
-    = render 'layouts/clean_canvas/header'
-    - flash.each do |key, value|
-      = content_tag(:div, value, class: "alert alert-#{key}")
-    = yield
-    = render 'layouts/clean_canvas/footer'
-    = debug(params) if Rails.env.development?
+    #main-wrapper
+      #content-wrapper
+        = render 'layouts/clean_canvas/header'
+        - flash.each do |key, value|
+          = content_tag(:div, value, class: "alert alert-#{key}")
+        = yield
+        = render 'layouts/clean_canvas/footer'
+        = debug(params) if Rails.env.development?

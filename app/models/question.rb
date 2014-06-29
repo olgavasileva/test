@@ -9,7 +9,9 @@ class Question < ActiveRecord::Base
 	validates :user, presence: true
 	validates :category, presence: true
 	validates :title, presence: true
-  validates :description, presence: true
+
+  mount_uploader :image, CategoryImageUploader
+  mount_uploader :info_image, ImageUploader
 
 	def included_by?(pack)
 		self.inclusions.find_by(pack_id: pack.id)

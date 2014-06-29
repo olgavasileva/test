@@ -26,11 +26,13 @@ gem 'formtastic-bootstrap'
 
 gem 'haml'
 
-gem "simple-navigation"
+gem 'simple-navigation'
+
+gem 'carrierwave'
 
 gem 'grape'             # API Framework
-gem 'grape-swagger'     # API docs" >> Gemfile
-gem 'swagger-ui_rails'  # API docs hosting" >> Gemfile
+gem 'grape-swagger'     # API docs
+gem 'swagger-ui_rails'  # API docs hosting
 
 gem 'hirb'
 gem 'wirble'
@@ -59,7 +61,7 @@ group :test do
   gem 'capybara'
   gem 'factory_girl_rails'
   gem 'faker'
-  gem "spring-commands-rspec"
+  gem 'spring-commands-rspec'
 end
 
 gem 'rails_12factor',         group: :production

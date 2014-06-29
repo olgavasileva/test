@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140627201742) do
+ActiveRecord::Schema.define(version: 20140629211936) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -51,21 +51,27 @@ ActiveRecord::Schema.define(version: 20140627201742) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "category_type"
+    t.string   "image"
+    t.string   "icon"
   end
 
   create_table "choices", force: true do |t|
-    t.integer "question_id"
-    t.string  "title"
-    t.integer "position"
-    t.boolean "rotate"
-    t.boolean "muex"
+    t.integer  "question_id"
+    t.string   "title"
+    t.integer  "position"
+    t.boolean  "rotate"
+    t.boolean  "muex"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "choices", ["question_id"], name: "index_choices_on_question_id"
 
   create_table "choices_responses", force: true do |t|
-    t.integer "multiple_choice_id"
-    t.integer "multiple_choice_response_id"
+    t.integer  "multiple_choice_id"
+    t.integer  "multiple_choice_response_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "comments", force: true do |t|
@@ -128,8 +134,10 @@ ActiveRecord::Schema.define(version: 20140627201742) do
   add_index "microposts", ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at"
 
   create_table "order_choices_responses", force: true do |t|
-    t.integer "order_choice_id"
-    t.integer "order_response_id"
+    t.integer  "order_choice_id"
+    t.integer  "order_response_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "ownerships", force: true do |t|
@@ -174,28 +182,33 @@ ActiveRecord::Schema.define(version: 20140627201742) do
   add_index "partners", ["reset_password_token"], name: "index_partners_on_reset_password_token", unique: true
 
   create_table "percent_choices_responses", force: true do |t|
-    t.integer "percent_choice_id"
-    t.integer "percent_response_id"
+    t.integer  "percent_choice_id"
+    t.integer  "percent_response_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "questions", force: true do |t|
-    t.integer "user_id"
-    t.integer "category_id"
-    t.string  "title"
-    t.string  "description"
-    t.boolean "rotate"
-    t.string  "type"
-    t.integer "position"
-    t.boolean "show_question_results"
-    t.integer "weight"
-    t.string  "image"
-    t.string  "html"
-    t.string  "text_type"
-    t.integer "min_characters"
-    t.integer "max_characters"
-    t.integer "min_responses"
-    t.integer "max_responses"
-    t.integer "max_stars"
+    t.integer  "user_id"
+    t.integer  "category_id"
+    t.string   "title"
+    t.string   "description"
+    t.boolean  "rotate"
+    t.string   "type"
+    t.integer  "position"
+    t.boolean  "show_question_results"
+    t.integer  "weight"
+    t.string   "image"
+    t.string   "html"
+    t.string   "text_type"
+    t.integer  "min_characters"
+    t.integer  "max_characters"
+    t.integer  "min_responses"
+    t.integer  "max_responses"
+    t.integer  "max_stars"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "info_image"
   end
 
   add_index "questions", ["category_id"], name: "index_questions_on_category_id"
@@ -213,15 +226,17 @@ ActiveRecord::Schema.define(version: 20140627201742) do
   add_index "relationships", ["follower_id"], name: "index_relationships_on_follower_id"
 
   create_table "responses", force: true do |t|
-    t.string  "type"
-    t.integer "user_id"
-    t.integer "question_id"
-    t.string  "image"
-    t.string  "text"
-    t.integer "choice_id"
-    t.integer "stars"
-    t.float   "percent"
-    t.integer "position"
+    t.string   "type"
+    t.integer  "user_id"
+    t.integer  "question_id"
+    t.string   "image"
+    t.string   "text"
+    t.integer  "choice_id"
+    t.integer  "stars"
+    t.float    "percent"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "responses", ["choice_id"], name: "index_responses_on_choice_id"
@@ -253,8 +268,10 @@ ActiveRecord::Schema.define(version: 20140627201742) do
   add_index "sharings", ["sender_id"], name: "index_sharings_on_sender_id"
 
   create_table "star_choices_responses", force: true do |t|
-    t.integer "star_choice_id"
-    t.integer "star_response_id"
+    t.integer  "star_choice_id"
+    t.integer  "star_response_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|
