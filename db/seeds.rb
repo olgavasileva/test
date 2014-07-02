@@ -36,11 +36,10 @@ q.choices.where(title:"Up to $1,000").first_or_create!
 q.choices.where(title:"Over $1,000").first_or_create!
 
 q = ChoiceQuestion.where(title:"Who’s coffee do you prefer?").first_or_create!(rotate:true,category:values,user:user)
-q.choices.where(title:"Starbucks").first_or_create!
-q.choices.where(title:"Einstein's").first_or_create!
-q.choices.where(title:"Seattle's Best").first_or_create!
-q.choices.where(title:"Dunkin Donuts").first_or_create!
-q.choices.where(title:"Hava Java").first_or_create!
+q.choices.where(title:"Starbucks").first_or_create!(image:open(seed_image("starbucks.jpg")))
+q.choices.where(title:"Einstein's").first_or_create!(image:open(seed_image("einstein.jpg")))
+q.choices.where(title:"Seattle's Best").first_or_create!(image:open(seed_image("seattles-best.jpg")))
+q.choices.where(title:"Dunkin Donuts").first_or_create!(image:open(seed_image("dunkin.jpg")))
 
 q = ChoiceQuestion.where(title:"How would you split up a $50 million lottery prize?").first_or_create!(rotate:true,category:business,user:user)
 q.choices.where(title:"Give it all to charity.").first_or_create!

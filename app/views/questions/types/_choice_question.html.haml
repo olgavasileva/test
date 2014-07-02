@@ -3,4 +3,5 @@
     .choice
       = radio_button_tag :choice, choice.id
       = label_tag "choice_#{choice.id}", choice.title
+      = image_tag choice.image.url if choice.image
   = f.submit "Submit"
