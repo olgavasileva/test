@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
 
+  before_action :find_recent_questions
+
   # Apply strong_parameters filtering before CanCan authorization
   # See https://github.com/ryanb/cancan/issues/571#issuecomment-10753675
   before_action do
@@ -50,5 +52,9 @@ class ApplicationController < ActionController::Base
           "pixel_admin"
         end
       end || "clean_canvas"
+    end
+
+    def find_recent_questions
+      @recent_questions ||= Question.order("created_at DESC").limit(2)
     end
 end

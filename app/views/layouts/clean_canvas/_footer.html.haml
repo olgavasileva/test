@@ -3,13 +3,18 @@
     .row
       .recent-questions.col-md-4
         %h2 Recent Questions
-        - @canned_recent_questions.each do |q|
+        - @recent_questions.each do |q|
           .row
-            .col-md-2.thumb= image_tag q[:image_url]
-            .col-md-10 
-              .date= q[:date].strftime("%a, %d %b")
-              .title= q[:title]
-              %br
+            - modal_id = "footer-modal-#{q.id}"
+            .modal.fade.modal-blur{id:modal_id, role: :dialog, style: "display: none;", tabindex: "-1"}
+              .modal-dialog.modal-sm
+                .modal-content
+            = link_to question_path(q), "data-toggle" => "modal", "data-target" => "##{modal_id}", role: :dialog, "data-id" => q.id, class: :mask, id: :open do
+              .col-md-2.thumb= image_tag q.category.icon.url
+              .col-md-10
+                .date= q.created_at.strftime("%a, %d %b")
+                .title= q.title
+                %br
       .col-md-4
         %h2 Contact
         #inquiry= render "inquiries/form"
