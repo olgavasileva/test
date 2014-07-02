@@ -1,0 +1,28 @@
+#undertop.container
+  #portfolio
+    .container
+      .row
+        .col-md-12
+          #filters_container
+            %ul#filters
+              %li
+                %a.active{"data-filter" => "*", :href => "#"} All
+              - @categories.each do |category|
+                %li.separator /
+                %li
+                  %a{"data-filter" => ".#{category.name.parameterize.underscore.to_sym}", :href => "#"}= category.name
+      .row
+        .col-md-12
+          #gallery_container
+            - @questions.each do |question|
+              - modal_id = "modal-#{question.id}"
+              .modal.fade.modal-blur{id:modal_id, role: :dialog, style: "display: none;", tabindex: "-1"}
+                .modal-dialog.modal-sm
+                  .modal-content
+
+              .photo{class: question.category.name.parameterize.underscore.to_sym}
+                = image_tag question.image_url || question.category.image_url, class: "img-responsive"
+                = link_to question_path(question), "data-toggle" => "modal", "data-target" => "##{modal_id}", role: :dialog, "data-id" => question.id, id: :open, class: :mask do
+                  %h3=question.title
+                  %small=question.category.name
+                  .more +

@@ -5,9 +5,10 @@ LinkchatApp::Application.routes.draw do
 
   ActiveAdmin.routes(self)
 
-  root 'pages#home'
+  root 'questions#index'
   get '/test' => 'pages#test' if Rails.env.development?
 
+  resources :questions
   resources :inquiries
 
   mount TwoCents::API =>'/'
