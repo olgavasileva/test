@@ -59,7 +59,7 @@ LinkchatApp::Application.configure do
 
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-  # config.assets.precompile += %w( search.js )
+  config.assets.precompile += %w( docs.js docs.css )
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -76,7 +76,7 @@ LinkchatApp::Application.configure do
   # config.autoflush_log = false
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new  
-  
+  config.log_formatter = ::Logger::Formatter.new
+
   config.action_mailer.default_url_options = { host: 'crashmob.com' }
 end
