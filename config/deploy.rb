@@ -33,7 +33,7 @@ set :deploy_to, "/app/#{fetch :application}"
 set :linked_files, %w{config/database.yml config/application.yml db/production.sqlite3}
 
 # Default value for linked_dirs is []
-set :linked_dirs, %w{log tmp/pids}
+set :linked_dirs, %w{log tmp/pids public/uploads}
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
