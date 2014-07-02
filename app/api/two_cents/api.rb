@@ -40,5 +40,5 @@ class TwoCents::API < Grape::API
 
   mount Users
 
-  add_swagger_documentation api_version:'2.0', mount_path: "/docs", markdown:true unless Rails.env.production?
+  add_swagger_documentation api_version:'2.0', mount_path: "/docs", markdown:true
 end
