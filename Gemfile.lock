@@ -15,6 +15,15 @@ GIT
       ransack (~> 1.0)
       sass-rails
 
+GIT
+  remote: git://github.com/plataformatec/simple_form.git
+  revision: 01ccfcebd45b8de0a6846d0f33b9daf74673dcc1
+  branch: master
+  specs:
+    simple_form (3.1.0.rc1)
+      actionpack (~> 4.0)
+      activemodel (~> 4.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -127,8 +136,6 @@ GEM
     ffi (1.9.3)
     formtastic (2.3.0.rc3)
       actionpack (>= 3.0)
-    formtastic-bootstrap (3.0.0)
-      formtastic (>= 2.2)
     grape (0.7.0)
       activesupport
       builder
@@ -338,8 +345,6 @@ DEPENDENCIES
   devise
   factory_girl_rails
   faker
-  formtastic
-  formtastic-bootstrap
   grape
   grape-swagger
   haml
@@ -358,6 +363,7 @@ DEPENDENCIES
   sdoc
   selenium-webdriver
   simple-navigation
+  simple_form (~> 3.1.0.rc1)!
   spring
   spring-commands-rspec
   sqlite3
