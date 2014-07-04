@@ -18,7 +18,9 @@ gem 'jquery-ui-rails'
 gem 'activeadmin', github: 'gregbell/active_admin'
 gem 'devise'
 gem 'rolify'
-gem 'cancan'
+gem 'pundit',           # simple, robust and scaleable authorization system
+  git:"https://github.com/elabs/pundit.git",
+  ref:"509be500c36c4a665b2cb88ed188fc36ee41bdf8"
 
 gem 'simple_form', '~> 3.1.0.rc1', github: 'plataformatec/simple_form', branch: 'master'
 
@@ -47,8 +49,8 @@ end
 
 group :development, :test do
   gem 'pry'
-  gem 'pry-nav'
-  gem 'pry-rails'
+  gem 'pry-debugger'                # Allow stepping and breakpoints in pry console
+  gem 'pry-rails'                   # Use pry in the console
   gem 'spring'
 end
 

@@ -9,6 +9,10 @@ LinkchatApp::Application.routes.draw do
   get '/test' => 'pages#test' if Rails.env.development?
 
   resources :questions
+  resources :responses
+  namespace :responses do
+    resources :choice_responses
+  end
   resources :inquiries
 
   mount TwoCents::API =>'/'

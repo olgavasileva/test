@@ -5,4 +5,4 @@
 .modal-body
   - case @question.type
   - when "ChoiceQuestion"
-    = render "questions/types/choice_question", question:@question
+    = render "responses/choice_response", response:@response

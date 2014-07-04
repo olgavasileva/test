@@ -1,0 +1,11 @@
+= simple_form_for [:responses, response] do |f|
+  = f.association :question, as: :hidden
+  = f.association :user, as: :hidden
+  = f.input :type, as: :hidden
+  = f.association :choice, collection: response.question.choices
+  / - response.question.choices.each do |choice|
+  /   .choice
+  /     = radio_button_tag :choice, choice.id
+  /     = label_tag "choice_#{choice.id}", choice.title
+  /     = image_tag choice.image.url if choice.image
+  = f.submit "Submit"

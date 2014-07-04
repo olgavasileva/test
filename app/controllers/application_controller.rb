@@ -1,16 +1,16 @@
 class ApplicationController < ActionController::Base
+  include Pundit
+
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
 
   before_action :find_recent_questions
 
-  # Apply strong_parameters filtering before CanCan authorization
-  # See https://github.com/ryanb/cancan/issues/571#issuecomment-10753675
-  before_action do
-    resource = controller_path.singularize.gsub('/', '_').to_sym
-    method = "#{resource}_params"
-    params[resource] &&= send(method) if respond_to?(method, true)
-  end
+  # Verify that controller actions are authorized. Optional, but good.
+  after_action :verify_authorized,  except: :index
+  after_action :verify_policy_scoped, only: :index
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -42,6 +42,11 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+    def user_not_authorized
+      flash[:error] = "You are not authorized to perform this action."
+      redirect_to request.headers["Referer"] || root_path
+    end
 
     def layout_by_resource
       if devise_controller?

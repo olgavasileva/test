@@ -1,10 +1,10 @@
 class User < ActiveRecord::Base
   rolify
-  
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, 
+         :recoverable, :rememberable, :trackable, :validatable,
          authentication_keys:[:login], reset_password_keys:[:login]
 
   # Allow user to log in using username OR email in the 'login' text area
@@ -41,11 +41,11 @@ class User < ActiveRecord::Base
 	has_many :reverse_sharings, foreign_key: "receiver_id", class_name: "Sharing", dependent: :destroy
 
 	before_create :create_remember_token
-	
+
 	VALID_USERNAME_REGEX ||= /\A[a-z0-9\-_]{4,50}\z/i
-	validates :username, presence: true, 
+	validates :username, presence: true,
 						format: { with: VALID_USERNAME_REGEX },
-						length: { maximum: 50 }, 
+						length: { maximum: 50 },
 						uniqueness: { case_sensitive: false }
 	validates :name, presence: true, length: { maximum: 50 }
 	validates :terms_and_conditions, acceptance: true

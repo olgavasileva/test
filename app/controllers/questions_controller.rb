@@ -1,18 +1,16 @@
 class QuestionsController < ApplicationController
-  load_and_authorize_resource
-
   layout "clean_canvas"
 
   def index
+    @questions = policy_scope Question
     @categories = Category.where(id:@questions.group(:category_id).map{|question| question.category_id}).order(:name)
-    @questions = @questions.order("created_at DESC")
   end
 
   def show
+    @question = Question.find params[:id]
+    authorize @question
+
+    @response = @question.responses.new user:current_user
     render layout:false
   end
-
-  def update
-  end
-
 end
