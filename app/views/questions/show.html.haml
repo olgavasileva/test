@@ -1,7 +1,7 @@
 .modal-header
   %button.close{"data-dismiss" => "modal", type: "button"} ×
-  %h4.modal-title=@question.category.name
-  %h6.modal-title=@question.title
+  %h6.modal-title=@question.category.name
+  %h4.modal-title=@question.title
 .modal-body
   - case @question.type
   - when "ChoiceQuestion"

@@ -28,7 +28,9 @@ gem 'haml'
 
 gem 'simple-navigation'
 
-gem 'carrierwave'
+gem 'carrierwave'       # Image uploading and access
+gem 'rmagick',          # Image manipulation
+  require: false
 
 gem 'grape'             # API Framework
 gem 'grape-swagger'     # API docs

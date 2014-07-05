@@ -26,3 +26,6 @@ doc/
 .rspec
 .rvmrc
 .sass-cache
+
+# Ignore uploaded files
+public/uploads

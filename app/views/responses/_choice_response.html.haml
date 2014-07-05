@@ -2,10 +2,11 @@
   = f.association :question, as: :hidden
   = f.association :user, as: :hidden
   = f.input :type, as: :hidden
-  = f.association :choice, collection: response.question.choices
-  / - response.question.choices.each do |choice|
-  /   .choice
-  /     = radio_button_tag :choice, choice.id
-  /     = label_tag "choice_#{choice.id}", choice.title
-  /     = image_tag choice.image.url if choice.image
+  - n = 1
+  = f.collection_radio_buttons :choice, response.question.choices, :id, :title do |c|
+    = c.label do
+      .title= c.object.title
+      .image= image_tag(c.object.image.thumb.url || image_path("fallback/choice#{n}.png"))
+      = c.radio_button
+    - n += 1
   = f.submit "Submit"
