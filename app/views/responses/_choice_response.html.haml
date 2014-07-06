@@ -3,7 +3,7 @@
   = f.association :user, as: :hidden
   = f.input :type, as: :hidden
   - n = 1
-  = f.collection_radio_buttons :choice, response.question.choices, :id, :title do |c|
+  = f.collection_radio_buttons :choice_id, response.question.choices, :id, :title do |c|
     = c.label do
       .title= c.object.title
       = c.radio_button
