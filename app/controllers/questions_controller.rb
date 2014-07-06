@@ -11,6 +11,8 @@ class QuestionsController < ApplicationController
     authorize @question
 
     @response = @question.responses.new user:current_user
-    render layout:false
+
+    # Skip the layout if this is an AJAX request
+    render layout:false if request.xhr?
   end
 end

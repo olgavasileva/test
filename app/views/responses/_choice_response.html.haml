@@ -6,7 +6,10 @@
   = f.collection_radio_buttons :choice, response.question.choices, :id, :title do |c|
     = c.label do
       .title= c.object.title
-      .image= image_tag(c.object.image.thumb.url || image_path("fallback/choice#{n}.png"))
       = c.radio_button
+      .indicators
+        .checkmark
+          .glyphicon.glyphicon-ok-circle
+        = image_tag(c.object.image.thumb.url || image_path("fallback/choice#{n}.png"))
     - n += 1
   = f.submit "Submit"
