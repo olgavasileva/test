@@ -3,6 +3,8 @@ class TwoCents::API < Grape::API
   version '2.0', using: :path
 
   helpers do
+    include Pundit
+
     def declared_params
       declared(params, include_missing: false)
     end
@@ -39,6 +41,7 @@ class TwoCents::API < Grape::API
   end
 
   mount Users
+  mount Questions
 
   add_swagger_documentation api_version:'2.0', mount_path: "/docs", markdown:true
 end

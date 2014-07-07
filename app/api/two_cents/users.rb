@@ -47,16 +47,15 @@ class TwoCents::Users < Grape::API
 
     desc 'Log in a user'
     params do
-      optional :id, type: Integer
       requires :username, type: String, regexp:User::VALID_USERNAME_REGEX
       requires :password, type: String
       requires :udid, type: String
       requires :device_type, type: String
       requires :os_version, type: String
     end
-    post ':id/login' do
+    post 'login' do
       user = User.find_by(username: declared_params[:username].downcase)
-      fail! 403, "forbidden: invalid username and password combination, access denied" unless user && user.authenticate(params[:user][:password])
+      fail! 403, "forbidden: invalid username and password combination, access denied" unless user && user.valid_password?(declared_params[:password])
       device = Device.find_by(udid: declared_params[:udid]) || Device.create!(declared_params.slice(:udid, :device_type, :os_version))
       device.update_attributes! declared_params.slice(:device_type, :os_version)
       ownership = Ownership.find_by(device_id: device.id, user_id: user.id)
