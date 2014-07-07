@@ -1,3 +1,3 @@
-class DocsController < ApplicationController
+class DocsController < ActionController::Base
   layout "docs"
 end
