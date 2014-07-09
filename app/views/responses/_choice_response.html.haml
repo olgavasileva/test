@@ -10,6 +10,6 @@
       .indicators
         .checkmark
           .glyphicon.glyphicon-ok-circle
-        = image_tag(c.object.image.thumb.url || image_path("fallback/choice#{n}.png"))
+        = responsive_image_tag(c.object.image.web.url || image_path("fallback/choice#{n}.png"))
     - n += 1
   = f.submit "Submit"

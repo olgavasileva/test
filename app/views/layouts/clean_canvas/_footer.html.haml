@@ -10,7 +10,7 @@
               .modal-dialog.modal-sm
                 .modal-content
             = link_to question_path(q), "data-toggle" => "modal", "data-target" => "##{modal_id}", role: :dialog, "data-id" => q.id, class: :mask, id: :open do
-              .col-md-2.thumb= image_tag q.category.icon.url
+              .col-md-2.thumb= image_tag q.category.icon.web.url
               .col-md-10
                 .date= q.created_at.strftime("%a, %d %b")
                 .title= q.title

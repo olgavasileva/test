@@ -19,3 +19,12 @@
 # Other
 #
 
+#= require hisrc
+#= require_self
+
+#
+# hisrc (retina support)
+#
+
+$ ->
+  $('img').hisrc(srcIsLowResolution:false, forcedBandwidth:'high')

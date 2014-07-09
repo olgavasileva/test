@@ -33,6 +33,7 @@ gem 'rmagick',          # Image manipulation
   require: false
 
 gem 'grape'             # API Framework
+gem 'grape-rabl'        # rabl for Grape rendering
 gem 'grape-swagger'     # API docs
 gem 'swagger-ui_rails'  # API docs hosting
 

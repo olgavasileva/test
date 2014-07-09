@@ -6,5 +6,5 @@ class Choice < ActiveRecord::Base
   validates :title, presence: true
   validates :rotate, inclusion:{in:[true,false], allow_nil:true}
 
-  mount_uploader :image, ChoiceImageUploader
+  mount_uploader :image, QuestionImageUploader
 end
