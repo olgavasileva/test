@@ -9,8 +9,7 @@ class QuestionPolicy < ApplicationPolicy
 
     def resolve
       if user
-        # TODO only show questions that user hasn't answered
-        Question.order("created_at DESC")
+        user.unanswered_questions.order("created_at DESC")
       else
         Question.order("created_at DESC")
       end

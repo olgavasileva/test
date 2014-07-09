@@ -18,8 +18,13 @@ class Question < ActiveRecord::Base
 	end
 
 	def self.answered_by_user(user)
-		answered_question_ids = "SELECT question_id FROM answers WHERE user_id = :user_id"
+		answered_question_ids = "SELECT question_id FROM responses WHERE user_id = :user_id"
 		where("id IN (#{answered_question_ids})", user_id: user)
+	end
+
+	def self.unanswered_by_user user
+		answered_question_ids = "SELECT question_id FROM responses WHERE user_id = :user_id"
+		where("id NOT IN (#{answered_question_ids})", user_id: user)
 	end
 
 	def as_json(options={})

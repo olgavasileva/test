@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          authentication_keys:[:login], reset_password_keys:[:login]
 
+  has_many :unanswered_questions, class_name: "Question"
+
   # Allow user to log in using username OR email in the 'login' text area
 	# https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
   def self.find_first_by_auth_conditions(warden_conditions)
@@ -98,8 +100,12 @@ class User < ActiveRecord::Base
 		self.friendships.find_by(friend_id: other_user.id).destroy!
 	end
 
+	def unanswered_questions
+		Question.unanswered_by_user self
+	end
+
 	def answered_questions
-		Question.answered_by_user(self)
+		Question.answered_by_user self
 	end
 
 	def as_json(options={})

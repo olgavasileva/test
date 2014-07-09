@@ -11,10 +11,10 @@ class TwoCents::API < Grape::API
 
     def authorized_user!
       device = Device.find_by udid: declared_params[:udid]
-      fail! 403, "forbidden: unregistered device, access denied" unless device
+      fail! 1003, "Forbidden: unregistered device, access denied" unless device
 
       ownership = Ownership.find_by(device_id: device.id, remember_token: declared_params[:remember_token])
-      fail! 403, "forbidden: invalid session, access denied" unless ownership
+      fail! 1004, "Forbidden: invalid session, access denied" unless ownership
 
       User.find_by(id: ownership.user_id)
     end
