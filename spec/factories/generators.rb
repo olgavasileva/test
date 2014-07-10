@@ -37,10 +37,6 @@ FactoryGirl.define do
     "Description #{n}"
   end
 
-  sequence :scene_data do |n|
-    "Not sure what goes here #{n}"
-  end
-
   sequence :image do |n|
     fixture_file_upload File.join("spec","factories","fixtures","images","Example.jpg")
   end

@@ -1,6 +1,9 @@
 class TwoCents::API < Grape::API
   prefix 'v'
   version '2.0', using: :path
+  format :json
+  formatter :json, Grape::Formatter::Rabl
+  default_format :json
 
   helpers do
     include Pundit
@@ -9,38 +12,41 @@ class TwoCents::API < Grape::API
       declared(params, include_missing: false)
     end
 
-    def authorized_user!
-      device = Device.find_by udid: declared_params[:udid]
-      fail! 1003, "Forbidden: unregistered device, access denied" unless device
-
-      ownership = Ownership.find_by(device_id: device.id, remember_token: declared_params[:remember_token])
-      fail! 1004, "Forbidden: invalid session, access denied" unless ownership
-
-      User.find_by(id: ownership.user_id)
+    def app_version_compatible? app_version
+      true
     end
 
     def current_user
-      @current_user ||= authorized_user!
+      @current_user ||= begin
+        @instance = Instance.find_by auth_token:params[:auth_token]
+        fail! 402, "Invalid auth token" unless @instance
+        @instance.user
+      end
+    end
+
+    def validate_user!
+      fail! 403, "Login required" unless current_user
     end
 
     def fail! code, message
-      error!({error_code:code, error:message}, 401)
+      error!({error_message:message, error_code:code}, 200)
     end
   end
 
   rescue_from Grape::Exceptions::ValidationErrors do |e|
-    Rack::Response.new({error_code: 1000, error_message: e.message}.to_json, 400).finish
+    Rack::Response.new({error_code: 400, error_message: e.message}.to_json, 200).finish
   end
 
   rescue_from ActiveRecord::RecordNotFound do |e|
-    Rack::Response.new({error_code: 1001, error_message: e.message}.to_json, 404).finish
+    Rack::Response.new({error_code: 401, error_message: e.message}.to_json, 200).finish
   end
 
   rescue_from :all do |e|
-    Rack::Response.new({error_code: 1002, error_message: e.message}.to_json, 500).finish
+    Rack::Response.new({error_code: 500, error_message: e.message}.to_json, 200).finish
   end
 
-  mount Users
+  mount Auth
+  # mount Users
   mount Questions
   mount Categories
 

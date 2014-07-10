@@ -29,8 +29,9 @@ class User < ActiveRecord::Base
 	has_many :followed_users, through: :relationships, source: :followed
 	has_many :reverse_relationships, foreign_key: "followed_id", class_name: "Relationship", dependent: :destroy
 	has_many :followers, through: :reverse_relationships, source: :follower
-	has_many :ownerships, dependent: :destroy
-	has_many :devices, through: :ownerships
+	has_many :instances, dependent: :destroy
+	has_many :authentications, dependent: :destroy
+	has_many :devices, through: :instances
 	has_many :questions, dependent: :destroy
 	has_many :answers, dependent: :destroy
 	has_many :packs, dependent: :destroy
@@ -74,18 +75,6 @@ class User < ActiveRecord::Base
 
 	def unfollow!(other_user)
 		self.relationships.find_by(followed_id: other_user.id).destroy!
-	end
-
-	def own!(device)
-		self.ownerships.create!(device_id: device.id)
-	end
-
-	def disown!(device)
-		self.ownerships.find_by(device_id: device.id).destroy!
-	end
-
-	def owner_of?(device)
-		self.ownerships.find_by(device_id: device.id)
 	end
 
 	def friends_with?(other_user)

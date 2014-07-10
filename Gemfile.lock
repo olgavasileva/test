@@ -16,6 +16,21 @@ GIT
       sass-rails
 
 GIT
+  remote: git://github.com/intridea/grape.git
+  revision: 2099c3a050df454c9181b775657fec544b97fe1a
+  specs:
+    grape (0.7.1)
+      activesupport
+      builder
+      hashie (>= 2.1.0)
+      multi_json (>= 1.3.2)
+      multi_xml (>= 0.5.2)
+      rack (>= 1.3.0)
+      rack-accept
+      rack-mount
+      virtus (>= 1.0.0)
+
+GIT
   remote: git://github.com/plataformatec/simple_form.git
   revision: 01ccfcebd45b8de0a6846d0f33b9daf74673dcc1
   branch: master
@@ -148,18 +163,11 @@ GEM
     faker (1.3.0)
       i18n (~> 0.5)
     ffi (1.9.3)
+    figaro (0.7.0)
+      bundler (~> 1.0)
+      rails (>= 3, < 5)
     formtastic (2.3.0.rc3)
       actionpack (>= 3.0)
-    grape (0.7.0)
-      activesupport
-      builder
-      hashie (>= 1.2.0)
-      multi_json (>= 1.3.2)
-      multi_xml (>= 0.5.2)
-      rack (>= 1.3.0)
-      rack-accept
-      rack-mount
-      virtus (>= 1.0.0)
     grape-entity (0.4.3)
       activesupport
       multi_json (>= 1.3.2)
@@ -177,7 +185,7 @@ GEM
     has_scope (0.6.0.rc)
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
-    hashie (3.0.0)
+    hashie (3.1.0)
     hike (1.2.3)
     hirb (0.7.2)
     i18n (0.6.9)
@@ -198,6 +206,8 @@ GEM
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     kramdown (1.4.0)
+    macaddr (1.6.7)
+      systemu (~> 2.6.2)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -319,6 +329,7 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     swagger-ui_rails (0.1.7)
+    systemu (2.6.4)
     thin (1.6.2)
       daemons (>= 1.0.9)
       eventmachine (>= 1.0.0)
@@ -336,6 +347,8 @@ GEM
     uglifier (2.5.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    uuid (2.3.7)
+      macaddr (~> 1.0)
     virtus (1.0.2)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
@@ -367,7 +380,8 @@ DEPENDENCIES
   devise
   factory_girl_rails
   faker
-  grape
+  figaro
+  grape!
   grape-rabl
   grape-swagger
   haml
@@ -396,5 +410,6 @@ DEPENDENCIES
   thin
   turbolinks
   uglifier (>= 1.3.0)
+  uuid
   will_paginate
   wirble

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140702143027) do
+ActiveRecord::Schema.define(version: 20140710003909) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -46,6 +46,18 @@ ActiveRecord::Schema.define(version: 20140702143027) do
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
 
+  create_table "authentications", force: true do |t|
+    t.integer  "user_id"
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "token"
+    t.string   "token_secret"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "authentications", ["user_id"], name: "index_authentications_on_user_id"
+
   create_table "categories", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -56,23 +68,19 @@ ActiveRecord::Schema.define(version: 20140702143027) do
   end
 
   create_table "choices", force: true do |t|
-    t.integer  "question_id"
-    t.string   "title"
-    t.integer  "position"
-    t.boolean  "rotate"
-    t.boolean  "muex"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "image"
+    t.integer "question_id"
+    t.string  "title"
+    t.integer "position"
+    t.boolean "rotate"
+    t.boolean "muex"
+    t.string  "image"
   end
 
   add_index "choices", ["question_id"], name: "index_choices_on_question_id"
 
   create_table "choices_responses", force: true do |t|
-    t.integer  "multiple_choice_id"
-    t.integer  "multiple_choice_response_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "multiple_choice_id"
+    t.integer "multiple_choice_response_id"
   end
 
   create_table "comments", force: true do |t|
@@ -87,11 +95,13 @@ ActiveRecord::Schema.define(version: 20140702143027) do
   add_index "comments", ["user_id"], name: "index_comments_on_user_id"
 
   create_table "devices", force: true do |t|
-    t.string   "udid"
-    t.string   "device_type"
+    t.string   "device_vendor_identifier"
+    t.string   "platform"
     t.string   "os_version"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "manufacturer"
+    t.string   "model"
   end
 
   create_table "friendships", force: true do |t|
@@ -125,6 +135,23 @@ ActiveRecord::Schema.define(version: 20140702143027) do
     t.datetime "updated_at"
   end
 
+  create_table "instances", force: true do |t|
+    t.string   "uuid"
+    t.integer  "device_id"
+    t.integer  "user_id"
+    t.string   "push_app_name"
+    t.string   "push_environment"
+    t.string   "push_token"
+    t.integer  "launch_count"
+    t.string   "auth_token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "app_version"
+  end
+
+  add_index "instances", ["device_id"], name: "index_instances_on_device_id"
+  add_index "instances", ["user_id"], name: "index_instances_on_user_id"
+
   create_table "microposts", force: true do |t|
     t.string   "content"
     t.integer  "user_id"
@@ -135,24 +162,9 @@ ActiveRecord::Schema.define(version: 20140702143027) do
   add_index "microposts", ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at"
 
   create_table "order_choices_responses", force: true do |t|
-    t.integer  "order_choice_id"
-    t.integer  "order_response_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "order_choice_id"
+    t.integer "order_response_id"
   end
-
-  create_table "ownerships", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "device_id"
-    t.string   "remember_token"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "ownerships", ["device_id"], name: "index_ownerships_on_device_id"
-  add_index "ownerships", ["remember_token"], name: "index_ownerships_on_remember_token"
-  add_index "ownerships", ["user_id", "device_id"], name: "index_ownerships_on_user_id_and_device_id", unique: true
-  add_index "ownerships", ["user_id"], name: "index_ownerships_on_user_id"
 
   create_table "packs", force: true do |t|
     t.string   "title"
@@ -183,33 +195,29 @@ ActiveRecord::Schema.define(version: 20140702143027) do
   add_index "partners", ["reset_password_token"], name: "index_partners_on_reset_password_token", unique: true
 
   create_table "percent_choices_responses", force: true do |t|
-    t.integer  "percent_choice_id"
-    t.integer  "percent_response_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "percent_choice_id"
+    t.integer "percent_response_id"
   end
 
   create_table "questions", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "category_id"
-    t.string   "title"
-    t.string   "description"
-    t.boolean  "rotate"
-    t.string   "type"
-    t.integer  "position"
-    t.boolean  "show_question_results"
-    t.integer  "weight"
-    t.string   "image"
-    t.string   "html"
-    t.string   "text_type"
-    t.integer  "min_characters"
-    t.integer  "max_characters"
-    t.integer  "min_responses"
-    t.integer  "max_responses"
-    t.integer  "max_stars"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "info_image"
+    t.integer "user_id"
+    t.integer "category_id"
+    t.string  "title"
+    t.string  "description"
+    t.boolean "rotate"
+    t.string  "type"
+    t.integer "position"
+    t.boolean "show_question_results"
+    t.integer "weight"
+    t.string  "image"
+    t.string  "html"
+    t.string  "text_type"
+    t.integer "min_characters"
+    t.integer "max_characters"
+    t.integer "min_responses"
+    t.integer "max_responses"
+    t.integer "max_stars"
+    t.string  "info_image"
   end
 
   add_index "questions", ["category_id"], name: "index_questions_on_category_id"
@@ -227,17 +235,15 @@ ActiveRecord::Schema.define(version: 20140702143027) do
   add_index "relationships", ["follower_id"], name: "index_relationships_on_follower_id"
 
   create_table "responses", force: true do |t|
-    t.string   "type"
-    t.integer  "user_id"
-    t.integer  "question_id"
-    t.string   "image"
-    t.string   "text"
-    t.integer  "choice_id"
-    t.integer  "stars"
-    t.float    "percent"
-    t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string  "type"
+    t.integer "user_id"
+    t.integer "question_id"
+    t.string  "image"
+    t.string  "text"
+    t.integer "choice_id"
+    t.integer "stars"
+    t.float   "percent"
+    t.integer "position"
   end
 
   add_index "responses", ["choice_id"], name: "index_responses_on_choice_id"
@@ -269,10 +275,8 @@ ActiveRecord::Schema.define(version: 20140702143027) do
   add_index "sharings", ["sender_id"], name: "index_sharings_on_sender_id"
 
   create_table "star_choices_responses", force: true do |t|
-    t.integer  "star_choice_id"
-    t.integer  "star_response_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "star_choice_id"
+    t.integer "star_response_id"
   end
 
   create_table "users", force: true do |t|

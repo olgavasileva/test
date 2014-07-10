@@ -2,7 +2,7 @@
 
 #
 # Base CarrierWave uploader for generating web and device files of standard and @2x sizes.
-# Inherit from this class and call responsive_version with a version name and 1x_size
+# Inherit from this class and call responsive_version with a version name and standard_size (1x size)
 
 class RetinaImageUploader < CarrierWave::Uploader::Base
 
@@ -10,14 +10,13 @@ class RetinaImageUploader < CarrierWave::Uploader::Base
 
   # This generates 2 versiosn for the given name - e.g. :web and :retina_web
   # Use these with responsive_image_tag, which will look for the retina_* version.
-  # The
-  def self.responsive_version name = :web, 1x_size = [310,0]
+  def self.responsive_version name = :web, standard_size = [310,0]
     version name do
-      process resize_to_fit: 1x_size
+      process resize_to_fit: standard_size
     end
 
     version "retina_#{name}" do
-      process resize_to_fit: 1x_size.map{|s| s*2}
+      process resize_to_fit: standard_size.map{|s| s*2}
 
       # returns @2x for retina version
       def full_filename(for_file)

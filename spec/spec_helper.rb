@@ -44,9 +44,7 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 
-  config.include RSpec::Rails::RequestExampleGroup, type: :request, example_group: {
-    file_path: /spec\/api/
-  }
+  config.include RSpec::Rails::RequestExampleGroup, type: :request, file_path: /spec\/api/
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :truncation

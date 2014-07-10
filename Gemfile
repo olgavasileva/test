@@ -32,10 +32,14 @@ gem 'carrierwave'       # Image uploading and access
 gem 'rmagick',          # Image manipulation
   require: false
 
-gem 'grape'             # API Framework
+gem 'grape',            # API DSL
+  github: 'intridea/grape'
 gem 'grape-rabl'        # rabl for Grape rendering
 gem 'grape-swagger'     # API docs
 gem 'swagger-ui_rails'  # API docs hosting
+
+gem 'uuid'              # UUID generation
+gem 'figaro'            # Supports application.yml and easy defaults override in specs
 
 gem 'hirb'
 gem 'wirble'

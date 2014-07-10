@@ -1,0 +1,4 @@
+# Add application configuration variables here, as shown below.
+#
+api_shared_secret: "SOME BIG UGLY SECRET STRING"
+google_gtm: "Something"
