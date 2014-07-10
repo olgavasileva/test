@@ -13,7 +13,7 @@ gem 'jbuilder'
 gem 'will_paginate'
 
 gem 'bcrypt-ruby'
-gem 'jquery-ui-rails'
+gem 'jquery-ui-rails', '4.2.1'
 
 gem 'activeadmin', github: 'gregbell/active_admin'
 gem 'devise'
