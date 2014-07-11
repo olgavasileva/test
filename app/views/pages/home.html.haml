@@ -3,16 +3,6 @@
     .container
       .row
         .col-md-12
-          #filters_container
-            %ul#filters
-              %li
-                %a.active{"data-filter" => "*", :href => "#"} All
-              - @categories.each do |category|
-                %li.separator /
-                %li
-                  %a{"data-filter" => ".#{category.name.parameterize.underscore.to_sym}", :href => "#"}= category.name
-      .row
-        .col-md-12
           #modal-blurred-bg.modal.fade.modal-blur{role: :dialog, style: "display: none;", tabindex: "-1"}
             .modal-dialog.modal-sm
               .modal-content
