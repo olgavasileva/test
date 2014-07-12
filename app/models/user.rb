@@ -53,6 +53,11 @@ class User < ActiveRecord::Base
 	validates :name, presence: true, length: { maximum: 50 }
 	validates :terms_and_conditions, acceptance: true
 
+  # Enable saving users without a password if they have another authenication scheme
+  def password_required?
+    (authentications.empty? || !password.blank?) && super
+  end
+
  	def User.new_remember_token
 	    SecureRandom.urlsafe_base64
 	end

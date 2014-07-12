@@ -41,6 +41,8 @@ gem 'swagger-ui_rails'  # API docs hosting
 gem 'uuid'              # UUID generation
 gem 'figaro'            # Supports application.yml and easy defaults override in specs
 
+gem 'koala'             # Facebook graph and realtime access (for email, fid, friends, etc.)
+
 gem 'hirb'
 gem 'wirble'
 

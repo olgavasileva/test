@@ -6,60 +6,103 @@ class TwoCents::Questions < Grape::API
 
         #### Example response
             [
-              {
-                "id": 63,
-                "title": "How many years do you think you will live?",
-                "category": {
-                  "id": 16,
-                  "name": "Values",
-                  "image": {
-                    "url": "/uploads/category/image/16/portfolio2.png"
-                  },
-                  "icon": {
-                    "url": "/uploads/category/icon/16/values-icon.png"
-                  }
-                },
-                "choices": [
-                  {
-                    "id": 244,
-                    "question_id": 63,
-                    "title": "A few more",
-                    "position": null,
-                    "rotate": null,
-                    "muex": null,
-                    "image": {
-                      "url": null,
-                      "thumb": {
-                        "url": null
-                      }
+                {
+                    "question": {
+                        "id": 1,
+                        "type": "ChoiceQuestion",
+                        "title": "Choice Title",
+                        "description": "Choice Description",
+                        "rotate": true,
+                        "category": {
+                            "id": 1,
+                            "name": "Category 1"
+                        },
+                        "choices": [
+                            {
+                                "choice": {
+                                    "id": 1,
+                                    "rotate": true,
+                                    "title": "Choice 1"
+                                }
+                            },
+                            {
+                                "choice": {
+                                    "id": 2,
+                                    "rotate": true,
+                                    "title": "Choice 2"
+                                }
+                            },
+                            {
+                                "choice": {
+                                    "id": 3,
+                                    "rotate": false,
+                                    "title": "Choice 3"
+                                }
+                            }
+                        ]
                     }
-                  }
-                ],
-                "user": {
-                  "id": 5,
-                  "username": "crashmob",
-                  "name": "Question Master"
+                },
+                {
+                    "question": {
+                        "id": 2,
+                        "type": "MultipleChoiceQuestion",
+                        "title": "Multiple Choice Title",
+                        "description": "Multiple Choice Description",
+                        "min_responses": 1,
+                        "max_responses": 2,
+                        "rotate": true,
+                        "category": {
+                            "id": 2,
+                            "name": "Category 2"
+                        },
+                        "choices": [
+                            {
+                                "choice": {
+                                    "id": 4,
+                                    "muex": true,
+                                    "rotate": true,
+                                    "title": "Multiple Choice 1"
+                                }
+                            },
+                            {
+                                "choice": {
+                                    "id": 5,
+                                    "muex": false,
+                                    "rotate": true,
+                                    "title": "Multiple Choice 2"
+                                }
+                            },
+                            {
+                                "choice": {
+                                    "id": 6,
+                                    "muex": true,
+                                    "rotate": false,
+                                    "title": "Multiple Choice 3"
+                                }
+                            }
+                        ]
+                    }
                 }
-              }
             ]
+
       END
     }
     params do
-      requires :udid, type: String
-      requires :remember_token, type: String
+      requires :auth_token, type:String, desc:'Obtain this from the instances API'
       optional :page, type: Integer, desc: "Page number, starting at 1 - all questions returned if not supplied"
       optional :per_page, type: Integer, default: 15, desc: "Number of questions per page"
     end
-    post 'feed', http_codes:[
-      [400, "1000 - Invalid params"],
-      [500, "1002 - Server error"],
-      [401, "1003 - Forbidden: unregistered device, access denied"],
-      [401, "1004 - Forbidden: invalid session, access denied"]
+    post 'feed', rabl: "questions", http_codes:[
+      [200, "402 - Invalid auth token"],
+      [200, "400 - Invalid params"]
     ] do
+      validate_user!
+
       page = declared_params[:page]
       per_page = page ? declared_params[:per_page] : nil
       questions = policy_scope(Question)
-      questions.paginate(page:page, per_page:per_page)
+
+      @questions = questions.paginate(page:page, per_page:per_page)
     end
   end
 end

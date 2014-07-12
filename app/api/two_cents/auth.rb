@@ -82,7 +82,7 @@ class TwoCents::Auth < Grape::API
       requires :token, type: String, regexp: /^[0-9A-F]{64}$/i, desc:'e.g. "0000000000000000000000000000000000000000000000000000000000000000"'
       requires :environment, type: String, values:%w{production development}, desc:'Possible values: production|development'
     end
-    post 'push_token/:instance_token', http_codes: [
+    post 'push_token', http_codes: [
         [200, "1001 - Invalid instance token"],
       ] do
 
@@ -116,7 +116,7 @@ class TwoCents::Auth < Grape::API
       requires :password, type: String, regexp: /.{6,20}/, desc:'6-20 character password'
       requires :name, type: String, desc:"The user's name"
     end
-    post 'register/:instance_token', http_codes:[
+    post 'register', http_codes:[
         [200, "1001 - Invalid instance token"],
         [200, "1002 - A user with that email is already registered"],
         [200, "1009 - Handle is already taken"],
@@ -148,12 +148,12 @@ class TwoCents::Auth < Grape::API
       requires :instance_token, type:String, desc:'Obtain this from the instances API'
       requires :username, type: String, regexp: /^[A-Z0-9\-_ ]{4,20}$/i, desc:'Unique username'
       requires :facebook_token, type: String, desc:"Token obtained from facebook's auth API"
-      requires :name, type: String, desc:"The user's name"
     end
-    post 'register/facebook/:instance_token', http_codes:[
+    post 'register/facebook', http_codes:[
         [200, "1001 - Invalid instance token"],
         [200, "1002 - Could not access facebook profile"],
         [200, "1003 - Facebook profile has no email"],
+        [200, "1004 - Facebook profile has no name"],
         [200, "1009 - Handle is already taken"],
         [200, "400 - Missing required params"]
       ] do
@@ -170,6 +170,7 @@ class TwoCents::Auth < Grape::API
       end
 
       fail! 1003, "Facebook profile has no email" if fb_profile['email'].blank?
+      fail! 1004, "Facebook profile has no name" if fb_profile['name'].blank?
 
       authentication = Authentication.find_by provider:'facebook', uid:fb_profile['id']
 
@@ -177,7 +178,7 @@ class TwoCents::Auth < Grape::API
         authentication.user
       else
         user = User.find_by email:fb_profile['email']
-        user = User.new name:declared_params[:name], email:fb_profile['email'], username:declared_params[:username] unless user
+        user = User.new name:fb_profile['name'], email:fb_profile['email'], username:declared_params[:username] unless user
 
         user.authentications.new provider:"facebook", uid:fb_profile['id'], token:declared_params[:facebook_token]
         user.save!
@@ -206,7 +207,7 @@ class TwoCents::Auth < Grape::API
       optional :username, type: String, regexp: /^[A-Z0-9\-_ ]{4,20}$/i, desc:'Unique username'
       mutually_exclusive :email, :username
     end
-    post 'login/:instance_token', http_codes: [
+    post 'login', http_codes: [
         [200, "1001 - Invalid instance token"],
         [200, "1004 - Email not found"],
         [200, "1005 - Handle not found"],
@@ -248,7 +249,7 @@ class TwoCents::Auth < Grape::API
     params do
       requires :instance_token, type:String, desc:'Obtain this from the instances API'
     end
-    post 'logout/:instance_token', http_codes: [
+    post 'logout', http_codes: [
         [200, "1001 - Invalid instance token"],
       ] do
 
@@ -272,7 +273,7 @@ class TwoCents::Auth < Grape::API
       optional :username, type: String, regexp: /^[A-Z0-9\-_ ]{4,20}$/i, desc:'Unique username'
       mutually_exclusive :email, :username
     end
-    post 'reset_password/:instance_token', http_codes: [
+    post 'reset_password', http_codes: [
         [200, "1001 - Invalid instance token"],
         [200, "1011 - User not found"]
       ] do
