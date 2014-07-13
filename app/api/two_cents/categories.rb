@@ -28,6 +28,8 @@ class TwoCents::Categories < Grape::API
       [200, "402 - Invalid auth token"],
       [200, "400 - Invalid params"]
     ] do
+      validate_user!
+
       @categories = policy_scope(Category)
     end
   end

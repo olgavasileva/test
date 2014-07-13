@@ -87,7 +87,6 @@ describe :feed do
             it {expect(JSON.parse(response.body)[0]['question']['description']).to eq "Choice Description"}
             it {expect(JSON.parse(response.body)[0]['question']['rotate']).to eq true}
             it {expect(JSON.parse(response.body)[0]['question']['category']['name']).to eq "Category 1"}
-            it {expect(response.body).to eq "Troy"}
 
             it {expect(JSON.parse(response.body)[1]['question']['id']).to eq multiple_choice_question.id}
             it {expect(JSON.parse(response.body)[1]['question']['type']).to eq "MultipleChoiceQuestion"}
