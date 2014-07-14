@@ -80,3 +80,10 @@ q.choices.where(title:"A few more").first_or_create!
 q.choices.where(title:"Over 60").first_or_create!
 q.choices.where(title:"Over 100").first_or_create!
 q.choices.where(title:"Forever").first_or_create!
+
+q = MultipleChoiceQuestion.where(title:"Choose all of your favorite fruits.").first_or_create(min_responses:1,rotate:false,category:values,user:user)
+q.choices.where(title:"Apples").first_or_create!
+q.choices.where(title:"Oranges").first_or_create!
+q.choices.where(title:"Bananas").first_or_create!
+q.choices.where(title:"Pears").first_or_create!
+

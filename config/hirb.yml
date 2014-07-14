@@ -1,0 +1,45 @@
+:output:
+  ChoiceQuestion:
+    :options:
+      :fields:
+        - id
+        - title
+  MultipleChoiceQuestion:
+    :options:
+      :fields:
+        - id
+        - title
+  Response:
+    :options:
+      :fields:
+        - id
+        - question_id
+        - text
+        - stars
+        - percent
+        - position
+  ChoiceResponse:
+    :options:
+      :fields:
+        - id
+        - question_id
+        - text
+        - stars
+        - percent
+        - position
+  MultipleChoiceResponse:
+    :options:
+      :fields:
+        - id
+        - question_id
+        - text
+        - stars
+        - percent
+        - position
+  User:
+    :options:
+      :fields:
+        - id
+        - username
+        - email
+        - name

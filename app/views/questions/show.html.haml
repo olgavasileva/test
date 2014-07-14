@@ -7,3 +7,5 @@
     - case @question.type
     - when "ChoiceQuestion"
       = render "responses/choice_response", response:@response
+    - when "MultipleChoiceQuestion"
+      = render "responses/multiple_choice_response", response:@response

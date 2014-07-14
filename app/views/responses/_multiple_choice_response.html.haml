@@ -1,0 +1,15 @@
+= simple_form_for [:responses, response] do |f|
+  = f.association :question, as: :hidden
+  = f.association :user, as: :hidden
+  = f.input :type, as: :hidden
+  - n = 1
+  = f.collection_check_boxes :choice_ids, response.question.choices, :id, :title do |c|
+    = c.label do
+      .title= c.object.title
+      = c.check_box
+      .indicators
+        .checkmark
+          .glyphicon.glyphicon-ok-circle
+        = responsive_image_tag(c.object.image.web.url || image_path("fallback/choice#{n}.png"))
+    - n += 1
+  = f.submit "Submit"
