@@ -29,6 +29,11 @@ class TwoCents::Auth < Grape::API
         On all subsequent launches, supply the instance token returned last time the method was called.
         If you receive an api_domain that is different than the one you're using, make this same call on it to get a valid instance token going forward.
 
+        ### On the labs/staging environment, you can use the following for testing:
+            # Note: the resulting instance_token will only be valid until someone else uses this same data
+            api_signature: eee0326c65497495144b5382085ea4370b7003bddd9608b2d2f7616d0a3d7fc4
+            device_vendor_identifier: TEST
+
         #### Example response
             { instance_token: "SOME_STRING", api_domain:"https://somewhere.com", google_gtm:"GTM-SOMETHING" }
       END
@@ -49,6 +54,9 @@ class TwoCents::Auth < Grape::API
         [200, "1010 - Incompatible app version"],
         [200, "400 - Missing required params"]
       ] do
+
+      # Fail if someone is trying to use "TEST" in the production environment
+      fail! 1000, "Invalid API signature" if Rails.env.production? && declared_params[:device_vendor_identifier] == "TEST"
 
       validate_api_signature! declared_params[:device_vendor_identifier], declared_params[:api_signature]
       if declared_params[:instance_token]
