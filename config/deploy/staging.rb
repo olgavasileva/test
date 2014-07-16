@@ -1,3 +1,6 @@
+set :deploy_to, "/app/#{fetch :application}/staging"
+set :branch, "staging"
+
 # Simple Role Syntax
 # ==================
 # Supports bulk-adding hosts to roles, the primary server in each group

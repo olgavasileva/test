@@ -1,4 +1,4 @@
-set :rails_env, 'labs'  # If the environment differs from the stage name
+set :deploy_to, "/app/#{fetch :application}/labs"
 set :branch, "labs"
 
 # Simple Role Syntax
