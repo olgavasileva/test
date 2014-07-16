@@ -1,9 +1,10 @@
 class TwoCents::API < Grape::API
   prefix 'v'
   version '2.0', using: :path
-  format :json
+  format :json          # input must be json
+  default_format :json  # assume json if no Content-Type is supplied
+  default_error_formatter :json
   formatter :json, Grape::Formatter::Rabl
-  default_format :json
 
   helpers do
     include Pundit
@@ -34,15 +35,15 @@ class TwoCents::API < Grape::API
   end
 
   rescue_from Grape::Exceptions::ValidationErrors do |e|
-    Rack::Response.new({error_code: 400, error_message: e.message}.to_json, 200).finish
+    Rack::Response.new({error_code: 400, error_message: e.message}.to_json, 200, "Content-Type" => "application/json").finish
   end
 
   rescue_from ActiveRecord::RecordNotFound do |e|
-    Rack::Response.new({error_code: 401, error_message: e.message}.to_json, 200).finish
+    Rack::Response.new({error_code: 401, error_message: e.message}.to_json, 200, "Content-Type" => "application/json").finish
   end
 
   rescue_from :all do |e|
-    Rack::Response.new({error_code: 500, error_message: e.message}.to_json, 200).finish
+    Rack::Response.new({error_code: 500, error_message: e.message}.to_json, 200, "Content-Type" => "application/json").finish
   end
 
   mount Auth
