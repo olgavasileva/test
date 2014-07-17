@@ -1,0 +1,51 @@
+.response
+  .modal-body
+    %button.close{"data-dismiss" => "modal", type: "button"} ×
+    %h2.modal-title=@question.title
+    = simple_form_for [:responses, @response], remote:true do |form|
+      .row
+        .col-md-9
+          = hidden_field_tag :next_question_id, @next_question.id if @next_question
+          = form.association :question, as: :hidden
+          = form.association :user, as: :hidden
+          = form.input :type, as: :hidden
+
+          - case @question.type
+          - when "ChoiceQuestion"
+            = render "responses/choice_response", form:form, response:@response
+          - when "MultipleChoiceQuestion"
+            = render "responses/multiple_choice_response", form:form, response:@response
+
+        .col-md-3.actions.btn-group-vertical
+          = link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
+            %span.glyphicon.glyphicon-star
+            Like
+          = link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
+            %span.glyphicon.glyphicon-cloud-upload
+            Share
+          = link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
+            %span.glyphicon.glyphicon-send
+            Send
+          = link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
+            %span.glyphicon.glyphicon-flag
+            Flag
+          = link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
+            .asked-by
+              Asked by
+              %br
+              = @question.user.name
+            %div
+              %span.glyphicon.glyphicon-resize-small
+              Follow
+      .row
+        .col-md-12.submit
+          .row
+            .col-md-9.buttons
+              - if @next_question
+                = link_to question_path(@next_question), remote:true, class: %w{btn-link skip} do
+                  %span.glyphicon.glyphicon-remove
+                  Skip
+              = button_tag type: :submit, data:{disable:true}, class: %w(btn-link) do
+                Submit
+                %span.glyphicon.glyphicon-play
+            .col-md-3

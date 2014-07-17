@@ -56,9 +56,12 @@ other = Category.where(name:"Other").first_or_create!(image:open(seed_image "por
 # Questions
 #
 
+q = ChoiceQuestion.where(title:"Do you like green eggs and ham?").first_or_create!(rotate:false,category:business_and_finance,user:user)
+q.choices.where(title:"Yes").first_or_create!
+q.choices.where(title:"No").first_or_create!
+
 q = ChoiceQuestion.where(title:"How much should be spent on meteor-strike prevention?").first_or_create!(rotate:false,category:business_and_finance,user:user)
 q.choices.where(title:"About $1").first_or_create!
-q.choices.where(title:"Up to $10").first_or_create!
 q.choices.where(title:"Up to $100").first_or_create!
 q.choices.where(title:"Up to $1,000").first_or_create!
 q.choices.where(title:"Over $1,000").first_or_create!
@@ -85,7 +88,6 @@ q.choices.where(title:"Summer").first_or_create!(rotate:true)
 q.choices.where(title:"Fall").first_or_create!(rotate:true)
 q.choices.where(title:"Winter").first_or_create!(rotate:true)
 q.choices.where(title:"Spring").first_or_create!(rotate:true)
-q.choices.where(title:"...of my discontent").first_or_create!(rotate:false)
 
 q = ChoiceQuestion.where(title:"Which would you give up first?").first_or_create!(rotate:true,category:business_and_finance,user:user)
 q.choices.where(title:"My computer").first_or_create!

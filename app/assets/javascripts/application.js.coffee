@@ -20,6 +20,7 @@
 #
 
 #= require hisrc
+#= require toastr
 #= require_self
 
 #
@@ -28,3 +29,5 @@
 
 $ ->
   $('img').hisrc(srcIsLowResolution:false, forcedBandwidth:'high')
+
+  $(".modal.question").modal(show:false, keyboard:true)

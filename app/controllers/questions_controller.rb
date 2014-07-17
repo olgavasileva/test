@@ -11,8 +11,15 @@ class QuestionsController < ApplicationController
     authorize @question
 
     @response = @question.responses.new user:current_user
-
-    # Skip the layout if this is an AJAX request
-    render layout:false if request.xhr?
+    @next_question = next_question @question
+    @just_answered = params[:just_answered]
   end
+
+  private
+
+    def next_question question
+      question_ids = policy_scope(Question).pluck(:id)
+      index = question_ids.find_index @question.id
+      Question.find question_ids[index + 1] if index < question_ids.count - 1
+    end
 end
