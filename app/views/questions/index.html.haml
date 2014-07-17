@@ -1,3 +1,6 @@
+.modal.question.fade.modal-blur{role: :dialog, style: "display: none;", tabindex: "-1"}
+  .modal-dialog.modal-lg
+    .modal-content
 #undertop.container
   #portfolio
     .container
@@ -7,12 +10,9 @@
       .row
         .col-md-12
           #gallery_container
-            #question-modal.modal.question.fade.modal-blur{role: :dialog, style: "display: none;", tabindex: "-1"}
-              .modal-dialog.modal-md
-                .modal-content
             - @questions.each do |question|
               .photo{class: question.category.name.parameterize.underscore.to_sym}
-                = responsive_image_tag question.image.web.url || question.category.image.web.url, class: "img-responsive"
+                = responsive_image_tag((question.image.web.url || question.category.image.web.url), class: "img-responsive")
                 = link_to question_path(question), remote:true, class: :mask do
                   %h3=question.title
                   .icon

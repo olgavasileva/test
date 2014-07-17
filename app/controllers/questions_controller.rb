@@ -12,6 +12,7 @@ class QuestionsController < ApplicationController
 
     @response = @question.responses.new user:current_user
     @next_question = next_question @question
+    @just_answered = params[:just_answered]
   end
 
   private

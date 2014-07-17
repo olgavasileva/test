@@ -1,19 +1,10 @@
 class ResponsesController < ApplicationController
   def create
-    case params[:commit]
-    when "Submit"
-      @response = Response.new response_params
-      authorize @response
-      if @response.save
-        flash[:success] = "Thank you for your response!"
-      else
-        flash[:error] = "Unable to save your response."
-      end
-
-      redirect_to root_path
-    when "Skip"
-      flash[:warning] = "Question skipped"
-      redirect_to root_path
+    @response = Response.new response_params
+    authorize @response
+    if @response.save
+      # On a successful response, go to the next question, otherwise handle it in the responses/create.js.coffee
+      redirect_to question_path(params[:next_question_id], just_answered:true) if params[:next_question_id]
     end
   end
 

@@ -23,6 +23,7 @@ gem 'pundit',           # simple, robust and scaleable authorization system
   ref:"509be500c36c4a665b2cb88ed188fc36ee41bdf8"
 
 gem 'simple_form', '~> 3.1.0.rc1', github: 'plataformatec/simple_form', branch: 'master'
+gem 'toastr-rails'      # Growl like notifications
 
 gem 'haml'
 
