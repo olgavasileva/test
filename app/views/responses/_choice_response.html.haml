@@ -12,4 +12,5 @@
           .glyphicon.glyphicon-ok-circle
         = responsive_image_tag(c.object.image.web.url || image_path("fallback/choice#{n}.png"))
     - n += 1
-  = f.submit "Submit"
+  = link_to "Skip", question_path(next_question), remote:true, class: %w{btn btn-danger} if next_question
+  = f.submit "Submit", data:{disable_with:"Submitting..."}, class: %w{btn btn-success}

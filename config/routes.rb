@@ -8,7 +8,9 @@ LinkchatApp::Application.routes.draw do
   root 'questions#index'
   get '/test' => 'pages#test' if Rails.env.development?
 
-  resources :questions
+  resources :questions do
+    get :skip, on: :member
+  end
   resources :responses
   namespace :responses do
     resources :choice_responses

@@ -6,6 +6,6 @@
   .modal-body
     - case @question.type
     - when "ChoiceQuestion"
-      = render "responses/choice_response", response:@response
+      = render "responses/choice_response", response:@response, next_question:@next_question
     - when "MultipleChoiceQuestion"
-      = render "responses/multiple_choice_response", response:@response
+      = render "responses/multiple_choice_response", response:@response, next_question:@next_question

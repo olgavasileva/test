@@ -7,18 +7,13 @@
       .row
         .col-md-12
           #gallery_container
+            #question-modal.modal.question.fade.modal-blur{role: :dialog, style: "display: none;", tabindex: "-1"}
+              .modal-dialog.modal-md
+                .modal-content
             - @questions.each do |question|
-              - # Modal for this question - see questions/show for the modal content
-              - modal_id = "modal-#{question.id}"
-
-              .modal.question.fade.modal-blur{id:modal_id, role: :dialog, style: "display: none;", tabindex: "-1"}
-                .modal-dialog.modal-md
-                  .modal-content
-
-              - # Question on the index page
               .photo{class: question.category.name.parameterize.underscore.to_sym}
                 = responsive_image_tag question.image.web.url || question.category.image.web.url, class: "img-responsive"
-                = link_to question_path(question), "data-toggle" => "modal", "data-target" => "##{modal_id}", role: :dialog, "data-id" => question.id, class: :mask, id: :open do
+                = link_to question_path(question), remote:true, class: :mask do
                   %h3=question.title
                   .icon
                     =responsive_image_tag question.category.icon.web.url
