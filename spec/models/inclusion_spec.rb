@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Inclusion do
 
@@ -6,24 +6,22 @@ describe Inclusion do
 	let (:question) { FactoryGirl.create(:question) }
 	let (:inclusion) { pack.inclusions.build(question_id: question.id) }
 
-	subject { inclusion }
-
-	it { should be_valid }
+	it { inclusion.should be_valid }
 
 	describe "inclusion methods" do
-		it { should respond_to(:pack) }
-		it { should respond_to(:question) }
-		its(:pack) { should eq pack }
-		its(:question) { should eq question }
+		it { inclusion.should respond_to(:pack) }
+		it { inclusion.should respond_to(:question) }
+		it { inclusion.pack.should eq pack }
+		it { inclusion.question.should eq question }
 	end
 
 	describe "when pack id is not present" do
-		before { inclusion.pack_id = nil }
-		it { should_not be_valid }
+		before { inclusion.pack = nil }
+		it { inclusion.should_not be_valid }
 	end
 
 	describe "when question id is not present" do
-		before { inclusion.question_id = nil }
-		it { should_not be_valid }
+		before { inclusion.question = nil }
+		it { inclusion.should_not be_valid }
 	end
 end

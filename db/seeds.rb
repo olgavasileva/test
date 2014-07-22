@@ -56,64 +56,63 @@ other = Category.where(name:"Other").first_or_create!(image:open(seed_image "por
 # Questions
 #
 
-q = ChoiceQuestion.where(title:"Do you like green eggs and ham?").first_or_create!(rotate:false,category:business_and_finance,user:user)
+q = ChoiceQuestion.where(title:"Do you like green eggs and ham?").first_or_create!(rotate:false,category:fashion_and_beauty,user:user,image:seed_image("portfolio1.png"))
 q.choices.where(title:"Yes").first_or_create!
 q.choices.where(title:"No").first_or_create!
 
-q = ChoiceQuestion.where(title:"How much should be spent on meteor-strike prevention?").first_or_create!(rotate:false,category:business_and_finance,user:user)
+q = ChoiceQuestion.where(title:"How much should be spent on meteor-strike prevention?").first_or_create!(rotate:false,category:home_and_garden,user:user,image:seed_image("portfolio1.png"))
 q.choices.where(title:"About $1").first_or_create!
 q.choices.where(title:"Up to $100").first_or_create!
 q.choices.where(title:"Up to $1,000").first_or_create!
 q.choices.where(title:"Over $1,000").first_or_create!
 
-q = ChoiceQuestion.where(title:"Who’s coffee do you prefer?").first_or_create!(rotate:true,category:values,user:user)
+q = ImageChoiceQuestion.where(title:"Who’s coffee do you prefer?").first_or_create!(rotate:true,category:food_and_drink,user:user)
 q.choices.where(title:"Starbucks").first_or_create!(image:open(seed_image("starbucks.jpg")))
 q.choices.where(title:"Einstein's").first_or_create!(image:open(seed_image("einstein.jpg")))
 q.choices.where(title:"Seattle's Best").first_or_create!(image:open(seed_image("seattles-best.jpg")))
 q.choices.where(title:"Dunkin Donuts").first_or_create!(image:open(seed_image("dunkin.jpg")))
 
-q = ChoiceQuestion.where(title:"How would you split up a $50 million lottery prize?").first_or_create!(rotate:true,category:business_and_finance,user:user)
+q = ChoiceQuestion.where(title:"How would you split up a $50 million lottery prize?").first_or_create!(rotate:true,category:consumer,user:user,image:seed_image("portfolio1.png"))
 q.choices.where(title:"Give it all to charity.").first_or_create!
 q.choices.where(title:"80% me, 20% them").first_or_create!
 q.choices.where(title:"80% them, 20% me").first_or_create!
 
-q = ChoiceQuestion.where(title:"What made-up language would you like to speak?").first_or_create!(rotate:false,category:sports_and_outdoors,user:user)
+q = ChoiceQuestion.where(title:"What made-up language would you like to speak?").first_or_create!(rotate:false,category:places_and_travel,user:user,image:seed_image("portfolio1.png"))
 q.choices.where(title:"Esparanto").first_or_create!
 q.choices.where(title:"Igpay Atinlay").first_or_create!
 q.choices.where(title:"Klingon").first_or_create!
 q.choices.where(title:"Ewok").first_or_create!
 
-q = ChoiceQuestion.where(title:"Which is your favorite season?").first_or_create!(rotate:true,category:values,user:user)
+q = ChoiceQuestion.where(title:"Which is your favorite season?").first_or_create!(rotate:true,category:science_and_nature,user:user,image:seed_image("portfolio1.png"))
 q.choices.where(title:"Summer").first_or_create!(rotate:true)
 q.choices.where(title:"Fall").first_or_create!(rotate:true)
 q.choices.where(title:"Winter").first_or_create!(rotate:true)
 q.choices.where(title:"Spring").first_or_create!(rotate:true)
 
-q = ChoiceQuestion.where(title:"Which would you give up first?").first_or_create!(rotate:true,category:business_and_finance,user:user)
+q = ChoiceQuestion.where(title:"Which would you give up first?").first_or_create!(rotate:true,category:lifestyle,user:user,image:seed_image("portfolio1.png"))
 q.choices.where(title:"My computer").first_or_create!
 q.choices.where(title:"My car").first_or_create!
 q.choices.where(title:"My home").first_or_create!
 q.choices.where(title:"My vacations").first_or_create!
 
-q = ChoiceQuestion.where(title:"Which of these indulgent drinks is healthier?").first_or_create!(rotate:false,category:values,user:user)
+q = ChoiceQuestion.where(title:"Which of these indulgent drinks is healthier?").first_or_create!(rotate:false,category:food_and_drink,user:user,image:seed_image("portfolio1.png"))
 q.choices.where(title:"Starbucks Iced Grande Mocha").first_or_create!
 q.choices.where(title:"McDonald's Milkshake").first_or_create!
 q.choices.where(title:"Jameson's Mai Tai").first_or_create!
 
-q = ChoiceQuestion.where(title:"How likely is world peace in your lifetime?").first_or_create!(rotate:false,category:sports_and_outdoors,user:user)
+q = ChoiceQuestion.where(title:"How likely is world peace in your lifetime?").first_or_create!(rotate:false,category:news_and_history,user:user,image:seed_image("portfolio1.png"))
 q.choices.where(title:"No Chance").first_or_create!
 q.choices.where(title:"50/50 Chance").first_or_create!
 q.choices.where(title:"It's Already Here").first_or_create!
 
-q = ChoiceQuestion.where(title:"How many years do you think you will live?").first_or_create!(rotate:false,category:values,user:user)
+q = ChoiceQuestion.where(title:"How many years do you think you will live?").first_or_create!(rotate:false,category:lifestyle,user:user,image:seed_image("portfolio1.png"))
 q.choices.where(title:"A few more").first_or_create!
 q.choices.where(title:"Over 60").first_or_create!
 q.choices.where(title:"Over 100").first_or_create!
 q.choices.where(title:"Forever").first_or_create!
 
-q = MultipleChoiceQuestion.where(title:"Choose all of your favorite fruits.").first_or_create(min_responses:1,rotate:false,category:values,user:user)
-q.choices.where(title:"Apples").first_or_create!
-q.choices.where(title:"Oranges").first_or_create!
-q.choices.where(title:"Bananas").first_or_create!
-q.choices.where(title:"Pears").first_or_create!
-
+q = MultipleChoiceQuestion.where(title:"Choose all of your favorite coffee houses.").first_or_create(min_responses:1,rotate:false,category:food_and_drink,user:user)
+q.choices.where(title:"Starbucks").first_or_create!(image:open(seed_image("starbucks.jpg")))
+q.choices.where(title:"Einstein's").first_or_create!(image:open(seed_image("einstein.jpg")))
+q.choices.where(title:"Seattle's Best").first_or_create!(image:open(seed_image("seattles-best.jpg")))
+q.choices.where(title:"Dunkin Donuts").first_or_create!(image:open(seed_image("dunkin.jpg")))

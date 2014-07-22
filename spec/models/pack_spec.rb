@@ -1,7 +1,7 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Pack do
-  
+
   let(:user) { FactoryGirl.create(:user) }
   before { @pack = user.packs.build(title: "Lorem ipsum") }
 
@@ -10,7 +10,7 @@ describe Pack do
   it { should respond_to(:title) }
   it { should respond_to(:user_id) }
   it { should respond_to(:user) }
-  its(:user) { should eq user }
+  it { @pack.user.should eq user }
 
   it { should be_valid }
 
@@ -34,18 +34,17 @@ describe Pack do
   	end
 
   	specify { expect(@pack).to be_includer_of(question) }
-  	its(:questions) { should include(question) }
+  	it { @pack.questions.should include(question) }
 
   	describe "included question" do
-  		subject { question }
-  		its(:packs) { should include(@pack) }
+  		it { question.packs.should include(@pack) }
   	end
 
   	describe "and disincluding" do
   		before { @pack.disinclude_question!(question) }
 
   		it { should_not be_includer_of(question) }
-  		its(:questions) { should_not include(question) }
+  		it { @pack.questions.should_not include(question) }
   	end
 
   	it "should destroy associated inclusions" do

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe :push_token do
   let(:params) {{}}

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe MultipleChoiceResponse do
   describe :validations do
@@ -11,7 +11,6 @@ describe MultipleChoiceResponse do
     it {multiple_choice_response.should be_valid}
     it {multiple_choice_response.question.should be_present}
     it {multiple_choice_response.question.class.should eq MultipleChoiceQuestion}
-    it {multiple_choice_response.choices.should be_present}
-    it {multiple_choice_response.choices.first.class.should eq MultipleChoice}
+    it {multiple_choice_response.choices_responses.build.class.should eq ChoicesResponse}
   end
 end

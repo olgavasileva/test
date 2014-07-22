@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Response do
   it {FactoryGirl.build(:image_response).should be_valid}
