@@ -1,2 +1,0 @@
-class ChoiceQuestionPolicy < QuestionPolicy
-end
