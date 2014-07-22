@@ -1,4 +1,5 @@
 - n = 1
+.instructions Choose all that apply:
 .row
   = form.collection_check_boxes :choice_ids, response.question.choices, :id, :title do |c|
     .title= c.object.title
