@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe :register_facebook do
   let(:params) {{}}

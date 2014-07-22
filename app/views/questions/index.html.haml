@@ -15,8 +15,6 @@
                 = responsive_image_tag((question.image.web.url || question.category.image.web.url), class: "img-responsive")
                 .icon
                   = responsive_image_tag question.category.icon.web.url
-                  %small= question.category.name
+                  %small.category= question.category.name
                 = link_to question_path(question), remote:true, class: :mask do
                   %h3=question.title
-
-

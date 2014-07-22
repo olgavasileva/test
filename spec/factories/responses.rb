@@ -19,9 +19,14 @@ FactoryGirl.define do
     question {build :multiple_choice_question}
   end
 
-  factory :choice_response, parent: :response, class: "ChoiceResponse" do
-    question {build :choice_question}
-    choice
+  factory :text_choice_response, parent: :response, class: "TextChoiceResponse" do
+    question {build :text_choice_question}
+    choice {build :text_choice}
+  end
+
+  factory :image_choice_response, parent: :response, class: "ImageChoiceResponse" do
+    question {build :image_choice_question}
+    choice {build :image_choice}
   end
 
   factory :star_response, parent: :response, class: "StarResponse" do

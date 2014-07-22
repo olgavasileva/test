@@ -1,0 +1,2 @@
+class ImageChoiceQuestionPolicy < QuestionPolicy
+end

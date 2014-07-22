@@ -5,7 +5,6 @@ FactoryGirl.define do
     user
     category
     title {generate :name}
-    description {generate :name}
   end
 
   factory :info_question, parent: :question, class: "InfoQuestion" do
@@ -21,7 +20,12 @@ FactoryGirl.define do
     max_characters 255
   end
 
-  factory :choice_question, parent: :question, class: "ChoiceQuestion" do
+  factory :text_choice_question, parent: :question, class: "TextChoiceQuestion" do
+    rotate false
+    image
+  end
+
+  factory :image_choice_question, parent: :question, class: "ImageChoiceQuestion" do
     rotate false
   end
 

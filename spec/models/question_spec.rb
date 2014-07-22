@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Question do
   describe :image_question do
@@ -15,11 +15,11 @@ describe Question do
     it {q.responses.build.class.should eq TextResponse}
   end
 
-  describe :choice_question do
-    let(:q) {FactoryGirl.build :choice_question}
+  describe :text_choice_question do
+    let(:q) {FactoryGirl.build :text_choice_question}
 
     it {q.should be_valid}
-    it {q.responses.build.class.should eq ChoiceResponse}
+    it {q.responses.build.class.should eq TextChoiceResponse}
   end
 
   describe :multiple_choice_question do
