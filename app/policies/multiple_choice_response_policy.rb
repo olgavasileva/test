@@ -1,2 +1,0 @@
-class MultipleChoiceResponsePolicy < ResponsePolicy
-end

@@ -1,10 +1,12 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe MultipleChoice do
   describe :validations do
     it {FactoryGirl.build(:multiple_choice).should be_valid}
     it {FactoryGirl.build(:multiple_choice, title:nil).should_not be_valid}
-    it {FactoryGirl.build(:multiple_choice, rotate:nil).should_not be_valid}
+    it {FactoryGirl.build(:multiple_choice, rotate:nil).should be_valid}
+    it {FactoryGirl.build(:multiple_choice, rotate:true).should be_valid}
+    it {FactoryGirl.build(:multiple_choice, rotate:false).should be_valid}
     it {FactoryGirl.build(:multiple_choice, muex:nil).should_not be_valid}
   end
 
@@ -12,8 +14,8 @@ describe MultipleChoice do
     let(:choice) {FactoryGirl.build :multiple_choice}
 
     it {choice.should be_valid}
-    it {choice.muex.should be_false}
-    it {choice.rotate.should be_false}
+    it {choice.muex.should be false}
+    it {choice.rotate.should be false}
   end
 
   describe :relations do

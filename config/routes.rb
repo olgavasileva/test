@@ -13,7 +13,8 @@ LinkchatApp::Application.routes.draw do
   end
   resources :responses
   namespace :responses do
-    resources :choice_responses
+    resources :text_choice_responses
+    resources :image_choice_responses
     resources :multiple_choice_responses
   end
   resources :inquiries

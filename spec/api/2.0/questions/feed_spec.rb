@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe :feed do
   let(:params) {{}}
@@ -56,10 +56,10 @@ describe :feed do
           let(:category1) {FactoryGirl.create :category, name:"Category 1"}
           let(:category2) {FactoryGirl.create :category, name:"Category 2"}
 
-          let(:choice_question) {FactoryGirl.create :choice_question, category:category1, title:"Choice Title", description:"Choice Description", rotate:true, created_at:Date.today}
-          let(:choice1) {FactoryGirl.create :choice, question:choice_question, title:"Choice 1", rotate:true}
-          let(:choice2) {FactoryGirl.create :choice, question:choice_question, title:"Choice 2", rotate:true}
-          let(:choice3) {FactoryGirl.create :choice, question:choice_question, title:"Choice 3", rotate:false}
+          let(:text_choice_question) {FactoryGirl.create :text_choice_question, category:category1, title:"Choice Title", description:"Choice Description", rotate:true, created_at:Date.today}
+          let(:choice1) {FactoryGirl.create :text_choice, question:text_choice_question, title:"Choice 1", rotate:true}
+          let(:choice2) {FactoryGirl.create :text_choice, question:text_choice_question, title:"Choice 2", rotate:true}
+          let(:choice3) {FactoryGirl.create :text_choice, question:text_choice_question, title:"Choice 3", rotate:false}
 
           let(:multiple_choice_question) {FactoryGirl.create :multiple_choice_question, category:category2, title:"Multiple Choice Title", description:"Multiple Choice Description", rotate:true, min_responses:1, max_responses:2, created_at:Date.yesterday}
           let(:multiple_choice1) {FactoryGirl.create :multiple_choice, question:multiple_choice_question, title:"Multiple Choice 1", rotate:true, muex:true}
@@ -67,7 +67,7 @@ describe :feed do
           let(:multiple_choice3) {FactoryGirl.create :multiple_choice, question:multiple_choice_question, title:"Multiple Choice 3", rotate:false, muex:true}
 
           let(:setup_questions) {
-            choice_question
+            text_choice_question
             choice1
             choice2
             choice3
@@ -81,8 +81,8 @@ describe :feed do
           describe "Question Output" do
             it {expect(JSON.parse(response.body).count).to eq 2}
 
-            it {expect(JSON.parse(response.body)[0]['question']['id']).to eq choice_question.id}
-            it {expect(JSON.parse(response.body)[0]['question']['type']).to eq "ChoiceQuestion"}
+            it {expect(JSON.parse(response.body)[0]['question']['id']).to eq text_choice_question.id}
+            it {expect(JSON.parse(response.body)[0]['question']['type']).to eq "TextChoiceQuestion"}
             it {expect(JSON.parse(response.body)[0]['question']['title']).to eq "Choice Title"}
             it {expect(JSON.parse(response.body)[0]['question']['description']).to eq "Choice Description"}
             it {expect(JSON.parse(response.body)[0]['question']['rotate']).to eq true}
@@ -131,9 +131,9 @@ describe :feed do
             it {expect(JSON.parse(response.body)[1]['question']['choices'][2]['choice']['muex']).to eq true}
           end
 
-          context "When the user has answered the choice question" do
-            let(:choice_response) {FactoryGirl.create :choice_response, question:choice_question, choice:choice1}
-            let(:user) {choice_response.user}
+          context "When the user has answered the text choice question" do
+            let(:text_choice_response) {FactoryGirl.create :text_choice_response, question:text_choice_question, choice:choice1}
+            let(:user) {text_choice_response.user}
 
             it {expect(JSON.parse(response.body).count).to eq 1}
             it {expect(JSON.parse(response.body)[0]['question']['id']).to eq multiple_choice_question.id}

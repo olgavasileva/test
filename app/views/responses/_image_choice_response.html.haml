@@ -1,0 +1,11 @@
+- n = 1
+.instructions Choose One:
+.row
+  = form.collection_radio_buttons :choice_id, response.question.choices, :id, :title do |c|
+    .title= c.object.title
+    = c.radio_button label:false
+    .indicators
+      .checkmark
+        .glyphicon.glyphicon-ok-circle
+      = responsive_image_tag((c.object.image.web.url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
+    - n += 1

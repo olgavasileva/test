@@ -11,8 +11,10 @@
           = form.input :type, as: :hidden
 
           - case @question.type
-          - when "ChoiceQuestion"
-            = render "responses/choice_response", form:form, response:@response
+          - when "TextChoiceQuestion"
+            = render "responses/text_choice_response", form:form, response:@response
+          - when "ImageChoiceQuestion"
+            = render "responses/image_choice_response", form:form, response:@response
           - when "MultipleChoiceQuestion"
             = render "responses/multiple_choice_response", form:form, response:@response
 

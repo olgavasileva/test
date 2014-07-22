@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140710003909) do
+ActiveRecord::Schema.define(version: 20140721182501) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -86,17 +86,6 @@ ActiveRecord::Schema.define(version: 20140710003909) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "comments", force: true do |t|
-    t.string   "content"
-    t.integer  "user_id"
-    t.integer  "question_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "comments", ["question_id"], name: "index_comments_on_question_id", using: :btree
-  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "devices", force: true do |t|
     t.string   "device_vendor_identifier"
@@ -256,6 +245,7 @@ ActiveRecord::Schema.define(version: 20140710003909) do
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "comment"
   end
 
   add_index "responses", ["choice_id"], name: "index_responses_on_choice_id", using: :btree

@@ -3,7 +3,6 @@ class Question < ActiveRecord::Base
 	belongs_to :category
 	has_many :inclusions, dependent: :destroy
 	has_many :packs, through: :inclusions
-	has_many :comments, dependent: :destroy
 	has_many :sharings, dependent: :destroy
 
 	validates :user, presence: true

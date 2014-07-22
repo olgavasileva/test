@@ -6,8 +6,13 @@ FactoryGirl.define do
     rotate false
   end
 
-  factory :choice, parent: :choice_base do
-    question {build :choice_question}
+  factory :text_choice, parent: :choice_base, class:"TextChoice" do
+    question {build :text_choice_question}
+  end
+
+  factory :image_choice, parent: :choice_base, class:"ImageChoice" do
+    question {build :image_choice_question}
+    image
   end
 
   factory :multiple_choice, parent: :choice_base, class:"MultipleChoice" do
