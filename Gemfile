@@ -48,6 +48,7 @@ gem 'hirb'
 gem 'wirble'
 
 group :development do
+  gem 'sqlite3'
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
