@@ -9,7 +9,6 @@
           = form.association :question, as: :hidden
           = form.association :user, as: :hidden
           = form.input :type, as: :hidden
-
           - case @question.type
           - when "TextChoiceQuestion"
             = render "responses/text_choice_response", form:form, response:@response
@@ -39,6 +38,9 @@
             %div
               %span.glyphicon.glyphicon-resize-small
               Follow
+      .row
+        .col-md-9
+          = form.input :comment, as: :text,:placeholder =>"Add new comment"
       .row
         .col-md-12.submit
           .row
