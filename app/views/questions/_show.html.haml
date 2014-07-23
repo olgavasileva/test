@@ -9,7 +9,7 @@
           = form.association :question, as: :hidden
           = form.association :user, as: :hidden
           = form.input :type, as: :hidden
-          = form.input :anonymous, :as => :check_boxes
+          = form.input :anonymous, wrapper: :vertical_boolean
           - case @question.type
           - when "TextChoiceQuestion"
             = render "responses/text_choice_response", form:form, response:@response
