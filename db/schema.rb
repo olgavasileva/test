@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140721182501) do
+ActiveRecord::Schema.define(version: 20140723153531) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -246,6 +246,7 @@ ActiveRecord::Schema.define(version: 20140721182501) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "comment"
+    t.boolean  "anonymous"
   end
 
   add_index "responses", ["choice_id"], name: "index_responses_on_choice_id", using: :btree
