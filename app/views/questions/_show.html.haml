@@ -5,7 +5,6 @@
     = simple_form_for [:responses, @response], remote:true do |form|
       .row
         .col-md-9
-          = hidden_field_tag :next_question_id, @next_question.id if @next_question
           = form.association :question, as: :hidden
           = form.association :user, as: :hidden
           = form.input :type, as: :hidden

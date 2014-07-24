@@ -15,6 +15,15 @@ class QuestionsController < ApplicationController
     @just_answered = params[:just_answered]
   end
 
+  def summary
+    @question = Question.find params[:id]
+    authorize @question
+
+    @next_question = next_question @question
+
+    # Generate summary info
+  end
+
   private
 
     def next_question question
