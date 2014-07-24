@@ -10,7 +10,7 @@ describe Pack do
   it { should respond_to(:title) }
   it { should respond_to(:user_id) }
   it { should respond_to(:user) }
-  it { @pack.user.should eq user }
+  it { except(@pack.user).to eq user }
 
   it { should be_valid }
 

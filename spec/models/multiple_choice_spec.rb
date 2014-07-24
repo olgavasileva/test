@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe MultipleChoice do
   describe :validations do
-    it {FactoryGirl.build(:multiple_choice).should be_valid}
+    it {except(FactoryGirl.build(:multiple_choice)).to be_valid}
     it {FactoryGirl.build(:multiple_choice, title:nil).should_not be_valid}
     it {FactoryGirl.build(:multiple_choice, rotate:nil).should be_valid}
     it {FactoryGirl.build(:multiple_choice, rotate:true).should be_valid}
@@ -21,7 +21,7 @@ describe MultipleChoice do
   describe :relations do
     let(:choice) {FactoryGirl.create :multiple_choice}
 
-    it {choice.should be_valid}
+    it {except(choice).to be_valid}
     it {choice.question.should be_present}
     it {choice.question.class.should eq MultipleChoiceQuestion}
   end

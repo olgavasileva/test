@@ -9,7 +9,7 @@ describe :reset_password do
   context "Without the required params" do
     it {expect(response.status).to eq 200}
     it {expect(JSON.parse(response.body)).to_not be_nil}
-    it {JSON.parse(response.body)['error_code'].should eq 400}
+    it {except(JSON.parse(response.body)['error_code']).to eq 400}
     it {JSON.parse(response.body)['error_message'].should match /.+ is missing/}
   end
 
@@ -35,7 +35,7 @@ describe :reset_password do
         context "Without email or username params" do
           it {response.status.should eq 200}
           it {JSON.parse(response.body)['error_code'].should eq 1011}
-          it {JSON.parse(response.body)['error_message'].should match /User not found/}
+          it {except(JSON.parse(response.body)['error_message']).to match /User not found/}
         end
 
         context "With a user's username" do
@@ -62,7 +62,7 @@ describe :reset_password do
           let(:some_user) {FactoryGirl.create :user}
           let(:params) {{instance_token:instance_token, email:some_user.email, username:some_user.username}}
 
-          it {response.status.should eq 200}
+          it {except(response.status).to eq 200}
           it {JSON.parse(response.body)['error_code'].should eq 400}
           it {JSON.parse(response.body)['error_message'].should match /\[:email, :username\] are mutually exclusive/}
         end
@@ -84,7 +84,7 @@ describe :reset_password do
           it {response.status.should eq 201}
           it {JSON.parse(response.body).should_not be_nil}
           it {JSON.parse(response.body)['error_code'].should be_nil}
-          it {JSON.parse(response.body)['error_message'].should be_nil}
+          it {except(JSON.parse(response.body)['error_message']).to be_nil}
         end
 
         context "With a user's email address" do

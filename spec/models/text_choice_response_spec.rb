@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe TextChoiceResponse do
   describe :validations do
-    it {FactoryGirl.build(:text_choice_response).should be_valid}
+    it {except(FactoryGirl.build(:text_choice_response)).to be_valid}
   end
 
   describe :relations do
