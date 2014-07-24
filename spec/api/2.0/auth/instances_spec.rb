@@ -63,6 +63,7 @@ describe :instances do
         end
         it {expect(JSON.parse(response.body)['api_domain']).to be_present}
         it {expect(JSON.parse(response.body)['google_gtm']).to eq ENV['google_gtm']}
+        it {expect(JSON.parse(response.body)['background_images'].class).to eq Array}
         it "should set the app version on the instance" do
           expect(Instance.find_by(uuid:JSON.parse(response.body)['instance_token']).app_version).to eq app_version
         end
