@@ -2,7 +2,7 @@
 
 class QuestionImageUploader < RetinaImageUploader
 
-  responsive_version :web, [310,0]
-  responsive_version :device, [155,0]
+  responsive_version :web, [320,320]
+  responsive_version :device, [160,160]
 
 end

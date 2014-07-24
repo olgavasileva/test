@@ -2,7 +2,7 @@
 
 class InfoImageUploader < RetinaImageUploader
 
-  responsive_version :web,    [310,310]
-  responsive_version :device, [310,310]
+  responsive_version :web,    [320,320]
+  responsive_version :device, [320,320]
 
 end

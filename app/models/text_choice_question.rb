@@ -3,4 +3,8 @@ class TextChoiceQuestion < ChoiceQuestion
   has_many :responses, class_name:"TextChoiceResponse", foreign_key: :question_id
 
   validates :image, presence: true
+
+  def device_image_url
+    image.device.url
+  end
 end

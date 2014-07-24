@@ -8,11 +8,12 @@ class TwoCents::Questions < Grape::API
             [
                 {
                     "question": {
+                        "description": "Text Choice Description",
                         "id": 1,
-                        "type": "ChoiceQuestion",
-                        "title": "Choice Title",
-                        "description": "Choice Description",
+                        "image_url": "http://crashmob.com/Example.jpg",
                         "rotate": true,
+                        "title": "Text Choice Title",
+                        "type": "TextChoiceQuestion",
                         "category": {
                             "id": 1,
                             "name": "Category 1"
@@ -22,21 +23,21 @@ class TwoCents::Questions < Grape::API
                                 "choice": {
                                     "id": 1,
                                     "rotate": true,
-                                    "title": "Choice 1"
+                                    "title": "Text Choice 1"
                                 }
                             },
                             {
                                 "choice": {
                                     "id": 2,
                                     "rotate": true,
-                                    "title": "Choice 2"
+                                    "title": "Text Choice 2"
                                 }
                             },
                             {
                                 "choice": {
                                     "id": 3,
                                     "rotate": false,
-                                    "title": "Choice 3"
+                                    "title": "Text Choice 3"
                                 }
                             }
                         ]
@@ -44,13 +45,13 @@ class TwoCents::Questions < Grape::API
                 },
                 {
                     "question": {
-                        "id": 2,
-                        "type": "MultipleChoiceQuestion",
-                        "title": "Multiple Choice Title",
                         "description": "Multiple Choice Description",
-                        "min_responses": 1,
+                        "id": 2,
                         "max_responses": 2,
+                        "min_responses": 1,
                         "rotate": true,
+                        "title": "Multiple Choice Title",
+                        "type": "MultipleChoiceQuestion",
                         "category": {
                             "id": 2,
                             "name": "Category 2"
@@ -82,8 +83,40 @@ class TwoCents::Questions < Grape::API
                             }
                         ]
                     }
+                },
+                {
+                    "question": {
+                        "description": "Image Choice Description",
+                        "id": 3,
+                        "rotate": false,
+                        "title": "Image Choice Title",
+                        "type": "ImageChoiceQuestion",
+                        "category": {
+                            "id": 2,
+                            "name": "Category 2"
+                        },
+                        "choices": [
+                            {
+                                "choice": {
+                                    "id": 7,
+                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "rotate": false,
+                                    "title": "Image Choice 1"
+                                }
+                            },
+                            {
+                                "choice": {
+                                    "id": 8,
+                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "rotate": false,
+                                    "title": "Image Choice 2"
+                                }
+                            }
+                        ]
+                    }
                 }
             ]
+
 
       END
     }
