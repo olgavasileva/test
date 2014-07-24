@@ -14,6 +14,8 @@ class TwoCents::Questions < Grape::API
                         "rotate": true,
                         "title": "Text Choice Title",
                         "type": "TextChoiceQuestion",
+                        "response_count": 8,
+                        "comment_count": 5,
                         "category": {
                             "id": 1,
                             "name": "Category 1"
@@ -52,6 +54,8 @@ class TwoCents::Questions < Grape::API
                         "rotate": true,
                         "title": "Multiple Choice Title",
                         "type": "MultipleChoiceQuestion",
+                        "response_count": 8,
+                        "comment_count": 5,
                         "category": {
                             "id": 2,
                             "name": "Category 2"
@@ -91,6 +95,8 @@ class TwoCents::Questions < Grape::API
                         "rotate": false,
                         "title": "Image Choice Title",
                         "type": "ImageChoiceQuestion",
+                        "response_count": 8,
+                        "comment_count": 5,
                         "category": {
                             "id": 2,
                             "name": "Category 2"

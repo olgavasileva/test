@@ -4,6 +4,8 @@ describe :feed do
   let(:params) {{}}
   let(:setup_questions) {}
   before { setup_questions }
+  let(:before_api_call) {}
+  before { before_api_call }
   before { post "v/2.0/questions/feed", Hash[params].to_json,{"CONTENT_TYPE" => "application/json"}}
 
   context "Without the required params" do
@@ -97,6 +99,8 @@ describe :feed do
             it {expect(JSON.parse(response.body)[0]['question']['rotate']).to eq true}
             it {expect(JSON.parse(response.body)[0]['question']['category']['name']).to eq "Category 1"}
             it {expect(JSON.parse(response.body)[0]['question']['image_url']).not_to be_nil}
+            it {expect(JSON.parse(response.body)[0]['question']['comment_count']).to eq 0}
+            it {expect(JSON.parse(response.body)[0]['question']['response_count']).to eq 0}
 
             it {expect(JSON.parse(response.body)[1]['question']['id']).to eq multiple_choice_question.id}
             it {expect(JSON.parse(response.body)[1]['question']['type']).to eq "MultipleChoiceQuestion"}
@@ -105,6 +109,8 @@ describe :feed do
             it {expect(JSON.parse(response.body)[1]['question']['rotate']).to eq true}
             it {expect(JSON.parse(response.body)[1]['question']['min_responses']).to eq 1}
             it {expect(JSON.parse(response.body)[1]['question']['max_responses']).to eq 2}
+            it {expect(JSON.parse(response.body)[1]['question']['comment_count']).to eq 0}
+            it {expect(JSON.parse(response.body)[1]['question']['response_count']).to eq 0}
 
             it {expect(JSON.parse(response.body)[2]['question']['id']).to eq image_choice_question.id}
             it {expect(JSON.parse(response.body)[2]['question']['type']).to eq "ImageChoiceQuestion"}
@@ -112,6 +118,8 @@ describe :feed do
             it {expect(JSON.parse(response.body)[2]['question']['description']).to eq "Image Choice Description"}
             it {expect(JSON.parse(response.body)[2]['question']['rotate']).to eq false}
             it {expect(JSON.parse(response.body)[2]['question']['category']['name']).to eq "Category 2"}
+            it {expect(JSON.parse(response.body)[2]['question']['comment_count']).to eq 0}
+            it {expect(JSON.parse(response.body)[2]['question']['response_count']).to eq 0}
           end
 
           describe "Text Choice output" do
@@ -163,8 +171,6 @@ describe :feed do
             it {expect(JSON.parse(response.body)[2]['question']['choices'][1]['choice']['image_url']).not_to be_nil}
           end
 
-          it {expect(response.body).to eq "Troy"}
-
           context "When the user has answered the text choice question" do
             let(:text_choice_response) {FactoryGirl.create :text_choice_response, question:text_choice_question, choice:text_choice1}
             let(:user) {text_choice_response.user}
@@ -172,6 +178,28 @@ describe :feed do
             it {expect(JSON.parse(response.body).count).to eq 2}
             it {expect(JSON.parse(response.body)[0]['question']['id']).to eq multiple_choice_question.id}
             it {expect(JSON.parse(response.body)[1]['question']['id']).to eq image_choice_question.id}
+          end
+
+          context "When the text_choice_question has been responded to by another user" do
+            let(:before_api_call) {FactoryGirl.create :text_choice_response, question:text_choice_question, choice:text_choice1, comment:comment}
+
+            context "With no comment" do
+              let(:comment) {}
+
+              it {expect(JSON.parse(response.body).count).to eq 3}
+              it {expect(JSON.parse(response.body)[0]['question']['id']).to eq text_choice_question.id}
+              it {expect(JSON.parse(response.body)[0]['question']['comment_count']).to eq 0}
+              it {expect(JSON.parse(response.body)[0]['question']['response_count']).to eq 1}
+            end
+
+            context "With a comment" do
+              let(:comment) {"A Comment"}
+
+              it {expect(JSON.parse(response.body).count).to eq 3}
+              it {expect(JSON.parse(response.body)[0]['question']['id']).to eq text_choice_question.id}
+              it {expect(JSON.parse(response.body)[0]['question']['comment_count']).to eq 1}
+              it {expect(JSON.parse(response.body)[0]['question']['response_count']).to eq 1}
+            end
           end
         end
       end

@@ -1,5 +1,5 @@
 collection @questions, object_root: :question
-attributes :id, :type, :title, :description
+attributes :id, :type, :title, :description, :response_count, :comment_count
 attribute :rotate, if: lambda{|q| q.kind_of? ChoiceQuestion}
 attributes :min_responses, :max_responses, if: lambda{|q| q.instance_of? MultipleChoiceQuestion}
 attribute device_image_url: :image_url, if: lambda{|q| q.instance_of? TextChoiceQuestion}

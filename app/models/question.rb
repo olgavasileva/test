@@ -4,6 +4,7 @@ class Question < ActiveRecord::Base
 	has_many :inclusions, dependent: :destroy
 	has_many :packs, through: :inclusions
 	has_many :sharings, dependent: :destroy
+	has_many :responses
 
 	validates :user, presence: true
 	validates :category, presence: true
@@ -16,17 +17,11 @@ class Question < ActiveRecord::Base
 		self.inclusions.find_by(pack_id: pack.id)
 	end
 
-	def self.answered_by_user(user)
-		answered_question_ids = "SELECT question_id FROM responses WHERE user_id = :user_id"
-		where("id IN (#{answered_question_ids})", user_id: user)
+	def response_count
+		responses.count
 	end
 
-	def self.unanswered_by_user user
-		answered_question_ids = "SELECT question_id FROM responses WHERE user_id = :user_id"
-		where("id NOT IN (#{answered_question_ids})", user_id: user)
-	end
-
-	def as_json(options={})
-		super(:include => [:category, :choices, :user => {:only => [:id, :username, :name]}], :only => [:id, :created_at, :title, :info, :image_url, :question_type, :min_value, :max_value, :interval, :units, :updated_at, :hidden])
+	def comment_count
+		responses.where("comment is not ?", nil).count
 	end
 end
