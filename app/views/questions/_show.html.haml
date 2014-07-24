@@ -9,7 +9,6 @@
           = form.association :question, as: :hidden
           = form.association :user, as: :hidden
           = form.input :type, as: :hidden
-          = form.input :anonymous, wrapper: :vertical_boolean
           - case @question.type
           - when "TextChoiceQuestion"
             = render "responses/text_choice_response", form:form, response:@response
@@ -40,8 +39,9 @@
               %span.glyphicon.glyphicon-resize-small
               Follow
       .row
-        .col-md-9
-          = form.input :comment, as: :text,:placeholder =>"Add new comment"
+        .col-md-12
+          = form.input :anonymous, wrapper: :vertical_boolean, label: "Make this an anonymous response"
+          = form.input :comment, as: :text,:placeholder =>"Comment on your response"
       .row
         .col-md-12.submit
           .row
