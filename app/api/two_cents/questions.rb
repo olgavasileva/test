@@ -132,8 +132,9 @@ class TwoCents::Questions < Grape::API
       optional :per_page, type: Integer, default: 15, desc: "Number of questions per page"
     end
     post 'feed', rabl: "questions", http_codes:[
+      [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
-      [200, "400 - Invalid params"]
+      [200, "403 - Login required"]
     ] do
       validate_user!
 
@@ -142,6 +143,102 @@ class TwoCents::Questions < Grape::API
       questions = policy_scope(Question)
 
       @questions = questions.paginate(page:page, per_page:per_page)
+    end
+
+    desc "Submit responses to the survey questions", {
+      notes: <<-END
+        When the user answers a question, use this API to submit the response.
+        The server will return summary information about the question.
+
+        #### Example JSON to supply in the **response** parameter
+              // text question response
+              { "text":"What they typed" }
+
+              // text or image choice question response
+              { "choice_id":234 }
+
+              // multiple choice question response
+              { "choice_ids":[123,234,345,456] }
+
+              // prioritizer response (id's in order of preference)
+              { "choice_ids":[123,234,345,456] }
+
+        #### Example response
+            { "summary":
+              {
+                response_count:700,
+                view_count:1000,
+                comment_count:500,
+                share_count:150,
+                skip_count:1000,
+                published_at: "June 5, 2014",
+                sponsor: "Some Person" or nil,
+                creator_id: <User ID of creator>,
+                creator_name: "Creator's Name",
+                anonymous: true
+              }
+            }
+      END
+    }
+    params do
+      requires :auth_token, type:String, desc:'Obtain this from the instances API'
+      requires :question_id, type:Integer, desc:'Question this is a response to'
+      optional :comment, type:String, desc:'Some comment about the question'
+      optional :anonymous, type:Boolean, default:false, desc:"True if the user want's to remain anonymous"
+
+      optional :text, type:String, desc:'What the user typed when responding to a TextQuestion'
+      optional :choice_id, type:Integer, desc:'The single choice selected in a TextChoiceQuestion or ImageChoiceQuestion'
+      optional :choice_ids, type:Array, desc:'The choices selected in a MultipleChoiceQuestion or ordered by an OrderQuestion'
+      mutually_exclusive :text, :choice_id, :choice_ids
+    end
+    post 'response', rabl: "summary", http_codes:[
+      [200, "400 - Invalid params"],
+      [200, "401 - Couldn't find Question"],
+      [200, "402 - Invalid auth token"],
+      [200, "403 - Login required"]
+    ] do
+      validate_user!
+
+      @question = Question.find declared_params[:question_id]
+      @anonymous = declared_params[:anonymous]
+    end
+
+
+    desc "Obtain summary information about a question", {
+      notes: <<-END
+        Return summary information about the question.
+
+        #### Example response
+            { "summary":
+              {
+                response_count:700,
+                view_count:1000,
+                comment_count:500,
+                share_count:150,
+                skip_count:1000,
+                published_at: "June 5, 2014",
+                sponsor: "Some Person" or nil,
+                creator_id: <User ID of creator>,
+                creator_name: "Creator's Name",
+                anonymous: true
+              }
+            }
+      END
+    }
+    params do
+      requires :auth_token, type:String, desc:'Obtain this from the instances API'
+      requires :question_id, type:Integer, desc:'Question this is a response to'
+    end
+    post 'summary', rabl: "summary", http_codes:[
+      [200, "400 - Invalid params"],
+      [200, "401 - Couldn't find Question"],
+      [200, "402 - Invalid auth token"],
+      [200, "403 - Login required"]
+    ] do
+      validate_user!
+
+      @question = Question.find declared_params[:question_id]
+      @anonymous = @question.responses.where(user:current_user).last.try(:anonymous)
     end
   end
 end

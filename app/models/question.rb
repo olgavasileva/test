@@ -22,6 +22,18 @@ class Question < ActiveRecord::Base
 	end
 
 	def comment_count
-		responses.where("comment is not ?", nil).count
+		responses_with_comments.count
+	end
+
+	def responses_with_comments
+		responses.where("comment is not ?", nil)
+	end
+
+	def share_count
+		0
+	end
+
+	def skip_count
+		0
 	end
 end
