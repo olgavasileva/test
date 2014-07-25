@@ -127,7 +127,7 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type:String, desc:'Obtain this from the instances API'
+      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
       optional :page, type: Integer, desc: "Page number, starting at 1 - all questions returned if not supplied"
       optional :per_page, type: Integer, default: 15, desc: "Number of questions per page"
     end
@@ -181,15 +181,20 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type:String, desc:'Obtain this from the instances API'
-      requires :question_id, type:Integer, desc:'Question this is a response to'
-      optional :comment, type:String, desc:'Some comment about the question'
-      optional :anonymous, type:Boolean, default:false, desc:"True if the user want's to remain anonymous"
+      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+      requires :question_id, type: Integer, desc: 'Question this is a response to'
+      optional :comment, type: String, desc: 'Some comment about the question'
+      optional :anonymous, type: Boolean, default:false, desc: "True if the user want's to remain anonymous"
 
-      optional :text, type:String, desc:'What the user typed when responding to a TextQuestion'
-      optional :choice_id, type:Integer, desc:'The single choice selected in a TextChoiceQuestion or ImageChoiceQuestion'
-      optional :choice_ids, type:Array, desc:'The choices selected in a MultipleChoiceQuestion or ordered by an OrderQuestion'
+      optional :text, type: String, desc: 'What the user typed when responding to a TextQuestion'
+      optional :choice_id, type: Integer, desc: 'The single choice selected in a TextChoiceQuestion or ImageChoiceQuestion'
+      optional :choice_ids, type: Array, desc: 'The choices selected in a MultipleChoiceQuestion or ordered by an OrderQuestion'
       mutually_exclusive :text, :choice_id, :choice_ids
+
+      optional :filter_group, type: Symbol, values:[:all, :friends, :followers, :following, :me], desc: ":all, :friends, :followers, :following, :me"
+      optional :filter_gender, type: Symbol, values:[:all, :male, :female], desc: ":all, :male, :female"
+      optional :filter_geography, type: Symbol, values:[:all, :near_me], desc: ":all, :near_me"
+      optional :filter_age_group, type: Symbol, values:[:all, :under_18, :from_19_to_34, :from_35_to_50, :over_50], desc: ":all, :under_18, :from_19_to_34, :from_35_to_50, :over_50"
     end
     post 'response', rabl: "summary", http_codes:[
       [200, "400 - Invalid params"],
@@ -226,8 +231,13 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type:String, desc:'Obtain this from the instances API'
-      requires :question_id, type:Integer, desc:'Question this is a response to'
+      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+      requires :question_id, type: Integer, desc: 'Question this is a response to'
+
+      optional :filter_group, type: Symbol, values:[:all, :friends, :followers, :following, :me], desc: ":all, :friends, :followers, :following, :me"
+      optional :filter_gender, type: Symbol, values:[:all, :male, :female], desc: ":all, :male, :female"
+      optional :filter_geography, type: Symbol, values:[:all, :near_me], desc: ":all, :near_me"
+      optional :filter_age_group, type: Symbol, values:[:all, :under_18, :from_19_to_34, :from_35_to_50, :over_50], desc: ":all, :under_18, :from_19_to_34, :from_35_to_50, :over_50"
     end
     post 'summary', rabl: "summary", http_codes:[
       [200, "400 - Invalid params"],
