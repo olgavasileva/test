@@ -250,5 +250,61 @@ class TwoCents::Questions < Grape::API
       @question = Question.find declared_params[:question_id]
       @anonymous = @question.responses.where(user:current_user).last.try(:anonymous)
     end
+
+
+    desc "Flag nappropriate question"
+    params do
+      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+      requires :question_id, type: Integer, desc: 'Question this is a response to'
+    end
+    post 'inappropriate', http_codes:[
+      [200, "400 - Invalid params"],
+      [200, "401 - Couldn't find Question"],
+      [200, "402 - Invalid auth token"],
+      [200, "403 - Login required"]
+    ] do
+      validate_user!
+      @question = Question.find declared_params[:question_id]
+
+      {}
+    end
+
+
+    desc "Like a question"
+    params do
+      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+      requires :question_id, type: Integer, desc: 'Question this is a response to'
+    end
+    post 'like', http_codes:[
+      [200, "400 - Invalid params"],
+      [200, "401 - Couldn't find Question"],
+      [200, "402 - Invalid auth token"],
+      [200, "403 - Login required"]
+    ] do
+      validate_user!
+      @question = Question.find declared_params[:question_id]
+
+      {}
+    end
+
+
+
+    desc "Follow a question"
+    params do
+      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+      requires :question_id, type: Integer, desc: 'Question this is a response to'
+    end
+    post 'follow', http_codes:[
+      [200, "400 - Invalid params"],
+      [200, "401 - Couldn't find Question"],
+      [200, "402 - Invalid auth token"],
+      [200, "403 - Login required"]
+    ] do
+      validate_user!
+      @question = Question.find declared_params[:question_id]
+
+      {}
+    end
+
   end
 end
