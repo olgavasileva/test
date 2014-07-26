@@ -18,4 +18,8 @@ FactoryGirl.define do
   factory :multiple_choice, parent: :choice_base, class:"MultipleChoice" do
     question {build :multiple_choice_question}
   end
+
+  factory :order_choice, parent: :choice_base, class:"OrderChoice" do
+    question {build :order_question}
+  end
 end

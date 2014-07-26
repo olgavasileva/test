@@ -8,12 +8,12 @@ class TwoCents::Questions < Grape::API
             [
                 {
                     "question": {
-                        "description": "Text Choice Description",
+                        "type": "TextChoiceQuestion",
                         "id": 1,
+                        "title": "Text Choice Title",
+                        "description": "Text Choice Description",
                         "image_url": "http://crashmob.com/Example.jpg",
                         "rotate": true,
-                        "title": "Text Choice Title",
-                        "type": "TextChoiceQuestion",
                         "response_count": 8,
                         "comment_count": 5,
                         "category": {
@@ -47,13 +47,13 @@ class TwoCents::Questions < Grape::API
                 },
                 {
                     "question": {
-                        "description": "Multiple Choice Description",
-                        "id": 2,
-                        "max_responses": 2,
-                        "min_responses": 1,
-                        "rotate": true,
-                        "title": "Multiple Choice Title",
                         "type": "MultipleChoiceQuestion",
+                        "id": 2,
+                        "title": "Multiple Choice Title",
+                        "description": "Multiple Choice Description",
+                        "min_responses": 1,
+                        "max_responses": 2,
+                        "rotate": true,
                         "response_count": 8,
                         "comment_count": 5,
                         "category": {
@@ -90,11 +90,11 @@ class TwoCents::Questions < Grape::API
                 },
                 {
                     "question": {
-                        "description": "Image Choice Description",
-                        "id": 3,
-                        "rotate": false,
-                        "title": "Image Choice Title",
                         "type": "ImageChoiceQuestion",
+                        "id": 3,
+                        "title": "Image Choice Title",
+                        "description": "Image Choice Description",
+                        "rotate": false,
                         "response_count": 8,
                         "comment_count": 5,
                         "category": {
@@ -120,10 +120,67 @@ class TwoCents::Questions < Grape::API
                             }
                         ]
                     }
+                },
+                {
+                    "question": {
+                        "type": "OrderQuestion",
+                        "id": 4,
+                        "title": "Order Title",
+                        "description": "Order Description",
+                        "rotate": true,
+                        "response_count": 0,
+                        "comment_count": 0,
+                        "category": {
+                            "id": 1,
+                            "name": "Category 1"
+                        },
+                        "choices": [
+                            {
+                                "choice": {
+                                    "id": 9,
+                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "rotate": true,
+                                    "title": "Order Choice 1"
+                                }
+                            },
+                            {
+                                "choice": {
+                                    "id": 10,
+                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "rotate": true,
+                                    "title": "Order Choice 2"
+                                }
+                            },
+                            {
+                                "choice": {
+                                    "id": 11,
+                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "rotate": false,
+                                    "title": "Order Choice 3"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "question": {
+                        "type": "TextQuestion"
+                        "id": 5,
+                        "title": "Text Title",
+                        "description": "Text Description",
+                        "image_url": "http://crashmob.com/Example.jpg",
+                        "text_type": "freeform",
+                        "min_characters": 1,
+                        "max_characters": 100,
+                        "response_count": 0,
+                        "comment_count": 0,
+                        "category": {
+                            "id": 1,
+                            "name": "Category 1"
+                        },
+                    }
                 }
             ]
-
-
       END
     }
     params do
@@ -144,6 +201,8 @@ class TwoCents::Questions < Grape::API
 
       @questions = questions.paginate(page:page, per_page:per_page)
     end
+
+
 
     desc "Submit responses to the survey questions", {
       notes: <<-END
