@@ -16,6 +16,7 @@ LinkchatApp::Application.routes.draw do
     resources :text_choice_responses
     resources :image_choice_responses
     resources :multiple_choice_responses
+    resources :text_responses
   end
   resources :inquiries
 

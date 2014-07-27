@@ -12,7 +12,7 @@
           #gallery_container
             - @questions.each do |question|
               .photo{class: question.category.name.parameterize.underscore.to_sym}
-                = responsive_image_tag((question.image.web.url || question.category.image.web.url), class: "img-responsive")
+                = responsive_image_tag((@questions.sample.image.web.url || question.category.image.web.url), class: "img-responsive")
                 .icon
                   = responsive_image_tag question.category.icon.web.url
                   %small.category= question.category.name

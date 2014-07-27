@@ -18,4 +18,5 @@ class QuestionPolicy < ApplicationPolicy
 
   def require_user? ; false; end
   def index?  ; true; end
+  def summary? ; true; end
 end

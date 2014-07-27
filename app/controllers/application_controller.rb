@@ -35,6 +35,6 @@ class ApplicationController < ActionController::Base
     end
 
     def find_recent_questions
-      @recent_questions ||= Question.order("created_at DESC").limit(2)
+      @recent_questions ||= ::Question.order("created_at DESC").limit(2)
     end
 end

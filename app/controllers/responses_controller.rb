@@ -2,10 +2,9 @@ class ResponsesController < ApplicationController
   def create
     @response = Response.new response_params
     authorize @response
-    if @response.save
-      # On a successful response, go to the next question, otherwise handle it in the responses/create.js.coffee
-      redirect_to question_path(params[:next_question_id], just_answered:true) if params[:next_question_id]
-    end
+
+    # On a successful response, show the results for this question, otherwise handle it in the responses/create.js.coffee
+    redirect_to summary_question_path(@response.question) if @response.save
   end
 
 
