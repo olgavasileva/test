@@ -65,6 +65,13 @@ ActiveRecord::Schema.define(version: 20140724221930) do
     t.datetime "updated_at"
   end
 
+  create_table "background_images", force: true do |t|
+    t.string   "image"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "categories", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
