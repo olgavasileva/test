@@ -66,6 +66,7 @@ class TwoCents::Questions < Grape::API
                                     "id": 4,
                                     "muex": true,
                                     "rotate": true,
+                                    "image_url": "http://crashmob.com/Example.jpg",
                                     "title": "Multiple Choice 1"
                                 }
                             },
@@ -74,6 +75,7 @@ class TwoCents::Questions < Grape::API
                                     "id": 5,
                                     "muex": false,
                                     "rotate": true,
+                                    "image_url": "http://crashmob.com/Example.jpg",
                                     "title": "Multiple Choice 2"
                                 }
                             },
@@ -82,6 +84,7 @@ class TwoCents::Questions < Grape::API
                                     "id": 6,
                                     "muex": true,
                                     "rotate": false,
+                                    "image_url": "http://crashmob.com/Example.jpg",
                                     "title": "Multiple Choice 3"
                                 }
                             }
