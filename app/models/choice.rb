@@ -7,4 +7,8 @@ class Choice < ActiveRecord::Base
   validates :rotate, inclusion:{in:[true,false], allow_nil:true}
 
   mount_uploader :image, QuestionImageUploader
+
+  def device_image_url
+    image.device.url
+  end
 end

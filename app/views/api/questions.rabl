@@ -7,6 +7,7 @@ attribute device_image_url: :image_url, if: lambda{|q| q.instance_of? TextQuesti
 attributes :text_type, :min_characters, :max_characters, if: lambda{|q| q.instance_of? TextQuestion}
 
 child(:choices, if:lambda{|q| q.kind_of? TextChoiceQuestion}) { attributes :id, :title, :rotate }
+
 child(:choices, if:lambda{|q| q.kind_of? OrderQuestion}) do
   attributes :id, :title, :rotate
   attribute device_image_url: :image_url
@@ -17,6 +18,9 @@ child(:choices, if:lambda{|q| q.kind_of? ImageChoiceQuestion}) do
   attribute device_image_url: :image_url
 end
 
-child(:choices, if:lambda{|q| q.instance_of? MultipleChoiceQuestion}) { attributes :id, :title, :rotate, :muex }
+child(:choices, if:lambda{|q| q.instance_of? MultipleChoiceQuestion}) do
+  attributes :id, :title, :rotate, :muex
+  attribute device_image_url: :image_url
+end
 
 child(:category) { attributes :id, :name }

@@ -65,9 +65,9 @@ describe :feed do
           let(:text_choice3) {FactoryGirl.create :text_choice, question:text_choice_question, title:"Text Choice 3", rotate:false}
 
           let(:multiple_choice_question) {FactoryGirl.create :multiple_choice_question, category:category2, title:"Multiple Choice Title", description:"Multiple Choice Description", rotate:true, min_responses:1, max_responses:2, created_at:Date.today - 1.day}
-          let(:multiple_choice1) {FactoryGirl.create :multiple_choice, question:multiple_choice_question, title:"Multiple Choice 1", rotate:true, muex:true}
-          let(:multiple_choice2) {FactoryGirl.create :multiple_choice, question:multiple_choice_question, title:"Multiple Choice 2", rotate:true, muex:false}
-          let(:multiple_choice3) {FactoryGirl.create :multiple_choice, question:multiple_choice_question, title:"Multiple Choice 3", rotate:false, muex:true}
+          let(:multiple_choice1) {FactoryGirl.create :multiple_choice, question:multiple_choice_question, title:"Multiple Choice 1", image:image, rotate:true, muex:true}
+          let(:multiple_choice2) {FactoryGirl.create :multiple_choice, question:multiple_choice_question, title:"Multiple Choice 2", image:image, rotate:true, muex:false}
+          let(:multiple_choice3) {FactoryGirl.create :multiple_choice, question:multiple_choice_question, title:"Multiple Choice 3", image:image, rotate:false, muex:true}
 
           let(:image_choice_question) {FactoryGirl.create :image_choice_question, category:category2, title:"Image Choice Title", description:"Image Choice Description", rotate:false, created_at:Date.today - 2.days}
           let(:image_choice1) {FactoryGirl.create :image_choice, question:image_choice_question, title:"Image Choice 1", image:image, rotate:false}
@@ -190,16 +190,19 @@ describe :feed do
             it {expect(JSON.parse(response.body)[1]['question']['choices'][0]['choice']['title']).to eq "Multiple Choice 1"}
             it {expect(JSON.parse(response.body)[1]['question']['choices'][0]['choice']['rotate']).to eq true}
             it {expect(JSON.parse(response.body)[1]['question']['choices'][0]['choice']['muex']).to eq true}
+            it {expect(JSON.parse(response.body)[1]['question']['choices'][0]['choice']['image_url']).not_to be_nil}
 
             it {expect(JSON.parse(response.body)[1]['question']['choices'][1]['choice']['id']).to eq multiple_choice2.id}
             it {expect(JSON.parse(response.body)[1]['question']['choices'][1]['choice']['title']).to eq "Multiple Choice 2"}
             it {expect(JSON.parse(response.body)[1]['question']['choices'][1]['choice']['rotate']).to eq true}
             it {expect(JSON.parse(response.body)[1]['question']['choices'][1]['choice']['muex']).to eq false}
+            it {expect(JSON.parse(response.body)[2]['question']['choices'][1]['choice']['image_url']).not_to be_nil}
 
             it {expect(JSON.parse(response.body)[1]['question']['choices'][2]['choice']['id']).to eq multiple_choice3.id}
             it {expect(JSON.parse(response.body)[1]['question']['choices'][2]['choice']['title']).to eq "Multiple Choice 3"}
             it {expect(JSON.parse(response.body)[1]['question']['choices'][2]['choice']['rotate']).to eq false}
             it {expect(JSON.parse(response.body)[1]['question']['choices'][2]['choice']['muex']).to eq true}
+            it {expect(JSON.parse(response.body)[1]['question']['choices'][2]['choice']['image_url']).not_to be_nil}
           end
 
           describe "Image Choice Output" do
@@ -233,7 +236,6 @@ describe :feed do
             it {expect(JSON.parse(response.body)[3]['question']['choices'][2]['choice']['title']).to eq "Order Choice 3"}
             it {expect(JSON.parse(response.body)[3]['question']['choices'][2]['choice']['rotate']).to eq false}
             it {expect(JSON.parse(response.body)[3]['question']['choices'][2]['choice']['image_url']).not_to be_nil}
-            it {expect(response.body).to eq "Troy"}
           end
 
           context "When the user has answered the text choice question" do
