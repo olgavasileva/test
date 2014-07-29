@@ -15,6 +15,8 @@
             = render "responses/image_choice_response", form:form, response:@response
           - when "MultipleChoiceQuestion"
             = render "responses/multiple_choice_response", form:form, response:@response
+          - when "TextQuestion"
+            = render "responses/text_response", form:form, response:@response
 
         .col-md-3.actions.btn-group-vertical
           = link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
