@@ -51,5 +51,5 @@ class TwoCents::API < Grape::API
   mount Questions
   mount Categories
 
-  add_swagger_documentation api_version:'2.0', mount_path: "/docs", markdown:true
+  add_swagger_documentation api_version:'2.0', mount_path: "/docs", markdown:true, hide_documentation_path:true
 end

@@ -1,6 +1,6 @@
 - n = 1
 .instructions Choose One:
-.row
+.row.image-choices
   = form.collection_radio_buttons :choice_id, response.question.choices, :id, :title do |c|
     .title= c.object.title
     = c.radio_button label:false

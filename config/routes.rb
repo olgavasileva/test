@@ -9,13 +9,14 @@ LinkchatApp::Application.routes.draw do
   get '/test' => 'pages#test' if Rails.env.development?
 
   resources :questions do
-    get :skip, on: :member
+    get :summary, on: :member
   end
   resources :responses
   namespace :responses do
     resources :text_choice_responses
     resources :image_choice_responses
     resources :multiple_choice_responses
+    resources :text_responses
   end
   resources :inquiries
 

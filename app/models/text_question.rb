@@ -6,4 +6,9 @@ class TextQuestion < Question
   validates :text_type, inclusion: {in: TEXT_TYPES}
   validates :min_characters, presence:true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :max_characters, presence:true, numericality: { only_integer: true, greater_than_or_equal_to: :min_characters }
+  validates :image, presence: true
+
+  def device_image_url
+    image.device.url
+  end
 end

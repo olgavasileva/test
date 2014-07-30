@@ -7,7 +7,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          authentication_keys:[:login], reset_password_keys:[:login]
 
-  has_many :unanswered_questions, class_name: "Question"
+  has_many :responses, dependent: :destroy
+  has_many :answered_questions, through: :responses, source: :question
 
   # Allow user to log in using username OR email in the 'login' text area
 	# https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
@@ -95,19 +96,8 @@ class User < ActiveRecord::Base
 	end
 
 	def unanswered_questions
-		Question.unanswered_by_user self
-	end
-
-	def answered_questions
-		Question.answered_by_user self
-	end
-
-	def as_json(options={})
-  	super(:only => [:id, :username, :name])
-	end
-
-	def to_json(options={})
-		super(:only => [:id, :username, :name])
+    answered_question_ids = Response.where(user_id:id).pluck(:question_id)
+    answered_question_ids.present? ? Question.where("id NOT IN (?)", answered_question_ids) : Question.all
 	end
 
 	private

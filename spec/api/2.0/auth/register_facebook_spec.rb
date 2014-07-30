@@ -9,8 +9,8 @@ describe :register_facebook do
   context "Without the required params" do
     it {expect(response.status).to eq 200}
     it {expect(JSON.parse(response.body)).to_not be_nil}
-    it {JSON.parse(response.body)['error_code'].should eq 400}
-    it {JSON.parse(response.body)['error_message'].should match /.+ is missing/}
+    it {except(JSON.parse(response.body)['error_code']).to eq 400}
+    it {except(JSON.parse(response.body)['error_message']).to match /.+ is missing/}
   end
 
   context "With all required params" do
@@ -25,7 +25,7 @@ describe :register_facebook do
 
         it {response.status.should eq 200}
         it {JSON.parse(response.body)['error_code'].should eq 1001}
-        it {JSON.parse(response.body)['error_message'].should match /Invalid instance token/}
+        it {except(JSON.parse(response.body)['error_message']).to match /Invalid instance token/}
       end
 
       context "With a valid instance" do
@@ -71,7 +71,7 @@ describe :register_facebook do
               let(:name) {FactoryGirl.generate :name}
 
               it {response.status.should eq 201}
-              it {JSON.parse(response.body)['error_code'].should be_nil}
+              it {except(JSON.parse(response.body)['error_code']).to be_nil}
               it {JSON.parse(response.body)['error_message'].should be_nil}
 
               context "When another user has a matching username" do
@@ -101,8 +101,8 @@ describe :register_facebook do
                   let(:email) {user.email}
 
                   it {response.status.should eq 201}
-                  it {JSON.parse(response.body)['error_code'].should be_nil}
-                  it {JSON.parse(response.body)['error_message'].should be_nil}
+                  it {except(JSON.parse(response.body)['error_code']).to be_nil}
+                  it {except(JSON.parse(response.body)['error_message']).to be_nil}
                   it {user.reload.instances.should include instance}
                   it {instance.reload.user.authentications.find_by(uid:fid).should be_present}
                 end
@@ -113,7 +113,7 @@ describe :register_facebook do
                   it {JSON.parse(response.body)['error_message'].should be_nil}
                   it {User.find_by(email:email).should_not be_nil}
                   it {Instance.find_by(uuid:instance_token).user.id.should eq User.find_by(email:email).id}
-                  it {JSON.parse(response.body)['auth_token'].should eq Instance.find_by(uuid:instance_token).auth_token}
+                  it {except(JSON.parse(response.body)['auth_token']).to eq Instance.find_by(uuid:instance_token).auth_token}
                 end
               end
             end

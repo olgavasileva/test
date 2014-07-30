@@ -4,6 +4,7 @@ class MultipleChoice < Choice
   has_many :responses, through: :choices_responses
 
   validates :muex, inclusion:{in:[true,false]}
+  validates :image, presence:true
 
 protected
   after_initialize do

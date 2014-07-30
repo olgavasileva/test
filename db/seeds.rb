@@ -43,7 +43,7 @@ science_and_nature = Category.where(name:"Science & Nature").first_or_create!(im
 technology = Category.where(name:"Technology").first_or_create!(image:open(seed_image "portfolio1.png"), icon:open(seed_image "categories/Technology150.png"))
 places_and_travel = Category.where(name:"Places & Travel").first_or_create!(image:open(seed_image "portfolio2.png"), icon:open(seed_image "categories/PlacesAndTravel150.png"))
 weddings = Category.where(name:"Weddings").first_or_create!(image:open(seed_image "portfolio3.png"), icon:open(seed_image "categories/Weddings150.png"))
-relationships = Category.where(name:"Relationships").first_or_create!(image:open(seed_image "portfolio1.png"), icon:open(seed_image "values-icon.png"))
+relationships = Category.where(name:"Relationships").first_or_create!(image:open(seed_image "portfolio1.png"), icon:open(seed_image "categories/Relationship150.png"))
 politics = Category.where(name:"Politics").first_or_create!(image:open(seed_image "portfolio2.png"), icon:open(seed_image "categories/Politics150.png"))
 business_and_finance = Category.where(name:"Business & Finance").first_or_create!(image:open(seed_image "portfolio3.png"), icon:open(seed_image "categories/BusinessAndFinance150.png"))
 values = Category.where(name:"Values").first_or_create!(image:open(seed_image "portfolio1.png"), icon:open(seed_image "categories/Values150.png"))
@@ -116,3 +116,11 @@ q.choices.where(title:"Starbucks").first_or_create!(image:open(seed_image("starb
 q.choices.where(title:"Einstein's").first_or_create!(image:open(seed_image("einstein.jpg")))
 q.choices.where(title:"Seattle's Best").first_or_create!(image:open(seed_image("seattles-best.jpg")))
 q.choices.where(title:"Dunkin Donuts").first_or_create!(image:open(seed_image("dunkin.jpg")))
+
+q = OrderQuestion.where(title:"Rate these in order of best to worst.").first_or_create(rotate:true,category:photography,user:user)
+q.choices.where(title:"Starbucks").first_or_create!(image:open(seed_image("starbucks.jpg")))
+q.choices.where(title:"Einstein's").first_or_create!(image:open(seed_image("einstein.jpg")))
+q.choices.where(title:"Seattle's Best").first_or_create!(image:open(seed_image("seattles-best.jpg")))
+q.choices.where(title:"Dunkin Donuts").first_or_create!(image:open(seed_image("dunkin.jpg")))
+
+q = TextQuestion.where(title:"What's do you like about travelling?").first_or_create(category:places_and_travel,user:user, text_type:"freeform", min_characters:1, max_characters:200, image:open(seed_image("portfolio1.png")))

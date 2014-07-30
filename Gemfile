@@ -33,6 +33,10 @@ gem 'carrierwave'       # Image uploading and access
 gem 'rmagick',          # Image manipulation
   require: false
 
+gem 'activeadmin-sortable'
+gem 'acts_as_list'
+
+
 gem 'grape',            # API DSL
   github: 'intridea/grape'
 gem 'grape-rabl'        # rabl for Grape rendering
@@ -48,6 +52,7 @@ gem 'hirb'
 gem 'wirble'
 
 group :development do
+  gem 'sqlite3'
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'

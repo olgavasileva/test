@@ -35,7 +35,15 @@ class TwoCents::Auth < Grape::API
             device_vendor_identifier: TEST
 
         #### Example response
-            { instance_token: "SOME_STRING", api_domain:"https://somewhere.com", google_gtm:"GTM-SOMETHING" }
+            {
+              instance_token: "SOME_STRING",
+              api_domain:"https://somewhere.com",
+              google_gtm:"GTM-SOMETHING",
+              background_images: [
+                "http://some.url.png",
+                "http://some.other.url.png"
+              ]
+            }
       END
     }
     params do
@@ -72,7 +80,7 @@ class TwoCents::Auth < Grape::API
 
       instance.update_attributes! launch_count:instance.launch_count.to_i + 1, app_version:declared_params[:app_version]
 
-      { instance_token:instance.uuid, api_domain:api_domain, google_gtm:google_gtm }
+      { instance_token:instance.uuid, api_domain:api_domain, google_gtm:google_gtm, background_images:BackgroundImage.all.map{ |i| i.image_url } }
     end
 
 

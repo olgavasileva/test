@@ -1,6 +1,6 @@
 - n = 1
 .instructions Choose all that apply:
-.row
+.row.image-choices
   = form.collection_check_boxes :choice_ids, response.question.choices, :id, :title do |c|
     .title= c.object.title
     = c.check_box label:false

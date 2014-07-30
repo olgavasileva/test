@@ -4,7 +4,7 @@ describe Question do
   describe :image_question do
     let(:q) {FactoryGirl.build :image_question}
 
-    it {q.should be_valid}
+    it {except(q).to be_valid}
     it {q.responses.build.class.should eq ImageResponse}
   end
 
@@ -47,7 +47,7 @@ describe Question do
     let(:q) {FactoryGirl.build :order_question}
 
     it {q.should be_valid}
-    it {q.responses.build.class.should eq OrderResponse}
+    it {except(q.responses.build.class).to eq OrderResponse}
   end
 
 end

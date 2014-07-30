@@ -5,7 +5,7 @@ describe Friendship do
   let(:friend) { FactoryGirl.create(:user) }
   let(:friendship) { user.friendships.build(friend_id: friend.id, status: "accepted") }
 
-  it { friendship.should be_valid }
+  it { except(friendship).to be_valid }
 
   describe "friendship methods" do
   	it { friendship.should respond_to(:user) }
