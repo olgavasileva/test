@@ -22,6 +22,8 @@ class QuestionsController < ApplicationController
     @next_question = next_question @question
 
     # Generate summary info
+    @all_comments = []
+    @friend_comments = []
   end
 
   private

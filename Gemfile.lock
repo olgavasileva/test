@@ -84,6 +84,8 @@ GEM
     arbre (1.0.1)
       activesupport (>= 3.0.0)
     arel (5.0.1.20140414130214)
+    autoprefixer-rails (2.2.0.20140727)
+      execjs
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -96,6 +98,8 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap-sass (3.2.0.1)
+      sass (~> 3.2)
     bourbon (3.2.3)
       sass (~> 3.2)
       thor
@@ -386,9 +390,11 @@ DEPENDENCIES
   activeadmin!
   activeadmin-sortable
   acts_as_list
+  autoprefixer-rails
   bcrypt-ruby
   better_errors
   binding_of_caller
+  bootstrap-sass
   capistrano-bundler
   capistrano-rails
   capistrano-rails-collection

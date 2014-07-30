@@ -6,6 +6,7 @@
 #= require jquery_ujs
 #= require jquery.ui.all
 #= require turbolinks
+#= require bootstrap-sprockets
 
 #
 # Theme files
@@ -28,6 +29,6 @@
 #
 
 $ ->
-  $('img').hisrc(srcIsLowResolution:false, forcedBandwidth:'high')
+  $('img').hisrc(srcIsLowResolution:false)
 
   $(".modal.question").modal(show:false, keyboard:true)
