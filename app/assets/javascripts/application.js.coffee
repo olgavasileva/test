@@ -29,6 +29,6 @@
 #
 
 $ ->
-  $('img').hisrc(srcIsLowResolution:false, forcedBandwidth:'high')
+  $('img').hisrc(srcIsLowResolution:false)
 
   $(".modal.question").modal(show:false, keyboard:true)
