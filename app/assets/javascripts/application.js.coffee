@@ -6,6 +6,7 @@
 #= require jquery_ujs
 #= require jquery.ui.all
 #= require turbolinks
+#= require bootstrap-sprockets
 
 #
 # Theme files
