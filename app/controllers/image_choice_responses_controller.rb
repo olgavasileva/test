@@ -1,4 +1,4 @@
-class Responses::ImageChoiceResponsesController < ResponsesController
+class ImageChoiceResponsesController < ResponsesController
 
   protected
 

@@ -8,16 +8,15 @@ LinkchatApp::Application.routes.draw do
   root 'questions#index'
   get '/test' => 'pages#test' if Rails.env.development?
 
-  resources :questions do
+  resources :questions, shallow:true do
     get :summary, on: :member
-  end
-  resources :responses
-  namespace :responses do
+    resources :responses
     resources :text_choice_responses
     resources :image_choice_responses
     resources :multiple_choice_responses
     resources :text_responses
   end
+
   resources :inquiries
 
   mount TwoCents::API =>'/'

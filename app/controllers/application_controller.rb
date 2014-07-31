@@ -16,6 +16,16 @@ class ApplicationController < ActionController::Base
   # layout "clean_canvas"
   layout :layout_by_resource
 
+
+  protected
+
+    def next_question question
+      question_ids = policy_scope(Question).pluck(:id)
+      index = question_ids.find_index question.id
+      Question.find question_ids[index + 1] if index < question_ids.count - 1
+    end
+
+
   private
 
     def user_not_authorized
