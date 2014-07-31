@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140724221930) do
+ActiveRecord::Schema.define(version: 20140731162349) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -152,6 +152,16 @@ ActiveRecord::Schema.define(version: 20140724221930) do
   add_index "instances", ["device_id"], name: "index_instances_on_device_id", using: :btree
   add_index "instances", ["user_id"], name: "index_instances_on_user_id", using: :btree
 
+  create_table "liked_comments", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "response_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "liked_comments", ["response_id"], name: "index_liked_comments_on_response_id", using: :btree
+  add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
+
   create_table "microposts", force: true do |t|
     t.string   "content"
     t.integer  "user_id"
@@ -166,6 +176,7 @@ ActiveRecord::Schema.define(version: 20140724221930) do
     t.integer  "order_response_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "position"
   end
 
   create_table "packs", force: true do |t|
@@ -201,6 +212,7 @@ ActiveRecord::Schema.define(version: 20140724221930) do
     t.integer  "percent_response_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "percent"
   end
 
   create_table "questions", force: true do |t|
@@ -247,9 +259,6 @@ ActiveRecord::Schema.define(version: 20140724221930) do
     t.string   "image"
     t.string   "text"
     t.integer  "choice_id"
-    t.integer  "stars"
-    t.float    "percent"
-    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "comment"
@@ -289,6 +298,7 @@ ActiveRecord::Schema.define(version: 20140724221930) do
     t.integer  "star_response_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "stars"
   end
 
   create_table "users", force: true do |t|

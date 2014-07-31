@@ -28,7 +28,13 @@
 # hisrc (retina support)
 #
 
-$ ->
+everypage = ->
   $('img').hisrc(srcIsLowResolution:false)
 
-  $(".modal.question").modal(show:false, keyboard:true)
+# This is to accomodate turbolinks loads
+$(document).on "page:load", ->
+  everypage()
+
+# This is to accomodate full page loads
+$ ->
+  everypage()

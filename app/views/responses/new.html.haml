@@ -1,22 +1,24 @@
-.response
-  .modal-body
-    %button.close{"data-dismiss" => "modal", type: "button"} ×
-    %h2.modal-title=@question.title
-    = simple_form_for [:responses, @response], remote:true do |form|
+.panel.panel-default
+  .panel-heading
+    .panel-title=@response.question.title
+  .panel-body.response
+    = simple_form_for [:question, setup_response(@response)] do |form|
       .row
         .col-md-9
           = form.association :question, as: :hidden
           = form.association :user, as: :hidden
           = form.input :type, as: :hidden
-          - case @question.type
+          - case @response.question.type
           - when "TextChoiceQuestion"
-            = render "responses/text_choice_response", form:form, response:@response
+            = render "text_choice_response", form:form, response:@response
           - when "ImageChoiceQuestion"
-            = render "responses/image_choice_response", form:form, response:@response
+            = render "image_choice_response", form:form, response:@response
           - when "MultipleChoiceQuestion"
-            = render "responses/multiple_choice_response", form:form, response:@response
+            = render "multiple_choice_response", form:form, response:@response
           - when "TextQuestion"
-            = render "responses/text_response", form:form, response:@response
+            = render "text_response", form:form, response:@response
+          - when "OrderQuestion"
+            = render "order_response", form:form, response:@response
 
         .col-md-3.actions.btn-group-vertical
           = link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
@@ -35,7 +37,7 @@
             .asked-by
               Asked by
               %br
-              = @question.user.name
+              = @response.question.user.name
             %div
               %span.glyphicon.glyphicon-resize-small
               Follow
@@ -48,7 +50,7 @@
           .row
             .col-md-9.buttons
               - if @next_question
-                = link_to question_path(@next_question), remote:true, class: %w{btn-link skip} do
+                = link_to new_question_response_path(@next_question), class: %w{btn-link skip} do
                   %span.glyphicon.glyphicon-remove
                   Skip
               = button_tag type: :submit, data:{disable:true}, class: %w(btn-link) do

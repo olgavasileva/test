@@ -1,4 +1,4 @@
-class Responses::TextChoiceResponsesController < ResponsesController
+class TextChoiceResponsesController < ResponsesController
 
   protected
 
