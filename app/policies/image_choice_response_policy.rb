@@ -1,0 +1,2 @@
+class ImageChoiceResponsePolicy < ResponsePolicy
+end

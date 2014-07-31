@@ -1,18 +1,19 @@
-.summary
-  .modal-body
+.panel.panel-default
+  .panel-heading
+    .panel-title Response Summary
+  .panel-body.summary
     .row
       .col-md-12.submit
         .row
           .col-md-9.buttons
             - if @next_question
-              = link_to question_path(@next_question), remote:true, class: %w{btn-link skip} do
+              = link_to new_question_response_path(@next_question), class: %w{btn-link skip} do
                 Next Question
                 %span.glyphicon.glyphicon-play
           .col-md-3
-            %button.close{"data-dismiss" => "modal", type: "button"} ×
     .row
       .col-md-6
-        %h2.modal-title=@question.title
+        %h2=@question.title
         = image_tag @question.image.url
         .row
           .col-xs-6 Stats
