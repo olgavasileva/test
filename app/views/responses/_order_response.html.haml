@@ -1,7 +1,0 @@
-.instructions Prioritize from most to least:
-.row.image-choices
-  = form.fields_for :choice_responses do |c|
-    .title= c.object.choice.title
-    = c.input :order_choice_id, as: :hidden
-    = responsive_image_tag(c.object.choice.image.web.url, class: "img-responsive")
-    = c.input :position

@@ -8,7 +8,11 @@
         #gallery_container
           - @questions.each do |question|
             .photo{class: question.category.name.parameterize.underscore.to_sym}
-              = responsive_image_tag((@questions.sample.image.web.url || question.category.image.web.url), class: "img-responsive")
+              - if question.image.present?
+                = responsive_image_tag question.image.web.url, class: "img-responsive"
+              - else
+                - # TODO: show a representation of the set of responses
+                = responsive_image_tag "fallback/choice1.png", class: "img-responsive"
               .icon
                 = responsive_image_tag question.category.icon.web.url
                 %small.category= question.category.name

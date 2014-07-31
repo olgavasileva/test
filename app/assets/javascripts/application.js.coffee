@@ -4,7 +4,8 @@
 
 #= require jquery
 #= require jquery_ujs
-#= require jquery.ui.all
+#= require jquery-ui
+#= require jquery.ui.touch-punch
 #= require turbolinks
 #= require bootstrap-sprockets
 
@@ -22,19 +23,4 @@
 
 #= require hisrc
 #= require toastr
-#= require_self
-
-#
-# hisrc (retina support)
-#
-
-everypage = ->
-  $('img').hisrc(srcIsLowResolution:false)
-
-# This is to accomodate turbolinks loads
-$(document).on "page:load", ->
-  everypage()
-
-# This is to accomodate full page loads
-$ ->
-  everypage()
+#= require_tree ./pages

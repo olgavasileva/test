@@ -1,0 +1,18 @@
+.row
+  .col-lg-6
+    = responsive_image_tag((response.question.image.web.url || image_path("fallback/choice1.png")), class: "img-responsive")
+    .title= response.question.title
+    = render "responses/response_fields/shared/sharing", form:form, response:response
+  .col-lg-6
+    = form.collection_check_boxes :choice_ids, response.question.choices, :id, :title, item_wrapper_class: 'col-xs-12' do |c|
+      .title= c.object.title
+      = c.check_box label:false
+      .indicators
+        .checkmark
+          .glyphicon.glyphicon-ok-circle
+.row
+  .col-lg-12
+    = render "responses/response_fields/shared/comment", form:form, response:response
+    = render "responses/response_fields/shared/anonymous", form:form, response:response
+    %br
+    = render "responses/response_fields/shared/submit", form:form, response:response
