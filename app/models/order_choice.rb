@@ -1,4 +1,5 @@
 class OrderChoice < Choice
-  has_and_belongs_to_many :responses, join_table: :order_choices_response
+  has_many :order_choices_responses
+  has_many :responses, through: :order_choices_responses
   mount_uploader :image, OrderChoiceImageUploader
 end

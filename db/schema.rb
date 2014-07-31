@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140731003757) do
+ActiveRecord::Schema.define(version: 20140731162349) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -176,6 +176,7 @@ ActiveRecord::Schema.define(version: 20140731003757) do
     t.integer  "order_response_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "position"
   end
 
   create_table "packs", force: true do |t|
@@ -211,6 +212,7 @@ ActiveRecord::Schema.define(version: 20140731003757) do
     t.integer  "percent_response_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "percent"
   end
 
   create_table "questions", force: true do |t|
@@ -257,9 +259,6 @@ ActiveRecord::Schema.define(version: 20140731003757) do
     t.string   "image"
     t.string   "text"
     t.integer  "choice_id"
-    t.integer  "stars"
-    t.float    "percent"
-    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "comment"
@@ -299,6 +298,7 @@ ActiveRecord::Schema.define(version: 20140731003757) do
     t.integer  "star_response_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "stars"
   end
 
   create_table "users", force: true do |t|
