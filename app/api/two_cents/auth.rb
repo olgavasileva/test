@@ -87,7 +87,7 @@ class TwoCents::Auth < Grape::API
       { instance_token:instance.uuid,
         api_domain:api_domain,
         google_gtm:google_gtm,
-        background_images:BackgroundImage.all.map{ |i| i.image_url },
+        background_images:BackgroundImage.all.map{ |i| i.device_image_url },
         faq_url:"http://www.crashmob.com/?page_id=668",
         feedback_url:"http://www.crashmob.com/?page_id=674",
         about_url:"http://www.crashmob.com/?page_id=670",
