@@ -42,6 +42,10 @@ class TwoCents::Auth < Grape::API
               background_images: [
                 "http://some.url.png",
                 "http://some.other.url.png"
+              ],
+              background_images_retina: [
+                "http://some.url@2x.png",
+                "http://some.other.url@2x.png"
               ]
               faq_url:"http://some.url.com?page=123"
               feedback_url:"http://some.url.com?page=124"
@@ -88,6 +92,7 @@ class TwoCents::Auth < Grape::API
         api_domain:api_domain,
         google_gtm:google_gtm,
         background_images:BackgroundImage.all.map{ |i| i.device_image_url },
+        background_images_retina:BackgroundImage.all.map{ |i| i.retina_device_image_url },
         faq_url:"http://www.crashmob.com/?page_id=668",
         feedback_url:"http://www.crashmob.com/?page_id=674",
         about_url:"http://www.crashmob.com/?page_id=670",
