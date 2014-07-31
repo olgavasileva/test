@@ -5,6 +5,7 @@ class Question < ActiveRecord::Base
 	has_many :packs, through: :inclusions
 	has_many :sharings, dependent: :destroy
 	has_many :responses
+	has_many :responses_with_comments, -> { where "comment != ''" }, class_name: "Response"
 
 	validates :user, presence: true
 	validates :category, presence: true
@@ -23,10 +24,6 @@ class Question < ActiveRecord::Base
 
 	def comment_count
 		responses_with_comments.count
-	end
-
-	def responses_with_comments
-		responses.where("comment is not ?", nil)
 	end
 
 	def share_count

@@ -43,6 +43,8 @@ class User < ActiveRecord::Base
 	has_many :reverse_friends, through: :reverse_friendships, source: :user
 	has_many :sharings, foreign_key: "sender_id", dependent: :destroy
 	has_many :reverse_sharings, foreign_key: "receiver_id", class_name: "Sharing", dependent: :destroy
+  has_many :liked_comments
+  has_many :liked_comment_responses, through: :liked_comments, source: :response
 
 	before_create :create_remember_token
 

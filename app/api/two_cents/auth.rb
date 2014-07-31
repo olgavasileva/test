@@ -43,6 +43,10 @@ class TwoCents::Auth < Grape::API
                 "http://some.url.png",
                 "http://some.other.url.png"
               ]
+              faq_url:"http://some.url.com?page=123"
+              feedback_url:"http://some.url.com?page=124"
+              about_url:"http://some.url.com?page=125"
+              terms_and_conditions_url:"http://some.url.com?page=126"
             }
       END
     }
@@ -80,7 +84,15 @@ class TwoCents::Auth < Grape::API
 
       instance.update_attributes! launch_count:instance.launch_count.to_i + 1, app_version:declared_params[:app_version]
 
-      { instance_token:instance.uuid, api_domain:api_domain, google_gtm:google_gtm, background_images:BackgroundImage.all.map{ |i| i.image_url } }
+      { instance_token:instance.uuid,
+        api_domain:api_domain,
+        google_gtm:google_gtm,
+        background_images:BackgroundImage.all.map{ |i| i.image_url },
+        faq_url:"http://www.crashmob.com/?page_id=668",
+        feedback_url:"http://www.crashmob.com/?page_id=674",
+        about_url:"http://www.crashmob.com/?page_id=670",
+        terms_and_conditions_url:"http://www.crashmob.com/?page_id=672"
+      }
     end
 
 
