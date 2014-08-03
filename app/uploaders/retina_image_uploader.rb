@@ -12,11 +12,11 @@ class RetinaImageUploader < CarrierWave::Uploader::Base
   # Use these with responsive_image_tag, which will look for the retina_* version.
   def self.responsive_version name = :web, standard_size = [320,0]
     version name do
-      process resize_to_fit: standard_size
+      process resize_and_pad: standard_size
     end
 
     version "retina_#{name}" do
-      process resize_to_fit: standard_size.map{|s| s*2}
+      process resize_and_pad: standard_size.map{|s| s*2}
 
       # returns @2x for retina version
       def full_filename(for_file)

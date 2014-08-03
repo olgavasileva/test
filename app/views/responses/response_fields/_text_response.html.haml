@@ -1,0 +1,15 @@
+.row
+  .col-md-4
+  .col-md-4
+    = responsive_image_tag((response.question.image.web.url || image_path("fallback/choice1.png")), class: "img-responsive")
+    .title= response.question.title
+    = render "responses/response_fields/shared/sharing", form:form, response:response
+    = form.input :text, as: :text, label: false, placeholder: "Type your response here", input_html: { rows:3 }
+    = render "responses/response_fields/shared/anonymous", form:form, response:response
+    %br
+  .col-4
+.row
+  .col-md-3
+  .col-md-6
+    = render "responses/response_fields/shared/submit", form:form, response:response
+  .col-md-3

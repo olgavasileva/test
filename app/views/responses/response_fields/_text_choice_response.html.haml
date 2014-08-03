@@ -1,0 +1,16 @@
+.row
+  .col-md-6
+    = responsive_image_tag((response.question.image.web.url || image_path("fallback/choice1.png")), class: "img-responsive")
+    .title= response.question.title
+    = render "responses/response_fields/shared/sharing", form:form, response:response
+  .col-md-6
+    = form.collection_radio_buttons :choice_id, response.question.choices, :id, :title, item_wrapper_class: 'col-xs-12' do |c|
+      .title= c.object.title
+      = c.radio_button label:false
+      .indicators
+        .checkmark
+          .glyphicon.glyphicon-ok-circle
+  = render "responses/response_fields/shared/comment", form:form, response:response
+  = render "responses/response_fields/shared/anonymous", form:form, response:response
+  %br
+  = render "responses/response_fields/shared/submit", form:form, response:response

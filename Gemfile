@@ -16,7 +16,8 @@ gem 'autoprefixer-rails'
 gem 'will_paginate'
 
 gem 'bcrypt-ruby'
-gem 'jquery-ui-rails', '4.2.1'
+gem 'jquery-ui-rails'
+gem 'touchpunch-rails'  # Convert touch events on mobile to jquery compatible mouse events
 
 gem 'activeadmin', github: 'gregbell/active_admin'
 gem 'devise'
