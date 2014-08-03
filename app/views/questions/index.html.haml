@@ -1,20 +1,12 @@
 #portfolio
   .container
-    .row
-      .col-md-12
-        #filters_container
-    .row
-      .col-md-12
-        #gallery_container
-          - @questions.each do |question|
-            .photo{class: question.category.name.parameterize.underscore.to_sym}
-              - if question.image.present?
-                = responsive_image_tag question.image.web.url, class: "img-responsive"
-              - else
-                - # TODO: show a representation of the set of responses
-                = responsive_image_tag "fallback/choice1.png", class: "img-responsive"
-              .icon
-                = responsive_image_tag question.category.icon.web.url
-                %small.category= question.category.name
-              = link_to new_question_response_path(question), class: :mask do
-                %h3=question.title
+    #gallery_container.row
+      - @questions.each do |question|
+        .col-sm-4
+          =link_to new_question_response_path(question), class: :thumbnail do
+            = responsive_image_tag question.web_image_url
+            .mask
+            .title=question.title
+            .icon
+              = responsive_image_tag question.category.icon.web.url
+              %small.category= question.category.name

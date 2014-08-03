@@ -14,6 +14,15 @@ class Question < ActiveRecord::Base
   mount_uploader :image, QuestionImageUploader
   mount_uploader :info_image, InfoImageUploader
 
+  def web_image_url
+    if image.present?
+	      image.web.url
+    else
+      # TODO: show a representation of the set of responses
+      "fallback/choice1.png"
+    end
+  end
+
 	def included_by?(pack)
 		self.inclusions.find_by(pack_id: pack.id)
 	end
