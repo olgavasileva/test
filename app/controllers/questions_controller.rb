@@ -17,4 +17,9 @@ class QuestionsController < ApplicationController
     @friend_comments = []
   end
 
+  def new
+    @question = current_user.questions.new
+    authorize @question
+  end
+
 end
