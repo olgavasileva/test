@@ -57,18 +57,16 @@
           img
             background-color: white
             cursor: pointer
-            border: 4px solid transparent
             width: 100%
             border-radius: 5px
 
-          .checkmark
-            color: transparent
+          .checkmark img
+            display: none
+            border: 3px solid white
 
         &:checked+.indicators
-          img
-            border-color: #185AA3
-          .checkmark
-            color: #185AA3
+          .checkmark img
+            display: block
       .title
         position: absolute
         bottom: 0
@@ -87,51 +85,11 @@
         width: 60px
         height: 60px
 
-
-.response
-  .ximage-choices
-    label
-      border-radius: 5px
-      display: inline-block
-      position: relative
-      width: 300px
-      margin: 3px 5px
-
-      & > input[type=radio],
-      & > input[type=checkbox]
-        display: none
-
-        &+.indicators
-          img
-            background-color: white
-            cursor: pointer
-            border: 4px solid transparent
-            width: 300px
-            border-radius: 5px
-
-          .checkmark
-            color: transparent
-
-        &:checked+.indicators
-          img
-            border-color: #185AA3
-          .checkmark
-            color: #185AA3
-
-      .title
-        position: absolute
-        top: 20px
-        text-align: center
-        background-color: rgba(0,0,0,0.4)
-        color: white
-        padding: 15px 5px
-        width: 100%
-        font-size: 150%
-
-      .checkmark
-        position: absolute
-        bottom: 15px
-        right: 10px
-        font-size: 60px
-        width: 60px
-        height: 60px
+  .col-md-12.comment
+    padding-bottom: 20px
+    .form-group
+      margin-bottom: 0
+    textarea
+      background-color: #2E5BA0
+      color: white
+      border: none
