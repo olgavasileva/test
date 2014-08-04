@@ -8,7 +8,7 @@
         %span.icon-bar
       = link_to root_path, class:"navbar-brand" do
         - if user_signed_in?
-          = "Hi. @{current_user.name}"
+          = link_to "Hi. #{current_user.name}", [current_user]
         - else
           %strong Crash Mob
     .collapse.navbar-collapse.navbar-ex1-collapse{:role => "navigation"}

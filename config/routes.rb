@@ -1,4 +1,10 @@
 LinkchatApp::Application.routes.draw do
+  get 'users/show'
+
+  get 'accounts/show'
+
+  get 'user/show'
+
   devise_for :users
   devise_for :partners
   devise_for :admin_users, ActiveAdmin::Devise.config
@@ -19,6 +25,7 @@ LinkchatApp::Application.routes.draw do
   end
 
   resources :inquiries
+  resources :users
 
   mount TwoCents::API =>'/'
   get "/docs" => 'docs#index'
