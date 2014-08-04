@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   include Pundit
 
   before_action :find_recent_questions
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   # Verify that controller actions are authorized. Optional, but good.
   after_action :verify_authorized,  except: :index, unless: :devise_controller?
@@ -25,6 +26,13 @@ class ApplicationController < ActionController::Base
       Question.find question_ids[index + 1] if index < question_ids.count - 1
     end
 
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:name, :username, :email, :password, :password_confirmation, :remember_me) }
+      devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
+
+      # Need to add other user fields like gender etc.
+      devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
+    end
 
   private
 
