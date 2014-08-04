@@ -59,6 +59,7 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :get_app, 'Get the App', '#'
 
     if user_signed_in?
+      primary.item :feed, 'Question Feed', root_path
       primary.item :ask, 'Ask a Question', new_question_path
       primary.item :logout, 'Logout', destroy_user_session_path, method: :delete
     else
