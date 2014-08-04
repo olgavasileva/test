@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
 
   # Allow user to log in using username OR email in the 'login' text area
 	# https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
-  def self.find_first_by_auth_conditions(warden_conditions)
+  def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
       where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
@@ -34,9 +34,7 @@ class User < ActiveRecord::Base
 	has_many :authentications, dependent: :destroy
 	has_many :devices, through: :instances
 	has_many :questions, dependent: :destroy
-	has_many :answers, dependent: :destroy
 	has_many :packs, dependent: :destroy
-	has_many :comments, dependent: :destroy
 	has_many :friendships, foreign_key: "user_id", dependent: :destroy
 	has_many :friends, through: :friendships, source: :friend
 	has_many :reverse_friendships, foreign_key: "friend_id", class_name: "Friendship", dependent: :destroy
