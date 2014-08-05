@@ -6,10 +6,10 @@
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-      = link_to root_path, class:"navbar-brand" do
-        - if user_signed_in?
-          = link_to "Hi. #{current_user.name}", [current_user]
-        - else
+      - if user_signed_in?
+        = link_to "Hi. #{current_user.name}", [current_user], class:"navbar-brand"
+      - else
+        = link_to root_path, class:"navbar-brand" do
           %strong Crash Mob
     .collapse.navbar-collapse.navbar-ex1-collapse{:role => "navigation"}
       = render_navigation

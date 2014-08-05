@@ -1,0 +1,15 @@
+.panel.panel-default
+  .panel-heading
+    .panel-title
+      =link_to root_path do
+        %span.glyphicon.glyphicon-chevron-left
+        Back to Feed
+  .panel-body
+    %h1 Question Types
+    .row
+      - @question_types.each do |question_type|
+        .col-sm-6
+          = link_to path_for_new(question_type), class: %w(btn btn-default) do
+            .row{style:"background-color: blue"}
+              .col-xs-4=image_tag icon_for(question_type)
+              .col-xs-8=title_for question_type
