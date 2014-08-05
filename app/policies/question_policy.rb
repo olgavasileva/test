@@ -20,6 +20,6 @@ class QuestionPolicy < ApplicationPolicy
   def index?  ; true; end
   def summary? ; true; end
   def new?
-    @user.present?
+    @user.present? && @record.user == @user
   end
 end

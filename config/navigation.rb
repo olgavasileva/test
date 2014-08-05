@@ -60,7 +60,7 @@ SimpleNavigation::Configuration.run do |navigation|
 
     if user_signed_in?
       primary.item :feed, 'Question Feed', root_path
-      primary.item :ask, 'Ask a Question', new_question_path
+      primary.item :ask, 'Ask a Question', question_types_path
       primary.item :logout, 'Logout', destroy_user_session_path, method: :delete
     else
       primary.item :sign_up, 'Sign Up', new_user_registration_path

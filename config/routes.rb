@@ -1,10 +1,4 @@
 LinkchatApp::Application.routes.draw do
-  get 'users/show'
-
-  get 'accounts/show'
-
-  get 'user/show'
-
   devise_for :users
   devise_for :partners
   devise_for :admin_users, ActiveAdmin::Devise.config
@@ -26,6 +20,15 @@ LinkchatApp::Application.routes.draw do
 
   resources :inquiries
   resources :users
+
+  resources :question_types
+
+  resources :yes_no_questions
+  resources :order_questions
+  resources :text_questions
+  resources :multiple_choice_questions
+  resources :image_choice_questions
+  resources :text_choice_questions
 
   mount TwoCents::API =>'/'
   get "/docs" => 'docs#index'
