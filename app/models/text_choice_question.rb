@@ -4,6 +4,8 @@ class TextChoiceQuestion < ChoiceQuestion
 
   validates :image, presence: true
 
+  accepts_nested_attributes_for :choices
+
   def device_image_url
     image.device.url
   end

@@ -4,6 +4,6 @@ class MultipleChoiceQuestionsController < ApplicationController
     authorize @question
   end
 
-  def update
+  def create
   end
 end

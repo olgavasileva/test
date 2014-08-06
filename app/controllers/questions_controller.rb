@@ -1,5 +1,4 @@
 class QuestionsController < ApplicationController
-  layout "clean_canvas"
 
   def index
     @questions = policy_scope Question

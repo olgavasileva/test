@@ -2,6 +2,6 @@ class TextChoiceQuestionsController < ApplicationController
   def new
   end
 
-  def update
+  def create
   end
 end

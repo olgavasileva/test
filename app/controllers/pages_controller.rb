@@ -1,8 +1,6 @@
 class PagesController < ApplicationController
   before_action :find_recent_questions
 
-  layout "clean_canvas"
-
   def help
   end
 
