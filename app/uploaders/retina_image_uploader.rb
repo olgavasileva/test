@@ -8,7 +8,7 @@ class RetinaImageUploader < CarrierWave::Uploader::Base
 
   include CarrierWave::RMagick
 
-  # This generates 2 versiosn for the given name - e.g. :web and :retina_web
+  # This generates 2 versions for the given name - e.g. :web and :retina_web
   # Use these with responsive_image_tag, which will look for the retina_* version.
   def self.responsive_version name = :web, standard_size = [320,0]
     version name do
@@ -25,16 +25,6 @@ class RetinaImageUploader < CarrierWave::Uploader::Base
         end
       end
     end
-  end
-
-  # Choose what kind of storage to use for this uploader:
-  storage :file
-  # storage :fog
-
-  # Override the directory where uploaded files will be stored.
-  # This is a sensible default for uploaders that are meant to be mounted:
-  def store_dir
-    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
   # Add a white list of extensions which are allowed to be uploaded.

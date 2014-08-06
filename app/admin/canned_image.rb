@@ -1,4 +1,4 @@
-ActiveAdmin.register BackgroundImage do
+ActiveAdmin.register CannedImage do
   permit_params :image, :position, :remove_image
 
   config.sort_order = 'position_asc' # assumes you are using 'position' for your acts_as_list column
@@ -8,14 +8,17 @@ ActiveAdmin.register BackgroundImage do
     sortable_handle_column
     column :id
     column :image do |i|
-      image_tag i.image.url, height: 320
+      image_tag i.standard_image_url, height: 80
     end
+    actions
   end
 
 
   form do |f|
     f.inputs "Background Image", multipart: true do
-      f.input :remove_image, as: :boolean
+      if f.object.image.present?
+        f.input :remove_image, as: :boolean
+      end
       f.input :image, as: :file, image_preview: true
     end
     f.actions

@@ -6,12 +6,12 @@ class Question < ActiveRecord::Base
 	has_many :sharings, dependent: :destroy
 	has_many :responses
 	has_many :responses_with_comments, -> { where "comment != ''" }, class_name: "Response"
+  belongs_to :background_image
 
 	validates :user, presence: true
 	validates :category, presence: true
 	validates :title, presence: true
 
-  mount_uploader :image, QuestionImageUploader
   mount_uploader :info_image, InfoImageUploader
 
   before_save :save_image_from_index
@@ -35,12 +35,8 @@ class Question < ActiveRecord::Base
 
 
   def web_image_url
-    if image.present?
-	      image.web.url
-    else
-      # TODO: show a representation of the set of responses
-      "fallback/choice1.png"
-    end
+    # TODO: show a representation of the set of responses for some question types
+    background_image.try(:standard_image_url) || "fallback/choice1.png"
   end
 
 	def included_by?(pack)

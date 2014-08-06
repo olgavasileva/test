@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140731162349) do
+ActiveRecord::Schema.define(version: 20140806165124) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -59,10 +59,11 @@ ActiveRecord::Schema.define(version: 20140731162349) do
   add_index "authentications", ["user_id"], name: "index_authentications_on_user_id", using: :btree
 
   create_table "background_images", force: true do |t|
-    t.string   "image"
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "image"
+    t.string   "type"
   end
 
   create_table "categories", force: true do |t|
@@ -225,7 +226,6 @@ ActiveRecord::Schema.define(version: 20140731162349) do
     t.integer  "position"
     t.boolean  "show_question_results"
     t.integer  "weight"
-    t.string   "image"
     t.string   "html"
     t.string   "text_type"
     t.integer  "min_characters"
@@ -236,8 +236,10 @@ ActiveRecord::Schema.define(version: 20140731162349) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "info_image"
+    t.integer  "background_image_id"
   end
 
+  add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
   add_index "questions", ["category_id"], name: "index_questions_on_category_id", using: :btree
   add_index "questions", ["user_id"], name: "index_questions_on_user_id", using: :btree
 
