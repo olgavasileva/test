@@ -4,11 +4,15 @@ class BackgroundImage < ActiveRecord::Base
 
   mount_uploader :image, BackgroundImageUploader
 
-  def standard_image_url
+  def web_image_url
     image.web.url
   end
 
-  def retina_image_url
-    image.retina_web.url
+  def device_image_url
+    image.device.url
+  end
+
+  def retina_device_image_url
+    image.retina_device.url
   end
 end

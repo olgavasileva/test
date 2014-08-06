@@ -6,37 +6,14 @@ class Question < ActiveRecord::Base
 	has_many :sharings, dependent: :destroy
 	has_many :responses
 	has_many :responses_with_comments, -> { where "comment != ''" }, class_name: "Response"
-  belongs_to :background_image
 
 	validates :user, presence: true
 	validates :category, presence: true
 	validates :title, presence: true
 
-  mount_uploader :info_image, InfoImageUploader
-
-  before_save :save_image_from_index
-
-  #
-  # Image indexes
-  #
-
-  CANNED_IMAGE_PATHS ||= %w(question_bg/bluegrunge.png question_bg/bluetriangle.png question_bg/bluetriangular.png question_bg/bluewall.png question_bg/greengrunge.png question_bg/greentriangle.png question_bg/greentriangular.png question_bg/greenwall.png question_bg/redgrunge.png question_bg/redtriangle.png question_bg/redtriangular.png question_bg/redwall.png question_bg/yellowgrunge.png question_bg/yellowtriangle.png question_bg/yellowtriangular.png question_bg/yellowwall.png)
-
-  attr_accessor :image_index
-
-  def image_index
-    @image_index
-  end
-
-  def image_index= index
-    @image_index = index
-  end
-
-
-
   def web_image_url
     # TODO: show a representation of the set of responses for some question types
-    background_image.try(:standard_image_url) || "fallback/choice1.png"
+    "fallback/choice1.png"  # For now, just show something
   end
 
 	def included_by?(pack)
@@ -58,10 +35,4 @@ class Question < ActiveRecord::Base
 	def skip_count
 		0
 	end
-
-  protected
-    def save_image_from_index
-      self.image = open File.join(Rails.root, "app/assets/images", CANNED_IMAGE_PATHS[@image_index.to_i]) if @image_index
-      true
-    end
 end

@@ -1,6 +1,6 @@
 .row
   .col-lg-6
-    = responsive_image_tag((response.question.image.web.url || image_path("fallback/choice1.png")), class: "img-responsive")
+    = responsive_image_tag((response.question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
     .title= response.question.title
     = render "responses/response_fields/shared/sharing", form:form, response:response
   .col-lg-6
