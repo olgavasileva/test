@@ -18,9 +18,9 @@
               .title=f.input :title, label: false, placeholder: "Ask Your Question Here"
               .bgimage= responsive_image_tag @question.web_image_url, class: "img-responsive"
           .col-md-6
-            =f.simple_fields_for :choices do |c|
-              .answer.well
-                =c.input :title, label: false, placeholder: "Type a response"
+            =f.simple_fields_for :choices do |choice|
+              = render 'choice_fields', f:choice
+            .links=link_to_add_association 'Add another Choice', f, :choices
         .row
           .col-md-6
             .well.image_control

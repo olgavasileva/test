@@ -20,6 +20,6 @@ class TextChoiceQuestionsController < ApplicationController
 
   protected
     def text_choice_question_params
-      params.require(:text_choice_question).permit(:type, :title, :category_id, :background_image_id, :rotate, choices:[:title])
+      params.require(:text_choice_question).permit(:type, :title, :category_id, :background_image_id, :rotate, choices:[:title, :_destroy])
     end
 end
