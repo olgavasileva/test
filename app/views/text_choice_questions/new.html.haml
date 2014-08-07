@@ -1,2 +1,41 @@
-%h1 TextChoiceQuestions#new
-%p Find me in app/views/text_choice_questions/new.html.erb
+.col-md-2
+.col-md-8
+  .textchoice.panel.panel-default
+    .panel-heading
+      .panel-title
+        =link_to question_types_path do
+          %span.glyphicon.glyphicon-chevron-left
+    .panel-body
+      = simple_form_for @question do |f|
+        =f.input :type, as: :hidden
+        =f.input :rotate, as: :hidden
+        .hidden
+          .canned{data:{ids:canned_image_ids, urls:canned_image_web_urls}}
+          .id=f.input :background_image_id, as: :hidden
+        .row
+          .col-sm-6
+            .question
+              .title=f.input :title, label: false, placeholder: "Ask Your Question Here"
+              .bgimage= responsive_image_tag @question.web_image_url, class: "img-responsive"
+          .col-md-6
+            =f.simple_fields_for :choices do |c|
+              .answer.well
+                =c.input :title, label: false, placeholder: "Type a response"
+        .row
+          .col-md-6
+            .well.image_control
+              <Image manipulation tools>
+              =link_to '#', class: :prev_image do
+                %span.glyphicon.glyphicon-chevron-left
+              =link_to '#', class: :next_image do
+                %span.glyphicon.glyphicon-chevron-right
+          .col-md-6
+            .well
+              =f.association :category
+        .row
+          .col-md-6
+            .btn-group.btn-group-justified
+              =link_to "Preview", '#', class: %w(btn btn-primary)
+          .col-md-6
+            .btn-group.btn-group-justified
+              =f.button :submit, "Continue", class: %w(btn-block)

@@ -7,18 +7,18 @@
           %span.glyphicon.glyphicon-chevron-left
     .panel-body
       = simple_form_for @question do |f|
+        =f.input :type, as: :hidden
+        =f.input :rotate, as: :hidden
         .hidden
-          - canned_question_image_urls.each_with_index do |url, index|
-            .canned{class: index}=image_path url
-          .index= f.input :image_index, as: :hidden
-          = f.input :type, as: :hidden
+          .canned{data:{ids:canned_image_ids, urls:canned_image_web_urls}}
+          .id=f.input :background_image_id, as: :hidden
         .row
           .col-sm-6
             .question
-              .title=f.input :title, label: false, placeholder: "Type your question here"
-              .bgimage= responsive_image_tag image_path canned_question_image_urls[@question.image_index], class: "img-responsive"
+              .title=f.input :title, label: false, placeholder: "Ask Your Question Here"
+              .bgimage= responsive_image_tag @question.web_image_url, class: "img-responsive"
           .col-md-6
-            = f.simple_fields_for :choices do |c|
+            =f.simple_fields_for :choices do |c|
               .answer.well
                 =c.input :title, label: false, placeholder: "Type a response"
         .row
@@ -32,11 +32,10 @@
           .col-md-6
             .well
               =f.association :category
-              =f.input :rotate
         .row
           .col-md-6
             .btn-group.btn-group-justified
               =link_to "Preview", '#', class: %w(btn btn-primary)
           .col-md-6
             .btn-group.btn-group-justified
-              = f.button :submit, "Continue", class: %w(btn-block)
+              =f.button :submit, "Continue", class: %w(btn-block)

@@ -84,6 +84,8 @@ GEM
     arbre (1.0.1)
       activesupport (>= 3.0.0)
     arel (5.0.1.20140414130214)
+    attribute_defaults (0.3)
+      activerecord (>= 3.1.0)
     autoprefixer-rails (2.2.0.20140727)
       execjs
     axiom-types (0.1.1)
@@ -132,6 +134,7 @@ GEM
       mime-types (>= 1.16)
     childprocess (0.5.3)
       ffi (~> 1.0, >= 1.0.11)
+    cocoon (1.2.6)
     coderay (1.1.0)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
@@ -419,6 +422,7 @@ DEPENDENCIES
   activeadmin!
   activeadmin-sortable
   acts_as_list
+  attribute_defaults
   autoprefixer-rails
   bcrypt-ruby
   better_errors
@@ -430,6 +434,7 @@ DEPENDENCIES
   capistrano-rvm
   capybara
   carrierwave
+  cocoon
   coffee-rails (~> 4.0.0)
   database_cleaner
   devise

@@ -1,22 +1,29 @@
 $ ->
-  $(document).on "click", "a.next_image", (e)->
+  change_image_by = (delta) ->
+    $image = $(".bgimage img")
+    $id_field = $(".id input")
+
+    ids = $(".canned").data("ids")
+    urls = $(".canned").data("urls")
+    max = urls.length
+
+    i = $.inArray $image.attr("src"), urls
+
+    if i >= 0
+      i = i + delta
+
+      if i < 0
+        i += max
+      else
+        i = i % max
+
+      $image.attr "src", urls[i]
+      $id_field.val ids[i]
+
+  $(document).on "click", ".image_control a.next_image", (e)->
     e.preventDefault()
+    change_image_by 1
 
-    i = parseInt $("form .index input").val()
-    max = $(".canned").length
-
-    i = (i + 1) % max
-    $("form .index input").val(i)
-    $(".bgimage img").attr "src", $($(".canned")[i]).html()
-
-
-  $(document).on "click", "a.prev_image", (e)->
+  $(document).on "click", ".image_control a.prev_image", (e)->
     e.preventDefault()
-
-    i = parseInt $("form .index input").val()
-    max = $(".canned").length
-
-    i = if i == 0 then max - 1 else i - 1
-
-    $("form .index input").val(i)
-    $(".bgimage img").attr "src", $($(".canned")[i]).html()
+    change_image_by -1
