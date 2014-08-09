@@ -51,7 +51,7 @@ class User < ActiveRecord::Base
 						format: { with: VALID_USERNAME_REGEX },
 						length: { maximum: 50 },
 						uniqueness: { case_sensitive: false }
-	validates :name, presence: true, length: { maximum: 50 }
+	validates :name, length: { maximum: 50 }
 	validates :terms_and_conditions, acceptance: true
 
   # Enable saving users without a password if they have another authenication scheme

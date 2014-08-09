@@ -22,7 +22,7 @@ class TwoCents::Users < Grape::API
     }
     params do
       requires :username, type: String, regexp:User::VALID_USERNAME_REGEX
-      requires :name, type: String, regexp:/\A.{1,50}\z/, desc:"User's full name, 1 to 50 characters, including whitespace and special characters"
+      optional :name, type: String, regexp:/\A.{1,50}\z/, desc:"User's full name, 1 to 50 characters, including whitespace and special characters"
       requires :email, type: String, regexp: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$.?/i, desc:'e.g. oscar@madisononline.com'
       requires :password, type: String
       requires :udid, type: String, desc:"Unique identifier for the device"
