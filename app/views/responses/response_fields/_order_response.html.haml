@@ -1,15 +1,16 @@
 .row
   .col-md-4
   .col-md-4
-    = render "responses/response_fields/shared/title", form:form, response:response
-    %ul#orderChoices.list-unstyled
-      = form.fields_for :choice_responses do |c|
-        %li
-          .panel.panel-default.handle
-            = c.input :order_choice_id, as: :hidden
-            = c.input :position, as: :hidden
-            = responsive_image_tag(c.object.choice.image.web.url, class: "img-responsive")
-            .title=c.object.choice.title
+    .row.order-choices
+      = render "responses/response_fields/shared/title", form:form, response:response
+      %ul#orderChoices.list-unstyled
+        = form.fields_for :choice_responses do |c|
+          %li
+            .panel.panel-default.handle
+              = c.input :order_choice_id, as: :hidden
+              = c.input :position, as: :hidden
+              .title=c.object.choice.title
+              = responsive_image_tag(c.object.choice.image.web.url, class: "img-responsive")
     = render "responses/response_fields/shared/comment", form:form, response:response
     = render "responses/response_fields/shared/sharing", form:form, response:response
     = render "responses/response_fields/shared/anonymous", form:form, response:response
