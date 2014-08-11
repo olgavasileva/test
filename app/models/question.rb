@@ -9,7 +9,7 @@ class Question < ActiveRecord::Base
 
 	validates :user, presence: true
 	validates :category, presence: true
-	validates :title, presence: true
+	validates :title, presence: true, length: { maximum: 250 }
 
   def web_image_url
     # TODO: show a representation of the set of responses for some question types

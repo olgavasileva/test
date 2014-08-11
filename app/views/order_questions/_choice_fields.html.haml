@@ -1,7 +1,7 @@
-.col-xs-6.nested-fields.answer
+.col-sm-12.nested-fields.answer
   .choice.imagechooser
     .hidden
-      .canned{data:{ids:canned_choice_image_ids, urls:canned_choice_image_web_urls}}
+      .canned{data:{ids:canned_order_choice_image_ids, urls:canned_order_choice_image_web_urls}}
       .id=f.input :background_image_id, as: :hidden
     .bgimage= responsive_image_tag f.object.web_image_url, class: "img-responsive"
     .overimage

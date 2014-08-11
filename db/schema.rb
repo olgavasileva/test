@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140811005045) do
+ActiveRecord::Schema.define(version: 20140811034913) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -74,7 +74,7 @@ ActiveRecord::Schema.define(version: 20140811005045) do
   end
 
   create_table "choices", force: true do |t|
-    t.string   "title"
+    t.text     "title"
     t.integer  "position"
     t.boolean  "rotate"
     t.boolean  "muex"
@@ -218,7 +218,7 @@ ActiveRecord::Schema.define(version: 20140811005045) do
   create_table "questions", force: true do |t|
     t.integer  "user_id"
     t.integer  "category_id"
-    t.string   "title"
+    t.text     "title"
     t.string   "description"
     t.boolean  "rotate"
     t.string   "type"
@@ -257,11 +257,11 @@ ActiveRecord::Schema.define(version: 20140811005045) do
     t.integer  "user_id"
     t.integer  "question_id"
     t.string   "image"
-    t.string   "text"
+    t.text     "text"
     t.integer  "choice_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "comment"
+    t.text     "comment"
     t.boolean  "anonymous"
   end
 

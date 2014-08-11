@@ -29,7 +29,7 @@ module QuestionHelper
 
 
   def canned_order_choice_images
-    @canned_order_choice_images ||= CannedChoiceImage.order(:position)
+    @canned_order_choice_images ||= CannedOrderChoiceImage.order(:position)
   end
 
   def canned_order_choice_image_ids

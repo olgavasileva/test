@@ -5,5 +5,5 @@ class Response < ActiveRecord::Base
   has_many :comment_likers, through: :liked_comments, source: :user
 
 	validates :question, presence: true
-  validates :comment, length: { maximum: 140, allow_nil: true }
+  validates :comment, length: { maximum: 2000, allow_nil: true }
 end

@@ -10,5 +10,4 @@ init_order_response = ->
     update: ->
       $('.panel', $list).each (index, elem)->
         $item = $(elem)
-        newIndex = $item.index()
-        $("input[type=number]",$item).val(newIndex+1)
+        $("input[name*=position]",$item).val(index+1)

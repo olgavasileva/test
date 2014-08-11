@@ -1,5 +1,6 @@
 class OrderChoice < Choice
   belongs_to :background_image
+  belongs_to :question, class_name:"OrderQuestion", inverse_of: :choices
   has_many :order_choices_responses
   has_many :responses, through: :order_choices_responses
 
