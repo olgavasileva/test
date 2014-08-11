@@ -1,8 +1,7 @@
 class BackgroundImage < ActiveRecord::Base
 
   has_many :questions
-
-  mount_uploader :image, BackgroundImageUploader
+  has_many :choices
 
   def web_image_url
     image.web.url

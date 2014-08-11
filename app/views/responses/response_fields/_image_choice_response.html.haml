@@ -11,7 +11,7 @@
           .indicators
             .checkmark
               = responsive_image_tag "icons/CheckTransparent60.png"
-            = responsive_image_tag((c.object.image.web.url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
+            = responsive_image_tag((c.object.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
           - n += 1
     = render "responses/response_fields/shared/comment", form:form, response:response
     = render "responses/response_fields/shared/sharing", form:form, response:response

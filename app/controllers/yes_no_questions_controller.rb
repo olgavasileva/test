@@ -7,7 +7,7 @@ class YesNoQuestionsController < ApplicationController
   end
 
   def create
-    @question = Question.new yes_no_question_params.merge(user_id:current_user.id)
+    @question = YesNoQuestion.new yes_no_question_params.merge(user_id:current_user.id)
     authorize @question
 
     if @question.save
@@ -20,6 +20,6 @@ class YesNoQuestionsController < ApplicationController
 
   protected
     def yes_no_question_params
-      params.require(:yes_no_question).permit(:type, :title, :category_id, :background_image_id, :rotate, choices:[:title])
+      params.require(:yes_no_question).permit(:type, :title, :category_id, :background_image_id, :rotate, choices_attributes:[:id, :title])
     end
 end

@@ -20,9 +20,7 @@ class ApplicationController < ActionController::Base
   protected
 
     def next_question question
-      question_ids = policy_scope(Question).pluck(:id)
-      index = question_ids.find_index question.id
-      Question.find question_ids[index + 1] if index < question_ids.count - 1
+      policy_scope(Question).where.not(id:question.id).where("created_at >= ?",question.created_at).limit(1).first
     end
 
     def configure_devise_permitted_parameters

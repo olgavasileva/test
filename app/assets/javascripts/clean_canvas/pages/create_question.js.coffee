@@ -1,10 +1,10 @@
 $ ->
-  change_image_by = (delta) ->
-    $image = $(".bgimage img")
-    $id_field = $(".id input")
+  change_image_by = (delta, scope) ->
+    $image = $(scope).find(".bgimage img")
+    $id_field = $(scope).find(".id input")
 
-    ids = $(".canned").data("ids")
-    urls = $(".canned").data("urls")
+    ids = $(scope).find(".canned").data("ids")
+    urls = $(scope).find(".canned").data("urls")
     max = urls.length
 
     i = $.inArray $image.attr("src"), urls
@@ -22,8 +22,8 @@ $ ->
 
   $(document).on "click", ".image_control a.next_image", (e)->
     e.preventDefault()
-    change_image_by 1
+    change_image_by 1, $(this).closest(".imagechooser")
 
   $(document).on "click", ".image_control a.prev_image", (e)->
     e.preventDefault()
-    change_image_by -1
+    change_image_by -1, $(this).closest(".imagechooser")

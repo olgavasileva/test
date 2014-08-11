@@ -5,12 +5,12 @@
       .panel-title
         =link_to question_types_path do
           %span.glyphicon.glyphicon-chevron-left
-    .panel-body
+    .panel-body.imagechooser
       = simple_form_for @question do |f|
         =f.input :type, as: :hidden
         =f.input :rotate, as: :hidden
         .hidden
-          .canned{data:{ids:canned_image_ids, urls:canned_image_web_urls}}
+          .canned{data:{ids:canned_question_image_ids, urls:canned_question_image_web_urls}}
           .id=f.input :background_image_id, as: :hidden
         .row
           .col-sm-6

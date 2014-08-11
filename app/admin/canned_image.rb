@@ -1,4 +1,4 @@
-ActiveAdmin.register CannedImage do
+ActiveAdmin.register CannedQuestionImage do
   permit_params :image, :position, :remove_image
 
   config.sort_order = 'position_asc' # assumes you are using 'position' for your acts_as_list column
