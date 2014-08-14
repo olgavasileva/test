@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140811034913) do
+ActiveRecord::Schema.define(version: 20140814021818) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -235,6 +235,7 @@ ActiveRecord::Schema.define(version: 20140811034913) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "background_image_id"
+    t.string   "state"
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree

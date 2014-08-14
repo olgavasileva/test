@@ -10,6 +10,15 @@ class Question < ActiveRecord::Base
 	validates :user, presence: true
 	validates :category, presence: true
 	validates :title, presence: true, length: { maximum: 250 }
+	validates :state, presence: true, inclusion: {in: %w(preview active)}
+
+	def active?
+		state == "active"
+	end
+
+	def preview?
+		state == "preview"
+	end
 
   def web_image_url
     # TODO: show a representation of the set of responses for some question types

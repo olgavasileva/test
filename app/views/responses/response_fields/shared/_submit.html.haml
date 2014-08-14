@@ -1,8 +1,14 @@
 .row
   .col-xs-12
     .btn-group.btn-group-justified
-      .btn-group
-        - if @next_question
-          = link_to "Skip", new_question_response_path(@next_question), class: %w{btn btn-default}
-      .btn-group
-        %button.btn.btn-default{type: :submit} Submit
+      - if response.question.preview?
+        .btn-group
+          = link_to "Edit", [:edit, response.question], class: %w{btn btn-default}
+        .btn-group
+          = link_to "Continue", [:enable, response.question], class: %w{btn btn-default}, method: :post
+      - else
+        .btn-group
+          - if @next_question
+            = link_to "Skip", new_question_response_path(@next_question), class: %w{btn btn-default}
+        .btn-group
+          %button.btn.btn-default{type: :submit} Submit

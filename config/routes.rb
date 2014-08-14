@@ -23,12 +23,30 @@ LinkchatApp::Application.routes.draw do
 
   resources :question_types
 
-  resources :yes_no_questions
-  resources :order_questions
-  resources :text_questions
-  resources :multiple_choice_questions
-  resources :image_choice_questions
-  resources :text_choice_questions
+  resources :yes_no_questions do
+    post :enable, on: :member
+  end
+
+  resources :order_questions do
+    post :enable, on: :member
+  end
+
+  resources :text_questions do
+    post :enable, on: :member
+  end
+
+  resources :multiple_choice_questions do
+    post :enable, on: :member
+  end
+
+  resources :image_choice_questions do
+    post :enable, on: :member
+  end
+
+  resources :text_choice_questions do
+    post :enable, on: :member
+  end
+
 
   mount TwoCents::API =>'/'
   get "/docs" => 'docs#index'
