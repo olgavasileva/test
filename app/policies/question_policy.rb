@@ -9,9 +9,9 @@ class QuestionPolicy < ApplicationPolicy
 
     def resolve
       if user
-        user.unanswered_questions.order("created_at DESC")
+        user.unanswered_questions.active.order("created_at DESC")
       else
-        Question.order("created_at DESC")
+        Question.active.order("created_at DESC")
       end
     end
   end
@@ -23,5 +23,6 @@ class QuestionPolicy < ApplicationPolicy
   def create?;  @user.present? && @record.user == @user; end
   def edit?;    @user.present? && @record.user == @user; end
   def update?;  @user.present? && @record.user == @user; end
+  def target?;  @user.present? && @record.user == @user; end
   def enable?;  @user.present? && @record.user == @user; end
 end

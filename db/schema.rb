@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140814021818) do
+ActiveRecord::Schema.define(version: 20140814041246) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -104,6 +104,17 @@ ActiveRecord::Schema.define(version: 20140814021818) do
     t.string   "model"
   end
 
+  create_table "feed_items", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "question_id"
+    t.string   "reason"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "feed_items", ["question_id"], name: "index_feed_items_on_question_id", using: :btree
+  add_index "feed_items", ["user_id"], name: "index_feed_items_on_user_id", using: :btree
+
   create_table "friendships", force: true do |t|
     t.integer  "user_id"
     t.integer  "friend_id"
@@ -115,6 +126,25 @@ ActiveRecord::Schema.define(version: 20140814021818) do
   add_index "friendships", ["friend_id"], name: "index_friendships_on_friend_id", using: :btree
   add_index "friendships", ["user_id", "friend_id"], name: "index_friendships_on_user_id_and_friend_id", unique: true, using: :btree
   add_index "friendships", ["user_id"], name: "index_friendships_on_user_id", using: :btree
+
+  create_table "group_members", force: true do |t|
+    t.integer  "group_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "group_members", ["group_id"], name: "index_group_members_on_group_id", using: :btree
+  add_index "group_members", ["user_id"], name: "index_group_members_on_user_id", using: :btree
+
+  create_table "groups", force: true do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "groups", ["user_id"], name: "index_groups_on_user_id", using: :btree
 
   create_table "inclusions", force: true do |t|
     t.integer  "pack_id"
@@ -293,6 +323,16 @@ ActiveRecord::Schema.define(version: 20140814021818) do
   add_index "sharings", ["receiver_id"], name: "index_sharings_on_receiver_id", using: :btree
   add_index "sharings", ["sender_id", "receiver_id", "question_id"], name: "index_sharings_on_sender_id_and_receiver_id_and_question_id", unique: true, using: :btree
   add_index "sharings", ["sender_id"], name: "index_sharings_on_sender_id", using: :btree
+
+  create_table "skipped_items", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "question_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "skipped_items", ["question_id"], name: "index_skipped_items_on_question_id", using: :btree
+  add_index "skipped_items", ["user_id"], name: "index_skipped_items_on_user_id", using: :btree
 
   create_table "star_choices_responses", force: true do |t|
     t.integer  "star_choice_id"

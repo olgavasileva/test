@@ -5,7 +5,7 @@
         .btn-group
           = link_to "Edit", [:edit, response.question], class: %w{btn btn-default}
         .btn-group
-          = link_to "Continue", [:enable, response.question], class: %w{btn btn-default}, method: :post
+          = link_to "Continue", [:target, response.question], class: %w{btn btn-default}, method: :post
       - else
         .btn-group
           - if @next_question

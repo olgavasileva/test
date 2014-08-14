@@ -1,55 +1,15 @@
-class TextChoiceQuestionsController < ApplicationController
-  def new
-    @question = TextChoiceQuestion.new user:current_user
-    authorize @question
-    @question.choices.build title:"Option one"
-    @question.choices.build title:"Option two"
-  end
-
-  def create
-    @question = TextChoiceQuestion.new text_choice_question_params.merge(user_id:current_user.id, state:params[:commit] == "Preview" ? "preview" : "active")
-    authorize @question
-
-    if @question.save
-      redirect_to @question.preview? ? new_question_response_path(@question) : :root
-    else
-      flash[:error] = "There was a problem creating your question."
-      render "new"
-    end
-  end
-
-  def edit
-    @question = TextChoiceQuestion.find params[:id]
-    authorize @question
-  end
-
-  def update
-    @question = TextChoiceQuestion.find params[:id]
-    authorize @question
-
-    if @question.update text_choice_question_params.merge(state:params[:commit] == "Preview" ? "preview" : "active")
-      redirect_to @question.preview? ? new_question_response_path(@question) : :root
-    else
-      flash[:error] = "There was a problem updating your question."
-      render :edit
-    end
-  end
-
-  def enable
-    @question = TextChoiceQuestion.find params[:id]
-    authorize @question
-
-    if @question.update_attributes state:"active"
-      flash[:error] = "The question is now active."
-      redirect_to :root
-    else
-      flash[:error] = "There was a problem enabling your question."
-      render :edit
-    end
-  end
-
+class TextChoiceQuestionsController < QuestionsControllerBase
   protected
-    def text_choice_question_params
+    def question_class
+      TextChoiceQuestion
+    end
+
+    def after_build_new question
+      question.choices.build title:"Option one"
+      question.choices.build title:"Option two"
+    end
+
+    def safe_params
       params.require(:text_choice_question).permit(:type, :title, :category_id, :background_image_id, :rotate, choices_attributes:[:id, :title, :_destroy])
     end
 end
