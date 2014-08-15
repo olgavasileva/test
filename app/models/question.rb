@@ -28,6 +28,11 @@ class Question < ActiveRecord::Base
 		state == "targeting"
 	end
 
+	def activate!
+		self.state = "active"
+		self.save!
+	end
+
   def web_image_url
     # TODO: show a representation of the set of responses for some question types
     "fallback/choice1.png"  # For now, just show something

@@ -30,6 +30,7 @@ class Target
     target_count = 0
 
     ActiveRecord::Base.transaction do
+      @question.activate!
       if @all_users
         User.all.each do |u|
           if u.wants_question? @question

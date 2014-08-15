@@ -9,7 +9,7 @@ class QuestionPolicy < ApplicationPolicy
 
     def resolve
       if user
-        user.unanswered_questions.active.order("created_at DESC")
+        user.feed_questions.order("questions.created_at DESC")
       else
         Question.active.order("created_at DESC")
       end

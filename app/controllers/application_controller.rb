@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   protected
 
     def next_question question
-      policy_scope(Question).where.not(id:question.id).where("created_at >= ?",question.created_at).limit(1).first
+      policy_scope(Question).where.not(id:question.id).where("questions.created_at >= ?",question.created_at).limit(1).first
     end
 
     def configure_devise_permitted_parameters
