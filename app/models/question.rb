@@ -6,10 +6,27 @@ class Question < ActiveRecord::Base
 	has_many :sharings, dependent: :destroy
 	has_many :responses
 	has_many :responses_with_comments, -> { where "comment != ''" }, class_name: "Response"
+	has_many :feed_items, dependent: :destroy
+	has_many :skips, class_name:"SkippedItem", dependent: :destroy
+
+	scope :active, -> { where state:"active" }
 
 	validates :user, presence: true
 	validates :category, presence: true
 	validates :title, presence: true, length: { maximum: 250 }
+	validates :state, presence: true, inclusion: {in: %w(preview targeting active)}
+
+	def active?
+		state == "active"
+	end
+
+	def preview?
+		state == "preview"
+	end
+
+	def targeting?
+		state == "targeting"
+	end
 
   def web_image_url
     # TODO: show a representation of the set of responses for some question types
@@ -33,6 +50,6 @@ class Question < ActiveRecord::Base
 	end
 
 	def skip_count
-		0
+		skips.count
 	end
 end

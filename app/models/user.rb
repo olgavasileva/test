@@ -8,7 +8,14 @@ class User < ActiveRecord::Base
          authentication_keys:[:login], reset_password_keys:[:login]
 
   has_many :responses, dependent: :destroy
+  has_many :feed_items, dependent: :destroy
+  has_many :feed_questions, through: :feed_items, source: :question
   has_many :answered_questions, through: :responses, source: :question
+  has_many :skipped_items, dependent: :destroy
+  has_many :skipped_questions, through: :skipped_items, source: :question
+
+  has_many :groups, dependent: :destroy
+  has_many :group_members, through: :groups, source: :user
 
   # Allow user to log in using username OR email in the 'login' text area
 	# https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
@@ -99,6 +106,10 @@ class User < ActiveRecord::Base
     answered_question_ids = Response.where(user_id:id).pluck(:question_id)
     answered_question_ids.present? ? Question.where("id NOT IN (?)", answered_question_ids) : Question.all
 	end
+
+  def wants_question? question
+    feed_items.where(question_id:question).blank? && skipped_items.where(question_id:question).blank?
+  end
 
 	private
 

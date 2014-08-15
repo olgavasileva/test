@@ -1,0 +1,6 @@
+= simple_form_for @target do |f|
+  = f.input :question_id, as: :hidden
+  = f.input :all_users, as: :boolean
+  = f.input :all_followers, as: :boolean
+  = f.input :all_group_members, as: :boolean
+  = f.submit class:%(btn btn-default)

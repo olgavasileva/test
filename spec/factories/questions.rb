@@ -5,6 +5,7 @@ FactoryGirl.define do
     user
     category
     title {generate :name}
+    state "active"
   end
 
   factory :info_question, parent: :question, class: "InfoQuestion" do
