@@ -67,6 +67,26 @@
         &:checked+.indicators
           .checkmark img
             display: block
+
+    .well
+      background-color: #fff
+      color: #ccc
+      border: 2px solid
+      border-color: #000
+      .icon
+        font-size: 22px
+        padding: 5px 20px
+        color: $cm-blue
+
+
+    .welltitle
+      background-color: $cm-blue
+      height: 60px
+      text-align: center
+      padding: 10px
+      color: #fff
+
+
       .title
         position: absolute
         bottom: 0
@@ -129,23 +149,25 @@
   .order-choices
     .handle
       position: relative
+      widht: auto
 
     img
-      width: 100%
+      width: 300%
       border-radius: 5px
     .well
       background-color: #fff
       color: #ccc
+      border: 2px solid
+      border-color: #000
       .icon
         font-size: 27px
-        padding: 5px 22px
+        padding: 5px 20px
         color: $cm-blue
 
     .welltitle
       background-color: $cm-blue
       height: 60px
       padding: 10px
-
       color: #fff
 
 
@@ -168,9 +190,8 @@
   .multiple-choices
     img
       width: 100%
-      height: 100%
 
-    label
+    .label
       position: relative
       height: 80px
       font-size: 27px
@@ -188,31 +209,34 @@
         font-size: 30px
 
 
-
-
     .well
       background-color: rgba(87,87,87,0.0)
       position: absolute
-      bottom: 0px
+      bottom: 10px
       border: 0PX
 
       .icon
         font-size: 27px
-        padding: 5px 22px
+        padding: 5px 20px
+        color: #fff
+
+      .col-xs-12.welltitle
+        background-color: $cm-blue
+        height: 60px
+        padding: 10px
         color: #fff
 
 
-
-
     .title
-      background-color: rgba(87,87,87,0.75)
+      background-color:  $cm-blue
       position: absolute
+      width: 80%
       margin-left: 20px
       margin-right: 20px
       padding: 5px 15px
       color: #fff
       font-size: 22px
-      top: 24%
+      top: 26%
 
       .checkmark
         position: absolute
@@ -221,4 +245,3 @@
         font-size: 60px
         width: 60px
         height: 60px
-
