@@ -6,14 +6,16 @@
       %ul#orderChoices.list-unstyled
         = form.fields_for :choice_responses do |c|
           %li
-            .panel.panel-default.handle
+            .panel.panel-default
+            .handle
               = c.input :order_choice_id, as: :hidden
               = c.input :position, as: :hidden
               .title=c.object.choice.title
               = responsive_image_tag(c.object.choice.web_image_url, class: "img-responsive")
-    = render "responses/response_fields/shared/comment", form:form, response:response
-    = render "responses/response_fields/shared/sharing", form:form, response:response
-    = render "responses/response_fields/shared/anonymous", form:form, response:response
+      = render "responses/response_fields/shared/comment", form:form, response:response
+      = render "responses/response_fields/shared/sharing", form:form, response:response
+      %br
+      = render "responses/response_fields/shared/anonymous", form:form, response:response
     %br
     = render "responses/response_fields/shared/submit", form:form, response:response
   .col-md-4
