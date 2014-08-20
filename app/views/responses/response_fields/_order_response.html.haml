@@ -1,6 +1,6 @@
 .row
   .col-md-4
-  .col-md-4
+  .col-md-5
     .row.order-choices
       = render "responses/response_fields/shared/title", form:form, response:response
       %ul#orderChoices.list-unstyled
@@ -14,7 +14,6 @@
               = responsive_image_tag(c.object.choice.web_image_url, class: "img-responsive")
       = render "responses/response_fields/shared/comment", form:form, response:response
       = render "responses/response_fields/shared/sharing", form:form, response:response
-      %br
       = render "responses/response_fields/shared/anonymous", form:form, response:response
     %br
     = render "responses/response_fields/shared/submit", form:form, response:response

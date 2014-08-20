@@ -44,6 +44,18 @@
           padding-right: 9px
           margin-right: 4px
 
+.panel-default
+  border: 2px solid
+  border-color: #ccc
+.panel-default > .panel-heading
+  background-color: #fff
+  color: $cm-blue
+  border: 5px solid
+  border-color: #ccc
+
+
+
+
 
 .response
   .image-choices
@@ -52,22 +64,18 @@
       & > input[type=radio],
       & > input[type=checkbox]
         display: none
-
         &+.indicators
           img
             background-color: white
             cursor: pointer
             width: 100%
             border-radius: 5px
-
           .checkmark img
             display: none
             border: 3px solid white
-
         &:checked+.indicators
           .checkmark img
             display: block
-
     .well
       background-color: #fff
       color: #ccc
@@ -77,16 +85,12 @@
         font-size: 22px
         padding: 5px 20px
         color: $cm-blue
-
-
     .welltitle
       background-color: $cm-blue
       height: 60px
       text-align: center
       padding: 10px
       color: #fff
-
-
       .title
         position: absolute
         bottom: 0
@@ -96,7 +100,6 @@
         padding: 15px 5px
         width: 100%
         font-size: 150%
-
       .checkmark
         position: absolute
         top: 10px
@@ -104,7 +107,6 @@
         font-size: 60px
         width: 60px
         height: 60px
-
   .col-md-12.comment
     padding-bottom: 2px
     .form-group
@@ -113,24 +115,19 @@
       background-color: #fff
       color: #000000
       border: none
-
-
   .text-choices
     img
       width: 100%
       border-radius: 5px
-
     .well
       background-color: rgba(87,87,87,0.0)
       position: absolute
       bottom: 0px
       border: 0PX
-
       .icon
         font-size: 27px
         padding: 5px 22px
         color: #fff
-
     .title
       background-color: rgba(87,87,87,0.75)
       position: absolute
@@ -143,35 +140,31 @@
       text-align: center
       font-size: 22px
       top: 24%
-
-
-
   .order-choices
     .handle
       position: relative
       widht: auto
-
-    img
-      width: 300%
-      border-radius: 5px
-    .well
-      background-color: #fff
-      color: #ccc
-      border: 2px solid
-      border-color: #000
-      .icon
-        font-size: 27px
-        padding: 5px 20px
-        color: $cm-blue
-
+      .img-responsive
+        width: 100%
+        border-radius: 5px
     .welltitle
       background-color: $cm-blue
-      height: 60px
-      padding: 10px
+      height: 80px
+      padding: 5px
       color: #fff
-
-
-
+      text-align: center
+    .well
+      background-color: #fff
+      height: 80px
+      color: $cm-blue
+      border: 1px solid
+      text-align: center
+      .icon
+        position: relative
+        font-size: 27px
+        margin: 2px
+        padding: 10px 10px
+        color: $cm-blue
 
     .title
       position: absolute
@@ -183,14 +176,9 @@
       width: 100%
       text-align: center
       bottom: 0px
-
-
-
-
   .multiple-choices
     img
       width: 100%
-
     .label
       position: relative
       height: 80px
@@ -207,26 +195,20 @@
         display: none
         text-align: right
         font-size: 30px
-
-
     .well
       background-color: rgba(87,87,87,0.0)
       position: absolute
       bottom: 10px
       border: 0PX
-
       .icon
         font-size: 27px
         padding: 5px 20px
         color: #fff
-
       .col-xs-12.welltitle
         background-color: $cm-blue
         height: 60px
         padding: 10px
         color: #fff
-
-
     .title
       background-color:  $cm-blue
       position: absolute
@@ -237,7 +219,6 @@
       color: #fff
       font-size: 22px
       top: 26%
-
       .checkmark
         position: absolute
         top: 10px
