@@ -11,10 +11,13 @@ class Question < ActiveRecord::Base
 
 	scope :active, -> { where state:"active" }
 
+	default kind: "public"
+
 	validates :user, presence: true
 	validates :category, presence: true
 	validates :title, presence: true, length: { maximum: 250 }
 	validates :state, presence: true, inclusion: {in: %w(preview targeting active)}
+	validates :kind, inclusion: {in: %w(public targeted)}
 
 	def active?
 		state == "active"

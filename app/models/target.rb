@@ -24,7 +24,7 @@ class Target
     @question = question
   end
 
-  # Add the question to all of the appropriate users
+  # Add the question to all of the appropriate users' feed
   # Will not add a question to a user who already has this question in their feed or skip list
   def apply
     target_count = 0

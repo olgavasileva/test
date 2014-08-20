@@ -8,6 +8,10 @@ class TwoCents::Questions < Grape::API
     desc "Create a text choice question", {
       notes: <<-END
         A TextChoiceQuestion has an overview image and between 2 and 4 text choices of which a user can choose exactly one.
+
+        ## Coming Soon
+        requires :first_name
+
       END
     }
     params do

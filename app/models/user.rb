@@ -74,10 +74,6 @@ class User < ActiveRecord::Base
 		Digest::SHA1.hexdigest(token.to_s)
 	end
 
-	def feed
-		Micropost.from_users_followed_by(self)
-	end
-
 	def following?(other_user)
 		self.relationships.find_by(followed_id: other_user.id)
 	end
@@ -108,7 +104,30 @@ class User < ActiveRecord::Base
 	end
 
   def wants_question? question
-    feed_items.where(question_id:question).blank? && skipped_items.where(question_id:question).blank?
+    feed_items.where(question_id:question).blank? && responses.where(question_id:question).blank? && skipped_items.where(question_id:question).blank?
+  end
+
+  # Add more public questions to the feed
+  # Do not add questions that have been skipped or answered by this user
+  # Do not add questions that are already in this user's feed
+  def feed_more_questions num_to_add
+    all_public_questions = Question.where(kind: 'public')
+
+    # Do it the inefficient way if we don't have too many records since grabbing random items from a small sample is prone to too many misses
+    new_questions = if all_public_questions.count < 1000 &&  skipped_items.count + responses.count + feed_items.count < 1000
+      candidate_ids = all_public_questions.where.not(id:skipped_questions.pluck("questions.id") + answered_questions.pluck("questions.id") + feed_questions.pluck("questions.id"))
+      Question.where id:candidate_ids.sample(num_to_add)
+    else
+      new_questions = []
+      num_candidates = candidates.count
+      while new_questions.count < num_to_add
+        candidate = all_public_questions.order(:id).offset(rand(num_candidates)).limit(1)
+        new_questions << candidate if wants_question?(candidate)
+      end
+      new_questions
+    end
+
+    self.feed_questions += new_questions
   end
 
 	private

@@ -9,9 +9,9 @@ class QuestionPolicy < ApplicationPolicy
 
     def resolve
       if user
-        user.feed_questions.order("questions.created_at DESC")
+        user.feed_questions.order("questions.kind ASC").order("questions.created_at DESC")
       else
-        Question.active.order("created_at DESC")
+        Question.active.order("RAND()")
       end
     end
   end

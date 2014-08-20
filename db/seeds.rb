@@ -96,82 +96,82 @@ other = Category.where(name:"Other").first_or_create!(icon:open(seed_image "cate
 # Questions
 #
 
-q = TextChoiceQuestion.where(title:"Do you like green eggs and ham?").first_or_create!(rotate:false,category:fashion_and_beauty,user:user,background_image_id:random_question_image_id)
+q = TextChoiceQuestion.where(title:"Do you like green eggs and ham?").first_or_create!(state:"active",rotate:false,category:fashion_and_beauty,user:user,background_image_id:random_question_image_id)
 q.choices.where(title:"Yes").first_or_create!
 q.choices.where(title:"No").first_or_create!
 
-q = TextChoiceQuestion.where(title:"How much should be spent on meteor-strike prevention?").first_or_create!(rotate:false,category:home_and_garden,user:user,background_image_id:random_question_image_id)
+q = TextChoiceQuestion.where(title:"How much should be spent on meteor-strike prevention?").first_or_create!(state:"active",rotate:false,category:home_and_garden,user:user,background_image_id:random_question_image_id)
 q.choices.where(title:"About $1").first_or_create!
 q.choices.where(title:"Up to $100").first_or_create!
 q.choices.where(title:"Up to $1,000").first_or_create!
 q.choices.where(title:"Over $1,000").first_or_create!
 
-q = ImageChoiceQuestion.where(title:"Who’s coffee do you prefer?").first_or_create!(rotate:true,category:food_and_drink,user:user)
+q = ImageChoiceQuestion.where(title:"Who’s coffee do you prefer?").first_or_create!(state:"active",rotate:true,category:food_and_drink,user:user)
 q.choices.where(title:"Starbucks").first_or_create!(background_image:ChoiceImage.create!(image:open(seed_image("starbucks.jpg"))))
 q.choices.where(title:"Einstein's").first_or_create!(background_image:ChoiceImage.create!(image:open(seed_image("einstein.jpg"))))
 q.choices.where(title:"Seattle's Best").first_or_create!(background_image:ChoiceImage.create!(image:open(seed_image("seattles-best.jpg"))))
 q.choices.where(title:"Dunkin Donuts").first_or_create!(background_image:ChoiceImage.create!(image:open(seed_image("dunkin.jpg"))))
 
-q = TextChoiceQuestion.where(title:"How would you split up a $50 million lottery prize?").first_or_create!(rotate:true,category:consumer,user:user,background_image_id:random_question_image_id)
+q = TextChoiceQuestion.where(title:"How would you split up a $50 million lottery prize?").first_or_create!(state:"active",rotate:true,category:consumer,user:user,background_image_id:random_question_image_id)
 q.choices.where(title:"Give it all to charity.").first_or_create!
 q.choices.where(title:"80% me, 20% them").first_or_create!
 q.choices.where(title:"80% them, 20% me").first_or_create!
 
-q = TextChoiceQuestion.where(title:"What made-up language would you like to speak?").first_or_create!(rotate:false,category:places_and_travel,user:user,background_image_id:random_question_image_id)
+q = TextChoiceQuestion.where(title:"What made-up language would you like to speak?").first_or_create!(state:"active",rotate:false,category:places_and_travel,user:user,background_image_id:random_question_image_id)
 q.choices.where(title:"Esparanto").first_or_create!
 q.choices.where(title:"Igpay Atinlay").first_or_create!
 q.choices.where(title:"Klingon").first_or_create!
 q.choices.where(title:"Ewok").first_or_create!
 
-q = TextChoiceQuestion.where(title:"Which is your favorite season?").first_or_create!(rotate:true,category:science_and_nature,user:user,background_image_id:random_question_image_id)
+q = TextChoiceQuestion.where(title:"Which is your favorite season?").first_or_create!(state:"active",rotate:true,category:science_and_nature,user:user,background_image_id:random_question_image_id)
 q.choices.where(title:"Summer").first_or_create!(rotate:true)
 q.choices.where(title:"Fall").first_or_create!(rotate:true)
 q.choices.where(title:"Winter").first_or_create!(rotate:true)
 q.choices.where(title:"Spring").first_or_create!(rotate:true)
 
-q = TextChoiceQuestion.where(title:"Which would you give up first?").first_or_create!(rotate:true,category:lifestyle,user:user,background_image_id:random_question_image_id)
+q = TextChoiceQuestion.where(title:"Which would you give up first?").first_or_create!(state:"active",rotate:true,category:lifestyle,user:user,background_image_id:random_question_image_id)
 q.choices.where(title:"My computer").first_or_create!
 q.choices.where(title:"My car").first_or_create!
 q.choices.where(title:"My home").first_or_create!
 q.choices.where(title:"My vacations").first_or_create!
 
-q = TextChoiceQuestion.where(title:"Which of these indulgent drinks is healthier?").first_or_create!(rotate:false,category:food_and_drink,user:user,background_image_id:random_question_image_id)
+q = TextChoiceQuestion.where(title:"Which of these indulgent drinks is healthier?").first_or_create!(state:"active",rotate:false,category:food_and_drink,user:user,background_image_id:random_question_image_id)
 q.choices.where(title:"Starbucks Iced Grande Mocha").first_or_create!
 q.choices.where(title:"McDonald's Milkshake").first_or_create!
 q.choices.where(title:"Jameson's Mai Tai").first_or_create!
 
-q = TextChoiceQuestion.where(title:"How likely is world peace in your lifetime?").first_or_create!(rotate:false,category:news_and_history,user:user,background_image_id:random_question_image_id)
+q = TextChoiceQuestion.where(title:"How likely is world peace in your lifetime?").first_or_create!(state:"active",rotate:false,category:news_and_history,user:user,background_image_id:random_question_image_id)
 q.choices.where(title:"No Chance").first_or_create!
 q.choices.where(title:"50/50 Chance").first_or_create!
 q.choices.where(title:"It's Already Here").first_or_create!
 
-q = TextChoiceQuestion.where(title:"How many years do you think you will live?").first_or_create!(rotate:false,category:lifestyle,user:user,background_image_id:random_question_image_id)
+q = TextChoiceQuestion.where(title:"How many years do you think you will live?").first_or_create!(state:"active",rotate:false,category:lifestyle,user:user,background_image_id:random_question_image_id)
 q.choices.where(title:"A few more").first_or_create!
 q.choices.where(title:"Over 60").first_or_create!
 q.choices.where(title:"Over 100").first_or_create!
 q.choices.where(title:"Forever").first_or_create!
 
-q = MultipleChoiceQuestion.where(title:"Choose all of your favorite coffee houses.").first_or_create(min_responses:1,rotate:false,category:food_and_drink,user:user)
+q = MultipleChoiceQuestion.where(title:"Choose all of your favorite coffee houses.").first_or_create!(state:"active",min_responses:1,rotate:false,category:food_and_drink,user:user)
 q.choices.where(title:"Starbucks").first_or_create!(background_image:ChoiceImage.create!(image:open(seed_image("starbucks.jpg"))))
 q.choices.where(title:"Einstein's").first_or_create!(background_image:ChoiceImage.create!(image:open(seed_image("einstein.jpg"))))
 q.choices.where(title:"Seattle's Best").first_or_create!(background_image:ChoiceImage.create!(image:open(seed_image("seattles-best.jpg"))))
 q.choices.where(title:"Dunkin Donuts").first_or_create!(background_image:ChoiceImage.create!(image:open(seed_image("dunkin.jpg"))))
 
-q = MultipleChoiceQuestion.where(title:"Choose all of the utencils you use.").first_or_create(min_responses:1,rotate:false,category:food_and_drink,user:user)
+q = MultipleChoiceQuestion.where(title:"Choose all of the utencils you use.").first_or_create!(state:"active",min_responses:1,rotate:false,category:food_and_drink,user:user)
 q.choices.where(title:"Fork").first_or_create!(background_image_id:random_choice_image_id)
 q.choices.where(title:"Knife").first_or_create!(background_image_id:random_choice_image_id)
 q.choices.where(title:"Spoon").first_or_create!(background_image_id:random_choice_image_id)
 q.choices.where(title:"Spork").first_or_create!(background_image_id:random_choice_image_id)
 
-q = OrderQuestion.where(title:"Rate these in order of best to worst.").first_or_create(rotate:true,category:food_and_drink,user:user)
+q = OrderQuestion.where(title:"Rate these in order of best to worst.").first_or_create!(state:"active",rotate:true,category:food_and_drink,user:user)
 q.choices.where(title:"Starbucks").first_or_create!(background_image:ChoiceImage.create!(image:open(seed_image("starbucks.jpg"))))
 q.choices.where(title:"Einstein's").first_or_create!(background_image:ChoiceImage.create!(image:open(seed_image("einstein.jpg"))))
 q.choices.where(title:"Seattle's Best").first_or_create!(background_image:ChoiceImage.create!(image:open(seed_image("seattles-best.jpg"))))
 q.choices.where(title:"Dunkin Donuts").first_or_create!(background_image:ChoiceImage.create!(image:open(seed_image("dunkin.jpg"))))
 
-q = OrderQuestion.where(title:"Rate these in order of fastest to slowest.").first_or_create(rotate:true,category:humor,user:user)
+q = OrderQuestion.where(title:"Rate these in order of fastest to slowest.").first_or_create!(state:"active",rotate:true,category:humor,user:user)
 q.choices.where(title:"The Blue Angels").first_or_create!(background_image_id:random_order_image_id)
 q.choices.where(title:"Forest Gump").first_or_create!(background_image_id:random_order_image_id)
 q.choices.where(title:"Madonna").first_or_create!(background_image_id:random_order_image_id)
 
-q = TextQuestion.where(title:"What do you like about travelling?").first_or_create(category:places_and_travel,user:user, text_type:"freeform", min_characters:1, max_characters:200, background_image_id:random_question_image_id)
+q = TextQuestion.where(title:"What do you like about travelling?").first_or_create!(state:"active",category:places_and_travel,user:user, text_type:"freeform", min_characters:1, max_characters:200, background_image_id:random_question_image_id)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140814041246) do
+ActiveRecord::Schema.define(version: 20140820055631) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -266,10 +266,13 @@ ActiveRecord::Schema.define(version: 20140814041246) do
     t.datetime "updated_at"
     t.integer  "background_image_id"
     t.string   "state"
+    t.string   "kind"
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
   add_index "questions", ["category_id"], name: "index_questions_on_category_id", using: :btree
+  add_index "questions", ["created_at"], name: "index_questions_on_created_at", using: :btree
+  add_index "questions", ["kind"], name: "index_questions_on_kind", using: :btree
   add_index "questions", ["user_id"], name: "index_questions_on_user_id", using: :btree
 
   create_table "relationships", force: true do |t|
