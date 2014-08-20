@@ -22,7 +22,6 @@ class ResponsesController < ApplicationController
     end
   end
 
-
   protected
 
     def response_params

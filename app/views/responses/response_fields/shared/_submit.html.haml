@@ -8,7 +8,6 @@
           = link_to "Continue", [:target, response.question], class: %w{btn btn-default}, method: :post
       - else
         .btn-group
-          - if @next_question
-            = link_to "Skip", new_question_response_path(@next_question), class: %w{btn btn-default}
+          = link_to "Skip", new_question_skipped_item_path(response.question), class: %w{btn btn-default}
         .btn-group
           %button.btn.btn-default{type: :submit} Submit
