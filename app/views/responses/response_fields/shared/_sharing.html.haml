@@ -1,13 +1,23 @@
 .row
   .col-md-12
     .well
-      .icon
-        = link_to "#", class:%w(icon), id:%w(icon1), remote:true do
-          %span.glyphicon.glyphicon-asterisk
-        = link_to "#", class:%w(icon), id:%w(icon2),remote:true do
-          %span.glyphicon.glyphicon-euro
-        = link_to "#", class:%w(icon),id:%w(icon3), remote:true do
-          %span.glyphicon.glyphicon-music
-        = link_to "#", class:%w(icon),id:%w(icon4), remote:true do
-          %span.glyphicon.glyphicon-film
-
+      = link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
+        %span.glyphicon.glyphicon-star
+        Like
+      = link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
+        %span.glyphicon.glyphicon-cloud-upload
+        Share
+      = link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
+        %span.glyphicon.glyphicon-send
+        Send
+      = link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
+        %span.glyphicon.glyphicon-flag
+        Flag
+      = link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
+        .asked-by
+          Asked by
+          %br
+          = @response.question.user.name
+        %div
+          %span.glyphicon.glyphicon-resize-small
+          Follow
