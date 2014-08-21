@@ -1,6 +1,6 @@
 .row
   .col-md-4
-  .col-md-5
+  .col-md-4
     .row.order-choices
       = render "responses/response_fields/shared/title", form:form, response:response
       %ul#orderChoices.list-unstyled
@@ -15,6 +15,8 @@
       = render "responses/response_fields/shared/comment", form:form, response:response
       = render "responses/response_fields/shared/sharing", form:form, response:response
       = render "responses/response_fields/shared/anonymous", form:form, response:response
-    %br
+.row
+  .col-md-2
+  .col-md-8
     = render "responses/response_fields/shared/submit", form:form, response:response
   .col-md-4
