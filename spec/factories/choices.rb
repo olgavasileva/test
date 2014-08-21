@@ -12,7 +12,7 @@ FactoryGirl.define do
 
   factory :image_choice, parent: :choice_base, class:"ImageChoice" do
     question {build :image_choice_question}
-    image
+    background_image
   end
 
   factory :multiple_choice, parent: :choice_base, class:"MultipleChoice" do

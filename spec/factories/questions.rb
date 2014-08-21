@@ -23,7 +23,7 @@ FactoryGirl.define do
 
   factory :text_choice_question, parent: :question, class: "TextChoiceQuestion" do
     rotate false
-    image
+    background_image
   end
 
   factory :image_choice_question, parent: :question, class: "ImageChoiceQuestion" do

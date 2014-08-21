@@ -395,10 +395,14 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       page = declared_params[:page]
-      per_page = page ? declared_params[:per_page] : nil
-      questions = policy_scope(Question)
+      per_page = page ? declared_params[:per_page] : 9
 
-      @questions = questions.paginate(page:page, per_page:per_page)
+      @questions = policy_scope(Question).paginate(page: page, per_page:per_page)
+
+      if @questions.count < per_page * page.to_i + per_page + 1
+        current_user.feed_more_questions per_page + 1
+        @questions = policy_scope(Question).paginate(page: page, per_page:per_page)
+      end
     end
 
 

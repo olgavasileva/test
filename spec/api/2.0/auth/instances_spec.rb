@@ -64,6 +64,30 @@ describe :instances do
         it {expect(JSON.parse(response.body)['api_domain']).to be_present}
         it {expect(JSON.parse(response.body)['google_gtm']).to eq ENV['google_gtm']}
         it {expect(JSON.parse(response.body)['background_images'].class).to eq Array}
+        it {expect(JSON.parse(response.body)['background_images_retina'].class).to eq Array}
+        it {expect(JSON.parse(response.body)['background_choice_images'].class).to eq Array}
+        it {expect(JSON.parse(response.body)['background_choice_images_retina'].class).to eq Array}
+        it {expect(JSON.parse(response.body)['background_order_choice_images'].class).to eq Array}
+        it {expect(JSON.parse(response.body)['background_order_choice_images_retina'].class).to eq Array}
+
+        context "When there is one background image of each type (quetion, choice, order choice) and for standard and retina displays" do
+          let(:before_api_call) do
+            CannedQuestionImage.stub(:all).and_return([question_image])
+            CannedChoiceImage.stub(:all).and_return([choice_image])
+            CannedOrderChoiceImage.stub(:all).and_return([order_choice_image])
+          end
+          let(:question_image) {double(:question_image, device_image_url:"DEVICE QUESTION URL", retina_device_image_url:"RETINA DEVICE QUESTION URL")}
+          let(:choice_image) {double(:choice_image, device_image_url:"DEVICE CHOICE URL", retina_device_image_url:"RETINA DEVICE CHOICE URL")}
+          let(:order_choice_image) {double(:order_choice_image, device_image_url:"DEVICE ORDER URL", retina_device_image_url:"RETINA DEVICE ORDER URL")}
+
+          it {expect(JSON.parse(response.body)['background_images']).to eq ["DEVICE QUESTION URL"]}
+          it {expect(JSON.parse(response.body)['background_images_retina']).to eq ["RETINA DEVICE QUESTION URL"]}
+          it {expect(JSON.parse(response.body)['background_choice_images']).to eq ["DEVICE CHOICE URL"]}
+          it {expect(JSON.parse(response.body)['background_choice_images_retina']).to eq ["RETINA DEVICE CHOICE URL"]}
+          it {expect(JSON.parse(response.body)['background_order_choice_images']).to eq ["DEVICE ORDER URL"]}
+          it {expect(JSON.parse(response.body)['background_order_choice_images_retina']).to eq ["RETINA DEVICE ORDER URL"]}
+        end
+
         it "should set the app version on the instance" do
           expect(Instance.find_by(uuid:JSON.parse(response.body)['instance_token']).app_version).to eq app_version
         end
