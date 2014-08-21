@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe ImageChoiceResponse do
   describe :validations do
-    it {except(FactoryGirl.build(:image_choice_response)).to be_valid}
+    it {expect(FactoryGirl.build(:image_choice_response)).to be_valid}
   end
 
   describe :relations do

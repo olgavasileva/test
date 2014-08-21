@@ -20,7 +20,10 @@ LinkchatApp::Application.routes.draw do
   end
 
   resources :inquiries
-  resources :users
+  resources :users do
+    get :profile, on: :collection
+    get :follow, on: :member
+  end
 
   resources :question_types
 

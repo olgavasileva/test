@@ -32,24 +32,22 @@ class User < ActiveRecord::Base
   # This is in addition to a real persisted field like 'username'
 	attr_accessor :login
 
-	has_many :microposts, dependent: :destroy
-	has_many :relationships, foreign_key: "follower_id", dependent: :destroy
-	has_many :followed_users, through: :relationships, source: :followed
-	has_many :reverse_relationships, foreign_key: "followed_id", class_name: "Relationship", dependent: :destroy
-	has_many :followers, through: :reverse_relationships, source: :follower
-	has_many :instances, dependent: :destroy
+  has_many :followership_relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
+  has_many :leaders, through: :followership_relationships, source: :leader
+
+  has_many :leadership_relationships, class_name: "Relationship", foreign_key: "leader_id", dependent: :destroy
+  has_many :followers, through: :leadership_relationships, source: :follower
+
+  has_many :instances, dependent: :destroy
 	has_many :authentications, dependent: :destroy
 	has_many :devices, through: :instances
 	has_many :questions, dependent: :destroy
 	has_many :packs, dependent: :destroy
-	has_many :friendships, foreign_key: "user_id", dependent: :destroy
-	has_many :friends, through: :friendships, source: :friend
-	has_many :reverse_friendships, foreign_key: "friend_id", class_name: "Friendship", dependent: :destroy
-	has_many :reverse_friends, through: :reverse_friendships, source: :user
 	has_many :sharings, foreign_key: "sender_id", dependent: :destroy
 	has_many :reverse_sharings, foreign_key: "receiver_id", class_name: "Sharing", dependent: :destroy
   has_many :liked_comments
   has_many :liked_comment_responses, through: :liked_comments, source: :response
+  has_many :responses_with_comments, -> {where "responses.comment IS NOT NULL AND responses.comment != ''"}, class_name: "Response"
 
 	before_create :create_remember_token
 
@@ -74,28 +72,16 @@ class User < ActiveRecord::Base
 		Digest::SHA1.hexdigest(token.to_s)
 	end
 
-	def following?(other_user)
-		self.relationships.find_by(followed_id: other_user.id)
+	def following? leader
+		self.followership_relationships.where(leader_id: leader.id).present?
 	end
 
-	def follow!(other_user)
-		self.relationships.create!(followed_id: other_user.id)
+	def follow! leader
+		self.leaders << leader
 	end
 
-	def unfollow!(other_user)
-		self.relationships.find_by(followed_id: other_user.id).destroy!
-	end
-
-	def friends_with?(other_user)
-		self.friendships.find_by(friend_id: other_user.id)
-	end
-
-	def friend!(other_user)
-		self.friendships.create!(friend_id: other_user.id, status: 'accepted')
-	end
-
-	def unfriend!(other_user)
-		self.friendships.find_by(friend_id: other_user.id).destroy!
+	def unfollow! leader
+    self.leaders.where(id:leader.id).destroy!
 	end
 
 	def unanswered_questions

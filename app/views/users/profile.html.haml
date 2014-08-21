@@ -1,0 +1,45 @@
+.panel.panel-default
+  .panel-heading
+    %h2.panel-title=@user.username
+  .panel-body
+    .row
+
+      .col-sm-4
+        .panel.panel-default
+          .panel-heading
+            %h3.panel-title You have asked #{pluralize @user.questions.count, "question"}
+          .list-group
+            - @user.questions.each do |question|
+              .list-group-item=question.title
+
+      .col-sm-4
+        .panel.panel-default
+          .panel-heading
+            %h3.panel-title You have answered #{pluralize @user.responses.count, "question"}
+          .list-group
+            - @user.responses.each do |response|
+              .list-group-item=response.question.title
+
+      .col-sm-4
+        .panel.panel-default
+          .panel-heading
+            %h3.panel-title You have made #{pluralize @user.responses_with_comments.count, "comment"}
+          .list-group
+            - @user.responses_with_comments.each do |response|
+              .list-group-item=response.question.title
+
+      .col-sm-4
+        .panel.panel-default
+          .panel-heading
+            %h3.panel-title You have #{pluralize @user.followers.count, "follower"}
+          .list-group
+            - @user.followers.each do |follower|
+              .list-group-item=follower.username
+
+      .col-sm-4
+        .panel.panel-default
+          .panel-heading
+            %h3.panel-title You are following #{pluralize @user.leaders.count, "other user"}
+          .list-group
+            - @user.leaders.each do |leader|
+              .list-group-item=leader.username

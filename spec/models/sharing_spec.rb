@@ -6,13 +6,13 @@ describe Sharing do
   let(:question) { FactoryGirl.create(:question) }
   let(:sharing) { sender.sharings.build(receiver_id: receiver.id, question_id: question.id) }
 
-  it { except(sharing).to be_valid }
+  it { expect(sharing).to be_valid }
 
   describe "sharing methods" do
   	it { sharing.should respond_to(:sender) }
   	it { sharing.should respond_to(:receiver) }
   	it { sharing.should respond_to(:question) }
-  	it { except(sharing.sender).to eq sender }
+  	it { expect(sharing.sender).to eq sender }
   	it { sharing.receiver.should eq receiver }
   	it { sharing.question.should eq question }
   end

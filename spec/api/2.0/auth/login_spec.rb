@@ -44,7 +44,7 @@ describe :login do
             it {expect(response.headers["Content-Type"]).to eq "application/json"}
             it {expect(JSON.parse(response.body)).to_not be_nil}
             it {expect(JSON.parse(response.body)['error_code']).to eq 400}
-            it {expect(JSON.parse(response.body)['error_message']).to match /\[:email, :username\] are mutually exclusive/}
+            it {expect(JSON.parse(response.body)['error_message']).to match /email, username are mutually exclusive/}
           end
 
           context "With neither email nor password " do

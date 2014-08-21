@@ -8,7 +8,7 @@ describe Relationship do
 
   subject { relationship }
 
-  it { except(relationship).to be_valid }
+  it { expect(relationship).to be_valid }
 
   describe "follower methods" do
     it { relationship.should respond_to(:follower) }

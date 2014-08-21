@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe MultipleChoiceResponse do
   describe :validations do
-    it {except(FactoryGirl.build(:multiple_choice_response)).to be_valid}
+    it {expect(FactoryGirl.build(:multiple_choice_response)).to be_valid}
   end
 
   describe :relations do

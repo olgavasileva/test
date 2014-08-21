@@ -64,7 +64,6 @@
         - comment
         - stars
         - percent
-        - position
   ChoiceResponse:
     :options:
       :fields:
@@ -72,7 +71,6 @@
         - question_id
         - text
         - comment
-        - position
   MultipleChoiceResponse:
     :options:
       :fields:
@@ -80,7 +78,6 @@
         - question_id
         - text
         - comment
-        - position
   User:
     :options:
       :fields:

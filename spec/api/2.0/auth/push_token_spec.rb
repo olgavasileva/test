@@ -9,7 +9,7 @@ describe :push_token do
   context "Without the required params" do
     it {expect(response.status).to eq 200}
     it {expect(JSON.parse(response.body)).to_not be_nil}
-    it {except(JSON.parse(response.body)['error_code']).to eq 400}
+    it {expect(JSON.parse(response.body)['error_code']).to eq 400}
     it {JSON.parse(response.body)['error_message'].should match /.+ is missing/}
   end
 
@@ -33,7 +33,7 @@ describe :push_token do
         let(:instance) {FactoryGirl.create :instance}
 
         context "When the push token doesn't belong to any instances" do
-          it {except(response.status).to eq 201}
+          it {expect(response.status).to eq 201}
           it {JSON.parse(response.body)['error_code'].should be_nil}
           it {JSON.parse(response.body)['error_message'].should be_nil}
           it {instance.reload.push_token.should eq token}
@@ -45,7 +45,7 @@ describe :push_token do
           let(:token) {other_instance.push_token}
 
           it {response.status.should eq 201}
-          it {except(JSON.parse(response.body)['error_code']).to be_nil}
+          it {expect(JSON.parse(response.body)['error_code']).to be_nil}
           it {JSON.parse(response.body)['error_message'].should be_nil}
           it {instance.reload.push_token.should eq token}
           it {other_instance.reload.push_token.should be_nil}

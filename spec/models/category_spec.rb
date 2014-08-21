@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Category do
 
   describe :validations do
-    it {except(FactoryGirl.build(:category)).to be_valid}
+    it {expect(FactoryGirl.build(:category)).to be_valid}
     it {FactoryGirl.build(:category, name:nil).should_not be_valid}
   end
 
