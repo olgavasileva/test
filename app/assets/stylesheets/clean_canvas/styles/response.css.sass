@@ -115,19 +115,23 @@
       background-color: #fff
       color: #000000
       border: none
+
   .text-choices
     img
-      width: 100%
       border-radius: 5px
+      width: 100%
     .well
       background-color: rgba(87,87,87,0.0)
       position: absolute
       bottom: 0px
       border: 0PX
+      margin-bottom: 0px
       .icon
         font-size: 27px
-        padding: 5px 22px
+        padding: 0px 22px
         color: #fff
+    .triangle-isosceles
+      padding: 1px
     .title
       background-color: rgba(87,87,87,0.75)
       position: absolute
@@ -155,17 +159,20 @@
       text-align: center
     .well
       background-color: #fff
-      height: 80px
+      height: 50px
       color: $cm-blue
       border: 1px solid
       text-align: center
+      margin: 2px
+      padding: 5px
       .icon
         position: relative
-        font-size: 27px
-        margin: 2px
-        padding: 10px 10px
+        font-size: 22px
+        margin: 0px
+        padding: 5px 24px
         color: $cm-blue
-
+    .triangle-isosceles
+      padding: 1px
     .title
       position: absolute
       background-color: rgba(87,87,87,0.75)
@@ -176,47 +183,19 @@
       width: 100%
       text-align: center
       bottom: 0px
+
   .multiple-choices
     img
       width: 100%
-    .label
-      position: relative
-      height: 80px
-      font-size: 27px
-      text-align: center
-      padding: 5px
-      background-color: $cm-blue
-      width: 100%
-    .indicators
-      width: 100%
-      position: relative
-      .checkmark
-        position: absolute
-        display: none
-        text-align: right
-        font-size: 30px
-    .well
-      background-color: rgba(87,87,87,0.0)
-      position: absolute
-      bottom: 10px
-      border: 0PX
-      .icon
-        font-size: 27px
-        padding: 5px 20px
-        color: #fff
-      .col-xs-12.welltitle
-        background-color: $cm-blue
-        height: 60px
-        padding: 10px
-        color: #fff
     .title
-      background-color:  $cm-blue
+      background-color: rgba(87,87,87,0.75)
       position: absolute
       width: 80%
       margin-left: 20px
       margin-right: 20px
       padding: 5px 15px
       color: #fff
+      text-align: center
       font-size: 22px
       top: 26%
       .checkmark
@@ -226,3 +205,36 @@
         font-size: 60px
         width: 60px
         height: 60px
+
+    .triangle-isosceles
+      padding: 2px
+
+    .label
+      position: absolute
+      font-size: 20px
+      text-align: center
+      padding: 10px
+      background-color: $cm-blue
+      width: 100%
+      min-height: 50%
+      height: auto
+      .indicators
+        width: 100%
+        position: relative
+        .checkmark
+          position: absolute
+          display: none
+          text-align: right
+          font-size: 30px
+    .well
+      background-color: rgba(87,87,87,0.0)
+      position: absolute
+      bottom: 0px
+      border: 0px
+      padding-bottom: 0px
+      margin-bottom: 0px
+      .icon
+        font-size: 27px
+        padding: 0px 20px
+        color: #fff
+
