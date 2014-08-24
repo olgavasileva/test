@@ -1,5 +1,4 @@
-.col-md-3
-.col-md-6
+.col-md-6.col-md-push-3
   .prioritizer.panel.panel-default
     .panel-heading
       .panel-title
@@ -9,8 +8,7 @@
       = simple_form_for @question do |f|
         =f.input :type, as: :hidden
         .row
-          .col-sm-3
-          .col-sm-6
+          .col-sm-6.col-md-push-3
             .row.question
               .col-sm-12
                 .title=f.input :title, label: false, placeholder: "Ask Your Question Here"
