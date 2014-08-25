@@ -6,6 +6,6 @@ class SkippedItem < ActiveRecord::Base
 
   private
     def remove_from_feed
-      user.feed_items.where(question_id:question).destroy_all
+      user.feed_items.where(question_id:question).destroy_all if user
     end
 end

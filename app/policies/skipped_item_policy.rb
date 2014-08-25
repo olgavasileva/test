@@ -12,6 +12,6 @@ class SkippedItemPolicy < ApplicationPolicy
     end
   end
 
-  def require_user? ; true; end
-  def new?;     @user.present? && @record.user == @user; end
+  def require_user? ; false; end
+  def new?;     @user.present? ? @record.user == @user : @record.user.nil?; end
 end

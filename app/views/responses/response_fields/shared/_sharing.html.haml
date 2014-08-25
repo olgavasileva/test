@@ -48,10 +48,11 @@
       %h5 Posted by
       %h6.elipsable
         = @response.question.user.name
-    - if current_user.following? @response.question.user
-      %div
-        Following
-    - else
-      = link_to "Follow",[:follow, @response.question.user],class:%w(col-md-2 btn vertical-middle btn-default negative) , remote: true
+    - if user_signed_in?
+      - if current_user.following? @response.question.user
+        %div
+          Following
+      - else
+        = link_to "Follow",[:follow, @response.question.user],class:%w(col-md-2 btn vertical-middle btn-default negative) , remote: true
     = link_to "",class:%w(col-md-2 col-md-push-5 vertical-middle) , remote: true do
       %h4 ...
