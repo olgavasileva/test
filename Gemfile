@@ -43,6 +43,7 @@ gem 'activeadmin-sortable'
 gem 'acts_as_list'
 
 gem 'attribute_defaults' # Provides an easy way to initialize attributes in active record
+gem 'gravatar_for'
 
 
 gem 'grape',            # API DSL

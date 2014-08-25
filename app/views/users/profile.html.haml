@@ -1,6 +1,10 @@
 .panel.panel-default
   .panel-heading
-    %h2.panel-title=@user.username
+    %h2.panel-title
+      =link_to "https://en.gravatar.com", target: :_blank do
+        - gravatar_for @user.email, default: :identicon
+      &nbsp;
+      =@user.username
   .panel-body
     .row
 
