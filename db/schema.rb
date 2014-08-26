@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140820223051) do
+ActiveRecord::Schema.define(version: 20140825230106) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -59,10 +59,10 @@ ActiveRecord::Schema.define(version: 20140820223051) do
   add_index "authentications", ["user_id"], name: "index_authentications_on_user_id", using: :btree
 
   create_table "background_images", force: true do |t|
-    t.string   "image"
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "image"
     t.string   "type"
   end
 
@@ -74,7 +74,6 @@ ActiveRecord::Schema.define(version: 20140820223051) do
   end
 
   create_table "choices", force: true do |t|
-    t.integer  "question_id"
     t.text     "title"
     t.integer  "position"
     t.boolean  "rotate"
@@ -83,6 +82,7 @@ ActiveRecord::Schema.define(version: 20140820223051) do
     t.datetime "updated_at"
     t.integer  "background_image_id"
     t.string   "type"
+    t.integer  "question_id"
   end
 
   add_index "choices", ["question_id"], name: "index_choices_on_question_id", using: :btree
@@ -292,6 +292,14 @@ ActiveRecord::Schema.define(version: 20140820223051) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
+
+  create_table "settings", force: true do |t|
+    t.boolean  "enabled"
+    t.string   "key"
+    t.text     "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "sharings", force: true do |t|
     t.integer  "sender_id"
