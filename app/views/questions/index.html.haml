@@ -1,6 +1,9 @@
 #portfolio
   .container
     #gallery_container.row
+      - if @questions.blank?
+        %h2.col-sm-12.text-center
+          Please check back later.
       - @questions.each do |question|
         .col-sm-4
           =link_to new_question_response_path(question), class: :thumbnail do
@@ -10,3 +13,6 @@
             .icon
               = responsive_image_tag question.category.icon.web.url
               %small.category= question.category.name
+    .row
+      .col-sm-12.text-center
+        = will_paginate @questions

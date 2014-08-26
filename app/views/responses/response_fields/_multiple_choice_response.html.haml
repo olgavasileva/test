@@ -1,26 +1,69 @@
-.row.multiple-choices
-  .col-md-2
-  .col-md-4
-    = responsive_image_tag((response.question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
+:sass
+  .multiple-choice-wrapper
+    &.col-md-6
+      margin: 0
+      border: solid 1px black
+      width: 49%
+      margin-bottom: 10px
+      margin-right: -2px
+      overflow: hidden
+      cursor: pointer
+      &:nth-child(2n)
+        margin-left: 2%
+    .img-responsive
+      margin: auto
+
+    i.glyphicon.glyphicon-ok.selected
+      font-size: 1.8em
+      position: absolute
+      right: 15px
+      top: 15px
+      color: white
+      background-color: rgba(0,0,0,0.3)
+      padding: 5px
+      padding-left: 15px
+      padding-right: 15px
+      border: solid 1px white
+      display: none
+
+    .option-title
+      position: absolute
+      width: 100%
+      bottom: 0
+      text-align: center
+      color: white
+      background-color: rgba(0,0,0,0.3)
+      left: 0
+      padding-top: 8px
+      padding-bottom: 8px
+
+    &.selected-choice
+      i.glyphicon.glyphicon-ok.selected
+        display: block
+
+    input[type]
+      position: absolute
+      top: -110%
+
+.row
+  .col-md-6.col-md-push-3
+    = render "responses/response_fields/shared/title", form:form, response:response
     .row
-    .title= response.question.title
-    = render "responses/response_fields/shared/sharing", form:form, response:response
-  .col-md-4
-    = form.collection_check_boxes :choice_ids, response.question.choices, :id, :title, item_wrapper_class: 'col-md-12' do |c|
-      .label= c.object.title
-      = c.check_box label:false
-      .indicators
-        .checkmark
-          .glyphicon.glyphicon-ok
 
-
-.row
-  .col-md-2
-  .col-md-4.multiple-choices
+      -@response.question.choices.each do |c|
+        %label.col-md-6.multiple-choice-wrapper
+          =responsive_image_tag((c.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
+          %i.glyphicon.glyphicon-ok.selected
+          =check_box_tag(:answer,c.id,false,{class:'selected-choice',onchange:"Toggle(event)"})
+          .option-title=c.title
     = render "responses/response_fields/shared/comment", form:form, response:response
-  .col-md-4
+    = render "responses/response_fields/shared/sharing", form:form, response:response
     = render "responses/response_fields/shared/anonymous", form:form, response:response
-.row
-  .col-md-2
-  .col-md-8
+    %br
     = render "responses/response_fields/shared/submit", form:form, response:response
+
+    :javascript
+      window.Toggle=function(event){
+        method=event.target.checked?'addClass':'removeClass'
+        $(event.target).parent()[method]('selected-choice');
+      }

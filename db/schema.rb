@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140814041246) do
+ActiveRecord::Schema.define(version: 20140825230106) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -115,18 +115,6 @@ ActiveRecord::Schema.define(version: 20140814041246) do
   add_index "feed_items", ["question_id"], name: "index_feed_items_on_question_id", using: :btree
   add_index "feed_items", ["user_id"], name: "index_feed_items_on_user_id", using: :btree
 
-  create_table "friendships", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "friend_id"
-    t.string   "status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "friendships", ["friend_id"], name: "index_friendships_on_friend_id", using: :btree
-  add_index "friendships", ["user_id", "friend_id"], name: "index_friendships_on_user_id_and_friend_id", unique: true, using: :btree
-  add_index "friendships", ["user_id"], name: "index_friendships_on_user_id", using: :btree
-
   create_table "group_members", force: true do |t|
     t.integer  "group_id"
     t.integer  "user_id"
@@ -191,15 +179,6 @@ ActiveRecord::Schema.define(version: 20140814041246) do
 
   add_index "liked_comments", ["response_id"], name: "index_liked_comments_on_response_id", using: :btree
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
-
-  create_table "microposts", force: true do |t|
-    t.string   "content"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "microposts", ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at", using: :btree
 
   create_table "order_choices_responses", force: true do |t|
     t.integer  "order_choice_id"
@@ -266,22 +245,25 @@ ActiveRecord::Schema.define(version: 20140814041246) do
     t.datetime "updated_at"
     t.integer  "background_image_id"
     t.string   "state"
+    t.string   "kind"
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
   add_index "questions", ["category_id"], name: "index_questions_on_category_id", using: :btree
+  add_index "questions", ["created_at"], name: "index_questions_on_created_at", using: :btree
+  add_index "questions", ["kind"], name: "index_questions_on_kind", using: :btree
   add_index "questions", ["user_id"], name: "index_questions_on_user_id", using: :btree
 
   create_table "relationships", force: true do |t|
     t.integer  "follower_id"
-    t.integer  "followed_id"
+    t.integer  "leader_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "relationships", ["followed_id"], name: "index_relationships_on_followed_id", using: :btree
-  add_index "relationships", ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true, using: :btree
+  add_index "relationships", ["follower_id", "leader_id"], name: "index_relationships_on_follower_id_and_leader_id", unique: true, using: :btree
   add_index "relationships", ["follower_id"], name: "index_relationships_on_follower_id", using: :btree
+  add_index "relationships", ["leader_id"], name: "index_relationships_on_leader_id", using: :btree
 
   create_table "responses", force: true do |t|
     t.string   "type"
@@ -310,6 +292,14 @@ ActiveRecord::Schema.define(version: 20140814041246) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
+
+  create_table "settings", force: true do |t|
+    t.boolean  "enabled"
+    t.string   "key"
+    t.text     "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "sharings", force: true do |t|
     t.integer  "sender_id"

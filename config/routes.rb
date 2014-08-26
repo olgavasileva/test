@@ -16,10 +16,14 @@ LinkchatApp::Application.routes.draw do
     resources :multiple_choice_responses
     resources :text_responses
     resources :order_responses
+    resources :skipped_items
   end
 
   resources :inquiries
-  resources :users
+  resources :users do
+    get :profile, on: :collection
+    get :follow, on: :member
+  end
 
   resources :question_types
 

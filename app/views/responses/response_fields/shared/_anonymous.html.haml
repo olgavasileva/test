@@ -1,7 +1,7 @@
-.row
-  .col-xs-12
-    .btn-group.btn-group-justified{data:{toggle: :buttons}}
-      %label.btn.btn-primary
-        %input{type: :radio, name:"#{form.object_name}[anonymous]", id:"option1", value: false} Public
-      %label.btn.btn-primary
-        %input{type: :radio, name:"#{form.object_name}[anonymous]", id:"option2", value: true} Anonymous
+
+.row.user-visibility
+  .btn-group.btn-group-justified{data:{toggle: :buttons}}
+    %label.btn.btn-default.negative
+      %input{type: :radio, name:"#{form.object_name}[anonymous]", id:"option1", value: false} Public
+    %label.btn.btn-default.negative
+      %input{type: :radio, name:"#{form.object_name}[anonymous]", id:"option2", value: true} Anonymous

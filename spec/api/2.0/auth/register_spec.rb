@@ -9,7 +9,7 @@ describe :register do
   context "Without the required params" do
     it {expect(response.status).to eq 200}
     it {expect(JSON.parse(response.body)).to_not be_nil}
-    it {except(JSON.parse(response.body)['error_code']).to eq 400}
+    it {expect(JSON.parse(response.body)['error_code']).to eq 400}
     it {JSON.parse(response.body)['error_message'].should match /.+ is missing/}
   end
 
@@ -49,7 +49,7 @@ describe :register do
 
           it {response.status.should eq 200}
           it {JSON.parse(response.body).should_not be_nil}
-          it {except(JSON.parse(response.body)['error_code']).to eq 1001}
+          it {expect(JSON.parse(response.body)['error_code']).to eq 1001}
           it {JSON.parse(response.body)['error_message'].should match /Invalid instance token/}
         end
 
@@ -68,7 +68,7 @@ describe :register do
             let(:user) {FactoryGirl.create :user}
             let(:username) {user.username}
 
-            it {except(response.status).to eq 200}
+            it {expect(response.status).to eq 200}
             it {JSON.parse(response.body).should_not be_nil}
             it {JSON.parse(response.body)['error_code'].should eq 1009}
             it {JSON.parse(response.body)['error_message'].should match /Handle is already taken/}
@@ -81,7 +81,7 @@ describe :register do
             it {JSON.parse(response.body)['error_message'].should be_nil}
             it {User.find_by(email:email).should_not be_nil}
             it {User.find_by(username:username.downcase).should_not be_nil}
-            it {except(User.find_by(username:username.downcase)).to eq User.find_by(email:email)}
+            it {expect(User.find_by(username:username.downcase)).to eq User.find_by(email:email)}
             it {Instance.find_by(uuid:instance_token).user.id.should eq User.find_by(email:email).id}
             it {JSON.parse(response.body)['auth_token'].should eq Instance.find_by(uuid:instance_token).auth_token}
 

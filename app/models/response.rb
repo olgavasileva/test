@@ -1,7 +1,7 @@
 class Response < ActiveRecord::Base
   belongs_to :user
   belongs_to :question
-  has_many :liked_comments
+  has_many :liked_comments, dependent: :destroy
   has_many :comment_likers, through: :liked_comments, source: :user
 
 	validates :question, presence: true

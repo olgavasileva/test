@@ -6,7 +6,7 @@ describe Inclusion do
 	let (:question) { FactoryGirl.create(:question) }
 	let (:inclusion) { pack.inclusions.build(question_id: question.id) }
 
-	it { except(inclusion).to be_valid }
+	it { expect(inclusion).to be_valid }
 
 	describe "inclusion methods" do
 		it { inclusion.should respond_to(:pack) }

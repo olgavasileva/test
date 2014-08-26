@@ -1,17 +1,45 @@
-.row
-  .col-md-4
-  .col-md-4
+:sass
+  .row.text-choices
+    .popover.bottom.text-answer
+      padding: 0
+      display:  block
+      position: relative
+      margin-top: 0
+      box-shadow: none
+      max-width: none
+      height: auto
+      .arrow
+        left: 12.5%
+      .form-group.text
+        margin: 0
+        textarea
+          height: 6em
+          border: none
+          resize: none
+          margin: 0
+    .well.row.follow-menu
+      margin-top: -60px
+      background-color: transparent
+      a
+        color: white
+        .elipsable
+          border-color: white
+      .btn-default.negative
+        background-color: transparent
+        color: white
+        border-color: white
+
+.row.text-choices.form-group
+  .col-md-6.col-md-push-3
+    .well
     .row.text-choices
       = responsive_image_tag((response.question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
       .title= response.question.title
-      %br
-      = render "responses/response_fields/shared/sharing", form:form, response:response
-      = render "responses/response_fields/shared/comment", form:form, response:response
-      = render "responses/response_fields/shared/anonymous", form:form, response:response
-    %br
-  .col-4
+    = render "responses/response_fields/shared/sharing", form:form, response:response
+    .popover.bottom.text-answer.row.form-group
+      = form.input :text, as: :text, label: false, placeholder: "Type your response here", input_html: { rows:3 }
+      .arrow
+    = render "responses/response_fields/shared/anonymous", form:form, response:response
 .row
-  .col-md-3
-  .col-md-6
+  .col-md-10.col-md-push-1
     = render "responses/response_fields/shared/submit", form:form, response:response
-  .col-md-3

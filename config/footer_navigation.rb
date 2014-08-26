@@ -2,6 +2,7 @@
 SimpleNavigation::Configuration.run do |navigation|
   navigation.items do |footer|
     footer.item :home, 'Home', root_path
+    footer.item :profile, 'Your Profile', [:profile, :users] if user_signed_in?
     footer.item :about, 'About Us', '#'
     footer.item :tos, 'Terms of Service', '#'
     footer.item :privacy, 'Privacy Policy', '#'

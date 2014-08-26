@@ -88,16 +88,16 @@ class TwoCents::Auth < Grape::API
 
       instance.update_attributes! launch_count:instance.launch_count.to_i + 1, app_version:declared_params[:app_version]
 
-      { instance_token:instance.uuid,
+      Hash[Setting.enabled.map{|s| [s.key, s.value] }].merge({
+        instance_token:instance.uuid,
         api_domain:api_domain,
-        google_gtm:google_gtm,
-        background_images:BackgroundImage.all.map{ |i| i.device_image_url },
-        background_images_retina:BackgroundImage.all.map{ |i| i.retina_device_image_url },
-        faq_url:"http://www.crashmob.com/?page_id=668",
-        feedback_url:"http://www.crashmob.com/?page_id=674",
-        about_url:"http://www.crashmob.com/?page_id=670",
-        terms_and_conditions_url:"http://www.crashmob.com/?page_id=672"
-      }
+        background_images:CannedQuestionImage.all.map{ |i| i.device_image_url },
+        background_images_retina:CannedQuestionImage.all.map{ |i| i.retina_device_image_url },
+        background_choice_images:CannedChoiceImage.all.map{ |i| i.device_image_url },
+        background_choice_images_retina:CannedChoiceImage.all.map{ |i| i.retina_device_image_url },
+        background_order_choice_images:CannedOrderChoiceImage.all.map{ |i| i.device_image_url },
+        background_order_choice_images_retina:CannedOrderChoiceImage.all.map{ |i| i.retina_device_image_url }
+      })
     end
 
 

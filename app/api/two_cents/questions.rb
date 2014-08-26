@@ -8,6 +8,10 @@ class TwoCents::Questions < Grape::API
     desc "Create a text choice question", {
       notes: <<-END
         A TextChoiceQuestion has an overview image and between 2 and 4 text choices of which a user can choose exactly one.
+
+        ## Coming Soon
+        requires :first_name
+
       END
     }
     params do
@@ -391,10 +395,14 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       page = declared_params[:page]
-      per_page = page ? declared_params[:per_page] : nil
-      questions = policy_scope(Question)
+      per_page = page ? declared_params[:per_page] : 15
 
-      @questions = questions.paginate(page:page, per_page:per_page)
+      @questions = policy_scope(Question).paginate(page: page, per_page:per_page)
+
+      if @questions.count < per_page * page.to_i + per_page + 1
+        current_user.feed_more_questions per_page + 1
+        @questions = policy_scope(Question).paginate(page: page, per_page:per_page)
+      end
     end
 
 

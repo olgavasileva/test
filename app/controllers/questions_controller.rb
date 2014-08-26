@@ -1,8 +1,14 @@
 class QuestionsController < ApplicationController
 
   def index
-    @questions = policy_scope Question
-    @categories = Category.where(id:@questions.group(:category_id).map{|question| question.category_id}).order(:name)
+    per_page = 9
+    @questions = policy_scope(Question).paginate(page: params[:page], per_page:per_page)
+
+    if user_signed_in? && @questions.count < per_page * params[:page].to_i + per_page + 1
+      current_user.feed_more_questions per_page + 1
+      @questions = policy_scope(Question).paginate(page: params[:page], per_page:per_page)
+    end
+
   end
 
   def summary
@@ -18,6 +24,7 @@ class QuestionsController < ApplicationController
 
   def new
     @question = current_user.questions.new
+    @question_types=question_ty
     authorize @question
   end
 

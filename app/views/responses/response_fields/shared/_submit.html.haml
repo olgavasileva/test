@@ -1,14 +1,13 @@
+:sass
+  .almost-6
+    width: 49%
+    margin-right: -2px
+    &:nth-child(2n)
+      margin-left: 2%
 .row
-  .col-xs-12
-    .btn-group.btn-group-justified
-      - if response.question.preview?
-        .btn-group
-          = link_to "Edit", [:edit, response.question], class: %w{btn btn-default}
-        .btn-group
-          = link_to "Continue", [:target, response.question], class: %w{btn btn-default}, method: :post
-      - else
-        .btn-group
-          - if @next_question
-            = link_to "Skip", new_question_response_path(@next_question), class: %w{btn btn-default}
-        .btn-group
-          %button.btn.btn-default{type: :submit} Submit
+  - if response.question.preview?
+    = link_to "Edit", [:edit, response.question], class: %w{btn btn-default almost-6}
+    = link_to "Continue", [:target, response.question], class: %w{btn btn-default almost-6}
+  - else
+    = link_to "Skip", new_question_skipped_item_path(response.question), class: %w{btn btn-default almost-6}
+    %button.btn.btn-default.almost-6{type: :submit} Submit

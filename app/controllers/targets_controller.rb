@@ -10,14 +10,17 @@ class TargetsController < ApplicationController
   def create
     @target =Target.new target_params
     authorize @target
-    @target_count = @target.apply  # TODO - do this on a background resque queue or delayed job - it will take time when there are lots of users
+    @target_count = @target.apply_to_user current_user  # TODO - do this on a background resque queue or delayed job - it will take time when there are lots of users
+    @public = @target.public?
+    targets = @target.public? ? ["the public feed"] : []
+    targets << view_context.pluralize( @target_count, "direct feed") if @target_count > 0
 
-    flash[:alert] = "Question added to #{view_context.pluralize @target_count, "user feed"}"
+    flash[:alert] = "Question added to #{ targets.join " and " }."
     redirect_to :root
   end
 
   protected
     def target_params
-      params.require(:target).permit(:question_id, :all_users, :all_followers, :all_group_members)
+      params.require(:target).permit(:question_id, :all_users, :all_followers, :all_groups, :follower_ids, :group_ids)
     end
 end
