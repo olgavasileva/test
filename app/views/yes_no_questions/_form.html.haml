@@ -1,5 +1,68 @@
-.col-md-2
-.col-md-8
+:sass
+  .col-sm-6.not_visible
+    visibility: hidden
+  .img-responsive.scale-buttons
+    margin-top: 3px
+    margin-bottom: 3px
+  .answer-option
+    &:hover
+      .option-text
+        textarea.form-control
+          background-color: rgba(255,255,255,0.2)
+          border-color: #ccccff
+    .option-text
+      .form-group.text.required.yes_no_question_choices_title
+        font-size: 2em
+        height: 1.5em
+        position: absolute
+        top: 50%
+        margin: 0
+        left: 0
+        margin-top: -0.75em
+        display: block
+        width: 100%
+      textarea.form-control
+        display: block
+        font-size: 1em
+        width: 100%
+        background-color: transparent
+        border: solid 1px transparent
+        color: white
+        overflow: hidden
+        text-align: center
+        resize: none
+        outline: none
+        box-shadow: none
+        margin: 0
+        height: 100%
+        padding: 0
+        border-radius: 0
+
+  #yes_no_question_title
+    background-color: transparent
+    border-color: transparent
+    width: 100%
+    color: white
+    font-size: 0.7em
+    margin: 0
+    resize: none
+    max-height: 100%
+    &:focus
+      background-color: rgba(0,0,0,0.2)
+      border-color: #ccccff
+    &:hover
+      background-color: rgba(0,0,0,0.3)
+      border-color: #ccccff
+
+  #yesno_title_container
+    max-height: 80%
+    padding: 15px
+    top: 50%
+    margin-top: -43px
+    .form-group
+      margin: 0
+
+.col-sm-8.col-sm-push-2
   .yesno.panel.panel-default
     .panel-heading
       .panel-title
@@ -15,27 +78,80 @@
         .row
           .col-sm-6
             .question
-              .title=f.input :title, label: false, placeholder: "Ask Your Question Here"
+              #yesno_title_container.title=f.input :title, label: false, placeholder: "Ask Your Question Here"
               .bgimage= responsive_image_tag @question.web_image_url, class: "img-responsive"
-          .col-md-6
-            =f.simple_fields_for :choices do |c|
-              .answer.well
-                =c.input :title, label: false, placeholder: "Type a response"
+          =f.simple_fields_for :choices do |c|
+            .col-sm-6.form-group.answer-option
+              %div
+                %a.btn.btn-primary.col-sm-12.option-text
+                  .row
+                    .col-sm-6.not_visible
+                      .bgimage
+                        = responsive_image_tag @question.web_image_url, class: "img-responsive scale-buttons"
+                  -#=text_area_tag(:title, label: false, placeholder:"Type a response",class:"selectable-choice-text col-sm-12")
+                  =c.input :title, label: false, placeholder: "Type a response"
+
         .row
-          .col-md-6
+          .col-sm-6
             .well.image_control
               <Image manipulation tools>
               =link_to '#', class: :prev_image do
                 %span.glyphicon.glyphicon-chevron-left
               =link_to '#', class: :next_image do
                 %span.glyphicon.glyphicon-chevron-right
-          .col-md-6
+          .col-sm-6
             .well
               =f.association :category
         .row
-          .col-md-6
+          .col-sm-6
             .btn-group.btn-group-justified
               =f.button :submit, "Preview", class: %w(btn-block)
-          .col-md-6
+          .col-sm-6
             .btn-group.btn-group-justified
               =f.button :submit, "Continue", class: %w(btn-block)
+
+:javascript
+  $(function(){
+
+    window.TextAreaAutoReize=function(elem,level_reposition){
+
+      var timeHandler,
+      repositionNode;
+
+      var resize=function(){
+        clearTimeout(timeHandler)
+        $(this).height(0);
+        $(this).height(this.scrollHeight);
+        if(repositionNode){
+          repositionNode.css({top:'50%','margin-top':('-'+(repositionNode.outerHeight()/2)+'px'),position:'aboslute'})
+        }
+
+      },
+      delayResize=function(){
+        clearTimeout(timeHandler)
+        timeHandler=setTimeout(resize.bind(this),10);
+      }
+
+      if(!arguments.length || (typeof elem!=='string' && !elem.nodeType)){
+        console.log('selector or DOM node needed');
+        return
+      }
+
+
+      if(typeof elem ==='string'){
+        elem=$(elem);
+      }
+      elem.on('change',resize);
+      elem.on('keydown cut paste drop',delayResize);
+      if(typeof level_reposition != 'undefined'){
+        repositionNode=elem;
+        for(i=0; i<level_reposition;i++){
+          repositionNode=repositionNode.parent();
+        }
+      }
+
+
+  }
+    TextAreaAutoReize('#yes_no_question_title',2);
+
+  })
