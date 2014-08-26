@@ -7,7 +7,7 @@
 .row
   - if response.question.preview?
     = link_to "Edit", [:edit, response.question], class: %w{btn btn-default almost-6}
-    = link_to "Continue", [:target, response.question], class: %w{btn btn-default almost-6}, method: :post
+    = link_to "Continue", [:target, response.question], class: %w{btn btn-default almost-6}
   - else
     = link_to "Skip", new_question_skipped_item_path(response.question), class: %w{btn btn-default almost-6}
     %button.btn.btn-default.almost-6{type: :submit} Submit
