@@ -1,3 +1,13 @@
+:sass
+  .almost-8
+    background-color: #cecece
+    width: 100%
+    margin: 0px
+    padding: 17px
+    font-size: 18px
+    color: #fff
+
+
 #portfolio
   .container
     #gallery_container.row
@@ -13,6 +23,10 @@
             .icon
               = responsive_image_tag question.category.icon.web.url
               %small.category= question.category.name
+    .row
+      .col-md-2
+      .col-sm-8
+        %button.almost-8 Show More
     .row
       .col-sm-12.text-center
         = will_paginate @questions
