@@ -34,8 +34,9 @@
   // Show the remove_field link on the 3rd and subsequent fields
   .answer a.remove_fields
     display: none
-  .answer+.answer+.answer a.remove_fields
-    display: inline
+  .answer+.answer+.answer
+    .remove_fields
+      display: inline!important
 
   // Hide the Add Another Choice link when there are 4 choices showing
   .answer+.answer+.answer+.answer+.links a.add_fields

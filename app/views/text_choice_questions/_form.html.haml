@@ -1,42 +1,36 @@
 :sass
-  .col-sm-6.not_visible
-    visibility: hidden
-  .img-responsive.scale-buttons
-    margin-top: 3px
-    margin-bottom: 3px
-  .answer-option
+  .answer.text-created-choice
+    position: relative
     &:hover
-      .option-text
-        textarea.form-control
-          background-color: rgba(255,255,255,0.2)
-          border-color: #ccccff
-    .option-text
-      .form-group.text.required.text_choice_question_title
-        font-size: 2em
-        height: 1.5em
-        position: absolute
-        top: 50%
-        margin: 0
-        left: 0
-        margin-top: -0.75em
-        display: block
-        width: 100%
       textarea.form-control
-        display: block
-        font-size: 1em
-        width: 100%
-        background-color: transparent
-        border: solid 1px transparent
-        color: white
-        overflow: hidden
-        text-align: center
-        resize: none
-        outline: none
-        box-shadow: none
-        margin: 0
-        height: 100%
-        padding: 0
-        border-radius: 0
+        background-color: rgba(255,255,255,0.2)
+        border-color: #ccccff
+    .form-group.text_choice_question_choices_title
+      font-size: 1.3em
+      height: 1.5em
+      position: absolute
+      top: 50%
+      margin: 0
+      left: 0
+      margin-top: -0.75em
+      display: block
+      width: 100%
+    textarea.form-control
+      display: block
+      font-size: 1em
+      width: 100%
+      background-color: transparent
+      border: solid 1px transparent
+      color: white
+      overflow: hidden
+      text-align: center
+      resize: none
+      outline: none
+      box-shadow: none
+      margin: 0
+      height: 100%
+      padding: 0
+      border-radius: 0
 
   #text_choice_question_title
     background-color: transparent
@@ -106,8 +100,16 @@
     clear: both
     float: none
 
+  .text-created-choice
+    .remove_fields
+      position: absolute
+      right: 10px
+      top: 10px
+      color: white
+      text-decoration: none
+      z-index: 20
 
-.col-sm-8.col.sm-push-2
+.col-sm-8.col-sm-push-2
   .textchoice.panel.panel-default
     .panel-heading
       .panel-title
