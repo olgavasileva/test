@@ -19,11 +19,12 @@ FactoryGirl.define do
     text_type "freeform"
     min_characters 0
     max_characters 255
+    association :background_image, factory: :question_image
   end
 
   factory :text_choice_question, parent: :question, class: "TextChoiceQuestion" do
     rotate false
-    background_image
+    association :background_image, factory: :question_image
   end
 
   factory :image_choice_question, parent: :question, class: "ImageChoiceQuestion" do

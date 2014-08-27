@@ -41,10 +41,6 @@ FactoryGirl.define do
     fixture_file_upload File.join("spec","factories","fixtures","images","Example.jpg")
   end
 
-  sequence :background_image do |n|
-    fixture_file_upload File.join("spec","factories","fixtures","images","Example.jpg")
-  end
-
   sequence :sample_image_url do |n|
     "/tmp/Vals-sample.jpg"
   end
