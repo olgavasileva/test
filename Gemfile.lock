@@ -325,7 +325,7 @@ GEM
       json (~> 1.4)
     responders (1.0.0)
       railties (>= 3.2, < 5)
-    rmagick (2.13.2)
+    rmagick (2.13.3)
     rolify (3.4.0)
     rspec-core (3.0.2)
       rspec-support (~> 3.0.0)
