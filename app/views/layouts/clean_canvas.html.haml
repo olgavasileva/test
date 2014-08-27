@@ -15,17 +15,21 @@
     / Open Sans font from Google CDN
     %link{href: "http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic", rel: "stylesheet", type: "text/css"}/
 
-    = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true
-    = javascript_include_tag "application", "data-turbolinks-track" => true
+    = stylesheet_link_tag "clean_canvas", media: "all", "data-turbolinks-track" => true
+    = javascript_include_tag "clean_canvas", "data-turbolinks-track" => true
     :sass
       #main-wrapper,
       #content-wrapper
         padding: 0
 
+      .navbar.sticky
+        z-index: 1062
+
+
     /[if lt IE 9]
       <script src="assets/javascripts/ie.min.js"></script>
 
-  %body#clean-canvas.pull_top{class: yield(:body_class)}
+  %body#clean-canvas.pull_top
     #main-wrapper
       #content-wrapper
         = render 'layouts/clean_canvas/header'
@@ -33,6 +37,7 @@
           #flash
             - flash.each do |key, value|
               = content_tag(:div, value, class: "alert alert-#{key}")
-        = yield
+        #undertop.container
+          = yield
         = render 'layouts/clean_canvas/footer'
-        = debug(params) if Rails.env.development?
+    = debug(params) if Rails.env.development?

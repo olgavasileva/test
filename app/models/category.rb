@@ -3,6 +3,5 @@ class Category < ActiveRecord::Base
 
 	validates :name, presence: true
 
-  mount_uploader :image, CategoryImageUploader
   mount_uploader :icon, IconUploader
 end

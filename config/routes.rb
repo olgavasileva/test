@@ -8,17 +8,57 @@ LinkchatApp::Application.routes.draw do
   root 'questions#index'
   get '/test' => 'pages#test' if Rails.env.development?
 
-  resources :questions do
+  resources :questions, shallow:true do
     get :summary, on: :member
-  end
-  resources :responses
-  namespace :responses do
+    resources :responses
     resources :text_choice_responses
     resources :image_choice_responses
     resources :multiple_choice_responses
     resources :text_responses
+    resources :order_responses
+    resources :skipped_items
   end
+
   resources :inquiries
+  resources :users do
+    get :profile, on: :collection
+    get :follow, on: :member
+  end
+
+  resources :question_types
+
+  resources :yes_no_questions do
+    get :target, on: :member
+    post :enable, on: :member
+  end
+
+  resources :order_questions do
+    get :target, on: :member
+    post :enable, on: :member
+  end
+
+  resources :text_questions do
+    get :target, on: :member
+    post :enable, on: :member
+  end
+
+  resources :multiple_choice_questions do
+    get :target, on: :member
+    post :enable, on: :member
+  end
+
+  resources :image_choice_questions do
+    get :target, on: :member
+    post :enable, on: :member
+  end
+
+  resources :text_choice_questions do
+    get :target, on: :member
+    post :enable, on: :member
+  end
+
+  resources :targets
+
 
   mount TwoCents::API =>'/'
   get "/docs" => 'docs#index'

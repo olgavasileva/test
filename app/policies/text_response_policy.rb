@@ -1,0 +1,2 @@
+class TextResponsePolicy < ResponsePolicy
+end

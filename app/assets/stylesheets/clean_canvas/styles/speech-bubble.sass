@@ -1,0 +1,38 @@
+// From: http://nicolasgallagher.com/pure-css-speech-bubbles/demo/
+
+$triangle-size:10px
+
+.triangle-isosceles
+  position: relative
+  padding: 15px
+  color: #000
+  background-color: #2E5BA0
+  -webkit-border-radius: 10px
+  -moz-border-radius: 10px
+  border-radius: 10px
+
+// THE TRIANGLE
+// -------------------------------------------------------------------------------------------------------------------------------
+
+// creates triangle
+.triangle-isosceles:after
+  content: ""
+  position: absolute
+  bottom: -$triangle-size             // value = - border-top-width - border-bottom-width
+  left: 50px               // controls horizontal position
+  border-width: $triangle-size $triangle-size 0 // vary these values to change the angle of the vertex
+  border-style: solid
+  border-color: #2E5BA0 transparent
+  // reduce the damage in FF3.0
+  display: block
+  width: 0
+
+// Variant : top
+// ------------------------------------------
+
+.triangle-isosceles.top:after
+  top: -$triangle-size    // value = - border-top-width - border-bottom-width
+  left: 50px   // controls horizontal position
+  bottom: auto
+  border-width: 0 $triangle-size $triangle-size // vary these values to change the angle of the vertex
+  border-color: #2E5BA0 transparent

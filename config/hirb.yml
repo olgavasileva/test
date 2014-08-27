@@ -3,39 +3,81 @@
     :options:
       :fields:
         - id
+        - type
         - title
+        - state
   MultipleChoiceQuestion:
     :options:
       :fields:
         - id
+        - type
         - title
+        - state
+  TextChoiceQuestion:
+    :options:
+      :fields:
+        - id
+        - type
+        - title
+        - state
+  TextQuestion:
+    :options:
+      :fields:
+        - id
+        - type
+        - title
+        - state
+  ImageChoiceQuestion:
+    :options:
+      :fields:
+        - id
+        - type
+        - title
+        - state
+  OrderQuestion:
+    :options:
+      :fields:
+        - id
+        - type
+        - title
+        - state
+  YesNoQuestion:
+    :options:
+      :fields:
+        - id
+        - type
+        - title
+        - state
+  Question:
+    :options:
+      :fields:
+        - id
+        - type
+        - title
+        - state
   Response:
     :options:
       :fields:
         - id
         - question_id
         - text
+        - comment
         - stars
         - percent
-        - position
   ChoiceResponse:
     :options:
       :fields:
         - id
         - question_id
         - text
-        - stars
-        - percent
-        - position
+        - comment
   MultipleChoiceResponse:
     :options:
       :fields:
         - id
         - question_id
         - text
-        - stars
-        - percent
-        - position
+        - comment
   User:
     :options:
       :fields:

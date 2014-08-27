@@ -10,10 +10,14 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder'
 
+gem 'bootstrap-sass'
+gem 'autoprefixer-rails'
+
 gem 'will_paginate'
 
 gem 'bcrypt-ruby'
-gem 'jquery-ui-rails', '4.2.1'
+gem 'jquery-ui-rails'
+gem 'touchpunch-rails'  # Convert touch events on mobile to jquery compatible mouse events
 
 gem 'activeadmin', github: 'gregbell/active_admin'
 gem 'devise'
@@ -23,6 +27,7 @@ gem 'pundit',           # simple, robust and scaleable authorization system
   ref:"509be500c36c4a665b2cb88ed188fc36ee41bdf8"
 
 gem 'simple_form', '~> 3.1.0.rc1', github: 'plataformatec/simple_form', branch: 'master'
+gem 'cocoon'            # Dynamic nested forms using jQuery made easy; works with formtastic, simple_form or default forms
 gem 'toastr-rails'      # Growl like notifications
 
 gem 'haml'
@@ -30,11 +35,15 @@ gem 'haml'
 gem 'simple-navigation'
 
 gem 'carrierwave'       # Image uploading and access
+gem 'fog'               # Cloud services intergration into carrierwave (e.g. s3)
 gem 'rmagick',          # Image manipulation
   require: false
 
 gem 'activeadmin-sortable'
 gem 'acts_as_list'
+
+gem 'attribute_defaults' # Provides an easy way to initialize attributes in active record
+gem 'gravatar_for'
 
 
 gem 'grape',            # API DSL

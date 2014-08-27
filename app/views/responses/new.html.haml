@@ -1,0 +1,12 @@
+.panel.panel-default
+  .panel-heading
+    .panel-title
+      =link_to root_path do
+        %span.glyphicon.glyphicon-chevron-left
+        Back to Feed
+  .panel-body.response
+    = simple_form_for [:question, setup_response(@response)] do |form|
+      = form.association :question, as: :hidden
+      = form.association :user, as: :hidden
+      = form.input :type, as: :hidden
+      = render "response_fields", form:form, response:@response

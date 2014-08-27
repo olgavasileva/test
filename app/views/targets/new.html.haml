@@ -1,0 +1,17 @@
+= simple_form_for @target do |f|
+  = f.input :question_id, as: :hidden
+  .panel.panel-default
+    .panel-heading
+      %h2.panel-title Send To
+    .panel-body
+      .row
+        .col-sm-4
+          = f.input :all_users, as: :boolean
+        .col-sm-4
+          = f.input :all_followers, as: :boolean
+          = f.input :follower_ids, as: :check_boxes, collection: current_user.followers, label:""
+        .col-sm-4
+          = f.input :all_groups, as: :boolean
+          = f.input :group_ids, as: :check_boxes, collection: current_user.groups, label:""
+
+  = f.submit class:%(btn btn-default)

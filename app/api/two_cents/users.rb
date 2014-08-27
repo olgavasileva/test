@@ -22,7 +22,7 @@ class TwoCents::Users < Grape::API
     }
     params do
       requires :username, type: String, regexp:User::VALID_USERNAME_REGEX
-      requires :name, type: String, regexp:/\A.{1,50}\z/, desc:"User's full name, 1 to 50 characters, including whitespace and special characters"
+      optional :name, type: String, regexp:/\A.{1,50}\z/, desc:"User's full name, 1 to 50 characters, including whitespace and special characters"
       requires :email, type: String, regexp: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$.?/i, desc:'e.g. oscar@madisononline.com'
       requires :password, type: String
       requires :udid, type: String, desc:"Unique identifier for the device"
@@ -103,42 +103,6 @@ class TwoCents::Users < Grape::API
       {success:User.paginate(page:declared_params[:page])}
     end
 
-
-
-    desc "Become friends with all other users"
-    params do
-      requires :udid, type: String, desc:"Unique identifier for the device"
-      requires :remember_token, type: String, desc:"Token obtained from register or login"
-    end
-    post 'autofriend_all_users' do
-      authorize_user!
-
-      User.all.each do |user|
-        unless user == current_user
-          unless current_user.friends_with? user
-            current_user.friend! user
-          end
-
-          unless user.friends_with? current_user
-            user.friend! current_user
-          end
-        end
-      end
-
-      { success: { friendships: current_user.friendships } }
-    end
-
-
-    desc "Return the list of my friends"
-    params do
-      requires :udid, type: String, desc:"Unique identifier for the device"
-      requires :remember_token, type: String, desc:"Token obtained from register or login"
-    end
-    post 'friends' do
-      { success: { friends: current_user.friends } }
-    end
-
-
     desc "Return a list of users the caller is following"
     params do
       requires :udid, type: String, desc:"Unique identifier for the device"
@@ -146,7 +110,7 @@ class TwoCents::Users < Grape::API
       requires :page, type: Integer
     end
     post 'following' do
-      users = current_user.followed_users.paginate page: declared_params[:page]
+      users = current_user.leaders.paginate page: declared_params[:page]
       { success:users }
     end
 
@@ -172,18 +136,6 @@ class TwoCents::Users < Grape::API
     post 'devices' do
       devices = current_user.devices.paginate page: declared_params[:page]
       { success:devices }
-    end
-
-
-    desc "Return a list of this user's microposts"
-    params do
-      requires :udid, type: String, desc:"Unique identifier for the device"
-      requires :remember_token, type: String, desc:"Token obtained from register or login"
-      requires :page, type: Integer
-    end
-    post 'microposts' do
-      microposts = current_user.microposts.paginate page: declared_params[:page]
-      { success:microposts }
     end
 
 

@@ -1,0 +1,213 @@
+:sass
+  .answer.text-created-choice
+    position: relative
+    &:hover
+      textarea.form-control
+        background-color: rgba(255,255,255,0.2)
+        border-color: #ccccff
+    .form-group.text_choice_question_choices_title
+      font-size: 1.3em
+      height: 1.5em
+      position: absolute
+      top: 50%
+      margin: 0
+      left: 0
+      margin-top: -0.75em
+      display: block
+      width: 100%
+    textarea.form-control
+      display: block
+      font-size: 1em
+      width: 100%
+      background-color: transparent
+      border: solid 1px transparent
+      color: white
+      overflow: hidden
+      text-align: center
+      resize: none
+      outline: none
+      box-shadow: none
+      margin: 0
+      height: 100%
+      padding: 0
+      border-radius: 0
+
+  #text_choice_question_title
+    background-color: transparent
+    border-color: transparent
+    width: 100%
+    color: white
+    font-size: 0.7em
+    margin: 0
+    resize: none
+    max-height: 100%
+    &:focus
+      background-color: rgba(0,0,0,0.2)
+      border-color: #ccccff
+    &:hover
+      background-color: rgba(0,0,0,0.3)
+      border-color: #ccccff
+
+  #text_title_container
+    max-height: 80%
+    padding: 15px
+    top: 50%
+    margin-top: -43px
+    .form-group
+      margin: 0
+  #category_dropdown_toggler
+    position: relative
+  #category_caret
+    border-top: 21px solid
+    border-right: 20px solid transparent
+    border-left: 20px solid transparent
+    &:after
+      display: inline-block
+      width: 0
+      height: 0
+      margin-left: 2px
+      vertical-align: middle
+      border-top: 16px solid white
+      border-right: 15px solid transparent
+      border-left: 15px solid transparent
+      position: absolute
+      left: 20px
+      top: 0px
+      content: " "
+  .category-dropdown-wrapper
+    border: solid 1px #264e8e
+    position: relative
+    ul#categry_dropdown_menu
+      left: auto
+      overflow: auto
+      left: -1px
+      right: -1px
+      width: auto
+      border: solid 1px #264e8e
+      border-radius: 0 0 3px 3px
+      padding: 10px
+      border-top: none
+      margin-top: -3px
+      max-height: 110px
+  #background_selector
+    font-size: 2.2em
+    border: solid 1px #264e8e
+    padding: 8px
+    padding-top: 9px
+  #image_upload
+    text-align: center
+  .close-float
+    clear: both
+    float: none
+
+  .text-created-choice
+    .remove_fields
+      position: absolute
+      right: 10px
+      top: 10px
+      color: white
+      text-decoration: none
+      z-index: 20
+
+.col-sm-8.col-sm-push-2
+  .textchoice.panel.panel-default
+    .panel-heading
+      .panel-title
+        =link_to question_types_path do
+          %span.glyphicon.glyphicon-chevron-left
+    .panel-body.imagechooser
+      = simple_form_for @question do |f|
+        =f.input :type, as: :hidden
+        =f.input :rotate, as: :hidden
+        .hidden
+          .canned{data:{ids:canned_question_image_ids, urls:canned_question_image_web_urls}}
+          .id=f.input :background_image_id, as: :hidden
+        .row.form-group
+          .col-sm-6
+            .question
+              #text_title_container.title=f.input :title, label: false, placeholder: "Ask Your Question Here"
+              .bgimage= responsive_image_tag @question.web_image_url, class: "img-responsive"
+          .col-md-6
+            =f.simple_fields_for :choices do |choice|
+              = render 'choice_fields', f:choice
+            .links=link_to_add_association 'Add another Choice', f, :choices
+        .row.form-group
+          .col-sm-6
+            #background_selector.image_control
+              <Image manipulation tools>
+              .col-sm-6#image_upload
+                =link_to '#', class: :upload_image do
+                  %span.glyphicon.glyphicon-cloud-upload
+              .col-sm-2
+                =link_to '#', class: :prev_image do
+                  %span.glyphicon.glyphicon-chevron-left
+              .col-sm-2.col-sm-push-1
+                =link_to '#', class: :next_image do
+                  %span.glyphicon.glyphicon-chevron-right
+              .close-float
+
+          #category_dropdown.dropdown.col-sm-6
+
+            %div.category-dropdown-wrapper
+              %a{:class=>"row",:id=>'category_dropdown_toggler',:role=>'button',:data=>{:toggle=>'dropdown',:target=>'#'}}
+                .col-sm-9=(@question.category||'Select a Category')
+                .col-sm-1
+                  %span{:class=>["caret"], :id=>"category_caret"}
+              %ul#categry_dropdown_menu{:class=>["dropdown-menu"],:role=>"menu", :aria=>{:labelledby=>"category_dropdown_toggler"}}
+                -Category.all.each do |c|
+                  %li
+                    =c.name
+
+        .row
+          .col-sm-6
+            .btn-group.btn-group-justified
+              =f.button :submit, "Preview", class: %w(btn-block btn-lg)
+          .col-sm-6
+            .btn-group.btn-group-justified
+              =f.button :submit, "Continue", class: %w(btn-block btn-lg)
+
+:javascript
+  $(function(){
+
+    window.TextAreaAutoReize=function(elem,level_reposition){
+
+      var timeHandler,
+      repositionNode;
+
+      var resize=function(){
+        clearTimeout(timeHandler)
+        $(this).height(0);
+        $(this).height(this.scrollHeight);
+        if(repositionNode){
+          repositionNode.css({top:'50%','margin-top':('-'+(repositionNode.outerHeight()/2)+'px'),position:'aboslute'})
+        }
+
+      },
+      delayResize=function(){
+        clearTimeout(timeHandler)
+        timeHandler=setTimeout(resize.bind(this),10);
+      }
+
+      if(!arguments.length || (typeof elem!=='string' && !elem.nodeType)){
+        console.log('selector or DOM node needed');
+        return
+      }
+
+
+      if(typeof elem ==='string'){
+        elem=$(elem);
+      }
+      elem.on('change',resize);
+      elem.on('keydown cut paste drop',delayResize);
+      if(typeof level_reposition != 'undefined'){
+        repositionNode=elem;
+        for(i=0; i<level_reposition;i++){
+          repositionNode=repositionNode.parent();
+        }
+      }
+
+
+  }
+    TextAreaAutoReize('#text_choice_question_title',2);
+
+  })

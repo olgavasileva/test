@@ -1,0 +1,34 @@
+:sass
+  .question_types .panel-body a
+    margin: 0
+    margin-bottom: 15px
+  .question_types .panel-body a h1.title
+    position: relative
+    font-size: 1.7em
+    margin: 0
+    line-height: 136px
+
+  .question_types .icon.floating-icom
+    position: absolute
+    left: 25px
+    top: 9px
+
+  @media (max-width: 995px)
+    .question_types .panel-body a h1.title
+      padding-left: 65px
+
+.question_types.panel.panel-default
+  .panel-heading
+    .panel-title
+      =link_to root_path do
+        %span.glyphicon.glyphicon-chevron-left
+        Back to Feed
+  .panel-body
+    %h1 Question Types
+    .row
+      - @question_types.each do |question_type|
+        .item.col-sm-6
+          = link_to path_for_new(question_type), class: %w(btn btn-default) do
+            .row
+              .icon.floating-icom=image_tag icon_for(question_type)
+              %h1.title.col-xs-12=title_for question_type

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe ImageChoiceQuestion do
   describe :validations do
-    it {except(FactoryGirl.build(:image_choice_question)).to be_valid}
+    it {expect(FactoryGirl.build(:image_choice_question)).to be_valid}
     it {FactoryGirl.build(:image_choice_question, title:nil).should_not be_valid}
     it {FactoryGirl.build(:image_choice_question, rotate:nil).should_not be_valid}
   end

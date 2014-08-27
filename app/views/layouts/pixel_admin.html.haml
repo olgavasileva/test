@@ -14,8 +14,8 @@
     / Open Sans font from Google CDN
     %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
 
-    = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true
-    = javascript_include_tag "application", "data-turbolinks-track" => true
+    = stylesheet_link_tag "pixel_admin", media: "all", "data-turbolinks-track" => true
+    = javascript_include_tag "pixel_admin", "data-turbolinks-track" => true
 
     %title= full_title(yield(:title))
 
@@ -23,7 +23,7 @@
       <script src="assets/javascripts/ie.min.js"></script>
     /
 
-  %body{class: yield(:body_class)}
+  %body
     #main-wrapper
       #content-wrapper
         - flash.each do |key, value|

@@ -1,0 +1,34 @@
+.panel.panel-default
+  .panel-heading
+    .panel-title Response Summary
+  .panel-body.summary
+    .row
+      .col-md-12.submit
+        .row
+          .col-md-9.buttons
+            - if @next_question
+              = link_to new_question_response_path(@next_question), class: %w{btn-link skip} do
+                Next Question
+                %span.glyphicon.glyphicon-play
+          .col-md-3
+    .row
+      .col-md-6
+        %h2=@question.title
+        = image_tag @question.web_image_url
+        .row
+          .col-xs-6 Stats
+          .col-xs-6 Filter
+        .row
+          .col-md-12
+            %div=pluralize @question.responses.count, "response"
+            %div=pluralize 0, "view"
+            %div=pluralize @question.comment_count, "comment"
+            %div=pluralize @question.share_count, "share"
+            %div=pluralize @question.skip_count, "skip"
+            %div Published #{time_ago_in_words @question.updated_at}
+            %div Not sponsored,
+            %div Created by #{User.first.name} (#{User.first.id})
+            %div=@anonymous ? "Anonymous" : "Public"
+      .col-md-6
+        .col-xs-6 All Comments (#{@all_comments.count})
+        .col-xs-6 Comments by Friends (#{@friend_comments.count})

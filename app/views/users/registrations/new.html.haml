@@ -2,8 +2,6 @@
   .container
     .section_header
       %h3
-
-        %span
     .row.login
       .col-sm-5.left_box
         %h4 Create your account
@@ -27,9 +25,9 @@
         .box
           .box_cont
             .social
-              = link_to image_tag("b3/img/face.png"), '#', class:%w(circle facebook)
-              = link_to image_tag("b3/img/twt.png"), '#', class:%w(circle twitter)
-              = link_to image_tag("b3/img/gplus.png"), '#', class:%w(circle gplus)
+              = link_to image_tag("clean_canvas/face.png"), '#', class:%w(circle facebook)
+              = link_to image_tag("clean_canvas/twt.png"), '#', class:%w(circle twitter)
+              = link_to image_tag("clean_canvas/gplus.png"), '#', class:%w(circle gplus)
             .division
               .line.l
               %span or
@@ -37,8 +35,6 @@
             .form
               = form_for resource, as: resource_name, url: registration_path(resource_name), class: "form-inline" do |f|
                 = devise_error_messages!
-                .form-group.w-icon
-                  = f.text_field :name, placeholder: "Full name", class:%w{form-control input-lg}
                 .form-group.w-icon
                   = f.text_field :username, placeholder: "Username", class:%w{form-control input-lg}
                 .form-group.w-icon

@@ -5,6 +5,7 @@ FactoryGirl.define do
     user
     category
     title {generate :name}
+    state "active"
   end
 
   factory :info_question, parent: :question, class: "InfoQuestion" do
@@ -18,11 +19,12 @@ FactoryGirl.define do
     text_type "freeform"
     min_characters 0
     max_characters 255
+    association :background_image, factory: :question_image
   end
 
   factory :text_choice_question, parent: :question, class: "TextChoiceQuestion" do
     rotate false
-    image
+    association :background_image, factory: :question_image
   end
 
   factory :image_choice_question, parent: :question, class: "ImageChoiceQuestion" do
