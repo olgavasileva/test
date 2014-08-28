@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe :feed do
+describe :response do
   let(:params) {{}}
   let(:before_api_call) {}
   before { before_api_call }
@@ -54,16 +54,21 @@ describe :feed do
           let(:question_id) {question.id}
 
           it {expect(response.status).to eq 201}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('response_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('view_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('comment_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('share_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('skip_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('published_at')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('sponsor')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('creator_id')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('creator_name')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('anonymous')}
+
+          it "should return summary fields" do
+            summary = JSON.parse(response.body)['summary']
+
+            expect(summary.keys).to include('response_count')
+            expect(summary.keys).to include('view_count')
+            expect(summary.keys).to include('comment_count')
+            expect(summary.keys).to include('share_count')
+            expect(summary.keys).to include('skip_count')
+            expect(summary.keys).to include('published_at')
+            expect(summary.keys).to include('sponsor')
+            expect(summary.keys).to include('creator_id')
+            expect(summary.keys).to include('creator_name')
+            expect(summary.keys).to include('anonymous')
+          end
         end
 
         describe "TextChoiceQuestion response" do
@@ -71,16 +76,19 @@ describe :feed do
           let(:question_id) {question.id}
 
           it {expect(response.status).to eq 201}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('response_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('view_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('comment_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('share_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('skip_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('published_at')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('sponsor')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('creator_id')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('creator_name')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('anonymous')}
+          it "should return summary fields" do
+            summary = JSON.parse(response.body)['summary']
+            expect(summary.keys).to include('response_count')
+            expect(summary.keys).to include('view_count')
+            expect(summary.keys).to include('comment_count')
+            expect(summary.keys).to include('share_count')
+            expect(summary.keys).to include('skip_count')
+            expect(summary.keys).to include('published_at')
+            expect(summary.keys).to include('sponsor')
+            expect(summary.keys).to include('creator_id')
+            expect(summary.keys).to include('creator_name')
+            expect(summary.keys).to include('anonymous')
+          end
         end
 
         describe "ImageChoiceQuestion response" do
@@ -88,16 +96,19 @@ describe :feed do
           let(:question_id) {question.id}
 
           it {expect(response.status).to eq 201}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('response_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('view_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('comment_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('share_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('skip_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('published_at')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('sponsor')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('creator_id')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('creator_name')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('anonymous')}
+          it "should return summary fields" do
+            summary = JSON.parse(response.body)['summary']
+            expect(summary.keys).to include('response_count')
+            expect(summary.keys).to include('view_count')
+            expect(summary.keys).to include('comment_count')
+            expect(summary.keys).to include('share_count')
+            expect(summary.keys).to include('skip_count')
+            expect(summary.keys).to include('published_at')
+            expect(summary.keys).to include('sponsor')
+            expect(summary.keys).to include('creator_id')
+            expect(summary.keys).to include('creator_name')
+            expect(summary.keys).to include('anonymous')
+          end
         end
 
         describe "MultipleChoiceQuestion response" do
@@ -105,16 +116,19 @@ describe :feed do
           let(:question_id) {question.id}
 
           it {expect(response.status).to eq 201}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('response_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('view_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('comment_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('share_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('skip_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('published_at')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('sponsor')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('creator_id')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('creator_name')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('anonymous')}
+          it "should return summary fields" do
+            summary = JSON.parse(response.body)['summary']
+            expect(summary.keys).to include('response_count')
+            expect(summary.keys).to include('view_count')
+            expect(summary.keys).to include('comment_count')
+            expect(summary.keys).to include('share_count')
+            expect(summary.keys).to include('skip_count')
+            expect(summary.keys).to include('published_at')
+            expect(summary.keys).to include('sponsor')
+            expect(summary.keys).to include('creator_id')
+            expect(summary.keys).to include('creator_name')
+            expect(summary.keys).to include('anonymous')
+          end
         end
 
         describe "OrderQuestion response" do
@@ -122,16 +136,19 @@ describe :feed do
           let(:question_id) {question.id}
 
           it {expect(response.status).to eq 201}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('response_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('view_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('comment_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('share_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('skip_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('published_at')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('sponsor')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('creator_id')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('creator_name')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('anonymous')}
+          it "should return summary fields" do
+            summary = JSON.parse(response.body)['summary']
+            expect(summary.keys).to include('response_count')
+            expect(summary.keys).to include('view_count')
+            expect(summary.keys).to include('comment_count')
+            expect(summary.keys).to include('share_count')
+            expect(summary.keys).to include('skip_count')
+            expect(summary.keys).to include('published_at')
+            expect(summary.keys).to include('sponsor')
+            expect(summary.keys).to include('creator_id')
+            expect(summary.keys).to include('creator_name')
+            expect(summary.keys).to include('anonymous')
+          end
         end
       end
     end
