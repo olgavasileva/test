@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 describe :location do
-  let(:instance) { FactoryGirl.create(:instance) }
+  let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
   let(:common_params) { {
     instance_token: instance.uuid,
+    auth_token: instance.auth_token,
     accuracy: 0
   } }
   let(:response_body) { JSON.parse(response.body) }
@@ -17,6 +18,11 @@ describe :location do
 
     it "responds with no data" do
       expect(response_body.keys).to be_blank
+    end
+
+    it "sets current user's latitude and longitude" do
+      expect(instance.user.reload.latitude).to_not be_nil
+      expect(instance.user.reload.longitude).to_not be_nil
     end
   end
 

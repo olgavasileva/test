@@ -325,7 +325,8 @@ class TwoCents::Auth < Grape::API
 
     desc "Update logged in user's location"
     params do
-      requires :instance_token, type: String, desc: "Obtain this from the instances API"
+      requires :instance_token, type: String, desc: "Obtain this from the instance's API"
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API"
 
       requires :source, type: String, values: %w[IP gps], desc: "Location source"
       requires :accuracy, type: Integer, desc: "Location accuracy"
@@ -345,6 +346,8 @@ class TwoCents::Auth < Grape::API
           fail! 400, "gps source requires longitude and latitude"
         end
       end
+
+      current_user.update_attributes longitude: longitude, latitude: latitude
 
       {}
     end
