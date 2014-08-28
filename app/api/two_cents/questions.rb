@@ -41,13 +41,20 @@ class TwoCents::Questions < Grape::API
       fail!(2001, "Not more than 4 choice may be provided") if declared_params[:choices].count > 4
 
       category = Category.find declared_params[:category_id]
+
+      background_image = if URI(declared_params[:image_url]).scheme.nil?
+        QuestionImage.create!(image:open(declared_params[:image_url]))
+      else
+        QuestionImage.create!(remote_image_url:declared_params[:image_url])
+      end
+
       @question = TextChoiceQuestion.new( state: "active",
                                           user_id:current_user.id,
                                           category_id:category.id,
                                           title:declared_params[:title],
                                           description:declared_params[:description],
                                           rotate:declared_params[:rotate],
-                                          background_image:QuestionImage.create!(image:open(declared_params[:image_url])))
+                                          background_image:background_image)
 
       declared_params[:choices].each do |choice_params|
         @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate]
@@ -112,8 +119,13 @@ class TwoCents::Questions < Grape::API
                                               max_responses:max_responses)
 
       declared_params[:choices].each do |choice_params|
-        image = ChoiceImage.create!(image:open(choice_params[:image_url]))
-        @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate], muex:choice_params[:muex], background_image:image
+        background_image = if URI(choice_params[:image_url]).scheme.nil?
+          ChoiceImage.create!(image:open(choice_params[:image_url]))
+        else
+          ChoiceImage.create!(remote_image_url:choice_params[:image_url])
+        end
+
+        @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate], muex:choice_params[:muex], background_image:background_image
       end
 
       @question.save!
@@ -163,8 +175,13 @@ class TwoCents::Questions < Grape::API
                                             rotate:declared_params[:rotate])
 
       declared_params[:choices].each do |choice_params|
-        image = ChoiceImage.create!(image:open(choice_params[:image_url]))
-        @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate], background_image:image
+        background_image = if URI(choice_params[:image_url]).scheme.nil?
+          ChoiceImage.create!(image:open(choice_params[:image_url]))
+        else
+          ChoiceImage.create!(remote_image_url:choice_params[:image_url])
+        end
+
+        @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate], background_image:background_image
       end
 
       @question.save!
@@ -215,8 +232,13 @@ class TwoCents::Questions < Grape::API
                                       rotate:declared_params[:rotate])
 
       declared_params[:choices].each do |choice_params|
-        image = ChoiceImage.create!(image:open(choice_params[:image_url]))
-        @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate], background_image:image
+        background_image = if URI(choice_params[:image_url]).scheme.nil?
+          ChoiceImage.create!(image:open(choice_params[:image_url]))
+        else
+          ChoiceImage.create!(remote_image_url:choice_params[:image_url])
+        end
+
+        @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate], background_image:background_image
       end
 
       @question.save!
@@ -253,11 +275,18 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       category = Category.find declared_params[:category_id]
+
+      background_image = if URI(declared_params[:image_url]).scheme.nil?
+        QuestionImage.create!(image:open(declared_params[:image_url]))
+      else
+        QuestionImage.create!(remote_image_url:declared_params[:image_url])
+      end
+
       @question = TextQuestion.new( state: "active",
                                     user_id:current_user.id,
                                     category_id:category.id,
                                     title:declared_params[:title],
-                                    background_image:QuestionImage.create!(image:open(declared_params[:image_url])),
+                                    background_image:background_image,
                                     description:declared_params[:description],
                                     text_type:declared_params[:text_type],
                                     min_characters:declared_params[:min_characters],
