@@ -54,6 +54,7 @@ describe :feed do
           let(:question_id) {question.id}
 
           it {expect(response.status).to eq 201}
+          it {expect(JSON.parse(response.body)['summary'].keys).to include('choices')}
           it {expect(JSON.parse(response.body)['summary'].keys).to include('response_count')}
           it {expect(JSON.parse(response.body)['summary'].keys).to include('view_count')}
           it {expect(JSON.parse(response.body)['summary'].keys).to include('comment_count')}
@@ -71,6 +72,7 @@ describe :feed do
           let(:question_id) {question.id}
 
           it {expect(response.status).to eq 201}
+          it {expect(JSON.parse(response.body)['summary'].keys).to include('choices')}
           it {expect(JSON.parse(response.body)['summary'].keys).to include('response_count')}
           it {expect(JSON.parse(response.body)['summary'].keys).to include('view_count')}
           it {expect(JSON.parse(response.body)['summary'].keys).to include('comment_count')}
@@ -88,6 +90,7 @@ describe :feed do
           let(:question_id) {question.id}
 
           it {expect(response.status).to eq 201}
+          it {expect(JSON.parse(response.body)['summary'].keys).to include('choices')}
           it {expect(JSON.parse(response.body)['summary'].keys).to include('response_count')}
           it {expect(JSON.parse(response.body)['summary'].keys).to include('view_count')}
           it {expect(JSON.parse(response.body)['summary'].keys).to include('comment_count')}
@@ -105,6 +108,7 @@ describe :feed do
           let(:question_id) {question.id}
 
           it {expect(response.status).to eq 201}
+          it {expect(JSON.parse(response.body)['summary'].keys).to include('choices')}
           it {expect(JSON.parse(response.body)['summary'].keys).to include('response_count')}
           it {expect(JSON.parse(response.body)['summary'].keys).to include('view_count')}
           it {expect(JSON.parse(response.body)['summary'].keys).to include('comment_count')}
@@ -122,6 +126,7 @@ describe :feed do
           let(:question_id) {question.id}
 
           it {expect(response.status).to eq 201}
+          it {expect(JSON.parse(response.body)['summary'].keys).to include('choices')}
           it {expect(JSON.parse(response.body)['summary'].keys).to include('response_count')}
           it {expect(JSON.parse(response.body)['summary'].keys).to include('view_count')}
           it {expect(JSON.parse(response.body)['summary'].keys).to include('comment_count')}

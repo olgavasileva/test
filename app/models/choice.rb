@@ -1,4 +1,5 @@
 class Choice < ActiveRecord::Base
+  belongs_to :question
   has_many :responses, class_name: "ChoiceResponse", dependent: :destroy
 
   validates :question, presence: true
