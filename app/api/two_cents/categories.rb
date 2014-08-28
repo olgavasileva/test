@@ -30,7 +30,7 @@ class TwoCents::Categories < Grape::API
     ] do
       validate_user!
 
-      @categories = policy_scope(Category)
+      @categories = policy_scope Category
     end
   end
 end
