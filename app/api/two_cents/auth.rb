@@ -130,32 +130,6 @@ class TwoCents::Auth < Grape::API
 
       {}
     end
-
-    desc "Update location for the instance"
-    params do
-      requires :instance_token, type: String, desc: "Obtain this from the instances API"
-
-      requires :source, type: String, values: %w[IP gps], desc: "Location source"
-      requires :accuracy, type: Integer, desc: "Location accuracy"
-      optional :longitude, type: String, desc: "Location longitude"
-      optional :latitude, type: String, desc: "Location longitude"
-    end
-    post 'location' do
-      validate_instance!
-
-      if params[:source] == 'IP'
-        ip = env['REMOTE_ADDR']
-        longitude, latitude = Geocoder.search(ip).first.coordinates
-      else
-        longitude, latitude = params[:longitude], params[:latitude]
-
-        if longitude.nil? || latitude.nil?
-          fail! 400, "gps source requires longitude and latitude"
-        end
-      end
-
-      {}
-    end
   end
 
   resource :users do
@@ -345,6 +319,32 @@ class TwoCents::Auth < Grape::API
       fail! 1011, "User not found" unless user
 
       user.send_reset_password_instructions
+
+      {}
+    end
+
+    desc "Update logged in user's location"
+    params do
+      requires :instance_token, type: String, desc: "Obtain this from the instances API"
+
+      requires :source, type: String, values: %w[IP gps], desc: "Location source"
+      requires :accuracy, type: Integer, desc: "Location accuracy"
+      optional :longitude, type: String, desc: "Location longitude"
+      optional :latitude, type: String, desc: "Location longitude"
+    end
+    post 'location' do
+      validate_instance!
+
+      if params[:source] == 'IP'
+        ip = env['REMOTE_ADDR']
+        longitude, latitude = Geocoder.search(ip).first.coordinates
+      else
+        longitude, latitude = params[:longitude], params[:latitude]
+
+        if longitude.nil? || latitude.nil?
+          fail! 400, "gps source requires longitude and latitude"
+        end
+      end
 
       {}
     end
