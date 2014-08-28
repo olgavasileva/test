@@ -42,6 +42,6 @@ FactoryGirl.define do
   end
 
   sequence :sample_image_url do |n|
-    "/tmp/Vals-sample.jpg"
+    File.join(Rails.root, "spec","factories","fixtures","images","Example.jpg")
   end
 end

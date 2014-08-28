@@ -42,11 +42,12 @@ class TwoCents::Questions < Grape::API
 
       category = Category.find declared_params[:category_id]
       @question = TextChoiceQuestion.create!( user_id:current_user.id,
-                                            category_id:category.id,
-                                            title:declared_params[:title],
-                                            description:declared_params[:description],
-                                            rotate:declared_params[:rotate],
-                                            image:open(declared_params[:image_url]))
+                                              category_id:category.id,
+                                              title:declared_params[:title],
+                                              description:declared_params[:description],
+                                              rotate:declared_params[:rotate],
+                                              background_image:QuestionImage.create!(image:open(declared_params[:image_url])),
+                                              state: "active")
       declared_params[:choices].each do |choice_params|
         @question.choices.create! title:choice_params[:title], rotate:choice_params[:rotate]
       end
