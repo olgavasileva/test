@@ -1,2 +1,2 @@
 collection @categories, object_root: :category
-attributes :id, :name
+attributes :id, :name, :icon_url
