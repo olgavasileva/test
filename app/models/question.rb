@@ -8,6 +8,7 @@ class Question < ActiveRecord::Base
 	has_many :responses_with_comments, -> { where "comment != ''" }, class_name: "Response"
 	has_many :feed_items, dependent: :destroy
 	has_many :skips, class_name:"SkippedItem", dependent: :destroy
+  has_many :choices
 
 	scope :active, -> { where state:"active" }
 

@@ -58,6 +58,7 @@ describe :response do
           it "should return summary fields" do
             summary = JSON.parse(response.body)['summary']
 
+            expect(summary.keys).to include('choices')
             expect(summary.keys).to include('response_count')
             expect(summary.keys).to include('view_count')
             expect(summary.keys).to include('comment_count')
@@ -78,6 +79,7 @@ describe :response do
           it {expect(response.status).to eq 201}
           it "should return summary fields" do
             summary = JSON.parse(response.body)['summary']
+            expect(summary.keys).to include('choices')
             expect(summary.keys).to include('response_count')
             expect(summary.keys).to include('view_count')
             expect(summary.keys).to include('comment_count')
@@ -98,6 +100,7 @@ describe :response do
           it {expect(response.status).to eq 201}
           it "should return summary fields" do
             summary = JSON.parse(response.body)['summary']
+            expect(summary.keys).to include('choices')
             expect(summary.keys).to include('response_count')
             expect(summary.keys).to include('view_count')
             expect(summary.keys).to include('comment_count')
@@ -118,6 +121,7 @@ describe :response do
           it {expect(response.status).to eq 201}
           it "should return summary fields" do
             summary = JSON.parse(response.body)['summary']
+            expect(summary.keys).to include('choices')
             expect(summary.keys).to include('response_count')
             expect(summary.keys).to include('view_count')
             expect(summary.keys).to include('comment_count')
@@ -138,6 +142,7 @@ describe :response do
           it {expect(response.status).to eq 201}
           it "should return summary fields" do
             summary = JSON.parse(response.body)['summary']
+            expect(summary.keys).to include('choices')
             expect(summary.keys).to include('response_count')
             expect(summary.keys).to include('view_count')
             expect(summary.keys).to include('comment_count')
