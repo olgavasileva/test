@@ -3,6 +3,6 @@ class MultipleChoiceResponse < Response
   has_many :choices, through: :choices_responses
 
   def text
-    choices.map(&:text).join(', ')
+    choices.map(&:title).join(', ')
   end
 end
