@@ -1,4 +1,110 @@
-.col-md-6.col-md-push-3
+:sass
+
+  .questionare-title
+    padding: 10px
+    .title-text
+      width: 100%
+      text-align: center
+      box-shadow: none
+      resize: none
+
+  .revealable
+    background-color: transparent
+    border-color: transparent
+    &:hover, &:focus
+      outline: none
+      border-color: white
+      background-color: rgba(255,255,255,0.2)
+
+  .overimage.add-option
+    background-color: orange
+    color: white
+    text-align: center
+    height: 100%
+    font-size: 3em
+    h3
+      margin-top: 35%
+      margin-bottom: 5%
+      font-size: 1.1em
+
+  .close.remove_fields
+    margin-right: 10px
+  #category_dropdown_toggler
+    position: relative
+    &.row
+      &:before
+        margin-bottom: -12px
+      &:after
+        margin-bottom: -12px
+
+    #category_caret
+      border-top: 21px solid
+      border-right: 20px solid transparent
+      border-left: 20px solid transparent
+      &:after
+        display: inline-block
+        width: 0
+        height: 0
+        margin-left: 2px
+        vertical-align: middle
+        border-top: 16px solid white
+        border-right: 15px solid transparent
+        border-left: 15px solid transparent
+        position: absolute
+        left: 20px
+        top: 0px
+        content: " "
+  .category-dropdown-wrapper
+    border: solid 1px #264e8e
+    position: relative
+    ul#categry_dropdown_menu
+      left: auto
+      overflow: auto
+      left: -1px
+      right: -1px
+      width: auto
+      border: solid 1px #264e8e
+      border-radius: 0 0 3px 3px
+      padding: 10px
+      border-top: none
+      margin-top: -3px
+      max-height: 110px
+
+  .choice.imagechooser
+    .bgimage
+      position: relative
+      min-height: 120px
+      .overimage
+        position: absolute
+        width: 100%
+        .image_control
+          font-size: 1.3em
+          text-align: center
+
+  .image-choice-footer
+    background-color: rgba(87, 87, 87, 0.75)
+    padding: 15px
+    color: white
+    font-size: 22px
+
+    .form-group
+      margin: 0
+    textarea
+      display: block
+      font-size: 1em
+      width: 100%
+      overflow: auto
+      text-align: center
+      margin: 0
+      padding: 0
+      border-radius: 0
+      min-height: 1.5em
+      max-height: 1.5em
+      box-shadow: none
+      resize: none
+
+
+.col-md-8.col-md-push-2
   .prioritizer.panel.panel-default
     .panel-heading
       .panel-title
@@ -8,22 +114,32 @@
       = simple_form_for @question do |f|
         =f.input :type, as: :hidden
         .row
-          .col-sm-6.col-md-push-3
+          .col-sm-8.col-md-push-2
             .row.question
               .col-sm-12
-                .title=f.input :title, label: false, placeholder: "Ask Your Question Here"
+                .title
+                  .form-group.text.required.questionare-title.btn-primary
+                    =f.input_field :title, label: false , class: "revealable title-text", placeholder: "Ask Your Question Here"
 
               =f.simple_fields_for :choices do |choice|
                 = render 'choice_fields', f:choice
               .links=link_to_add_association 'Add another Choice', f, :choices
 
-              .col-md-12
-                .well
-                  =f.association :category
+              #category_dropdown.dropdown.col-sm-12.form-group
+                %div.category-dropdown-wrapper
+                  %a{:class=>"row",:id=>'category_dropdown_toggler',:role=>'button',:data=>{:toggle=>'dropdown',:target=>'#'}}
+                    .col-sm-10.col-xs-9=(@question.category||'Select a Category')
+                    .col-sm-1.col-xs-1
+                      %span{:class=>["caret"], :id=>"category_caret"}
+
+                  %ul#categry_dropdown_menu{:class=>["dropdown-menu"],:role=>"menu", :aria=>{:labelledby=>"category_dropdown_toggler"}}
+                    -Category.all.each do |c|
+                      %li
+                        =c.name
             .row
               .col-md-6
                 .btn-group.btn-group-justified
-                  =f.button :submit, "Preview", class: %w(btn-block)
+                  =f.button :submit, "Preview", class: %w(btn-block btn-lg)
               .col-md-6
                 .btn-group.btn-group-justified
-                  =f.button :submit, "Continue", class: %w(btn-block)
+                  =f.button :submit, "Continue", class: %w(btn-block btn-lg)
