@@ -1,0 +1,209 @@
+= stylesheet_link_tag "photoshoot"
+
+%section#studio-wrapper.col-sm-12
+  / .row
+  /   #ps-breadcrumbs.col-sm-12
+  /     #current-studio-icon
+  /     %h2#current-studio-name
+  /     =link_to '#', "Save", id: "ps-save", class:%w(btn ps-btn-yellow), data:{'btn-role' => :save}
+  /     =link_to '#', "Clear All", id: "ps-clear-all", class: %w(btn btn-gary-dark ps-btn-gray)
+  /     .ps-undo-redo
+  /       %button#ps-undo.btn.btn-gary-dark.ps-btn-gray.ps-btn-disabled{data:{"btn-role" => :undo}}
+  /         %i.icon-undo
+  /         &nbsp;Undo
+  /       %button#ps-redo.btn.btn-gary-dark.ps-btn-gray.ps-btn-disabled{data:{"btn-role" => :redo}}
+  /         %i.icon-repeat
+  /         &nbsp;Redo
+  /     =link_to '#', "?", id:"ps-help", data:{"btn-role" => "help"} class: %w(btn btn-gary-dark btn-circle btn-sm ps-btn-gray)
+  /     .help
+
+  #pack-drawer.col-sm-4.inactive.drawer-control-right.drawer
+    %aside#asset-wrapper.container
+      .row
+        %header#title-bar.col-sm-12
+          .row
+            #asset-title.col-sm-12
+              =link_to 'javascript:void(0);', class: %w(title col-8 col-push-2 dropdown) do
+                %span.title-text All Packs
+                %span.icon-stack.dropdown-icon{data:{toggle: :dropdown}}
+                  %i.icon-sign-blank.icon-stack-base
+                  %i.icon-chevron-down.icon-light
+                %ul.pack-dropdown-list.dropdown-menu{role: :menu}
+                  %li#browse-packs-drop Browse
+                  %li#all-packs-drop See All
+              =link_to 'javascript:void(0);', class: %w(pack-browser-control page-left col-2 col-pull-8) do
+                %i.icon-chevron-left
+              =link_to 'javascript:void(0);', class: %w(pack-browser-control page-right col-2) do
+                %i.icon-chevron-right
+      #pack-wrapper.row.is-scrollable
+    .drawer-handle
+      %i.icon-double-angle-right.closed
+      %i.icon-double-angle-left.open
+    .help
+
+  .row
+    .col-1.no-padding
+    #ps-desktop.col-6.no-padding
+      %canvas#ps-canvas
+    .col-2
+      #nutrition-facts Nutrition Facts
+      .nutrition-info
+        Calories
+        %span.nutrition-value
+          %span#calorie-counter 0
+      .nutrition-info
+        Protein
+        %span.nutrition-value
+          %span#protein-counter 0
+          g
+      .nutrition-info
+        Sugar
+        %span.nutrition-value
+          %span#sugar-counter 0
+          g
+
+:javascript
+  (function(){
+      /* define size constants */
+      PS_MENU_WIDTH = 278; // PS_ITEMS_MENU_CELL_WIDTH + (PS_ITEMS_MENU_CELL_MARGIN * 6 /* margins */))
+      PS_MENU_SCROLL_WIDTH = 18;
+      PS_OTHERS_HEIGHT = $("#studio-wrapper").offset().top + 2; // total vertical space occupied by other elements
+      PS_HEADER_HEIGHT = $('#ps-breadcrumbs').outerHeight();
+      PS_MIN_CANVAS_WIDTH = 720;
+      PS_MAX_CANVAS_WIDTH = 2048;
+      PS_MIN_CANVAS_HEIGHT = 495;
+      PS_MAX_CANVAS_HEIGHT = 1408;
+      PS_ITEMS_MENU_CELL_WIDTH = 118;
+      PS_ITEMS_MENU_CELL_HEIGHT = 118;
+      PS_ITEMS_MENU_CELL_MARGIN = 10;
+      PS_DIRS_MENU_ICON_WIDTH = 100;
+      PS_DIRS_MENU_ICON_HEIGHT = 100;
+      PS_BASE_WIDTH = 2048;
+      PS_BASE_HEIGHT = 1408;
+      PS_STUDIO_ID = "#{ @studio.id }";
+      PS_STUDIO_NAME = "#{ @studio.display_name || @studio.name }"
+      PS_SCENE_ID = 0;
+      PS_DETAILS_URL = "";
+      PS_CONTEST_ID = #{ (@contest && @contest.id) || 0 }
+      PS_DEBUG_MODE_ON = false
+      PS_LOGGED_IN = #{ !current_user.nil? }
+      PS_SAVE_MODAL_WIDTH = 600;
+      SURVEY_ID = '#{ @survey.permalink }'
+      QUESTION_ID = #{ @survey.studio_question.id }
+      THIRD_PARTY_ID = "#{@third_party_id}";
+  })();
+
+  #{- if !@scene.nil?}
+    $(function(){
+        $(document).bind("ps.bootstrap.initialized", function(){
+            setTimeout(function() {
+                psUtils().setStickers(#{ raw @scene_stickers.to_json });
+                psNetwork().getScaledScene(#{ @scene.id }, function(data) {
+                    #{ if @scene.user_id }
+                      psCanvas().loadScene(data);
+                    #{ else }
+                      psCanvas().loadScene(data, psUI().saveSceneAfterLogin);
+                });
+            }, 300);
+        });
+
+        #{- if !@scene_id.nil? }
+          PS_SCENE_ID = #{ @scene.id };
+          PS_DETAILS_URL = "#{ @scene.share_link('link', current_user) }";
+    });
+
+=javascript_include_tag 'photoshoot.js'
+
+/ UI templates / Hidden stuff
+
+.ps-ui#ps-ui-templates{data:{"no-turbolink" => true}}
+
+  #welcome-dialog{title: "Welcome to the Photo Shoot"}
+    %h1
+    %p
+      %span
+    %p
+      %button.ps-btn-yellow
+    %br
+
+  #flaunt-dialog{title: "Flaunt Your Style!"}
+    .ps-dlg-col
+      %div
+      =link_to '#' do
+        Enter this
+        %br
+        Week's Contest
+    .ps-dlg-col
+      %div
+      =link_to '#' do
+        Set as
+        %br
+        Avatar
+    .ps-dlg-col
+      %div
+      =link_to '#' do
+        Share with
+        %br
+        Friends
+
+  #thanku-dialog{title:"Your design looks fab!"}
+    - if current_user
+      %p.lead Your design was saved to your Photo Gallery!
+
+    #post-save-container.container
+      .row
+        - if @contest && !@users_entry.nil? && @contest.entry_eligible?
+          .col-sm-4
+            .ps-dlg-col-img=image_tag image_url('photoshoot/icon_share_contest_disabled.png')
+            %p
+              You're already entered into the
+              =link_to "/galleries/#{@contest.id}", @contest.name
+            %p.small There's one entry per person!
+
+        - if @contest && @users_entry.nil? && @contest.entry_eligible?
+          .col-sm-4
+            - if @contest.voting_close.nil? || (@contest.voting_close > Time.now)
+              .ps-dlg-col-img=link_to image_tag(image_url('photoshoot/icon_share_contest.png')), "javascript:psUI().enterContest(PS_CONTEST_ID);"
+              =link_to "javascript:psUI().enterContest(PS_CONTEST_ID);", "Enter the #{@contest.name}"
+            - else
+              .ps-dlg-col-img=link_to "javascript:psUI().addToGallery(PS_CONTEST_ID);", image_tag( image_url('photoshoot/gallery.png'))
+              =link_to "javascript:psUI().addToGallery(PS_CONTEST_ID);", "Add to the #{@contest.name} gallery"
+
+        .col-sm-4
+          .ps-dlg-col-img= link_to "javascript:psUI().share();", image_tag( image_url('photoshoot/icon_share_toFriends.png'))
+          =link_to "javascript:psUI().share();", "Share with Friends"
+
+        .col-sm-4
+          .ps-dlg-col-img=link_to "/surveys/#{@survey.permalink}%>", image_tag(image_url('photoshoot/icon_startOver.png'))
+          =link_to "javascript:void(0);", "Move to the next question", id: "next-question"
+
+  = render 'shared/share_modal'
+
+  #enter-contest-dialog{title:"Confirm your contest entry!"}
+    - if @contest && @contest.confirm_message
+      %p= markdown(@contest.confirm_message)
+
+    %p=link_to "#", "Enter Contest", id:"ps-enter-contest-save", data:{"btn-role" => "submit to contest"}, class: %w(btn ps-btn-yellow)
+    %p=link_to '#', "No, I'm not ready just yet.", id:"ps-not-ready"
+
+  #avatar-dialog{title:"Set as Avatar"}
+    %strong Instructions:
+    choose save when you're done cropping!
+    .ps-avatar-header
+      %button.ps-btn-gray Cancel
+      %button.ps-btn-yellow Save
+    .ps-avatar-image
+
+  #jsondata-dialog{title:"JSON data representation"}
+    %textarea{style: "width: 554px; height: 400px; font: normal 12px monospace;"}
+    .center
+      %button.ps-btn-yellow Set
+
+  #clear-scene-dialog{title:"Clear Your Scene?"}
+    %p Are you sure you want to clear your<br/>scene and start from scratch?
+    %div
+      %button.ps-btn-gray Cancel
+      %button.ps-btn-yellow{id: "ps-confirm-clear", data:{"btn-role" => "clear all"}} Clear
+
+= render 'sticker_packs'
+= render 'sticker_pack_details'

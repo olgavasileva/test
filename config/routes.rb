@@ -3,6 +3,8 @@ LinkchatApp::Application.routes.draw do
   devise_for :partners
   devise_for :admin_users, ActiveAdmin::Devise.config
 
+  get '/studio' => 'pages#studio' if Rails.env.development?
+
   ActiveAdmin.routes(self)
 
   root 'questions#index'
