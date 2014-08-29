@@ -1,3 +1,41 @@
+:sass
+  .almost-8
+    background-color: #cecece
+    width: 100%
+    margin: 0px
+    padding: 17px
+    font-size: 18px
+    color: #fff
+  .icon2
+    position: absolute
+    bottom: 20px
+    left: 33%
+    text-align: center
+    font-size: 12px
+    color: #fff
+    font-weight: bold
+
+  .icon3
+    position: absolute
+    bottom: 20px
+    left: 53%
+    text-align: center
+    font-size: 12px
+    color: #fff
+    font-weight: bold
+  .icon4
+    position: absolute
+    bottom: 20px
+    left: 85%
+    text-align: center
+    font-size: 26px
+    color: #fff
+    font-weight: bold
+
+  hr
+    margin: 3px
+
+
 #portfolio
   .container
     #gallery_container.row
@@ -13,6 +51,20 @@
             .icon
               = responsive_image_tag question.category.icon.web.url
               %small.category= question.category.name
+            .icon2
+              Answered
+              %hr
+              %small (#{@all_responses})
+            .icon3
+              Commented
+              %hr
+              %small (#{@all_comments})
+            .icon4
+              %small ....
+    .row
+      .col-md-2
+      .col-sm-8
+        %button.almost-8 Show More
     .row
       .col-sm-12.text-center
         = will_paginate @questions
