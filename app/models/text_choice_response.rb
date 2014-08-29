@@ -4,6 +4,6 @@ class TextChoiceResponse < Response
   validates :choice, presence: true
 
   def text
-    choice.try(:text)
+    choice.try(:title)
   end
 end
