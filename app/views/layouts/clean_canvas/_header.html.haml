@@ -22,5 +22,5 @@
         .collapse.navbar-collapse.navbar-ex1-collapse{:role => "navigation"}
           = render_navigation
       -if params[:controller]=='responses' && params[:action]=='new'
-        = link_to "",class:"col-md-1 navbar-header hidden-xs hidden-sm" do
+        = link_to "/question_types",class:"col-md-1 navbar-header hidden-xs hidden-sm" do
           %i.glyphicon.glyphicon-edit.navbar-brand

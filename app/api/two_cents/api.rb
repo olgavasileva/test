@@ -47,10 +47,12 @@ class TwoCents::API < Grape::API
   end
 
   mount Auth
-  # mount Users
   mount Questions
   mount Categories
   mount Comments
+  mount Relationships
+  mount Groups
+  mount Messages
 
   add_swagger_documentation api_version:'2.0', mount_path: "/docs", markdown:true, hide_documentation_path:true
 end
