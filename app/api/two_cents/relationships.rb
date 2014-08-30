@@ -65,7 +65,22 @@ class TwoCents::Relationships < Grape::API
 
     # follow
     desc "Follow a user"
-    post 'follow'
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      requires :user_id, type: Integer, desc: "ID of user to follow."
+    end
+    post 'follow' do
+      user = User.find(params[:user_id])
+
+      if current_user.followers.include? user
+        fail! 400, "Already following user."
+      end
+
+      current_user.followers << user
+
+      {}
+    end
 
     # unfollow
     desc "Unfollow a user"
