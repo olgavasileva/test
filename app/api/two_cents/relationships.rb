@@ -84,7 +84,22 @@ class TwoCents::Relationships < Grape::API
 
     # unfollow
     desc "Unfollow a user"
-    post 'unfollow'
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      requires :user_id, type: Integer, desc: "ID of user to unfollow."
+    end
+    post 'unfollow' do
+      user = User.find(params[:user_id])
+
+      unless current_user.followers.include? user
+        fail! 400, "Not following user."
+      end
+
+      current_user.followers.delete(user)
+
+      {}
+    end
 
   end
 end
