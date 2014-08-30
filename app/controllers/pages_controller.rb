@@ -17,6 +17,7 @@ class PagesController < ApplicationController
 
   def studio
     # For testing studio setup
+    @question = StudioQuestion.first
   end
 
 private

@@ -1,4 +1,4 @@
-#photoshootinfo.hidden{data:{studio_id:@studio.id, studio_name:@studio.display_name || @studio.name, logged_in:user_signed_in?, question_id:@question.id}}
+#photoshootinfo.hidden{data:{studio_id:@question.studio.id, studio_name:@question.studio.display_name || @question.studio.name, logged_in:user_signed_in?, question_id:@question.id}}
 - if @scene.present?
   #sceneinfo.hidden{data:{stickers:@scene_stickers, scene_id:@scene.id, scene_user_id:@scene.user_id, share_link:@scene.share_link('link', current_user)}}
 

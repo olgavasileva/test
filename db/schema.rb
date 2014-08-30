@@ -432,7 +432,7 @@ ActiveRecord::Schema.define(version: 20140830230216) do
 
   create_table "stickers", force: true do |t|
     t.string   "display_name"
-    t.string   "type"
+    t.string   "kind"
     t.boolean  "mirrorable"
     t.integer  "priority"
     t.string   "image"

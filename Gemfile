@@ -20,6 +20,7 @@ gem 'jquery-ui-rails'
 gem 'touchpunch-rails'  # Convert touch events on mobile to jquery compatible mouse events
 
 gem 'activeadmin', github: 'gregbell/active_admin'
+gem 'just-datetime-picker'  # Date time picker for active admin
 gem 'devise'
 gem 'rolify'
 gem 'pundit',           # simple, robust and scaleable authorization system

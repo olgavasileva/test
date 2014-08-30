@@ -247,6 +247,9 @@ GEM
     jquery-ui-rails (5.0.0)
       railties (>= 3.2.16)
     json (1.8.1)
+    just-datetime-picker (0.0.6)
+      activeadmin (>= 0.4.4)
+      formtastic (>= 2.0.0)
     kaminari (0.16.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -454,6 +457,7 @@ DEPENDENCIES
   jbuilder
   jquery-rails
   jquery-ui-rails
+  just-datetime-picker
   koala
   mysql2
   pry

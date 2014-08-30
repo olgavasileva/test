@@ -84,7 +84,7 @@ class AddStudioQuestion < ActiveRecord::Migration
 
     create_table :stickers do |t|
       t.string   :display_name
-      t.string   :type
+      t.string   :kind
       t.boolean  :mirrorable
       t.integer  :priority
       t.string   :image
