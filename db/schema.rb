@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140825230106) do
+ActiveRecord::Schema.define(version: 20140828210226) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -59,10 +59,10 @@ ActiveRecord::Schema.define(version: 20140825230106) do
   add_index "authentications", ["user_id"], name: "index_authentications_on_user_id", using: :btree
 
   create_table "background_images", force: true do |t|
+    t.string   "image"
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "image"
     t.string   "type"
   end
 
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 20140825230106) do
   end
 
   create_table "choices", force: true do |t|
+    t.integer  "question_id"
     t.text     "title"
     t.integer  "position"
     t.boolean  "rotate"
@@ -82,7 +83,6 @@ ActiveRecord::Schema.define(version: 20140825230106) do
     t.datetime "updated_at"
     t.integer  "background_image_id"
     t.string   "type"
-    t.integer  "question_id"
   end
 
   add_index "choices", ["question_id"], name: "index_choices_on_question_id", using: :btree
@@ -348,6 +348,8 @@ ActiveRecord::Schema.define(version: 20140825230106) do
     t.string   "username"
     t.string   "name"
     t.string   "remember_token"
+    t.string   "longitude"
+    t.string   "latitude"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

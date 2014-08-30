@@ -1,5 +1,83 @@
-.col-md-3
-.col-md-6
+:sass
+  #category_dropdown_toggler
+    position: relative
+    &.row
+      &:before
+        margin-bottom: -12px
+      &:after
+        margin-bottom: -12px
+
+    #category_caret
+      border-top: 21px solid
+      border-right: 20px solid transparent
+      border-left: 20px solid transparent
+      &:after
+        display: inline-block
+        width: 0
+        height: 0
+        margin-left: 2px
+        vertical-align: middle
+        border-top: 16px solid white
+        border-right: 15px solid transparent
+        border-left: 15px solid transparent
+        position: absolute
+        left: 20px
+        top: 0px
+        content: " "
+  .category-dropdown-wrapper
+    border: solid 1px #264e8e
+    position: relative
+    ul#categry_dropdown_menu
+      left: auto
+      overflow: auto
+      left: -1px
+      right: -1px
+      width: auto
+      border: solid 1px #264e8e
+      border-radius: 0 0 3px 3px
+      padding: 10px
+      border-top: none
+      margin-top: -3px
+      max-height: 110px
+
+  #background_selector
+    font-size: 2.2em
+    border: solid 1px #264e8e
+    padding: 0
+  #image_upload
+    text-align: center
+
+  .option-question-stripe
+    position: absolute
+    max-height: 80%
+    padding: 15px
+    top: 50%
+    margin-top: -43px
+    width: 100%
+    background-color: rgba(0,0,0,0.4)
+    .form-group
+      margin: 0
+      textarea
+        min-height: 1.5em
+        box-shadow: none
+        resize: none
+
+  .question .bgimage
+    position: relative
+
+  .img-responsive
+    width: 100% !important
+    height: auto
+
+  .revealable
+    background-color: transparent
+    border-color: transparent
+    box-shadow: none
+    &:hover, &:focus
+      outline: none
+      border-color: white
+      background-color: rgba(255,255,255,0.2)
+.col-sm-8.col-sm-push-2
   .openended.panel.panel-default
     .panel-heading
       .panel-title
@@ -11,28 +89,45 @@
         .hidden
           .canned{data:{ids:canned_question_image_ids, urls:canned_question_image_web_urls}}
           .id=f.input :background_image_id, as: :hidden
-        .row
-          .col-sm-3
-          .col-sm-6
-            .row
+        .row.form-group
+          .col-md-8.col-md-push-2
+            .row.form-group
               .col-sm-12
                 .question
-                  .title=f.input :title, label: false, placeholder: "Ask Your Question Here"
-                  .bgimage= responsive_image_tag @question.web_image_url, class: "img-responsive"
+                  .bgimage
+                    .title.option-question-stripe
+                      =f.input :title, label: false, placeholder: "Ask Your Question Here", input_html:{class: :revealable}
+                    = responsive_image_tag @question.web_image_url, class: "img-responsive"
+
+            .row.form-group
               .col-md-12
-                .well.image_control
+                #background_selector.image_control
                   <Image manipulation tools>
-                  =link_to '#', class: :prev_image do
-                    %span.glyphicon.glyphicon-chevron-left
-                  =link_to '#', class: :next_image do
-                    %span.glyphicon.glyphicon-chevron-right
-              .col-md-12
-                .well
-                  =f.association :category
+                  .col-sm-6#image_upload
+                    =link_to '#', class: :upload_image do
+                      %span.glyphicon.glyphicon-cloud-upload
+                  .col-sm-2
+                    =link_to '#', class: :prev_image do
+                      %span.glyphicon.glyphicon-chevron-left
+                  .col-sm-2.col-sm-push-1
+                    =link_to '#', class: :next_image do
+                      %span.glyphicon.glyphicon-chevron-right
+            .row.form-group
+              #category_dropdown.dropdown.col-sm-12
+                %div.category-dropdown-wrapper
+                  %a{:class=>"row",:id=>'category_dropdown_toggler',:role=>'button',:data=>{:toggle=>'dropdown',:target=>'#'}}
+                    .col-sm-10.col-xs-9=(@question.category||'Select a Category')
+                    .col-sm-1.col-xs-1
+                      %span{:class=>["caret"], :id=>"category_caret"}
+
+                  %ul#categry_dropdown_menu{:class=>["dropdown-menu"],:role=>"menu", :aria=>{:labelledby=>"category_dropdown_toggler"}}
+                    -Category.all.each do |c|
+                      %li
+                        =c.name
         .row
           .col-md-6
             .btn-group.btn-group-justified
-              =f.button :submit, "Preview", class: %w(btn-block)
+              =f.button :submit, "Preview", class: %w(btn-block btn-lg)
           .col-md-6
             .btn-group.btn-group-justified
-              =f.button :submit, "Continue", class: %w(btn-block)
+              =f.button :submit, "Continue", class: %w(btn-block btn-lg)

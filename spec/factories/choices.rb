@@ -1,7 +1,7 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
-  factory :choice_base, class:"Choice" do
+  factory :choice_base, class:"Choice", aliases: [:choice] do
     title {generate :name}
     rotate false
   end

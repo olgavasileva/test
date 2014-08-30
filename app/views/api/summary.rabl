@@ -1,6 +1,12 @@
 object false
 node(:summary) do
+  resp_ratios = @question.try(:response_ratios)
+
   {
+    choices: @question.choices.map { |c| {
+      id: c.id,
+      response_ratio: resp_ratios[c]
+    } },
     response_count: @question.responses.count,
     view_count: 1000,
     comment_count: @question.comment_count,
@@ -8,8 +14,8 @@ node(:summary) do
     skip_count: @question.skip_count,
     published_at: @question.updated_at,
     sponsor: nil,
-    creator_id: User.first.id,
-    creator_name: User.first.name,
-    anonymous: @anonymous
+    creator_id: @question.user.id,
+    creator_name: @question.user.name,
+    anonymous: @anonymous,
   }
 end
