@@ -41,6 +41,5 @@ FactoryGirl.define do
 
   factory :order_response, parent: :response, class: "OrderResponse" do
     question {build :order_question}
-    position 1
   end
 end
