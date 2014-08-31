@@ -1,5 +1,5 @@
 "use strict";
-var psNetwork = function() 
+var psNetwork = function()
 {
 	/**
 	 * Singleton constructor
@@ -7,7 +7,7 @@ var psNetwork = function()
 	if( psNetwork.prototype._instance ){
 		return psNetwork.prototype._instance;
     }
-    psNetwork.prototype._instance = this;	
+    psNetwork.prototype._instance = this;
 
     //========================================
     // Public interface
@@ -49,8 +49,8 @@ var psNetwork = function()
     	var studio_id = PS_STUDIO_ID;
     	var stickers = [];
     	var studio = {};
-    	var menus = [];        
-    	var progressBar = showProgressbar();	
+    	var menus = [];
+    	var progressBar = showProgressbar();
 
     	getStudioWithData( studio_id ).done(function( _studio ){
     		progressBar.progressbar( "option", "max", 0 );
@@ -58,18 +58,18 @@ var psNetwork = function()
 
 			menus = _studio.menus;
     		_studio.menus = null;
-    		studio = _studio;			
+    		studio = _studio;
 
     		_.each( menus, function( _menu ){
-    			_.each( _menu.sticker_packs, function( _pack ){    				
+    			_.each( _menu.sticker_packs, function( _pack ){
 					_.each( _pack.stickers, function( _sticker ){
     					_sticker._menu_id = _menu.id;
-    					_sticker._pack_id = _pack.id;    					
-	    				stickers.push( _sticker );				    					    					
-					});						    				
+    					_sticker._pack_id = _pack.id;
+	    				stickers.push( _sticker );
+					});
     			});
     		});
-    		
+
 			dfdResult.resolve( studio, menus, stickers );
 
     	}).fail(function(){ // getMenuStructure
@@ -83,18 +83,18 @@ var psNetwork = function()
 
     //========================================
     // Private methods
-    //========================================	
+    //========================================
 
     var API_URL = "";
 
 	function getStickerPacks( studio_id ){
 		var dfd = $.Deferred();
-		$.ajax( API_URL + "/api/v1/studios/" + studio_id + "/sticker_packs.json", {
+        $.ajax(API_URL + "v/2.0/studios/" + studio_id + "/sticker_packs.json", {
 			chache: false,
             data: {
                 canvas_width: $("#ps-canvas").width()
                 ,canvas_height: $("#ps-canvas").height()
-            },            
+            },
 			//crossDomain: true,
 			//dataType: 'jsonp',
 			type: 'POST'
@@ -113,12 +113,12 @@ var psNetwork = function()
 
 	function getStickers( studio_id, sticker_pack_id ){
 		var dfd = $.Deferred();
-		$.ajax( API_URL + "/api/v1/studios/" + studio_id + "/sticker_packs/" + sticker_pack_id + "/stickers.json", {
+		$.ajax( API_URL + "v/2.0/studios/" + studio_id + "/sticker_packs/" + sticker_pack_id + "/stickers.json", {
 			chache: false,
             data: {
                 canvas_width: $("#ps-canvas").width()
                 ,canvas_height: $("#ps-canvas").height()
-            },            
+            },
 			//crossDomain: true,
 			//dataType: 'jsonp',
 			type: 'POST'
@@ -142,7 +142,7 @@ var psNetwork = function()
 
     function getStudioConfig( studio_id ){
         var dfd = $.Deferred();
-        $.ajax( API_URL + "/api/v1/studios/" + studio_id + ".json", {
+        $.ajax( API_URL + "v/2.0/studios/" + studio_id + ".json", {
             chache: false,
             //crossDomain: true,
             //dataType: 'jsonp',
@@ -158,7 +158,7 @@ var psNetwork = function()
             dfd.reject();
         });
         return dfd;
-    }    
+    }
 
 	function showProgressbar()
 	{
@@ -174,7 +174,7 @@ var psNetwork = function()
 
 		var progressbar = $( ".ps-progress-bar", dialog );
       	var progressLabel = $( ".ps-progress-label", dialog );
- 
+
     	progressbar.progressbar({
       		value: false,
       		change: function() {
@@ -184,14 +184,14 @@ var psNetwork = function()
       				progressLabel.text( "Loading Stickers..." );
       			} else {
 					progressLabel.text( Math.round( val / max * 100 ) + "%" );
-      			}        		
+      			}
       		},
       		complete: function() {
         		progressbar.progressbar( "destroy" );
         		dialog.remove();
       		}
     	});
- 
+
     	return progressbar;
 	}
 
@@ -239,18 +239,18 @@ var psNetwork = function()
 
     function saveAvatar( scene_id, left, top )
     {
-        var params = {          
+        var params = {
             scene_id: scene_id,
             left: left,
             top: top
-        };          
+        };
 
-        return $.ajax({ 
+        return $.ajax({
             url: API_URL + "/avatar/save",
-            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},            
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
             data: params,
             type: 'POST'
-        }); 
-    }    
+        });
+    }
 
  };

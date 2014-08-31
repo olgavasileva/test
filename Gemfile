@@ -10,6 +10,9 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder'
 
+gem 'therubyracer'
+gem 'less-rails'
+
 gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
 
@@ -62,6 +65,11 @@ gem 'hirb'
 gem 'wirble'
 
 gem 'geocoder'          # Geolocation
+
+gem 'acts-as-taggable-on'           # A tagging plugin for Rails applications that allows for custom tagging along dynamic contexts
+gem 'roo'                           # Roo provides an interface to Open Office, Excel, and Google Spreadsheets
+gem 'rubyzip'                       # rubyzip is a ruby library for reading and writing zip files
+gem 'creek', '~> 1.0.3'             # Configurable streaming aggregator
 
 group :development do
   gem 'sqlite3'

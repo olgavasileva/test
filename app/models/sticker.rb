@@ -21,7 +21,7 @@ class Sticker < ActiveRecord::Base
 
   validates :display_name, presence: true
   validates :priority, numericality: true
-  validates :kind, inclusion: {in: KINDS}
+  validates :type, inclusion: {in: KINDS}
 
   before_create :set_priority_value
   before_save :set_image_geometry
@@ -34,18 +34,8 @@ class Sticker < ActiveRecord::Base
     end
   end
 
-  scope :backgrounds, -> {where(kind: 'Background')}
-  scope :stickers, -> {where(kind: 'Sticker')}
-
-  def type
-    Rails.logger.warning "Deprecated type used on Sticker, use kind"
-    kind
-  end
-
-  def type= kind
-    Rails.logger.warning "Deprecated type= used on Sticker, use kind="
-    self.kind = kind
-  end
+  scope :backgrounds, -> {where(type: 'Background')}
+  scope :stickers, -> {where(type: 'Sticker')}
 
   def self.available
     active
@@ -77,7 +67,7 @@ class Sticker < ActiveRecord::Base
     item_properties.each do |ip|
       properties[ip.key] = ip.value
     end
-    {:id => id, :display_name => display_name, :mirrorable => mirrorable, :kind => kind, :sort_order => priority,
+    {:id => id, :display_name => display_name, :mirrorable => mirrorable, :type => type, :sort_order => priority,
     :tags => tag_list, :image_thumb_url => image.thumb.url, :image_url => image_url, :image_width => image_width,
     :image_height => image_height, :properties => properties}
   end

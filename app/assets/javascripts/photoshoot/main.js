@@ -1,3 +1,4 @@
+//=require_self
 //=require ./globals.js
 //=require ./libs/fabric.js
 // require ./libs/jquery-ui-1.10.3.custom.js
@@ -10,6 +11,7 @@
 //=require ./libs/idangerous.swiper-2.0
 //=require ./libs/idangerous.swiper.scrollbar-2.0
 //=require ./libs/jquery.rcrumbs
+//=require handlebars
 //=require ./ui
 //=require ./utils
 //=require ./canvas
@@ -23,11 +25,11 @@
 //=require ./network
 //=require ./bootstrap
 // DO WE NEED THIS? =require plugins/modernizr.custom.js
-//=require_self
+//=require ./libs/underscore
 
 $(function() {
     $(document).bind("ps.bootstrap.initialized", function() {
-        if $("#sceneinfo").length > 0 {
+        if ($("#sceneinfo").length > 0) {
             var sceneData = $("#sceneinfo").data();
 
             setTimeout(function() {
@@ -40,9 +42,6 @@ $(function() {
                     }
                 });
             }, 300);
-
-            PS_SCENE_ID = sceneData.sceneId;
-            PS_DETAILS_URL = sceneData.shareLink;;
         }
     });
 });

@@ -1,0 +1,7 @@
+.col-sm-12
+  %h4.section-title=header
+
+{{#each #{object}}}
+.col-lg-4.col-md-4.col-sm-12.col-xs-12.sticker-container{class:"{{#if ../is_locked}}locked{{else}}stickable{{/if}}"}
+  =image_tag "{{image_thumb_url}}", id:"sticker_{{id}}", class:"img-responsive", data:{id:"{{id}}", src:"{{image_url}}", height:"{{image_height}}", width:"{{image_width}}", type:"{{type}}"}
+{{/each}}

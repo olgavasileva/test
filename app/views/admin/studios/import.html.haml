@@ -1,0 +1,11 @@
+- if @error_messages
+  %ul
+    - @error_messages.each do |err|
+      %li= err
+.left.panel
+  = form_tag import_admin_studios_path, method: :post, multipart: true do
+    .panel_contents
+      %div{style: "padding:5px;"}
+        = file_field_tag :file
+      %div{style: "padding:5px;"}
+        = submit_tag 'Import'

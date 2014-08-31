@@ -48,6 +48,13 @@
         - type
         - title
         - state
+  StudioQuestion:
+    :options:
+      :fields:
+        - id
+        - type
+        - title
+        - studio_id
   Question:
     :options:
       :fields:
@@ -85,3 +92,10 @@
         - username
         - email
         - name
+  Studio:
+    :options:
+      :fields:
+        - id
+        - name
+        - display_name
+        - disabled
