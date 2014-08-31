@@ -20,7 +20,23 @@ class TwoCents::Groups < Grape::API
 
     # add group
     desc "Add a group"
-    put 'group'
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      requires :name, type: String, desc: "Name for group."
+    end
+    put 'group' do
+      validate_user!
+
+      group = Group.new(user: current_user, name: params[:name])
+
+      fail! 400, group.errors.full_messages.first unless group.save
+
+      {
+        id: group.id,
+        name: group.name
+      }
+    end
 
     # update group
     desc "Update one of my groups"

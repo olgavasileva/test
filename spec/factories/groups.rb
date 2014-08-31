@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :group do
-    name "Software Developers"
+    sequence(:name) { |n| "Software Developers #{n}" }
     user
   end
 end
