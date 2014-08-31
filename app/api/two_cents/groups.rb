@@ -3,7 +3,20 @@ class TwoCents::Groups < Grape::API
 
     # list groups
     desc "List my groups"
-    get 'groups'
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+    end
+    get 'groups' do
+      validate_user!
+
+      current_user.groups.map do |g|
+        {
+          id: g.id,
+          name: g.name,
+          member_count: g.members.count
+        }
+      end
+    end
 
     # add group
     desc "Add a group"
