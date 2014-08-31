@@ -2,8 +2,8 @@
     /* define size constants */
     PS_MENU_WIDTH = 278; // PS_ITEMS_MENU_CELL_WIDTH + (PS_ITEMS_MENU_CELL_MARGIN * 6 /* margins */))
     PS_MENU_SCROLL_WIDTH = 18;
-    PS_OTHERS_HEIGHT = $("#studio-wrapper").offset.top + 2; // total vertical space occupied by other elements
-    PS_HEADER_HEIGHT = $('#ps-breadcrumbs').outerHeight();
+    PS_OTHERS_HEIGHT = 0; // total vertical space occupied by other elements
+    PS_HEADER_HEIGHT = 0;
     PS_MIN_CANVAS_WIDTH = 720;
     PS_MAX_CANVAS_WIDTH = 2048;
     PS_MIN_CANVAS_HEIGHT = 495;
@@ -31,6 +31,9 @@
 $(function() {
     $(document).bind("ps.bootstrap.initializing", function() {
         var data = $("#photoshootinfo").data();
+
+        PS_OTHERS_HEIGHT = $("#studio-wrapper").offset().top + 2; // total vertical space occupied by other elements
+        PS_HEADER_HEIGHT = $('#ps-breadcrumbs').outerHeight();
 
         PS_STUDIO_ID = data.studioId;
         PS_STUDIO_NAME = data.studioName;

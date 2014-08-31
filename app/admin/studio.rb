@@ -144,17 +144,17 @@ ActiveAdmin.register Studio do
   collection_action :import, :method => [:get, :post] do
     if params[:file]
       name =  params[:file].original_filename
-      directory = "/tmp"
+      tmp_dir = "/tmp"
       # create the file path
-      path = File.join(directory, name)
+      zip_file_path = File.join(tmp_dir, name)
       # write the file
-      File.open(path, "wb") { |f| f.write(params[:file].read) }
+      File.open(zip_file_path, "wb") { |f| f.write(params[:file].read) }
 
       require 'zip/filesystem'
       require 'creek'
-      Zip::File.open(path) do |zipfile|
+      Zip::File.open(zip_file_path) do |zipfile|
         excel_file = zipfile.glob('*.xlsx').first || zipfile.glob('*.xls').first
-        excel_file_path = File.join(directory, excel_file.name)
+        excel_file_path = File.join(tmp_dir, excel_file.name)
         File.open(excel_file_path, "wb") { |f| f.write(excel_file.get_input_stream.read) }
 
         studio_name = excel_file.name.split('.')[0]
@@ -207,12 +207,17 @@ ActiveAdmin.register Studio do
               sticker.type = (row.values[2] == 'Background' ? 'Background' : 'Sticker')
               if !row.values[0].nil?
                 sticker.display_name = row.values[0]
-                File.open(row.values[1], "wb") {|f| f.write(zipfile.glob(row.values[1]).first.get_input_stream.read)}
-                file = File.open(row.values[1], "r")
-                sticker.image = file
-                sticker.mirrorable = row.values[3]
-                sticker.priority = row_num
-                sticker.save!
+
+                image_file = File.join tmp_dir, row.values[1]
+                File.open(image_file, "wb") {|f| f.write(zipfile.glob(row.values[1]).first.get_input_stream.read)}
+                File.open(image_file, "r") do |file|
+                  sticker.image = file
+                  sticker.mirrorable = row.values[3]
+                  sticker.priority = row_num
+                  sticker.save!
+                end
+                File.delete image_file
+
                 if !sticker_pack.stickers.include?(sticker)
                   sticker_pack.stickers << sticker
                 end
@@ -245,7 +250,10 @@ ActiveAdmin.register Studio do
         end
 
         studio.save!
+        File.delete excel_file_path
       end
+
+      File.delete zip_file_path
     end
   end
 

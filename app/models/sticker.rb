@@ -1,7 +1,7 @@
 class Sticker < ActiveRecord::Base
   include Togglable
 
-  KINDS ||= %w(Background Sticker)
+  TYPES ||= %w(Background Sticker)
 
   mount_uploader :image, StickerImageUploader, :mount_on => :image
 
@@ -21,7 +21,7 @@ class Sticker < ActiveRecord::Base
 
   validates :display_name, presence: true
   validates :priority, numericality: true
-  validates :type, inclusion: {in: KINDS}
+  validates :type, inclusion: {in: TYPES}
 
   before_create :set_priority_value
   before_save :set_image_geometry

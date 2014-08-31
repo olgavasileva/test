@@ -1,0 +1,64 @@
+/ = semantic_form_for [:admin, @sticker] do |f|
+= f.inputs do
+  = f.input :display_name, hint: 'What the Users will see'
+  = f.input :priority
+  = f.input :disabled
+  = f.input :type, as: :select, collection: Sticker::TYPES, include_blank: false
+  = f.input :tag_list,                                                                                          |
+    hint: 'For Marketing use',                                                                                  |
+    input_html: {class: 'chosen-new-select', multiple: true},                                                   |
+    as: :select,                                                                                                |
+    collection: ActsAsTaggableOn::Tag.where(taggings: {taggable_type: %w(Sticker Background), context: 'tags'}) |
+    .joins(:taggings).uniq.map(&:name)                                                                          |
+  = f.input :mirrorable
+  = f.input :spotlightable
+
+  = f.inputs "Associations" do
+    = f.input :sticker_pack_ids,                                            |
+      input_html: {class: 'chosen-select', multiple: true},                 |
+      label: 'Sticker Pack',                                                |
+      as: :select,                                                          |
+      collection: StickerPack.all.map{|sp| [" #{sp.display_name} ", sp.id]} |
+
+  = f.inputs "Properties" do
+    = f.inputs for: :item_properties, heading: 'Properties', allow_destroy: true, new_record: "New Property" do |p|
+      = p.input :key, options_for_select(ItemProperty.all.map(&:key).uniq, f.object.try(:key)), {include_blank: true}
+      = p.input :value
+
+  = f.inputs "Product Info", multipart: true do
+    = f.input :image, as: :file, hint: f.template.image_tag(f.object.image_url.to_s)
+  = f.actions
+
+
+/ = semantic_form_for [:admin, @sticker], as: :sticker, url: @sticker.id ? admin_sticker_path(@sticker.id) : '/admin/stickers', html: {method: (@sticker.new_record? ? :post : :patch)} do |f|
+/   = f.inputs do
+/     = f.input :display_name, hint: 'What the Users will see'
+/     = f.input :priority
+/     = f.input :disabled
+/     = f.input :type, as: :select, collection: Sticker::TYPES, include_blank: false
+/     = f.input :tag_list,                                                                                          |
+/       hint: 'For Marketing use',                                                                                  |
+/       input_html: {class: 'chosen-new-select', multiple: true},                                                   |
+/       as: :select,                                                                                                |
+/       collection: ActsAsTaggableOn::Tag.where(taggings: {taggable_type: %w(Sticker Background), context: 'tags'}) |
+/       .joins(:taggings).uniq.map(&:name)                                                                          |
+/     = f.input :mirrorable
+/     = f.input :spotlightable
+/   = f.inputs 'Associations' do
+/     = f.input :sticker_pack_ids,                                            |
+/       input_html: {class: 'chosen-select', multiple: true},                 |
+/       label: 'Sticker Pack',                                                |
+/       as: :select,                                                          |
+/       collection: StickerPack.all.map{|sp| [" #{sp.display_name} ", sp.id]} |
+/   = f.inputs 'Properties' do
+/     %ol#properties_list
+/       %li
+/         %span= label_tag :key
+/         %span= label_tag :value
+/       = f.fields_for :item_properties do |properties|
+/         = render partial: 'admin/shared/property_form', locals: {f: properties}
+/       %li
+/         = link_to_add_fields("Add Property", f, :item_properties, template: 'admin/shared/property_form', class: 'light-button')
+/   = f.inputs 'Product Info', multipart: true do
+/     = f.input :image, as: :file, hint: f.template.image_tag(f.object.image_url.to_s)
+/   = f.actions

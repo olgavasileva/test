@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140830230216) do
+ActiveRecord::Schema.define(version: 20140831175039) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -229,6 +229,17 @@ ActiveRecord::Schema.define(version: 20140830230216) do
 
   add_index "instances", ["device_id"], name: "index_instances_on_device_id", using: :btree
   add_index "instances", ["user_id"], name: "index_instances_on_user_id", using: :btree
+
+  create_table "item_properties", force: true do |t|
+    t.string   "key"
+    t.string   "value"
+    t.integer  "item_id"
+    t.string   "item_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "item_properties", ["item_id", "item_type"], name: "index_item_properties_on_item_id_and_item_type", using: :btree
 
   create_table "liked_comments", force: true do |t|
     t.integer  "user_id"
@@ -474,6 +485,23 @@ ActiveRecord::Schema.define(version: 20140830230216) do
   add_index "studios", ["contest_id"], name: "index_studios_on_contest_id", using: :btree
   add_index "studios", ["scene_id"], name: "index_studios_on_scene_id", using: :btree
   add_index "studios", ["sticker_pack_id"], name: "index_studios_on_sticker_pack_id", using: :btree
+
+  create_table "taggings", force: true do |t|
+    t.integer  "tag_id"
+    t.integer  "taggable_id"
+    t.string   "taggable_type"
+    t.integer  "tagger_id"
+    t.string   "tagger_type"
+    t.string   "context",       limit: 128
+    t.datetime "created_at"
+  end
+
+  add_index "taggings", ["tag_id"], name: "index_taggings_on_tag_id", using: :btree
+  add_index "taggings", ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context", using: :btree
+
+  create_table "tags", force: true do |t|
+    t.string "name"
+  end
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
