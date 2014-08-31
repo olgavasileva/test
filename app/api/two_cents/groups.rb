@@ -49,8 +49,9 @@ class TwoCents::Groups < Grape::API
     post 'group' do
       validate_user!
 
-      group = current_user.groups.find_by_id(params[:id])
-      fail! 400, "Couldn't find user's group" unless group.present?
+      group = Group.find_by_id(params[:id])
+      fail! 400, "Couldn't find group" unless group.present?
+      fail! 400, "Group does not belong to user" if group.user != current_user
 
       group.update_attributes(name: params[:name])
       fail! 400, group.errors.full_messages.first unless group.save
