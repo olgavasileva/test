@@ -25,7 +25,7 @@ class TwoCents::Groups < Grape::API
 
       requires :name, type: String, desc: "Name for group."
     end
-    put 'group' do
+    post 'group' do
       validate_user!
 
       group = Group.new(user: current_user, name: params[:name])
@@ -46,7 +46,7 @@ class TwoCents::Groups < Grape::API
       requires :id, type: Integer, desc: "ID for group."
       requires :name, type: String, desc: "New name for group."
     end
-    post 'group' do
+    put 'group' do
       validate_user!
 
       group = Group.find_by_id(params[:id])
