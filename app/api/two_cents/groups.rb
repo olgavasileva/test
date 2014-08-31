@@ -40,7 +40,23 @@ class TwoCents::Groups < Grape::API
 
     # update group
     desc "Update one of my groups"
-    post 'group'
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      requires :id, type: Integer, desc: "ID for group."
+      requires :name, type: String, desc: "New name for group."
+    end
+    post 'group' do
+      validate_user!
+
+      group = current_user.groups.find_by_id(params[:id])
+      fail! 400, "Couldn't find user's group" unless group.present?
+
+      group.update_attributes(name: params[:name])
+      fail! 400, group.errors.full_messages.first unless group.save
+
+      {}
+    end
 
     # delete group
     desc "Delete one of my groups"

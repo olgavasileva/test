@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'groups/group' do
+describe 'PUT groups/group' do
   let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
   let(:params) { {
     auth_token: instance.auth_token,
