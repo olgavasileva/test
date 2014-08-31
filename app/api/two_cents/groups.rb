@@ -60,7 +60,23 @@ class TwoCents::Groups < Grape::API
 
     # delete group
     desc "Delete one of my groups"
-    delete 'group'
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      requires :id, type: Integer, desc: "ID for group."
+    end
+    delete 'group' do
+      validate_user!
+
+      group = Group.find_by_id(params[:id])
+      fail! 400, "Couldn't find group" unless group.present?
+      fail! 400, "Group does not belong to user" if group.user != current_user
+
+      group.destroy
+      fail! 400, group.errors.full_messages.first unless group.save
+
+      {}
+    end
 
   end
 
