@@ -79,6 +79,29 @@ class TwoCents::Groups < Grape::API
       {}
     end
 
+    # add follower to group
+    desc "Add a follower to one of my groups"
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      requires :id, type: Integer, desc: "ID for group."
+      requires :user_id, type: Integer, desc: "ID for user to add to group."
+    end
+    put 'add_user' do
+      validate_user!
+
+      group = Group.find_by_id(params[:id])
+      fail! 400, "Couldn't find group" unless group.present?
+      fail! 400, "Group does not belong to user" if group.user != current_user
+
+      user = User.find_by_id(params[:user_id])
+      fail! 400, "Couldn't find user" unless user.present?
+
+      member = GroupMember.new(user_id: user.id, group_id: group.id)
+      fail! 400, member.errors.full_messages.first unless member.save
+
+      {}
+    end
   end
 
 end
