@@ -124,7 +124,7 @@
 
 
         .row.form-group
-          =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-12"}}
+          =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-12", :name=>"category",:value_field=>"id"}}
         .row
           .col-md-6
             .btn-group.btn-group-justified
