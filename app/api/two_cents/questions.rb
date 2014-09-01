@@ -543,6 +543,42 @@ class TwoCents::Questions < Grape::API
 
 
     #
+    # Return answered questions.
+    #
+
+    desc "Return list of questions answered by a user."
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      optional :user_id, type: Integer, desc: "User ID. Defaults to logged in user's ID."
+      optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all questions."
+      optional :per_page, type: Integer, default: 15, desc: "Number of questions per page."
+    end
+    post 'answered' do
+      user_id = params[:user_id]
+      user = user_id.present? ? User.find(user_id) : current_user
+
+      questions = user.answered_questions
+
+      if params[:page]
+        questions = questions.paginate(page: params[:page],
+                                       per_page: params[:per_page])
+      end
+
+      questions.map do |question|
+        response = question.responses.where(user_id: user.id).first
+        choices = response.try(:choices) || []
+
+        {
+          id: question.id,
+          response_id: response.id,
+          response_text: response.text,
+          choice_ids: choices.map(&:id)
+        }
+      end
+    end
+
+    #
     # Submit a user's response
     #
 
