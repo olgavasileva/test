@@ -24,10 +24,17 @@ describe 'relationships/followers' do
   context "without user_id" do
     let(:params) { common_params }
 
-    before { request.call }
+    before do
+      FactoryGirl.create_list(:user, 3) # non-followers
+      request.call
+    end
 
     it "responds with data for all logged in user's followers" do
+      response_follower_ids = response_body.map{ |h| h['id'] }
+      user_follower_ids = instance.user.followers.map(&:id)
+
       expect(response_body.count).to eq count
+      expect(response_follower_ids).to match_array user_follower_ids
     end
 
     include_examples :correct_fields

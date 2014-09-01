@@ -14,13 +14,13 @@ describe 'relationships/follow' do
     before { request.call }
 
     it "follows user" do
-      expect(instance.user.followers).to include(user)
+      expect(instance.user.leaders).to include(user)
     end
   end
 
   describe "when already following user" do
     before do
-      instance.user.followers << user
+      instance.user.leaders << user
       request.call
     end
 

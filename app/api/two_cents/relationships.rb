@@ -73,11 +73,11 @@ class TwoCents::Relationships < Grape::API
     post 'follow' do
       user = User.find(params[:user_id])
 
-      if current_user.followers.include? user
+      if current_user.leaders.include? user
         fail! 400, "Already following user."
       end
 
-      current_user.followers << user
+      current_user.leaders << user
 
       {}
     end
@@ -92,11 +92,11 @@ class TwoCents::Relationships < Grape::API
     post 'unfollow' do
       user = User.find(params[:user_id])
 
-      unless current_user.followers.include? user
+      unless current_user.leaders.include? user
         fail! 400, "Not following user."
       end
 
-      current_user.followers.delete(user)
+      current_user.leaders.delete(user)
 
       {}
     end
