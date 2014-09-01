@@ -27,47 +27,6 @@
 
 
 
-
-  #category_dropdown_toggler
-    &.row
-      &:before
-        margin-bottom: -12px
-      &:after
-        margin-bottom: -12px
-    position: relative
-  #category_caret
-    border-top: 21px solid
-    border-right: 20px solid transparent
-    border-left: 20px solid transparent
-    &:after
-      display: inline-block
-      width: 0
-      height: 0
-      margin-left: 2px
-      vertical-align: middle
-      border-top: 16px solid white
-      border-right: 15px solid transparent
-      border-left: 15px solid transparent
-      position: absolute
-      left: 20px
-      top: 0px
-      content: " "
-
-  .category-dropdown-wrapper
-    border: solid 1px #264e8e
-    position: relative
-    ul#categry_dropdown_menu
-      left: auto
-      overflow: auto
-      left: -1px
-      right: -1px
-      width: auto
-      border: solid 1px #264e8e
-      border-radius: 0 0 3px 3px
-      padding: 10px
-      border-top: none
-      margin-top: -3px
-      max-height: 110px
   #background_selector
     font-size: 2.2em
     border: solid 1px #264e8e
@@ -165,17 +124,7 @@
 
 
         .row.form-group
-          #category_dropdown.dropdown.col-sm-12
-            %div.category-dropdown-wrapper
-              %a{:class=>"row",:id=>'category_dropdown_toggler',:role=>'button',:data=>{:toggle=>'dropdown',:target=>'#'}}
-                .col-sm-10.col-xs-9=(@question.category||'Select a Category')
-                .col-sm-1.col-xs-1
-                  %span{:class=>["caret"], :id=>"category_caret"}
-
-              %ul#categry_dropdown_menu{:class=>["dropdown-menu"],:role=>"menu", :aria=>{:labelledby=>"category_dropdown_toggler"}}
-                -Category.all.each do |c|
-                  %li
-                    =c.name
+          =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-12", :name=>"category",:value_field=>"id"}}
         .row
           .col-md-6
             .btn-group.btn-group-justified
