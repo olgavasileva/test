@@ -49,24 +49,33 @@ describe :summary do
       context "When a user is associated with the instnace" do
         let(:user) {FactoryGirl.create :user}
 
-        context "With a question" do
-          let(:question) {FactoryGirl.create :text_question}
-          let(:question_id) {question.id}
+        question_types = %i[question image_question text_question
+          choice_question text_choice_question image_choice_question
+          multiple_choice_question star_question percent_question
+          order_question]
 
-          it {expect(response.status).to eq 201}
-          it "should return all summary fields" do
-            summary = JSON.parse(response.body)['summary']
+        question_types.each do |question_type|
+          context "With a #{question_type.to_s.classify}" do
+            let(:question) {FactoryGirl.create question_type}
+            let(:question_id) {question.id}
 
-            expect(summary.keys).to include('response_count')
-            expect(summary.keys).to include('view_count')
-            expect(summary.keys).to include('comment_count')
-            expect(summary.keys).to include('share_count')
-            expect(summary.keys).to include('skip_count')
-            expect(summary.keys).to include('published_at')
-            expect(summary.keys).to include('sponsor')
-            expect(summary.keys).to include('creator_id')
-            expect(summary.keys).to include('creator_name')
-            expect(summary.keys).to include('anonymous')
+            it {expect(response.status).to eq 201}
+
+            it "should return all summary fields" do
+              summary = JSON.parse(response.body)['summary']
+
+              expect(summary.keys).to include('choices')
+              expect(summary.keys).to include('response_count')
+              expect(summary.keys).to include('view_count')
+              expect(summary.keys).to include('comment_count')
+              expect(summary.keys).to include('share_count')
+              expect(summary.keys).to include('skip_count')
+              expect(summary.keys).to include('published_at')
+              expect(summary.keys).to include('sponsor')
+              expect(summary.keys).to include('creator_id')
+              expect(summary.keys).to include('creator_name')
+              expect(summary.keys).to include('anonymous')
+            end
           end
         end
       end
