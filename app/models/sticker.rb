@@ -59,17 +59,4 @@ class Sticker < ActiveRecord::Base
       self.priority = Sticker.maximum(:priority).to_i + 1
     end
   end
-
-  #Builds json using Jbuilder.
-  #Use attributes! or target! to make the information workable
-  def api_response(options={})
-    properties = {}
-    item_properties.each do |ip|
-      properties[ip.key] = ip.value
-    end
-    {:id => id, :display_name => display_name, :mirrorable => mirrorable, :type => type, :sort_order => priority,
-    :tags => tag_list, :image_thumb_url => image.thumb.url, :image_url => image_url, :image_width => image_width,
-    :image_height => image_height, :properties => properties}
-  end
-
 end

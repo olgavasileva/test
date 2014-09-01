@@ -40,15 +40,6 @@ class StickerPack < ActiveRecord::Base
     header_icon.thumb.url
   end
 
-  def api_response(options={})
-    response = {:id => self.id, :display_name => self.display_name, :header_icon_url => self.header_icon_url,
-     :updated_at => self.updated_at}
-    if options['sort_order']
-      response['sort_order'] = options['sort_order']
-    end
-    response
-  end
-
   private
     def sticker_ttl
       @sticker_ttl ||= ENV['STICKER_CACHE_TTL_IN_MINUTES'] ? ENV['STICKER_CACHE_TTL_IN_MINUTES'].to_i.minutes : 1.minute

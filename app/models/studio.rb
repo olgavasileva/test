@@ -8,18 +8,13 @@ class Studio < ActiveRecord::Base
 
   has_many :studio_sticker_packs, -> { order(:sort_order) }
   has_many :sticker_packs, through: :studio_sticker_packs
+  has_many :stickers, through: :sticker_packs
 
   validates :name, uniqueness: true, presence: true
   validates :display_name, presence: true
 
   mount_uploader :image, ImageUploader
-  mount_uploader :icon, ImageUploader
+  mount_uploader :icon, StudioIconUploader
 
   scope :featured, -> {where(featured: true)}
-
-  def api_response
-    {:display_name => display_name, :welcome_message => welcome_message, :scene_id => scene_id, :icon_url => icon_url,
-     :updated_at => updated_at }
-  end
-
 end

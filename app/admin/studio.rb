@@ -38,8 +38,8 @@ ActiveAdmin.register Studio do
 
     f.inputs 'Sticker Packs' do
       f.input :sticker_packs,
-              as: :select,
-              collection: StickerPack.all.map{|sp| [sp.display_name, sp.id]},
+              as: :check_boxes,
+              collection: StickerPack.all,
               input_html: {class: 'chosen-select', id: 'studio_config_sticker_packs'}
     end
 

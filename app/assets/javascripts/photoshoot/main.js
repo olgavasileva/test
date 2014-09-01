@@ -2,10 +2,10 @@
 //=require ./globals.js
 //=require ./libs/fabric.js
 // require ./libs/jquery-ui-1.10.3.custom.js
-// DO WE NEED THIS? =require plugins/jquery-ui.min.js
+// ALREADY INCLUDED =require plugins/jquery-ui.min.js
 //=require ./libs/jquery.ui-contextmenu
 //=require ./libs/jquery.ba-hashchange.min
-// DO WE NEED THIS? =require plugins/jquery.ui.touch-punch.min.js
+// ALREADY INCLUDED =require plugins/jquery.ui.touch-punch.min.js
 //=require ./libs/jquery.cookie
 //=require ./libs/doubleTap
 //=require ./libs/idangerous.swiper-2.0
@@ -24,7 +24,7 @@
 //=require ./sticker-details
 //=require ./network
 //=require ./bootstrap
-// DO WE NEED THIS? =require plugins/modernizr.custom.js
+// DO WE NEED THIS? =require ./libs/modernizr.custom.js
 //=require ./libs/underscore
 
 $(function() {

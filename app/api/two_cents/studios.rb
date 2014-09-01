@@ -1,11 +1,19 @@
 class TwoCents::Studios < Grape::API
+  formatter :json, Grape::Formatter::Jbuilder
+
   helpers do
-    def get_studio
-      @studio = Studio.find(params[:studio_id]) rescue (fail! 400, "Studio with ID #{params[:studio_id]} not found")
+    def studio
+      @studio = Studio.find(params[:studio_id]) rescue (fail! 4400, "Studio with ID #{params[:studio_id]} not found")
     end
 
-    def get_sticker_pack
-      @sticker_pack = StickerPack.find(params[:sticker_pack_id]) rescue (fail! 400, "Sticker pack with ID #{params[:sticker_pack_id]} not found")
+    def sticker_pack
+      @sticker_pack = studio.sticker_packs.find(params[:sticker_pack_id]) rescue (fail! 4401, "Sticker pack with ID #{params[:sticker_pack_id]} not found")
+    end
+
+    def next_index
+      @index ||= 0
+      @index += 1
+      @index - 1
     end
   end
 
@@ -16,7 +24,6 @@ class TwoCents::Studios < Grape::API
 
                   #### Example response
                   {
-                    response: "ok"
                     studio: { display_name: "Breakfast",
                               welcome_message: "Welcome to the Breakfast studio",
                               scene_id: 1,
@@ -26,11 +33,10 @@ class TwoCents::Studios < Grape::API
                   }
         END
     }
-    post '/:studio_id', http_codes: [
+    post '/:studio_id', jbuilder: "studio", http_codes: [
       [200, "4400 - Studio not found"]
     ] do
-      get_studio
-      {:response => 'ok', :studio => @studio.api_response}
+      @studio = studio
     end
 
     desc "Get all of a studio's sticker packs", {
@@ -39,7 +45,6 @@ class TwoCents::Studios < Grape::API
 
                   #### Example response
                   {
-                    response: "ok"
                     sticker_packs: [
                       {
                         id: 26,
@@ -59,15 +64,10 @@ class TwoCents::Studios < Grape::API
                   }
         END
     }
-    post '/:studio_id/sticker_packs', http_codes: [
+    post '/:studio_id/sticker_packs', jbuilder: "sticker_packs", http_codes: [
         [200, "4400 - Studio not found"]
     ] do
-      get_studio
-      sticker_packs = []
-      @studio.sticker_packs.each_with_index do |sp, idx|
-        sticker_packs << sp.api_response({'sort_order' => idx})
-      end
-      {:response => "ok", :sticker_packs => sticker_packs}
+      @sticker_packs = studio.sticker_packs
     end
 
     desc "Get a particular sticker pack", {
@@ -76,7 +76,6 @@ class TwoCents::Studios < Grape::API
 
                   #### Example response
                   {
-                    response: "ok"
                     sticker_pack: {
                       id: 26,
                       display_name: "Cereal",
@@ -86,13 +85,11 @@ class TwoCents::Studios < Grape::API
                   }
         END
     }
-    post '/:studio_id/sticker_packs/:sticker_pack_id', http_codes: [
+    post '/:studio_id/sticker_packs/:sticker_pack_id', jbuilder: "sticker_pack", http_codes: [
         [200, "4400 - Studio not found"],
         [200, "4401 - Sticker Pack not found"]
     ] do
-        get_studio
-        get_sticker_pack
-        {:response => "ok", :sticker_pack => @sticker_pack.api_response}
+        @sticker_pack = sticker_pack
     end
 
     desc "Get all the stickers in a sticker pack", {
@@ -101,7 +98,6 @@ class TwoCents::Studios < Grape::API
 
                   #### Example response
                   {
-                    response: "ok"
                     backgrounds: [
                       {
                         id: 65,
@@ -167,21 +163,12 @@ class TwoCents::Studios < Grape::API
                   }
         END
     }
-    post '/:studio_id/sticker_packs/:sticker_pack_id/stickers', http_codes: [
+    post '/:studio_id/sticker_packs/:sticker_pack_id/stickers', jbuilder: "stickers", http_codes: [
         [200, "4400 - Studio not found"],
         [200, "4401 - Sticker Pack not found"]
     ] do
-      get_studio
-      get_sticker_pack
-      backgrounds = []
-      @sticker_pack.backgrounds.each do |bg|
-        backgrounds << bg.api_response
-      end
-      stickers = []
-      @sticker_pack.available_stickers.each do |s|
-        stickers << s.api_response
-      end
-      { :response => "ok", :backgrounds => backgrounds, :stickers => stickers }
+      @backgrounds = sticker_pack.backgrounds
+      @stickers = sticker_pack.available_stickers
     end
 
     desc "Get a particular sticker", {
@@ -190,7 +177,6 @@ class TwoCents::Studios < Grape::API
 
                   #### Example response
                   {
-                    response: "ok"
                     sticker: {
                       id: 55,
                       display_name: "Cheerios",
@@ -210,13 +196,11 @@ class TwoCents::Studios < Grape::API
                   }
        END
     }
-    post '/:studio_id/stickers/:sticker_id', http_codes: [
+    post '/:studio_id/stickers/:sticker_id', jbuilder: "sticker", http_codes: [
         [200, "4400 - Studio not found"],
         [200, "4402 - Sticker not found"]
     ] do
-      get_studio
-      sticker = Sticker.find(params[:sticker_id]).api_response rescue (fail! 400, "Sticker with ID #{params[:sticker_id]} not found")
-      {:response => "ok", :sticker => sticker}
+      @sticker = studio.stickers.find(params[:sticker_id]) rescue (fail! 4002, "Sticker with ID #{params[:sticker_id]} not found")
     end
 
     desc "Get thumbnail images for all stickers in a studio", {

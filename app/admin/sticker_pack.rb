@@ -58,9 +58,8 @@ ActiveAdmin.register StickerPack do
 
     f.inputs 'Associations' do
       f.input :studio_ids,
-              input_html: {class: 'chosen-select', multiple: true},
               label: 'Studios',
-              as: :select,
+              as: :check_boxes,
               collection: Studio.all.map{|sc| [" #{sc.name}( #{sc.display_name}) ", sc.id]}
     end
     f.actions

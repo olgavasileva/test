@@ -46,12 +46,6 @@ class GalleryElement < ActiveRecord::Base
     (vote.votes >= gallery.max_votes rescue false)
   end
 
-  def api_response
-    {'id' => self.id, 'scene_id' => self.scene.id, 'image_url' => self.scene.image_url,
-     'image_thumb_url' => self.scene.image.thumb.url, 'votes_count' => self.votes,
-     'entry_date' => self.created_at.strftime('%Y-%m-%d %I:%M:%S'), 'votable' => self.gallery.voting_eligible?}
-  end
-
   def share_link(type, share_user = nil)
     if gallery.contest?
       url = url_helpers.contest_show_entry_url(:id => gallery.id, :entry_id => id, :host => APP_CONFIG[:site_url])

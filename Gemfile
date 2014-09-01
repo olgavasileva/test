@@ -53,6 +53,7 @@ gem 'gravatar_for'
 gem 'grape',            # API DSL
   github: 'intridea/grape'
 gem 'grape-rabl'        # rabl for Grape rendering
+gem 'grape-jbuilder'    # jbuilder for Grape rendering
 gem 'grape-swagger'     # API docs
 gem 'swagger-ui_rails'  # API docs hosting
 

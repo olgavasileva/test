@@ -69,11 +69,7 @@ class Gallery < ActiveRecord::Base
   end
 
   def winners
-    winners = []
-    gallery_elements.order("votes DESC").limit(num_winners).each do |winner|
-      winners << winner.api_response
-    end
-    winners
+    gallery_elements.order("votes DESC").limit(num_winners)
   end
 
   def self.contests_open_for_entries
@@ -120,26 +116,6 @@ class Gallery < ActiveRecord::Base
     return new_contest
   end
 
-  def get_gallery_elements(scope="current", sort_order, page, limit)
-    items = []
-    gallery_elements = []
-    if scope == "all"
-      gallery_ids = []
-      Gallery.where("gallery_template_id = ?", gallery_template_id).each do |g|
-        gallery_ids << g.id
-      end
-      gallery_elements = GalleryElement.where(gallery_id: gallery_ids).order(sort_order).page(page).per(limit)
-      count = GalleryElement.where(gallery_id: gallery_ids).size
-    else
-      gallery_elements = GalleryElement.where(gallery_id: id).order(sort_order).page(page).per(limit)
-      count = gallery_elements.count
-    end
-    gallery_elements.each do |element|
-      items << element.api_response
-    end
-    {:items => items, :count => count}
-  end
-
   def self.get_active_public_galleries
     # Make sure all recurring contests have an active instance
     GalleryTemplate.assure_recurring_contests
@@ -160,11 +136,5 @@ class Gallery < ActiveRecord::Base
 
   def self.get_previous_contests(limit)
     return Gallery.where("voting_close < ?", Time.now).order("voting_close DESC").limit(limit)
-  end
-
-  def api_response
-    {:id => id, :entries_open => entries_open, :entries_close => entries_close, :voting_open => voting_open,
-     :voting_close => voting_close, :total_votes => total_votes, :total_entries => total_entries, :name => name,
-     :description => description, :contest => contest, :image => image.url, :rules => rules}
   end
 end
