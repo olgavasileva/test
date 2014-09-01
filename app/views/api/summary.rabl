@@ -12,7 +12,7 @@ node(:summary) do
     comment_count: @question.comment_count,
     share_count: @question.share_count,
     skip_count: @question.skip_count,
-    published_at: @question.updated_at,
+    published_at: @question.updated_at.to_i,
     sponsor: nil,
     creator_id: @question.user.id,
     creator_name: @question.user.name,
