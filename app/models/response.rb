@@ -6,4 +6,5 @@ class Response < ActiveRecord::Base
 
 	validates :question, presence: true
   validates :comment, length: { maximum: 2000, allow_nil: true }
+  scope :with_comment, -> { where("comment <> ''") } # comment not nil or blank
 end
