@@ -8,10 +8,6 @@ FactoryGirl.define do
     state "active"
   end
 
-  factory :info_question, parent: :question, class: "InfoQuestion" do
-    html "This is an info question"
-  end
-
   factory :image_question, parent: :question, class: "ImageQuestion" do
   end
 
