@@ -70,31 +70,40 @@ describe :image_choice_question do
           it {expect(JSON.parse(response.body)['error_message']).to be_nil}
 
           describe :question do
-            it {expect(JSON.parse(response.body)['question']).to_not be_nil}
-            it {expect(JSON.parse(response.body)['question']['id']).to_not be_nil}
-            it {expect(JSON.parse(response.body)['question']['type']).to eq "TextChoiceQuestion"}
-            it {expect(JSON.parse(response.body)['question']['title']).to eq "The Title"}
-            it {expect(JSON.parse(response.body)['question']['rotate']).to eq true}
-            it {expect(JSON.parse(response.body)['question']['category']['id']).to eq category.id}
-            it {expect(JSON.parse(response.body)['question']['category']['name']).to eq category.name}
-            it {expect(JSON.parse(response.body)['question']['comment_count']).to eq 0}
-            it {expect(JSON.parse(response.body)['question']['response_count']).to eq 0}
+            it "should return all question fields" do
+              q = JSON.parse(response.body)['question']
+
+              expect(q).to_not be_nil
+              expect(q['id']).to_not be_nil
+              expect(q['type']).to eq "ImageChoiceQuestion"
+              expect(q['title']).to eq "The Title"
+              expect(q['rotate']).to eq true
+              expect(q['category']['id']).to eq category.id
+              expect(q['category']['name']).to eq category.name
+              expect(q['comment_count']).to eq 0
+              expect(q['response_count']).to eq 0
+            end
           end
 
           describe :choices do
-            it {expect(JSON.parse(response.body)['question']['choices'].count).to eq 3}
+            it "should return all choices and their fields" do
+              q = JSON.parse(response.body)['question']
+              choices = q['choices']
 
-            it {expect(JSON.parse(response.body)['question']['choices'][0]['choice']['rotate']).to eq true}
-            it {expect(JSON.parse(response.body)['question']['choices'][0]['choice']['title']).to eq "Choice Title 1"}
-            it {expect(JSON.parse(response.body)['question']['choices'][0]['choice']['image_url']).not_to be_nil}
+              expect(choices.count).to eq 3
 
-            it {expect(JSON.parse(response.body)['question']['choices'][1]['choice']['rotate']).to eq true}
-            it {expect(JSON.parse(response.body)['question']['choices'][1]['choice']['title']).to eq "Choice Title 2"}
-            it {expect(JSON.parse(response.body)['question']['choices'][0]['choice']['image_url']).not_to be_nil}
+              expect(choices[0]['choice']['rotate']).to eq true
+              expect(choices[0]['choice']['title']).to eq "Choice Title 1"
+              expect(choices[0]['choice']['image_url']).not_to be_nil
 
-            it {expect(JSON.parse(response.body)['question']['choices'][2]['choice']['rotate']).to eq false}
-            it {expect(JSON.parse(response.body)['question']['choices'][2]['choice']['title']).to eq "Choice Title 3"}
-            it {expect(JSON.parse(response.body)['question']['choices'][0]['choice']['image_url']).not_to be_nil}
+              expect(choices[1]['choice']['rotate']).to eq true
+              expect(choices[1]['choice']['title']).to eq "Choice Title 2"
+              expect(choices[0]['choice']['image_url']).not_to be_nil
+
+              expect(choices[2]['choice']['rotate']).to eq false
+              expect(choices[2]['choice']['title']).to eq "Choice Title 3"
+              expect(choices[0]['choice']['image_url']).not_to be_nil
+            end
           end
         end
       end

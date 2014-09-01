@@ -64,9 +64,11 @@ describe :feed do
 
           it {expect(JSON.parse(response.body)[0]['category']['id']).to eq c1.id}
           it {expect(JSON.parse(response.body)[0]['category']['name']).to eq "Category 1"}
+          it {expect(JSON.parse(response.body)[0]['category'].keys).to include 'icon_url'}
 
           it {expect(JSON.parse(response.body)[1]['category']['id']).to eq c2.id}
           it {expect(JSON.parse(response.body)[1]['category']['name']).to eq "Category 2"}
+          it {expect(JSON.parse(response.body)[1]['category'].keys).to include 'icon_url'}
         end
       end
     end

@@ -60,6 +60,8 @@ gem 'koala'             # Facebook graph and realtime access (for email, fid, fr
 gem 'hirb'
 gem 'wirble'
 
+gem 'geocoder'          # Geolocation
+
 group :development do
   gem 'sqlite3'
   gem 'capistrano-rails'

@@ -38,14 +38,10 @@ FactoryGirl.define do
   end
 
   sequence :image do |n|
-    fixture_file_upload File.join("spec","factories","fixtures","images","Example.jpg")
-  end
-
-  sequence :background_image do |n|
-    fixture_file_upload File.join("spec","factories","fixtures","images","Example.jpg")
+    Rack::Test::UploadedFile.new File.join("spec","factories","fixtures","images","Example.jpg")
   end
 
   sequence :sample_image_url do |n|
-    "/tmp/Vals-sample.jpg"
+    File.join(Rails.root, "spec","factories","fixtures","images","Example.jpg")
   end
 end

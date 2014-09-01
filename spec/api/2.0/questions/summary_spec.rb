@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-describe :feed do
+describe :summary do
   let(:params) {{}}
   let(:before_api_call) {}
   before { before_api_call }
-  before { post "v/2.0/questions/response", Hash[params].to_json,{"CONTENT_TYPE" => "application/json"}}
+  before { post "v/2.0/questions/summary", Hash[params].to_json,{"CONTENT_TYPE" => "application/json"}}
 
   context "Without the required params" do
     it {expect(response.status).to eq 200}
@@ -54,16 +54,20 @@ describe :feed do
           let(:question_id) {question.id}
 
           it {expect(response.status).to eq 201}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('response_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('view_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('comment_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('share_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('skip_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('published_at')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('sponsor')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('creator_id')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('creator_name')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('anonymous')}
+          it "should return all summary fields" do
+            summary = JSON.parse(response.body)['summary']
+
+            expect(summary.keys).to include('response_count')
+            expect(summary.keys).to include('view_count')
+            expect(summary.keys).to include('comment_count')
+            expect(summary.keys).to include('share_count')
+            expect(summary.keys).to include('skip_count')
+            expect(summary.keys).to include('published_at')
+            expect(summary.keys).to include('sponsor')
+            expect(summary.keys).to include('creator_id')
+            expect(summary.keys).to include('creator_name')
+            expect(summary.keys).to include('anonymous')
+          end
         end
       end
     end
