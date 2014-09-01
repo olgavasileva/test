@@ -1,5 +1,4 @@
 class QuestionsControllerBase < ApplicationController
-
   def new
     @question = question_class.send :new, user:current_user
     authorize @question
