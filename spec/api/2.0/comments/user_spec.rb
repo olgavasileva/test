@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe 'comments/user', do
-  let(:count) { 20 }
+describe 'comments/user' do
+  let(:count) { 3 }
   let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
   let(:common_params) { {
     auth_token: instance.auth_token
@@ -27,7 +27,7 @@ describe 'comments/user', do
     before { request.call }
 
     it "responds with data for all logged in user's comments" do
-      expect(response_body.count).to eq count + 1
+      expect(response_body.count).to eq count
     end
 
     include_examples :correct_fields
@@ -50,6 +50,7 @@ describe 'comments/user', do
   end
 
   context "with page" do
+    let(:count) { 20 }
     let(:params) { common_params.merge(page: 1) }
 
     before { request.call }
@@ -61,6 +62,7 @@ describe 'comments/user', do
     include_examples :correct_fields
 
     context "with per_page" do
+      let(:count) { 7 }
       let(:per_page) { 5 }
       let(:params) { common_params.merge(page: 1, per_page: per_page) }
 
