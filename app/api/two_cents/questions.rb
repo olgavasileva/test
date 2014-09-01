@@ -578,6 +578,44 @@ class TwoCents::Questions < Grape::API
       end
     end
 
+
+    #
+    # Return a TextQuestion's responses.
+    #
+
+    desc "Return list of a TextQuestion's responses."
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      requires :question_id, type: Integer, desc: "ID of TextQuestion."
+      optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all answers."
+      optional :per_page, type: Integer, default: 15, desc: "Number of answers per page."
+    end
+    get 'responses' do
+      validate_user!
+
+      question = TextQuestion.find(params[:question_id])
+
+      unless current_user.questions.include? question
+        fail! 400, "Question doesn't belong to user."
+      end
+
+      responses = question.responses
+
+      if params[:page]
+        responses = responses.paginate(page: params[:page],
+                                       per_page: params[:per_page])
+      end
+
+      responses.map do |r|
+        {
+          id: r.id,
+          user_id: r.user.id,
+          text: r.text
+        }
+      end
+    end
+
     #
     # Submit a user's response
     #
