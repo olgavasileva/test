@@ -30,20 +30,22 @@
 
 $(function() {
     $(document).bind("ps.bootstrap.initializing", function() {
-        var data = $("#photoshootinfo").data();
+        if ($("#photoshootinfo").length == 1 && $("#studio-wrapper").length == 1) {
+            var data = $("#photoshootinfo").data();
 
-        PS_OTHERS_HEIGHT = $("#studio-wrapper").offset().top + 2; // total vertical space occupied by other elements
-        PS_HEADER_HEIGHT = $('#ps-breadcrumbs').outerHeight();
+            PS_OTHERS_HEIGHT = $("#studio-wrapper").offset().top + 2; // total vertical space occupied by other elements
+            PS_HEADER_HEIGHT = $('#ps-breadcrumbs').outerHeight();
 
-        PS_STUDIO_ID = data.studioId;
-        PS_STUDIO_NAME = data.studioName;
-        PS_LOGGED_IN = data.loggedIn;
-        QUESTION_ID = data.questionId;
+            PS_STUDIO_ID = data.studioId;
+            PS_STUDIO_NAME = data.studioName;
+            PS_LOGGED_IN = data.loggedIn;
+            QUESTION_ID = data.questionId;
 
-        if ($("#sceneinfo").length > 0) {
-            var sceneData = $("#sceneinfo").data();
-            PS_SCENE_ID = sceneData.sceneId;
-            PS_DETAILS_URL = sceneData.shareLink;
+            if ($("#sceneinfo").length > 0) {
+                var sceneData = $("#sceneinfo").data();
+                PS_SCENE_ID = sceneData.sceneId;
+                PS_DETAILS_URL = sceneData.shareLink;
+            }
         }
     })
 });

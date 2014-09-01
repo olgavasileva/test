@@ -1,6 +1,9 @@
 $(function() {
     $(document).trigger('ps.bootstrap.initializing');
 
+    if (PS_STUDIO_ID == 0)
+        return;
+
     var ui = new psUI();
     var utils = new psUtils();
     var canvas = new psCanvas();
