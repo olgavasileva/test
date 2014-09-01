@@ -1,0 +1,8 @@
+<div class="col-sm-12">
+  <h4 class="section-title"><%= header %></h4>
+</div>
+{{#each <%= object %>}}
+<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sticker-container {{#if ../is_locked}}locked{{else}}stickable{{/if}}">
+  <img src="{{image_thumb_url}}" id="sticker_{{id}}" class="img-responsive" data-id="{{id}}" data-src="{{image_url}}" data-height="{{image_height}}" data-width="{{image_width}}" data-type="{{type}}"/>
+</div>
+{{/each}}

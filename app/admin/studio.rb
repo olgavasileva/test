@@ -139,7 +139,7 @@ ActiveAdmin.register Studio do
     link_to('Import Excel', import_admin_studios_path)
   end
 
-  NUM_NON_META_COLUMNS = 4
+  NUM_NON_META_COLUMNS ||= 4
 
   collection_action :import, :method => [:get, :post] do
     if params[:file]

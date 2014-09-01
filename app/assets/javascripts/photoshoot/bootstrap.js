@@ -179,7 +179,7 @@ $(function() {
         //		$('#ps-header').html( studio.html_header );
 
         // set studio title & icon
-        setupForContest = utils.getUrlParameterByName('contest_id') ? true : false;
+        var setupForContest = utils.getUrlParameterByName('contest_id') ? true : false;
 
         if (setupForContest) {
             // TODO: pass through the contest details in the functions
