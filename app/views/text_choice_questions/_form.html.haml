@@ -1,4 +1,5 @@
 :sass
+
   .answer.text-created-choice
     position: relative
     &:hover
@@ -55,40 +56,6 @@
     margin-top: -43px
     .form-group
       margin: 0
-  #category_dropdown_toggler
-    position: relative
-  #category_caret
-    border-top: 21px solid
-    border-right: 20px solid transparent
-    border-left: 20px solid transparent
-    &:after
-      display: inline-block
-      width: 0
-      height: 0
-      margin-left: 2px
-      vertical-align: middle
-      border-top: 16px solid white
-      border-right: 15px solid transparent
-      border-left: 15px solid transparent
-      position: absolute
-      left: 20px
-      top: 0px
-      content: " "
-  .category-dropdown-wrapper
-    border: solid 1px #264e8e
-    position: relative
-    ul#categry_dropdown_menu
-      left: auto
-      overflow: auto
-      left: -1px
-      right: -1px
-      width: auto
-      border: solid 1px #264e8e
-      border-radius: 0 0 3px 3px
-      padding: 10px
-      border-top: none
-      margin-top: -3px
-      max-height: 110px
   #background_selector
     font-size: 2.2em
     border: solid 1px #264e8e
@@ -108,6 +75,25 @@
       color: white
       text-decoration: none
       z-index: 20
+
+  .dropdown-toggler
+    &:before
+      margin-bottom: 0!important
+    &:after
+      margin-bottom: 0!important
+
+  .add-option-control
+    background-color: orange
+    color: white
+    text-align: center
+    height: 100%
+    font-size: 1.7em
+    text-align: center
+    height: 100px
+    line-height: 100px
+    verrical-align: middle
+
+
 
 .col-sm-8.col-sm-push-2
   .textchoice.panel.panel-default
@@ -130,7 +116,11 @@
           .col-md-6
             =f.simple_fields_for :choices do |choice|
               = render 'choice_fields', f:choice
-            .links=link_to_add_association 'Add another Choice', f, :choices
+
+            .links
+              =link_to_add_association  f, :choices, class: 'add-option-control col-xs-12' do
+                %i.glyphicon.glyphicon-plus-sign
+                Add Option
         .row.form-group
           .col-sm-6
             #background_selector.image_control
@@ -146,17 +136,7 @@
                   %span.glyphicon.glyphicon-chevron-right
               .close-float
 
-          #category_dropdown.dropdown.col-sm-6
-
-            %div.category-dropdown-wrapper
-              %a{:class=>"row",:id=>'category_dropdown_toggler',:role=>'button',:data=>{:toggle=>'dropdown',:target=>'#'}}
-                .col-sm-9=(@question.category||'Select a Category')
-                .col-sm-1
-                  %span{:class=>["caret"], :id=>"category_caret"}
-              %ul#categry_dropdown_menu{:class=>["dropdown-menu"],:role=>"menu", :aria=>{:labelledby=>"category_dropdown_toggler"}}
-                -Category.all.each do |c|
-                  %li
-                    =c.name
+          =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-6"}}
 
         .row
           .col-sm-6

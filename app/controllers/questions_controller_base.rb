@@ -1,5 +1,5 @@
 class QuestionsControllerBase < ApplicationController
-
+ include TcUiHelper
   def new
     @question = question_class.send :new, user:current_user
     authorize @question
