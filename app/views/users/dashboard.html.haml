@@ -1,0 +1,24 @@
+#dashboard
+  %ul.breadcrumb.breadcrumb-page
+    .breadcrumb-label.text-light-gray You are here:
+    %li=link_to "Home", root_path
+    %li.active=link_to "Dashboard", '#'
+
+  = render 'users/pro/page_header'
+  .row
+    .col-md-8
+      = render 'users/pro/chart'
+      .row
+        .col-xs-4= render 'users/pro/view_rate'
+        .col-xs-4= render 'users/pro/engagement_rate'
+        .col-xs-4= render 'users/pro/complete_rate'
+    .col-md-4
+      .row
+        .col-sm-4.col-md-12= render 'users/pro/insights'
+        .col-sm-4.col-md-12= render 'users/pro/reach'
+        .col-sm-4.col-md-12= render 'users/pro/engagements'
+
+  %hr.no-grid-gutter-h.grid-gutter-margin-b.no-margin-t/
+  .row
+    .col-md-6=render 'users/pro/responses'
+    .col-md-6=render 'users/pro/recent_comments'

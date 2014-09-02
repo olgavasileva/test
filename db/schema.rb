@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140828210226) do
+ActiveRecord::Schema.define(version: 20140831175039) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -115,6 +115,66 @@ ActiveRecord::Schema.define(version: 20140828210226) do
   add_index "feed_items", ["question_id"], name: "index_feed_items_on_question_id", using: :btree
   add_index "feed_items", ["user_id"], name: "index_feed_items_on_user_id", using: :btree
 
+  create_table "galleries", force: true do |t|
+    t.datetime "entries_open"
+    t.datetime "entries_close"
+    t.datetime "voting_open"
+    t.datetime "voting_close"
+    t.integer  "total_votes"
+    t.integer  "user_id"
+    t.integer  "gallery_template_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "galleries", ["gallery_template_id"], name: "index_galleries_on_gallery_template_id", using: :btree
+
+  create_table "gallery_element_votes", force: true do |t|
+    t.integer  "gallery_element_id"
+    t.integer  "votes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+  end
+
+  add_index "gallery_element_votes", ["gallery_element_id"], name: "index_gallery_element_votes_on_gallery_element_id", using: :btree
+  add_index "gallery_element_votes", ["user_id"], name: "index_gallery_element_votes_on_user_id", using: :btree
+
+  create_table "gallery_elements", force: true do |t|
+    t.integer  "scene_id"
+    t.integer  "gallery_id"
+    t.integer  "user_id"
+    t.integer  "votes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "gallery_elements", ["gallery_id"], name: "index_gallery_elements_on_gallery_id", using: :btree
+  add_index "gallery_elements", ["scene_id"], name: "index_gallery_elements_on_scene_id", using: :btree
+  add_index "gallery_elements", ["user_id"], name: "index_gallery_elements_on_user_id", using: :btree
+
+  create_table "gallery_templates", force: true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.string   "image"
+    t.boolean  "contest",         default: false
+    t.text     "rules"
+    t.string   "recurrence"
+    t.datetime "entries_open"
+    t.datetime "entries_close"
+    t.datetime "voting_open"
+    t.datetime "voting_close"
+    t.integer  "num_occurrences"
+    t.integer  "studio_id"
+    t.integer  "max_votes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "confirm_message"
+    t.integer  "num_winners"
+  end
+
+  add_index "gallery_templates", ["studio_id"], name: "index_gallery_templates_on_studio_id", using: :btree
+
   create_table "group_members", force: true do |t|
     t.integer  "group_id"
     t.integer  "user_id"
@@ -169,6 +229,17 @@ ActiveRecord::Schema.define(version: 20140828210226) do
 
   add_index "instances", ["device_id"], name: "index_instances_on_device_id", using: :btree
   add_index "instances", ["user_id"], name: "index_instances_on_user_id", using: :btree
+
+  create_table "item_properties", force: true do |t|
+    t.string   "key"
+    t.string   "value"
+    t.integer  "item_id"
+    t.string   "item_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "item_properties", ["item_id", "item_type"], name: "index_item_properties_on_item_id_and_item_type", using: :btree
 
   create_table "liked_comments", force: true do |t|
     t.integer  "user_id"
@@ -246,6 +317,7 @@ ActiveRecord::Schema.define(version: 20140828210226) do
     t.integer  "background_image_id"
     t.string   "state"
     t.string   "kind"
+    t.integer  "studio_id"
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
@@ -276,6 +348,7 @@ ActiveRecord::Schema.define(version: 20140828210226) do
     t.datetime "updated_at"
     t.text     "comment"
     t.boolean  "anonymous"
+    t.integer  "scene_id"
   end
 
   add_index "responses", ["choice_id"], name: "index_responses_on_choice_id", using: :btree
@@ -292,6 +365,20 @@ ActiveRecord::Schema.define(version: 20140828210226) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
+
+  create_table "scenes", force: true do |t|
+    t.text     "canvas_json"
+    t.integer  "user_id"
+    t.boolean  "deleted",     default: false
+    t.string   "name"
+    t.integer  "studio_id"
+    t.string   "image"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "scenes", ["studio_id"], name: "index_scenes_on_studio_id", using: :btree
+  add_index "scenes", ["user_id"], name: "index_scenes_on_user_id", using: :btree
 
   create_table "settings", force: true do |t|
     t.boolean  "enabled"
@@ -330,6 +417,90 @@ ActiveRecord::Schema.define(version: 20140828210226) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "stars"
+  end
+
+  create_table "sticker_pack_stickers", force: true do |t|
+    t.integer "sticker_pack_id"
+    t.integer "sticker_id"
+    t.integer "sort_order"
+  end
+
+  add_index "sticker_pack_stickers", ["sticker_id"], name: "index_sticker_pack_stickers_on_sticker_id", using: :btree
+  add_index "sticker_pack_stickers", ["sticker_pack_id"], name: "index_sticker_pack_stickers_on_sticker_pack_id", using: :btree
+
+  create_table "sticker_packs", force: true do |t|
+    t.string   "display_name"
+    t.boolean  "disabled"
+    t.string   "klass"
+    t.string   "header_icon"
+    t.string   "footer_image"
+    t.string   "footer_link"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "starts_at"
+    t.datetime "expires_at"
+  end
+
+  create_table "stickers", force: true do |t|
+    t.string   "display_name"
+    t.string   "type"
+    t.boolean  "mirrorable"
+    t.integer  "priority"
+    t.string   "image"
+    t.integer  "image_width"
+    t.integer  "image_height"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "spotlightable"
+    t.boolean  "disabled"
+  end
+
+  create_table "studio_sticker_packs", force: true do |t|
+    t.integer "sticker_pack_id"
+    t.integer "sort_order"
+    t.integer "studio_id"
+  end
+
+  add_index "studio_sticker_packs", ["sticker_pack_id"], name: "index_studio_sticker_packs_on_sticker_pack_id", using: :btree
+  add_index "studio_sticker_packs", ["studio_id"], name: "index_studio_sticker_packs_on_studio_id", using: :btree
+
+  create_table "studios", force: true do |t|
+    t.string   "name"
+    t.string   "display_name"
+    t.boolean  "disabled",        default: true
+    t.integer  "affiliate_id"
+    t.integer  "contest_id"
+    t.integer  "scene_id"
+    t.text     "welcome_message"
+    t.integer  "sticker_pack_id"
+    t.datetime "starts_at"
+    t.datetime "expires_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "image"
+    t.string   "icon"
+  end
+
+  add_index "studios", ["affiliate_id"], name: "index_studios_on_affiliate_id", using: :btree
+  add_index "studios", ["contest_id"], name: "index_studios_on_contest_id", using: :btree
+  add_index "studios", ["scene_id"], name: "index_studios_on_scene_id", using: :btree
+  add_index "studios", ["sticker_pack_id"], name: "index_studios_on_sticker_pack_id", using: :btree
+
+  create_table "taggings", force: true do |t|
+    t.integer  "tag_id"
+    t.integer  "taggable_id"
+    t.string   "taggable_type"
+    t.integer  "tagger_id"
+    t.string   "tagger_type"
+    t.string   "context",       limit: 128
+    t.datetime "created_at"
+  end
+
+  add_index "taggings", ["tag_id"], name: "index_taggings_on_tag_id", using: :btree
+  add_index "taggings", ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context", using: :btree
+
+  create_table "tags", force: true do |t|
+    t.string "name"
   end
 
   create_table "users", force: true do |t|

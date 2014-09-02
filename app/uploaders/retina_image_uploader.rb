@@ -4,7 +4,7 @@
 # Base CarrierWave uploader for generating web and device files of standard and @2x sizes.
 # Inherit from this class and call responsive_version with a version name and standard_size (1x size)
 
-class RetinaImageUploader < CarrierWave::Uploader::Base
+class RetinaImageUploader < UploaderBase
 
   include CarrierWave::RMagick
 
@@ -31,16 +31,5 @@ class RetinaImageUploader < CarrierWave::Uploader::Base
   # For images you might use something like this:
   def extension_white_list
     %w(jpg jpeg gif png)
-  end
-
-  # Override the directory where uploaded files will be stored.
-  # This is a sensible default for uploaders that are meant to be mounted:
-  def store_dir
-    if Rails.env.production?
-      File.join "uploads", Rails.env, model.class.to_s.underscore, mounted_as.to_s, model.id.to_s
-    else
-      # This is to ensure that each developer has their own files on S3 - be sure to add DEVELOPER_NAME in application.yml
-      File.join "uploads", Rails.env, ENV['DEVELOPER_NAME'].to_s.parameterize.underscore, model.class.to_s.underscore, mounted_as.to_s, model.id.to_s
-    end
   end
 end

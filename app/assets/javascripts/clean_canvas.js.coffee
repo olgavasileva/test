@@ -29,3 +29,5 @@
 #
 
 #= require_tree ./clean_canvas/pages
+#= require photoshoot/main
+#= require_tree ./photoshoot/lib

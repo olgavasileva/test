@@ -59,11 +59,10 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :get_app, 'Get the App', '#'
 
     if user_signed_in?
+      primary.item :dashboard, 'Enterprise', [:dashboard, current_user], if: -> { Pundit.policy(current_user, User).dashboard?}
       primary.item :feed, 'Question Feed', root_path
-      primary.item :ask, 'Ask a Question', question_types_path
       primary.item :logout, 'Logout', destroy_user_session_path, method: :delete
-      primary.item :edit, 'Edit', destroy_user_session_path,class:%w(visible-xs-block visible-sm-block)
-
+      primary.item :ask, "<span class='glyphicon glyphicon glyphicon-edit'></span> New Question".html_safe, question_types_path
     else
       primary.item :sign_up, 'Sign Up', new_user_registration_path
       primary.item :sign_in, 'Sign In', new_user_session_path

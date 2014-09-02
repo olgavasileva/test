@@ -10,6 +10,9 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder'
 
+gem 'therubyracer'
+gem 'less-rails'
+
 gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
 
@@ -20,6 +23,7 @@ gem 'jquery-ui-rails'
 gem 'touchpunch-rails'  # Convert touch events on mobile to jquery compatible mouse events
 
 gem 'activeadmin', github: 'gregbell/active_admin'
+gem 'just-datetime-picker'  # Date time picker for active admin
 gem 'devise'
 gem 'rolify'
 gem 'pundit',           # simple, robust and scaleable authorization system
@@ -45,10 +49,13 @@ gem 'acts_as_list'
 gem 'attribute_defaults' # Provides an easy way to initialize attributes in active record
 gem 'gravatar_for'
 
+gem 'font-awesome-rails'  # Used by pixel-admin - The Font-Awesome web fonts and stylesheets as a Rails engine for use with the asset pipeline
+gem "animate-rails"       # Used by pixel-admin
 
 gem 'grape',            # API DSL
   github: 'intridea/grape'
 gem 'grape-rabl'        # rabl for Grape rendering
+gem 'grape-jbuilder'    # jbuilder for Grape rendering
 gem 'grape-swagger'     # API docs
 gem 'swagger-ui_rails'  # API docs hosting
 
@@ -61,6 +68,11 @@ gem 'hirb'
 gem 'wirble'
 
 gem 'geocoder'          # Geolocation
+
+gem 'acts-as-taggable-on'           # A tagging plugin for Rails applications that allows for custom tagging along dynamic contexts
+gem 'roo'                           # Roo provides an interface to Open Office, Excel, and Google Spreadsheets
+gem 'rubyzip'                       # rubyzip is a ruby library for reading and writing zip files
+gem 'creek', '~> 1.0.3'             # Configurable streaming aggregator
 
 group :development do
   gem 'sqlite3'

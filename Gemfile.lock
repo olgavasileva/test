@@ -1,4 +1,21 @@
 GIT
+  remote: git://github.com/gregbell/active_admin.git
+  revision: 7a2a31067e99e8e484942a3cddc44be1980b1ae6
+  specs:
+    activeadmin (1.0.0.pre)
+      arbre (~> 1.0)
+      bourbon
+      coffee-rails
+      formtastic (~> 2.3.0.rc3)
+      inherited_resources (~> 1.4.1)
+      jquery-rails
+      jquery-ui-rails (~> 5.0)
+      kaminari (~> 0.15)
+      rails (>= 3.2, < 4.2)
+      ransack (~> 1.0)
+      sass-rails
+
+GIT
   remote: git://github.com/intridea/grape.git
   revision: 64955edb6c0250a684c4f0b31de534bd3230d2f1
   specs:
@@ -29,23 +46,6 @@ GIT
   specs:
     pundit (0.2.3)
       activesupport (>= 3.0.0)
-
-GIT
-  remote: git://github.com/gregbell/active_admin.git
-  revision: 7a2a31067e99e8e484942a3cddc44be1980b1ae6
-  specs:
-    activeadmin (1.0.0.pre)
-      arbre (~> 1.0)
-      bourbon
-      coffee-rails
-      formtastic (~> 2.3.0.rc3)
-      inherited_resources (~> 1.4.1)
-      jquery-rails
-      jquery-ui-rails (~> 5.0)
-      kaminari (~> 0.15)
-      rails (>= 3.2, < 4.2)
-      ransack (~> 1.0)
-      sass-rails
 
 GEM
   remote: https://rubygems.org/
@@ -78,9 +78,13 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    acts-as-taggable-on (2.4.1)
+      rails (>= 3, < 5)
     acts_as_list (0.4.0)
       activerecord (>= 3.0)
     addressable (2.3.6)
+    animate-rails (1.0.7)
+      rails
     arbre (1.0.1)
       activesupport (>= 3.0.0)
     arel (5.0.1.20140414130214)
@@ -147,6 +151,10 @@ GEM
     coffee-script-source (1.7.1)
     colorize (0.7.3)
     columnize (0.8.9)
+    commonjs (0.2.7)
+    creek (1.0.5)
+      nokogiri (~> 1.6.0)
+      rubyzip (>= 1.0.0)
     daemons (1.1.9)
     database_cleaner (1.3.0)
     debug_inspector (0.0.2)
@@ -206,6 +214,8 @@ GEM
     fog-softlayer (0.3.13)
       fog-core
       fog-json
+    font-awesome-rails (4.1.0.0)
+      railties (>= 3.2, < 5.0)
     formatador (0.2.5)
     formtastic (2.3.0.rc3)
       actionpack (>= 3.0)
@@ -213,6 +223,12 @@ GEM
     grape-entity (0.4.3)
       activesupport
       multi_json (>= 1.3.2)
+    grape-jbuilder (0.2.0)
+      grape (>= 0.3)
+      i18n
+      jbuilder
+      tilt
+      tilt-jbuilder (>= 0.4.0)
     grape-rabl (0.2.2)
       grape
       i18n
@@ -247,6 +263,9 @@ GEM
     jquery-ui-rails (5.0.0)
       railties (>= 3.2.16)
     json (1.8.1)
+    just-datetime-picker (0.0.6)
+      activeadmin (>= 0.4.4)
+      formtastic (>= 2.0.0)
     kaminari (0.16.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -255,6 +274,12 @@ GEM
       faraday
       multi_json
     kramdown (1.4.0)
+    less (2.5.1)
+      commonjs (~> 0.2.7)
+    less-rails (2.5.0)
+      actionpack (>= 3.1)
+      less (~> 2.5.0)
+    libv8 (3.11.8.17)
     macaddr (1.6.7)
       systemu (~> 2.6.2)
     mail (2.5.4)
@@ -324,10 +349,15 @@ GEM
       polyamorous (~> 1.0.0)
     rdoc (4.1.1)
       json (~> 1.4)
+    ref (1.0.5)
     responders (1.0.0)
       railties (>= 3.2, < 5)
     rmagick (2.13.3)
     rolify (3.4.0)
+    roo (1.13.2)
+      nokogiri
+      rubyzip
+      spreadsheet (> 0.6.4)
     rspec-core (3.0.2)
       rspec-support (~> 3.0.0)
     rspec-expectations (3.0.2)
@@ -344,6 +374,7 @@ GEM
       rspec-mocks (~> 3.0.0)
       rspec-support (~> 3.0.0)
     rspec-support (3.0.2)
+    ruby-ole (1.2.11.7)
     rubyzip (1.1.4)
     sass (3.2.19)
     sass-rails (4.0.3)
@@ -362,6 +393,8 @@ GEM
     simple-navigation (3.13.0)
       activesupport (>= 2.3.2)
     slop (3.5.0)
+    spreadsheet (0.9.7)
+      ruby-ole (>= 1.0)
     spring (1.1.3)
     spring-commands-rspec (1.0.2)
       spring (>= 0.9.1)
@@ -381,6 +414,9 @@ GEM
       net-ssh (>= 2.8.0)
     swagger-ui_rails (0.1.7)
     systemu (2.6.4)
+    therubyracer (0.11.4)
+      libv8 (~> 3.11.8.12)
+      ref
     thin (1.6.2)
       daemons (>= 1.0.9)
       eventmachine (>= 1.0.0)
@@ -388,6 +424,9 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
+    tilt-jbuilder (0.6.1)
+      jbuilder
+      tilt (<= 1.5.0)
     toastr-rails (1.0.3)
       railties (>= 3.1.0)
     touchpunch-rails (1.0.3)
@@ -423,7 +462,9 @@ PLATFORMS
 DEPENDENCIES
   activeadmin!
   activeadmin-sortable
+  acts-as-taggable-on
   acts_as_list
+  animate-rails
   attribute_defaults
   autoprefixer-rails
   bcrypt-ruby
@@ -438,14 +479,17 @@ DEPENDENCIES
   carrierwave
   cocoon
   coffee-rails (~> 4.0.0)
+  creek (~> 1.0.3)
   database_cleaner
   devise
   factory_girl_rails
   faker
   figaro
   fog
+  font-awesome-rails
   geocoder
   grape!
+  grape-jbuilder
   grape-rabl
   grape-swagger
   gravatar_for
@@ -454,7 +498,9 @@ DEPENDENCIES
   jbuilder
   jquery-rails
   jquery-ui-rails
+  just-datetime-picker
   koala
+  less-rails
   mysql2
   pry
   pry-debugger
@@ -464,7 +510,9 @@ DEPENDENCIES
   rails_12factor
   rmagick
   rolify
+  roo
   rspec-rails
+  rubyzip
   sass-rails (~> 4.0.3)
   sdoc
   selenium-webdriver
@@ -474,6 +522,7 @@ DEPENDENCIES
   spring-commands-rspec
   sqlite3
   swagger-ui_rails
+  therubyracer
   thin
   toastr-rails
   touchpunch-rails

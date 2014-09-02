@@ -1,0 +1,136 @@
+#photoshootinfo.hidden{data:{studio_id:@question.studio.id, studio_name:@question.studio.display_name || @question.studio.name, logged_in:user_signed_in?, question_id:@question.id}}
+- if @scene.present?
+  #sceneinfo.hidden{data:{stickers:@scene_stickers, scene_id:@scene.id, scene_user_id:@scene.user_id, share_link:@scene.share_link('link', current_user)}}
+
+%section#studio-wrapper.col-sm-12
+  .row
+    #ps-breadcrumbs.col-sm-12
+      #current-studio-icon
+      %h2#current-studio-name
+      =link_to "Save", '#', id: "ps-save", class:%w(btn ps-btn-yellow), data:{'btn-role' => :save}
+      =link_to "Clear All", '#', id: "ps-clear-all", class: %w(btn btn-gary-dark ps-btn-gray)
+      .ps-undo-redo
+        %button#ps-undo.btn.btn-gary-dark.ps-btn-gray.ps-btn-disabled{data:{"btn-role" => :undo}}
+          %i.icon-undo
+          &nbsp;Undo
+        %button#ps-redo.btn.btn-gary-dark.ps-btn-gray.ps-btn-disabled{data:{"btn-role" => :redo}}
+          %i.icon-repeat
+          &nbsp;Redo
+      =link_to '?', '#', id:"ps-help", data:{"btn-role" => "help"}, class: %w(btn btn-gary-dark btn-circle btn-sm ps-btn-gray)
+      .help
+
+  #pack-drawer.col-sm-4.inactive.drawer-control-right.drawer
+    %aside#asset-wrapper.container
+      .row
+        %header#title-bar.col-sm-12
+          .row
+            #asset-title.col-sm-12
+              =link_to 'javascript:void(0);', class: %w(title col-8 col-push-2 dropdown) do
+                %span.title-text All Packs
+                %span.icon-stack.dropdown-icon{data:{toggle: :dropdown}}
+                  %i.icon-sign-blank.icon-stack-base
+                  %i.icon-chevron-down.icon-light
+                %ul.pack-dropdown-list.dropdown-menu{role: :menu}
+                  %li#browse-packs-drop Browse
+                  %li#all-packs-drop See All
+              =link_to 'javascript:void(0);', class: %w(pack-browser-control page-left col-2 col-pull-8) do
+                %i.icon-chevron-left
+              =link_to 'javascript:void(0);', class: %w(pack-browser-control page-right col-2) do
+                %i.icon-chevron-right
+      #pack-wrapper.row.is-scrollable
+    .drawer-handle
+      %i.icon-double-angle-right.closed
+      %i.icon-double-angle-left.open
+    .help
+
+  .row
+    .col-1.no-padding
+    #ps-desktop.col-6.no-padding
+      %canvas#ps-canvas
+    .col-2
+      #nutrition-facts Nutrition Facts
+      .nutrition-info
+        Calories
+        %span.nutrition-value
+          %span#calorie-counter 0
+      .nutrition-info
+        Protein
+        %span.nutrition-value
+          %span#protein-counter 0
+          g
+      .nutrition-info
+        Sugar
+        %span.nutrition-value
+          %span#sugar-counter 0
+          g
+
+- # UI templates / Hidden stuff
+
+.ps-ui#ps-ui-templates{data:{"no-turbolink" => true}}
+
+  #welcome-dialog{title: "Welcome to the Photo Shoot"}
+    %h1
+    %p
+      %span
+    %p
+      %button.ps-btn-yellow
+    %br
+
+  #flaunt-dialog{title: "Flaunt Your Style!"}
+    .ps-dlg-col
+      %div
+      =link_to '#' do
+        Enter this
+        %br
+        Week's Contest
+    .ps-dlg-col
+      %div
+      =link_to '#' do
+        Set as
+        %br
+        Avatar
+    .ps-dlg-col
+      %div
+      =link_to '#' do
+        Share with
+        %br
+        Friends
+
+  #thanku-dialog{title:"Your design looks fab!"}
+    - if current_user
+      %p.lead Your design was saved to your Photo Gallery!
+
+    #post-save-container.container
+      .row
+        .col-sm-4
+          .ps-dlg-col-img= link_to "javascript:psUI().share();", image_tag( image_url('photoshoot/icon_share_toFriends.png'))
+          =link_to "javascript:psUI().share();", "Share with Friends"
+
+  = render 'shared/shared_modal'
+
+  #enter-contest-dialog{title:"Confirm your contest entry!"}
+
+    %p=link_to "#", "Enter Contest", id:"ps-enter-contest-save", data:{"btn-role" => "submit to contest"}, class: %w(btn ps-btn-yellow)
+    %p=link_to '#', "No, I'm not ready just yet.", id:"ps-not-ready"
+
+  #avatar-dialog{title:"Set as Avatar"}
+    %strong Instructions:
+    choose save when you're done cropping!
+    .ps-avatar-header
+      %button.ps-btn-gray Cancel
+      %button.ps-btn-yellow Save
+    .ps-avatar-image
+
+  #jsondata-dialog{title:"JSON data representation"}
+    %textarea{style: "width: 554px; height: 400px; font: normal 12px monospace;"}
+    .center
+      %button.ps-btn-yellow Set
+
+  #clear-scene-dialog{title:"Clear Your Scene?"}
+    %p Are you sure you want to clear your<br/>scene and start from scratch?
+    %div
+      %button.ps-btn-gray Cancel
+      %button.ps-btn-yellow{id: "ps-confirm-clear", data:{"btn-role" => "clear all"}} Clear
+
+= render 'sticker_packs'
+= render 'sticker_pack_details'
