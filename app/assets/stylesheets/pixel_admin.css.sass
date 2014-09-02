@@ -1,14 +1,17 @@
 //= require_self
 //= require toastr
 //= require jquery-ui
-@import bootstrap-sprockets
-@import bootstrap
+//= require font-awesome
+//= require animate
 
 // Pixel Admin
 //
 
-// ### Variables
+// ### Variables (override bootstrap)
 @import "./pixel-admin-scss/variables"
+
+@import bootstrap-sprockets
+@import bootstrap
 
 // ### Pixel Admin"s stylesheets
 @import "./pixel-admin-scss/mixins"
@@ -89,3 +92,36 @@
 @import "./pixel-admin-scss/plugins/morris"
 @import "./pixel-admin-scss/plugins/jquery.flot"
 @import "./pixel-admin-scss/plugins/slim_scroll"
+
+
+// widgets
+//
+
+@import "./pixel-admin-scss/widgets/support_tickets"
+@import "./pixel-admin-scss/widgets/comments"
+@import "./pixel-admin-scss/widgets/article_comments"
+@import "./pixel-admin-scss/widgets/threads"
+@import "./pixel-admin-scss/widgets/chat"
+@import "./pixel-admin-scss/widgets/profile"
+@import "./pixel-admin-scss/widgets/messages"
+@import "./pixel-admin-scss/widgets/tasks"
+@import "./pixel-admin-scss/widgets/rating"
+@import "./pixel-admin-scss/widgets/maps"
+@import "./pixel-admin-scss/widgets/notifications"
+@import "./pixel-admin-scss/widgets/messages_alt"
+@import "./pixel-admin-scss/widgets/followers"
+
+
+// pages (pixel-admin-scss/pages/pages.scss)
+//
+@import "./pixel-admin-scss/crashmob-pages/*"
+
+// themes
+//
+
+@import "./pixel-admin-scss/themes/default/default"
+
+
+// rtl (pixel-admin-scss/rtl/rtl.scss)
+//
+

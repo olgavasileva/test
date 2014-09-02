@@ -1,0 +1,25 @@
+#responses.panel.panel-success.widget-support-tickets
+  .panel-heading
+    %span.panel-title
+      %i.panel-title-icon.fa.fa-bullhorn>
+      Responses / Completes
+    .panel-heading-controls
+      .panel-heading-text
+        =link_to pluralize(@dummy_response_data.count, "new response"), '#'
+
+  .panel-body.tab-content-padding
+    .panel-padding.no-padding-vr
+      - @dummy_response_data.each do |data|
+        .ticket
+          - if data[:completed]
+            %span.label.label-success.ticket-label Completed
+          - else
+            %span.label.label-danger.ticket-label Skipped
+          = link_to data[:response_url], class: %w(ticket-title), title: "" do
+            Response
+            %span [##{data[:response_id]}]
+          %span.ticket-info
+            by
+            =link_to "@#{data[:respondent_name]}", data[:respondent_url], title: ""
+            =time_ago_in_words data[:date]
+            ago

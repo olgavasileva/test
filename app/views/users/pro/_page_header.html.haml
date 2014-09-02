@@ -1,0 +1,20 @@
+.page-header
+  .row
+    %h1.col-xs-12.col-sm-4.text-center.text-left-sm
+      %i.fa.fa-dashboard.page-header-icon
+      &nbsp;&nbsp;Dashboard
+    .col-xs-12.col-sm-8
+      .row
+        %hr.visible-xs.no-grid-gutter-h
+        .pull-right.col-xs-12.col-sm-auto
+          =link_to '#', class: %w(btn btn-primary btn-labeled), style: "width: 100%;" do
+            %span.btn-label.icon.fa.fa-plus
+            Create Campaign
+
+        .visible-xs.clearfix.form-group-margin
+
+        %form.pull-right.col-xs-12.col-sm-6{action: ""}
+          .input-group.no-margin
+            %span.input-group-addon{style: "border:none; background: #fff; background: rgba(0,0,0,.05);"}
+              %i.fa.fa-search
+            %input{type: :text, placeholder: "Search...", class:%w(form-control no-padding-hr), style:"border:none;background: #fff;background: rgba(0,0,0,.05);"}

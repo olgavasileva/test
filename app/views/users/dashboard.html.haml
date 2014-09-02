@@ -1,26 +1,24 @@
-.row
-  .col-sm-3=render "users/pro/navigation"
-  .col-sm-9
-    .row
-      .col-sm-12 Breadcrumbs
-    .row
-      .col-sm-9
-        .row
-          .col-sm-4 Dashbaord
-          .col-sm-8 Search
-        .row
-          .col-sm-12=render "users/pro/chart"
-        .row
-          .col-sm-4 View Rate
-          .col-sm-4 Engagement Rate
-          .col-sm-4 Complete Rate
-      .col-sm-3
-        .row
-          .col-sm-12=link_to "Create Campaign", '#', class: %w(btn btn-primary)
-          .col-sm-12 Unique Ingights
-          .col-sm-12 Viral Reach
-          .col-sm-12 Unique Engagements Today
-          .col-sm-12 See More Stats
-    .row
-      .col-sm-6 Responses/Completes
-      .col-sm-6 Recent
+#dashboard
+  %ul.breadcrumb.breadcrumb-page
+    .breadcrumb-label.text-light-gray You are here:
+    %li=link_to "Home", root_path
+    %li.active=link_to "Dashboard", '#'
+
+  = render 'users/pro/page_header'
+  .row
+    .col-md-8
+      = render 'users/pro/chart'
+      .row
+        .col-xs-4= render 'users/pro/view_rate'
+        .col-xs-4= render 'users/pro/engagement_rate'
+        .col-xs-4= render 'users/pro/complete_rate'
+    .col-md-4
+      .row
+        .col-sm-4.col-md-12= render 'users/pro/insights'
+        .col-sm-4.col-md-12= render 'users/pro/reach'
+        .col-sm-4.col-md-12= render 'users/pro/engagements'
+
+  %hr.no-grid-gutter-h.grid-gutter-margin-b.no-margin-t/
+  .row
+    .col-md-6=render 'users/pro/responses'
+    .col-md-6=render 'users/pro/recent_comments'

@@ -1,46 +1,14 @@
-:coffee
-  $ ->
-    uploads_data = [
-      { day: '2014-03-10', v: 20 },
-      { day: '2014-03-11', v: 10 },
-      { day: '2014-03-12', v: 15 },
-      { day: '2014-03-13', v: 12 },
-      { day: '2014-03-14', v: 5  },
-      { day: '2014-03-15', v: 5  },
-      { day: '2014-03-16', v: 20 }
-    ]
-
-    Morris.Line
-      element: 'hero-graph'
-      data: uploads_data
-      xkey: 'day'
-      ykeys: ['v']
-      labels: ['Value']
-      lineColors: ['#fff']
-      lineWidth: 2
-      pointSize: 4
-      gridLineColor: 'rgba(255,255,255,.5)'
-      resize: true
-      gridTextColor: '#fff'
-      xLabels: "day"
-      xLabelFormat: (d)->
-        ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov', 'Dec'][d.getMonth()] + ' ' + d.getDate()
-
 .stat-panel
   .stat-row
     .stat-cell.col-sm-4.padding-sm-hr.bordered.no-border-r.valign-top
       %h4.padding-sm.no-padding-t.padding-xs-hr
         %i.fa.fa-cloud-upload.text-primary>
-        \&nbsp;&nbsp;Uploads
+        \&nbsp;&nbsp;Summary
       %ul.list-group.no-margin
-        %li.list-group-item.no-border-hr.padding-xs-hr.no-bg.no-border-radius
-          Documents
-          %span.label.label-pa-purple.pull-right 34
-        %li.list-group-item.no-border-hr.padding-xs-hr.no-bg
-          Audio
-          %span.label.label-danger.pull-right 128
-        %li.list-group-item.no-border-hr.no-border-b.padding-xs-hr.no-bg
-          Videos
-          %span.label.label-success.pull-right 12
+        - @campaign_data.each do |data|
+          - color_class = data[:value].to_i < 1000 ? "label-danger" : "label-success"
+          %li.list-group-item.no-border-hr.padding-xs-hr.no-bg.no-border-radius
+            =data[:label]
+            %span.label.pull-right{class: color_class}=number_with_delimiter data[:value]
     .stat-cell.col-sm-8.bg-primary.padding-sm.valign-middle
-      #hero-graph.graph{style: "height: 230px;"}
+      #hero-graph.graph{style: "height: #{@campaign_data.count * 40 + 90}px;"}
