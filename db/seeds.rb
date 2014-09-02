@@ -24,7 +24,9 @@ Setting.where(key: :aws_bucket).first_or_create!(value: ENV['DEVICE_AWS_BUCKET']
 # Users
 #
 
+Role.where(name:"pro").first_or_create!
 user = User.where(username:'crashmob').first_or_create!(name:"Question Master",email:'question-master@crashmob.com',password:"dirty socks",password_confirmation:"dirty socks")
+user.add_role :pro
 
 
 def background_image filename
