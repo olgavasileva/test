@@ -95,6 +95,18 @@ class User < ActiveRecord::Base
 		self.friendships.find_by(friend_id: other_user.id).destroy!
 	end
 
+  def number_of_answered_questions
+    return Response.where(user_id:id).count
+  end
+  def number_of_asked_questions
+    return Question.where(user_id:id).count
+  end
+
+  def number_of_comments_left
+    return self.responses.where("comment is not ?", nil).count
+  end
+
+
 	def unanswered_questions
     answered_question_ids = Response.where(user_id:id).pluck(:question_id)
     answered_question_ids.present? ? Question.where("id NOT IN (?)", answered_question_ids) : Question.all
