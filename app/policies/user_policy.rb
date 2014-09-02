@@ -8,4 +8,8 @@ class UserPolicy < ApplicationPolicy
 
   # Any logged in user can follow another user
   def follow?;        true;   end
+
+  def dashboard?
+    @user.has_role? :pro
+  end
 end

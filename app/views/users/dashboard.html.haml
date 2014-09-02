@@ -1,0 +1,26 @@
+.row
+  .col-sm-3=render "users/pro/navigation"
+  .col-sm-9
+    .row
+      .col-sm-12 Breadcrumbs
+    .row
+      .col-sm-9
+        .row
+          .col-sm-4 Dashbaord
+          .col-sm-8 Search
+        .row
+          .col-sm-12=render "users/pro/chart"
+        .row
+          .col-sm-4 View Rate
+          .col-sm-4 Engagement Rate
+          .col-sm-4 Complete Rate
+      .col-sm-3
+        .row
+          .col-sm-12=link_to "Create Campaign", '#', class: %w(btn btn-primary)
+          .col-sm-12 Unique Ingights
+          .col-sm-12 Viral Reach
+          .col-sm-12 Unique Engagements Today
+          .col-sm-12 See More Stats
+    .row
+      .col-sm-6 Responses/Completes
+      .col-sm-6 Recent

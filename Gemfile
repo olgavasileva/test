@@ -49,6 +49,8 @@ gem 'acts_as_list'
 gem 'attribute_defaults' # Provides an easy way to initialize attributes in active record
 gem 'gravatar_for'
 
+gem 'font-awesome-rails'  # Used by pixel-admin - The Font-Awesome web fonts and stylesheets as a Rails engine for use with the asset pipeline
+gem "animate-rails"       # Used by pixel-admin
 
 gem 'grape',            # API DSL
   github: 'intridea/grape'

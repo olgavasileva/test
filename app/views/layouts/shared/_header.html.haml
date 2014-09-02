@@ -1,1 +1,15 @@
-%header Welcome to Crashmob
+.navbar.navbar-inverse.navbar-fixed-top.sticky{role: "navigation"}
+  .container
+    .navbar-header
+      %button.navbar-toggle.collapsed.pull-right{data:{target: "#main-nav", toggle: "collapse"}, type: :button}
+        %span.sr-only Toggle navigation
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      - if user_signed_in?
+        = link_to "Hi #{current_user.name}", [current_user], class:"navbar-brand"
+      - else
+        = link_to root_path, class:"navbar-brand" do
+          %strong Crash Mob
+    #main-nav.collapse.navbar-collapse{:role => "navigation"}
+      = render_navigation

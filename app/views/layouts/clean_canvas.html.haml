@@ -3,7 +3,7 @@
 /[if IE 9] <html class="ie9 gt-ie8">
 :plain
   <!--[if gt IE 9] -->
-%html#pixel-admin.gt-ie8.gt-ie9.not-ie
+%html.gt-ie8.gt-ie9.not-ie
   / <![endif]
   %head
     %title= full_title(yield(:title))
@@ -12,19 +12,12 @@
     %meta{name: :viewport, content: "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"}/
     = csrf_meta_tags
 
+
     / Open Sans font from Google CDN
     %link{href: "http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic", rel: "stylesheet", type: "text/css"}/
 
     = stylesheet_link_tag "clean_canvas", media: "all", "data-turbolinks-track" => true
     = javascript_include_tag "clean_canvas", "data-turbolinks-track" => true
-    :sass
-      #main-wrapper,
-      #content-wrapper
-        padding: 0
-
-      .navbar.sticky
-        z-index: 1062
-
 
     /[if lt IE 9]
       <script src="assets/javascripts/ie.min.js"></script>
@@ -32,7 +25,7 @@
   %body#clean-canvas.pull_top
     #main-wrapper
       #content-wrapper
-        = render 'layouts/clean_canvas/header'
+        = render 'layouts/shared/header'
         - if flash.present?
           #flash
             - flash.each do |key, value|
@@ -40,4 +33,5 @@
         #undertop.container
           = yield
         = render 'layouts/clean_canvas/footer'
+
     = debug(params) if Rails.env.development?

@@ -25,6 +25,7 @@ LinkchatApp::Application.routes.draw do
   resources :users do
     get :profile, on: :collection
     get :follow, on: :member
+    get :dashboard, on: :member
   end
 
   resources :question_types
