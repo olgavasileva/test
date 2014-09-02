@@ -12,13 +12,13 @@ describe 'relationships/unfollow' do
 
   describe "when following user" do
     before do
-      instance.user.followers << user
+      instance.user.leaders << user
       request.call
       instance.user.reload
     end
 
     it "unfollows user" do
-      expect(instance.user.followers).to_not include user
+      expect(instance.user.leaders).to_not include user
     end
   end
 
