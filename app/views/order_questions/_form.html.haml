@@ -95,7 +95,7 @@
                   %i.glyphicon.glyphicon-plus-sign
                   Add Option
 
-              =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-12 form-group", :name=>"category",:value_field=>"id"}}
+              =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-12 form-group", :name=>"order_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
 
             .row
               .col-md-6

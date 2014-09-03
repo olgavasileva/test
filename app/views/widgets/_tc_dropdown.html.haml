@@ -4,10 +4,12 @@
 %div{class:classes, id:id}
   %div.dropdown-wrapper
     %a{:class=>["row","dropdown-toggler"],:role=>'button',:data=>{:toggle=>'dropdown',:target=>'#'}}
-      .col-xs-9.value-label=(attrs[:value]||attrs[:placeholder])
+      -selected_object=attrs[:options].find{|o| o[value]==attrs[:value]}
+      -sel_text=selected_object.nil? ? attrs[:placeholder]:selected_object[attrs[:key]];
+      .col-xs-9.value-label=sel_text
       %span{:class=>["caret"], :id=>(id+"_caret")}
     -if attrs.has_key?(:name)
-      %input{:type=>'hidden', :name=>attrs[:name],:class=>'value-holder'}
+      %input{:type=>'hidden', :name=>attrs[:name],:class=>'value-holder',:value=>attrs[:value]}
     %ul{:class=>["dropdown-menu"],:role=>"menu"}
       -attrs[:options].each do |c|
         %li{:class=>["dropdown-menu-item"],:data=>{:value=>c[value]}}
@@ -19,6 +21,7 @@
       window.tcHandlers={};
     }
     if(!window.tcHandlers.basic_dropdown){
+
         window.tcHandlers.basic_dropdown=$('.tc-dropdown').on('click','.dropdown-menu-item',function(){
                                                  var root=$(this).parent().parent();
                                                  var text=$(this).html();
@@ -27,6 +30,7 @@
                                                  root.find('.value-label').html(text);
 
                                                })
+
     }
 
   })
