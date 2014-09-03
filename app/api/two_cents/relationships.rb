@@ -22,12 +22,14 @@ class TwoCents::Relationships < Grape::API
       end
 
       followers.map do |f|
+        relationship = f.followership_relationships.where(leader_id: user).first
+
         {
           id: f.id,
           username: f.username,
           email: f.email,
           name: f.name,
-          group_ids: f.groups.map(&:id)
+          group_ids: relationship.groups.map(&:id)
         }
       end
     end
@@ -49,16 +51,18 @@ class TwoCents::Relationships < Grape::API
 
       if params[:page]
         leaders = leaders.paginate(page: params[:page],
-                                       per_page: params[:per_page])
+                                   per_page: params[:per_page])
       end
 
       leaders.map do |l|
+        relationship = l.leadership_relationships.where(follower_id: user).first
+
         {
           id: l.id,
           username: l.username,
           email: l.email,
           name: l.name,
-          group_ids: l.groups.map(&:id)
+          group_ids: relationship.groups.map(&:id)
         }
       end
     end
