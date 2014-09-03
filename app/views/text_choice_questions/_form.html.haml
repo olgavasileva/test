@@ -136,7 +136,7 @@
                   %span.glyphicon.glyphicon-chevron-right
               .close-float
 
-          =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-6", :name=>"category",:value_field=>"id"}}
+          =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-6", :name=>"yes_no_question[category_id]",:value_field=>"id"}}
 
         .row
           .col-sm-6
