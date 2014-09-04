@@ -3,8 +3,8 @@ require 'rails_helper'
 describe Relationship do
 
   let(:follower) { FactoryGirl.create(:user) }
-  let(:followed) { FactoryGirl.create(:user) }
-  let(:relationship) { follower.relationships.build(followed_id: followed.id) }
+  let(:leader) { FactoryGirl.create(:user) }
+  let!(:relationship) { follower.followership_relationships.create(leader_id: leader.id) }
 
   subject { relationship }
 
@@ -12,18 +12,28 @@ describe Relationship do
 
   describe "follower methods" do
     it { relationship.should respond_to(:follower) }
-    it { relationship.should respond_to(:followed) }
+    it { relationship.should respond_to(:leader) }
     it { relationship.follower.should eq follower }
-    it { relationship.followed.should eq followed }
+    it { relationship.leader.should eq leader }
   end
 
-  describe "when followed id is not present" do
-    before { relationship.followed_id = nil }
+  describe "when leader id is not present" do
+    before { relationship.leader_id = nil }
     it { relationship.should_not be_valid }
   end
 
   describe "when follower id is not present" do
     before { relationship.follower_id = nil }
     it { relationship.should_not be_valid }
+  end
+
+  describe :groups do
+    let(:groups) { FactoryGirl.create_list(:group, 3, user: leader) }
+
+    before { groups[1].member_users << follower }
+
+    it "returns groups created by leader with follower as member" do
+      expect(relationship.groups).to match_array [groups[1]]
+    end
   end
 end

@@ -17,6 +17,9 @@ class User < ActiveRecord::Base
   has_many :groups, dependent: :destroy
   has_many :group_members, through: :groups, source: :user
 
+  has_many :memberships, class_name: 'GroupMember'
+  has_many :membership_groups, through: :memberships, source: :group
+
   # Allow user to log in using username OR email in the 'login' text area
 	# https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
   def self.find_for_database_authentication(warden_conditions)

@@ -11,12 +11,27 @@ describe 'relationships/followers' do
 
   before do
     instance.user.followers = FactoryGirl.create_list(:user, count)
+
+    instance.user.groups = FactoryGirl.create_list(:group, 2)
+    instance.user.followers.each_with_index do |follower, i|
+      instance.user.groups[i % 2].member_users << follower
+    end
   end
 
   shared_examples :correct_fields do
     it "responds with correct data fields" do
       response_body.each do |data|
         expect(data.keys).to match_array %w[id username email name group_ids]
+      end
+    end
+
+    it "responds with group_ids representing user's groups that follower is in" do
+      response_body.each do |data|
+        follower = User.find(data['id'])
+        leader_follower_groups = instance.user.groups.select { |g|
+          g.member_users.include? follower }
+
+        expect(data['group_ids']).to match_array leader_follower_groups.map(&:id)
       end
     end
   end
