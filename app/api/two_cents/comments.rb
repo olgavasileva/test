@@ -1,7 +1,7 @@
 class TwoCents::Comments < Grape::API
   resource :comments do
 
-    desc "Return comments for a user"
+    desc "Return questions with comments for a user"
     params do
       requires :auth_token, type: String, desc: "Obtain this from the instance's API."
 
@@ -22,8 +22,8 @@ class TwoCents::Comments < Grape::API
 
       responses.map do |r|
         {
-          comment: r.comment,
-          question_id: r.question.id
+          question_id: r.question.id,
+          question_title: r.question.title
         }
       end
     end

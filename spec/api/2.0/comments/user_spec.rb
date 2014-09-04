@@ -16,7 +16,7 @@ describe 'comments/user' do
   shared_examples :correct_fields do
     it "responds with correct data fields" do
       response_body.each do |data|
-        expect(data.keys).to match_array %w[comment question_id]
+        expect(data.keys).to match_array %w[question_id question_title]
       end
     end
   end
