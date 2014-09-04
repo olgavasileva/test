@@ -20,33 +20,19 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     authorize @user
 
+    # TODO - lazy load this data
     @campaign_data = [
-      { label: "Targeted Reach", value: 50991 },
-      { label: "Views", value: 40792 },
-      { label: "Engagements", value: 36713 },
-      { label: "Completes", value: 35612 },
-      { label: "Skips", value: 366 },
-      { label: "Comments", value: 2149 },
-      { label: "Shares", value: 1973 }
+      { label: "Targeted Reach", value: @user.questions.map{|q| q.targeted_reach }.sum },
+      { label: "Views", value: @user.questions.sum(:view_count) },
+      { label: "Engagements", value: @user.questions.sum(:start_count) },
+      { label: "Completes", value: @user.questions.map{|q| q.response_count }.sum },
+      { label: "Skips", value: @user.questions.map{|q| q.skip_count }.sum },
+      { label: "Comments", value: @user.questions.map{|q| q.comment_count }.sum  },
+      { label: "Shares", value: @user.questions.map{|q| q.share_count }.sum  }
     ]
 
-    @dummy_response_data = [
-      { completed: true, response_url: '#', response_id: 201798, respondent_url: '#', respondent_name:"timmyo", date: 0.days.ago},
-      { completed: true, response_url: '#', response_id: 201799, respondent_url: '#', respondent_name:"bobbyj", date: 30.seconds.ago},
-      { completed: true, response_url: '#', response_id: 201812, respondent_url: '#', respondent_name:"jimmyz", date: 32.seconds.ago},
-      { completed: true, response_url: '#', response_id: 201824, respondent_url: '#', respondent_name:"jamest", date: 39.seconds.ago},
-      { completed: true, response_url: '#', response_id: 201890, respondent_url: '#', respondent_name:"bobd", date: 41.seconds.ago},
-      { completed: false, response_url: '#', response_id: 201891, respondent_url: '#', respondent_name:"sammyd", date: 51.seconds.ago},
-      { completed: true, response_url: '#', response_id: 201997, respondent_url: '#', respondent_name:"jamiec", date: 102.seconds.ago},
-      { completed: false, response_url: '#', response_id: 201999, respondent_url: '#', respondent_name:"sophia", date: 112.seconds.ago},
-      { completed: false, response_url: '#', response_id: 202020, respondent_url: '#', respondent_name:"johnny", date: 122.seconds.ago},
-      { completed: true, response_url: '#', response_id: 202024, respondent_url: '#', respondent_name:"julia", date: 234.seconds.ago},
-      { completed: true, response_url: '#', response_id: 202045, respondent_url: '#', respondent_name:"stacy", date: 345.seconds.ago},
-      { completed: true, response_url: '#', response_id: 202089, respondent_url: '#', respondent_name:"frederick", date: 890.seconds.ago},
-      { completed: false, response_url: '#', response_id: 202102, respondent_url: '#', respondent_name:"wylie", date: 991.seconds.ago},
-      { completed: true, response_url: '#', response_id: 202189, respondent_url: '#', respondent_name:"stevej", date: 1234.seconds.ago},
-      { completed: true, response_url: '#', response_id: 202212, respondent_url: '#', respondent_name:"timc", date: 2345.seconds.ago}
-    ]
+    # TODO - lazy load this data
+    @recent_question_actions = QuestionAction.recent_actions(@user, Time.now - 6.hours)
 
     @dummy_comment_data = [
       { email: "james@kirk.com", name: "Jim", url: '#', campaign_name: "Campaign 1", campaign_url: '#', text: "This was an awesome question!", date: 5.minutes.ago },

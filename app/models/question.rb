@@ -20,6 +20,18 @@ class Question < ActiveRecord::Base
 	validates :state, presence: true, inclusion: {in: %w(preview targeting active)}
 	validates :kind, inclusion: {in: %w(public targeted)}
 
+	def targeted_reach
+		feed_items.count + skips.count + responses.count
+	end
+
+	def viewed!
+		update_attribute :view_count, (view_count.to_i + 1)
+	end
+
+	def started!
+		update_attribute :start_count, (start_count.to_i + 1)
+	end
+
 	def active?
 		state == "active"
 	end

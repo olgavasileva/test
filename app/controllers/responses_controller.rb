@@ -5,6 +5,8 @@ class ResponsesController < ApplicationController
     @response = question.responses.new user:current_user
     authorize @response
 
+    question.started!
+
     @next_question = next_question question
     @just_answered = params[:just_answered]
   end

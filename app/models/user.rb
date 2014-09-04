@@ -45,6 +45,8 @@ class User < ActiveRecord::Base
 	has_many :authentications, dependent: :destroy
 	has_many :devices, through: :instances
 	has_many :questions, dependent: :destroy
+  has_many :responses_to_questions, through: :questions, source: :responses
+  has_many :questions_skips, through: :questions, source: :skips
 	has_many :packs, dependent: :destroy
 	has_many :sharings, foreign_key: "sender_id", dependent: :destroy
 	has_many :reverse_sharings, foreign_key: "receiver_id", class_name: "Sharing", dependent: :destroy
