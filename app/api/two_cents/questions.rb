@@ -568,14 +568,9 @@ class TwoCents::Questions < Grape::API
       end
 
       questions.map do |question|
-        response = question.responses.where(user_id: user.id).first
-        choices = response.try(:choices) || []
-
         {
           id: question.id,
-          response_id: response.id,
-          response_text: response.text,
-          choice_ids: choices.map(&:id)
+          title: question.title
         }
       end
     end
