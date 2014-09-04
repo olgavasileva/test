@@ -1,23 +1,31 @@
+:sass
+  .selectable-option
+    text-align: center
+    display: table
+    label
+      display: table-cell
+      height: 100px
+      position: relative
+      vertical-align: middle
+      overflow: hidden
+      font-size: 1.3em
+    input
+      position: absolute
+      bottom: 100%
 .row.text-choices
-  .col-md-2
-  .col-md-4
+  .col-md-4.col-md-push-2
     = responsive_image_tag((response.question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
     .title= response.question.title
     = render "responses/response_fields/shared/sharing", form:form, response:response
-  .col-md-4
-    = form.collection_radio_buttons :choice_id, response.question.choices, :id, :title, item_wrapper_class: 'col-xs-12' do |c|
-      .label= c.object.title
+  .col-md-4.col-md-push-2
+    = form.collection_radio_buttons :choice_id, response.question.choices, :id, :title,  item_wrapper_class: 'col-xs-12 btn-primary form-group selectable-option' do |c|
+      =c.object.title
       = c.radio_button label:false
-      .indicators
-        .checkmark
-          .glyphicon.glyphicon-ok-circle
 .row
-  .col-md-2
-  .col-md-4
+  .col-md-4.col-md-push-2
     = render "responses/response_fields/shared/comment", form:form, response:response
-  .col-md-4
+  .col-md-4.col-md-push-2
     = render "responses/response_fields/shared/anonymous", form:form, response:response
 .row
-  .col-md-2
-  .col-md-8
+  .col-md-8.col-md-push-2
     = render "responses/response_fields/shared/submit", form:form, response:response
