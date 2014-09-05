@@ -103,7 +103,7 @@
                         %i.glyphicon.glyphicon-plus-sign
 
         .row.form-group
-          =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-12", :name=>"yes_no_question[category_id]",:value_field=>"id"}}
+          =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-12", :name=>"image_choice_question[category_id]",:value_field=>"id"}}
         .row
           .col-md-6
             .btn-group.btn-group-justified
