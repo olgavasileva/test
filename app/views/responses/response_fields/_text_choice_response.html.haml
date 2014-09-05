@@ -38,7 +38,8 @@
 .row.text-choices
   .col-md-4.col-md-push-2
     = responsive_image_tag((response.question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
-    .title= response.question.title
+    .floating-question-title
+      %span= response.question.title
   .col-xs-12.col-md-4.col-md-push-2.btn-group{:data=>{:toggle=>"buttons"}}
     -cols=(12/response.question.choices.length)+1
     -pc_margin=(10/(response.question.choices.length-1)).to_s+'%'
