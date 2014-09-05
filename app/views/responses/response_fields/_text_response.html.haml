@@ -35,7 +35,7 @@
       .title= response.question.title
     = render "responses/response_fields/shared/sharing", form:form, response:response
     .popover.bottom.text-answer.row.form-group
-      = form.input :text, as: :text, label: false, placeholder: "Type your response here", input_html: { rows:3 }
+      = form.input :text, as: :text, label: false, error:false, placeholder: "Type your response here", input_html: { rows:3 }
       .arrow
     = render "responses/response_fields/shared/anonymous", form:form, response:response
 .row
