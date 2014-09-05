@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 
   has_many :responses, dependent: :destroy
   has_many :answered_questions, through: :responses, source: :question
-
+  has_many :messages, dependent: :destroy
   # Allow user to log in using username OR email in the 'login' text area
 	# https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
   def self.find_first_by_auth_conditions(warden_conditions)
