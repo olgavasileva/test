@@ -593,8 +593,8 @@ class TwoCents::Questions < Grape::API
 
       question = TextQuestion.find(params[:question_id])
 
-      unless current_user.questions.include? question
-        fail! 400, "Question doesn't belong to user."
+      unless question.public? || current_user.questions.include?(question)
+        fail! 400, "Question isn't public and doesn't belong to user."
       end
 
       responses = question.responses
