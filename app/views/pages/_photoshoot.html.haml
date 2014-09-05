@@ -2,7 +2,7 @@
 - if @scene.present?
   #sceneinfo.hidden{data:{stickers:@scene_stickers, scene_id:@scene.id, scene_user_id:@scene.user_id, share_link:@scene.share_link('link', current_user)}}
 
-%section#studio-wrapper.col-sm-12
+%section#studio-wrapper
   .row
     #ps-breadcrumbs.col-sm-12
       #current-studio-icon
@@ -11,43 +11,43 @@
       =link_to "Clear All", '#', id: "ps-clear-all", class: %w(btn btn-gary-dark ps-btn-gray)
       .ps-undo-redo
         %button#ps-undo.btn.btn-gary-dark.ps-btn-gray.ps-btn-disabled{data:{"btn-role" => :undo}}
-          %i.icon-undo
+          %i.fa.fa-undo
           &nbsp;Undo
         %button#ps-redo.btn.btn-gary-dark.ps-btn-gray.ps-btn-disabled{data:{"btn-role" => :redo}}
-          %i.icon-repeat
+          %i.fa.fa-repeat
           &nbsp;Redo
       =link_to '?', '#', id:"ps-help", data:{"btn-role" => "help"}, class: %w(btn btn-gary-dark btn-circle btn-sm ps-btn-gray)
       .help
 
   #pack-drawer.col-sm-4.inactive.drawer-control-right.drawer
-    %aside#asset-wrapper.container
+    %aside#asset-wrapper
       .row
         %header#title-bar.col-sm-12
           .row
             #asset-title.col-sm-12
-              =link_to 'javascript:void(0);', class: %w(title col-8 col-push-2 dropdown) do
+              =link_to 'javascript:void(0);', class: %w(pack-browser-control pull-left col-sm-2 col-pull-8) do
+                %i.fa.fa-chevron-left
+              =link_to 'javascript:void(0);', class: %w(title col-sm-8 col-push-2 dropdown) do
                 %span.title-text All Packs
                 %span.icon-stack.dropdown-icon{data:{toggle: :dropdown}}
-                  %i.icon-sign-blank.icon-stack-base
-                  %i.icon-chevron-down.icon-light
+                  %i.fa.fa-sign-blank.fa-stack-base
+                  %i.fa.fa-chevron-down.fa-light
                 %ul.pack-dropdown-list.dropdown-menu{role: :menu}
                   %li#browse-packs-drop Browse
                   %li#all-packs-drop See All
-              =link_to 'javascript:void(0);', class: %w(pack-browser-control page-left col-2 col-pull-8) do
-                %i.icon-chevron-left
-              =link_to 'javascript:void(0);', class: %w(pack-browser-control page-right col-2) do
-                %i.icon-chevron-right
+              =link_to 'javascript:void(0);', class: %w(pack-browser-control pull-right col-sm-2) do
+                %i.fa.fa-chevron-right
       #pack-wrapper.row.is-scrollable
     .drawer-handle
-      %i.icon-double-angle-right.closed
-      %i.icon-double-angle-left.open
+      %i.fa.fa-double-angle-right.closed
+      %i.fa.fa-double-angle-left.open
     .help
 
   .row
-    .col-1.no-padding
-    #ps-desktop.col-6.no-padding
-      %canvas#ps-canvas
-    .col-2
+    .col-sm-10
+      #ps-desktop
+        %canvas#ps-canvas
+    .col-sm-2
       #nutrition-facts Nutrition Facts
       .nutrition-info
         Calories

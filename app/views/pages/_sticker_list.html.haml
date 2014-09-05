@@ -1,6 +1,11 @@
 .col-sm-12
   %h4.section-title= header
 {{#each #{object}}}
-.col-lg-4.col-md-4.col-sm-12.col-xs-12{class: "sticker-container {{#if ../is_locked}}locked{{else}}stickable{{/if}}"}
-  =image_tag "{{image_thumb_url}}", id: "sticker_{{id}}", class: "img-responsive", data:{height: "{{image_height}}", id: "{{id}}", src: "{{image_url}}", type: "{{type}}", width: "{{image_width}}"
+{{#if ../is_locked}}
+.col-lg-4.col-md-4.col-sm-12.col-xs-12.sticker-container.locked
+  %img{src: "{{image_thumb_url}}",id: "sticker_{{id}}", class: "img-responsive", data:{height: "{{image_height}}", id: "{{id}}", src: "{{image_url}}", type: "{{type}}", width: "{{image_width}}"}, alt: ""}
+{{else}}
+.col-lg-4.col-md-4.col-sm-12.col-xs-12.sticker-container.stickable
+  %img{src: "{{image_thumb_url}}",id: "sticker_{{id}}", class: "img-responsive", data:{height: "{{image_height}}", id: "{{id}}", src: "{{image_url}}", type: "{{type}}", width: "{{image_width}}"}, alt: ""}
+{{/if}}
 {{/each}}

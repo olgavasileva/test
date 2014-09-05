@@ -1,14 +1,14 @@
 %script#sticker-pack-detail{type:"text/x-handlebars-template"}
   {{#sticker_pack}}
   %section#pack-browser
-    %article.sticker-pack.container{id: "pack-{{id}}"}
+    %article.sticker-pack{id: "pack-{{id}}"}
       %header.row{style:"background-image: url({{header_icon_url}});"}
         .col-sm-8
           %h3.name {{display_name}}
         .col-sm-4
       {{#if backgrounds}}
       %section.row.backgrounds
-        = render partial: 'sticker_list', locals: { header: 'Backgrounds', object: 'backgrounds'}
+        = render 'sticker_list', header: 'Backgrounds', object: 'backgrounds'
       {{/if}}
       {{#if stickers}}
       %section.row.stickers

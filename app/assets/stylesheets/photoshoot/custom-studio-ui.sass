@@ -1,0 +1,277 @@
+#studio-wrapper2
+  .panel-heading
+    background-color: $gray
+
+
+#studio-wrapper
+  max-width: 100% !important
+  position: relative
+  background: image-url('photoshoot/groovepaper.png') repeat 0 0
+
+  .no-padding
+    padding: 0px
+
+  // Hide all help screens by default
+  .help
+    position: absolute
+    display: none
+    z-index: 110
+    background-image: asset-data-url("photoshoot/modal_help.png")
+    background-repeat: no-repeat
+
+  // Show the help screens
+  &.help-active
+
+  .row
+    margin-right: 0px
+    margin-left: 0px
+    .row
+      margin-right: 0px
+      margin-left: 0px
+      // margin-right: -15px
+      // margin-left: -15px
+
+  #ps-breadcrumbs
+    +gradient-vertical($start-color: #4B494A, $end-color: #575556)
+    padding-top: 5px
+    padding-bottom: 5px
+    z-index: 10
+    *
+      -webkit-box-sizing: content-box
+      -moz-box-sizing: content-box
+      box-sizing: content-box
+    #current-studio-icon
+      background-color: #fff
+      float: left
+      margin: 4px 10px 4px 0
+      border-radius: 50px
+      overflow: hidden
+
+      img
+        height: 35px
+        width: auto
+
+    #current-studio-name
+      display: inline-block
+      float: left
+      font-size: 26px
+      line-height: 1
+      margin: 8px 0
+      vertical-align: baseline
+      color: #FFF
+    // Shows the help for Close, 'Clear All' and 'Save' buttons
+    .help
+      right: 0px
+      top: -104px
+      height: 236px
+      width: 484px
+      background-position-x: -463px
+      background-position-y: 3px
+
+  #ps-desktop
+    margin-left: auto
+    margin-right: auto
+    float: none
+    background: #fff
+
+  #asset-wrapper
+    // position: relative
+    overflow: hidden
+    opacity: 1
+    +transition-duration(.5s)
+    // +transition($duration:.5s, $ease:linear)
+
+    #title-bar
+      background-color: #4B494A
+      padding: 6px 0
+      box-shadow: inset 0px 10px 10px -10px rgba(0, 0, 0, 0.3)
+      text-align: center
+
+      a
+        display: inline-block
+      .title-text
+        text-align: center
+        font-size: 16px
+        color: #F0F0F0
+        margin: 0 auto
+      .dropdown-icon
+        font-size: 10px
+        vertical-align: top
+        margin-top: 3px
+        .icon-chevron-down
+          font-size: 80%
+          text-align:center
+      .page-left
+      .page-right
+
+      .pack-dropdown-list
+        left: 20%
+
+    #pack-wrapper
+      +user-select(none)
+      height: 465px
+      -webkit-overflow-scrolling: touch
+      overflow-y:auto
+      overflow-x: hidden
+
+      #pack-grid
+        .sticker-pack-wrapper
+          position: relative
+          cursor: pointer
+          margin: 10px 0 0
+          border: 1px solid $gray-lighter
+
+          .name
+            position: absolute
+            bottom: 0
+            background: rgba(255, 255, 255, 0.75)
+            display: block
+            width: 100%
+            padding: 5px 10px
+            font-weight: 700
+
+      #pack-browser
+        header
+          overflow: hidden
+          padding-top: 60%
+          background-size: cover
+          background-position: top center
+          background-repeat: no-repeat
+          box-shadow: inset 0px -70px 48px -19px rgba(0, 0, 0, 0.3)
+          background-color: #FFF
+
+          .name
+            color: #fff
+            text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.5)
+            margin-top: 0px
+        section .section-title
+          margin-top: 15px
+          border-bottom: solid 1px #D0E9EC
+          padding-bottom: 5px
+        .sticker-container
+          height: 100px
+          margin-bottom: 10px
+          overflow: hidden
+
+          &.locked
+            opacity: 0.4
+            filter: alpha(opacity=40) // For IE8 and earlier
+          img
+            width:  auto
+            height: 100%
+
+
+
+        section
+          img
+            max-height: 100px
+            display: block
+            margin-left: auto
+            margin-right: auto
+
+          &.backgrounds
+            .ui-draggable
+              cursor: pointer
+            img
+              height: 100px
+
+          &.stickers
+
+          .stickable
+
+
+  #pack-drawer
+    position: absolute
+    top: 0
+    left: 0px
+    padding-left: 0px
+    padding-right: 0px
+    height: 100%
+    border-right: 1px solid $gray-dark
+    background: rgba(255, 255, 255, 0.96)
+    // .transition(@duration:.5s, @ease:linear)
+    -webkit-transition-property: -webkit-transform,width
+    transition-property: transform,width
+    -webkit-transition-duration: 500ms
+    transition-duration: 500ms
+    -webkit-transition-timing-function: ease-in-out
+    transition-timing-function: ease-in-out
+    -ms-transform: translateX(0)
+    -webkit-transform: translateX(0)
+    transform: translateX(0)
+    z-index: 5
+
+
+    // Shows the help for the open Sticker Pack drawer
+    .help
+      top: 37%
+      right: -488px
+      height: 141px
+      width: 515px
+      background-position-x: -258px
+      background-position-y: -290px
+
+    // Closed drawer
+    &.inactive
+      width: 0px !important
+      -webkit-transition-duration: 100ms
+      transition-duration: 100ms
+      -ms-transform: translateX(0px)
+      -webkit-transform: translateX(0px)
+      transform: translateX(0px)
+
+      #asset-wrapper
+        opacity: 0
+        width: 0px
+        overflow: hidden
+
+      // Shows the help for the closed Sticker Pack drawer
+      .help
+        right: -547px
+        height: 64px
+        background-position-x: -255px
+        background-position-y: -323px
+
+
+    .drawer-handle
+      cursor: pointer
+      position: absolute
+      padding: 100px 10px
+      color: #fff
+      +gradient-horizontal(#ffffff, #ececec)
+      background-color: $gray-light
+      border-width: 1px 1px 1px 0px
+      border-style: solid
+      border-color: #444
+      box-shadow: inset -10px 0px 2px -10px rgba(0, 0, 0, 0.3)
+      opacity: .97
+      top: 25%
+
+    &.drawer-control-right
+      .drawer-handle
+        right: -28px
+        border-radius: 0 8px 8px 0
+
+    &.drawer-control-left
+      .drawer-handle
+        left: -28px
+        border-radius: 8px 0 0 8px
+
+  #nutrition-facts
+    font-weight: bold
+    font-size: 30px
+    color: #000
+    border-bottom: 10px solid #000
+    padding-top: 20px
+    padding-bottom: 20px
+
+  .nutrition-info
+    font-weight: bold
+    font-size: 24px
+    color: #000
+    border-bottom: 5px solid #000
+    padding-top: 15px
+    padding-bottom: 15px
+
+  .nutrition-value
+    font-weight: normal
