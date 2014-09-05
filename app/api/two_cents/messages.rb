@@ -4,7 +4,7 @@ class TwoCents::Messages < Grape::API
     #
     # Update the read status of a message
     #
-    desc "Create a text choice question", {
+    desc "Update the status of a message", {
         notes: <<-END
                 This API will update the status of a message which belongs to the current user.
 
@@ -48,6 +48,53 @@ class TwoCents::Messages < Grape::API
         body []
       else
         fail!(2003, "Failed to update the read status of the message")
+      end
+    end
+
+    #
+    # Delete a message
+    #
+    desc "Delete a message", {
+        notes: <<-END
+        This API will delete a message which belongs to the current user.
+
+                        inputs:
+                          id: id of the message to be deleted
+
+                        output:
+                          error if message doesn't exist
+                          error if message doesn't belong to current_user
+                          success: empty body("[]") and success response code
+        END
+    }
+    params do
+      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+      requires :id, type: Integer, desc: 'ID of the target message'
+    end
+    post 'delete', http_codes:[
+        [200, "400 - Invalid params"],
+        [200, "402 - Invalid auth token"],
+        [200, "403 - Login required"],
+        [200, "2000 - The message doesn't exist"],
+        [200, "2001 - The message doesn't belong to current_user"],
+        [200, "2002 - Failed to delete the message"]
+    ] do
+      validate_user!
+
+
+
+      fail!(2000, "The message doesn't exist") if !Message.exists?(declared_params[:id])
+
+      message = Message.find(declared_params[:id])
+      fail!(2001, "The message doesn't belong to current_user") if message.user != current_user
+
+      message.read_at = Time.zone.now()
+
+      if message.destroy
+        status 200
+        body []
+      else
+        fail!(2002, "Failed to delete the message")
       end
     end
 
