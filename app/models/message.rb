@@ -1,8 +1,8 @@
 class Message < ActiveRecord::Base
   belongs_to :user
-  after_initialize :defaults
+  before_create :defaults
 
   def defaults
-    self.read_at = Time.zone.now()
+    self.read_at = nil
   end
 end
