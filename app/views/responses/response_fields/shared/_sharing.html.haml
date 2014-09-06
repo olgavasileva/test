@@ -41,7 +41,7 @@
     -#= link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
     -#  %span.glyphicon.glyphicon-flag
     -#  Flag
-    = link_to "", class:%w(col-xs-4 col-lg-3), remote:true do
+    = link_to "", class:%w(col-xs-4 ), remote:true do
       %h5 Posted by
       %h6.elipsable
         = @response.question.user.name
@@ -50,6 +50,6 @@
         %div
           Following
       - else
-        = link_to "Follow",[:follow, @response.question.user],class:%w(col-xs-3 col-lg-2 btn vertical-middle btn-default negative) , remote: true
-    = link_to "",class:%w(col-md-2 col-xs-push-3 col-lg-push-5 vertical-middle) , remote: true do
+        = link_to "Follow",[:follow, @response.question.user],class:%w(col-xs-3  btn vertical-middle btn-default negative) , remote: true
+    = link_to "",class:%w(col-xs-2 col-xs-push-3 vertical-middle) , remote: true do
       %h4 ...

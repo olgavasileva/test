@@ -33,7 +33,9 @@
     = responsive_image_tag((response.question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
     .floating-question-title
       %span= response.question.title
-    = render "responses/response_fields/shared/sharing", form:form, response:response
+    %div
+      .col-xs-12
+        = render "responses/response_fields/shared/sharing", form:form, response:response
 .row
   .col-md-6.col-md-push-3.text-choices
     .popover.bottom.text-answer.form-group
