@@ -19,7 +19,7 @@ class QuestionsControllerBase < ApplicationController
 
   def edit
     @question = question_class.send :find, params[:id]
-    authorize @question
+    #authorize @question
   end
 
   def update
@@ -39,6 +39,12 @@ class QuestionsControllerBase < ApplicationController
     authorize @question
     redirect_to new_target_path(question_id:@question)
   end
+
+  def share
+    @question = question_class.send :find, params[:id]
+    authorize @question
+  end
+
 
   def enable
     @question = question_class.send :find, params[:id]
