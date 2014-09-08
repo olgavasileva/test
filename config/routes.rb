@@ -61,6 +61,11 @@ LinkchatApp::Application.routes.draw do
     post :enable, on: :member
   end
 
+  resources :background_images
+  resources :question_images
+  resources :choice_images
+  resources :order_choice_images
+
   resources :targets
 
 

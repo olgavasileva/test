@@ -1,3 +1,10 @@
+:sass
+  .question-image-uploader
+    overflow: hidden
+    position: relative
+    input
+      position: absolute
+      bottom: 120%
 .col-xs-6.nested-fields.answer.form-group
   .choice.imagechooser
     .hidden
@@ -9,10 +16,55 @@
         %i.glyphicon.glyphicon-remove
       .image_control.row
         <Image manipulation tools>
-        =link_to '#', class:[:prev_image,'col-sm-12','form-group']  do
+        %a.question-image-uploader.col-sm-12.form-group.upload-trigger
           %span.glyphicon.glyphicon-cloud-upload
+          %input{:type=>'file'}
         =link_to '#', class:[:prev_image,'col-sm-6'] do
           %span.glyphicon.glyphicon-chevron-left
         =link_to '#', class:[:next_image,'col-sm-6'] do
           %span.glyphicon.glyphicon-chevron-right
       .title=f.input :title, label: false, placeholder: "Type a response"
+
+  :javascript
+    if(!window.tcHAndlers){
+      window.tcHAndlers={};
+    }
+    if(!window.tcHAndlers.usedImages){
+      window.tcHAndlers.usedImages=[];
+    }
+    window.tcHAndlers.usedImages.push("#{f.object.web_image_url}");
+
+    $(function(){
+        if(!window.tcHAndlers){
+          window.tcHAndlers={};
+        }
+        if(!window.tcHAndlers.uploaderHandlerTrigger){
+            window.tcHAndlers.uploaderHandlerTrigger=$('.question-image-uploader').on('click',function(event){
+            //event.preventDefault();
+              $(this).find('[type="file"]')[0].click();
+            })
+        }
+        if(!window.tcHAndlers.uploaderHandlerFile){
+            var container=$(this).closest('.canned');
+            window.tcHAndlers.uploaderHandlerFile=$('.question-image-uploader input[type="file"]').on('change',function(event){
+              var data = new FormData();
+              data.append('background_image', this.files[0]);
+
+              $.ajax({
+                  url: '/background_images',
+                  data: data,
+                  cache: false,
+                  contentType: false,
+                  processData: false,
+                  type: 'POST',
+                  success: function(data){
+                      alert(data);
+                  }
+              });
+
+            })
+        }
+
+
+
+    })
