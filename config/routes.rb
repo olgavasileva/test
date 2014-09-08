@@ -12,6 +12,7 @@ LinkchatApp::Application.routes.draw do
 
   resources :questions, shallow:true do
     get :summary, on: :member
+    get :share, on: :member
     resources :responses
     resources :text_choice_responses
     resources :image_choice_responses
@@ -59,6 +60,11 @@ LinkchatApp::Application.routes.draw do
     get :target, on: :member
     post :enable, on: :member
   end
+
+  resources :background_images
+  resources :question_images
+  resources :choice_images
+  resources :order_choice_images
 
   resources :targets
 

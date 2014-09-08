@@ -20,11 +20,14 @@
 .question_types.panel.panel-default
   .panel-heading
     .panel-title
-      =link_to root_path do
-        %span.glyphicon.glyphicon-chevron-left
-        Back to Feed
+      .row
+        .col-xs-2
+          =link_to root_path do
+            %span.glyphicon.glyphicon-chevron-left
+        .col-xs-8
+          %h3 Ask A Questions
+
   .panel-body
-    %h1 Question Types
     .row
       - @question_types.each do |question_type|
         .item.col-sm-6
