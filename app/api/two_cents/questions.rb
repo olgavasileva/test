@@ -568,14 +568,9 @@ class TwoCents::Questions < Grape::API
       end
 
       questions.map do |question|
-        response = question.responses.where(user_id: user.id).first
-        choices = response.try(:choices) || []
-
         {
           id: question.id,
-          response_id: response.id,
-          response_text: response.text,
-          choice_ids: choices.map(&:id)
+          title: question.title
         }
       end
     end
@@ -598,8 +593,8 @@ class TwoCents::Questions < Grape::API
 
       question = TextQuestion.find(params[:question_id])
 
-      unless current_user.questions.include? question
-        fail! 400, "Question doesn't belong to user."
+      unless question.public? || current_user.questions.include?(question)
+        fail! 400, "Question isn't public and doesn't belong to user."
       end
 
       responses = question.responses

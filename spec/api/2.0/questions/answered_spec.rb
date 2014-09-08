@@ -15,7 +15,7 @@ describe :answered do
 
   shared_examples :correct_fields do
     it "responds with correct data fields" do
-      keys = %w[id response_id response_text choice_ids]
+      keys = %w[id title]
 
       response_body.each do |data|
         expect(data.keys).to match_array keys

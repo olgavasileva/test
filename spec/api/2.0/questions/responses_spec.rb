@@ -28,15 +28,8 @@ describe 'questions/responses' do
     include_examples :fail
   end
 
-  context "with question_id not belonging to current user" do
+  context "with question_id" do
     let(:question) { FactoryGirl.create(:text_question) }
-    let(:params) { common_params.merge(question_id: question.id) }
-
-    include_examples :fail
-  end
-
-  context "with question_id that belongs to current user" do
-    let(:question) { FactoryGirl.create(:text_question, user: instance.user) }
     let(:responses) { FactoryGirl.create_list(:text_response, 16) }
     let(:params) { common_params.merge(question_id: question.id) }
 
@@ -49,6 +42,20 @@ describe 'questions/responses' do
 
     it "responds with data for all question's responses" do
       expect(response_body.count).to eq responses.count
+    end
+
+    context "with question not public" do
+      let(:question) { FactoryGirl.create(:text_question, kind: 'targeted') }
+
+      include_examples :fail
+
+      context "with question belonging to user" do
+        let(:question) { FactoryGirl.create(:text_question,
+                                            kind: 'targeted',
+                                            user: instance.user) }
+
+        include_examples :success
+      end
     end
 
     context "with page param" do

@@ -44,6 +44,10 @@ class Question < ActiveRecord::Base
 		state == "targeting"
 	end
 
+  def public?
+    kind == 'public'
+  end
+
 	def activate!
 		self.state = "active"
 		self.save!
