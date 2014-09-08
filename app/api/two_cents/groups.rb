@@ -102,6 +102,31 @@ class TwoCents::Groups < Grape::API
 
       {}
     end
+
+    # remove follower from group
+    desc "Remove a follower from one of my groups"
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      requires :id, type: Integer, desc: "ID for group."
+      requires :user_id, type: Integer, desc: "ID for user to remove from group."
+    end
+    put 'remove_user' do
+      validate_user!
+
+      group = Group.find_by_id(params[:id])
+      fail! 400, "Couldn't find group" unless group.present?
+      fail! 400, "Group does not belong to user" if group.user != current_user
+
+      user = User.find_by_id(params[:user_id])
+      fail! 400, "Couldn't find user" unless user.present?
+
+      member = GroupMember.where(user_id: user.id, group_id: group.id).first
+      fail! 400, "User is not part of group" unless member.present?
+      fail! 400, member.errors.full_messages.first unless member.destroy!
+
+      {}
+    end
   end
 
 end
