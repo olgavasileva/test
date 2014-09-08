@@ -1,53 +1,17 @@
+:sass
+  .invert-float
+    float: right
+
+  #canvas-row
+    margin-left: -15px !important
+    margin-right: -15px !important
 #photoshootinfo.hidden{data:{studio_id:@question.studio.id, studio_name:@question.studio.display_name || @question.studio.name, logged_in:user_signed_in?, question_id:@question.id}}
 - if @scene.present?
   #sceneinfo.hidden{data:{stickers:@scene_stickers, scene_id:@scene.id, scene_user_id:@scene.user_id, share_link:@scene.share_link('link', current_user)}}
 
 %section#studio-wrapper
   .row
-    #ps-breadcrumbs.col-sm-12
-      #current-studio-icon
-      %h2#current-studio-name
-      =link_to "Save", '#', id: "ps-save", class:%w(btn ps-btn-yellow), data:{'btn-role' => :save}
-      =link_to "Clear All", '#', id: "ps-clear-all", class: %w(btn btn-gary-dark ps-btn-gray)
-      .ps-undo-redo
-        %button#ps-undo.btn.btn-gary-dark.ps-btn-gray.ps-btn-disabled{data:{"btn-role" => :undo}}
-          %i.fa.fa-undo
-          &nbsp;Undo
-        %button#ps-redo.btn.btn-gary-dark.ps-btn-gray.ps-btn-disabled{data:{"btn-role" => :redo}}
-          %i.fa.fa-repeat
-          &nbsp;Redo
-      =link_to '?', '#', id:"ps-help", data:{"btn-role" => "help"}, class: %w(btn btn-gary-dark btn-circle btn-sm ps-btn-gray)
-      .help
-
-  #pack-drawer.col-sm-4.inactive.drawer-control-right.drawer
-    %aside#asset-wrapper
-      .row
-        %header#title-bar.col-sm-12
-          .row
-            #asset-title.col-sm-12
-              =link_to 'javascript:void(0);', class: %w(pack-browser-control pull-left col-sm-2 col-pull-8) do
-                %i.fa.fa-chevron-left
-              =link_to 'javascript:void(0);', class: %w(title col-sm-8 col-push-2 dropdown) do
-                %span.title-text All Packs
-                %span.icon-stack.dropdown-icon{data:{toggle: :dropdown}}
-                  %i.fa.fa-sign-blank.fa-stack-base
-                  %i.fa.fa-chevron-down.fa-light
-                %ul.pack-dropdown-list.dropdown-menu{role: :menu}
-                  %li#browse-packs-drop Browse
-                  %li#all-packs-drop See All
-              =link_to 'javascript:void(0);', class: %w(pack-browser-control pull-right col-sm-2) do
-                %i.fa.fa-chevron-right
-      #pack-wrapper.row.is-scrollable
-    .drawer-handle
-      %i.fa.fa-double-angle-right.closed
-      %i.fa.fa-double-angle-left.open
-    .help
-
-  .row
-    .col-sm-10
-      #ps-desktop
-        %canvas#ps-canvas
-    .col-sm-2
+    .col-sm-3.invert-float
       #nutrition-facts Nutrition Facts
       .nutrition-info
         Calories
@@ -64,6 +28,47 @@
           %span#sugar-counter 0
           g
 
+    #ps-breadcrumbs.col-sm-9
+      #current-studio-icon
+      %h2#current-studio-name
+      =link_to "Save", '#', id: "ps-save", class:%w(btn btn-primary btn-sm), data:{'btn-role' => :save}
+      =link_to "Clear All", '#', id: "ps-clear-all", class: %w(btn btn-gary-dark ps-btn-gray)
+      .ps-undo-redo
+        %button#ps-undo.btn.btn-gary-dark.ps-btn-gray.ps-btn-disabled{data:{"btn-role" => :undo}}
+          %i.fa.fa-undo
+          &nbsp;Undo
+        %button#ps-redo.btn.btn-gary-dark.ps-btn-gray.ps-btn-disabled{data:{"btn-role" => :redo}}
+          %i.fa.fa-repeat
+          &nbsp;Redo
+      =link_to '?', '#', id:"ps-help", data:{"btn-role" => "help"}, class: %w(btn btn-gary-dark btn-circle btn-sm ps-btn-gray)
+      .help
+    .col-sm-9
+      .row#canvas-row
+        #pack-drawer.col-sm-4.inactive.drawer-control-right.drawer
+          %aside#asset-wrapper
+            .row
+              %header#title-bar.col-sm-12
+                .row
+                  #asset-title.col-sm-12
+                    =link_to 'javascript:void(0);', class: %w(pack-browser-control pull-left col-sm-2 col-pull-8) do
+                      %i.fa.fa-chevron-left
+                    =link_to 'javascript:void(0);', class: %w(title col-sm-8 col-push-2 dropdown) do
+                      %span.title-text All Packs
+                      %span.icon-stack.dropdown-icon{data:{toggle: :dropdown}}
+                        %i.fa.fa-sign-blank.fa-stack-base
+                        %i.fa.fa-chevron-down.fa-light
+                      %ul.pack-dropdown-list.dropdown-menu{role: :menu}
+                        %li#browse-packs-drop Browse
+                        %li#all-packs-drop See All
+                    =link_to 'javascript:void(0);', class: %w(pack-browser-control pull-right col-sm-2) do
+                      %i.fa.fa-chevron-right
+            #pack-wrapper.row.is-scrollable
+          .drawer-handle
+            %span.glyphicon.glyphicon-chevron-right
+            %span.glyphicon.glyphicon-chevron-left
+          .help
+        #ps-desktop
+          %canvas#ps-canvas
 - # UI templates / Hidden stuff
 
 .ps-ui#ps-ui-templates{data:{"no-turbolink" => true}}

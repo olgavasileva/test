@@ -182,7 +182,7 @@
 
   #pack-drawer
     position: absolute
-    top: 0
+    top: 0 !important
     left: 0px
     padding-left: 0px
     padding-right: 0px
@@ -192,8 +192,8 @@
     // .transition(@duration:.5s, @ease:linear)
     -webkit-transition-property: -webkit-transform,width
     transition-property: transform,width
-    -webkit-transition-duration: 500ms
-    transition-duration: 500ms
+    -webkit-transition-duration: 200ms
+    transition-duration: 200ms
     -webkit-transition-timing-function: ease-in-out
     transition-timing-function: ease-in-out
     -ms-transform: translateX(0)
@@ -220,6 +220,7 @@
       -webkit-transform: translateX(0px)
       transform: translateX(0px)
 
+
       #asset-wrapper
         opacity: 0
         width: 0px
@@ -232,24 +233,38 @@
         background-position-x: -255px
         background-position-y: -323px
 
+      .drawer-handle
+        .glyphicon-chevron-left
+          display: none !important
 
+    &.active
+      .drawer-handle
+        .glyphicon-chevron-right
+          display: none !important
     .drawer-handle
       cursor: pointer
       position: absolute
-      padding: 100px 10px
+      height: 180px
+      line-height: 180px
+      padding-right: 10px
+      padding-left: 10px
+      display: inline-block
       color: #fff
-      +gradient-horizontal(#ffffff, #ececec)
+      font-size: 1.7rem
+      /*+gradient-horizontal(#ffffff, #ececec)*/
       background-color: $gray-light
       border-width: 1px 1px 1px 0px
       border-style: solid
       border-color: #444
       box-shadow: inset -10px 0px 2px -10px rgba(0, 0, 0, 0.3)
       opacity: .97
-      top: 25%
+      top: 50%
+      margin-top: -90px
 
     &.drawer-control-right
       .drawer-handle
-        right: -28px
+        left: 100%
+        right: auto
         border-radius: 0 8px 8px 0
 
     &.drawer-control-left

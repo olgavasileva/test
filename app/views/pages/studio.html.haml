@@ -1,1 +1,16 @@
-= render "photoshoot"
+:sass
+  .panel-title
+    text-align: center
+.panel.panel-default
+  .panel-heading
+    .panel-title
+      .row
+        .col-xs-3.col-sm-2
+          =link_to root_path do
+            %span.glyphicon.glyphicon-chevron-left
+        .col-xs-6.col-sm-8
+        .col-xs-3.col-sm-2
+          =link_to root_path do
+            %span.glyphicon.glyphicon-chevron-right
+  .panel-body.response
+    = render "photoshoot"

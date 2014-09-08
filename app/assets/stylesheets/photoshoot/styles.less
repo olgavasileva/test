@@ -4,7 +4,7 @@
 @imgBaseUrl: "/photoshoot/"; /* PS_IMG_BASE_URL */
 /* intial size */
 @canvasHeight: 495px;
-@canvasWidth: 720px;
+@canvasWidth: 100%;
 
 .ps-ui, #ps-frame {
 	* {
@@ -61,7 +61,7 @@
 }
 
 #ps-breadcrumbs {
-	width: 100%;
+	/*width: 100%;*/
 	background: #565455;
 	background: -moz-linear-gradient(top, #565455 0%, #424041 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#565455), color-stop(100%,#424041)); /* Chrome,Safari4+ */
@@ -85,10 +85,11 @@
 }
 
 #ps-desktop {
-	width: @canvasWidth;
+	width: @canvasWidth  !important;
 	height: @canvasHeight;
 	min-height: @canvasHeight;
 	float: left;
+    overflow: auto;
 }
 
 #ps-help, #ps-clear-all, #ps-save, #ps-enter-contest {
