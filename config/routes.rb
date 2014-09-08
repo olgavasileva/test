@@ -3,7 +3,7 @@ LinkchatApp::Application.routes.draw do
   devise_for :partners
   devise_for :admin_users, ActiveAdmin::Devise.config
 
-  get '/studio' => 'pages#studio' if Rails.env.development?
+  get '/studio' => 'pages#studio' unless Rails.env.production?
 
   ActiveAdmin.routes(self)
 
@@ -19,6 +19,7 @@ LinkchatApp::Application.routes.draw do
     resources :multiple_choice_responses
     resources :text_responses
     resources :order_responses
+    resources :studio_responses
     resources :skipped_items
   end
 
