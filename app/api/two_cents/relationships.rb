@@ -105,5 +105,17 @@ class TwoCents::Relationships < Grape::API
       {}
     end
 
+    desc "Whether following a user"
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      requires :user_id, type: Integer, desc: "ID of user to check whether following."
+    end
+    get 'is_following' do
+      user = User.find(params[:user_id])
+
+      current_user.leaders.include? user
+    end
+
   end
 end
