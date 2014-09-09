@@ -17,7 +17,7 @@ class PagesController < ApplicationController
 
   def studio
     # For testing studio setup
-    @question = StudioQuestion.first
+    @response = StudioQuestion.first.responses.new user: current_user
   end
 
 private

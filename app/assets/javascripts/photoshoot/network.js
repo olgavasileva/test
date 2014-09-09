@@ -84,7 +84,7 @@ var psNetwork = function() {
     // Private methods
     //========================================
 
-    var API_URL = "";
+    var API_URL = "/";
 
     function getStickerPacks(studio_id) {
         var dfd = $.Deferred();

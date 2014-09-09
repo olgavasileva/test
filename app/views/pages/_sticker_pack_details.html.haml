@@ -8,10 +8,10 @@
         .col-sm-4
       {{#if backgrounds}}
       %section.row.backgrounds
-        = render 'sticker_list', header: 'Backgrounds', object: 'backgrounds'
+        = render 'pages/sticker_list', header: 'Backgrounds', object: 'backgrounds'
       {{/if}}
       {{#if stickers}}
       %section.row.stickers
-        = render partial: 'sticker_list', locals: {header: 'Stickers', object: 'stickers'}
+        = render partial: 'pages/sticker_list', locals: {header: 'Stickers', object: 'stickers'}
       {{/if}}
   {{/sticker_pack}}

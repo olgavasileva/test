@@ -26,6 +26,7 @@ class QuestionsController < ApplicationController
 
   def new
     @question = current_user.questions.new
+    binding.pry
     @question_types=question_ty
     authorize @question
   end
