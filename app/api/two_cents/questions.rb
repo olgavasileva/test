@@ -735,7 +735,9 @@ class TwoCents::Questions < Grape::API
     desc "Flag inappropriate question"
     params do
       requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+
       requires :question_id, type: Integer, desc: 'Question this is a response to'
+      requires :reason, type: String, desc: "Reason that question is inappropriate"
     end
     post 'inappropriate', http_codes:[
       [200, "400 - Invalid params"],
@@ -744,7 +746,12 @@ class TwoCents::Questions < Grape::API
       [200, "403 - Login required"]
     ] do
       validate_user!
-      @question = Question.find declared_params[:question_id]
+
+      QuestionReport.create!(
+        user: current_user,
+        question: Question.find(params[:question_id]),
+        reason: params[:reason]
+      )
 
       {}
     end
