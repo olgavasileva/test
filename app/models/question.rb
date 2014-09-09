@@ -9,6 +9,7 @@ class Question < ActiveRecord::Base
 	has_many :feed_items, dependent: :destroy
 	has_many :skips, class_name:"SkippedItem", dependent: :destroy
   has_many :choices
+  has_many :question_reports
 
 	scope :active, -> { where state:"active" }
 
