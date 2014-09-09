@@ -35,7 +35,7 @@ ActiveAdmin.register StickerPack do
         links << link_to('Disable', disable_admin_sticker_pack_path(pack), method: :patch, class: 'member_link')
       end
 
-      links << link_to('Stickers',  stickers_admin_sticker_pack_path(pack), class: 'member_link')
+      # links << link_to('Stickers',  stickers_admin_sticker_pack_path(pack), class: 'member_link')
       links
     end
   end

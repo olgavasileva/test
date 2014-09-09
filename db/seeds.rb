@@ -19,6 +19,9 @@ Setting.where(key: :aws_secret_access_key).first_or_create!(value: ENV['DEVICE_A
 Setting.where(key: :aws_region).first_or_create!(value: ENV['DEVICE_AWS_REGION'])
 Setting.where(key: :aws_bucket).first_or_create!(value: ENV['DEVICE_AWS_BUCKET'])
 
+%w(Calories Fat Carbohydrates Protein).each do |key|
+  Key.where(key:key).first_or_create!
+end
 
 #
 # Users
