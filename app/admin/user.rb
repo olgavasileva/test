@@ -5,6 +5,7 @@ ActiveAdmin.register User do
   index do
     selectable_column
     id_column
+    column :username
     column :email
     column :roles do |u|
       u.roles.map{|r|r.name}.join ", "
@@ -12,7 +13,17 @@ ActiveAdmin.register User do
     column :current_sign_in_at
     column :sign_in_count
     column :created_at
+    column "Responses" do |u|
+      link_to "Clear all #{pluralize u.responses.count, "response"} and reset the feed", reset_admin_user_path(u), method: :delete
+    end
     actions
+  end
+
+  member_action :reset, method: :delete do
+    user = User.find params[:id]
+    user.responses.destroy_all
+    user.feed_items.destroy_all
+    redirect_to admin_users_path, notice: "Responses and feed have been reset for #{user.username}."
   end
 
   filter :email
