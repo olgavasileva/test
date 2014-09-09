@@ -20,7 +20,9 @@ class UsersController < ApplicationController
     @user = current_user
     authorize @user
 
-    question = @user.feed_questions.order('questions.created_at DESC').first
+    @user.feed_more_questions 10 if @user.feed_questions.count < 1
+
+    question = @user.feed_questions.order('feed_questions.created_at DESC').first
 
     if question
       redirect_to new_question_response_path(question)
