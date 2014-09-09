@@ -114,11 +114,10 @@ var photoshoot = function() {
             dialogClass: 'ps-avatar-dialog'
         }));
 
-        $("#clear-scene-dialog").dialog((new psUtils()).getDialogConfig({
-            width: 330,
-            dialogClass: 'ps-clear-scene-dialog'
-        }));
-
+        // $("#clear-scene-dialog").dialog((new psUtils()).getDialogConfig({
+        //     width: 330,
+        //     dialogClass: 'ps-clear-scene-dialog'
+        // }));
         $("#welcome-dialog").dialog((new psUtils()).getDialogConfig({
             width: 600,
             dialogClass: 'ps-welcome-dialog'

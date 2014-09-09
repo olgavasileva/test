@@ -53,11 +53,11 @@ var psUI = function() {
             return false;
         });
 
-        $('.page-right').on('click', function(e) {
+        $('.prev-pack').on('click', function(e) {
             renderPackDetails(psUtils().nextPack());
         });
 
-        $('.page-left').on('click', function(e) {
+        $('.next-pack').on('click', function(e) {
             renderPackDetails(psUtils().prevPack());
         });
 
@@ -227,21 +227,17 @@ var psUI = function() {
     }
 
     function clearAll() {
-        $("#clear-scene-dialog").dialog("open");
-        $('.ui-dialog :button, .ui-dialog a').blur();
-
-        $("#clear-scene-dialog button.ps-btn-yellow").one('click', function() {
-            $("#clear-scene-dialog").dialog("close");
-            $(document).trigger('ui.clearAll.before');
-            psCanvas().getContext().backgroundImage = 0;
-            psCanvas().getContext().clear();
-            $(document).trigger('ui.clearAll.after');
-        });
-        $("#clear-scene-dialog button.ps-btn-gray").one('click', function() {
-            $("#clear-scene-dialog").dialog("close");
-        });
+        $('#clear-scene-modal').modal('show');
         return false;
     }
+
+    $('#clear-scene-modal button#clear-all').on('click', function() {
+        $(document).trigger('ui.clearAll.before');
+        psCanvas().getContext().backgroundImage = 0;
+        psCanvas().getContext().clear();
+        $(document).trigger('ui.clearAll.after');
+    });
+
 
     /**
      * Show loading dialog inside application frame

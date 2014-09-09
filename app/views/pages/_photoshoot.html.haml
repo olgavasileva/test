@@ -214,7 +214,7 @@
               %header#title-bar.col-sm-12
                 .row
                   #asset-title.col-sm-12
-                    =link_to 'javascript:void(0);', class: %w(pack-browser-control pull-left col-sm-2 col-pull-8) do
+                    =link_to 'javascript:void(0);', class: %w(pack-browser-control prev-pack pull-left col-sm-2 col-pull-8) do
                       %i.fa.fa-chevron-left
                     =link_to 'javascript:void(0);', class: %w(title col-sm-8 col-push-2 dropdown) do
                       %span.title-text All Packs
@@ -224,7 +224,7 @@
                       %ul.pack-dropdown-list.dropdown-menu{role: :menu}
                         %li#browse-packs-drop Browse
                         %li#all-packs-drop See All
-                    =link_to 'javascript:void(0);', class: %w(pack-browser-control pull-right col-sm-2) do
+                    =link_to 'javascript:void(0);', class: %w(pack-browser-control next-pack pull-right col-sm-2) do
                       %i.fa.fa-chevron-right
             #pack-wrapper.row.is-scrollable
           .drawer-handle
@@ -295,11 +295,22 @@
     .center
       %button.ps-btn-yellow Set
 
-  #clear-scene-dialog{title:"Clear Your Scene?"}
-    %p Are you sure you want to clear your<br/>scene and start from scratch?
-    %div
-      %button.ps-btn-gray Cancel
-      %button.ps-btn-yellow{id: "ps-confirm-clear", data:{"btn-role" => "clear all"}} Clear
+  #clear-scene-modal.modal.fade
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{type: :button, data:{dismiss: :modal}}
+            %span{aria_hidden:true} &times;
+            %span.sr-only Close
+          %h4.modal-title Clear Your Scene?
+        .modal-body
+          %p
+            Are you sure you want to clear your
+            %br
+            scene and start from scratch?
+        .modal-footer
+          %button.btn.btn-default{type: :button, data:{dismiss: :modal}} Cancel
+          %button.btn.btn-primary#clear-all{type: :button, data:{dismiss: :modal, "btn-role" => "clear all"}} Clear
 
 = render 'pages/sticker_packs'
 = render 'pages/sticker_pack_details'
