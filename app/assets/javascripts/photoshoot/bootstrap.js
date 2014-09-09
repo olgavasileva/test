@@ -57,18 +57,20 @@ var photoshoot = function() {
     //  $(window).resize(function(e)
     //  {
     function _calculateCanvasHeight() {
-        var v = $(window).height() - PS_HEADER_HEIGHT - PS_OTHERS_HEIGHT;
-        return Math.min(PS_MAX_CANVAS_HEIGHT, Math.max(v, PS_MIN_CANVAS_HEIGHT));
+        return Math.ceil(_calculateCanvasWidth() * (495 / 720));
+        // var v = $(window).height() - PS_HEADER_HEIGHT - PS_OTHERS_HEIGHT;
+        // return Math.min(PS_MAX_CANVAS_HEIGHT, Math.max(v, PS_MIN_CANVAS_HEIGHT));
     }
 
     function _calculateCanvasWidth() {
-        return Math.ceil(_calculateCanvasHeight() * (720 / 495));
+        return $("#canvas-row").width();
+        // return Math.ceil(_calculateCanvasHeight() * (720 / 495));
         //      var v = Math.ceil( _calculateCanvasHeight() * (4/3) );
         //          return Math.min( PS_MAX_CANVAS_WIDTH, Math.max( v, PS_MIN_CANVAS_WIDTH ));
     }
 
-    var ch = _calculateCanvasHeight();
     var cw = _calculateCanvasWidth();
+    var ch = _calculateCanvasHeight();
 
     $("#pack-drawer").css({
         top: 0 + PS_HEADER_HEIGHT,
