@@ -81,7 +81,6 @@ var photoshoot = function() {
     });
     canvas.setDimensions(cw, ch);
     $("#pack-wrapper").css('height', ch - 31);
-    //  });
 
     if (utils.getUrlParameterByName('debug') == 'techisland') {
         PS_DEBUG_MODE_ON = true;
