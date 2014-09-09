@@ -5,29 +5,193 @@
   #canvas-row
     margin-left: -15px !important
     margin-right: -15px !important
+
+  .sticker-container
+    img
+      max-height: auto!important
+      height: auto!important
+      width: 100%!important
+
+  #nutrition_facts_wrapper
+    font-size: 1.5rem
+    background-color: white
+    h3#nutrition-facts
+      font-size: 2em
+      font-weight: bold
+      margin: 0
+      padding-top: 5px
+    h4
+      font-size: 1.1em
+      font-weight: normal
+    h5
+      font-weight: bold
+      display: inline
+      padding: 0
+      margin: 0
+
+
+    table
+      width: 100%
+      tr
+        td
+          font-size: 1em
+          word-break: keep-all
+          white-space: nowrap
+          box-sizing: border-box
+          padding-top: 5px !important
+          padding-bottom: 5px !important
+          &:last-child
+            width: 3em
+          .regular-text
+            padding-left: 10px
+      &:last-child
+        tr:last-child
+          border-bottom-width: 10px
+
+    .nutrition-info
+      font-size: 1em
+      border-bottom: 1px solid black
+  .facts_percent_header.nutrition-info
+    text-align: right
+
+  .pack-browser-control
+    color: cyan!important
+  #asset-title
+    .dropdown
+      .fa.fa-chevron-down
+        color: white
+        font-size: 1.1em
+        background-color: darkcyan
+        padding: 3px
+        padding-top: 1px
+        margin-top: -4px
+        height: 1.6em
+        line-height: 1.6em
+        vertical-align: middle
+        border-radius: 5px
+
+
+
 #photoshootinfo.hidden{data:{studio_id:@response.question.studio.id, studio_name:@response.question.studio.display_name || @response.question.studio.name, logged_in:user_signed_in?, question_id:@response.question.id}}
 - if @scene.present?
   #sceneinfo.hidden{data:{stickers:@scene.stickers, scene_id:@scene.id, scene_user_id:@scene.user_id, share_link:@scene.share_link('link', current_user)}}
 
 %section#studio-wrapper
   .row
-    .col-sm-3.invert-float
-      #nutrition-facts Nutrition Facts
-      .nutrition-info
-        Calories
-        %span.nutrition-value
-          %span#calorie-counter 0
-      .nutrition-info
-        Protein
-        %span.nutrition-value
-          %span#protein-counter 0
-          g
-      .nutrition-info
-        Sugar
-        %span.nutrition-value
-          %span#sugar-counter 0
-          g
-
+    .col-sm-3.invert-float#nutrition_facts_wrapper
+      %h3#nutrition-facts Nutrition Facts
+      %h4
+        Serving Size
+        %span#serving_instructions
+          1/4 cup dry(39g)
+        %br
+        Servings per container varies
+      %table
+        %tr
+          %th{:colspan=>2}
+            Amount Per Serving
+        %tr.nutrition-info
+          %td
+            Calories
+            %span.nutrition-value
+              %span#calorie-counter 0
+          %td
+            Calories from fat 10
+      .facts_percent_header.nutrition-info
+        \%Daily Value*
+      %table
+        %tr.nutrition-info
+          %td
+            %h5
+              Total fat
+              %span.nutrition-value
+                %span#total_fat-counter
+                  0
+              g
+          %td
+            %span.nutrition-value
+              %span#percent-total_fat-counter
+                0
+            \%
+        %tr.nutrition-info
+          %td
+            .regular-text
+              Saturated fat
+              %span.nutrition-value
+                %span#sat-fat-counter
+                  0
+              g
+          %td
+            %span.nutrition-value
+              %span#percent-sat-fat-counter
+                0
+            \%
+        %tr.nutrition-info
+          %td
+            %h5 Cholesterol
+            %span.nutrition-value
+              %span#cholesterol-counter
+                0
+            mg
+          %td
+            %span.nutrition-value
+              %span#percent-cholesterol-counter
+                0
+            \%
+        %tr.nutrition-info
+          %td
+            %h5 Sodium
+            %span.nutrition-value
+              %span#sodium-counter
+                0
+            g
+          %td
+            %span.nutrition-value
+              %span#percent-sodium-counter
+                0
+            \%
+        %tr.nutrition-info
+          %td
+            %h5 Total carbohydrate
+            %span.nutrition-value
+              %span#total_carbs-counter
+                0
+            g
+          %td
+            %span.nutrition-value
+              %span#percent-total_carbs-counter
+                0
+            \%
+        %tr.nutrition-info
+          %td
+            .regular-text
+              Dietary fiber
+              %span.nutrition-value
+                %span#dietary_fiber-counter
+                  0
+                g
+          %td
+            %span.nutrition-value
+              %span#percent-dietary_fiber-counter
+                0
+            \%
+        %tr.nutrition-info
+          %td
+            .regular-text
+              Sugars
+              %span.nutrition-value
+                %span#sugars-counter
+                  0
+              g
+          %td
+        %tr.nutrition-info
+          %td
+            %h5 Protein
+            %span.nutrition-value
+              %span#sugars-counter
+                0
+            g
+          %td
     #ps-breadcrumbs.col-sm-9
       #current-studio-icon
       %h2#current-studio-name
