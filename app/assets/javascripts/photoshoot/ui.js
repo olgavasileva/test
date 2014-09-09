@@ -28,7 +28,8 @@ var psUI = function() {
         $("footer.global").hide();
 
         $("#ps-save").click(function() {
-            saveScene(PS_LOGGED_IN);
+            // saveScene(PS_LOGGED_IN);
+            saveSceneForDemo(PS_LOGGED_IN);
             return false;
         });
 
@@ -140,6 +141,29 @@ var psUI = function() {
                 view.close();
             }
         }
+    }
+
+    function saveSceneForDemo(logged_in) {
+        var preloader_text;
+        if (logged_in)
+            preloader_text = "Saving to<br/>your gallery";
+        else
+            preloader_text = "Please log in";
+
+        var preloader = showPreloader(preloader_text);
+
+        var ret = new $.Deferred();
+        ret.done(function(scene) {
+            if (JSON.parse(scene).objects.length == 0) {
+                preloader.remove();
+                alert("Show us your favorite breakfast!");
+            } else {
+                preloader.remove();
+                window.location = '/gallery';
+            }
+        });
+        $(document).trigger("ps.canvas.serializer.serialize", [ret]);
+        return false;
     }
 
     function saveScene(logged_in) {

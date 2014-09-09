@@ -1,4 +1,4 @@
-$(function() {
+$('document').ready(function() {
     $(document).trigger('ps.bootstrap.initializing');
 
     if (PS_STUDIO_ID == 0)
@@ -89,55 +89,6 @@ $(function() {
 
     //	$(window).trigger('resize');
     $(document).trigger('ps.bootstrap.initialized');
-
-    /**
-     *
-     */
-    //	function setupRouting()
-    //	{
-    //		$(window).hashchange( function(e){
-    //			var hash = location.hash.replace( /^#/, '' );
-    //			var item = null;
-    //			var path = [];
-    //			var type = "directory";
-    //			var itemsOptions = {};
-    //
-    //			if( hash != "" && hash != "0" )
-    //			{
-    //				var path = hash.split('-');
-    //				try {
-    //					var submenu = utils.findMenuByPath( path )
-    //
-    //					if( submenu.sticker_packs != null ){
-    //						item = submenu.sticker_packs;
-    //						// If the menu only has a single sticker pack, go directly into the stickerpack
-    //						if( item.length == 1 && item[0].stickers != null ){
-    //							path.push( item[0].id );
-    //							window.location.hash = path.join('-');
-    //							return false;
-    //						}
-    //					}
-    //					else if( submenu.stickers != null ){
-    //						item = submenu.stickers;
-    //						type = submenu.type;
-    //					}
-    //				} catch(e){
-    //					window.location.hash = e.join('-');
-    //					return false;
-    //				}
-    //			}
-    //
-    //			if( item == null ){
-    //				item = utils.findMenuByPath();
-    //			}
-    //
-    //			if( type == "directory" ){
-    //				ui.createDirsMenu(item, path);
-    //			} else {
-    //				ui.createItemsMenu(item);
-    //			}
-    //		});
-    //	}
 
     /**
      *

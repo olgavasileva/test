@@ -20,6 +20,10 @@ class PagesController < ApplicationController
     @response = StudioQuestion.first.responses.new user: current_user
   end
 
+  def gallery
+    # For demo only
+  end
+
 private
 
   def find_recent_questions

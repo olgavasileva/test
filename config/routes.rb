@@ -4,6 +4,7 @@ LinkchatApp::Application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
 
   get '/studio' => 'pages#studio' unless Rails.env.production?
+  get '/gallery' => 'pages#gallery' unless Rails.env.production?
 
   ActiveAdmin.routes(self)
 
