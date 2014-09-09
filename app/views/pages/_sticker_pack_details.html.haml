@@ -12,6 +12,6 @@
       {{/if}}
       {{#if stickers}}
       %section.row.stickers
-        = render partial: 'pages/sticker_list', locals: {header: 'Stickers', object: 'stickers'}
+        = render 'pages/sticker_list', header: 'Stickers', object: 'stickers'
       {{/if}}
   {{/sticker_pack}}

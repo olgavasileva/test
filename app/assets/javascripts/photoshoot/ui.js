@@ -325,6 +325,8 @@ var psUI = function() {
         assetTitle.find('.pack-browser-control').hide();
         assetTitle.find('.title-text').html('All Packs');
 
+        $("#all-packs-drop i").hide();
+
         $(document).trigger('ui.createPackList.after');
     }
 
@@ -345,6 +347,8 @@ var psUI = function() {
         }));
         assetTitle.find('.pack-browser-control').show();
         assetTitle.find('.title-text').html((pack.sort_order + 1) + ' of ' + totalPacks + ' Packs');
+
+        $("#all-packs-drop i").show();
 
         enableDraggableObj();
 

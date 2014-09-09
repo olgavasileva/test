@@ -4,6 +4,6 @@
       {{#sticker_packs}}
       .col-sm-6
         .sticker-pack-wrapper{data:{"pack-id" => "{{id}}"}}
-          =image_tag "{{header_icon_url}}", class: "img-responsive {{#if is_locked}}locked{{/if}}"
+          %img{src:"{{header_icon_url}}", class:"img-responsive {{#if is_locked}}locked{{/if}}"}
           %span.name {{display_name}}
       {{/sticker_packs}}
