@@ -1,9 +1,14 @@
 LinkchatApp::Application.routes.draw do
   devise_for :users
+  devise_scope :user do
+    get 'campaign' => 'devise/registrations#new', as: :demo_registration
+    get 'campaign_login' => 'devise/sessions#new', as: :demo_login
+  end
   devise_for :partners
   devise_for :admin_users, ActiveAdmin::Devise.config
 
   get '/studio' => 'pages#studio' unless Rails.env.production?
+  get '/welcome' => 'pages#welcome' unless Rails.env.production?
   get '/gallery' => 'pages#gallery' unless Rails.env.production?
 
   ActiveAdmin.routes(self)
