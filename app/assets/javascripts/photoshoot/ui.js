@@ -405,7 +405,6 @@ var psUI = function() {
         }).on('click', function() {
             var data = $(this).find('img').data();
             if (data.type == 'Background') {
-                $(this).closest('#pack-browser').find('.sticker-pack>header:first-child').css('background-image',"url('"+data.src+"')");
                 psCanvas().placeBackground(data);
             }
             return false;
