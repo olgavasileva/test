@@ -400,6 +400,7 @@ var psUI = function() {
                 //        console.log("top " + ui.position.top);
                 //        console.log("offset " + ui.offset.top);
                 ui.position.top = ui.offset.top - $("#studio-wrapper").offset().top;
+                ui.position.left = ui.offset.left - $("#pack-drawer").width();
             }
         }).on('click', function() {
             var data = $(this).find('img').data();
