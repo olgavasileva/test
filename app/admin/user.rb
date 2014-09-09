@@ -1,4 +1,5 @@
 ActiveAdmin.register User do
+  menu parent: "Users", label: "Standard Users"
   permit_params :email, :password, :password_confirmation, role_ids: []
 
   index do

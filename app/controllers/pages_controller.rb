@@ -15,17 +15,18 @@ class PagesController < ApplicationController
     # render layout: false
   end
 
+  # For testing studio setup
   def studio
-    # For testing studio setup
     @response = StudioQuestion.first.responses.new user: current_user
   end
 
+  # For demo only
   def welcome
-    # For demo only
+    session[:demo] = true
   end
 
+  # For demo only
   def gallery
-    # For demo only
   end
 
 private

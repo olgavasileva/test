@@ -104,13 +104,17 @@ class User < ActiveRecord::Base
   def feed_more_questions num_to_add
     all_public_questions = Question.where(kind: 'public')
 
-    # Do it the inefficient way if we don't have too many records since grabbing random items from a small sample is prone to too many misses
-    new_questions = if all_public_questions.count < 1000 &&  skipped_items.count + responses.count + feed_items.count < 1000
+    # small_dataset = all_public_questions.count < 1000 &&  skipped_items.count + responses.count + feed_items.count < 1000
+    small_dataset = true # TODO: for now, just use the easier unpotimized selection logic
+
+    new_questions = if small_dataset
+      # TODO: This is inefficient for very large datasets - optimize when needed
       candidate_ids = all_public_questions.where.not(id:skipped_questions.pluck("questions.id") + answered_questions.pluck("questions.id") + feed_questions.pluck("questions.id"))
-      Question.where id:candidate_ids.sample(num_to_add)
+      Question.where(id:candidate_ids.sample(num_to_add)).order("CASE WHEN questions.position IS NULL THEN 1 ELSE 0 END ASC").order("questions.position ASC").order("RAND()")
     else
+      # Grabbing random items from a small sample is prone to too many misses, so only do this on a larger dataset
       new_questions = []
-      num_candidates = candidates.count
+      num_candidates = all_public_questions.count
       while new_questions.count < num_to_add
         candidate = all_public_questions.order(:id).offset(rand(num_candidates)).limit(1)
         new_questions << candidate if wants_question?(candidate)

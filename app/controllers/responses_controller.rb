@@ -16,7 +16,13 @@ class ResponsesController < ApplicationController
     authorize @response
 
     if @response.save
-      redirect_to summary_question_path(@response.question)
+      current_user.feed_items.where(question:@response.question).destroy_all
+
+      if session[:demo]
+        redirect_to question_path
+      else
+        redirect_to summary_question_path(@response.question)
+      end
     else
       flash[:alert] = @response.errors.full_messages.join ", "
       @next_question = next_question @response.question

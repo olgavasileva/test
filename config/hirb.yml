@@ -6,6 +6,7 @@
         - type
         - title
         - state
+        - position
   MultipleChoiceQuestion:
     :options:
       :fields:
@@ -13,6 +14,7 @@
         - type
         - title
         - state
+        - position
   TextChoiceQuestion:
     :options:
       :fields:
@@ -20,6 +22,7 @@
         - type
         - title
         - state
+        - position
   TextQuestion:
     :options:
       :fields:
@@ -27,6 +30,7 @@
         - type
         - title
         - state
+        - position
   ImageChoiceQuestion:
     :options:
       :fields:
@@ -34,6 +38,7 @@
         - type
         - title
         - state
+        - position
   OrderQuestion:
     :options:
       :fields:
@@ -41,6 +46,7 @@
         - type
         - title
         - state
+        - position
   YesNoQuestion:
     :options:
       :fields:
@@ -48,6 +54,7 @@
         - type
         - title
         - state
+        - position
   StudioQuestion:
     :options:
       :fields:
@@ -55,6 +62,8 @@
         - type
         - title
         - studio_id
+        - state
+        - position
   Question:
     :options:
       :fields:
@@ -62,6 +71,7 @@
         - type
         - title
         - state
+        - position
   Response:
     :options:
       :fields:

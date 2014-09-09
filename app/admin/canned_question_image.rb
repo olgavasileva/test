@@ -1,4 +1,5 @@
 ActiveAdmin.register CannedQuestionImage do
+  menu parent: 'Canned Images', label: 'Question Images'
   permit_params :image, :position, :remove_image
 
   config.sort_order = 'position_asc' # assumes you are using 'position' for your acts_as_list column
@@ -6,9 +7,10 @@ ActiveAdmin.register CannedQuestionImage do
 
   index do
     sortable_handle_column
+    id_column
     column :id
     column :image do |i|
-      image_tag i.standard_image_url, height: 80
+      image_tag i.web_image_url, height: 80
     end
     actions
   end

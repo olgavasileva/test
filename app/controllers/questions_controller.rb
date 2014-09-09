@@ -2,15 +2,18 @@ class QuestionsController < ApplicationController
 
   def index
     per_page = 6
-
     @questions = policy_scope(Question).paginate(page: params[:page], per_page:per_page)
 
-    if user_signed_in? && @questions.count < per_page * params[:page].to_i + per_page + 1
-      current_user.feed_more_questions per_page + 1
-      @questions = policy_scope(Question).paginate(page: params[:page], per_page:per_page)
-    end
+    if session[:demo]
+      redirect_to question_path
+    else
+      if user_signed_in? && @questions.count < per_page * params[:page].to_i + per_page + 1
+        current_user.feed_more_questions per_page + 1
+        @questions = policy_scope(Question).paginate(page: params[:page], per_page:per_page)
+      end
 
-    @questions.each{|q| q.viewed!}
+      @questions.each{|q| q.viewed!}
+    end
   end
 
   def summary
@@ -26,8 +29,6 @@ class QuestionsController < ApplicationController
 
   def new
     @question = current_user.questions.new
-    binding.pry
-    @question_types=question_ty
     authorize @question
   end
 

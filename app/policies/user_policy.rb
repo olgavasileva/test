@@ -12,4 +12,6 @@ class UserPolicy < ApplicationPolicy
   def dashboard?
     @user.has_role? :pro
   end
+
+  def first_question?;true;   end
 end

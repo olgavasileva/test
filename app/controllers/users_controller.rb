@@ -16,6 +16,20 @@ class UsersController < ApplicationController
     current_user.follow! @user
   end
 
+  def first_question
+    @user = current_user
+    authorize @user
+
+    question = @user.feed_questions.order('questions.created_at DESC').first
+
+    if question
+      redirect_to new_question_response_path(question)
+    else
+      flash[:alert] = "That was the last question, for now."
+      redirect_to welcome_path
+    end
+  end
+
   def dashboard
     @user = User.find params[:id]
     authorize @user
