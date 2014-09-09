@@ -1,4 +1,4 @@
-$('document').ready(function() {
+var photoshoot = function() {
     $(document).trigger('ps.bootstrap.initializing');
 
     if (PS_STUDIO_ID == 0)
@@ -54,8 +54,8 @@ $('document').ready(function() {
 
     // handling resizing
 
-    //	$(window).resize(function(e)
-    //	{
+    //  $(window).resize(function(e)
+    //  {
     function _calculateCanvasHeight() {
         var v = $(window).height() - PS_HEADER_HEIGHT - PS_OTHERS_HEIGHT;
         return Math.min(PS_MAX_CANVAS_HEIGHT, Math.max(v, PS_MIN_CANVAS_HEIGHT));
@@ -64,7 +64,7 @@ $('document').ready(function() {
     function _calculateCanvasWidth() {
         return Math.ceil(_calculateCanvasHeight() * (720 / 495));
         //      var v = Math.ceil( _calculateCanvasHeight() * (4/3) );
-        //			return Math.min( PS_MAX_CANVAS_WIDTH, Math.max( v, PS_MIN_CANVAS_WIDTH ));
+        //          return Math.min( PS_MAX_CANVAS_WIDTH, Math.max( v, PS_MIN_CANVAS_WIDTH ));
     }
 
     var ch = _calculateCanvasHeight();
@@ -81,13 +81,13 @@ $('document').ready(function() {
     });
     canvas.setDimensions(cw, ch);
     $("#pack-wrapper").css('height', ch - 31);
-    //	});
+    //  });
 
     if (utils.getUrlParameterByName('debug') == 'techisland') {
         PS_DEBUG_MODE_ON = true;
     }
 
-    //	$(window).trigger('resize');
+    //  $(window).trigger('resize');
     $(document).trigger('ps.bootstrap.initialized');
 
     /**
@@ -130,7 +130,7 @@ $('document').ready(function() {
      */
     function setupStudio(studio) {
 
-        //		$('#ps-header').html( studio.html_header );
+        //      $('#ps-header').html( studio.html_header );
 
         // set studio title & icon
         var setupForContest = utils.getUrlParameterByName('contest_id') ? true : false;
@@ -182,4 +182,7 @@ $('document').ready(function() {
         preloader.remove();
         ui.drawer().open();
     }
-});
+}
+
+$(photoshoot);
+$(document).on('page:load', photoshoot);
