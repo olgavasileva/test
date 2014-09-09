@@ -54,7 +54,7 @@ ActiveAdmin.register Sticker do
         as: :check_boxes
 
       f.has_many :item_properties, heading: 'Properties', allow_destroy: true, new_record: "New Property" do |p|
-        p.input :key, collection: ItemProperty.pluck(:key).uniq #, options_for_select(ItemProperty.all.map(&:key).uniq, f.object.try(:key)), {include_blank: true}
+        p.input :key, collection: ([p.object.key] + Key.order(:key).map(&:key)).uniq
         p.input :value
       end
 

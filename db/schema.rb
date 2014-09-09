@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140904155431) do
+ActiveRecord::Schema.define(version: 20140909003238) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -240,6 +240,12 @@ ActiveRecord::Schema.define(version: 20140904155431) do
   end
 
   add_index "item_properties", ["item_id", "item_type"], name: "index_item_properties_on_item_id_and_item_type", using: :btree
+
+  create_table "keys", force: true do |t|
+    t.string   "key"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "liked_comments", force: true do |t|
     t.integer  "user_id"
