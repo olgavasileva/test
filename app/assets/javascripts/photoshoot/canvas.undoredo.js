@@ -66,7 +66,14 @@ $(function() {
                 'canvas': data,
                 'calories': $("#calorie-counter").text(),
                 'protein': $("#protein-counter").text(),
-                'sugar': $("#sugar-counter").text()
+                'sugar': $("#sugar-counter").text(),
+                'carbohydrates': $("#carbohydrates-counter").text(),
+                'fat': $("#total-fat").text(),
+                'satfat': $('#sat-fat').text(),
+                'cholesterolcounter': $('#cholesterol-counter').text(),
+                'sodiumcounter': $('#sodium-counter').text(),
+                'fibercounter': $('#fiber-counter').text(),
+                'caloriesfromfat': $('#calories-from-fat').text()
             }) - 1;
             updateButtons();
         });
@@ -97,5 +104,12 @@ $(function() {
         $("#calorie-counter").text(data['calories']);
         $("#protein-counter").text(data['protein']);
         $("#sugar-counter").text(data['sugar']);
+        $("#carbohydrates-counter").text(data['carbohydrates']);
+        $("#total-fat").text(data['fat']);
+        $("#sat-fat").text(data['satfat']);
+        $("#cholesterol-counter").text(data['cholesterolcounter']);
+        $("#sodium-counter").text(data['sodiumcounter']);
+        $("#fiber-counter").text(data['fibercounter']);
+        $("#calories-from-fat").text(data['caloriesfromfat']);
     }
 });

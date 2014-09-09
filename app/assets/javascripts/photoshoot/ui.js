@@ -235,6 +235,7 @@ var psUI = function() {
         $(document).trigger('ui.clearAll.before');
         psCanvas().getContext().backgroundImage = 0;
         psCanvas().getContext().clear();
+        $('.nutrition-value span').text("0");
         $(document).trigger('ui.clearAll.after');
     });
 
