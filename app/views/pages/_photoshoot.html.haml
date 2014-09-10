@@ -65,6 +65,7 @@
       border-bottom: 1px solid black
   .facts_percent_header.nutrition-info
     text-align: right
+    display: none
 
   .pack-browser-control
     color: cyan!important
@@ -104,9 +105,10 @@
             Amount Per Serving
         %tr.nutrition-info
           %td
-            Calories
-            %span.nutrition-value
-              %span#calorie-counter 0
+            %h5
+              Calories
+              %span.nutrition-value
+                %span#calorie-counter  0
           %td
             Calories from fat
             %span.nutrition-value
