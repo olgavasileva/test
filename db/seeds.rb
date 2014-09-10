@@ -128,7 +128,7 @@ q = TextChoiceQuestion.where(title:"Do you eat cereal more than 3 times per week
 q.choices.where(title:"Yes").first_or_create!
 q.choices.where(title:"No").first_or_create!
 
-image_file = "breakfast_cereal_with_fruit.png"
+image_file = "breakfast_cereal_with_fruit.jpg"
 i = QuestionImage.create image:open(seed_image image_file) unless existing_question_image_file_paths.find {|fp| fp.match /#{image_file}$/}
 q = TextChoiceQuestion.where(title:"Do you ever add extra ingredients to your cereal before you eat it like fruits, nuts or sweets?").first_or_create!(state:"active",rotate:false,category:food_and_drink,user:user,background_image_id:i.id)
 q.choices.where(title:"I never do").first_or_create!
