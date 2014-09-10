@@ -47,6 +47,15 @@
               display: none
           .regular-text
             padding-left: 10px
+
+          h5, .regular-text
+            display: block
+            position: relative
+            .nutrition-value
+              position: absolute
+              top: 0
+              right: 0
+
       &:last-child
         tr:last-child
           border-bottom-width: 10px
@@ -113,7 +122,7 @@
               %span.nutrition-value
                 %span#total-fat
                   0
-              g
+                g
           %td
             %span.nutrition-value
               %span#percent-fat
@@ -126,7 +135,7 @@
               %span.nutrition-value
                 %span#sat-fat
                   0
-              g
+                g
           %td
             %span.nutrition-value
               %span#percent-sat-fat
@@ -134,11 +143,12 @@
             \%
         %tr.nutrition-info
           %td
-            %h5 Cholesterol
-            %span.nutrition-value
-              %span#cholesterol-counter
-                0
-            mg
+            %h5
+              Cholesterol
+              %span.nutrition-value
+                %span#cholesterol-counter
+                  0
+                mg
           %td
             %span.nutrition-value
               %span#percent-cholesterol-counter
@@ -146,11 +156,12 @@
             \%
         %tr.nutrition-info
           %td
-            %h5 Sodium
-            %span.nutrition-value
-              %span#sodium-counter
-                0
-            g
+            %h5
+              Sodium
+              %span.nutrition-value
+                %span#sodium-counter
+                  0
+                g
           %td
             %span.nutrition-value
               %span#percent-sodium-counter
@@ -158,11 +169,12 @@
             \%
         %tr.nutrition-info
           %td
-            %h5 Total carbohydrate
-            %span.nutrition-value
-              %span#carbohydrates-counter
-                0
-            g
+            %h5
+              Total carbohydrate
+              %span.nutrition-value
+                %span#carbohydrates-counter
+                  0
+                g
           %td
             %span.nutrition-value
               %span#percent-carbohydrates-counter
@@ -188,15 +200,16 @@
               %span.nutrition-value
                 %span#sugar-counter
                   0
-              g
+                g
           %td
         %tr.nutrition-info
           %td
-            %h5 Protein
-            %span.nutrition-value
-              %span#protein-counter
-                0
-            g
+            %h5
+              Protein
+              %span.nutrition-value
+                %span#protein-counter
+                  0
+                g
           %td
     #ps-breadcrumbs.col-sm-9
       #current-studio-icon
