@@ -825,5 +825,22 @@ class TwoCents::Questions < Grape::API
       {}
     end
 
+
+    #
+    # Increment a question's view count.
+    #
+    desc "Increment a question's view count"
+    params do
+      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+
+      requires :question_id, type: Integer, desc: 'Question this is a response to'
+    end
+    post 'view' do
+      validate_user!
+
+      Question.find(params[:question_id]).increment! :view_count
+
+      {}
+    end
   end
 end
