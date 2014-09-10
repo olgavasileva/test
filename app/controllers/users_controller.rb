@@ -22,7 +22,7 @@ class UsersController < ApplicationController
 
     @user.feed_more_questions 10 if @user.feed_questions.count < 1
 
-    question = @user.feed_questions.order('feed_questions.created_at DESC').first
+    question = @user.feed_questions.order('feed_items.created_at DESC').first
 
     if question
       redirect_to new_question_response_path(question)

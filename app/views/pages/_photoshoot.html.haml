@@ -231,20 +231,21 @@
           %aside#asset-wrapper
             .row
               %header#title-bar.col-sm-12
-                .row
-                  #asset-title.col-sm-12
-                    =link_to 'javascript:void(0);', class: %w(pack-browser-control prev-pack pull-left col-sm-2 col-pull-8) do
-                      %i.fa.fa-chevron-left
-                    =link_to 'javascript:void(0);', class: %w(title col-sm-8 col-push-2 dropdown) do
-                      %span.title-text All Packs
-                      %span.icon-stack.dropdown-icon{data:{toggle: :dropdown}}
-                        %i.fa.fa-sign-blank.fa-stack-base
-                        %i.fa.fa-chevron-down.fa-light
-                      %ul.pack-dropdown-list.dropdown-menu{role: :menu}
-                        %li#browse-packs-drop Browse
-                        %li#all-packs-drop See All
-                    =link_to 'javascript:void(0);', class: %w(pack-browser-control next-pack pull-right col-sm-2) do
-                      %i.fa.fa-chevron-right
+                .row#asset-title
+                  .col-sm-2
+                    .pull-left
+                      =link_to 'javascript:void(0);', class: %w(pack-browser-control prev-pack pull-left col-sm-2 col-pull-8) do
+                        %i.fa.fa-chevron-left
+                  .col-sm-8
+                    =link_to 'javascript:void(0);', class: %w(pack-browser-control title col-sm-8 col-push-2 dropdown) do
+                      #all-packs-drop
+                        %span
+                          %i.fa.fa-chevron-up.fa-dark
+                        %span.title-text All Packs
+                  .col-sm-2
+                    .pull-right
+                      =link_to 'javascript:void(0);', class: %w(pack-browser-control next-pack pull-right col-sm-2) do
+                        %i.fa.fa-chevron-right
             #pack-wrapper.row.is-scrollable
           .drawer-handle
             %span.glyphicon.glyphicon-chevron-right
