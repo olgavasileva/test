@@ -4,4 +4,9 @@ class Relationship < ActiveRecord::Base
 
 	validates :follower, presence: true
 	validates :leader, presence: true
+
+  # Leader's groups that follower is member of.
+  def groups
+    follower.membership_groups.where(user_id: leader.id)
+  end
 end

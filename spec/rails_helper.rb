@@ -59,7 +59,7 @@ RSpec.configure do |config|
     LinkchatApp::Application.reload_routes!
 
     # reload all the models - CAUTION: while this is convenient, it causes after_create callbacks to be called twice and warnings on all constant declarations
-    Dir["#{Rails.root}/app/models/**/*.rb"].each{ |model| load model }
+    # Dir["#{Rails.root}/app/models/**/*.rb"].each{ |model| load model }
     FactoryGirl.reload
   end
 

@@ -1,22 +1,21 @@
 :sass
-  .multiple-choice-wrapper
+  .choice-wrapper
     &.col-md-6
       margin: 0
-      border: solid 1px black
-      width: 49%
       margin-bottom: 10px
-      margin-right: -2px
       overflow: hidden
       cursor: pointer
-      &:nth-child(2n)
-        margin-left: 2%
     .img-responsive
       margin: auto
+
+    input[type]:checked~i.glyphicon.glyphicon-ok.selected
+      display: block
+
 
     i.glyphicon.glyphicon-ok.selected
       font-size: 1.8em
       position: absolute
-      right: 15px
+      right: 25px
       top: 15px
       color: white
       background-color: rgba(0,0,0,0.3)
@@ -28,12 +27,12 @@
 
     .option-title
       position: absolute
-      width: 100%
       bottom: 0
       text-align: center
       color: white
       background-color: rgba(0,0,0,0.3)
-      left: 0
+      left: 15px
+      right: 15px
       padding-top: 8px
       padding-bottom: 8px
 
@@ -46,15 +45,16 @@
       top: -110%
 
 .row
-  .col-md-6.col-md-push-3
+  .col-md-8.col-md-push-2
     = render "responses/response_fields/shared/title", form:form, response:response
     .row
-
+      -n=0
       -@response.question.choices.each do |c|
-        %label.col-md-6.multiple-choice-wrapper
-          =responsive_image_tag((c.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
+        -n+=1
+        %label.col-md-6.choice-wrapper
+          =check_box_tag("multiple_choice_response[choice_id]",c.id,false,{class:'selected-choice'})
+          =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
           %i.glyphicon.glyphicon-ok.selected
-          =check_box_tag(:answer,c.id,false,{class:'selected-choice',onchange:"Toggle(event)"})
           .option-title=c.title
     = render "responses/response_fields/shared/comment", form:form, response:response
     = render "responses/response_fields/shared/sharing", form:form, response:response
@@ -62,8 +62,3 @@
     %br
     = render "responses/response_fields/shared/submit", form:form, response:response
 
-    :javascript
-      window.Toggle=function(event){
-        method=event.target.checked?'addClass':'removeClass'
-        $(event.target).parent()[method]('selected-choice');
-      }

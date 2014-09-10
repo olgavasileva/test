@@ -29,3 +29,4 @@
 #
 
 #= require_tree ./clean_canvas/pages
+#= require photoshoot/main

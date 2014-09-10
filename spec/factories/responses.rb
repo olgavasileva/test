@@ -15,6 +15,10 @@ FactoryGirl.define do
     text "A Text Response"
   end
 
+  factory :choice_response, parent: :response, class: "ChoiceResponse" do
+    question {build :choice_question}
+  end
+
   factory :multiple_choice_response, parent: :response, class: "MultipleChoiceResponse" do
     question {build :multiple_choice_question}
   end
@@ -41,6 +45,5 @@ FactoryGirl.define do
 
   factory :order_response, parent: :response, class: "OrderResponse" do
     question {build :order_question}
-    position 1
   end
 end

@@ -1,0 +1,538 @@
+$menuWidth: 278px // PS_MENU_WIDTH
+$othersHeight: 512px // PS_OTHERS_HEIGHT
+$headerHeight: 138px // PS_HEADER_HEIGHT
+// intial size
+$canvasHeight: 495px
+$canvasWidth: 100%
+
+.ps-ui, #ps-frame
+  *
+    -webkit-box-sizing: content-box
+    -moz-box-sizing: content-box
+    box-sizing: content-box
+
+    .ui-dialog-content .container, .ui-dialog-content .container *
+      -webkit-box-sizing: border-box
+      -moz-box-sizing: border-box
+      box-sizing: border-box
+
+  a:hover
+    -webkit-transition: none
+    -moz-transition: none
+    -o-transition: none
+    transition: none
+
+
+  h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6
+    font-family: 'Lato', sans-serif
+
+  a, a:hover, a:focus
+    outline: none
+
+
+
+#ps-frame, .ps-ui
+  -webkit-box-sizing: default
+  -moz-box-sizing: default
+  box-sizing: default
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+  font-family: 'Lato', sans-serif
+  font-size: 12px
+  line-height: 1
+  color: #333333
+  background-color: #ffffff
+
+
+#ps-frame
+  // width: $canvasWidth
+  height: $canvasHeight + $headerHeight
+  min-height: $canvasHeight + $headerHeight
+  background: #34322f
+  border: 1px solid #333
+  margin: 0 auto
+
+
+#ps-header
+  height: $headerHeight
+  background: purple
+  height: 94px
+
+
+#ps-breadcrumbs
+  background: #565455
+  background: -moz-linear-gradient(top, #565455 0%, #424041 100%) // FF3.6+
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#565455), color-stop(100%,#424041)) // Chrome,Safari4+
+  background: -webkit-linear-gradient(top, #565455 0%,#424041 100%) // Chrome10+,Safari5.1+
+  background: -o-linear-gradient(top, #565455 0%,#424041 100%) // Opera 11.10+
+  background: -ms-linear-gradient(top, #565455 0%,#424041 100%) // IE10+
+  background: linear-gradient(to bottom, #565455 0%,#424041 100%) // W3C
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#565455', endColorstr='#424041',GradientType=0 ) // IE6-9
+  position: relative
+  border-top: 1px solid #333
+  border-bottom: 1px solid #333
+
+
+#ps-menu
+  width: $menuWidth
+  min-height: $canvasHeight
+  height: $canvasHeight
+  float: left
+  overflow: hidden
+  cursor: default
+
+
+#ps-desktop
+  width: $canvasWidth  !important
+  height: $canvasHeight
+  min-height: $canvasHeight
+  float: left
+    overflow: auto
+
+
+#ps-help, #ps-clear-all, #ps-save, #ps-enter-contest
+  float: right
+  margin-top: 6px
+  margin-right: 6px
+  margin-left: 8px
+
+
+#ps-help
+  font-size: 20px !important
+  line-height: 22px
+  width: 7px
+
+
+//
+#ps-save
+  background: image_url("/photoshoot/save-btn.png") 0 0 no-repeat
+  display: block
+  width: 56px
+  height: 31px
+  text-decoration: none
+  float: right
+  margin-top: 6px
+  margin-right: 6px
+
+
+
+#ps-save a:hover, #help:hover
+  text-decoration: none
+
+
+.swiper-container
+  height: $canvasHeight
+
+
+.swiper-container.ps-items
+  background: #fff
+
+
+//--------------------------------------
+// * Items menu
+//--------------------------------------
+
+$itemsMenuCellWidth: 118px  // unit(`PS_ITEMS_MENU_CELL_WIDTH`, px)
+$itemsMenuCellHeight: 118px // unit(`PS_ITEMS_MENU_CELL_HEIGHT`, px)
+$itemsMenuCellMargin: 10px  // unit(`PS_ITEMS_MENU_CELL_MARGIN`, px)
+
+// items menu
+#ps-menu .ps-items-menu
+  width: 100%
+  overflow: hidden
+  position: relative
+  border-top: 1px solid #e8e8e8
+
+
+// items menu cell
+#ps-menu .ps-items-menu .ps-item
+  float: left
+  width: $itemsMenuCellWidth + $itemsMenuCellMargin * 2
+  height: $itemsMenuCellHeight + $itemsMenuCellMargin * 2
+  border-bottom: 1px solid #e8e8e8
+  border-right: 1px solid #e8e8e8
+  cursor: pointer
+  overflow: hidden
+
+
+// items menu picture
+.ps-items-menu-picture
+  width: $itemsMenuCellWidth
+  height: $itemsMenuCellHeight
+  background-size: $itemsMenuCellWidth $itemsMenuCellHeight
+  background-repeat: no-repeat
+  background-position: 0px 0px
+  padding: 0
+  margin: 0
+  border: $itemsMenuCellMargin solid #fff
+
+
+#ps-menu .ps-items-menu a.ps-menu-design-more
+  background: image_url("/photoshoot/design-more-menu-item.png") 10px 10px no-repeat transparent
+
+
+#ps-menu .ps-items-menu a.ps-menu-design-more:hover
+  background: image_url("/photoshoot/design-more-menu-item.png") 10px 10px no-repeat #d7d7d7
+
+
+#ps-menu .ps-items-menu .ps-item > p:hover,
+  background-color: #d7d7d7
+  border-color: #d7d7d7
+
+
+//--------------------------------------
+// * Directory menu
+//--------------------------------------
+
+$dirsMenuIconWidth: 100px // unit(`PS_DIRS_MENU_ICON_WIDTH`, px)
+$dirsMenuIconHeight: 100px // unit(`PS_DIRS_MENU_ICON_HEIGHT`, px)
+
+// menu item row
+#ps-menu .ps-dirs-menu
+  text-align: center
+  width: $menuWidth - 1px
+  height: 120px
+  line-height: 160px
+  overflow: hidden
+  color: #707070
+  border-bottom: 1px solid #e8e8e8
+  border-right: 1px solid #e8e8e8
+  background: #ffffff // Old browsers
+  background: -moz-linear-gradient(top, #ffffff 0%, #efefef 100%) // FF3.6+
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#efefef)) // Chrome,Safari4+
+  background: -webkit-linear-gradient(top, #ffffff 0%,#efefef 100%) // Chrome10+,Safari5.1+
+  background: -o-linear-gradient(top, #ffffff 0%,#efefef 100%) // Opera 11.10+
+  background: -ms-linear-gradient(top, #ffffff 0%,#efefef 100%) // IE10+
+  background: linear-gradient(to bottom, #ffffff 0%,#efefef 100%) // W3C
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#efefef',GradientType=0 ) // IE6-9
+
+
+// menu item container for additional background layer
+#ps-menu .ps-dirs-menu a
+  display: block
+  width: 100%
+  height: 100%
+  background-image: url(data:image/pngbase64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAVCAYAAACdbmSKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAahJREFUeNqElNeOwjAQRSfB9N5BfGyGz+SVB0TvvXnnjuSwAbJ7pShFPr7THLper3Y2m9nhcGh3u52V98BaS39dZrvd0ng8pvv9TgJQp9NhEiWTyT7FyL/dbvR4PMjzPNrv9ySugFm+B7FQtVrlWq2mttBms6HpdEoCxYImnU732+02nnm9XtPz+SSEjE263S7jnkqlIqF6zkFyCsSB5/O5Agi3VCpRq9UiYwz/Bv3Q0ph+vV5nLIQAwhE5yoaRUEMnp/P5HMhCXq1WIYyNpKqUSCTU8QOCsKu0gZfLZfitUqloqL7v81cIulwuwWg0YrTB5Vgul6nRaLxyeheq2mw2WZqsEKqK6srUxEOn0ymQQjAmxSmbzepl4gApBC8WC3VAaMViUXOSCPgDOhwOCrhGQwB6vZ4WAa2JQMfjMZDFWm7nkMvl1EGeFdCevufgAKhQKGh/pDchEEIICQD6gomH8vk8Zg9HJAIoBAcpI2NcXM9QITh8A3SMcGonkwm50sIBgIAsY/P1IBrE7xwymYyGhBziADcuVubMDgYDKwfQYu7++0f8CDAAE2li0xEUUeYAAAAASUVORK5CYII=)
+  background-position: 250px 55%
+  background-repeat: no-repeat
+
+
+// menu item picture
+#ps-menu .ps-dirs-menu p
+  margin: 0
+  padding: 0
+  width: $dirsMenuIconWidth
+  height: $dirsMenuIconHeight
+  background-size: $dirsMenuIconWidth $dirsMenuIconHeight
+  background-repeat: no-repeat
+  background-position: 0 0
+  border: 1px solid #e8e8e8
+  margin: 10px
+  float: left
+
+
+#ps-menu .ps-dirs-menu h1,
+#ps-menu .ps-dirs-menu h2
+  margin: 0
+  padding: 0
+  text-align: left
+  float: left
+  // overflow: hidden
+  width: 130px
+
+
+// menu item title
+#ps-menu .ps-dirs-menu h1
+  font-size: 22px
+  line-height: 22px
+  margin-top: 20px
+  margin-bottom: 5px
+  height: 25px
+  font-weight: bold
+  color: #333
+
+// menu item description
+#ps-menu .ps-dirs-menu h2
+  font-size: 16px
+  line-height: 18px
+  height: 52px
+  font-weight: normal
+  color: #333
+  padding-top: 17px
+
+
+#canvas-context-menu
+  position: absolute
+  left: -99999px
+  top: -99999px
+
+
+#ps-ui-templates
+  position: absolute
+  left: -99999px
+  top: -99999px
+
+
+.ps-network-progress
+  width: 250px
+  height: 25px
+  position: absolute
+
+.ps-progress-bar
+  position: relative
+  z-index: 200
+
+.ps-progress-label
+  position: absolute
+  width: 100%
+  left: 0
+  top: 5px
+  text-align: center
+  font-weight: bold
+  text-shadow: 1px 1px 0 #222
+  color: #fff
+
+
+#help-dialog
+  margin-top: 3px
+  margin-left: 51px
+  background: asset_url("/photoshoot/modal_help.png") 0 0 no-repeat
+  width: 939px
+  height: 423px
+  z-index: 100
+
+
+.ps-btn-gray,
+.ps-btn-yellow
+  font-size: 15px !important
+  text-decoration: none !important
+  padding: 4px 12px !important
+
+
+.ps-btn-gray
+  text-shadow: 2px 2px 0px #333 !important
+  color: #fff !important
+  border: 1px solid #333 !important
+  background: #727272 !important // Old browsers
+  background: -moz-linear-gradient(top,  #727272 0%, #393939 100%) !important // FF3.6+
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#727272), color-stop(100%,#393939)) !important // Chrome,Safari4+
+  background: -webkit-linear-gradient(top,  #727272 0%,#393939 100%) !important // Chrome10+,Safari5.1+
+  background: -o-linear-gradient(top,  #727272 0%,#393939 100%) !important // Opera 11.10+
+  background: -ms-linear-gradient(top,  #727272 0%,#393939 100%) !important // IE10+
+  background: linear-gradient(to bottom,  #727272 0%,#393939 100%) !important // W3C
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#727272', endColorstr='#393939',GradientType=0 ) !important // IE6-9
+
+.ps-btn-gray:hover
+  text-shadow: 1px 0px 2px #333 !important
+  color: #fff !important
+
+
+.ps-btn-yellow
+  color: #399cb2 !important
+  border: 1px solid #e0cf13 !important
+  background: #f9f9cd !important // Old browsers
+  background: -moz-linear-gradient(top,  #f9f9cd 0%, #efe518 100%) !important // FF3.6+
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f9f9cd), color-stop(100%,#efe518)) !important // Chrome,Safari4+
+  background: -webkit-linear-gradient(top,  #f9f9cd 0%,#efe518 100%) !important // Chrome10+,Safari5.1+
+  background: -o-linear-gradient(top,  #f9f9cd 0%,#efe518 100%) !important // Opera 11.10+
+  background: -ms-linear-gradient(top,  #f9f9cd 0%,#efe518 100%) !important // IE10+
+  background: linear-gradient(to bottom,  #f9f9cd 0%,#efe518 100%) !important // W3C
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9cd', endColorstr='#efe518',GradientType=0 ) !important // IE6-9
+
+.ps-btn-yellow:hover
+  text-shadow: 1px 0px 2px rgba(56, 156, 176, 0.5) !important
+  color: #399cb2 !important
+
+.ps-btn-disabled
+  background: #474747 !important
+  color: #8f8f8f !important
+
+.ps-btn-disabled:hover
+  text-shadow: 2px 2px 0px #333 !important
+  color: #8f8f8f !important
+
+
+.ps-saving-overlay
+  background: rgba(0, 0, 0, .5)
+  position: absolute
+  z-index: 100
+
+
+.ps-saving-overlay > div
+  position: absolute
+  width: 161px
+  height: 153px
+  left: 45%
+  top: 45%
+  background: image_url("/photoshoot/spinner-on.gif") center 15px no-repeat #da4f89
+  text-align: center
+  color: #fff
+  border: 1px solid #bd3a6b
+  border-radius: 10px
+  -webkit-box-shadow: 0px 0px 20px 2px #000 !important
+  box-shadow: 0px 0px 20px 2px #000 !important
+  font-size: 16px
+  line-height: 20px
+  font-weight: bold
+
+
+.ps-saving-overlay > div > div
+  margin-top: 100px
+
+.ps-contest-enter-overlay
+  background: rgba(0, 0, 0, .5)
+  position: absolute
+  z-index: 100
+
+
+.ps-contest-enter-overlay > div
+  position: absolute
+  width: 260px
+  height: 200px
+  left: 45%
+  top: 45%
+  background: image_url("/assets/UI/spinner_on_df5387.gif") center 15px no-repeat #da4f89
+  text-align: center
+  color: #fff
+  border: 5px solid #bd3a6b
+  border-radius: 10px
+  -webkit-box-shadow: 0px 0px 20px 2px #000 !important
+  box-shadow: 0px 0px 20px 2px #000 !important
+  font-size: 16px
+  line-height: 20px
+  font-weight: bold
+
+
+.ps-contest-enter-overlay > div > div
+  margin-top: 100px
+
+
+// Avatar Tool
+
+.ps-avatar-tool
+  position: absolute
+  z-index: 101
+
+.ps-avatar-tool-frame
+  width: 176px
+  height: 173px
+  background: image_url("/photoshoot/avatar-tool-frame.png") 0 0 no-repeat transparent
+  border-left: 3px solid #df5387
+  border-right: 3px solid #df5387
+  border-bottom: 3px solid #df5387
+  border-bottom-left-radius: 4px
+  border-bottom-right-radius: 4px
+
+.ps-avatar-tool-header
+  cursor: move
+  padding: 5px 0
+  border-top-left-radius: 4px
+  border-top-right-radius: 4px
+  background: #df5387
+  color: #ffffff
+  font-weight: bold
+  font-family: Lato,sans-serif
+  font-size: 1.1em
+
+.ps-avatar-tool-buttons
+  height: 40px
+  background: #565455 // Old browsers
+  background: -moz-linear-gradient(top, #565455 0%, #404040 100%) // FF3.6+
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#565455), color-stop(100%,#404040)) // Chrome,Safari4+
+  background: -webkit-linear-gradient(top, #565455 0%,#404040 100%) // Chrome10+,Safari5.1+
+  background: -o-linear-gradient(top, #565455 0%,#404040 100%) // Opera 11.10+
+  background: -ms-linear-gradient(top, #565455 0%,#404040 100%) // IE10+
+  background: linear-gradient(to bottom, #565455 0%,#404040 100%) // W3C
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#565455', endColorstr='#404040',GradientType=0 ) // IE6-9
+  border-right: 3px solid #df5387
+  border-left: 3px solid #df5387
+
+
+.ps-avatar-tool-buttons button
+  padding: 5px 10px !important
+  margin: 5px
+  font-size: 12px !important
+
+
+.ps-avatar-tool-buttons .ps-btn-gray
+  float: left
+  background: none !important
+  border: none !important
+
+
+.ps-avatar-tool-buttons .ps-btn-yellow
+  float: right
+
+
+.ps-avatar-tool-header span
+  font-family: 'Lato', sans-serif, Arial !important
+  font-size: 20px !important
+  font-weight: 900 !important
+  color: #fff !important
+  text-shadow: 1px 1px 2px #980c40 !important
+  text-align: center !important
+  display: block !important
+  float: none !important
+  margin: 0 auto !important
+
+
+// -----
+
+.swiper-scrollbar
+  border: 1px solid #ccc
+  width: 18px
+  background: rgb(229,229,231)
+  background: -moz-linear-gradient(left,  rgba(229,229,231,1) 0%, rgba(255,255,255,1) 100%)
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(229,229,231,1)), color-stop(100%,rgba(255,255,255,1)))
+  background: -webkit-linear-gradient(left,  rgba(229,229,231,1) 0%,rgba(255,255,255,1) 100%)
+  background: -o-linear-gradient(left,  rgba(229,229,231,1) 0%,rgba(255,255,255,1) 100%)
+  background: -ms-linear-gradient(left,  rgba(229,229,231,1) 0%,rgba(255,255,255,1) 100%)
+  background: linear-gradient(to right,  rgba(229,229,231,1) 0%,rgba(255,255,255,1) 100%)
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e7', endColorstr='#ffffff',GradientType=1 )
+  position: relative
+  float: left
+  -ms-touch-action: none
+  height: $canvasHeight - 4
+
+.swiper-scrollbar-drag
+  width: 15px
+  margin: 1px
+  position: relative
+  border-radius: 10px
+  border: 1px solid #626262
+
+  background: image_url("/photoshoot/scrollbar-drop-bg.png") 50% 50% no-repeat, rgb(146,146,148)
+  background: image_url("/photoshoot/scrollbar-drop-bg.png") 50% 50% no-repeat, -moz-linear-gradient(left,  rgba(146,146,148,1) 0%, rgba(51,51,51,1) 100%)
+  background: image_url("/photoshoot/scrollbar-drop-bg.png") 50% 50% no-repeat, -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(146,146,148,1)), color-stop(100%,rgba(51,51,51,1)))
+  background: image_url("/photoshoot/scrollbar-drop-bg.png") 50% 50% no-repeat, -webkit-linear-gradient(left,  rgba(146,146,148,1) 0%,rgba(51,51,51,1) 100%)
+  background: image_url("/photoshoot/scrollbar-drop-bg.png") 50% 50% no-repeat, -o-linear-gradient(left,  rgba(146,146,148,1) 0%,rgba(51,51,51,1) 100%)
+  background: image_url("/photoshoot/scrollbar-drop-bg.png") 50% 50% no-repeat, -ms-linear-gradient(left,  rgba(146,146,148,1) 0%,rgba(51,51,51,1) 100%)
+  background: image_url("/photoshoot/scrollbar-drop-bg.png") 50% 50% no-repeat, linear-gradient(to right,  rgba(146,146,148,1) 0%,rgba(51,51,51,1) 100%)
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#929294', endColorstr='#333333',GradientType=1 )
+
+.swiper-scrollbar-cursor-drag
+  cursor:move
+
+
+// -------
+
+.ps-undo-redo
+  float: right
+  margin: 6px
+
+.ps-undo-redo button:first-child
+  border-bottom-right-radius: 0
+  border-top-right-radius: 0
+  border-right: 0 none !important
+
+.ps-undo-redo button:last-child
+  border-bottom-left-radius: 0
+  border-top-left-radius: 0
+
+
+.ps-trashcan
+  width: 70px
+  height: 77px
+  background: image_url("/photoshoot/ctx-menu-sprite.png") -11px -6px
+  left: 37%
+  top: 43%
+  position: absolute

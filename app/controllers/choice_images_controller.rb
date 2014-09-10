@@ -1,0 +1,2 @@
+class ChoiceImagesController < BackgroundImagesController
+end

@@ -47,7 +47,8 @@
           =link_to new_question_response_path(question), class: :thumbnail do
             = responsive_image_tag question.web_image_url
             .mask
-            .title=question.title
+            .floating-question-title
+              %span=question.title
             .icon
               = responsive_image_tag question.category.icon.web.url
               %small.category= question.category.name

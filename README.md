@@ -1,4 +1,4 @@
-# Crash Mob
+# Crashmob
 
   ## Feed Logic
 

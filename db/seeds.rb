@@ -19,12 +19,17 @@ Setting.where(key: :aws_secret_access_key).first_or_create!(value: ENV['DEVICE_A
 Setting.where(key: :aws_region).first_or_create!(value: ENV['DEVICE_AWS_REGION'])
 Setting.where(key: :aws_bucket).first_or_create!(value: ENV['DEVICE_AWS_BUCKET'])
 
+%w(Calories Fat Carbohydrates Protein Sugar SaturatedFat Sodium Cholesterol Fiber CaloriesFromFat).each do |key|
+  Key.where(key:key).first_or_create!
+end
 
 #
 # Users
 #
 
+Role.where(name:"pro").first_or_create!
 user = User.where(username:'crashmob').first_or_create!(name:"Question Master",email:'question-master@crashmob.com',password:"dirty socks",password_confirmation:"dirty socks")
+user.add_role :pro
 
 
 def background_image filename

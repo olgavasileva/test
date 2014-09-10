@@ -17,6 +17,9 @@ class User < ActiveRecord::Base
   has_many :groups, dependent: :destroy
   has_many :group_members, through: :groups, source: :user
 
+  has_many :memberships, class_name: 'GroupMember'
+  has_many :membership_groups, through: :memberships, source: :group
+
   # Allow user to log in using username OR email in the 'login' text area
 	# https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
   def self.find_for_database_authentication(warden_conditions)
@@ -42,6 +45,8 @@ class User < ActiveRecord::Base
 	has_many :authentications, dependent: :destroy
 	has_many :devices, through: :instances
 	has_many :questions, dependent: :destroy
+  has_many :responses_to_questions, through: :questions, source: :responses
+  has_many :questions_skips, through: :questions, source: :skips
 	has_many :packs, dependent: :destroy
 	has_many :sharings, foreign_key: "sender_id", dependent: :destroy
 	has_many :reverse_sharings, foreign_key: "receiver_id", class_name: "Sharing", dependent: :destroy
@@ -99,13 +104,17 @@ class User < ActiveRecord::Base
   def feed_more_questions num_to_add
     all_public_questions = Question.where(kind: 'public')
 
-    # Do it the inefficient way if we don't have too many records since grabbing random items from a small sample is prone to too many misses
-    new_questions = if all_public_questions.count < 1000 &&  skipped_items.count + responses.count + feed_items.count < 1000
+    # small_dataset = all_public_questions.count < 1000 &&  skipped_items.count + responses.count + feed_items.count < 1000
+    small_dataset = true # TODO: for now, just use the easier unpotimized selection logic
+
+    new_questions = if small_dataset
+      # TODO: This is inefficient for very large datasets - optimize when needed
       candidate_ids = all_public_questions.where.not(id:skipped_questions.pluck("questions.id") + answered_questions.pluck("questions.id") + feed_questions.pluck("questions.id"))
-      Question.where id:candidate_ids.sample(num_to_add)
+      Question.where(id:candidate_ids.sample(num_to_add)).order("CASE WHEN questions.position IS NULL THEN 1 ELSE 0 END ASC").order("questions.position ASC").order("RAND()")
     else
+      # Grabbing random items from a small sample is prone to too many misses, so only do this on a larger dataset
       new_questions = []
-      num_candidates = candidates.count
+      num_candidates = all_public_questions.count
       while new_questions.count < num_to_add
         candidate = all_public_questions.order(:id).offset(rand(num_candidates)).limit(1)
         new_questions << candidate if wants_question?(candidate)

@@ -17,6 +17,15 @@ class ApplicationController < ActionController::Base
   layout :layout_by_resource
 
 
+  def after_sign_in_path_for resource
+    resource.kind_of?(User) && session[:demo] ? "/question" : super(resource)
+  end
+
+  def after_sign_out_path_for resource
+    session[:demo] = nil
+    super resource
+  end
+
   protected
 
     # Find next newer question in the feed, or wrap around if at the last question

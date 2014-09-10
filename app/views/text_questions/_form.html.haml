@@ -1,5 +1,44 @@
-.col-md-3
-.col-md-6
+:sass
+  #background_selector
+    font-size: 2.2em
+    border: solid 1px #264e8e
+    padding: 0
+  #image_upload
+    text-align: center
+
+  .option-question-stripe
+    position: absolute
+    max-height: 80%
+    padding: 15px
+    top: 50%
+    margin-top: -43px
+    width: 100%
+    background-color: rgba(0,0,0,0.4)
+    .form-group
+      margin: 0
+      textarea
+        min-height: 1.5em
+        box-shadow: none
+        resize: none
+
+  .question .bgimage
+    position: relative
+
+  .img-responsive
+    width: 100% !important
+    height: auto
+
+  .revealable
+    background-color: transparent
+    border-color: transparent
+    box-shadow: none
+    &:hover, &:focus
+      outline: none
+      border-color: white
+      background-color: rgba(255,255,255,0.2)
+
+
+.col-sm-8.col-sm-push-2
   .openended.panel.panel-default
     .panel-heading
       .panel-title
@@ -11,28 +50,35 @@
         .hidden
           .canned{data:{ids:canned_question_image_ids, urls:canned_question_image_web_urls}}
           .id=f.input :background_image_id, as: :hidden
-        .row
-          .col-sm-3
-          .col-sm-6
-            .row
+        .row.form-group
+          .col-md-8.col-md-push-2
+            .row.form-group
               .col-sm-12
                 .question
-                  .title=f.input :title, label: false, placeholder: "Ask Your Question Here"
-                  .bgimage= responsive_image_tag @question.web_image_url, class: "img-responsive"
+                  .bgimage
+                    .title.option-question-stripe
+                      =f.input :title, label: false, placeholder: "Ask Your Question Here", input_html:{class: :revealable}
+                    = responsive_image_tag @question.web_image_url, class: "img-responsive"
+
+            .row.form-group
               .col-md-12
-                .well.image_control
+                #background_selector.image_control
                   <Image manipulation tools>
-                  =link_to '#', class: :prev_image do
-                    %span.glyphicon.glyphicon-chevron-left
-                  =link_to '#', class: :next_image do
-                    %span.glyphicon.glyphicon-chevron-right
-              .col-md-12
-                .well
-                  =f.association :category
+                  .col-sm-6#image_upload
+                    =link_to '#', class: :upload_image do
+                      %span.glyphicon.glyphicon-cloud-upload
+                  .col-sm-2
+                    =link_to '#', class: :prev_image do
+                      %span.glyphicon.glyphicon-chevron-left
+                  .col-sm-2.col-sm-push-1
+                    =link_to '#', class: :next_image do
+                      %span.glyphicon.glyphicon-chevron-right
+            .row.form-group
+              =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-12 form-group", :name=>"text_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
         .row
           .col-md-6
             .btn-group.btn-group-justified
-              =f.button :submit, "Preview", class: %w(btn-block)
+              =f.button :submit, "Preview", class: %w(btn-block btn-lg)
           .col-md-6
             .btn-group.btn-group-justified
-              =f.button :submit, "Continue", class: %w(btn-block)
+              =f.button :submit, "Continue", class: %w(btn-block btn-lg)

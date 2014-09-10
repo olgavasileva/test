@@ -3,30 +3,44 @@
 /[if IE 9] <html class="ie9 gt-ie8">
 :plain
   <!--[if gt IE 9] -->
-%html#pixel-admin.gt-ie8.gt-ie9.not-ie
+%html.gt-ie8.gt-ie9.not-ie
   / <![endif]
   %head
-    %meta{charset: "utf-8"}/
-    %meta{content: "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
-    %meta{content: "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0", name: "viewport"}/
+    %title= full_title(yield(:title))
+
+    %meta{charset: "utf-8"}
+    %meta{"http-equiv" => "X-UA-Compatible", content: "IE=edge,chrome=1"}
+    %meta{name: "viewport", content: "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"}
     = csrf_meta_tags
 
     / Open Sans font from Google CDN
     %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", :rel => "stylesheet", :type => "text/css"}/
 
+    :javascript
+      var init = [];
+
     = stylesheet_link_tag "pixel_admin", media: "all", "data-turbolinks-track" => true
     = javascript_include_tag "pixel_admin", "data-turbolinks-track" => true
 
-    %title= full_title(yield(:title))
-
     /[if lt IE 9]
       <script src="assets/javascripts/ie.min.js"></script>
-    /
 
-  %body
+  %body.theme-default
+
     #main-wrapper
+      = render 'layouts/shared/header'
+      = render 'layouts/pixel_admin/side_menu'
       #content-wrapper
         - flash.each do |key, value|
           = content_tag(:div, value, class: "alert alert-#{key}")
         = yield
-        = debug(params) if Rails.env.development?
+      #main-menu-bg
+
+      = debug(params) if Rails.env.development?
+
+    :coffee
+      init.push ->
+        # Javascript code here
+
+      $ ->
+        window.PixelAdmin.start(init)

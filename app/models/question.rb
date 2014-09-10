@@ -8,6 +8,7 @@ class Question < ActiveRecord::Base
 	has_many :responses_with_comments, -> { where "comment != ''" }, class_name: "Response"
 	has_many :feed_items, dependent: :destroy
 	has_many :skips, class_name:"SkippedItem", dependent: :destroy
+  has_many :choices
 
 	scope :active, -> { where state:"active" }
 
@@ -18,6 +19,18 @@ class Question < ActiveRecord::Base
 	validates :title, presence: true, length: { maximum: 250 }
 	validates :state, presence: true, inclusion: {in: %w(preview targeting active)}
 	validates :kind, inclusion: {in: %w(public targeted)}
+
+	def targeted_reach
+		feed_items.count + skips.count + responses.count
+	end
+
+	def viewed!
+		update_attribute :view_count, (view_count.to_i + 1)
+	end
+
+	def started!
+		update_attribute :start_count, (start_count.to_i + 1)
+	end
 
 	def active?
 		state == "active"
@@ -30,6 +43,10 @@ class Question < ActiveRecord::Base
 	def targeting?
 		state == "targeting"
 	end
+
+  def public?
+    kind == 'public'
+  end
 
 	def activate!
 		self.state = "active"

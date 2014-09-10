@@ -6,13 +6,10 @@
     color: white
     background-color: #20437a
     border-color: #19335d
-  .well.row.follow-menu
+  .follow-menu
    padding:  0
    background-color: white
    position: relative
-   .well-wrap
-    width: 100%
-    display:  inline-block
 
    a
     text-decoration: none!important
@@ -30,8 +27,8 @@
      overflow: hidden
      height: 1.5em
 
-.row.well.follow-menu
-  .well-wrap
+.follow-menu
+  .well-wrap.row
     -#= link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
     -#  %span.glyphicon.glyphicon-star
     -#  Like
@@ -44,7 +41,7 @@
     -#= link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
     -#  %span.glyphicon.glyphicon-flag
     -#  Flag
-    = link_to "", class:%w(col-md-3), remote:true do
+    = link_to "", class:%w(col-xs-5 col-sm-4 ), remote:true do
       %h5 Posted by
       %h6.elipsable
         = @response.question.user.name
@@ -53,6 +50,6 @@
         %div
           Following
       - else
-        = link_to "Follow",[:follow, @response.question.user],class:%w(col-md-2 btn vertical-middle btn-default negative) , remote: true
-    = link_to "",class:%w(col-md-2 col-md-push-5 vertical-middle) , remote: true do
+        = link_to "Follow",[:follow, @response.question.user],class:%w(col-xs-3  btn vertical-middle btn-default negative) , remote: true
+    = link_to "/questions/#{@response.question.id}/share",class:%w(col-xs-2 col-sm-push-3 col-xs-push-2 vertical-middle) , remote: true do
       %h4 ...

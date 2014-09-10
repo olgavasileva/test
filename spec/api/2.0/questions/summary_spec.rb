@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-describe :feed do
+describe :summary do
   let(:params) {{}}
   let(:before_api_call) {}
   before { before_api_call }
-  before { post "v/2.0/questions/response", Hash[params].to_json,{"CONTENT_TYPE" => "application/json"}}
+  before { post "v/2.0/questions/summary", Hash[params].to_json,{"CONTENT_TYPE" => "application/json"}}
 
   context "Without the required params" do
     it {expect(response.status).to eq 200}
@@ -49,21 +49,63 @@ describe :feed do
       context "When a user is associated with the instnace" do
         let(:user) {FactoryGirl.create :user}
 
-        context "With a question" do
-          let(:question) {FactoryGirl.create :text_question}
-          let(:question_id) {question.id}
+        question_types = %i[question image_question text_question
+          choice_question text_choice_question image_choice_question
+          multiple_choice_question star_question percent_question
+          order_question]
 
-          it {expect(response.status).to eq 201}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('response_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('view_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('comment_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('share_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('skip_count')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('published_at')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('sponsor')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('creator_id')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('creator_name')}
-          it {expect(JSON.parse(response.body)['summary'].keys).to include('anonymous')}
+        question_types.each do |question_type|
+          context "With a #{question_type.to_s.classify}" do
+            let(:question) {FactoryGirl.create question_type}
+            let(:question_id) {question.id}
+
+            it {expect(response.status).to eq 201}
+
+            it "should return all summary fields" do
+              summary = JSON.parse(response.body)['summary']
+
+              expect(summary.keys).to include('choices')
+              expect(summary.keys).to include('response_count')
+              expect(summary.keys).to include('view_count')
+              expect(summary.keys).to include('comment_count')
+              expect(summary.keys).to include('share_count')
+              expect(summary.keys).to include('skip_count')
+              expect(summary.keys).to include('published_at')
+              expect(summary.keys).to include('sponsor')
+              expect(summary.keys).to include('creator_id')
+              expect(summary.keys).to include('creator_name')
+              expect(summary.keys).to include('anonymous')
+            end
+          end
+        end
+
+        context "With a ChoiceQuestion with responses" do
+          let(:question) do
+            question = FactoryGirl.create :choice_question
+
+            question.choices = FactoryGirl.create_list(
+              :choice, 4, question: question)
+
+            question.responses = FactoryGirl.create_list(
+              :choice_response, 3, choice: question.choices[1])
+            question.responses << FactoryGirl.create(
+              :choice_response, choice: question.choices[2])
+            question.responses << FactoryGirl.create(
+              :choice_response, choice: question.choices[3])
+
+            question
+          end
+          let(:question_id) {question.id}
+          let(:choices_data) { JSON.parse(response.body)['summary']['choices'] }
+
+          it "returns correct choices data" do
+            expect(choices_data).to match_array [
+              { id: question.choices[0].id, response_ratio: 0 },
+              { id: question.choices[1].id, response_ratio: 0.6 },
+              { id: question.choices[2].id, response_ratio: 0.2 },
+              { id: question.choices[3].id, response_ratio: 0.2 }
+            ].map(&:stringify_keys)
+          end
         end
       end
     end
