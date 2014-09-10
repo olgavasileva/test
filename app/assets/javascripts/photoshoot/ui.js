@@ -209,7 +209,7 @@ var psUI = function() {
         body.append('<div class="overlay"></div>');
 
         body.find(".overlay").css({
-            'background': 'rgba(0, 0, 0, .5)',
+            'background': 'rgba(0, 0, 0, 0.0)',
             'width': '100%', //ps_frame.width(),
             'height': '100%', //ps_frame.height(),
             'position': 'absolute',
