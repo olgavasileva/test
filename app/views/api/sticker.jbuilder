@@ -1,10 +1,11 @@
-object @sticker
-attributes :id, :display_name, :mirrorable, :type, :image_url, :image_width, :image_height, :properties
-attributes sort_order: :priority
-node(:tags) {|s| s.tag_list}
-node(:image_thumb_url) {|s| s.image.thumb.url}
-# node(:properties) do
-#   object.item_properties.each do |property|
-#     node(property.key) {property.value}
-#   end
-# end
+json.(@sticker, :id, :display_name, :mirrorable, :type, :image_url, :image_width, :image_height)
+json.sort_order @sticker.priority
+json.tags @sticker.tag_list do |tag|
+  tag
+end
+json.image_thumb_url @sticker.image.thumb.url
+json.properties do
+  @sticker.item_properties.each do |property|
+    json.set! property.key, property.value
+  end
+end

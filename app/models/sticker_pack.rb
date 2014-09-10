@@ -13,8 +13,12 @@ class StickerPack < ActiveRecord::Base
   has_many :sticker_pack_stickers, -> {order(:sort_order)}
   has_many :stickers, through: :sticker_pack_stickers
 
+  scope :enabled, -> { where.not disabled: true }
+
+  before_validation :ensure_disabled_set
+
   validates :display_name, presence: true
-  #validates :klass, presence: true, inclusion: { in: Sticker::TYPES }
+  validates :disabled, inclusion: {in:[true, false]}
 
   # Modify the updated time of the studios on save so app knows the sticker packs need to be re-loaded
   before_save do
@@ -24,15 +28,15 @@ class StickerPack < ActiveRecord::Base
     end
   end
 
-  def available_stickers
+  def enabled_stickers
     Rails.cache.fetch("#{Rails.env}:#{self.id}:stickers".hash.to_s, expires_in: sticker_ttl) do
-      available_stickers = stickers.where.not(type: 'Background')
+      enabled_stickers = stickers.enabled.where.not(type: 'Background')
     end
   end
 
-  def backgrounds
+  def enabled_backgrounds
     Rails.cache.fetch("#{Rails.env}:#{self.id}:backgrounds".hash.to_s, expires_in: sticker_ttl) do
-      backgrounds = stickers.where(type: 'Background')
+      backgrounds = stickers.enabled.where(type: 'Background')
     end
   end
 
@@ -43,5 +47,9 @@ class StickerPack < ActiveRecord::Base
   private
     def sticker_ttl
       @sticker_ttl ||= ENV['STICKER_CACHE_TTL_IN_MINUTES'] ? ENV['STICKER_CACHE_TTL_IN_MINUTES'].to_i.minutes : 1.minute
+    end
+
+    def ensure_disabled_set
+      self.disabled = false if disabled.nil?
     end
 end
