@@ -78,6 +78,35 @@ describe :summary do
             end
           end
         end
+
+        context "With a ChoiceQuestion with responses" do
+          let(:question) do
+            question = FactoryGirl.create :choice_question
+
+            question.choices = FactoryGirl.create_list(
+              :choice, 4, question: question)
+
+            question.responses = FactoryGirl.create_list(
+              :choice_response, 3, choice: question.choices[1])
+            question.responses << FactoryGirl.create(
+              :choice_response, choice: question.choices[2])
+            question.responses << FactoryGirl.create(
+              :choice_response, choice: question.choices[3])
+
+            question
+          end
+          let(:question_id) {question.id}
+          let(:choices_data) { JSON.parse(response.body)['summary']['choices'] }
+
+          it "returns correct choices data" do
+            expect(choices_data).to match_array [
+              { id: question.choices[0].id, response_ratio: 0 },
+              { id: question.choices[1].id, response_ratio: 0.6 },
+              { id: question.choices[2].id, response_ratio: 0.2 },
+              { id: question.choices[3].id, response_ratio: 0.2 }
+            ].map(&:stringify_keys)
+          end
+        end
       end
     end
   end
