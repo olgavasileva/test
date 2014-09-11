@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140909230234) do
+ActiveRecord::Schema.define(version: 20140911174010) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -114,6 +114,17 @@ ActiveRecord::Schema.define(version: 20140909230234) do
 
   add_index "feed_items", ["question_id"], name: "index_feed_items_on_question_id", using: :btree
   add_index "feed_items", ["user_id"], name: "index_feed_items_on_user_id", using: :btree
+
+  create_table "friendships", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "friend_id"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "friendships", ["friend_id"], name: "index_friendships_on_friend_id", using: :btree
+  add_index "friendships", ["user_id"], name: "index_friendships_on_user_id", using: :btree
 
   create_table "galleries", force: true do |t|
     t.datetime "entries_open"
@@ -257,6 +268,22 @@ ActiveRecord::Schema.define(version: 20140909230234) do
   add_index "liked_comments", ["response_id"], name: "index_liked_comments_on_response_id", using: :btree
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
 
+  create_table "messages", force: true do |t|
+    t.string   "type"
+    t.datetime "read_at"
+    t.datetime "completed_at"
+    t.integer  "response_count"
+    t.integer  "comment_count"
+    t.integer  "share_count"
+    t.integer  "follower_id"
+    t.integer  "question_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "messages", ["user_id"], name: "index_messages_on_user_id", using: :btree
+
   create_table "order_choices_responses", force: true do |t|
     t.integer  "order_choice_id"
     t.integer  "order_response_id"
@@ -384,6 +411,64 @@ ActiveRecord::Schema.define(version: 20140909230234) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
+
+  create_table "rpush_apps", force: true do |t|
+    t.string   "name",                                null: false
+    t.string   "environment"
+    t.text     "certificate"
+    t.string   "password"
+    t.integer  "connections",             default: 1, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "type",                                null: false
+    t.string   "auth_key"
+    t.string   "client_id"
+    t.string   "client_secret"
+    t.string   "access_token"
+    t.datetime "access_token_expiration"
+  end
+
+  create_table "rpush_feedback", force: true do |t|
+    t.string   "device_token", limit: 64, null: false
+    t.datetime "failed_at",               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "app_id"
+  end
+
+  add_index "rpush_feedback", ["device_token"], name: "index_rpush_feedback_on_device_token", using: :btree
+
+  create_table "rpush_notifications", force: true do |t|
+    t.integer  "badge"
+    t.string   "device_token",      limit: 64
+    t.string   "sound",                              default: "default"
+    t.string   "alert"
+    t.text     "data"
+    t.integer  "expiry",                             default: 86400
+    t.boolean  "delivered",                          default: false,     null: false
+    t.datetime "delivered_at"
+    t.boolean  "failed",                             default: false,     null: false
+    t.datetime "failed_at"
+    t.integer  "error_code"
+    t.text     "error_description"
+    t.datetime "deliver_after"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "alert_is_json",                      default: false
+    t.string   "type",                                                   null: false
+    t.string   "collapse_key"
+    t.boolean  "delay_while_idle",                   default: false,     null: false
+    t.text     "registration_ids",  limit: 16777215
+    t.integer  "app_id",                                                 null: false
+    t.integer  "retries",                            default: 0
+    t.string   "uri"
+    t.datetime "fail_after"
+    t.boolean  "processing",                         default: false,     null: false
+    t.integer  "priority"
+  end
+
+  add_index "rpush_notifications", ["app_id", "delivered", "failed", "deliver_after"], name: "index_rapns_notifications_multi", using: :btree
+  add_index "rpush_notifications", ["delivered", "failed"], name: "index_rpush_notifications_multi", using: :btree
 
   create_table "scenes", force: true do |t|
     t.text     "canvas_json"

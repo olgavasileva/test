@@ -5,4 +5,13 @@ class Message < ActiveRecord::Base
   def defaults
     self.read_at = nil
   end
+
+  def isQuestionUpdated?
+    self.type == "QuestionUpdated"
+  end
+
+  def isUserFollowed?
+    self.type == "UserFollowed"
+  end
+
 end

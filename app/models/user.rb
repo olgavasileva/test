@@ -84,7 +84,14 @@ class User < ActiveRecord::Base
 	end
 
 	def follow! leader
+
+    count = self.leaders.count
 		self.leaders << leader
+
+    if self.leaders.count != count
+      add_and_push_message leader
+    end
+
 	end
 
 	def unfollow! leader
@@ -139,9 +146,35 @@ class User < ActiveRecord::Base
     return self.responses.where("comment is not ?", nil).count
   end
 
-	private
+	protected
 
 		def create_remember_token
 		  self.remember_token = User.encrypt(User.new_remember_token)
-		end
+    end
+
+    def add_and_push_message(followed_user)
+
+      if !UserFollowed.exists?(:follower_id => self.id, :user_id => followed_user.id )
+        message = UserFollowed.new
+        message.follower_id = self.id
+        message.user_id = followed_user.id
+
+        message.save
+
+
+        device_token = '12121313'
+
+
+        # APNS.send_notification(device_token, :alert => 'Hello iPhone!', :badge => 1, :sound => 'default',
+        #                        :other => {:type => message.type,
+        #                                   :created_at => message.created_at,
+        #                                   :read_at => message.read_at,
+        #                                   :follower_id => message.follower_id
+        #                                   })
+      end
+
+
+
+
+    end
 end

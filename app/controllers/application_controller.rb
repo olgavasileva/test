@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   before_action :find_recent_questions
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
-
+  before_action :initialize_for_apple_push_service
   # Verify that controller actions are authorized. Optional, but good.
   after_action :verify_authorized,  except: :index, unless: :devise_controller?
   after_action :verify_policy_scoped, only: :index, unless: :devise_controller?
@@ -65,5 +65,16 @@ class ApplicationController < ActionController::Base
 
     def find_recent_questions
       @recent_questions ||= ::Question.order("created_at DESC").limit(2)
+    end
+
+    def initialize_for_apple_push_service
+      APNS.host = 'gateway.push.apple.com'
+      # gateway.sandbox.push.apple.com is default
+
+      #APNS.pem  = '/path/to/pem/file'
+      # this is the file you just created
+
+      APNS.port = 2195
+      # this is also the default. Shouldn't ever have to set this, but just in case Apple goes crazy, you can.
     end
 end

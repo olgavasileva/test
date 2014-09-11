@@ -60,7 +60,7 @@ describe :delete do
 
         context "and the target message doesn't belong to current user" do
           let(:other_user) {FactoryGirl.create :user}
-          let(:message) {FactoryGirl.create :question_liked_message, user:other_user}
+          let(:message) {FactoryGirl.create :question_updated, user:other_user}
           let(:message_id) {message.id}
 
           it {expect(response.status).to eq 200}
@@ -70,7 +70,7 @@ describe :delete do
         end
 
         context "and the target message is all right" do
-          let(:message) {FactoryGirl.create :question_liked_message, user:user}
+          let(:message) {FactoryGirl.create :question_updated, user:user}
           let(:message_id) {message.id}
 
           it {expect(response.status).to eq 200}
