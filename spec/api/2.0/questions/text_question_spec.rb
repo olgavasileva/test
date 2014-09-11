@@ -16,7 +16,7 @@ describe :text_question do
   end
 
   context "With all required params" do
-    let(:params) {{auth_token:auth_token, category_id:category_id, title:title, image_url:image_url, text_type:text_type, min_characters:min_characters, max_characters:max_characters }}
+    let(:params) {{auth_token:auth_token, category_id:category_id, title:title, image_url:image_url, text_type:text_type, min_characters:min_characters, max_characters:max_characters, targets: targets }}
     let(:auth_token) {}
     let(:category_id) {}
     let(:title) {}
@@ -24,6 +24,7 @@ describe :text_question do
     let(:text_type) {}
     let(:min_characters) {}
     let(:max_characters) {}
+    let(:targets) {}
 
     context "Witout a valid text_type value" do
       it {expect(response.status).to eq 200}
