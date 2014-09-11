@@ -155,7 +155,5 @@ class TwoCents::Messages < Grape::API
 
       @messages = messages.paginate(page:page, per_page:per_page)
     end
-
-
   end
 end
