@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140909003238) do
+ActiveRecord::Schema.define(version: 20140909230234) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -300,6 +300,17 @@ ActiveRecord::Schema.define(version: 20140909003238) do
     t.datetime "updated_at"
     t.float    "percent"
   end
+
+  create_table "question_reports", force: true do |t|
+    t.integer  "question_id"
+    t.integer  "user_id"
+    t.text     "reason"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "question_reports", ["question_id"], name: "index_question_reports_on_question_id", using: :btree
+  add_index "question_reports", ["user_id"], name: "index_question_reports_on_user_id", using: :btree
 
   create_table "questions", force: true do |t|
     t.integer  "user_id"

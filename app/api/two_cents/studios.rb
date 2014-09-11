@@ -7,7 +7,7 @@ class TwoCents::Studios < Grape::API
     end
 
     def sticker_pack
-      @sticker_pack = studio.sticker_packs.find(params[:sticker_pack_id]) rescue (fail! 4401, "Sticker pack with ID #{params[:sticker_pack_id]} not found")
+      @sticker_pack = studio.sticker_packs.enabled.find(params[:sticker_pack_id]) rescue (fail! 4401, "Sticker pack with ID #{params[:sticker_pack_id]} not found")
     end
 
     def next_index
@@ -39,7 +39,7 @@ class TwoCents::Studios < Grape::API
       @studio = studio
     end
 
-    desc "Get all of a studio's sticker packs", {
+    desc "Get all of a studio's enabled sticker packs", {
         notes: <<-END
         Returns data about the sticker packs in the specified studio.
 
@@ -67,10 +67,10 @@ class TwoCents::Studios < Grape::API
     post '/:studio_id/sticker_packs', jbuilder: "sticker_packs", http_codes: [
         [200, "4400 - Studio not found"]
     ] do
-      @sticker_packs = studio.sticker_packs
+      @sticker_packs = studio.sticker_packs.enabled
     end
 
-    desc "Get a particular sticker pack", {
+    desc "Get a particular enabled sticker pack", {
         notes: <<-END
         Returns detailed data about the specified sticker pack.
 
@@ -92,7 +92,7 @@ class TwoCents::Studios < Grape::API
         @sticker_pack = sticker_pack
     end
 
-    desc "Get all the stickers in a sticker pack", {
+    desc "Get all the enabled stickers in a sticker pack", {
         notes: <<-END
         Returns the list of stickers in the specified sticker pack.
 
@@ -167,8 +167,8 @@ class TwoCents::Studios < Grape::API
         [200, "4400 - Studio not found"],
         [200, "4401 - Sticker Pack not found"]
     ] do
-      @backgrounds = sticker_pack.backgrounds
-      @stickers = sticker_pack.available_stickers
+      @backgrounds = sticker_pack.enabled_backgrounds
+      @stickers = sticker_pack.enabled_stickers
     end
 
     desc "Get a particular sticker", {
@@ -219,13 +219,12 @@ class TwoCents::Studios < Grape::API
     post '/:studio_id/sticker_thumbnails', http_codes: [
         [200, "4400 - Studio not found"],
     ] do
-      get_studio
       thumbnails = []
-      @studio.sticker_packs.each do |sp|
-        sp.backgrounds.each do |bg|
+      studio.sticker_packs.each do |sp|
+        sp.enabled_backgrounds.each do |bg|
           thumbnails << bg.image.thumb.url
         end
-        sp.available_stickers.each do |s|
+        sp.enabled_stickers.each do |s|
           thumbnails << s.image.thumb.url
         end
       end

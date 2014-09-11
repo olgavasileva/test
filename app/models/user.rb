@@ -20,6 +20,8 @@ class User < ActiveRecord::Base
   has_many :memberships, class_name: 'GroupMember'
   has_many :membership_groups, through: :memberships, source: :group
 
+  has_many :messages, dependent: :destroy
+
   # Allow user to log in using username OR email in the 'login' text area
 	# https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
   def self.find_for_database_authentication(warden_conditions)
@@ -123,6 +125,18 @@ class User < ActiveRecord::Base
     end
 
     self.feed_questions += new_questions
+  end
+
+  def number_of_answered_questions
+    return Response.where(user_id:id).count
+  end
+
+  def number_of_asked_questions
+    return Question.where(user_id:id).count
+  end
+
+  def number_of_comments_left
+    return self.responses.where("comment is not ?", nil).count
   end
 
 	private

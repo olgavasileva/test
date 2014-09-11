@@ -82,6 +82,8 @@ describe :order_question do
               expect(q['category']['name']).to eq category.name
               expect(q['comment_count']).to eq 0
               expect(q['response_count']).to eq 0
+              expect(q['creator_id']).to eq user.id
+              expect(q['creator_name']).to eq user.name
             end
           end
 

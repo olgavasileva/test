@@ -19,9 +19,14 @@ class Sticker < ActiveRecord::Base
   acts_as_taggable
   acts_as_taggable_on :categories
 
+  scope :enabled, -> { where.not disabled: true }
+
+  before_validation :ensure_disabled_set
+
   validates :display_name, presence: true
   validates :priority, numericality: true
   validates :type, inclusion: {in: TYPES}
+  validates :disabled, inclusion: {in:[true, false]}
 
   before_create :set_priority_value
   before_save :set_image_geometry
@@ -58,5 +63,9 @@ class Sticker < ActiveRecord::Base
       # add it to the end if the admin hasn't set a priority
       self.priority = Sticker.maximum(:priority).to_i + 1
     end
+  end
+
+  def ensure_disabled_set
+    self.disabled = false if disabled.nil?
   end
 end
