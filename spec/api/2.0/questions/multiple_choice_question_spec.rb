@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative 'shared_create_examples'
 
 describe :multiple_choice_question do
   let(:params) {{}}
@@ -112,6 +113,8 @@ describe :multiple_choice_question do
               expect(choices[2]['choice']['image_url']).not_to be_nil
             end
           end
+
+          it_behaves_like :uses_targets
         end
       end
     end

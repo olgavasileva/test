@@ -11,7 +11,7 @@ class FollowerTarget < ActiveRecord::Base
 
   def follower_follows_question_user
     unless question.user.followers.include? follower
-      errors.add("must have follower following question user")
+      errors.add(:follower_id, "must follow question user")
     end
   end
 end

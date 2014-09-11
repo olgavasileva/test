@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative 'shared_create_examples'
 
 describe :text_choice_question do
   let(:params) {{}}
@@ -105,6 +106,8 @@ describe :text_choice_question do
               expect(choices[2]['choice']['title']).to eq "Choice Title 3"
             end
           end
+
+          it_behaves_like :uses_targets
         end
       end
     end

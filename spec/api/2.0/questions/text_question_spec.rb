@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative 'shared_create_examples'
 
 describe :text_question do
   let(:params) {{}}
@@ -99,6 +100,8 @@ describe :text_question do
                 expect(q['response_count']).to eq 0
               end
             end
+
+            it_behaves_like :uses_targets
           end
         end
       end

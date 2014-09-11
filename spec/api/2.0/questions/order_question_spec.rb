@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative 'shared_create_examples'
 
 describe :order_question do
   let(:params) {{}}
@@ -106,6 +107,8 @@ describe :order_question do
               expect(choices[0]['choice']['image_url']).not_to be_nil
             end
           end
+
+          it_behaves_like :uses_targets
         end
       end
     end
