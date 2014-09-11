@@ -1,18 +1,19 @@
 class QuestionsController < ApplicationController
-  layout "clean_canvas"
 
   def index
-    @questions = policy_scope Question
-    @categories = Category.where(id:@questions.group(:category_id).map{|question| question.category_id}).order(:name)
-  end
+    per_page = 6
+    @questions = policy_scope(Question).paginate(page: params[:page], per_page:per_page)
 
-  def show
-    @question = Question.find params[:id]
-    authorize @question
+    if session[:demo]
+      redirect_to question_path
+    else
+      if user_signed_in? && @questions.count < per_page * params[:page].to_i + per_page + 1
+        current_user.feed_more_questions per_page + 1
+        @questions = policy_scope(Question).paginate(page: params[:page], per_page:per_page)
+      end
 
-    @response = @question.responses.new user:current_user
-    @next_question = next_question @question
-    @just_answered = params[:just_answered]
+      @questions.each{|q| q.viewed!}
+    end
   end
 
   def summary
@@ -22,13 +23,13 @@ class QuestionsController < ApplicationController
     @next_question = next_question @question
 
     # Generate summary info
+    @all_comments = []
+    @friend_comments = []
   end
 
-  private
+  def new
+    @question = current_user.questions.new
+    authorize @question
+  end
 
-    def next_question question
-      question_ids = policy_scope(Question).pluck(:id)
-      index = question_ids.find_index @question.id
-      Question.find question_ids[index + 1] if index < question_ids.count - 1
-    end
 end

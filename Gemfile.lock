@@ -1,8 +1,25 @@
 GIT
-  remote: git://github.com/intridea/grape.git
-  revision: 2099c3a050df454c9181b775657fec544b97fe1a
+  remote: git://github.com/gregbell/active_admin.git
+  revision: d7dfc134574e08a5509291ee9d5df386540533ce
   specs:
-    grape (0.7.1)
+    activeadmin (1.0.0.pre)
+      arbre (~> 1.0)
+      bourbon
+      coffee-rails
+      formtastic (~> 2.3.0.rc3)
+      inherited_resources (~> 1.3)
+      jquery-rails
+      jquery-ui-rails
+      kaminari (~> 0.15)
+      rails (>= 3.2, < 4.2)
+      ransack (~> 1.0)
+      sass-rails
+
+GIT
+  remote: git://github.com/intridea/grape.git
+  revision: 64955edb6c0250a684c4f0b31de534bd3230d2f1
+  specs:
+    grape (0.8.1)
       activesupport
       builder
       hashie (>= 2.1.0)
@@ -29,23 +46,6 @@ GIT
   specs:
     pundit (0.2.3)
       activesupport (>= 3.0.0)
-
-GIT
-  remote: git://github.com/gregbell/active_admin.git
-  revision: d7dfc134574e08a5509291ee9d5df386540533ce
-  specs:
-    activeadmin (1.0.0.pre)
-      arbre (~> 1.0)
-      bourbon
-      coffee-rails
-      formtastic (~> 2.3.0.rc3)
-      inherited_resources (~> 1.3)
-      jquery-rails
-      jquery-ui-rails
-      kaminari (~> 0.15)
-      rails (>= 3.2, < 4.2)
-      ransack (~> 1.0)
-      sass-rails
 
 GEM
   remote: https://rubygems.org/
@@ -78,12 +78,20 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    acts-as-taggable-on (2.4.1)
+      rails (>= 3, < 5)
     acts_as_list (0.4.0)
       activerecord (>= 3.0)
     addressable (2.3.6)
+    animate-rails (1.0.7)
+      rails
     arbre (1.0.1)
       activesupport (>= 3.0.0)
     arel (5.0.1.20140414130214)
+    attribute_defaults (0.3)
+      activerecord (>= 3.1.0)
+    autoprefixer-rails (2.2.0.20140727)
+      execjs
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -96,6 +104,8 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap-sass (3.2.0.1)
+      sass (~> 3.2)
     bourbon (3.2.3)
       sass (~> 3.2)
       thor
@@ -128,18 +138,23 @@ GEM
       mime-types (>= 1.16)
     childprocess (0.5.3)
       ffi (~> 1.0, >= 1.0.11)
+    cocoon (1.2.6)
     coderay (1.1.0)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
-    coffee-script (2.2.0)
+    coffee-script (2.3.0)
       coffee-script-source
       execjs
-    coffee-script-source (1.7.0)
+    coffee-script-source (1.7.1)
     colorize (0.7.3)
     columnize (0.8.9)
+    commonjs (0.2.7)
+    creek (1.0.5)
+      nokogiri (~> 1.6.0)
+      rubyzip (>= 1.0.0)
     daemons (1.1.9)
     database_cleaner (1.3.0)
     debug_inspector (0.0.2)
@@ -161,7 +176,8 @@ GEM
     equalizer (0.0.9)
     erubis (2.7.0)
     eventmachine (1.0.3)
-    execjs (2.2.0)
+    excon (0.39.3)
+    execjs (2.2.1)
     factory_girl (4.4.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.4.1)
@@ -175,11 +191,44 @@ GEM
     figaro (0.7.0)
       bundler (~> 1.0)
       rails (>= 3, < 5)
+    fog (1.23.0)
+      fog-brightbox
+      fog-core (~> 1.23)
+      fog-json
+      fog-softlayer
+      ipaddress (~> 0.5)
+      nokogiri (~> 1.5, >= 1.5.11)
+    fog-brightbox (0.1.1)
+      fog-core (~> 1.22)
+      fog-json
+      inflecto
+    fog-core (1.23.0)
+      builder
+      excon (~> 0.38)
+      formatador (~> 0.2)
+      mime-types
+      net-scp (~> 1.1)
+      net-ssh (>= 2.1.3)
+    fog-json (1.0.0)
+      multi_json (~> 1.0)
+    fog-softlayer (0.3.13)
+      fog-core
+      fog-json
+    font-awesome-rails (4.1.0.0)
+      railties (>= 3.2, < 5.0)
+    formatador (0.2.5)
     formtastic (2.3.0.rc3)
       actionpack (>= 3.0)
+    geocoder (1.2.4)
     grape-entity (0.4.3)
       activesupport
       multi_json (>= 1.3.2)
+    grape-jbuilder (0.2.0)
+      grape (>= 0.3)
+      i18n
+      jbuilder
+      tilt
+      tilt-jbuilder (>= 0.4.0)
     grape-rabl (0.2.2)
       grape
       i18n
@@ -189,28 +238,34 @@ GEM
       grape (>= 0.2.0)
       grape-entity (>= 0.3.0)
       kramdown (>= 1.3.1)
+    gravatar_for (0.1.2)
     haml (4.0.5)
       tilt
     has_scope (0.6.0.rc)
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
-    hashie (3.1.0)
+    hashie (3.2.0)
     hike (1.2.3)
     hirb (0.7.2)
-    i18n (0.6.9)
+    i18n (0.6.11)
     ice_nine (0.11.0)
-    inherited_resources (1.5.0)
+    inflecto (0.0.2)
+    inherited_resources (1.4.1)
       has_scope (~> 0.6.0.rc)
-      responders (~> 1.0)
+      responders (~> 1.0.0.rc)
+    ipaddress (0.8.0)
     jbuilder (2.1.1)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
     jquery-rails (3.1.1)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
-    jquery-ui-rails (4.2.1)
+    jquery-ui-rails (5.0.0)
       railties (>= 3.2.16)
     json (1.8.1)
+    just-datetime-picker (0.0.6)
+      activeadmin (>= 0.4.4)
+      formtastic (>= 2.0.0)
     kaminari (0.16.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -219,6 +274,12 @@ GEM
       faraday
       multi_json
     kramdown (1.4.0)
+    less (2.5.1)
+      commonjs (~> 0.2.7)
+    less-rails (2.5.0)
+      actionpack (>= 3.1)
+      less (~> 2.5.0)
+    libv8 (3.11.8.17)
     macaddr (1.6.7)
       systemu (~> 2.6.2)
     mail (2.5.4)
@@ -227,7 +288,7 @@ GEM
     method_source (0.8.2)
     mime-types (1.25.1)
     mini_portile (0.6.0)
-    minitest (5.3.5)
+    minitest (5.4.0)
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
@@ -288,10 +349,15 @@ GEM
       polyamorous (~> 1.0.0)
     rdoc (4.1.1)
       json (~> 1.4)
-    responders (1.1.0)
+    ref (1.0.5)
+    responders (1.0.0)
       railties (>= 3.2, < 5)
-    rmagick (2.13.2)
+    rmagick (2.13.3)
     rolify (3.4.0)
+    roo (1.13.2)
+      nokogiri
+      rubyzip
+      spreadsheet (> 0.6.4)
     rspec-core (3.0.2)
       rspec-support (~> 3.0.0)
     rspec-expectations (3.0.2)
@@ -308,6 +374,7 @@ GEM
       rspec-mocks (~> 3.0.0)
       rspec-support (~> 3.0.0)
     rspec-support (3.0.2)
+    ruby-ole (1.2.11.7)
     rubyzip (1.1.4)
     sass (3.2.19)
     sass-rails (4.0.3)
@@ -326,6 +393,8 @@ GEM
     simple-navigation (3.13.0)
       activesupport (>= 2.3.2)
     slop (3.5.0)
+    spreadsheet (0.9.7)
+      ruby-ole (>= 1.0)
     spring (1.1.3)
     spring-commands-rspec (1.0.2)
       spring (>= 0.9.1)
@@ -345,6 +414,9 @@ GEM
       net-ssh (>= 2.8.0)
     swagger-ui_rails (0.1.7)
     systemu (2.6.4)
+    therubyracer (0.11.4)
+      libv8 (~> 3.11.8.12)
+      ref
     thin (1.6.2)
       daemons (>= 1.0.9)
       eventmachine (>= 1.0.0)
@@ -352,8 +424,13 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
+    tilt-jbuilder (0.6.1)
+      jbuilder
+      tilt (<= 1.5.0)
     toastr-rails (1.0.3)
       railties (>= 3.1.0)
+    touchpunch-rails (1.0.3)
+      railties (>= 3.1)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -366,11 +443,11 @@ GEM
       json (>= 1.8.0)
     uuid (2.3.7)
       macaddr (~> 1.0)
-    virtus (1.0.2)
+    virtus (1.0.3)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
-      descendants_tracker (~> 0.0.3)
-      equalizer (~> 0.0.9)
+      descendants_tracker (~> 0.0, >= 0.0.3)
+      equalizer (~> 0.0, >= 0.0.9)
     warden (1.2.3)
       rack (>= 1.0)
     websocket (1.0.7)
@@ -385,31 +462,45 @@ PLATFORMS
 DEPENDENCIES
   activeadmin!
   activeadmin-sortable
+  acts-as-taggable-on
   acts_as_list
+  animate-rails
+  attribute_defaults
+  autoprefixer-rails
   bcrypt-ruby
   better_errors
   binding_of_caller
+  bootstrap-sass
   capistrano-bundler
   capistrano-rails
   capistrano-rails-collection
   capistrano-rvm
   capybara
   carrierwave
+  cocoon
   coffee-rails (~> 4.0.0)
+  creek (~> 1.0.3)
   database_cleaner
   devise
   factory_girl_rails
   faker
   figaro
+  fog
+  font-awesome-rails
+  geocoder
   grape!
+  grape-jbuilder
   grape-rabl
   grape-swagger
+  gravatar_for
   haml
   hirb
   jbuilder
   jquery-rails
-  jquery-ui-rails (= 4.2.1)
+  jquery-ui-rails
+  just-datetime-picker
   koala
+  less-rails
   mysql2
   pry
   pry-debugger
@@ -419,7 +510,9 @@ DEPENDENCIES
   rails_12factor
   rmagick
   rolify
+  roo
   rspec-rails
+  rubyzip
   sass-rails (~> 4.0.3)
   sdoc
   selenium-webdriver
@@ -429,8 +522,10 @@ DEPENDENCIES
   spring-commands-rspec
   sqlite3
   swagger-ui_rails
+  therubyracer
   thin
   toastr-rails
+  touchpunch-rails
   turbolinks
   uglifier (>= 1.3.0)
   uuid

@@ -1,0 +1,66 @@
+.yesno,
+.textchoice
+  .question
+    position: relative
+
+    .bgimage
+      img
+        width: 100%
+        padding: 0
+        margin: 0
+
+    .title
+      background-color: $cm_smoke
+      padding: 25px 15px 10px 15px
+      width: 100%
+      color: white
+      font-size: 22px
+      position: absolute
+      top: 40%
+
+  .answer
+    background-color: $cm_blue
+    height: 158px
+
+.textchoice
+  .answer
+    height: 100px
+
+.textchoice,
+.imagechoice,
+.multiplechoice,
+.prioritizer
+
+  // Show the remove_field link on the 3rd and subsequent fields
+  .answer a.remove_fields
+    display: none
+  .answer+.answer+.answer
+    .remove_fields
+      display: inline!important
+
+  // Hide the Add Another Choice link when there are 4 choices showing
+  .answer+.answer+.answer+.answer+.links a.add_fields
+    display: none
+
+.imagechoice,
+.multiplechoice
+
+  .choice
+    position: relative
+
+    .bgimage
+      img
+        width: 100%
+        padding: 0
+        margin: 0
+
+    .overimage
+      width: 100%
+      position: absolute
+      bottom: 0
+
+    .title
+      background-color: $cm_smoke
+      padding: 25px 15px 10px 15px
+      color: white
+      font-size: 22px

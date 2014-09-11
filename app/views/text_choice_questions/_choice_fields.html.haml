@@ -1,0 +1,6 @@
+.answer.well.nested-fields.text-created-choice.col-xs-12
+  =f.input :title, label: false, placeholder: "Type a response"
+  -#=link_to_remove_association '<i class="glyphicon glyphicon-remove></i>"', f
+  %a.remove_fields.dynamic{:href=>"#"}
+    %i.glyphicon.glyphicon-remove
+

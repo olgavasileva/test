@@ -1,0 +1,63 @@
+:sass
+  .choice-wrapper
+    &.col-md-6
+      margin: 0
+      margin-bottom: 10px
+      overflow: hidden
+      cursor: pointer
+    .img-responsive
+      margin: auto
+
+    input[type]:checked~i.glyphicon.glyphicon-ok.selected
+      display: block
+
+
+    i.glyphicon.glyphicon-ok.selected
+      font-size: 1.8em
+      position: absolute
+      right: 25px
+      top: 15px
+      color: white
+      background-color: rgba(0,0,0,0.3)
+      padding: 5px
+      padding-left: 15px
+      padding-right: 15px
+      border: solid 1px white
+      display: none
+
+    .option-title
+      position: absolute
+      bottom: 0
+      text-align: center
+      color: white
+      background-color: rgba(0,0,0,0.3)
+      left: 15px
+      right: 15px
+      padding-top: 8px
+      padding-bottom: 8px
+
+    &.selected-choice
+      i.glyphicon.glyphicon-ok.selected
+        display: block
+
+    input[type]
+      position: absolute
+      top: -110%
+.row
+  .col-md-8.col-md-push-2
+    = render "responses/response_fields/shared/title", form:form, response:response
+    .row
+      -n=0
+      -@response.question.choices.each do |c|
+        -n+=1
+        %label.col-md-6.choice-wrapper
+          =radio_button_tag("image_choice_response[choice_id]",c.id,false,{class:'selected-choice'})
+          =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
+          %i.glyphicon.glyphicon-ok.selected
+          .option-title=c.title
+    = render "responses/response_fields/shared/comment", form:form, response:response
+    = render "responses/response_fields/shared/sharing", form:form, response:response
+    = render "responses/response_fields/shared/anonymous", form:form, response:response
+    %br
+    = render "responses/response_fields/shared/submit", form:form, response:response
+  .col-lg-3

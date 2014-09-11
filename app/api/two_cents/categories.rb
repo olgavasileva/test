@@ -21,16 +21,10 @@ class TwoCents::Categories < Grape::API
             ]
       END
     }
-    params do
-      requires :auth_token, type:String, desc:'Obtain this from the instances API'
-    end
     post "/", rabl: "categories", http_codes:[
-      [200, "402 - Invalid auth token"],
       [200, "400 - Invalid params"]
     ] do
-      validate_user!
-
-      @categories = policy_scope(Category)
+      @categories = policy_scope Category
     end
   end
 end

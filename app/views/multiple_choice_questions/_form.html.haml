@@ -1,0 +1,134 @@
+:sass
+  .image_choice_question_choices_title
+    position: relative
+    max-height: 45%
+    &:hover
+      textarea.form-control
+        background-color: rgba(255,255,255,0.2)
+        border-color: #ccccff
+
+    textarea.form-control
+      display: block
+      font-size: 1em
+      width: 100%
+      background-color: transparent
+      border: solid 1px transparent
+      color: white
+      overflow: auto
+      text-align: center
+      resize: none
+      outline: none
+      box-shadow: none
+      margin: 0
+      padding: 0
+      border-radius: 0
+      min-height: 1.5em
+      max-height: 1.5em
+
+
+
+  #background_selector
+    font-size: 2.2em
+    border: solid 1px #264e8e
+    padding: 8px
+    padding-top: 9px
+  #image_upload
+    text-align: center
+  .close-float
+    clear: both
+    float: none
+
+  .image_control
+    font-size: 3.7em
+    text-align: center
+
+
+  .multiple_choice_question_title
+    padding: 10px
+    #multiple_choice_question_title
+      width: 100%
+      text-align: center
+      box-shadow: none
+      resize: none
+
+  .revealable
+    background-color: transparent
+    border-color: transparent
+    resize: none
+    box-shadow: none
+    &:hover, &:focus
+      outline: none
+      border-color: white
+      background-color: rgba(255,255,255,0.2)
+
+  .overimage.add-option
+    background-color: orange
+    color: white
+    text-align: center
+    height: 100%
+    font-size: 3em
+    h3
+      margin-top: 35%
+      margin-bottom: 5%
+      font-size: 1.1em
+
+  .close.remove_fields
+    margin-right: 10px
+
+  .image-option-title-text
+    display: block
+    font-size: 1em
+    width: 100%
+    background-color: transparent
+    border: solid 1px transparent
+    color: white
+    overflow: auto
+    text-align: center
+    resize: none
+    outline: none
+    box-shadow: none
+    margin: 0
+    padding: 0
+    border-radius: 0
+    min-height: 1.5em
+    max-height: 1.5em
+
+.col-md-8.col-md-push-2
+  .multiplechoice.panel.panel-default
+    .panel-heading
+      .panel-title
+        =link_to question_types_path do
+          %span.glyphicon.glyphicon-chevron-left
+    .panel-body
+      = simple_form_for @question do |f|
+        =f.input :type, as: :hidden
+        =f.input :rotate, as: :hidden
+        .row.question.form-group
+          .col-sm-12
+            .title
+              .multiple_choice_question_title.form-group.text.required.btn-primary
+                =f.input_field :title, label: false , class: :revealable, placeholder: "Ask Your Question Here"
+
+            .row
+              =f.simple_fields_for :choices do |choice|
+                = render 'choice_fields', f:choice
+              .col-xs-6
+                =link_to_add_association  f, :choices, class: 'nested-fields answer' do
+                  .choice.imagechooser
+                    .bgimage
+                      = responsive_image_tag f.object.web_image_url, class: "img-responsive transparent"
+                      .overimage.add-option
+                        %h3
+                          Add Option
+                        %i.glyphicon.glyphicon-plus-sign
+
+
+        .row.form-group
+          =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-12", :name=>"multiple_choice_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
+        .row
+          .col-md-6
+            .btn-group.btn-group-justified
+              =f.button :submit, "Preview", class: %w(btn-block btn-lg)
+          .col-md-6
+            .btn-group.btn-group-justified
+              =f.button :submit, "Continue", class: %w(btn-block btn-lg)

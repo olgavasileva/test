@@ -1,0 +1,9 @@
+/ = link_to 'Edit Stickers', sticker_pack.id ? stickers_admin_sticker_pack_path(sticker_pack) : '/admin/sticker_packs'
+- unless sticker_pack.stickers.empty?
+  %table.sticker-grid
+    %tr
+      - sticker_pack.stickers.each_with_index do |sticker, index|
+        %td
+          %img{:src => sticker.image.thumb.url}/
+        - if index % 10 == 9
+          %tr

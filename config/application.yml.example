@@ -1,4 +1,24 @@
 # Add application configuration variables here, as shown below.
 #
-api_shared_secret: "SOME BIG UGLY SECRET STRING"
-google_gtm: "Something"
+
+DEVELOPER_NAME:
+
+api_shared_secret:
+
+AWS_ACCESS_KEY:
+AWS_SECRET_ACCESS_KEY:
+AWS_REGION: us-east-1
+AWS_BUCKET: crashmob-production
+
+DEVICE_AWS_ACCESS_KEY:
+DEVICE_AWS_SECRET_ACCESS_KEY:
+DEVICE_AWS_REGION: us-east-1
+DEVICE_AWS_BUCKET: crashmob-production
+
+development:
+  AWS_BUCKET: crashmob-development
+  DEVICE_AWS_BUCKET: crashmob-development
+
+staging:
+  AWS_BUCKET: crashmob-labs
+  DEVICE_AWS_BUCKET: crashmob-labs

@@ -1,0 +1,19 @@
+.col-sm-12.nested-fields.answer.form-group
+  .choice.imagechooser
+    .hidden
+      .canned{data:{ids:canned_order_choice_image_ids, urls:canned_order_choice_image_web_urls}}
+      .id=f.input :background_image_id, as: :hidden
+    .bgimage
+      = responsive_image_tag f.object.web_image_url, class: "img-responsive center-block"
+      .overimage
+        =link_to_remove_association "Remove Choice", f
+        .image_control.row
+          <Image manipulation tools class="col-xs-1">
+          =link_to '#', class: "col-xs-1 prev_image" do
+            %span.glyphicon.glyphicon-chevron-left
+          =link_to '#', class: "col-xs-8 prev_image" do
+            %span.glyphicon.glyphicon-cloud-upload
+          =link_to '#', class: "col-xs-1 nex_image" do
+            %span.glyphicon.glyphicon-chevron-right
+        .title.image-choice-footer
+          =f.input :title, label: false, placeholder: "Type a response", input_html:{class: :revealable}

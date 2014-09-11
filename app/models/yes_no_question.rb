@@ -1,0 +1,2 @@
+class YesNoQuestion < TextChoiceQuestion
+end

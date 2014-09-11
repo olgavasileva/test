@@ -1,0 +1,104 @@
+#gallery_container
+  padding-top: 10px
+
+  .thumbnail
+    padding: 0
+    background-color: $cm-thumbnail-bg
+    position: relative
+    border: none
+    border-radius: 5px
+
+    .mask
+      position: absolute
+      opacity: 0.2
+      filter: alpha(opacity = 20)
+      box-shadow: 0px 1px 6px 2px #b1b1b1
+      top: 0px
+      left: 0px
+      border-radius: 5px
+      height: 100%
+      padding: 0px 20px
+      width: 100%
+      background: rgba(17, 137, 217, 0.5)
+      -webkit-transition: opacity .25s ease-in-out
+      -moz-transition: opacity .25s ease-in-out
+      transition: opacity .25s ease-in-out
+
+    &:hover
+      .mask
+        opacity: 1
+        filter: alpha(opacity = 100)
+
+    img
+      width: 100%
+      border-radius: 5px
+
+    .title
+      background-color: $cm_smoke
+      padding: 5px 15px
+      width: 100%
+      color: #fff
+      font-size: 22px
+      position: absolute
+      top: 40%
+
+    .icon
+      position: absolute
+      bottom: 20px
+      left: 10px
+      text-align: center
+      img
+        width: 40px
+        display: block
+      .category
+        display: block
+        color: $category-color
+        font-size: 15px
+        font-style: italic
+
+
+.floating-question-title
+  font-size: 2rem
+  position: absolute
+  height: 4.5em
+  line-height: 4.5em
+  vertical-align: middle
+  display: block
+  left: 0
+  right: 0
+  width: auto
+  top: 50%
+  text-overflow: ellipsis
+  margin-top: -2.25em
+  background-color: rgba(0,0,0,0.4)
+  color: white
+  padding-left: 10px
+  padding-right: 10px
+  span
+    line-height: 1em
+    display: inline-block
+    vertical-align: middle
+[class^="col-"]>.floating-question-title
+  left: 15px
+  right: 15px
+
+
+
+// Responsive
+// --------------------------------------------------
+
+@media (max-width: 480px)
+  #portfolio
+    #filters
+      li
+        margin: 0px 4px
+
+        a
+          font-size: 18px
+
+    #gallery_container
+      .photo
+        margin-left: 35px
+
+        img
+          left: 10%

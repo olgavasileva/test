@@ -1,0 +1,21 @@
+#main-menu{role: :navigation}
+  #main-menu-inner
+    .menu-content.top#menu-content-demo
+      %div
+        .text-bg
+          %span.text-slim Welcome,
+          %span.text-semibold=current_user.name
+        =gravatar_for @user.email, default: :identicon
+      .btn-group
+        =link_to '#', class:%w(btn btn-xs btn-primary btn-outline dark) do
+          %i.fa.fa-envelope
+        =link_to '#', class:%w(btn btn-xs btn-primary btn-outline dark) do
+          %i.fa.fa-user
+        =link_to '#', class:%w(btn btn-xs btn-primary btn-outline dark) do
+          %i.fa.fa-cig
+        =link_to '#', class:%w(btn btn-xs btn-primary btn-outline dark) do
+          %i.fa.fa-poser-off
+        =link_to '#', class: :close do
+          &times;
+
+    =render_navigation context: :pro
