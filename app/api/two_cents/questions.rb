@@ -29,11 +29,11 @@ class TwoCents::Questions < Grape::API
       end
 
       requires :targets, type: Hash do
-        optional :all, type: Boolean
-        optional :all_followers, type: Boolean
-        optional :all_groups, type: Boolean
-        optional :follower_ids, type: Array, default: []
-        optional :group_ids, type: Array, default: []
+        optional :all, type: Boolean, desc: "Whether question is targeted at all users."
+        optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
+        optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
+        optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
+        optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
       end
     end
     post 'text_choice_question', rabl: "question", http_codes:[
@@ -108,11 +108,11 @@ class TwoCents::Questions < Grape::API
       end
 
       requires :targets, type: Hash do
-        optional :all, type: Boolean
-        optional :all_followers, type: Boolean
-        optional :all_groups, type: Boolean
-        optional :follower_ids, type: Array, default: []
-        optional :group_ids, type: Array, default: []
+        optional :all, type: Boolean, desc: "Whether question is targeted at all users."
+        optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
+        optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
+        optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
+        optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
       end
     end
     post 'multiple_choice_question', rabl: "question", http_codes:[
@@ -191,11 +191,11 @@ class TwoCents::Questions < Grape::API
       end
 
       requires :targets, type: Hash do
-        optional :all, type: Boolean
-        optional :all_followers, type: Boolean
-        optional :all_groups, type: Boolean
-        optional :follower_ids, type: Array, default: []
-        optional :group_ids, type: Array, default: []
+        optional :all, type: Boolean, desc: "Whether question is targeted at all users."
+        optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
+        optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
+        optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
+        optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
       end
     end
     post 'image_choice_question', rabl: "question", http_codes:[
@@ -266,11 +266,11 @@ class TwoCents::Questions < Grape::API
       end
 
       requires :targets, type: Hash do
-        optional :all, type: Boolean
-        optional :all_followers, type: Boolean
-        optional :all_groups, type: Boolean
-        optional :follower_ids, type: Array, default: []
-        optional :group_ids, type: Array, default: []
+        optional :all, type: Boolean, desc: "Whether question is targeted at all users."
+        optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
+        optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
+        optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
+        optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
       end
     end
     post 'order_question', rabl: "question", http_codes:[
@@ -339,11 +339,11 @@ class TwoCents::Questions < Grape::API
       requires :max_characters, type:Integer
 
       requires :targets, type: Hash do
-        optional :all, type: Boolean
-        optional :all_followers, type: Boolean
-        optional :all_groups, type: Boolean
-        optional :follower_ids, type: Array, default: []
-        optional :group_ids, type: Array, default: []
+        optional :all, type: Boolean, desc: "Whether question is targeted at all users."
+        optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
+        optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
+        optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
+        optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
       end
     end
     post 'text_question', rabl: "question", http_codes:[
