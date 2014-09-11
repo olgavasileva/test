@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative 'shared_create_examples'
 
 describe :order_question do
   let(:params) {{}}
@@ -16,12 +17,13 @@ describe :order_question do
   end
 
   context "With all required params" do
-    let(:params) {{auth_token:auth_token, category_id:category_id, title:title, rotate:rotate, choices:choices}}
+    let(:params) {{auth_token:auth_token, category_id:category_id, title:title, rotate:rotate, choices:choices, targets: targets }}
     let(:auth_token) {}
     let(:category_id) {}
     let(:title) {}
     let(:rotate) {}
     let(:choices) {}
+    let(:targets) {}
 
     context "With an invalid auth token" do
       let(:auth_token) {"INVALID"}
@@ -107,6 +109,8 @@ describe :order_question do
               expect(choices[0]['choice']['image_url']).not_to be_nil
             end
           end
+
+          it_behaves_like :uses_targets
         end
       end
     end

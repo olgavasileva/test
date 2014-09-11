@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative 'shared_create_examples'
 
 describe :text_question do
   let(:params) {{}}
@@ -16,7 +17,7 @@ describe :text_question do
   end
 
   context "With all required params" do
-    let(:params) {{auth_token:auth_token, category_id:category_id, title:title, image_url:image_url, text_type:text_type, min_characters:min_characters, max_characters:max_characters }}
+    let(:params) {{auth_token:auth_token, category_id:category_id, title:title, image_url:image_url, text_type:text_type, min_characters:min_characters, max_characters:max_characters, targets: targets }}
     let(:auth_token) {}
     let(:category_id) {}
     let(:title) {}
@@ -24,6 +25,7 @@ describe :text_question do
     let(:text_type) {}
     let(:min_characters) {}
     let(:max_characters) {}
+    let(:targets) {}
 
     context "Witout a valid text_type value" do
       it {expect(response.status).to eq 200}
@@ -100,6 +102,8 @@ describe :text_question do
                 expect(q['creator_name']).to eq user.name
               end
             end
+
+            it_behaves_like :uses_targets
           end
         end
       end
