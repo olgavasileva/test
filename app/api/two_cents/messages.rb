@@ -110,30 +110,21 @@ class TwoCents::Messages < Grape::API
         #### Example response
             [
                 {
-                    "Message": {
-                        "type": "CommentLikedMessage",
-                        "content": "What a nice Comment! I loved it.",
-                        "read_at": "2014-09-05 18:37:21.818557000 +0000",
-                        "created_at": "2014-09-05 18:37:21.818557000 +0000",
-                    }
+                    "type": "QuestionUpdated",
+                    "question_id": 123
+                    "response_count": 3,
+                    "comment_count": 2,
+                    "share_count": 2,
+                    "completed_at": 1231231234,        # timestamp
+                    "created_at": 1231231234           # timestamp
+                    "read_at": 1231231234              # timestamp
                 },
                 {
-                    "Message": {
-                        "type": "DirectQuestionMessage",
-                        "content": "I failed to grab the real meaning of this question. Can you please tell me what it was?",
-                        "read_at": "2014-09-05 18:37:21.818557000 +0000",
-                        "created_at": "2014-09-05 18:37:21.818557000 +0000",
-                    }
-                },
-                {
-                    "Message": {
-                        "type": "QuestionLikedMessage",
-                        "content": "What a nice Question! I loved it.",
-                        "read_at": "2014-09-05 18:37:21.818557000 +0000",
-                        "created_at": "2014-09-05 18:37:21.818557000 +0000",
-                    }
-                },
-
+                    "type": "UserFollowed",
+                    "follower_id": 123,
+                    "created_at": 1231231234           # timestamp
+                    "read_at": 1231231234              # timestamp
+                }
             ]
       END
     }
