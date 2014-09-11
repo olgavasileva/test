@@ -67,6 +67,29 @@ class TwoCents::Relationships < Grape::API
       end
     end
 
+    desc "Search for followable users"
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      optional :search_text, type: String, desc: "Search text to match to users."
+    end
+    get 'followable' do
+      # TODO: optimize
+      users = current_user.leaders.search(q: params[:search_text]).result
+      users += User.search(q: params[:search_text]).result
+      users.uniq!
+
+      users.map do |u|
+        {
+          id: u.id,
+          username: u.username,
+          email: u.email,
+          name: u.name,
+          is_following: current_user.leaders.include?(u)
+        }
+      end
+    end
+
     # follow
     desc "Follow a user"
     params do
