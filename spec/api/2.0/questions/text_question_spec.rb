@@ -96,6 +96,8 @@ describe :text_question do
                 expect(q['max_characters']).to eq 100
                 expect(q['comment_count']).to eq 0
                 expect(q['response_count']).to eq 0
+                expect(q['creator_id']).to eq user.id
+                expect(q['creator_name']).to eq user.name
               end
             end
           end

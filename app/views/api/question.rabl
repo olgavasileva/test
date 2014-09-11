@@ -8,6 +8,9 @@ node :image_url, if: lambda{|q| q.instance_of?(TextQuestion) || q.instance_of?(T
 end
 attributes :text_type, :min_characters, :max_characters, if: lambda{|q| q.instance_of? TextQuestion}
 
+node(:creator_id) { |q| q.user.id }
+node(:creator_name) { |q| q.user.name }
+
 child(:choices, if:lambda{|q| q.kind_of? TextChoiceQuestion}) { attributes :id, :title, :rotate }
 
 child(:choices, if:lambda{|q| q.kind_of? OrderQuestion}) do
