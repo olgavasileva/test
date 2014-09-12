@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'relationships/followable' do
   let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
-  let(:users) { FactoryGirl.create_list(:user, 10) }
-  let!(:following) { instance.user.leaders = users.sample(5) }
+  let(:users) { FactoryGirl.create_list(:user, 16) }
+  let!(:following) { instance.user.leaders = users.sample(8) }
   let(:common_params) { {
     auth_token: instance.auth_token
   } }
@@ -32,12 +32,18 @@ describe 'relationships/followable' do
         !following_ids.include? datum['id']
       end
 
-      response_body[0...data_first_other_idx].each do |datum|
-        expect(following_ids).to include datum['id']
-      end
+      if data_first_other_idx.nil?
+        response_body.each do |datum|
+          expect(following_ids).to include datum['id']
+        end
+      else
+        response_body[0...data_first_other_idx].each do |datum|
+          expect(following_ids).to include datum['id']
+        end
 
-      response_body[data_first_other_idx..-1].each do |datum|
-        expect(following_ids).to_not include datum['id']
+        response_body[data_first_other_idx..-1].each do |datum|
+          expect(following_ids).to_not include datum['id']
+        end
       end
     end
   end
@@ -69,5 +75,28 @@ describe 'relationships/followable' do
     end
 
     include_examples :common
+  end
+
+  context "with page" do
+    let(:params) { common_params.merge(page: 1) }
+
+    before { request.call }
+
+    it "responds with data for up to 15 users" do
+      expect(response_body.count).to eq 15
+    end
+
+    include_examples :common
+
+    context "with per_page" do
+      let(:per_page) { 5 }
+      let(:params) { common_params.merge(page: 1, per_page: per_page) }
+
+      it "responds with data for up to `per_page` users" do
+        expect(response_body.count).to eq per_page
+      end
+
+      include_examples :common
+    end
   end
 end

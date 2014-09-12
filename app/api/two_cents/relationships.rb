@@ -72,12 +72,21 @@ class TwoCents::Relationships < Grape::API
       requires :auth_token, type: String, desc: "Obtain this from the instance's API."
 
       optional :search_text, type: String, desc: "Search text to match to users."
+      optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all."
+      optional :per_page, type: Integer, default: 15, desc: "Number of users per page."
     end
     get 'followable' do
       # TODO: optimize
       users = current_user.leaders.search(q: params[:search_text]).result
       users += User.search(q: params[:search_text]).result
       users.uniq!
+
+      if params[:page]
+        start_idx = params[:per_page] * (params[:page] - 1)
+        end_idx = start_idx + params[:per_page] - 1
+
+        users = users[start_idx..end_idx]
+      end
 
       users.map do |u|
         {
