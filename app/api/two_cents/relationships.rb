@@ -140,5 +140,25 @@ class TwoCents::Relationships < Grape::API
       current_user.leaders.include? user
     end
 
+    desc "Invite someone to become a user"
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      requires :method, type: String, values: %w[email sms], desc: "How to send message to person."
+      optional :email_address, type: String, desc: "Person's email address (for use with 'email' method)."
+      optional :phone_number, type: String, desc: "Person's phone number (for use with 'sms' method)."
+    end
+    post 'invite' do
+      validate_user!
+
+      if params[:method] == 'email' && params[:email_address].blank?
+        fail! 400, "`email_address` required for 'email' `method`"
+      elsif params[:method] == 'sms' && params[:phone_number].blank?
+        fail! 400, "`phone_number` required for 'sms' `method`"
+      end
+
+      {}
+    end
+
   end
 end
