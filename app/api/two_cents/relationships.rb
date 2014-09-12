@@ -1,3 +1,5 @@
+require 'will_paginate/array'
+
 class TwoCents::Relationships < Grape::API
   resource :relationships do
 
@@ -82,10 +84,8 @@ class TwoCents::Relationships < Grape::API
       users.uniq!
 
       if params[:page]
-        start_idx = params[:per_page] * (params[:page] - 1)
-        end_idx = start_idx + params[:per_page] - 1
-
-        users = users[start_idx..end_idx]
+        users = users.paginate(page: params[:page],
+                               per_page: params[:per_page])
       end
 
       users.map do |u|
