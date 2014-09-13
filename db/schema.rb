@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140909230234) do
+ActiveRecord::Schema.define(version: 20140911015241) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -115,6 +115,16 @@ ActiveRecord::Schema.define(version: 20140909230234) do
   add_index "feed_items", ["question_id"], name: "index_feed_items_on_question_id", using: :btree
   add_index "feed_items", ["user_id"], name: "index_feed_items_on_user_id", using: :btree
 
+  create_table "follower_targets", force: true do |t|
+    t.integer  "question_id"
+    t.integer  "follower_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "follower_targets", ["follower_id"], name: "index_follower_targets_on_follower_id", using: :btree
+  add_index "follower_targets", ["question_id"], name: "index_follower_targets_on_question_id", using: :btree
+
   create_table "galleries", force: true do |t|
     t.datetime "entries_open"
     t.datetime "entries_close"
@@ -184,6 +194,16 @@ ActiveRecord::Schema.define(version: 20140909230234) do
 
   add_index "group_members", ["group_id"], name: "index_group_members_on_group_id", using: :btree
   add_index "group_members", ["user_id"], name: "index_group_members_on_user_id", using: :btree
+
+  create_table "group_targets", force: true do |t|
+    t.integer  "question_id"
+    t.integer  "group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "group_targets", ["group_id"], name: "index_group_targets_on_group_id", using: :btree
+  add_index "group_targets", ["question_id"], name: "index_group_targets_on_question_id", using: :btree
 
   create_table "groups", force: true do |t|
     t.string   "name"
@@ -256,6 +276,20 @@ ActiveRecord::Schema.define(version: 20140909230234) do
 
   add_index "liked_comments", ["response_id"], name: "index_liked_comments_on_response_id", using: :btree
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
+
+  create_table "messages", force: true do |t|
+    t.text     "content"
+    t.string   "type"
+    t.datetime "read_at"
+    t.integer  "other_user_id"
+    t.integer  "question_id"
+    t.integer  "response_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "messages", ["user_id"], name: "index_messages_on_user_id", using: :btree
 
   create_table "order_choices_responses", force: true do |t|
     t.integer  "order_choice_id"
@@ -337,6 +371,9 @@ ActiveRecord::Schema.define(version: 20140909230234) do
     t.integer  "studio_id"
     t.integer  "view_count"
     t.integer  "start_count"
+    t.boolean  "target_all",            default: false
+    t.boolean  "target_all_followers",  default: false
+    t.boolean  "target_all_groups",     default: false
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree

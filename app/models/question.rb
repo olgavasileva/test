@@ -10,6 +10,10 @@ class Question < ActiveRecord::Base
 	has_many :skips, class_name:"SkippedItem", dependent: :destroy
   has_many :choices
   has_many :question_reports
+  has_many :group_targets
+  has_many :target_groups, through: :group_targets, source: :group
+  has_many :follower_targets
+  has_many :target_followers, through: :follower_targets, source: :follower
 
 	scope :active, -> { where state:"active" }
 
