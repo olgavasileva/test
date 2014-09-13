@@ -50,7 +50,7 @@
         .hidden
           .canned{data:{ids:canned_question_image_ids, urls:canned_question_image_web_urls}}
           .id=f.input :background_image_id, as: :hidden
-        .row.form-group
+        .row
           .col-md-8.col-md-push-2
             .row.form-group
               .col-sm-12
@@ -62,23 +62,14 @@
 
             .row.form-group
               .col-md-12
-                #background_selector.image_control
-                  <Image manipulation tools>
-                  .col-sm-6#image_upload
-                    =link_to '#', class: :upload_image do
-                      %span.glyphicon.glyphicon-cloud-upload
-                  .col-sm-2
-                    =link_to '#', class: :prev_image do
-                      %span.glyphicon.glyphicon-chevron-left
-                  .col-sm-2.col-sm-push-1
-                    =link_to '#', class: :next_image do
-                      %span.glyphicon.glyphicon-chevron-right
+                .col-sm-12
+                  =render partial:'/widgets/image_control',locals:{f:f,id:'background_selector'}
             .row.form-group
               =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-12 form-group", :name=>"text_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
         .row
-          .col-md-6
+          .col-md-6.form-group
             .btn-group.btn-group-justified
               =f.button :submit, "Preview", class: %w(btn-block btn-lg)
-          .col-md-6
+          .col-md-6.form-group
             .btn-group.btn-group-justified
               =f.button :submit, "Continue", class: %w(btn-block btn-lg)
