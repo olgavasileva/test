@@ -51,7 +51,7 @@ describe :messages do
         let(:user) {FactoryGirl.create :user}
 
         context "With no questions" do
-          it {expect(JSON.parse(response.body)).to eq []}
+          it {expect(JSON.parse(response.body)['number_of_unread_messages']).to eq 0}
         end
 
         context "With one of each type of message" do
@@ -71,35 +71,30 @@ describe :messages do
 
           describe "Message Output" do
             it {expect(Response.count).to eq 2}
-
-            it {expect(JSON.parse(response.body).count).to eq 3}
+            it {expect(JSON.parse(response.body)['number_of_unread_messages']).to eq 3}
 
             describe "First QuestionUpdated" do
-              it {expect(JSON.parse(response.body)[0]['message']['type']).to eq "QuestionUpdated"}
-              it {expect(JSON.parse(response.body)[0]['message'].count).to eq 8}
+              it {expect(JSON.parse(response.body)['messages'][0]['message']['type']).to eq "QuestionUpdated"}
+              it {expect(JSON.parse(response.body)['messages'][0]['message'].count).to eq 8}
 
-              it {expect(JSON.parse(response.body)[0]['message']['comment_count']).to eq 1}
-              it {expect(JSON.parse(response.body)[0]['message']['share_count']).to eq 0}
+              it {expect(JSON.parse(response.body)['messages'][0]['message']['comment_count']).to eq 1}
+              it {expect(JSON.parse(response.body)['messages'][0]['message']['share_count']).to eq 0}
 
             end
 
             describe "Second QuestionUpdated" do
-              it {expect(JSON.parse(response.body)[1]['message']['type']).to eq "QuestionUpdated"}
-              it {expect(JSON.parse(response.body)[1]['message'].count).to eq 8}
+              it {expect(JSON.parse(response.body)['messages'][1]['message']['type']).to eq "QuestionUpdated"}
+              it {expect(JSON.parse(response.body)['messages'][1]['message'].count).to eq 8}
 
-              it {expect(JSON.parse(response.body)[1]['message']['comment_count']).to eq 1}
-              it {expect(JSON.parse(response.body)[1]['message']['share_count']).to eq 0}
+              it {expect(JSON.parse(response.body)['messages'][1]['message']['comment_count']).to eq 1}
+              it {expect(JSON.parse(response.body)['messages'][1]['message']['share_count']).to eq 0}
 
             end
 
             describe "UserFollowed" do
-              it {expect(JSON.parse(response.body)[2]['message']['type']).to eq "UserFollowed"}
-              it {expect(JSON.parse(response.body)[2]['message'].count).to eq 4}
-
-
+              it {expect(JSON.parse(response.body)['messages'][2]['message']['type']).to eq "UserFollowed"}
+              it {expect(JSON.parse(response.body)['messages'][2]['message'].count).to eq 4}
             end
-
-
           end
         end
       end

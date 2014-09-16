@@ -162,19 +162,23 @@ class User < ActiveRecord::Base
         message.save
 
 
-        device_token = '12121313'
+        APNS.host = 'gateway.push.apple.com'
+        # gateway.sandbox.push.apple.com is default
+
+        APNS.pem  = Rails.root + 'app/pem/crashmob_dev_push.pem'
+
+        # this is the file you just created
+
+        APNS.port = 2195
+
+        followed_user.instances.each { |instance| APNS.send_notification(instance.push_token, :alert => 'Hello iPhone!', :badge => 1, :sound => 'default',
+                                                                         :other => {:type => message.type,
+                                                                                    :created_at => message.created_at,
+                                                                                    :read_at => message.read_at,
+                                                                                    :follower_id => message.follower_id
+                                                                         }) }
 
 
-        # APNS.send_notification(device_token, :alert => 'Hello iPhone!', :badge => 1, :sound => 'default',
-        #                        :other => {:type => message.type,
-        #                                   :created_at => message.created_at,
-        #                                   :read_at => message.read_at,
-        #                                   :follower_id => message.follower_id
-        #                                   })
       end
-
-
-
-
     end
 end

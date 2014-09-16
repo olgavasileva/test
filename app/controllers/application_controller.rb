@@ -71,7 +71,8 @@ class ApplicationController < ActionController::Base
       APNS.host = 'gateway.push.apple.com'
       # gateway.sandbox.push.apple.com is default
 
-      #APNS.pem  = '/path/to/pem/file'
+      APNS.pem  = Rails.root + 'app/pem/crashmob_dev_push.pem'
+
       # this is the file you just created
 
       APNS.port = 2195
