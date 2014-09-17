@@ -6,4 +6,8 @@ class TextChoiceResponse < Response
   def text
     choice.try(:title)
   end
+
+  def description
+    text
+  end
 end

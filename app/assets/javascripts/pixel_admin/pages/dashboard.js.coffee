@@ -17,19 +17,9 @@ init.push ->
   # Line Chart
   #
 
-  uploads_data = [
-    { day: '2014-03-10', v: 20 },
-    { day: '2014-03-11', v: 10 },
-    { day: '2014-03-12', v: 15 },
-    { day: '2014-03-13', v: 12 },
-    { day: '2014-03-14', v: 5  },
-    { day: '2014-03-15', v: 5  },
-    { day: '2014-03-16', v: 20 }
-  ]
-
   Morris.Line
     element: 'hero-graph'
-    data: uploads_data
+    data: $('#hero-graph').data().points
     xkey: 'day'
     ykeys: ['v']
     labels: ['Value']

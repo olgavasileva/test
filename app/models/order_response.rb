@@ -14,4 +14,8 @@ class OrderResponse < Response
   def top_choices_response
     choice_responses.sort_by(&:position).first
   end
+
+  def description
+    top_choices_response.order_choice.id
+  end
 end

@@ -13,8 +13,9 @@
         .ticket
           - if action.completed?
             %span.label.label-success.ticket-label Completed
+            =action.response.question.title
             = link_to [action.response], class: %w(ticket-title), title: "" do
-              Response
+              =action.response.description
               %span [##{action.response.id}]
           - else
             %span.label.label-danger.ticket-label Skipped
@@ -23,6 +24,6 @@
               %span [##{action.response.id}]
           %span.ticket-info
             by
-            =link_to "@#{action.respondent.username}", action.respondent_url, title: ""
+            =action.respondent.username
             =time_ago_in_words action.date
             ago

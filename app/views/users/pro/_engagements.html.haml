@@ -1,9 +1,11 @@
 .stat-panel
   .stat-row
     .stat-cell.bg-warning
-      %span.text-bg 11% more
+      %span.text-bg
+        =number_to_percentage (@engagement_increase_rate * 100).abs, precision:0
+        =@engagement_increase_rate > 0 ? "more" : "fewer"
       %br/
-      %span.text-sm Unique Engagements Today
+      %span.text-sm Engagements Yesterday than the day before
   .stat-row
     .stat-cell.bg-warning.padding-sm.no-padding-t.text-center
-      #engagements_graph.stats-sparklines{data: {points: [275,490,397,487,339,403,402,312,300,294,411,367,319,416,355,416,371,479,279,361,312,269,402,327,474,422,375,283,384,372]}, style: "width: 100%"}
+      #engagements_graph.stats-sparklines{data: {points: @engagement_data_points}, style: "width: 100%"}

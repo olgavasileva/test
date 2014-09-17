@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140917034850) do
+ActiveRecord::Schema.define(version: 20140917052147) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -115,6 +115,17 @@ ActiveRecord::Schema.define(version: 20140917034850) do
 
   add_index "contests", ["key_question_id"], name: "index_contests_on_key_question_id", using: :btree
   add_index "contests", ["survey_id"], name: "index_contests_on_survey_id", using: :btree
+
+  create_table "daily_analytics", force: true do |t|
+    t.integer  "user_id"
+    t.string   "metric"
+    t.integer  "total"
+    t.date     "date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "daily_analytics", ["user_id", "metric", "date"], name: "index_daily_analytics_on_user_id_and_metric_and_date", using: :btree
 
   create_table "devices", force: true do |t|
     t.string   "device_vendor_identifier"

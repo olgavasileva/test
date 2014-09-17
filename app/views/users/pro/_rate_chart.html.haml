@@ -2,8 +2,8 @@
   .stat-row
     .stat-cell.bg-dark-gray.padding-sm.text-xs.text-semibold
       %i.fa.fa-globe>
-      \&nbsp;&nbsp;View Rate
+      \&nbsp;&nbsp;#{title}
   .stat-row
     .stat-cell.bordered.no-border-t.no-padding-hr
-      #easy-pie-chart-1.pie-chart{"data-percent" => "81"}
-        .pie-chart-label 81%
+      #easy-pie-chart-1.pie-chart{"data-percent" => (rate * 100).round}
+        .pie-chart-label=number_to_percentage rate * 100, precision:0

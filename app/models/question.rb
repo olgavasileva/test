@@ -31,10 +31,12 @@ class Question < ActiveRecord::Base
 
 	def viewed!
 		update_attribute :view_count, (view_count.to_i + 1)
+		DailyAnalytic.increment! :views, self.user
 	end
 
 	def started!
 		update_attribute :start_count, (start_count.to_i + 1)
+		DailyAnalytic.increment! :starts, self.user
 	end
 
 	def active?

@@ -5,4 +5,8 @@ class MultipleChoiceResponse < Response
   def text
     choices.map(&:title).join(', ')
   end
+
+  def description
+    text
+  end
 end

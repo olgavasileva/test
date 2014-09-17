@@ -9,4 +9,16 @@ class Response < ActiveRecord::Base
   validates :comment, length: { maximum: 2000, allow_nil: true }
 
   scope :with_comment, -> { where("comment <> ''") } # comment not nil or blank
+
+  after_create :record_analytics
+
+  def description
+    "Override me!"
+  end
+
+  protected
+
+    def record_analytics
+      DailyAnalytic.increment! :responses, question.user
+    end
 end
