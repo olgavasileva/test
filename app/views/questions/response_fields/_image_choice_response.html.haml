@@ -8,11 +8,7 @@
     .img-responsive
       margin: auto
 
-    input[type]:checked~i.glyphicon.glyphicon-ok.selected
-      display: block
-
-
-    i.glyphicon.glyphicon-ok.selected
+    .response_counter
       font-size: 1.8em
       position: absolute
       right: 25px
@@ -23,7 +19,6 @@
       padding-left: 15px
       padding-right: 15px
       border: solid 1px white
-      display: none
 
     .option-title
       position: absolute
@@ -36,13 +31,6 @@
       padding-top: 8px
       padding-bottom: 8px
 
-    &.selected-choice
-      i.glyphicon.glyphicon-ok.selected
-        display: block
-
-    input[type]
-      position: absolute
-      top: -110%
 .row
   .col-md-8.col-md-push-2
     = render "questions/response_fields/shared/title", question:question
@@ -52,6 +40,8 @@
         -n+=1
         %label.col-sm-6.col-xs-12.choice-wrapper
           =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
-          %i.glyphicon.glyphicon-ok.selected
+          %i.response_counter
+            =Integer((((@responses_resume[c.id]||0)/Float(@question.response_count))*100.00).round())
+            \%
           .option-title=c.title
     = render "questions/response_fields/shared/sharing", question:question
