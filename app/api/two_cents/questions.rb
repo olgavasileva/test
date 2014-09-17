@@ -765,6 +765,13 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       @question = Question.find declared_params[:question_id]
+
+      resp_params = params.to_h.slice(
+        'comment', 'anonymous', 'text', 'choice_id', 'choice_ids')
+      resp_params['user_id'] = current_user.id
+
+      @question.responses.create!(resp_params)
+
       @anonymous = declared_params[:anonymous]
     end
 

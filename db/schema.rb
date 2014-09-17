@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140911015241) do
+ActiveRecord::Schema.define(version: 20140917034850) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -93,6 +93,28 @@ ActiveRecord::Schema.define(version: 20140911015241) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "contest_response_votes", force: true do |t|
+    t.integer  "contest_id"
+    t.integer  "response_id"
+    t.integer  "vote_count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "contest_response_votes", ["contest_id"], name: "index_contest_response_votes_on_contest_id", using: :btree
+  add_index "contest_response_votes", ["response_id"], name: "index_contest_response_votes_on_response_id", using: :btree
+
+  create_table "contests", force: true do |t|
+    t.integer  "survey_id"
+    t.integer  "key_question_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+  end
+
+  add_index "contests", ["key_question_id"], name: "index_contests_on_key_question_id", using: :btree
+  add_index "contests", ["survey_id"], name: "index_contests_on_survey_id", using: :btree
 
   create_table "devices", force: true do |t|
     t.string   "device_vendor_identifier"
@@ -382,6 +404,17 @@ ActiveRecord::Schema.define(version: 20140911015241) do
   add_index "questions", ["kind"], name: "index_questions_on_kind", using: :btree
   add_index "questions", ["user_id"], name: "index_questions_on_user_id", using: :btree
 
+  create_table "questions_surveys", force: true do |t|
+    t.integer  "question_id"
+    t.integer  "survey_id"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "questions_surveys", ["question_id"], name: "index_questions_surveys_on_question_id", using: :btree
+  add_index "questions_surveys", ["survey_id"], name: "index_questions_surveys_on_survey_id", using: :btree
+
   create_table "relationships", force: true do |t|
     t.integer  "follower_id"
     t.integer  "leader_id"
@@ -541,6 +574,12 @@ ActiveRecord::Schema.define(version: 20140911015241) do
   add_index "studios", ["contest_id"], name: "index_studios_on_contest_id", using: :btree
   add_index "studios", ["scene_id"], name: "index_studios_on_scene_id", using: :btree
   add_index "studios", ["sticker_pack_id"], name: "index_studios_on_sticker_pack_id", using: :btree
+
+  create_table "surveys", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "taggings", force: true do |t|
     t.integer  "tag_id"
