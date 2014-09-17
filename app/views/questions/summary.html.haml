@@ -9,4 +9,5 @@
     .row
       =render 'response_fields', question:@question
     .row
-      =render '/widgets/tc_summary_tabs/tc_summary_tabs', locals:{User: User, question: @question}
+      .col-xs-12
+        =render '/widgets/tc_summary_tabs/tc_summary_tabs', locals:{User: User, question: @question}

@@ -23,6 +23,11 @@ class QuestionsController < ApplicationController
     @next_question = next_question @question
 
     # Generate summary info
+    @responses_resume={}
+    @question.responses.all.each do |c|
+      @responses_resume[c.choice_id]||=0
+      @responses_resume[c.choice_id]+=1
+    end
     @all_comments = []
     @friend_comments = []
   end
