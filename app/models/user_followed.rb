@@ -1,0 +1,3 @@
+class UserFollowed < Message 
+
+end

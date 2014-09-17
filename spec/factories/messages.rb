@@ -5,16 +5,15 @@ FactoryGirl.define do
     user
   end
 
-  factory :direct_question_message, parent: :message, class: "DirectQuestionMessage" do
-    content "This is a direct question message."
+  factory :question_updated, parent: :message, class: "QuestionUpdated" do
+    question_id 1
+    response_count 3
+    comment_count 2
+    share_count 2
   end
 
-  factory :question_liked_message, parent: :message, class: "QuestionLikedMessage" do
-    content "This is a question liked message."
-  end
-
-  factory :comment_liked_message, parent: :message, class: "CommentLikedMessage" do
-    content "This is a comment liked message."
+  factory :user_followed, parent: :message, class: "UserFollowed" do
+    follower_id 2
   end
 
 end

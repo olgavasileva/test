@@ -1,12 +1,14 @@
 class CreateMessages < ActiveRecord::Migration
   def change
     create_table :messages do |t|
-      t.text :content
       t.string :type
       t.datetime :read_at
-      t.integer :other_user_id
+      t.datetime :completed_at
+      t.integer :response_count
+      t.integer :comment_count
+      t.integer :share_count
+      t.integer :follower_id
       t.integer :question_id
-      t.integer :response_id
       t.references :user, index: true
 
       t.timestamps
