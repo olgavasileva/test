@@ -1,0 +1,9 @@
+%div=pluralize @question.responses.count, "response"
+%div=pluralize 0, "view"
+%div=pluralize @question.comment_count, "comment"
+%div=pluralize @question.share_count, "share"
+%div=pluralize @question.skip_count, "skip"
+%div Published #{time_ago_in_words @question.updated_at}
+%div Not sponsored,
+%div Created by #{User.first.name} (#{User.first.id})
+%div=@anonymous ? "Anonymous" : "Public"

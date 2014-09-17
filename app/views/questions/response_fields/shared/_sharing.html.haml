@@ -1,0 +1,55 @@
+:sass
+  .btn.btn-default.negative
+   background-color: transparent
+   color: #2b59a2
+   &.active
+    color: white
+    background-color: #20437a
+    border-color: #19335d
+  .follow-menu
+   padding:  0
+   background-color: white
+   position: relative
+
+   a
+    text-decoration: none!important
+    text-align: center
+    display: inline-block
+    vertical-align: middle
+    &.vertical-middle
+     margin-top: 14px
+
+    h6.elipsable
+     border-top: solid 1px blue
+     padding-top: 2px
+     margin-top: 2px
+     text-overflow: clip
+     overflow: hidden
+     height: 1.5em
+
+.follow-menu
+  .well-wrap.row
+    -#= link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
+    -#  %span.glyphicon.glyphicon-star
+    -#  Like
+    -#= link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
+    -#  %span.glyphicon.glyphicon-cloud-upload
+    -#  Share
+    -#= link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
+    -#  %span.glyphicon.glyphicon-send
+    -#  Send
+    -#= link_to "#", class:%w(btn btn-default btn-lg), type: :button, remote:true do
+    -#  %span.glyphicon.glyphicon-flag
+    -#  Flag
+    = link_to "", class:%w(col-xs-5 col-sm-4 ), remote:true do
+      %h5 Posted by
+      %h6.elipsable
+        = question.user.name
+    - if user_signed_in?
+      - if current_user.following? question.user
+        %div
+          Following
+      - else
+        = link_to "Follow",[:follow, question.user],class:%w(col-xs-3  btn vertical-middle btn-default negative) , remote: true
+    = link_to "/questions/#{question.id}/share",class:%w(col-xs-2 col-sm-push-3 col-xs-push-2 vertical-middle) , remote: true do
+      %h4 ...

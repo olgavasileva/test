@@ -1,0 +1,14 @@
+:sass
+  .almost-6
+    width: 49%
+    margin-right: -2px
+    &:nth-child(2n)
+      margin-left: 2%
+.row
+  .col-xs-12
+    - if response.question.preview?
+      = link_to "Edit", [:edit, response.question], class: %w{btn btn-default almost-6 btn-lg}
+      = link_to "Continue", [:target, response.question], class: %w{btn btn-default almost-6 btn-lg}
+    - else
+      = link_to "Skip", new_question_skipped_item_path(response.question), class: %w{btn btn-default almost-6 btn-lg}
+      %button.btn.btn-default.almost-6.btn-lg{type: :submit} Submit

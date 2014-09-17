@@ -1,0 +1,18 @@
+%ul.nav.nav-tabs{:role=>"tablist"}
+  %li.active
+    %a{:href=>"#comments_pane", :role=>"tab", :data=>{:toggle=>"tab"}}
+      Comments
+  %li
+    %a{:href=>"#filter_pane", :role=>"tab", :data=>{:toggle=>"tab"}}
+      Filter
+  %li
+    %a{:href=>"#stats_pane", :role=>"tab", :data=>{:toggle=>"tab"}}
+      Stats
+
+.tab-content
+  .tab-pane#comments_pane
+    =render 'widgets/tc_summary_tabs/panes/comments_summary_pane',question:@question
+  .tab-pane#filter_pane
+    Filter Pane
+  .tab-pane#stats_pane
+    =render 'widgets/tc_summary_tabs/panes/stats_summary_pane',locals:{User:User}
