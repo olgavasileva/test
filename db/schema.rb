@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140917052147) do
+ActiveRecord::Schema.define(version: 20140918005504) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -93,6 +93,19 @@ ActiveRecord::Schema.define(version: 20140917052147) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "communities", force: true do |t|
+    t.string   "name"
+    t.boolean  "private",               default: false
+    t.string   "password"
+    t.string   "password_confirmation"
+    t.text     "description"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "communities", ["user_id"], name: "index_communities_on_user_id", using: :btree
 
   create_table "contest_response_votes", force: true do |t|
     t.integer  "contest_id"
