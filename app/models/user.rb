@@ -21,8 +21,8 @@ class User < ActiveRecord::Base
 
   has_many :communities, dependent: :destroy
   has_many :community_members, through: :communities, source: :user
-  has_many :community_membership, class_name: 'CommunityMember'
-  has_many :membership_communities, through: :community_memberships, source: :group
+  has_many :community_memberships, class_name: 'CommunityMember'
+  has_many :membership_communities, through: :community_memberships, source: :community
 
   has_many :messages, dependent: :destroy
 

@@ -5,4 +5,5 @@ class Community < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: { scope: :user_id }
   validates :user, presence: true
+  validates :password, presence: true, if: :private?
 end
