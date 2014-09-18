@@ -16,11 +16,13 @@ class User < ActiveRecord::Base
 
   has_many :groups, dependent: :destroy
   has_many :group_members, through: :groups, source: :user
-  has_many :memberships, class_name: 'GroupMember'
-  has_many :membership_groups, through: :memberships, source: :group
+  has_many :group_memberships, class_name: 'GroupMember'
+  has_many :membership_groups, through: :group_memberships, source: :group
 
   has_many :communities, dependent: :destroy
   has_many :community_members, through: :communities, source: :user
+  has_many :community_membership, class_name: 'CommunityMember'
+  has_many :membership_communities, through: :community_memberships, source: :group
 
   has_many :messages, dependent: :destroy
 
