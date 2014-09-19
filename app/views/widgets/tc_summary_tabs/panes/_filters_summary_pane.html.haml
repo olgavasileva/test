@@ -73,19 +73,17 @@
     Following
     %input.data-filter{:type=>'checkbox', :data=>{:filter=>'following'}}
     .data-filter-visual
-  %label.collapse-trigger.filter-name.col-xs-12{:data=>{:toggle=>'collapse',:target=>'.group-list-item'}}
-    Groups
-    %input.data-filter{:type=>'checkbox'}
-    .data-filter-visual
-    %label.filter-name.col-xs-12
-      proof of group
-      %input.data-filter{:type=>'checkbox', :data=>{:filter=>'group',:value=>"proof"}}
+
+  -if(current_user.groups.count>0)
+    %label.collapse-trigger.filter-name.col-xs-12{:data=>{:toggle=>'collapse',:target=>'.group-list-item'}}
+      Groups
+      %input.data-filter{:type=>'checkbox'}
       .data-filter-visual
-    -current_user.groups.all.each do |g|
-      %label.filter-name.col-xs-12
-        =g.name
-        %input.data-filter{:type=>'checkbox', :data=>{:filter=>'group',:value=>"#{g.name}"}}
-        .data-filter-visual
+      -current_user.groups.all.each do |g|
+        %label.filter-name.col-xs-12
+          =g.name
+          %input.data-filter{:type=>'checkbox', :data=>{:filter=>'group',:value=>"#{g.name}"}}
+          .data-filter-visual
 
   :javascript
     if(!window.tcHAndlers){
