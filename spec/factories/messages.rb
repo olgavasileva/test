@@ -16,4 +16,8 @@ FactoryGirl.define do
     follower_id 2
   end
 
+  factory :custom, parent: :message, class: "Custom" do
+
+  end
+
 end

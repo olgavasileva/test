@@ -144,6 +144,7 @@ class TwoCents::Messages < Grape::API
                             "message":
                               {
                                   "type": "QuestionUpdated",
+                                   “body”:”Question updated”,
                                   "question_id": 123
                                   "response_count": 3,
                                   "comment_count": 2,
@@ -158,6 +159,15 @@ class TwoCents::Messages < Grape::API
                               {
                                   "type": "UserFollowed",
                                   "follower_id": 123,
+                                  "created_at": 1231231234           # timestamp
+                                  "read_at": 1231231234              # timestamp
+                              }
+                        },
+                        {
+                            "message":
+                              {
+                                  "type": “Custom”,
+                                  “body”: “Custom Type”,
                                   "created_at": 1231231234           # timestamp
                                   "read_at": 1231231234              # timestamp
                               }
