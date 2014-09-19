@@ -19,5 +19,5 @@
           %li
             .panel.panel-default.handle
               .title=c.title
-              = responsive_image_tag(c.object.choice.web_image_url, class: "img-responsive")
+              = responsive_image_tag(c.web_image_url, class: "img-responsive")
     = render "questions/response_fields/shared/sharing", question:question

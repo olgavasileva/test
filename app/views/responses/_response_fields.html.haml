@@ -1,5 +1,5 @@
 - case response.question.type
-- when "TextChoiceQuestion"
+- when "TextChoiceQuestion", "YesNoQuestion"
   = render "responses/response_fields/text_choice_response", form:form, response:response
 - when "ImageChoiceQuestion"
   = render "responses/response_fields/image_choice_response", form:form, response:response
