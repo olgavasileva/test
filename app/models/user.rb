@@ -16,9 +16,13 @@ class User < ActiveRecord::Base
 
   has_many :groups, dependent: :destroy
   has_many :group_members, through: :groups, source: :user
+  has_many :group_memberships, class_name: 'GroupMember'
+  has_many :membership_groups, through: :group_memberships, source: :group
 
-  has_many :memberships, class_name: 'GroupMember'
-  has_many :membership_groups, through: :memberships, source: :group
+  has_many :communities, dependent: :destroy
+  has_many :community_members, through: :communities, source: :user
+  has_many :community_memberships, class_name: 'CommunityMember'
+  has_many :membership_communities, through: :community_memberships, source: :community
 
   has_many :messages, dependent: :destroy
 
@@ -48,6 +52,7 @@ class User < ActiveRecord::Base
 	has_many :devices, through: :instances
 	has_many :questions, dependent: :destroy
   has_many :responses_to_questions, through: :questions, source: :responses
+  has_many :responses_to_questions_with_comments, -> {where "responses.comment IS NOT NULL AND responses.comment != ''"}, through: :questions, source: :responses
   has_many :questions_skips, through: :questions, source: :skips
 	has_many :packs, dependent: :destroy
 	has_many :sharings, foreign_key: "sender_id", dependent: :destroy

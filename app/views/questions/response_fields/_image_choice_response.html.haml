@@ -1,0 +1,47 @@
+:sass
+  .choice-wrapper
+    &.col-md-6
+      margin: 0
+      margin-bottom: 10px
+      overflow: hidden
+      cursor: pointer
+    .img-responsive
+      margin: auto
+
+    .response_counter
+      text-align: right
+      font-size: 1.3em
+      width: 4em
+      position: absolute
+      right: 10px
+      top: 10px
+      color: white
+      background-color: rgba(0,0,0,0.3)
+      padding-left: 10px
+      padding-right: 10px
+      border: solid 1px white
+    .option-title
+      position: absolute
+      bottom: 0
+      text-align: center
+      color: white
+      background-color: rgba(0,0,0,0.3)
+      left: 15px
+      right: 15px
+      padding-top: 8px
+      padding-bottom: 8px
+
+.row
+  .col-md-8.col-md-push-2
+    = render "questions/response_fields/shared/title", question:question
+    .row
+      -n=0
+      -question.choices.each do |c|
+        -n+=1
+        %label.col-sm-6.col-xs-12.choice-wrapper
+          =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
+          %i.response_counter
+            =Integer((((@responses_resume[c.id]||0)/Float(@question.response_count))*100.00).round())
+            \%
+          .option-title=c.title
+    = render "questions/response_fields/shared/sharing", question:question

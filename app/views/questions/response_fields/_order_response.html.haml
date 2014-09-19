@@ -1,0 +1,23 @@
+:sass
+  .ignore-float
+    float: none !important
+    clear: both
+
+  .img-responsive
+    max-height: 160px
+
+  .list-unstyled
+    padding-left: 15px
+    padding-right: 15px
+.row
+  .col-md-6.col-md-push-3
+    .row.order-choices
+      .col-md-12.ignore-float
+        = render "questions/response_fields/shared/title", question:question
+      %ul#orderChoices.list-unstyled
+        -question.choices.all.each do |c|
+          %li
+            .panel.panel-default.handle
+              .title=c.title
+              = responsive_image_tag(c.web_image_url, class: "img-responsive")
+    = render "questions/response_fields/shared/sharing", question:question

@@ -9,9 +9,9 @@
     .col-md-8
       = render 'users/pro/chart'
       .row
-        .col-xs-4= render 'users/pro/view_rate'
-        .col-xs-4= render 'users/pro/engagement_rate'
-        .col-xs-4= render 'users/pro/complete_rate'
+        .col-xs-4= render 'users/pro/rate_chart', title:"Viral Rate", rate:@viral_rate
+        .col-xs-4= render 'users/pro/rate_chart', title:"Engagement Rate", rate:@engagement_rate
+        .col-xs-4= render 'users/pro/rate_chart', title:"Complete Rate", rate:@complete_rate
     .col-md-4
       .row
         .col-sm-4.col-md-12= render 'users/pro/insights'
@@ -20,5 +20,5 @@
 
   %hr.no-grid-gutter-h.grid-gutter-margin-b.no-margin-t/
   .row
-    .col-md-6=render 'users/pro/responses'
+    #recent_responses.col-md-6{data:{lazy:recent_responses_user_path(@user)}}
     .col-md-6=render 'users/pro/recent_comments'

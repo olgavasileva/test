@@ -112,7 +112,7 @@
             .row
               =f.simple_fields_for :choices do |choice|
                 = render 'choice_fields', f:choice
-              .col-xs-6
+              .col-xs-12.col-sm-6
                 =link_to_add_association  f, :choices, class: 'nested-fields answer' do
                   .choice.imagechooser
                     .bgimage
@@ -126,9 +126,9 @@
         .row.form-group
           =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-12", :name=>"multiple_choice_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
         .row
-          .col-md-6
+          .col-md-6.form-group
             .btn-group.btn-group-justified
               =f.button :submit, "Preview", class: %w(btn-block btn-lg)
-          .col-md-6
+          .col-md-6.form-group
             .btn-group.btn-group-justified
               =f.button :submit, "Continue", class: %w(btn-block btn-lg)

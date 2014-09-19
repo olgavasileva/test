@@ -114,7 +114,7 @@
       margin-bottom: 0!important
 
 
-.col-sm-8.col-sm-push-2
+.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2
   .yesno.panel.panel-default
     .panel-heading
       .panel-title
@@ -128,42 +128,31 @@
           .canned{data:{ids:canned_question_image_ids, urls:canned_question_image_web_urls}}
           .id=f.input :background_image_id, as: :hidden
         .row
-          .col-sm-6
+          .col-sm-6.col-xs-12.form-group
             .question
               #yesno_title_container.title=f.input :title, label: false, placeholder: "Ask Your Question Here"
               .bgimage= responsive_image_tag @question.web_image_url, class: "img-responsive"
-          =f.simple_fields_for :choices do |c|
-            .col-sm-6.form-group.answer-option
-              %div
-                %a.btn.btn-primary.col-sm-12.option-text
-                  .row
-                    .col-sm-6.not_visible
-                      .bgimage
-                        = responsive_image_tag @question.web_image_url, class: "img-responsive scale-buttons"
-                  -#=text_area_tag(:title, label: false, placeholder:"Type a response",class:"selectable-choice-text col-sm-12")
-                  =c.input :title, label: false, placeholder: "Type a response"
-
-        .row.form-group
-          .col-sm-6
-            #background_selector.image_control
-              <Image manipulation tools>
-              .col-sm-6#image_upload
-                =link_to '#', class: :upload_image do
-                  %span.glyphicon.glyphicon-cloud-upload
-              .col-sm-2
-                =link_to '#', class: :prev_image do
-                  %span.glyphicon.glyphicon-chevron-left
-              .col-sm-2.col-sm-push-1
-                =link_to '#', class: :next_image do
-                  %span.glyphicon.glyphicon-chevron-right
-              .close-float
-
-          =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-6", :name=>"yes_no_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
+          .col-sm-6.col-xs-12
+            =f.simple_fields_for :choices do |c|
+              .col-xs-12.form-group.answer-option
+                %div.row
+                  %a.btn.btn-primary.col-xs-12.option-text
+                    .row
+                      .col-xs-3.col-sm-6.not_visible
+                        .bgimage
+                          = responsive_image_tag @question.web_image_url, class: "img-responsive scale-buttons"
+                    -#=text_area_tag(:title, label: false, placeholder:"Type a response",class:"selectable-choice-text col-sm-12")
+                    =c.input :title, label: false, placeholder: "Type a response"
         .row
-          .col-sm-6
+          .col-sm-6.form-group
+            .col-sm-12
+              =render partial:'/widgets/image_control',locals:{f:f,id:'background_selector'}
+          =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-6 form-group", :name=>"yes_no_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
+        .row
+          .col-sm-6.form-group
             .btn-group.btn-group-justified
               =f.button :submit, "Preview", class: %w(btn-block btn-lg)
-          .col-sm-6
+          .col-sm-6.form-group
             .btn-group.btn-group-justified
               =f.button :submit, "Continue", class: %w(btn-block btn-lg)
 

@@ -11,4 +11,5 @@
             =data[:label]
             %span.label.pull-right{class: color_class}=number_with_delimiter data[:value]
     .stat-cell.col-sm-8.bg-primary.padding-sm.valign-middle
-      #hero-graph.graph{style: "height: #{@campaign_data.count * 40 + 90}px;"}
+      %h4 Completes
+      #hero-graph.graph{style: "height: #{@campaign_data.count * 40 + 40}px;", data:{points:@responses_by_day_data.to_json}}

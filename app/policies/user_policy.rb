@@ -8,10 +8,29 @@ class UserPolicy < ApplicationPolicy
 
   # Any logged in user can follow another user
   def follow?;        true;   end
+  def first_question?;true;   end
 
   def dashboard?
     @user.has_role? :pro
   end
 
-  def first_question?;true;   end
+  def recent_responses?
+    @user.has_role? :pro
+  end
+
+  def campaigns?
+    @user.has_role? :pro
+  end
+
+  def segments?
+    @user.has_role? :pro
+  end
+
+  def analytics?
+    @user.has_role? :pro
+  end
+
+  def account?
+    @user.has_role? :pro
+  end
 end

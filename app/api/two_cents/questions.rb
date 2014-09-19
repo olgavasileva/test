@@ -27,6 +27,14 @@ class TwoCents::Questions < Grape::API
         requires :title, type:String, desc:"Title of the choice to display to the user"
         requires :rotate, type:Boolean, desc:"This value is logically ANDed with question.rotate", default:true
       end
+
+      requires :targets, type: Hash do
+        optional :all, type: Boolean, desc: "Whether question is targeted at all users."
+        optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
+        optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
+        optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
+        optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
+      end
     end
     post 'text_choice_question', rabl: "question", http_codes:[
       [200, "400 - Invalid params"],
@@ -48,13 +56,22 @@ class TwoCents::Questions < Grape::API
         QuestionImage.create!(remote_image_url:declared_params[:image_url])
       end
 
-      @question = TextChoiceQuestion.new( state: "active",
-                                          user_id:current_user.id,
-                                          category_id:category.id,
-                                          title:declared_params[:title],
-                                          description:declared_params[:description],
-                                          rotate:declared_params[:rotate],
-                                          background_image:background_image)
+      question_params = {
+        state: "active",
+        user_id:current_user.id,
+        category_id:category.id,
+        title:declared_params[:title],
+        description:declared_params[:description],
+        rotate:declared_params[:rotate],
+        background_image:background_image,
+        target_all: params[:targets][:all],
+        target_all_followers: params[:targets][:all_followers],
+        target_all_groups: params[:targets][:all_groups],
+        target_follower_ids: params[:targets][:follower_ids],
+        target_group_ids: params[:targets][:group_ids]
+      }
+
+      @question = TextChoiceQuestion.new(question_params)
 
       declared_params[:choices].each do |choice_params|
         @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate]
@@ -89,6 +106,14 @@ class TwoCents::Questions < Grape::API
         requires :rotate, type:Boolean, desc:"This value is logically ANDed with question.rotate", default:true
         requires :muex, type:Boolean, desc:"If a muex choice is selected, no other choices are alloweed", default:false
       end
+
+      requires :targets, type: Hash do
+        optional :all, type: Boolean, desc: "Whether question is targeted at all users."
+        optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
+        optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
+        optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
+        optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
+      end
     end
     post 'multiple_choice_question', rabl: "question", http_codes:[
       [200, "400 - Invalid params"],
@@ -109,14 +134,24 @@ class TwoCents::Questions < Grape::API
       fail!(2004, "max_responses must be greater than or equal to min_responses") unless max_responses >= min_responses
 
       category = Category.find declared_params[:category_id]
-      @question = MultipleChoiceQuestion.new( state: "active",
-                                              user_id:current_user.id,
-                                              category_id:category.id,
-                                              title:declared_params[:title],
-                                              description:declared_params[:description],
-                                              rotate:declared_params[:rotate],
-                                              min_responses:min_responses,
-                                              max_responses:max_responses)
+
+      question_params = {
+        state: "active",
+        user_id:current_user.id,
+        category_id:category.id,
+        title:declared_params[:title],
+        description:declared_params[:description],
+        rotate:declared_params[:rotate],
+        min_responses:min_responses,
+        max_responses:max_responses,
+        target_all: params[:targets][:all],
+        target_all_followers: params[:targets][:all_followers],
+        target_all_groups: params[:targets][:all_groups],
+        target_follower_ids: params[:targets][:follower_ids],
+        target_group_ids: params[:targets][:group_ids]
+      }
+
+      @question = MultipleChoiceQuestion.new(question_params)
 
       declared_params[:choices].each do |choice_params|
         background_image = if URI(choice_params[:image_url]).scheme.nil?
@@ -154,6 +189,14 @@ class TwoCents::Questions < Grape::API
         requires :image_url, type:String, desc:"URL of the choice image"
         requires :rotate, type:Boolean, desc:"This value is logically ANDed with question.rotate", default:true
       end
+
+      requires :targets, type: Hash do
+        optional :all, type: Boolean, desc: "Whether question is targeted at all users."
+        optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
+        optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
+        optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
+        optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
+      end
     end
     post 'image_choice_question', rabl: "question", http_codes:[
       [200, "400 - Invalid params"],
@@ -167,12 +210,22 @@ class TwoCents::Questions < Grape::API
       fail!(2002, "The number of choices must be between 2 and 4") unless (2..4).include?(num_choices)
 
       category = Category.find declared_params[:category_id]
-      @question = ImageChoiceQuestion.new(  state: "active",
-                                            user_id:current_user.id,
-                                            category_id:category.id,
-                                            title:declared_params[:title],
-                                            description:declared_params[:description],
-                                            rotate:declared_params[:rotate])
+
+      question_params = {
+        state: "active",
+        user_id:current_user.id,
+        category_id:category.id,
+        title:declared_params[:title],
+        description:declared_params[:description],
+        rotate:declared_params[:rotate],
+        target_all: params[:targets][:all],
+        target_all_followers: params[:targets][:all_followers],
+        target_all_groups: params[:targets][:all_groups],
+        target_follower_ids: params[:targets][:follower_ids],
+        target_group_ids: params[:targets][:group_ids]
+      }
+
+      @question = ImageChoiceQuestion.new(question_params)
 
       declared_params[:choices].each do |choice_params|
         background_image = if URI(choice_params[:image_url]).scheme.nil?
@@ -211,6 +264,14 @@ class TwoCents::Questions < Grape::API
         requires :image_url, type:String, desc:"URL of the choice image"
         requires :rotate, type:Boolean, desc:"This value is logically ANDed with question.rotate", default:true
       end
+
+      requires :targets, type: Hash do
+        optional :all, type: Boolean, desc: "Whether question is targeted at all users."
+        optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
+        optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
+        optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
+        optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
+      end
     end
     post 'order_question', rabl: "question", http_codes:[
       [200, "400 - Invalid params"],
@@ -224,12 +285,22 @@ class TwoCents::Questions < Grape::API
       fail!(2002, "The number of choices must be between 2 and 4") unless (2..4).include?(num_choices)
 
       category = Category.find declared_params[:category_id]
-      @question = OrderQuestion.new(  state: "active",
-                                      user_id:current_user.id,
-                                      category_id:category.id,
-                                      title:declared_params[:title],
-                                      description:declared_params[:description],
-                                      rotate:declared_params[:rotate])
+
+      question_params = {
+        state: "active",
+        user_id:current_user.id,
+        category_id:category.id,
+        title:declared_params[:title],
+        description:declared_params[:description],
+        rotate:declared_params[:rotate],
+        target_all: params[:targets][:all],
+        target_all_followers: params[:targets][:all_followers],
+        target_all_groups: params[:targets][:all_groups],
+        target_follower_ids: params[:targets][:follower_ids],
+        target_group_ids: params[:targets][:group_ids]
+      }
+
+      @question = OrderQuestion.new(question_params)
 
       declared_params[:choices].each do |choice_params|
         background_image = if URI(choice_params[:image_url]).scheme.nil?
@@ -266,6 +337,14 @@ class TwoCents::Questions < Grape::API
       requires :text_type, type:String, values: TextQuestion::TEXT_TYPES, desc:"Type of text to collect: #{TextQuestion::TEXT_TYPES}"
       requires :min_characters, type:Integer
       requires :max_characters, type:Integer
+
+      requires :targets, type: Hash do
+        optional :all, type: Boolean, desc: "Whether question is targeted at all users."
+        optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
+        optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
+        optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
+        optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
+      end
     end
     post 'text_question', rabl: "question", http_codes:[
       [200, "400 - Invalid params"],
@@ -282,15 +361,24 @@ class TwoCents::Questions < Grape::API
         QuestionImage.create!(remote_image_url:declared_params[:image_url])
       end
 
-      @question = TextQuestion.new( state: "active",
-                                    user_id:current_user.id,
-                                    category_id:category.id,
-                                    title:declared_params[:title],
-                                    background_image:background_image,
-                                    description:declared_params[:description],
-                                    text_type:declared_params[:text_type],
-                                    min_characters:declared_params[:min_characters],
-                                    max_characters:declared_params[:max_characters])
+      question_params = {
+        state: "active",
+        user_id:current_user.id,
+        category_id:category.id,
+        title:declared_params[:title],
+        background_image:background_image,
+        description:declared_params[:description],
+        text_type:declared_params[:text_type],
+        min_characters:declared_params[:min_characters],
+        max_characters:declared_params[:max_characters],
+        target_all: params[:targets][:all],
+        target_all_followers: params[:targets][:all_followers],
+        target_all_groups: params[:targets][:all_groups],
+        target_follower_ids: params[:targets][:follower_ids],
+        target_group_ids: params[:targets][:group_ids]
+      }
+
+      @question = TextQuestion.new(question_params)
 
       @question.save!
     end
@@ -677,6 +765,13 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       @question = Question.find declared_params[:question_id]
+
+      resp_params = params.to_h.slice(
+        'comment', 'anonymous', 'text', 'choice_id', 'choice_ids')
+      resp_params['user_id'] = current_user.id
+
+      @question.responses.create!(resp_params)
+
       @anonymous = declared_params[:anonymous]
     end
 

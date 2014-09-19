@@ -1,3 +1,5 @@
+require 'will_paginate/array'
+
 class TwoCents::Relationships < Grape::API
   resource :relationships do
 
@@ -67,6 +69,36 @@ class TwoCents::Relationships < Grape::API
       end
     end
 
+    desc "Search for followable users"
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      optional :search_text, type: String, desc: "Search text to match to users."
+      optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all."
+      optional :per_page, type: Integer, default: 15, desc: "Number of users per page."
+    end
+    get 'followable' do
+      # TODO: optimize
+      users = current_user.leaders.search(q: params[:search_text]).result
+      users += User.search(q: params[:search_text]).result
+      users.uniq!
+
+      if params[:page]
+        users = users.paginate(page: params[:page],
+                               per_page: params[:per_page])
+      end
+
+      users.map do |u|
+        {
+          id: u.id,
+          username: u.username,
+          email: u.email,
+          name: u.name,
+          is_following: current_user.leaders.include?(u)
+        }
+      end
+    end
+
     # follow
     desc "Follow a user"
     params do
@@ -115,6 +147,26 @@ class TwoCents::Relationships < Grape::API
       user = User.find(params[:user_id])
 
       current_user.leaders.include? user
+    end
+
+    desc "Invite someone to become a user"
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      requires :method, type: String, values: %w[email sms], desc: "How to send message to person."
+      optional :email_address, type: String, desc: "Person's email address (for use with 'email' method)."
+      optional :phone_number, type: String, desc: "Person's phone number (for use with 'sms' method)."
+    end
+    post 'invite' do
+      validate_user!
+
+      if params[:method] == 'email' && params[:email_address].blank?
+        fail! 400, "`email_address` required for 'email' `method`"
+      elsif params[:method] == 'sms' && params[:phone_number].blank?
+        fail! 400, "`phone_number` required for 'sms' `method`"
+      end
+
+      {}
     end
 
   end

@@ -54,6 +54,8 @@ class TwoCents::API < Grape::API
   mount Groups
   mount Messages
   mount Studios
+  mount Profile
+  mount Communities
 
   add_swagger_documentation api_version:'2.0', mount_path: "/docs", markdown:true, hide_documentation_path:true
 end

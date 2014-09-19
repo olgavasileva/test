@@ -1,0 +1,1 @@
+$('#recent_responses').html("<%= j render 'users/pro/recent_responses' %>")

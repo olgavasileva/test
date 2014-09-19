@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140911174010) do
+ActiveRecord::Schema.define(version: 20140919034149) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -94,6 +94,62 @@ ActiveRecord::Schema.define(version: 20140911174010) do
     t.datetime "updated_at"
   end
 
+  create_table "communities", force: true do |t|
+    t.string   "name"
+    t.boolean  "private",               default: false
+    t.string   "password"
+    t.string   "password_confirmation"
+    t.text     "description"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "communities", ["user_id"], name: "index_communities_on_user_id", using: :btree
+
+  create_table "community_members", force: true do |t|
+    t.integer  "community_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "community_members", ["community_id"], name: "index_community_members_on_community_id", using: :btree
+  add_index "community_members", ["user_id"], name: "index_community_members_on_user_id", using: :btree
+
+  create_table "contest_response_votes", force: true do |t|
+    t.integer  "contest_id"
+    t.integer  "response_id"
+    t.integer  "vote_count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "contest_response_votes", ["contest_id"], name: "index_contest_response_votes_on_contest_id", using: :btree
+  add_index "contest_response_votes", ["response_id"], name: "index_contest_response_votes_on_response_id", using: :btree
+
+  create_table "contests", force: true do |t|
+    t.integer  "survey_id"
+    t.integer  "key_question_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+  end
+
+  add_index "contests", ["key_question_id"], name: "index_contests_on_key_question_id", using: :btree
+  add_index "contests", ["survey_id"], name: "index_contests_on_survey_id", using: :btree
+
+  create_table "daily_analytics", force: true do |t|
+    t.integer  "user_id"
+    t.string   "metric"
+    t.integer  "total"
+    t.date     "date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "daily_analytics", ["user_id", "metric", "date"], name: "index_daily_analytics_on_user_id_and_metric_and_date", using: :btree
+
   create_table "devices", force: true do |t|
     t.string   "device_vendor_identifier"
     t.string   "platform"
@@ -115,16 +171,15 @@ ActiveRecord::Schema.define(version: 20140911174010) do
   add_index "feed_items", ["question_id"], name: "index_feed_items_on_question_id", using: :btree
   add_index "feed_items", ["user_id"], name: "index_feed_items_on_user_id", using: :btree
 
-  create_table "friendships", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "friend_id"
-    t.string   "status"
+  create_table "follower_targets", force: true do |t|
+    t.integer  "question_id"
+    t.integer  "follower_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "friendships", ["friend_id"], name: "index_friendships_on_friend_id", using: :btree
-  add_index "friendships", ["user_id"], name: "index_friendships_on_user_id", using: :btree
+  add_index "follower_targets", ["follower_id"], name: "index_follower_targets_on_follower_id", using: :btree
+  add_index "follower_targets", ["question_id"], name: "index_follower_targets_on_question_id", using: :btree
 
   create_table "galleries", force: true do |t|
     t.datetime "entries_open"
@@ -195,6 +250,16 @@ ActiveRecord::Schema.define(version: 20140911174010) do
 
   add_index "group_members", ["group_id"], name: "index_group_members_on_group_id", using: :btree
   add_index "group_members", ["user_id"], name: "index_group_members_on_user_id", using: :btree
+
+  create_table "group_targets", force: true do |t|
+    t.integer  "question_id"
+    t.integer  "group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "group_targets", ["group_id"], name: "index_group_targets_on_group_id", using: :btree
+  add_index "group_targets", ["question_id"], name: "index_group_targets_on_question_id", using: :btree
 
   create_table "groups", force: true do |t|
     t.string   "name"
@@ -269,17 +334,19 @@ ActiveRecord::Schema.define(version: 20140911174010) do
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
 
   create_table "messages", force: true do |t|
+    t.text     "content"
     t.string   "type"
     t.datetime "read_at"
-    t.datetime "completed_at"
-    t.integer  "response_count"
-    t.integer  "comment_count"
-    t.integer  "share_count"
-    t.integer  "follower_id"
+    t.integer  "other_user_id"
     t.integer  "question_id"
+    t.integer  "response_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "response_count", default: 0
+    t.integer  "comment_count",  default: 0
+    t.integer  "share_count",    default: 0
+    t.datetime "completed_at"
   end
 
   add_index "messages", ["user_id"], name: "index_messages_on_user_id", using: :btree
@@ -364,6 +431,10 @@ ActiveRecord::Schema.define(version: 20140911174010) do
     t.integer  "studio_id"
     t.integer  "view_count"
     t.integer  "start_count"
+    t.boolean  "target_all",            default: false
+    t.boolean  "target_all_followers",  default: false
+    t.boolean  "target_all_groups",     default: false
+    t.integer  "targeted_reach"
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
@@ -371,6 +442,17 @@ ActiveRecord::Schema.define(version: 20140911174010) do
   add_index "questions", ["created_at"], name: "index_questions_on_created_at", using: :btree
   add_index "questions", ["kind"], name: "index_questions_on_kind", using: :btree
   add_index "questions", ["user_id"], name: "index_questions_on_user_id", using: :btree
+
+  create_table "questions_surveys", force: true do |t|
+    t.integer  "question_id"
+    t.integer  "survey_id"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "questions_surveys", ["question_id"], name: "index_questions_surveys_on_question_id", using: :btree
+  add_index "questions_surveys", ["survey_id"], name: "index_questions_surveys_on_survey_id", using: :btree
 
   create_table "relationships", force: true do |t|
     t.integer  "follower_id"
@@ -589,6 +671,12 @@ ActiveRecord::Schema.define(version: 20140911174010) do
   add_index "studios", ["contest_id"], name: "index_studios_on_contest_id", using: :btree
   add_index "studios", ["scene_id"], name: "index_studios_on_scene_id", using: :btree
   add_index "studios", ["sticker_pack_id"], name: "index_studios_on_sticker_pack_id", using: :btree
+
+  create_table "surveys", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "taggings", force: true do |t|
     t.integer  "tag_id"

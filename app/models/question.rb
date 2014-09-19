@@ -5,11 +5,16 @@ class Question < ActiveRecord::Base
 	has_many :packs, through: :inclusions
 	has_many :sharings, dependent: :destroy
 	has_many :responses, dependent: :destroy
+  has_many :users,  through: :responses
 	has_many :responses_with_comments, -> { where "comment != ''" }, class_name: "Response"
 	has_many :feed_items, dependent: :destroy
 	has_many :skips, class_name:"SkippedItem", dependent: :destroy
   has_many :choices
   has_many :question_reports
+  has_many :group_targets
+  has_many :target_groups, through: :group_targets, source: :group
+  has_many :follower_targets
+  has_many :target_followers, through: :follower_targets, source: :follower
 
 	scope :active, -> { where state:"active" }
 
@@ -21,16 +26,14 @@ class Question < ActiveRecord::Base
 	validates :state, presence: true, inclusion: {in: %w(preview targeting active)}
 	validates :kind, inclusion: {in: %w(public targeted)}
 
-	def targeted_reach
-		feed_items.count + skips.count + responses.count
-	end
-
 	def viewed!
 		update_attribute :view_count, (view_count.to_i + 1)
+		DailyAnalytic.increment! :views, self.user
 	end
 
 	def started!
 		update_attribute :start_count, (start_count.to_i + 1)
+		DailyAnalytic.increment! :starts, self.user
 	end
 
 	def active?

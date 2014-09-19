@@ -37,36 +37,85 @@ class UsersController < ApplicationController
     authorize @user
 
     # TODO - lazy load this data
+    reach = @user.questions.sum(:view_count)
+    targeted_reach = @user.questions.map{|q| q.targeted_reach.to_i }.sum
+    viral_reach = reach - targeted_reach
+    engagements = @user.questions.sum(:start_count)
+    completes = @user.questions.map{|q| q.response_count }.sum
+    skips = @user.questions.map{|q| q.skip_count }.sum
+    comments = @user.questions.map{|q| q.comment_count }.sum
+    shares = @user.questions.map{|q| q.share_count }.sum
+
     @campaign_data = [
-      { label: "Targeted Reach", value: @user.questions.map{|q| q.targeted_reach }.sum },
-      { label: "Views", value: @user.questions.sum(:view_count) },
-      { label: "Engagements", value: @user.questions.sum(:start_count) },
-      { label: "Completes", value: @user.questions.map{|q| q.response_count }.sum },
-      { label: "Skips", value: @user.questions.map{|q| q.skip_count }.sum },
-      { label: "Comments", value: @user.questions.map{|q| q.comment_count }.sum  },
-      { label: "Shares", value: @user.questions.map{|q| q.share_count }.sum  }
+      { label: "Reach", value: reach },
+      { label: "Engagements", value: engagements },
+      { label: "Completes", value: completes },
+      { label: "Skips", value: skips },
+      { label: "Comments", value: comments },
+      { label: "Shares", value: shares }
     ]
+
+    if reach != 0
+      @viral_rate = viral_reach.to_f / reach
+      @engagement_rate = engagements.to_f / reach
+      @complete_rate = completes.to_f / reach
+    end
+
+    @responses_by_day_data = (0..29).to_a.reverse.map{|days_ago| {day: (Date.today - days_ago).to_formatted_s(:sql), v: DailyAnalytic.fetch(:responses, Date.today - days_ago, @user)}}
+
+    engagements_yesterday = DailyAnalytic.fetch(:starts, Date.today - 1, @user)
+    engagements_day_before = DailyAnalytic.fetch(:starts, Date.today - 2, @user)
+    @engagement_increase_rate = engagements_yesterday.to_f / engagements_day_before - 1 unless engagements_day_before == 0
+    @engagement_data_points = (0..29).to_a.reverse.map{|days_ago| DailyAnalytic.fetch(:starts, Date.today - days_ago, @user)}
+
+    @reach_today = DailyAnalytic.fetch(:views, Date.today, @user)
+
+    @targeted_reach = targeted_reach
+    @viral_reach = viral_reach
+    @reach_data_points = (0..29).to_a.reverse.map{|days_ago| DailyAnalytic.fetch(:views, Date.today - days_ago, @user)}
 
     # TODO - lazy load this data
-    @recent_question_actions = QuestionAction.recent_actions(@user, Time.now - 6.hours)
-
-    @dummy_comment_data = [
-      { email: "james@kirk.com", name: "Jim", url: '#', campaign_name: "Campaign 1", campaign_url: '#', text: "This was an awesome question!", date: 5.minutes.ago },
-      { email: "scotty@engineering.com", name: "James", url: '#', campaign_name: "Campaign 1", campaign_url: '#', text: "This was another awesome question!", date: 7.minutes.ago },
-      { email: "leonard@mccoy.com", name: "Leonard", url: '#', campaign_name: "Campaign 1", campaign_url: '#', text: "This was an great question!", date: 12.minutes.ago },
-      { email: "uhura@thebridge.com", name: "Nyota", url: '#', campaign_name: "Campaign 1", campaign_url: '#', text: "This was asked just in time!", date: 23.minutes.ago },
-      { email: "hikaru@sulu.com", name: "Hikaru", url: '#', campaign_name: "Campaign 1", campaign_url: '#', text: "Who came up with this one?!", date: 45.minutes.ago },
-      { email: "spock@vulcan.com", name: "Spock", url: '#', campaign_name: "Campaign 1", campaign_url: '#', text: "Please ask more like this!", date: 123.minutes.ago },
-      { email: "patrick@stewart.com", name: "Captain", url: '#', campaign_name: "Campaign 1", campaign_url: '#', text: "What a rare thing to konw about!", date: 1234.minutes.ago }
-    ]
-
-    @dummy_complete_data = [
-      { email: "arthur@fillingstation.com", date: 1.week.ago, response: "That's what she said.", response_url: '#', name: "Fonzie", url: '#' },
-      { email: "ralph@malph.com", date: 2.weeks.ago, response: "That's what he said.", response_url: '#', name: "Ralph", url: '#' },
-      { email: "ritchie@cunningham.com", date: 3.weeks.ago, response: "That's what I always say.", response_url: '#', name: "Richard", url: '#' },
-      { email: "jonie@cunningham.com", date: 2.months.ago, response: "Wait, who said that?.", response_url: '#', name: "Jonie", url: '#' }
-    ]
+    @recent_responses = @user.responses_to_questions.order("responses.created_at DESC").kpage(1).per(5)
+    @recent_responses_with_comments = @user.responses_to_questions_with_comments.order("responses.created_at DESC").kpage(1).per(5)
 
     render layout: "pixel_admin"
   end
+
+  def recent_responses
+    @user = User.find params[:id]
+    authorize @user
+
+    @recent_responses = @user.responses_to_questions.order("responses.created_at DESC").kpage(params[:page]).per(5)
+  end
+
+  def campaigns
+    @user = User.find params[:id]
+    authorize @user
+
+    @questions = @user.questions
+
+    render layout: "pixel_admin"
+  end
+
+  def segments
+    @user = User.find params[:id]
+    authorize @user
+
+    render layout: "pixel_admin"
+  end
+
+  def analytics
+    @user = User.find params[:id]
+    authorize @user
+
+    render layout: "pixel_admin"
+  end
+
+  def account
+    @user = User.find params[:id]
+    authorize @user
+
+    render layout: "pixel_admin"
+  end
+
 end

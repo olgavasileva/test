@@ -50,7 +50,7 @@
       -n=0
       -@response.question.choices.each do |c|
         -n+=1
-        %label.col-md-6.choice-wrapper
+        %label.col-sm-6.col-xs-12.choice-wrapper
           =radio_button_tag("image_choice_response[choice_id]",c.id,false,{class:'selected-choice'})
           =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
           %i.glyphicon.glyphicon-ok.selected

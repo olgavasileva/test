@@ -14,6 +14,13 @@ class QuestionAction
     recent_skips.each do |skip_item|
       actions << QuestionAction.new(response:skip_item, date:skip_item.created_at)
     end
+
+    actions
+  end
+
+  def initialize options = {}
+    @response = options[:response]
+    @date = options[:date]
   end
 
   def response_id
