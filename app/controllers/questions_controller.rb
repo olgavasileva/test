@@ -17,6 +17,7 @@ class QuestionsController < ApplicationController
   end
 
   def summary
+
     @question = Question.find params[:id]
     authorize @question
 

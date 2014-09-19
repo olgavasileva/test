@@ -5,6 +5,7 @@ class Question < ActiveRecord::Base
 	has_many :packs, through: :inclusions
 	has_many :sharings, dependent: :destroy
 	has_many :responses, dependent: :destroy
+  has_many :users,  through: :responses
 	has_many :responses_with_comments, -> { where "comment != ''" }, class_name: "Response"
 	has_many :feed_items, dependent: :destroy
 	has_many :skips, class_name:"SkippedItem", dependent: :destroy

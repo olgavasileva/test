@@ -9,15 +9,16 @@
       margin: auto
 
     .response_counter
-      font-size: 1.8em
+      text-align: right
+      font-size: 1.3em
+      width: 4em
       position: absolute
-      right: 25px
-      top: 15px
+      right: 10px
+      top: 10px
       color: white
       background-color: rgba(0,0,0,0.3)
-      padding: 5px
-      padding-left: 15px
-      padding-right: 15px
+      padding-left: 10px
+      padding-right: 10px
       border: solid 1px white
 
     .option-title
@@ -50,7 +51,7 @@
         %label.col-sm-6.col-xs-12.choice-wrapper
           =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
           %i.response_counter
-            ==Integer((((@responses_resume[c.id]||0)/Float(@question.response_count))*100.00).round())
+            =Integer((((@responses_resume[c.id]||0)/Float(@question.response_count))*100.00).round())
             \%
           .option-title
             =c.title

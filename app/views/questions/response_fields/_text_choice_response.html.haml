@@ -47,15 +47,16 @@
     background-color: transparent
 
   .response_counter
-    font-size: 1.8em
+    text-align: right
+    font-size: 1.3em
+    width: 4em
     position: absolute
-    right: 25px
-    top: 15px
+    right: 10px
+    top: 10px
     color: white
     background-color: rgba(0,0,0,0.3)
-    padding: 5px
-    padding-left: 15px
-    padding-right: 15px
+    padding-left: 10px
+    padding-right: 10px
     border: solid 1px white
 
 .row.text-choices.form-group
@@ -78,8 +79,9 @@
             %div{:class=>["col-xs-4 col-sm-4 col-md-#{cols}"]}
               = responsive_image_tag((question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
           .option-title=c.title
+          -divNumber=(@question.response_count>0) ? @question.response_count : 1
           %i.response_counter
-            =Integer((((@responses_resume[c.id]||0)/Float(@question.response_count))*100.00).round())
+            =Integer((((@responses_resume[c.id]||0)/Float(divNumber))*100.00).round())
             \%
 
 -#.row.form-group

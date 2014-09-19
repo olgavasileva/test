@@ -1,5 +1,5 @@
 :sass
-  .nav.nav-tabs
+  .stats-tabs.nav.nav-tabs
     border-color: #357ebd
     background-color: #357ebd
     border-width: 1px
@@ -24,7 +24,11 @@
             background-color: white
             cursor: default
 
-%ul.col-xs-12.nav.nav-tabs{:role=>"tablist"}
+  .tab-content.stats-tabs-content
+    .tab-pane
+      min-height: 337px
+
+%ul.col-xs-12.nav.nav-tabs.stats-tabs{:role=>"tablist"}
   %li.active.col-xs-4
     %a.btn-primary.negative{:href=>"#comments_pane", :role=>"tab", :data=>{:toggle=>"tab"}}
       %span.glyphicon.glyphicon-comment
@@ -41,10 +45,10 @@
       %br
       Stats
 
-.tab-content.row
+.tab-content.stats-tabs-content.row
   .tab-pane.col-xs-12.active#comments_pane
     =render 'widgets/tc_summary_tabs/panes/comments_summary_pane',question:@question
   .tab-pane.col-xs-12#filter_pane
-    Filter Pane
+    =render 'widgets/tc_summary_tabs/panes/filters_summary_pane',locals:{user:current_user}
   .tab-pane.col-xs-12#stats_pane
-    =render 'widgets/tc_summary_tabs/panes/stats_summary_pane',locals:{User:User}
+    =render 'widgets/tc_summary_tabs/panes/stats_summary_pane',locals:{user:current_user}
