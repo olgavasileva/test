@@ -17,6 +17,7 @@ gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
 
 gem 'will_paginate'
+gem 'kaminari'
 
 gem 'bcrypt-ruby'
 gem 'jquery-ui-rails'

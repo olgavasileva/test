@@ -75,10 +75,17 @@ class UsersController < ApplicationController
     @reach_data_points = (0..29).to_a.reverse.map{|days_ago| DailyAnalytic.fetch(:views, Date.today - days_ago, @user)}
 
     # TODO - lazy load this data
-    @recent_responses = @user.responses_to_questions.order("responses.created_at DESC").paginate(page:1, per_page:5)
-    @recent_responses_with_comments = @user.responses_to_questions_with_comments.order("responses.created_at DESC").paginate(page:1, per_page:5)
+    @recent_responses = @user.responses_to_questions.order("responses.created_at DESC").kpage(1).per(5)
+    @recent_responses_with_comments = @user.responses_to_questions_with_comments.order("responses.created_at DESC").kpage(1).per(5)
 
     render layout: "pixel_admin"
+  end
+
+  def recent_responses
+    @user = User.find params[:id]
+    authorize @user
+
+    @recent_responses = @user.responses_to_questions.order("responses.created_at DESC").kpage(params[:page]).per(5)
   end
 
   def campaigns

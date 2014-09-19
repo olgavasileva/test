@@ -5,7 +5,7 @@
       Recent Comments
     .panel-heading-controls
       .panel-heading-text
-        =will_paginate @recent_responses_with_comments
+        =paginate @recent_responses_with_comments, remote: true
 
   .widget-comments.panel-body.tab-content-padding
     .panel-padding.no-padding-vr

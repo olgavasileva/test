@@ -27,3 +27,7 @@
 
 # Start the pixel admin app so initial settings are set up before our js stuff runs
 window.PixelAdmin.start()
+
+$ ->
+  $('[data-lazy]').each ->
+    $.getScript $(this).data().lazy

@@ -14,6 +14,10 @@ class UserPolicy < ApplicationPolicy
     @user.has_role? :pro
   end
 
+  def recent_responses?
+    @user.has_role? :pro
+  end
+
   def campaigns?
     @user.has_role? :pro
   end

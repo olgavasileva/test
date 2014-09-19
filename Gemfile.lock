@@ -506,6 +506,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   just-datetime-picker
+  kaminari
   koala
   less-rails
   mysql2
