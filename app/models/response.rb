@@ -52,7 +52,10 @@ class Response < ActiveRecord::Base
 
       APNS.port = 2195
 
-      self.user.instances.each { |instance| APNS.send_notification(instance.push_token, :alert => 'Hello iPhone!', :badge => 0, :sound => 'default',
+      self.user.instances.each do |instance|
+        next unless instance.push_token.present?
+
+        APNS.send_notification(instance.push_token, :alert => 'Hello iPhone!', :badge => 0, :sound => 'default',
                                                                        :other => {:type => message.type,
                                                                                   :created_at => message.created_at,
                                                                                   :read_at => message.read_at,
@@ -61,7 +64,8 @@ class Response < ActiveRecord::Base
                                                                                   :comment_count => message.comment_count,
                                                                                   :share_count => message.share_count,
                                                                                   :completed_at => message.completed_at
-                                                                       }) }
+                                                                       })
+      end
 
     end
 end
