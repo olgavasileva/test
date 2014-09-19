@@ -13,15 +13,15 @@
 
     #dashboard-recent-comments.widget-comments.panel-body.tab-pane.no-padding.fade.active.in
       .panel-padding.no-padding-vr
-        - @dummy_comment_data.each do |c|
+        - @recent_responses_with_comments.each do |r|
           .comment
-            =gravatar_for c[:email], class: %w(comment-avatar)
+            =gravatar_for r.user.email, class: %w(comment-avatar)
             .comment-body
               .comment-by
-                =link_to c[:name], c[:url], title: ""
+                =r.user.name
                 commented on
-                =link_to c[:campaign_name], c[:campaign_url], title: ""
-              .comment-text= c[:text]
+                =link_to r.question.title, [r.question], title: ""
+              .comment-text= r.comment
               .comment-actions
                 =link_to '#' do
                   %i.fa.fa-pencil>
@@ -30,19 +30,19 @@
                   %i.fa.fa-times>
                   Remove
                 %span.pull-right
-                  =time_ago_in_words c[:date]
+                  =time_ago_in_words r.created_at
                   ago
 
     #dashboard-recent-completes.widget-threads.panel-body.tab-pane.no-padding.fade
       .panel-padding.no-padding-vr
-        - @dummy_complete_data.each do |c|
+        - @recent_responses.each do |r|
           .thread
-            =gravatar_for c[:email], class: %w(thread-avatar)
+            =gravatar_for r.user.email, class: %w(thread-avatar)
             .thread-body
               %span.thread-time
-                =time_ago_in_words c[:date]
+                =time_ago_in_words r.created_at
                 ago
-              =link_to c[:response], c[:response_url], title: "", class: %w(thread-title)
+              =link_to r.question.title, [r], title: r.question.title, class: %w(thread-title)
               .thread-info
                 completed by
-                =link_to c[:name], c[:url], title: ""
+                =r.user.name

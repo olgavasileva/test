@@ -1,3 +1,20 @@
+namespace :db do
+  desc "Set up some analytics data"
+  task sample_analytics: :environment do
+    User.all.each do |u|
+      (0..6).each do |d|
+        date = Date.today - d.days
+
+        a = DailyAnalytic.where(user_id:u, metric: :views, date:date).first_or_create!
+        a.update_attribute :total, rand(150)
+
+        a = DailyAnalytic.where(user_id:u, metric: :starts, date:date).first_or_create!
+        a.update_attribute :total, rand(150)
+      end
+    end
+  end
+end
+
 # require 'csv'
 # require 'pp'
 

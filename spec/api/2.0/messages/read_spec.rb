@@ -60,7 +60,7 @@ describe :read do
 
         context "and the target message doesn't belong to current user" do
           let(:other_user) {FactoryGirl.create :user}
-          let(:message) {FactoryGirl.create :question_liked_message, user:other_user}
+          let(:message) {FactoryGirl.create :question_updated, user:other_user}
           let(:message_id) {message.id}
 
           it {expect(response.status).to eq 200}
@@ -70,7 +70,7 @@ describe :read do
         end
 
         context "and the target message has already been read" do
-          let(:message) {FactoryGirl.create :question_liked_message, user:user, read_at:Time.zone.now()}
+          let(:message) {FactoryGirl.create :question_updated, user:user, read_at:Time.zone.now()}
           let(:before_api_call) {
             message.read_at = Time.zone.now()
             message.save
@@ -84,7 +84,7 @@ describe :read do
         end
 
         context "and the target message is all right" do
-          let(:message) {FactoryGirl.create :question_liked_message, user:user}
+          let(:message) {FactoryGirl.create :question_updated, user:user}
           let(:message_id) {message.id}
 
           it {expect(response.status).to eq 200}

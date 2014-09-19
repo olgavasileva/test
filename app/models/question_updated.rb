@@ -1,0 +1,3 @@
+class QuestionUpdated < Message 
+
+end

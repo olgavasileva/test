@@ -1,6 +1,35 @@
 class TwoCents::Messages < Grape::API
   resource :messages do
 
+
+
+    #
+    # Returns the number of unread messages
+    #
+    desc "Update the status of a message", {
+        notes: <<-END
+        This API will update the status of a message which belongs to the current user.
+
+        #### Example response
+
+          {number_of_unread_messages : 4}
+        END
+    }
+    params do
+      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+    end
+    get 'number_of_unread_messages', http_codes:[
+        [200, "400 - Invalid params"],
+        [200, "402 - Invalid auth token"],
+        [200, "403 - Login required"]
+    ] do
+      validate_user!
+
+
+      @number = Message.all.where("read_at is ?", nil).count
+      { number_of_unread_messages: @number }
+    end
+
     #
     # Update the read status of a message
     #
@@ -103,35 +132,45 @@ class TwoCents::Messages < Grape::API
     # Return the messages sent to current user
     #
 
-    desc "Return an array of questions and related data for this user.", {
+    desc "Return an array of messages for this user.", {
       notes: <<-END
-        This API will return an ordered list of unanswered questions for this user.
+        This API will return an ordered list of messages for this user.
 
         #### Example response
-            [
-                {
-                    "type": "QuestionUpdated",
-                    "question_id": 123
-                    "response_count": 3,
-                    "comment_count": 2,
-                    "share_count": 2,
-                    "completed_at": 1231231234,        # timestamp
-                    "created_at": 1231231234           # timestamp
-                    "read_at": 1231231234              # timestamp
-                },
-                {
-                    "type": "UserFollowed",
-                    "follower_id": 123,
-                    "created_at": 1231231234           # timestamp
-                    "read_at": 1231231234              # timestamp
-                }
-            ]
+            {
+                "messages":
+                    [
+                        {
+                            "message":
+                              {
+                                  "type": "QuestionUpdated",
+                                  "question_id": 123
+                                  "response_count": 3,
+                                  "comment_count": 2,
+                                  "share_count": 2,
+                                  "completed_at": 1231231234,        # timestamp
+                                  "created_at": 1231231234           # timestamp
+                                  "read_at": 1231231234              # timestamp
+                              }
+                        },
+                        {
+                            "message":
+                              {
+                                  "type": "UserFollowed",
+                                  "follower_id": 123,
+                                  "created_at": 1231231234           # timestamp
+                                  "read_at": 1231231234              # timestamp
+                              }
+                        }
+                    ],
+                "number_of_unread_messages": 2
+            }
       END
     }
     params do
       requires :auth_token, type:String, desc: 'Obtain this from the instances API'
-      optional :page, type: Integer, desc: "Page number, starting at 1 - all questions returned if not supplied"
-      optional :per_page, type: Integer, default: 15, desc: "Number of questions per page"
+      optional :page, type: Integer, desc: "Page number, starting at 1 - all messages returned if not supplied"
+      optional :per_page, type: Integer, default: 15, desc: "Number of messages per page"
     end
     post '/', rabl: "messages", http_codes:[
       [200, "400 - Invalid params"],
@@ -145,8 +184,7 @@ class TwoCents::Messages < Grape::API
       messages = policy_scope(Message)
 
       @messages = messages.paginate(page:page, per_page:per_page)
+      @number = Message.all.where("read_at is ?", nil).count
     end
-
-
   end
 end

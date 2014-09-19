@@ -58,10 +58,10 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.dom_class = %w{navigation}
 
     primary.item :dashboard, '<i class="menu-icon fa fa-dashboard"></i><span class="mm-text">Dashboard</span>'.html_safe, [:dashboard, current_user]
-    primary.item :campaigns, '<i class="menu-icon fa fa-crosshairs"></i><span class="mm-text">Campaigns</span>'.html_safe, '#'
-    primary.item :segments, '<i class="menu-icon fa fa-cubes"></i><span class="mm-text">Segments</span>'.html_safe, '#'
-    primary.item :analytics, '<i class="menu-icon fa fa-bar-chart-o"></i><span class="mm-text">Analytics</span>'.html_safe, '#'
-    primary.item :account, '<i class="menu-icon fa fa-cog"></i><span class="mm-text">Account Management</span>'.html_safe, '#'
+    primary.item :campaigns, '<i class="menu-icon fa fa-crosshairs"></i><span class="mm-text">Campaigns</span>'.html_safe, [:campaigns, current_user]
+    primary.item :segments, '<i class="menu-icon fa fa-cubes"></i><span class="mm-text">Segments</span>'.html_safe, [:segments, current_user]
+    primary.item :analytics, '<i class="menu-icon fa fa-bar-chart-o"></i><span class="mm-text">Analytics</span>'.html_safe, [:analytics, current_user]
+    primary.item :account, '<i class="menu-icon fa fa-cog"></i><span class="mm-text">Account Management</span>'.html_safe, [:account, current_user]
     primary.item :create_campaign, '<i class="menu-icon"></i><span class="mm-text">Create Campaign</span>'.html_safe, '#'
   end
 end

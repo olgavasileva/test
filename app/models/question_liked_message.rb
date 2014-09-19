@@ -1,3 +1,0 @@
-class QuestionLikedMessage < Message 
-
-end

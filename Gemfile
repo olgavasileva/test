@@ -73,8 +73,11 @@ gem 'acts-as-taggable-on'           # A tagging plugin for Rails applications th
 gem 'roo'                           # Roo provides an interface to Open Office, Excel, and Google Spreadsheets
 gem 'rubyzip'                       # rubyzip is a ruby library for reading and writing zip files
 gem 'creek', '~> 1.0.3'             # Configurable streaming aggregator
+gem 'rpush'
+gem 'apns'
 
 group :development do
+
   gem 'sqlite3'
   gem 'capistrano-rails'
   gem 'capistrano-rvm'

@@ -1,3 +1,0 @@
-class DirectQuestionMessage < Message 
-
-end

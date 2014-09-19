@@ -3,6 +3,6 @@ class MultipleChoiceResponsesController < ResponsesController
   protected
 
     def response_params
-      params.require(:multiple_choice_response).permit(:user_id, :question_id, :type, choice_ids:[], :comment)
+      params.require(:multiple_choice_response).permit(:user_id, :question_id, :type, :comment, choice_ids:[])
     end
 end
