@@ -52,6 +52,7 @@ class User < ActiveRecord::Base
 	has_many :devices, through: :instances
 	has_many :questions, dependent: :destroy
   has_many :responses_to_questions, through: :questions, source: :responses
+  has_many :responses_to_questions_with_comments, -> {where "responses.comment IS NOT NULL AND responses.comment != ''"}, through: :questions, source: :responses
   has_many :questions_skips, through: :questions, source: :skips
 	has_many :packs, dependent: :destroy
 	has_many :sharings, foreign_key: "sender_id", dependent: :destroy

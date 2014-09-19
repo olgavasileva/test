@@ -2,47 +2,29 @@
   .panel-heading
     %span.panel-title
       %i.panel-title-icon.fa.fa-fire.text-danger>
-      Recent
-    %ul.nav.nav-tabs.nav-tabs-xs
-      %li.active
-        %a{"data-toggle" => "tab", :href => "#dashboard-recent-comments"} Comments
-      %li
-        %a{"data-toggle" => "tab", :href => "#dashboard-recent-completes"} Completes
+      Recent Comments
+    .panel-heading-controls
+      .panel-heading-text
+        =will_paginate @recent_responses_with_comments
 
-  .tab-content
-
-    #dashboard-recent-comments.widget-comments.panel-body.tab-pane.no-padding.fade.active.in
-      .panel-padding.no-padding-vr
-        - @recent_responses_with_comments.each do |r|
-          .comment
-            =gravatar_for r.user.email, class: %w(comment-avatar)
-            .comment-body
-              .comment-by
-                =r.user.name
-                commented on
-                =link_to r.question.title, [r.question], title: ""
-              .comment-text= r.comment
-              .comment-actions
-                =link_to '#' do
-                  %i.fa.fa-pencil>
-                  Edit
-                =link_to '#' do
-                  %i.fa.fa-times>
-                  Remove
-                %span.pull-right
-                  =time_ago_in_words r.created_at
-                  ago
-
-    #dashboard-recent-completes.widget-threads.panel-body.tab-pane.no-padding.fade
-      .panel-padding.no-padding-vr
-        - @recent_responses.each do |r|
-          .thread
-            =gravatar_for r.user.email, class: %w(thread-avatar)
-            .thread-body
-              %span.thread-time
+  .widget-comments.panel-body.tab-content-padding
+    .panel-padding.no-padding-vr
+      - @recent_responses_with_comments.each do |r|
+        .comment
+          =gravatar_for r.user.email, class: %w(comment-avatar)
+          .comment-body
+            .comment-by
+              =r.user.username
+              commented on
+              =link_to r.question.title, [r.question], title: ""
+            .comment-text= r.comment
+            .comment-actions
+              =link_to '#' do
+                %i.fa.fa-pencil>
+                Edit
+              =link_to '#' do
+                %i.fa.fa-times>
+                Remove
+              %span.pull-right
                 =time_ago_in_words r.created_at
                 ago
-              =link_to r.question.title, [r], title: r.question.title, class: %w(thread-title)
-              .thread-info
-                completed by
-                =r.user.name

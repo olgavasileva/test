@@ -21,13 +21,13 @@ class OrderResponse < Response
     end
   end
 
+  def description
+    top_choices_response.choice.id
+  end
+
   private
 
-  def top_choices_response
-    choice_responses.sort_by(&:position).first
-  end
-
-  def description
-    top_choices_response.order_choice.id
-  end
+    def top_choices_response
+      choice_responses.sort_by(&:position).first
+    end
 end

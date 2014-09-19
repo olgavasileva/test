@@ -9,7 +9,7 @@
     .col-md-8
       = render 'users/pro/chart'
       .row
-        .col-xs-4= render 'users/pro/rate_chart', title:"View Rate", rate:@view_rate
+        .col-xs-4= render 'users/pro/rate_chart', title:"Viral Rate", rate:@viral_rate
         .col-xs-4= render 'users/pro/rate_chart', title:"Engagement Rate", rate:@engagement_rate
         .col-xs-4= render 'users/pro/rate_chart', title:"Complete Rate", rate:@complete_rate
     .col-md-4
@@ -20,5 +20,5 @@
 
   %hr.no-grid-gutter-h.grid-gutter-margin-b.no-margin-t/
   .row
-    .col-md-6=render 'users/pro/responses'
+    .col-md-6=render 'users/pro/recent_completes'
     .col-md-6=render 'users/pro/recent_comments'

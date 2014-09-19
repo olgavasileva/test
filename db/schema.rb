@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140919000655) do
+ActiveRecord::Schema.define(version: 20140919034149) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -434,6 +434,7 @@ ActiveRecord::Schema.define(version: 20140919000655) do
     t.boolean  "target_all",            default: false
     t.boolean  "target_all_followers",  default: false
     t.boolean  "target_all_groups",     default: false
+    t.integer  "targeted_reach"
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree

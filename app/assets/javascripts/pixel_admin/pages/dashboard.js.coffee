@@ -22,7 +22,7 @@ init.push ->
     data: $('#hero-graph').data().points
     xkey: 'day'
     ykeys: ['v']
-    labels: ['Value']
+    labels: ['Completes']
     lineColors: ['#fff']
     lineWidth: 2
     pointSize: 4
