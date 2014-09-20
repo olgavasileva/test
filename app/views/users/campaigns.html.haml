@@ -1,2 +1,30 @@
-- @questions.each do |q|
-  %div=q.title
+.panel
+  .panel-heading
+    %h2.panel-title These are all of your campaigns
+.table-primary
+  %table.table.table-striped.table-bordered#campaigns{cellpadding:0, cellspacing:0, border:0}
+    %thead
+      %tr
+        %th Question
+        %th Creation Date
+        %th Start / Stop Campaign
+        %th Reach
+        %th Targeted Reach
+        %th Completes
+        %th
+    %tbody
+      - @questions.each do |q|
+        %tr
+          %td=q.title
+          %td=q.created_at
+          - if q.active?
+            %td=link_to "Stop Campaign", '#', class:%w(btn btn-xs btn-danger)
+          - else
+            %td=link_to "Start Campaign", '#', class:%w(btn btn-xs btn-success)
+          %td.text-right=q.view_count
+          -if q.targeted_reach.to_i > 0
+            %td.text-right= q.targeted_reach.to_i
+          -else
+            %td.text-center &mdash;
+          %td.text-right=q.response_count
+          %td=link_to "Full analytics", '#'
