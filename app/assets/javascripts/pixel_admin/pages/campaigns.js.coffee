@@ -1,4 +1,4 @@
 $(document).on 'page:change', ->
-  $('#campaigns').dataTable();
+  $('#campaigns table').dataTable();
   $('#campaigns_wrapper .table-caption').text('Some header text');
   $('#campaigns_wrapper .dataTables_filter input').attr('placeholder', 'Search...');
