@@ -36,6 +36,7 @@ LinkchatApp::Application.routes.draw do
     get :follow, on: :member
     get :dashboard, on: :member
     get :recent_responses, on: :member
+    get :recent_comments, on: :member
     get :campaigns, on: :member
     get :segments, on: :member
     get :analytics, on: :member

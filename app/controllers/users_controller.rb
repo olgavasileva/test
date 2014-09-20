@@ -74,10 +74,6 @@ class UsersController < ApplicationController
     @viral_reach = viral_reach
     @reach_data_points = (0..29).to_a.reverse.map{|days_ago| DailyAnalytic.fetch(:views, Date.today - days_ago, @user)}
 
-    # TODO - lazy load this data
-    @recent_responses = @user.responses_to_questions.order("responses.created_at DESC").kpage(1).per(5)
-    @recent_responses_with_comments = @user.responses_to_questions_with_comments.order("responses.created_at DESC").kpage(1).per(5)
-
     render layout: "pixel_admin"
   end
 
@@ -86,6 +82,13 @@ class UsersController < ApplicationController
     authorize @user
 
     @recent_responses = @user.responses_to_questions.order("responses.created_at DESC").kpage(params[:page]).per(5)
+  end
+
+  def recent_comments
+    @user = User.find params[:id]
+    authorize @user
+
+    @recent_responses_with_comments = @user.responses_to_questions_with_comments.order("responses.created_at DESC").kpage(params[:page]).per(5)
   end
 
   def campaigns

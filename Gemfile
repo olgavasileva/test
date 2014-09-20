@@ -77,6 +77,12 @@ gem 'creek', '~> 1.0.3'             # Configurable streaming aggregator
 gem 'rpush'
 gem 'apns'
 
+# pixel admin
+gem 'morrisjs-rails'                # js: good-looking charts shouldn't be difficult
+gem 'raphael-rails'                 # js: Cross-browser vector graphics the easy way (required by morrisjs-rails)
+gem 'jquery-slimscroll-rails'       # js: transforms any div into a scrollable area with a nice scrollbar
+gem 'easy_as_pie'                   # js+: Rails wrapper for easy-pie-chart
+
 group :development do
 
   gem 'sqlite3'
