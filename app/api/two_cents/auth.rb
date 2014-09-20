@@ -164,7 +164,7 @@ class TwoCents::Auth < Grape::API
       user = User.create! name:declared_params[:name], email:declared_params[:email], username:declared_params[:username], password:declared_params[:password], password_confirmation:declared_params[:password]
       instance.update_attributes! user:user, auth_token:"A"+UUID.new.generate
 
-      {auth_token:instance.auth_token}
+      {auth_token:instance.auth_token, user_id: user.id}
     end
 
 
@@ -219,7 +219,7 @@ class TwoCents::Auth < Grape::API
       end
 
       instance.update_attributes! user_id:user.id, auth_token:"A"+UUID.new.generate
-      {auth_token:instance.auth_token}
+      {auth_token:instance.auth_token, user_id: user.id}
     end
 
 
