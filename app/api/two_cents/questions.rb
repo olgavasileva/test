@@ -823,6 +823,33 @@ class TwoCents::Questions < Grape::API
     end
 
 
+    desc "Return a question's information."
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      requires :question_id, type: Integer, desc: "ID of question."
+      optional :user_id, type: Integer, desc: "ID of user for question answer data, defaults to current user's ID."
+    end
+    get 'question' do
+      validate_user!
+
+      @question = Question.find(params[:question_id])
+      @user = User.find(params.fetch(:user_id, current_user.id))
+
+      question_data = JSON.parse(Rabl.render(nil, 'question',
+                                             view_path: 'app/views/api',
+                                             scope: self)).fetch('question')
+      summary_data = JSON.parse(Rabl.render(nil, 'summary',
+                                            view_path: 'app/views/api',
+                                            scope: self)).fetch('summary')
+      user_data = {
+        user_answered: @user.answered_questions.include?(@question)
+      }
+
+      question_data.merge(summary_data).merge(user_data)
+    end
+
+
     #
     # Flag a question as inappropriate
     #
