@@ -43,14 +43,7 @@ class Response < ActiveRecord::Base
 
       message.save
 
-      APNS.host = 'gateway.push.apple.com'
-      # gateway.sandbox.push.apple.com is default
 
-      APNS.pem  = Rails.root + 'app/pem/crashmob_dev_push.pem'
-
-      # this is the file you just created
-
-      APNS.port = 2195
 
       self.user.instances.each do |instance|
         next unless instance.push_token.present?

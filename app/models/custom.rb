@@ -1,0 +1,3 @@
+class Custom < Message
+
+end

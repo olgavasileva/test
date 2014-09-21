@@ -151,6 +151,10 @@ class User < ActiveRecord::Base
     return self.responses.where("comment is not ?", nil).count
   end
 
+  def number_of_unread_messages
+    return self.messages.where("read_at is ?", nil).count
+  end
+
 	protected
 
 		def create_remember_token
@@ -167,14 +171,14 @@ class User < ActiveRecord::Base
         message.save
 
 
-        APNS.host = 'gateway.push.apple.com'
-        # gateway.sandbox.push.apple.com is default
-
-        APNS.pem  = Rails.root + 'app/pem/crashmob_dev_push.pem'
-
-        # this is the file you just created
-
-        APNS.port = 2195
+        # APNS.host = 'gateway.push.apple.com'
+        # # gateway.sandbox.push.apple.com is default
+        #
+        # APNS.pem  = Rails.root + 'app/pem/crashmob_dev_push.pem'
+        #
+        # # this is the file you just created
+        #
+        # APNS.port = 2195
 
         followed_user.instances.each { |instance| APNS.send_notification(instance.push_token, :alert => 'Hello iPhone!', :badge => 1, :sound => 'default',
                                                                          :other => {:type => message.type,
