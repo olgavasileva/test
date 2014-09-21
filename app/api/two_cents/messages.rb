@@ -26,7 +26,7 @@ class TwoCents::Messages < Grape::API
       validate_user!
 
 
-      @number = Message.all.where("read_at is ?", nil).count
+      @number = current_user.number_of_unread_messages
       { number_of_unread_messages: @number }
     end
 
