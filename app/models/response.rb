@@ -39,6 +39,7 @@ class Response < ActiveRecord::Base
       message.comment_count = self.question.comment_count
       message.share_count = self.question.share_count
 
+      message.read_at = nil
       message.completed_at = Time.now() if self.question.targeting?
 
       message.save
