@@ -162,8 +162,7 @@ class User < ActiveRecord::Base
     end
 
     def add_and_push_message(followed_user)
-
-      if !UserFollowed.exists?(:follower_id => self.id, :user_id => followed_user.id )
+      
         message = UserFollowed.new
         message.follower_id = self.id
         message.user_id = followed_user.id
@@ -188,6 +187,5 @@ class User < ActiveRecord::Base
                                                                          }) }
 
 
-      end
     end
 end
