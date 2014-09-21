@@ -162,7 +162,7 @@ class User < ActiveRecord::Base
     end
 
     def add_and_push_message(followed_user)
-      
+
         message = UserFollowed.new
         message.follower_id = self.id
         message.user_id = followed_user.id
