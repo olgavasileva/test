@@ -20,4 +20,15 @@ describe 'PUT questions/skip' do
 
     expect(skip).to_not be_nil
   end
+
+  context "with invalid question ID" do
+    let(:params) { {
+      auth_token: instance.auth_token,
+      question_id: -1
+    } }
+
+    it "responds with error data" do
+      expect(response_body.keys).to eq %w[error_code error_message]
+    end
+  end
 end

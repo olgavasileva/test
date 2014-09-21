@@ -977,8 +977,10 @@ class TwoCents::Questions < Grape::API
     put 'skip' do
       validate_user!
 
+      question = Question.find(params[:question_id])
+
       SkippedItem
-        .where(user_id: current_user.id, question_id: params[:question_id])
+        .where(user_id: current_user.id, question_id: question.id)
         .first_or_create!
 
       {}
