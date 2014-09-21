@@ -195,7 +195,7 @@ class TwoCents::Messages < Grape::API
       messages = policy_scope(Message)
 
       @messages = messages.paginate(page:page, per_page:per_page)
-      @number = Message.all.where("read_at is ?", nil).count
+      @number = current_user.number_of_unread_messages
     end
   end
 end

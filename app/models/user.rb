@@ -151,6 +151,10 @@ class User < ActiveRecord::Base
     return self.responses.where("comment is not ?", nil).count
   end
 
+  def number_of_unread_messages
+    return self.messages.where("read_at is ?", nil).count
+  end
+
 	protected
 
 		def create_remember_token
