@@ -166,6 +166,7 @@ class User < ActiveRecord::Base
         message = UserFollowed.new
         message.follower_id = self.id
         message.user_id = followed_user.id
+        message.created_at = Time.zone.now()
 
         message.save
 
