@@ -1,6 +1,6 @@
 class Response < ActiveRecord::Base
 
-  after_create :add_and_push_message
+
 
   belongs_to :user
   belongs_to :question
@@ -14,6 +14,7 @@ class Response < ActiveRecord::Base
   scope :with_comment, -> { where("comment <> ''") } # comment not nil or blank
 
   after_create :record_analytics
+  after_create :add_and_push_message
 
   def description
     "Override me!"
@@ -33,7 +34,7 @@ class Response < ActiveRecord::Base
         message = QuestionUpdated.find_by_question_id(self.question_id)
       end
 
-      message.user_id = self.user_id
+      message.user_id = self.question.user_id
       message.question_id = self.question_id
       message.response_count = self.question.response_count
       message.comment_count = self.question.comment_count
