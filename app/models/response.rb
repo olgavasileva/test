@@ -4,12 +4,14 @@ class Response < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :question
+  belongs_to :comment_parent, class_name: 'Response'
   has_many :liked_comments, dependent: :destroy
   has_many :comment_likers, through: :liked_comments, source: :user
   has_many :contest_response_votes, dependent: :destroy
 
 	validates :question, presence: true
   validates :comment, length: { maximum: 2000, allow_nil: true }
+  validate :comment_parent_shares_question
 
   scope :with_comment, -> { where("comment <> ''") } # comment not nil or blank
 
@@ -20,10 +22,20 @@ class Response < ActiveRecord::Base
     "Override me!"
   end
 
+  def comment_children
+    self.class.where(comment_parent_id: id)
+  end
+
   protected
 
     def record_analytics
       DailyAnalytic.increment! :responses, question.user
+    end
+
+    def comment_parent_shares_question
+      if comment_parent.present? && comment_parent.question != question
+        errors.add(:comment_parent_id, "must belong to the same question.")
+      end
     end
 
     def add_and_push_message

@@ -751,6 +751,8 @@ class TwoCents::Questions < Grape::API
       optional :choice_ids, type: Array, desc: 'The choices selected in a MultipleChoiceQuestion or ordered by an OrderQuestion'
       mutually_exclusive :text, :choice_id, :choice_ids
 
+      optional :comment_parent_id, type: Integer, desc: "Comment parent response's ID."
+
       optional :filter_group, type: Symbol, values:[:all, :friends, :followers, :following, :me], desc: ":all, :friends, :followers, :following, :me"
       optional :filter_gender, type: Symbol, values:[:all, :male, :female], desc: ":all, :male, :female"
       optional :filter_geography, type: Symbol, values:[:all, :near_me], desc: ":all, :near_me"
@@ -766,8 +768,9 @@ class TwoCents::Questions < Grape::API
 
       @question = Question.find declared_params[:question_id]
 
-      resp_params = params.to_h.slice(
-        'comment', 'anonymous', 'text', 'choice_id', 'choice_ids')
+      resp_param_keys =
+        %w[comment anonymous text choice_id choice_ids comment_parent_id]
+      resp_params = params.to_h.slice(*resp_param_keys)
       resp_params['user_id'] = current_user.id
 
       @question.responses.create!(resp_params)
