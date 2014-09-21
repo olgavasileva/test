@@ -1,6 +1,6 @@
 class Response < ActiveRecord::Base
 
-  before_create :add_and_push_message
+  after_create :add_and_push_message
 
   belongs_to :user
   belongs_to :question
