@@ -182,7 +182,7 @@ class User < ActiveRecord::Base
 
 
 
-        self.user.instances.each do |instance|
+        followed_user.instances.each do |instance|
           next unless instance.push_token.present?
 
           APNS.send_notification(instance.push_token, :alert => 'Hello iPhone!', :badge => 0, :sound => 'default',
