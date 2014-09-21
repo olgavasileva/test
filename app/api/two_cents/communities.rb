@@ -9,6 +9,10 @@ class TwoCents::Communities < Grape::API
         requires :id, type: Integer, desc: "ID of community."
       end
 
+      params :user_index do
+        optional :user_id, type: Integer, desc: "ID of user for results (defaults to current user's ID)"
+      end
+
       params :community do
         requires :name, type: String, desc: "Display name for community."
         optional :private, type: Boolean, default: false, desc: "Whether password is needed for new members."
@@ -34,17 +38,22 @@ class TwoCents::Communities < Grape::API
       def community_params
         params.to_h.slice *%w[name private password description]
       end
+
+      def specified_or_current_user
+        User.find(params.fetch(:user_id, current_user.id))
+      end
     end
 
 
     desc "Return owned communities."
     params do
       use :auth
+      use :user_index
     end
     get :as_owner do
       validate_user!
 
-      current_user.communities.map do |c|
+      specified_or_current_user.communities.map do |c|
         serialize_community(c)
       end
     end
@@ -52,11 +61,12 @@ class TwoCents::Communities < Grape::API
     desc "Return communities as member."
     params do
       use :auth
+      use :user_index
     end
     get :as_member do
       validate_user!
 
-      current_user.membership_communities.map do |c|
+      specified_or_current_user.membership_communities.map do |c|
         serialize_community(c)
       end
     end
