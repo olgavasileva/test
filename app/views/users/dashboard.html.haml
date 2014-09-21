@@ -4,19 +4,19 @@
     %li=link_to "Home", root_path
     %li.active=link_to "Dashboard", '#'
 
-  = render 'users/pro/page_header'
+  = render 'users/dashboard/header'
   .row
     .col-md-8
-      = render 'users/pro/chart'
+      = render 'users/dashboard/chart'
       .row
-        .col-xs-4= render 'users/pro/rate_chart', title:"Viral Rate", rate:@viral_rate
-        .col-xs-4= render 'users/pro/rate_chart', title:"Engagement Rate", rate:@engagement_rate
-        .col-xs-4= render 'users/pro/rate_chart', title:"Complete Rate", rate:@complete_rate
+        .col-xs-4= render 'users/dashboard/rate_chart', title:"Viral Rate", rate:@viral_rate
+        .col-xs-4= render 'users/dashboard/rate_chart', title:"Engagement Rate", rate:@engagement_rate
+        .col-xs-4= render 'users/dashboard/rate_chart', title:"Complete Rate", rate:@complete_rate
     .col-md-4
       .row
-        .col-sm-4.col-md-12= render 'users/pro/insights'
-        .col-sm-4.col-md-12= render 'users/pro/reach'
-        .col-sm-4.col-md-12= render 'users/pro/engagements'
+        .col-sm-4.col-md-12= render 'users/dashboard/insights'
+        .col-sm-4.col-md-12= render 'users/dashboard/reach'
+        .col-sm-4.col-md-12= render 'users/dashboard/engagements'
 
   %hr.no-grid-gutter-h.grid-gutter-margin-b.no-margin-t/
   .row
