@@ -163,10 +163,10 @@ class User < ActiveRecord::Base
 
     def add_and_push_message(followed_user)
 
-      if !UserFollowed.exists?(:follower_id => self.id, :user_id => followed_user.id )
         message = UserFollowed.new
         message.follower_id = self.id
         message.user_id = followed_user.id
+        message.created_at = Time.zone.now()
 
         message.save
 
@@ -180,14 +180,27 @@ class User < ActiveRecord::Base
         #
         # APNS.port = 2195
 
-        followed_user.instances.each { |instance| APNS.send_notification(instance.push_token, :alert => 'Hello iPhone!', :badge => 1, :sound => 'default',
-                                                                         :other => {:type => message.type,
-                                                                                    :created_at => message.created_at,
-                                                                                    :read_at => message.read_at,
-                                                                                    :follower_id => message.follower_id
-                                                                         }) }
 
 
-      end
+        followed_user.instances.each do |instance|
+          next unless instance.push_token.present?
+
+          APNS.send_notification(instance.push_token, :alert => 'Hello iPhone!', :badge => 0, :sound => 'default',
+                                 :other => {:type => message.type,
+                                            :created_at => message.created_at,
+                                            :read_at => message.read_at,
+                                            :follower_id => message.follower_id
+                                 })
+        end
+
+
+        # followed_user.instances.each { |instance| APNS.send_notification(instance.push_token, :alert => 'Hello iPhone!', :badge => 1, :sound => 'default',
+        #                                                                  :other => {:type => message.type,
+        #                                                                             :created_at => message.created_at,
+        #                                                                             :read_at => message.read_at,
+        #                                                                             :follower_id => message.follower_id
+        #                                                                  }) }
+
+
     end
 end

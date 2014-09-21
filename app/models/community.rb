@@ -6,4 +6,12 @@ class Community < ActiveRecord::Base
   validates :name, presence: true, uniqueness: { scope: :user_id }
   validates :user, presence: true
   validates :password, presence: true, if: :private?
+
+  after_create :add_creator_as_member
+
+  private
+
+  def add_creator_as_member
+    member_users << user
+  end
 end

@@ -967,5 +967,23 @@ class TwoCents::Questions < Grape::API
 
       {}
     end
+
+    desc "Skip a question."
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      requires :question_id, type: Integer, desc: "ID of question."
+    end
+    put 'skip' do
+      validate_user!
+
+      question = Question.find(params[:question_id])
+
+      SkippedItem
+        .where(user_id: current_user.id, question_id: question.id)
+        .first_or_create!
+
+      {}
+    end
   end
 end
