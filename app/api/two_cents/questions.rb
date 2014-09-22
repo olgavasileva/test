@@ -751,6 +751,8 @@ class TwoCents::Questions < Grape::API
       optional :choice_ids, type: Array, desc: 'The choices selected in a MultipleChoiceQuestion or ordered by an OrderQuestion'
       mutually_exclusive :text, :choice_id, :choice_ids
 
+      optional :comment_parent_id, type: Integer, desc: "Comment parent response's ID."
+
       optional :filter_group, type: Symbol, values:[:all, :friends, :followers, :following, :me], desc: ":all, :friends, :followers, :following, :me"
       optional :filter_gender, type: Symbol, values:[:all, :male, :female], desc: ":all, :male, :female"
       optional :filter_geography, type: Symbol, values:[:all, :near_me], desc: ":all, :near_me"
@@ -766,8 +768,9 @@ class TwoCents::Questions < Grape::API
 
       @question = Question.find declared_params[:question_id]
 
-      resp_params = params.to_h.slice(
-        'comment', 'anonymous', 'text', 'choice_id', 'choice_ids')
+      resp_param_keys =
+        %w[comment anonymous text choice_id choice_ids comment_parent_id]
+      resp_params = params.to_h.slice(*resp_param_keys)
       resp_params['user_id'] = current_user.id
 
       @question.responses.create!(resp_params)
@@ -820,6 +823,33 @@ class TwoCents::Questions < Grape::API
 
       @question = Question.find declared_params[:question_id]
       @anonymous = @question.responses.where(user:current_user).last.try(:anonymous)
+    end
+
+
+    desc "Return a question's information."
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      requires :question_id, type: Integer, desc: "ID of question."
+      optional :user_id, type: Integer, desc: "ID of user for question answer data, defaults to current user's ID."
+    end
+    get 'question' do
+      validate_user!
+
+      @question = Question.find(params[:question_id])
+      @user = User.find(params.fetch(:user_id, current_user.id))
+
+      question_data = JSON.parse(Rabl.render(nil, 'question',
+                                             view_path: 'app/views/api',
+                                             scope: self)).fetch('question')
+      summary_data = JSON.parse(Rabl.render(nil, 'summary',
+                                            view_path: 'app/views/api',
+                                            scope: self)).fetch('summary')
+      user_data = {
+        user_answered: @user.answered_questions.include?(@question)
+      }
+
+      question_data.merge(summary_data).merge(user_data)
     end
 
 
@@ -934,6 +964,24 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       Question.find(params[:question_id]).increment! :view_count
+
+      {}
+    end
+
+    desc "Skip a question."
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      requires :question_id, type: Integer, desc: "ID of question."
+    end
+    put 'skip' do
+      validate_user!
+
+      question = Question.find(params[:question_id])
+
+      SkippedItem
+        .where(user_id: current_user.id, question_id: question.id)
+        .first_or_create!
 
       {}
     end

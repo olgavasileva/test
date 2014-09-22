@@ -113,7 +113,7 @@ class TwoCents::Relationships < Grape::API
         fail! 400, "Already following user."
       end
 
-      current_user.leaders << user
+      current_user.follow! user
 
       {}
     end

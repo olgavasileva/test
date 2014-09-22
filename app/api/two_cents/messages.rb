@@ -26,7 +26,7 @@ class TwoCents::Messages < Grape::API
       validate_user!
 
 
-      @number = Message.all.where("read_at is ?", nil).count
+      @number = current_user.number_of_unread_messages
       { number_of_unread_messages: @number }
     end
 
@@ -144,6 +144,7 @@ class TwoCents::Messages < Grape::API
                             "message":
                               {
                                   "type": "QuestionUpdated",
+                                  "body": "QuestionUpdated",
                                   "question_id": 123
                                   "response_count": 3,
                                   "comment_count": 2,
@@ -157,7 +158,17 @@ class TwoCents::Messages < Grape::API
                             "message":
                               {
                                   "type": "UserFollowed",
+                                  "body": "UserFollowed",
                                   "follower_id": 123,
+                                  "created_at": 1231231234           # timestamp
+                                  "read_at": 1231231234              # timestamp
+                              }
+                        },
+                        {
+                            "message":
+                              {
+                                  "type": “Custom”,
+                                  "body": "Custom",
                                   "created_at": 1231231234           # timestamp
                                   "read_at": 1231231234              # timestamp
                               }
@@ -184,7 +195,7 @@ class TwoCents::Messages < Grape::API
       messages = policy_scope(Message)
 
       @messages = messages.paginate(page:page, per_page:per_page)
-      @number = Message.all.where("read_at is ?", nil).count
+      @number = current_user.number_of_unread_messages
     end
   end
 end

@@ -2,23 +2,23 @@
 
   .stat-row
     .stat-cell.bg-pa-purple.padding-sm
-      .text-xs{style: "margin-bottom: 5px;"} RETWEETS GRAPH
-      #reach_graph.stats-sparklines{data: {points: @tweet_data_points}, style: "width: 100%"}
+      .text-xs{style: "margin-bottom: 5px;"} REACH
+      #reach_graph.stats-sparklines{data: {points: @reach_data_points}, style: "width: 100%"}
 
   .stat-row
     .stat-counters.bordered.no-border-t.text-center
       .stat-cell.col-xs-4.padding-sm.no-padding-hr
         %span.text-bg
-          %strong=number_with_delimiter @tweets_targeted
+          %strong=number_with_delimiter @targeted_reach
         %br/
         %span.text-xs.text-muted TARGETED
       .stat-cell.col-xs-4.padding-sm.no-padding-hr
         %span.text-bg
-          %strong=number_with_delimiter @tweets_viral
+          %strong=number_with_delimiter @viral_reach
         %br/
         %span.text-xs.text-muted VIRAL
       .stat-cell.col-xs-4.padding-sm.no-padding-hr
         %span.text-bg
-          %strong=number_with_delimiter @tweets_targeted + @tweets_viral
+          %strong=number_with_delimiter @targeted_reach + @viral_reach
         %br/
-        %span.text-xs.text-muted TOTAL
+        %span.text-xs.text-muted TOTAL REACH
