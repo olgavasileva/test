@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140920013057) do
+ActiveRecord::Schema.define(version: 20140921231803) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -347,6 +347,7 @@ ActiveRecord::Schema.define(version: 20140920013057) do
     t.integer  "comment_count",  default: 0
     t.integer  "share_count",    default: 0
     t.datetime "completed_at"
+    t.integer  "follower_id"
   end
 
   add_index "messages", ["user_id"], name: "index_messages_on_user_id", using: :btree
@@ -465,6 +466,20 @@ ActiveRecord::Schema.define(version: 20140920013057) do
   add_index "relationships", ["follower_id"], name: "index_relationships_on_follower_id", using: :btree
   add_index "relationships", ["leader_id"], name: "index_relationships_on_leader_id", using: :btree
 
+  create_table "response_matchers", force: true do |t|
+    t.integer  "segment_id"
+    t.integer  "question_id"
+    t.boolean  "include_reponders"
+    t.boolean  "include_skippers"
+    t.text     "regex"
+    t.integer  "first_place_choice_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "response_matchers", ["question_id"], name: "index_response_matchers_on_question_id", using: :btree
+  add_index "response_matchers", ["segment_id"], name: "index_response_matchers_on_segment_id", using: :btree
+
   create_table "responses", force: true do |t|
     t.string   "type"
     t.integer  "user_id"
@@ -566,6 +581,17 @@ ActiveRecord::Schema.define(version: 20140920013057) do
 
   add_index "scenes", ["studio_id"], name: "index_scenes_on_studio_id", using: :btree
   add_index "scenes", ["user_id"], name: "index_scenes_on_user_id", using: :btree
+
+  create_table "segments", force: true do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.integer  "potential_reach_count"
+    t.datetime "potential_reach_computed_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "segments", ["user_id"], name: "index_segments_on_user_id", using: :btree
 
   create_table "settings", force: true do |t|
     t.boolean  "enabled"

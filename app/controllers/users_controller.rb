@@ -100,13 +100,6 @@ class UsersController < ApplicationController
     render layout: "pixel_admin"
   end
 
-  def segments
-    @user = User.find params[:id]
-    authorize @user
-
-    render layout: "pixel_admin"
-  end
-
   def analytics
     @user = User.find params[:id]
     authorize @user

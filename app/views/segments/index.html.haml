@@ -1,0 +1,47 @@
+.panel
+  .panel-heading
+    %h2.panel-title
+      .row
+        .col-sm-6 SEGMENT MANAGEMENT
+        .col-sm-6.text-right-not-xs
+          =link_to [:new, @user, :segment], class: %w(btn btn-sm btn-danger btn-labeled) do
+            %span.btn-label.icon.fa.fa-plus
+            Create New Segment
+/ .table-primary
+/   %table.table.table-striped.table-bordered#campaigns{cellpadding:0, cellspacing:0, border:0}
+/     %thead
+/       %tr
+/         %th.bg-success{colspan:3} These are all of your campaigns
+/         %th.bg-default{colspan:4} Quick stats
+/       %tr
+/         %th Question
+/         %th Creation Date
+/         %th Start / Stop Campaign
+/         %th Reach
+/         %th Targeted Reach
+/         %th Completes
+/         %th
+/     %tbody
+/       - @segments.each do |s|
+/         %tr
+/           %td=q.title
+/           %td=q.created_at
+/           %td.text-center=check_box_tag "enabled", q.id, q.active?, class:%w(switcher switcher-success)
+/           %td.text-right
+/             .counter-separated.counter-sm
+/               -q.view_count.to_s.split("").each do |digit|
+/                 %span=digit
+/           -if q.targeted_reach.to_i > 0
+/             %td.text-right
+/               .counter-separated.counter-sm
+/                 -q.targeted_reach.to_s.split("").each do |digit|
+/                   %span=digit
+/           -else
+/             %td.text-center
+/               &mdash;
+/           %td.text-right
+/             .counter-separated.counter-sm
+/               -q.response_count.to_s.split("").each do |digit|
+/                 %span=digit
+/           %td=link_to "Full analytics", '#'
+

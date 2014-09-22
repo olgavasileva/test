@@ -32,13 +32,13 @@ LinkchatApp::Application.routes.draw do
 
   resources :inquiries
   resources :users do
+    resources :segments
     get :profile, on: :collection
     get :follow, on: :member
     get :dashboard, on: :member
     get :recent_responses, on: :member
     get :recent_comments, on: :member
     get :campaigns, on: :member
-    get :segments, on: :member
     get :analytics, on: :member
     get :account, on: :member
   end

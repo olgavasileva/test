@@ -30,20 +30,11 @@
           %td=q.title
           %td=q.created_at
           %td.text-center=check_box_tag "enabled", q.id, q.active?, class:%w(switcher switcher-success)
-          %td.text-right
-            .counter-separated.counter-sm
-              -q.view_count.to_s.split("").each do |digit|
-                %span=digit
+          %td.text-right=q.view_count
           -if q.targeted_reach.to_i > 0
-            %td.text-right
-              .counter-separated.counter-sm
-                -q.targeted_reach.to_s.split("").each do |digit|
-                  %span=digit
+            %td.text-right=q.targeted_reach
           -else
             %td.text-center
               &mdash;
-          %td.text-right
-            .counter-separated.counter-sm
-              -q.response_count.to_s.split("").each do |digit|
-                %span=digit
+          %td.text-right=q.response_count
           %td=link_to "Full analytics", '#'

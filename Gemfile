@@ -83,6 +83,7 @@ gem 'raphael-rails'                 # js: Cross-browser vector graphics the easy
 gem 'jquery-slimscroll-rails'       # js: transforms any div into a scrollable area with a nice scrollbar
 gem 'easy_as_pie'                   # js+: Rails wrapper for easy-pie-chart
 gem 'jquery-datatables-rails', '~> 2.2.3'
+gem "select2-rails"                 # js: jQuery based replacement for select boxes
 
 group :development do
 

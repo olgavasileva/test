@@ -31,6 +31,9 @@
 #= require dataTables/jquery.dataTables
 #= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 
+## jquery-select2 gem
+#=require select2
+
 ## Pull these from pixel_admin libs - no gems to help
 #= require ./pixel_admin/libs/jquery.sparkline-2.1.2
 #= require ./pixel_admin/build/extensions_jquery.sparklines
