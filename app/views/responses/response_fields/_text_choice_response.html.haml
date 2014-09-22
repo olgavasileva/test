@@ -8,6 +8,7 @@
     float: none!important
     padding: 0 !important
 
+
     label
       display: block
       position: relative
@@ -64,32 +65,33 @@
     display: none
 
 .row.text-choices.form-group
-  .col-md-4.col-md-push-2.col-sm-6.col-xs-12
-    = responsive_image_tag((response.question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
-    .floating-question-title
-      %span= response.question.title
-    %div
-      .col-xs-12
-        = render "responses/response_fields/shared/sharing", form:form, response:response
-  .col-xs-12.col-sm-6.col-md-4.col-md-push-2.btn-group{:data=>{:toggle=>"buttons"}}
-    -cols=(12/response.question.choices.length)+1
-    -pc_margin=(10/(response.question.choices.length-1)).to_s+'%'
-    %div.equalizer-sm.hidden-lg
-    %div.equalizer-md.hidden-lg.hidden-sm
-    = form.collection_radio_buttons :choice_id, response.question.choices, :id, :title, label:false, wrapper:false, boolean_style: 'inline', item_wrapper_class:"col-xs-12 selectable-option btn"  do |c|
-      %label.btn-primary.col-xs-12{style:"margin-bottom:#{pc_margin};"}
-        .row
-          %div{:class=>["col-xs-4 col-sm-4 col-md-#{cols}"]}
-            = responsive_image_tag((response.question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
-        .option-title=c.object.title
-        = c.radio_button label:false, boolean_style: 'inline', wrapper:false
-        %i.glyphicon.glyphicon-ok.selected
+  .col-sm-12.col-md-10.col-md-push-1
+    .col-sm-6.col-xs-12
+      = responsive_image_tag((response.question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
+      .floating-question-title
+        %span= response.question.title
+      %div
+        .col-xs-12
+          = render "responses/response_fields/shared/sharing", form:form, response:response
+    .col-sm-6.col-xs-12.btn-group{:data=>{:toggle=>"buttons"}}
+      -cols=(12/response.question.choices.length)+1
+      -pc_margin=(10/(response.question.choices.length-1)).to_s+'%'
+      %div.equalizer-sm.hidden-lg
+      %div.equalizer-md.hidden-lg.hidden-sm
+      = form.collection_radio_buttons :choice_id, response.question.choices, :id, :title, label:false, wrapper:false, boolean_style: 'inline', item_wrapper_class:"col-xs-12 selectable-option btn"  do |c|
+        %label.btn-primary.col-xs-12{style:"margin-bottom:#{pc_margin};"}
+          .row
+            %div{:class=>["col-xs-3 col-sm-#{cols}"]}
+              = responsive_image_tag((response.question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
+          .option-title=c.object.title
+          = c.radio_button label:false, boolean_style: 'inline', wrapper:false
+          %i.glyphicon.glyphicon-ok.selected
 
-.row.form-group
-  .col-sm-6.col-md-4.col-md-push-2
-    = render "responses/response_fields/shared/comment", form:form, response:response
-  .col-sm-6.col-md-4.col-md-push-2
-    = render "responses/response_fields/shared/anonymous", form:form, response:response
-.row
-  .col-md-8.col-md-push-2
-    = render "responses/response_fields/shared/submit", form:form, response:response
+  .col-sm-12.col-md-10.col-md-push-1
+    .form-group
+      .col-sm-6.col-xs-12
+        = render "responses/response_fields/shared/comment", form:form, response:response
+      .col-xs-12.col-sm-6.form-group
+        = render "responses/response_fields/shared/anonymous", form:form, response:response
+    .col-sm-12
+      = render "responses/response_fields/shared/submit", form:form, response:response
