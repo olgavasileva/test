@@ -79,6 +79,7 @@ describe :multiple_choice_question do
 
               expect(q).to_not be_nil
               expect(q['id']).to_not be_nil
+              expect(q['uuid']).not_to be_nil
               expect(q['type']).to eq "MultipleChoiceQuestion"
               expect(q['title']).to eq "The Title"
               expect(q['rotate']).to eq true

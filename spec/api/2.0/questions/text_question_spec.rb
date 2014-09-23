@@ -88,6 +88,7 @@ describe :text_question do
 
                 expect(q).to_not be_nil
                 expect(q['id']).to_not be_nil
+                expect(q['uuid']).not_to be_nil
                 expect(q['type']).to eq "TextQuestion"
                 expect(q['title']).to eq "The Title"
                 expect(q['category']['id']).to eq category.id

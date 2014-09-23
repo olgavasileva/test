@@ -398,6 +398,7 @@ class TwoCents::Questions < Grape::API
                     "question": {
                         "type": "TextChoiceQuestion",
                         "id": 1,
+                        "uuid": "SOMEUUID",
                         "title": "Text Choice Title",
                         "description": "Text Choice Description",
                         "image_url": "http://crashmob.com/Example.jpg",
@@ -437,6 +438,7 @@ class TwoCents::Questions < Grape::API
                     "question": {
                         "type": "MultipleChoiceQuestion",
                         "id": 2,
+                        "uuid": "SOMEUUID",
                         "title": "Multiple Choice Title",
                         "description": "Multiple Choice Description",
                         "min_responses": 1,
@@ -483,6 +485,7 @@ class TwoCents::Questions < Grape::API
                     "question": {
                         "type": "ImageChoiceQuestion",
                         "id": 3,
+                        "uuid": "SOMEUUID",
                         "title": "Image Choice Title",
                         "description": "Image Choice Description",
                         "rotate": false,
@@ -516,6 +519,7 @@ class TwoCents::Questions < Grape::API
                     "question": {
                         "type": "OrderQuestion",
                         "id": 4,
+                        "uuid": "SOMEUUID",
                         "title": "Order Title",
                         "description": "Order Description",
                         "rotate": true,
@@ -557,6 +561,7 @@ class TwoCents::Questions < Grape::API
                     "question": {
                         "type": "TextQuestion"
                         "id": 5,
+                        "uuid": "SOMEUUID",
                         "title": "Text Title",
                         "description": "Text Description",
                         "image_url": "http://crashmob.com/Example.jpg",
