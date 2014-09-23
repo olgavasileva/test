@@ -14,6 +14,7 @@ LinkchatApp::Application.routes.draw do
   ActiveAdmin.routes(self)
 
   root 'questions#index'
+  get '/q/:uuid' => 'questions#new_response_from_uuid'
   get '/question' => 'users#first_question'
   get '/test' => 'pages#test' if Rails.env.development?
 

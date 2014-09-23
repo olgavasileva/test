@@ -26,6 +26,10 @@ class Question < ActiveRecord::Base
 	validates :state, presence: true, inclusion: {in: %w(preview targeting active)}
 	validates :kind, inclusion: {in: %w(public targeted)}
 
+  default :uuid do |question|
+    "Q"+UUID.new.generate.gsub(/-/, '')
+  end
+
 	def viewed!
 		update_attribute :view_count, (view_count.to_i + 1)
 		DailyAnalytic.increment! :views, self.user

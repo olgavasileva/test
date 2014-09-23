@@ -38,4 +38,12 @@ class QuestionsController < ApplicationController
     authorize @question
   end
 
+  def new_response_from_uuid
+    question = Question.find_by uuid:params[:uuid]
+    authorize question
+
+    redirect_to new_question_response_path(question)
+  end
+
+
 end
