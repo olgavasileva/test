@@ -985,5 +985,19 @@ class TwoCents::Questions < Grape::API
 
       {}
     end
+
+    desc "Start a question."
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      requires :question_id, type: Integer, desc: "ID of question."
+    end
+    post 'start' do
+      validate_user!
+
+      Question.find(params[:question_id]).increment! :start_count
+
+      {}
+    end
   end
 end
