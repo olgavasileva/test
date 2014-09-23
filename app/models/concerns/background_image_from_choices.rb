@@ -2,7 +2,7 @@ module BackgroundImageFromChoices
   extend ActiveSupport::Concern
 
   included do
-    after_create :generate_background_image_from_choices
+    before_create :generate_background_image_from_choices
 
     private
 
