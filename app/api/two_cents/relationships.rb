@@ -89,11 +89,16 @@ class TwoCents::Relationships < Grape::API
       end
 
       users.map do |u|
+        relationship =
+          current_user.followership_relationships.where(leader_id: u.id).first
+        groups = relationship.try(:groups) || []
+
         {
           id: u.id,
           username: u.username,
           email: u.email,
           name: u.name,
+          group_ids: groups.map(&:id),
           is_following: current_user.leaders.include?(u)
         }
       end
