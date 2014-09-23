@@ -157,7 +157,7 @@ class TwoCents::Communities < Grape::API
     post :members do
       validate_user!
 
-      c = current_user.communities.find(params[:community_id])
+      c = Community.find(params[:community_id])
       u = User.find(params[:user_id])
       c.member_users << u
 
@@ -172,7 +172,7 @@ class TwoCents::Communities < Grape::API
     delete :members do
       validate_user!
 
-      c = current_user.communities.find(params[:community_id])
+      c = Community.find(params[:community_id])
       u = User.find(params[:user_id])
       fail! 400, "User is not a member." unless c.member_users.include? u
       c.member_users.delete(u)
