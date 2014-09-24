@@ -59,7 +59,7 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :get_app, 'Get the App', '#'
 
     if user_signed_in?
-      primary.item :dashboard_item, 'Enterprise', [:dashboard, current_user], if: -> { Pundit.policy(current_user, User).dashboard?}
+      primary.item :dashboard_item, 'Enterprise', [:dashboard, current_user], if: -> { Pundit.policy(current_user, current_user).dashboard?}
       primary.item :feed, 'Question Feed', root_path
       primary.item :logout, 'Logout', destroy_user_session_path, method: :delete
       if (params[:controller]=='responses' && params[:action]=='new')||(params[:controller]=='questions')

@@ -15,6 +15,7 @@ class ApplicationPolicy
 
   def initialize user, record
     raise Pundit::NotAuthorizedError, "Must be signed in." if require_user? && user.blank?
+
     @user   = user
     @record = record
   end

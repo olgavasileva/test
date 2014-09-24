@@ -8,4 +8,8 @@ module FormHelper
 
     response
   end
+
+  def setup_response_matcher matcher
+    matcher
+  end
 end

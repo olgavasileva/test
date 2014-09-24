@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140923223507) do
+ActiveRecord::Schema.define(version: 20140924221528) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -470,12 +470,13 @@ ActiveRecord::Schema.define(version: 20140923223507) do
   create_table "response_matchers", force: true do |t|
     t.integer  "segment_id"
     t.integer  "question_id"
-    t.boolean  "include_reponders"
-    t.boolean  "include_skippers"
     t.text     "regex"
     t.integer  "first_place_choice_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "type"
+    t.string   "inclusion"
+    t.integer  "choice_id"
   end
 
   add_index "response_matchers", ["question_id"], name: "index_response_matchers_on_question_id", using: :btree

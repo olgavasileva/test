@@ -114,4 +114,14 @@ class UsersController < ApplicationController
     render layout: "pixel_admin"
   end
 
+  def question_search
+    @user = User.find params[:id]
+    authorize @user
+
+    search_term = params[:term]
+    questions = Question.where("title like ?", "%#{search_term}%").select([:id, :title])
+    response = questions.map{|q| {id:q.id, title:q.title, matcher_url:view_context.new_question_response_matcher_url(q)}}
+    render json:response
+  end
+
 end

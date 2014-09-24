@@ -1,0 +1,33 @@
+- if segment.response_matchers.blank?
+  %h2 Begin by searching for a relevant question.
+- else
+  %table.table.table-striped.table-bordered#campaigns{cellpadding:0, cellspacing:0, border:0}
+    %thead
+      %tr
+        %th Questions
+        %th Attributes
+        %th
+    %tbody
+      - segment.response_matchers.each do |matcher|
+        %tr
+          %td=matcher.question.title
+          %td
+            - if matcher.all_responders?
+              All people who responded
+            - elsif matcher.all_skippers?
+              All people who skipped
+            - else
+              People who selected
+              - case matcher.question.type
+              - when "TextChoiceQuestion", "YesNoQuestion"
+                %strong= matcher.choice.title
+              - when "ImageChoiceQuestion", "MultipleChoiceQuestion"
+                =responsive_image_tag matcher.choice.background_image.web_image_url
+              - when "TextQuestion"
+                something like
+                %strong=matcher.regex
+              - when "OrderQuestion"
+                =responsive_image_tag matcher.first_place_choice.background_image.web_image_url
+              - when "StudioQuestion"
+                %em (Coming Soon...)
+          %th.text-center x

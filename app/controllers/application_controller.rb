@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   include Pundit
 
+  before_action :authenticate_user!
+
   before_action :find_recent_questions
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
   before_action :initialize_for_apple_push_service

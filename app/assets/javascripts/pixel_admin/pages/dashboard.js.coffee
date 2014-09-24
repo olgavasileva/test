@@ -41,31 +41,33 @@ $(document).on 'page:change', ->
   # Reach graph
   #
 
-  $("#dashboard #reach_graph").pixelSparkline $("#dashboard #reach_graph").data().points,
-    type: 'line'
-    width: '100%'
-    height: '45px'
-    fillColor: ''
-    lineColor: '#fff'
-    lineWidth: 2
-    spotColor: '#ffffff'
-    minSpotColor: '#ffffff'
-    maxSpotColor: '#ffffff'
-    highlightSpotColor: '#ffffff'
-    highlightLineColor: '#ffffff'
-    spotRadius: 4
-    highlightLineColor: '#ffffff'
+  if $('#dashboard #reach_graph').length
+    $("#dashboard #reach_graph").pixelSparkline $("#dashboard #reach_graph").data().points,
+      type: 'line'
+      width: '100%'
+      height: '45px'
+      fillColor: ''
+      lineColor: '#fff'
+      lineWidth: 2
+      spotColor: '#ffffff'
+      minSpotColor: '#ffffff'
+      maxSpotColor: '#ffffff'
+      highlightSpotColor: '#ffffff'
+      highlightLineColor: '#ffffff'
+      spotRadius: 4
+      highlightLineColor: '#ffffff'
 
   # Engagements bar Chart
   #
 
-  $("#dashboard #engagements_graph").pixelSparkline $("#dashboard #engagements_graph").data().points,
-    type: 'bar'
-    height: '36px'
-    width: '100%'
-    barSpacing: 2
-    zeroAxis: false
-    barColor: '#ffffff'
+  if $("#dashboard #engagements_graph").length
+    $("#dashboard #engagements_graph").pixelSparkline $("#dashboard #engagements_graph").data().points,
+      type: 'bar'
+      height: '36px'
+      width: '100%'
+      barSpacing: 2
+      zeroAxis: false
+      barColor: '#ffffff'
 
 
   # Responses

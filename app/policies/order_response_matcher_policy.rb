@@ -1,0 +1,2 @@
+class OrderResponseMatcherPolicy < BaseResponseMatcherPolicy
+end

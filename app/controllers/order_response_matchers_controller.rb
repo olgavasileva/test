@@ -1,0 +1,2 @@
+class OrderResponseMatchersController < ResponseMatchersController
+end

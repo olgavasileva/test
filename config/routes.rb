@@ -28,7 +28,13 @@ LinkchatApp::Application.routes.draw do
     resources :text_responses
     resources :order_responses
     resources :studio_responses
+
     resources :skipped_items
+
+    resources :response_matchers
+    resources :text_response_matchers
+    resources :choice_response_matchers
+    resources :order_response_matchers
   end
 
   resources :inquiries
@@ -42,7 +48,8 @@ LinkchatApp::Application.routes.draw do
     get :campaigns, on: :member
     get :analytics, on: :member
     get :account, on: :member
-  end
+    get :question_search, on: :member
+    end
 
   resources :question_types
 
