@@ -53,12 +53,15 @@
       -n=0
       -@response.question.choices.each do |c|
         -n+=1
+
         %label.col-sm-6.col-xs-12.choice-wrapper
           .row
             =check_box_tag("multiple_choice_response[choice_id]",c.id,false,{class:'selected-choice'})
             =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
             %i.glyphicon.glyphicon-ok.selected
             .option-title=c.title
+
+            
   .col-xs-12.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2
     .form-group
       = render "responses/response_fields/shared/comment", form:form, response:response
