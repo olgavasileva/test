@@ -12,6 +12,7 @@ class TwoCents::Questions < Grape::API
 
         optional :invite_phone_numbers, type: Array, desc: "Phone numbers of people to invite to answer."
         optional :invite_email_addresses, type: Array, desc: "Email addresses of people to invite to answer."
+        optional :anonymous, type: Boolean, desc: "Whether question is anonymous"
 
         requires :targets, type: Hash do
           optional :all, type: Boolean, desc: "Whether question is targeted at all users."
@@ -80,7 +81,8 @@ class TwoCents::Questions < Grape::API
         target_all_followers: params[:targets][:all_followers],
         target_all_groups: params[:targets][:all_groups],
         target_follower_ids: params[:targets][:follower_ids],
-        target_group_ids: params[:targets][:group_ids]
+        target_group_ids: params[:targets][:group_ids],
+        anonymous: params[:anonymous]
       }
 
       @question = TextChoiceQuestion.new(question_params)
@@ -150,7 +152,8 @@ class TwoCents::Questions < Grape::API
         target_all_followers: params[:targets][:all_followers],
         target_all_groups: params[:targets][:all_groups],
         target_follower_ids: params[:targets][:follower_ids],
-        target_group_ids: params[:targets][:group_ids]
+        target_group_ids: params[:targets][:group_ids],
+        anonymous: params[:anonymous]
       }
 
       @question = MultipleChoiceQuestion.new(question_params)
@@ -214,7 +217,8 @@ class TwoCents::Questions < Grape::API
         target_all_followers: params[:targets][:all_followers],
         target_all_groups: params[:targets][:all_groups],
         target_follower_ids: params[:targets][:follower_ids],
-        target_group_ids: params[:targets][:group_ids]
+        target_group_ids: params[:targets][:group_ids],
+        anonymous: params[:anonymous]
       }
 
       @question = ImageChoiceQuestion.new(question_params)
@@ -279,7 +283,8 @@ class TwoCents::Questions < Grape::API
         target_all_followers: params[:targets][:all_followers],
         target_all_groups: params[:targets][:all_groups],
         target_follower_ids: params[:targets][:follower_ids],
-        target_group_ids: params[:targets][:group_ids]
+        target_group_ids: params[:targets][:group_ids],
+        anonymous: params[:anonymous]
       }
 
       @question = OrderQuestion.new(question_params)
@@ -347,7 +352,8 @@ class TwoCents::Questions < Grape::API
         target_all_followers: params[:targets][:all_followers],
         target_all_groups: params[:targets][:all_groups],
         target_follower_ids: params[:targets][:follower_ids],
-        target_group_ids: params[:targets][:group_ids]
+        target_group_ids: params[:targets][:group_ids],
+        anonymous: params[:anonymous]
       }
 
       @question = TextQuestion.new(question_params)
