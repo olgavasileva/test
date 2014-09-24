@@ -437,6 +437,7 @@ ActiveRecord::Schema.define(version: 20140924221528) do
     t.boolean  "target_all_groups",     default: false
     t.integer  "targeted_reach"
     t.string   "uuid"
+    t.boolean  "anonymous",             default: false
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
