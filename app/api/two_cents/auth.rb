@@ -352,5 +352,18 @@ class TwoCents::Auth < Grape::API
       {}
     end
 
+    desc "Return initial info on current user."
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+    end
+    get 'init' do
+      validate_user!
+
+      {
+        has_any_groups: current_user.groups.any?,
+        manages_any_communities: current_user.communities.any?
+      }
+    end
+
   end
 end
