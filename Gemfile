@@ -76,6 +76,7 @@ gem 'rubyzip'                       # rubyzip is a ruby library for reading and 
 gem 'creek', '~> 1.0.3'             # Configurable streaming aggregator
 gem 'rpush'
 gem 'apns'
+gem 'browser'                       # Browser detection
 
 # pixel admin
 gem 'morrisjs-rails'                # js: good-looking charts shouldn't be difficult

@@ -1,5 +1,4 @@
 class QuestionsController < ApplicationController
-
   def index
     per_page = 6
     @questions = policy_scope(Question).paginate(page: params[:page], per_page:per_page)
@@ -39,10 +38,10 @@ class QuestionsController < ApplicationController
   end
 
   def new_response_from_uuid
-    question = Question.find_by uuid:params[:uuid]
-    authorize question
+    @question = Question.find_by uuid:params[:uuid]
+    authorize @question
 
-    redirect_to new_question_response_path(question)
+    redirect_to new_question_response_path(@question) unless browser.iphone? || browser.ipod? || browser.ipad?
   end
 
 
