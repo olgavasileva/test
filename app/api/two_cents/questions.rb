@@ -10,6 +10,9 @@ class TwoCents::Questions < Grape::API
         requires :title, type:String, desc:"Title of question to display to the user"
         optional :description, type:String, desc:"Description - do we need this?"
 
+        optional :invite_phone_numbers, type: Array, desc: "Phone numbers of people to invite to answer."
+        optional :invite_email_addresses, type: Array, desc: "Email addresses of people to invite to answer."
+
         requires :targets, type: Hash do
           optional :all, type: Boolean, desc: "Whether question is targeted at all users."
           optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
