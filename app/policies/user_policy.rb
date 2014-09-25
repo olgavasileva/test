@@ -36,7 +36,4 @@ class UserPolicy < ApplicationPolicy
     @user == @record && @user.has_role?(:pro)
   end
 
-  def question_search?
-    @user == @record && @user.has_role?(:pro)
-  end
 end

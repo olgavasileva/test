@@ -1,1 +1,0 @@
-alert("<%= @response_matcher.valid? ? "Saved" : @response_matcher.errors.full_description %>")

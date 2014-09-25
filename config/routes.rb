@@ -30,16 +30,23 @@ LinkchatApp::Application.routes.draw do
     resources :studio_responses
 
     resources :skipped_items
-
-    resources :response_matchers
-    resources :text_response_matchers
-    resources :choice_response_matchers
-    resources :order_response_matchers
   end
+
+  resources :response_matchers, only: [:destroy]
+  resources :text_response_matchers, only: [:destroy]
+  resources :choice_response_matchers, only: [:destroy]
+  resources :order_response_matchers, only: [:destroy]
 
   resources :inquiries
   resources :users do
-    resources :segments
+    resources :segments do
+      get :question_search, on: :member
+
+      resources :response_matchers
+      resources :text_response_matchers
+      resources :choice_response_matchers
+      resources :order_response_matchers
+    end
     get :profile, on: :collection
     get :follow, on: :member
     get :dashboard, on: :member
@@ -48,8 +55,7 @@ LinkchatApp::Application.routes.draw do
     get :campaigns, on: :member
     get :analytics, on: :member
     get :account, on: :member
-    get :question_search, on: :member
-    end
+  end
 
   resources :question_types
 

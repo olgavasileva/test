@@ -5,7 +5,7 @@
     %thead
       %tr
         %th Questions
-        %th Attributes
+        %th Attributes (all must be true)
         %th
     %tbody
       - segment.response_matchers.each do |matcher|
@@ -17,17 +17,19 @@
             - elsif matcher.all_skippers?
               All people who skipped
             - else
-              People who selected
               - case matcher.question.type
               - when "TextChoiceQuestion", "YesNoQuestion"
+                People who selected
                 %strong= matcher.choice.title
               - when "ImageChoiceQuestion", "MultipleChoiceQuestion"
+                People who selected
                 =responsive_image_tag matcher.choice.background_image.web_image_url
               - when "TextQuestion"
-                something like
+                People who entered something like
                 %strong=matcher.regex
               - when "OrderQuestion"
+                People whose first choice was
                 =responsive_image_tag matcher.first_place_choice.background_image.web_image_url
               - when "StudioQuestion"
                 %em (Coming Soon...)
-          %th.text-center x
+          %th.text-center=link_to 'x', [matcher], method: :delete, data: { confirm: "Are you sure?" }, remote: true

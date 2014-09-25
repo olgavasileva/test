@@ -18,10 +18,10 @@ class SegmentsController < ApplicationController
 
     if @segment.save
       flash[:alert] = "Segment created."
-      redirect_to :index
+      redirect_to [@user, :segments]
     else
       flash[:error] = @segment.errors.full_messages.join ", "
-      render "new"
+      redirect_to [@user, :segments]
     end
   end
 
@@ -36,7 +36,7 @@ class SegmentsController < ApplicationController
 
     if @segment.update_attributes segment_params
       flash[:alert] = "Segment saved."
-      redirect_to :index
+      @segments = policy_scope(Segment)
     else
       flash[:error] = @segment.errors.full_messages.join ", "
       render "edit"
@@ -53,8 +53,19 @@ class SegmentsController < ApplicationController
     authorize @segment
 
     @segment.destroy!
+    @segments = policy_scope(Segment)
     flash[:alert] = "Segment has been deleted."
-    redirect_to :index
+    redirect_to [@user, :segments] unless request.xhr?
+  end
+
+  def question_search
+    @segment = @user.segments.find params[:id]
+    authorize @segment
+
+    search_term = params[:term]
+    questions = Question.where("title like ?", "%#{search_term}%").select([:id, :title])
+    response = questions.map{|q| {id:q.id, title:q.title, matcher_url:view_context.new_user_segment_response_matcher_url(@user, @segment, question_id:q)}}
+    render json:response
   end
 
   private
