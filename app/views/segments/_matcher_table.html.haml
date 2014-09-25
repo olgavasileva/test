@@ -13,9 +13,9 @@
           %td=matcher.question.title
           %td
             - if matcher.all_responders?
-              All people who responded
+              All people who responded to this question.
             - elsif matcher.all_skippers?
-              All people who skipped
+              All people who skipped this question.
             - else
               - case matcher.question.type
               - when "TextChoiceQuestion", "YesNoQuestion"
