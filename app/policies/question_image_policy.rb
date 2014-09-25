@@ -1,0 +1,2 @@
+class QuestionImagePolicy < BackgroundImagePolicy
+end
