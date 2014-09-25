@@ -80,6 +80,42 @@ class TwoCents::Messages < Grape::API
       end
     end
 
+
+
+    #
+    # Set all messages in the queue read
+    #
+    desc "Set all messages in the queue read", {
+        notes: <<-END
+        This API will Set all messages in the queue ,which belongs to the current user, read.
+
+                        inputs:
+                          auth_token: token of current user
+
+                        output:
+                          success: empty body {} and success response code
+        END
+    }
+    params do
+      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+    end
+    post 'read_all', http_codes:[
+        [200, "400 - Invalid params"],
+        [200, "402 - Invalid auth token"],
+        [200, "403 - Login required"]
+    ] do
+      validate_user!
+
+      current_user.messages.all().each do |message|
+        message.read_at = Time.zone.now()
+        message.save
+      end
+      status 200
+      {}
+
+    end
+
+
     #
     # Delete a message
     #
@@ -143,6 +179,7 @@ class TwoCents::Messages < Grape::API
                         {
                             "message":
                               {
+                                  "id": 1,
                                   "type": "QuestionUpdated",
                                   "body": "QuestionUpdated",
                                   "question_id": 123
@@ -151,22 +188,24 @@ class TwoCents::Messages < Grape::API
                                   "share_count": 2,
                                   "completed_at": 1231231234,        # timestamp
                                   "created_at": 1231231234           # timestamp
-                                  "read_at": 1231231234              # timestamp
+                                  "read_at": nil              # timestamp
                               }
                         },
                         {
                             "message":
                               {
+                                  "id": 2,
                                   "type": "UserFollowed",
                                   "body": "UserFollowed",
                                   "follower_id": 123,
                                   "created_at": 1231231234           # timestamp
-                                  "read_at": 1231231234              # timestamp
+                                  "read_at": nil              # timestamp
                               }
                         },
                         {
                             "message":
                               {
+                                  "id": 3,
                                   "type": “Custom”,
                                   "body": "Custom",
                                   "created_at": 1231231234           # timestamp
