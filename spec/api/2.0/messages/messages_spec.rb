@@ -59,48 +59,41 @@ describe :messages do
           let(:count) { 2 }
           let(:other_user) {FactoryGirl.create :user}
 
-          let(:auto_generate_messages_for_question_updated) {FactoryGirl.create_list(:text_response, count,
-                                                               user: user,
-                                                               comment: "first!") }
+          let(:text_question_1) {FactoryGirl.create(:text_question, kind: 'targeted', user: user)}
+          let(:auto_generate_message_for_question_updated) {
+            FactoryGirl.create(:text_response, question: text_question_1, user: other_user)
+          }
           let(:auto_generate_message_for_user_followed) {other_user.follow! user}
           let(:generate_message_for_custom) {FactoryGirl.create :custom, user:user}
           let(:setup_messages) {
-            auto_generate_messages_for_question_updated
+            auto_generate_message_for_question_updated
             auto_generate_message_for_user_followed
             generate_message_for_custom
           }
 
           describe "Message Output" do
-            it {expect(Response.count).to eq 2}
-            it {expect(JSON.parse(response.body)['number_of_unread_messages']).to eq 4}
+            it {expect(Response.count).to eq 1}
+            it {expect(JSON.parse(response.body)['number_of_unread_messages']).to eq 3}
 
-            describe "First QuestionUpdated" do
+            describe "QuestionUpdated" do
               it {expect(JSON.parse(response.body)['messages'][0]['message']['type']).to eq "QuestionUpdated"}
-              it {expect(JSON.parse(response.body)['messages'][0]['message'].count).to eq 9}
+              it {expect(JSON.parse(response.body)['messages'][0]['message'].count).to eq 10}
 
-              it {expect(JSON.parse(response.body)['messages'][0]['message']['comment_count']).to eq 1}
+              it {expect(JSON.parse(response.body)['messages'][0]['message']['comment_count']).to eq 0}
               it {expect(JSON.parse(response.body)['messages'][0]['message']['share_count']).to eq 0}
 
             end
 
-            describe "Second QuestionUpdated" do
-              it {expect(JSON.parse(response.body)['messages'][1]['message']['type']).to eq "QuestionUpdated"}
-              it {expect(JSON.parse(response.body)['messages'][1]['message'].count).to eq 9}
-
-              it {expect(JSON.parse(response.body)['messages'][1]['message']['comment_count']).to eq 1}
-              it {expect(JSON.parse(response.body)['messages'][1]['message']['share_count']).to eq 0}
-
-            end
 
             describe "UserFollowed" do
-              it {expect(JSON.parse(response.body)['messages'][2]['message']['type']).to eq "UserFollowed"}
-              it {expect(JSON.parse(response.body)['messages'][2]['message'].count).to eq 5}
+              it {expect(JSON.parse(response.body)['messages'][1]['message']['type']).to eq "UserFollowed"}
+              it {expect(JSON.parse(response.body)['messages'][1]['message'].count).to eq 6}
             end
 
             describe "Custom" do
-              it {expect(JSON.parse(response.body)['messages'][3]['message']['type']).to eq "Custom"}
-              it {expect(JSON.parse(response.body)['messages'][3]['message']['body']).to eq "Custom"}
-              it {expect(JSON.parse(response.body)['messages'][3]['message'].count).to eq 4}
+              it {expect(JSON.parse(response.body)['messages'][2]['message']['type']).to eq "Custom"}
+              it {expect(JSON.parse(response.body)['messages'][2]['message']['body']).to eq "Custom"}
+              it {expect(JSON.parse(response.body)['messages'][2]['message'].count).to eq 5}
             end
 
           end
