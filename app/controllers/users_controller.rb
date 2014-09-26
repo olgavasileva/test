@@ -6,10 +6,15 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find params[:id]
-    @tab = params.fetch(:tab, 'notifications')
+    authorize @user
+
+    default_tab = @user == current_user ? 'notifications' : 'questions'
+    @tab = params.fetch(:tab, default_tab)
 
     case @tab
     when 'notifications'
+      authorize @user, :notifications?
+
       @notifications = @user.messages.page(params[:page])
     when 'questions'
       @subtab = params.fetch(:subtab, 'asked')
@@ -25,8 +30,6 @@ class UsersController < ApplicationController
         @questions = Question.where(id: question_ids).page(params[:page])
       end
     end
-
-    authorize @user
   end
 
   def follow

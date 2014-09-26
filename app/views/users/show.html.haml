@@ -20,10 +20,11 @@
         =link_to "Follow", user_path(@user), class: 'btn btn-default'
     .clearfix
   %ul.nav.nav-tabs
-    %li{class: ('active' if @tab == 'notifications')}
-      = link_to user_path(@user, tab: 'notifications') do
-        %i.icon.fa.fa-star
-        Notifications
+    - if @user == current_user
+      %li{class: ('active' if @tab == 'notifications')}
+        = link_to user_path(@user, tab: 'notifications') do
+          %i.icon.fa.fa-star
+          Notifications
     %li{class: ('active' if @tab == 'questions')}
       = link_to user_path(@user, tab: 'questions') do
         %i.icon.fa.fa-comment

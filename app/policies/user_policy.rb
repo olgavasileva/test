@@ -36,4 +36,6 @@ class UserPolicy < ApplicationPolicy
     @user == @record && @user.has_role?(:pro)
   end
 
+  alias :notifications? :dashboard?
+
 end
