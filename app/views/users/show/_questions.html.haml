@@ -1,0 +1,12 @@
+.tab-content.questions-tab-content
+  .center
+    .btn-group
+      = link_to "Asked", user_path(@user, tab: 'questions', subtab: 'asked'), class: "btn btn-default #{'active' if @subtab == 'asked'}"
+      = link_to "Answered", user_path(@user, tab: 'questions', subtab: 'answered'), class: "btn btn-default #{'active' if @subtab == 'answered'}"
+      = link_to "Commented", user_path(@user, tab: 'questions', subtab: 'commented'), class: "btn btn-default #{'active' if @subtab == 'commented'}"
+  %ul.items
+    - @questions.each do |question|
+      %li
+        = link_to question.title, question
+  .center
+    = will_paginate @questions

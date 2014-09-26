@@ -6,11 +6,24 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find params[:id]
-    @tab = params[:tab] || 'notifications'
+    @tab = params.fetch(:tab, 'notifications')
 
     case @tab
     when 'notifications'
       @notifications = @user.messages.page(params[:page])
+    when 'questions'
+      @subtab = params.fetch(:subtab, 'asked')
+
+      case @subtab
+      when 'asked'
+        @questions = @user.questions.page(params[:page])
+      when 'answered'
+        @questions = @user.answered_questions.page(params[:page])
+      when 'commented'
+        # todo: optimize
+        question_ids = @user.responses.with_comment.map(&:question_id)
+        @questions = Question.where(id: question_ids).page(params[:page])
+      end
     end
 
     authorize @user
