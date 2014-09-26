@@ -8,6 +8,11 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     @tab = params[:tab] || 'notifications'
 
+    case @tab
+    when 'notifications'
+      @notifications = @user.messages.page(params[:page])
+    end
+
     authorize @user
   end
 

@@ -1,3 +1,5 @@
 .tab-content.notifications-tab-content
-  - @user.messages.each do |message|
-    %p.notification= message.body
+  - @notifications.each do |notification|
+    %p.notification= notification.body
+  .center
+    = will_paginate @notifications
