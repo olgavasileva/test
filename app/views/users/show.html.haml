@@ -40,3 +40,6 @@
       =link_to user_path(@user) do
         %i.icon.fa.fa-plus-circle
         Following
+  .tab-content.notifications-tab-content
+    - @user.messages.each do |message|
+      %p.notification= message.body
