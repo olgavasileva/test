@@ -114,10 +114,7 @@ class TwoCents::Communities < Grape::API
 
       c = current_user.communities.create! community_params
 
-      {
-        id: c.id,
-        name: c.name
-      }
+      serialize_community(c)
     end
 
     desc "Update a community."
