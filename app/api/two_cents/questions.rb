@@ -835,7 +835,7 @@ class TwoCents::Questions < Grape::API
         user_answered: @user.answered_questions.include?(@question)
       }
 
-      question_data.merge(summary_data).merge(user_data)
+      question_data.merge(user_data).merge(summary: summary_data)
     end
 
 
