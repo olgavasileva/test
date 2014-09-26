@@ -150,11 +150,17 @@ class TwoCents::Communities < Grape::API
     params do
       use :auth
       use :member
+      optional :password, type: String, desc: "Member password (private only)"
     end
     post :members do
       validate_user!
 
       c = Community.find(params[:community_id])
+
+      unless c.public? || params[:password] == c.password
+        fail! 400, "Incorrect password for private community."
+      end
+
       u = User.find(params[:user_id])
       c.member_users << u
 
