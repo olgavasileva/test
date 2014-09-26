@@ -2,7 +2,7 @@
   .top
     .left
       .avatar-container
-        =link_to "https://en.gravatar.com", target: :_blank do
+        = link_to "https://en.gravatar.com", target: :_blank do
           - gravatar_for @user.email, default: :identicon
       %h3.name= @user.username
     .right
@@ -20,26 +20,24 @@
         =link_to "Follow", user_path(@user), class: 'btn btn-default'
     .clearfix
   %ul.nav.nav-tabs
-    %li.active
-      =link_to user_path(@user) do
+    %li{class: ('active' if @tab == 'notifications')}
+      = link_to user_path(@user, tab: 'notifications') do
         %i.icon.fa.fa-star
         Notifications
-    %li
-      =link_to user_path(@user) do
+    %li{class: ('active' if @tab == 'questions')}
+      = link_to user_path(@user, tab: 'questions') do
         %i.icon.fa.fa-comment
         Questions
-    %li
-      =link_to user_path(@user) do
+    %li{class: ('active' if @tab == 'communities')}
+      = link_to user_path(@user, tab: 'communities') do
         %i.icon.fa.fa-ellipsis-h
         Communities
-    %li
-      =link_to user_path(@user) do
+    %li{class: ('active' if @tab == 'followers')}
+      = link_to user_path(@user, tab: 'followers') do
         %i.icon.fa.fa-users
         Followers
-    %li
-      =link_to user_path(@user) do
+    %li{class: ('active' if @tab == 'following')}
+      = link_to user_path(@user, tab: 'following') do
         %i.icon.fa.fa-plus-circle
         Following
-  .tab-content.notifications-tab-content
-    - @user.messages.each do |message|
-      %p.notification= message.body
+  = render "users/show/#{@tab}"

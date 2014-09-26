@@ -1,0 +1,3 @@
+.tab-content.notifications-tab-content
+  - @user.messages.each do |message|
+    %p.notification= message.body
