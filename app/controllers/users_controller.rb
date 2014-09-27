@@ -7,6 +7,32 @@ class UsersController < ApplicationController
   def show
     @user = User.find params[:id]
     authorize @user
+
+    default_tab = @user == current_user ? 'notifications' : 'questions'
+    @tab = params.fetch(:tab, default_tab)
+
+    case @tab
+    when 'notifications'
+      authorize @user, :notifications?
+
+      @notifications = @user.messages.page(params[:page])
+    when 'questions'
+      @subtab = params.fetch(:subtab, 'asked')
+
+      case @subtab
+      when 'asked'
+        @questions = @user.questions.page(params[:page])
+      when 'answered'
+        @questions = @user.answered_questions.page(params[:page])
+      when 'commented'
+        # todo: optimize
+        question_ids = @user.responses.with_comment.map(&:question_id)
+        @questions = Question.where(id: question_ids).page(params[:page])
+      end
+    when 'following'
+      leader_ids = @user.leaders.search(name_cont: params[:search_text]).result.map(&:id)
+      @leaders = @user.leaders.where(id: leader_ids).page(params[:page])
+    end
   end
 
   def follow
@@ -14,6 +40,16 @@ class UsersController < ApplicationController
     authorize @user
 
     current_user.follow! @user
+  end
+
+  def unfollow
+    @user = User.find params[:id]
+    authorize @user
+
+    current_user.leaders.delete(@user)
+
+    flash[:notice] = "Stopped following #{@user.name}."
+    redirect_to :back
   end
 
   def first_question
