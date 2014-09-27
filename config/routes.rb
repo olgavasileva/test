@@ -49,6 +49,7 @@ LinkchatApp::Application.routes.draw do
     end
     get :profile, on: :collection
     get :follow, on: :member
+    get :unfollow, on: :member
     get :dashboard, on: :member
     get :recent_responses, on: :member
     get :recent_comments, on: :member

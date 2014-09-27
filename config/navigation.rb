@@ -61,6 +61,7 @@ SimpleNavigation::Configuration.run do |navigation|
     if user_signed_in?
       primary.item :dashboard_item, 'Enterprise', [:dashboard, current_user], if: -> { Pundit.policy(current_user, current_user).dashboard?}
       primary.item :feed, 'Question Feed', root_path
+      primary.item :account, 'My Account', user_path(current_user)
       primary.item :logout, 'Logout', destroy_user_session_path, method: :delete
       if (params[:controller]=='responses' && params[:action]=='new')||(params[:controller]=='questions')
         primary.item :ask, "<span class='glyphicon glyphicon glyphicon-edit'></span> New Question".html_safe, question_types_path

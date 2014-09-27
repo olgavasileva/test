@@ -9,6 +9,10 @@ class Community < ActiveRecord::Base
 
   after_create :add_creator_as_member
 
+  def public?
+    !private?
+  end
+
   private
 
   def add_creator_as_member
