@@ -5,13 +5,90 @@
       %h2.panel-title Send To
     .panel-body
       .row
-        .col-sm-4
-          = f.input :all_users, as: :boolean
-        .col-sm-4
-          = f.input :all_followers, as: :boolean
-          = f.input :follower_ids, as: :check_boxes, collection: current_user.followers, label:""
-        .col-sm-4
-          = f.input :all_groups, as: :boolean
-          = f.input :group_ids, as: :check_boxes, collection: current_user.groups, label:""
+        .filters-list.col-xs-10.col-xs-push-1.col-sm-8.col-sm-push-2.col-md-6.col-md-push-3.col-lg-4.col-lg-push-4
+          %label.filter-name.col-xs-12
+            All
+            %input.data-filter{:name=>'all_users',:type=>'checkbox', :data=>{:exclude=>'true', :filter=>''}}
+            .data-filter-visual
+
+          -if(current_user.followers.count>0 || true)
+            %label.collapse-trigger.filters-list.filter-name.col-xs-12{:data=>{:toggle=>'collapse',:target=>'.group-list-item'}}
+              Followers
+              %input.data-filter{:type=>'checkbox'}
+              .data-filter-visual
+              %label.filter-name.col-xs-12
+                All
+                %input.data-filter{:name=>'all_followers',:type=>'checkbox', :data=>{:exclude=>'true', :filter=>''}}
+                .data-filter-visual
+              -current_user.followers.all.each do |g|
+                %label.filter-name.col-xs-12
+                  =g.name
+                  %input.data-filter{name=>"follower_ids[]",:value=>"#{g.id}",:type=>'checkbox', :data=>{:filter=>'group'}}
+                  .data-filter-visual
+          -if(current_user.groups.count>0 || true)
+            %label.collapse-trigger.filters-list.filter-name.col-xs-12{:data=>{:toggle=>'collapse',:target=>'.group-list-item'}}
+              Groups
+              %input.data-filter{:type=>'checkbox'}
+              .data-filter-visual
+              %label.filter-name.col-xs-12
+                All
+                %input.data-filter{:name=>'all_groups',:type=>'checkbox', :data=>{:exclude=>'true', :filter=>''}}
+                .data-filter-visual
+              -current_user.groups.all.each do |g|
+                %label.filter-name.col-xs-12
+                  =g.name
+                  %input.data-filter{name=>"group_ids[]",:value=>"#{g.id}",:type=>'checkbox', :data=>{:filter=>'group'}}
+                  .data-filter-visual
+
 
   = f.submit class:%(btn btn-default)
+  
+  :javascript
+    if(!window.tcHAndlers){
+      window.tcHAndlers={};
+    }
+    $(function(){
+        if(!window.tcHAndlers.filterSelectionTrigger){
+            window.tcHAndlers.filterSelectionTrigger=$('.filters-list').on('change','.data-filter[data-filter]',function(event){
+
+              var filtersList=$(event.originalEvent.currentTarget),
+              is_exclusive=!!$(this).data('exclude'),
+              filter_value=$(this).data('value'),
+              filter=$(this).data('filter'),
+              filterSet=JSON.parse(filtersList.data('filters-set')||'{}');
+
+
+
+              if(!filter){
+                filterSet={}
+              }
+              else if(!this.checked){
+                delete filterSet[filter]
+              }
+              else{
+                if(filter_value || filter_value=== 0 || filter_value===''){
+                  filterSet[filter]=filter_value
+                }
+                else{
+                  filterSet[filter]=true
+                }
+              }
+
+              filtersList.data('filters-set',JSON.stringify(filterSet));
+
+              if(!this.checked){
+                return;
+              }
+
+              if(is_exclusive){
+                filtersList.find('.data-filter[data-filter]').attr('checked',false);
+              }
+              else{
+                $(event.originalEvent.currentTarget).find('[data-exclude="true"]').attr('checked',false);
+              }
+
+              this.checked=true;
+            })
+        }
+
+    })

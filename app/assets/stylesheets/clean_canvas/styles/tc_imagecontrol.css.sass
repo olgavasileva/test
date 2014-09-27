@@ -1,10 +1,20 @@
 .image_control
+  font-size:  2.2rem
   a
     text-align: center
   .question-image-uploader
     position: relative
     overflow: hidden
+    text-align: left
+    &.centered
+      text-align: center
     input
       position: absolute
       bottom: 101%
       margin-bottom: 10px
+  .image-nav-control
+    text-align: right
+    &:last-of-type
+      text-align: left
+      span
+        margin-left: -5px

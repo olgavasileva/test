@@ -4,114 +4,11 @@
   .img-responsive.scale-buttons
     margin-top: 3px
     margin-bottom: 3px
-  .answer-option
-    &:hover
-      .option-text
-        textarea.form-control
-          background-color: rgba(255,255,255,0.2)
-          border-color: #ccccff
-    .option-text
-      .form-group.text.required.yes_no_question_choices_title
-        font-size: 2em
-        height: 1.5em
-        position: absolute
-        top: 50%
-        margin: 0
-        left: 0
-        margin-top: -0.75em
-        display: block
-        width: 100%
-      textarea.form-control
-        display: block
-        font-size: 1em
-        width: 100%
-        background-color: transparent
-        border: solid 1px transparent
-        color: white
-        overflow: hidden
-        text-align: center
-        resize: none
-        outline: none
-        box-shadow: none
-        margin: 0
-        height: 100%
-        padding: 0
-        border-radius: 0
 
-  #yes_no_question_title
-    background-color: transparent
-    border-color: transparent
-    width: 100%
+  .question-image-uploader,
+  .image-nav-control
     color: white
-    font-size: 0.7em
-    margin: 0
-    resize: none
-    max-height: 100%
-    &:focus
-      background-color: rgba(0,0,0,0.2)
-      border-color: #ccccff
-    &:hover
-      background-color: rgba(0,0,0,0.3)
-      border-color: #ccccff
 
-  #yesno_title_container
-    max-height: 80%
-    padding: 15px
-    top: 50%
-    margin-top: -43px
-    .form-group
-      margin: 0
-  #category_dropdown_toggler
-    position: relative
-  #category_caret
-    border-top: 21px solid
-    border-right: 20px solid transparent
-    border-left: 20px solid transparent
-    &:after
-      display: inline-block
-      width: 0
-      height: 0
-      margin-left: 2px
-      vertical-align: middle
-      border-top: 16px solid white
-      border-right: 15px solid transparent
-      border-left: 15px solid transparent
-      position: absolute
-      left: 20px
-      top: 0px
-      content: " "
-  .category-dropdown-wrapper
-    border: solid 1px #264e8e
-    position: relative
-    ul#categry_dropdown_menu
-      left: auto
-      overflow: auto
-      left: -1px
-      right: -1px
-      width: auto
-      border: solid 1px #264e8e
-      border-radius: 0 0 3px 3px
-      padding: 10px
-      border-top: none
-      margin-top: -3px
-      max-height: 110px
-  #background_selector
-    font-size: 2.2em
-    border: solid 1px #264e8e
-    padding: 8px
-    padding-top: 9px
-  #image_upload
-    text-align: center
-  .close-float
-    clear: both
-    float: none
-
-
-  .dropdown-toggler
-    &:before
-      margin-bottom: 0!important
-    &:after
-      margin-bottom: 0!important
 
 .row
   .col-xs-12.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2
@@ -130,8 +27,10 @@
           .row
             .col-sm-6.col-xs-12.form-group
               .question
-                #yesno_title_container.title=f.input :title, label: false, placeholder: "Ask Your Question Here"
+                .over_image_title_container.title=f.input :title, label: false, input_html: { class: "appearing-question-title"},placeholder: "Ask Your Question Here"
                 .bgimage= responsive_image_tag @question.web_image_url, class: "img-responsive"
+                .col-xs-12
+                  =render partial:'/widgets/image_control',locals:{f:f,id:'background_selector'}
             .col-sm-6.col-xs-12
               =f.simple_fields_for :choices do |c|
                 .col-xs-12.form-group.answer-option
@@ -142,12 +41,9 @@
                           .bgimage
                             = responsive_image_tag @question.web_image_url, class: "img-responsive scale-buttons"
                       -#=text_area_tag(:title, label: false, placeholder:"Type a response",class:"selectable-choice-text col-sm-12")
-                      =c.input :title, label: false, placeholder: "Type a response"
+                      =c.input :title, label: false, wrapper_html: { class: "question_choice_title"}, placeholder: "Type a response"
           .row
-            .col-xs-12.col-sm-6.form-group
-              .col-sm-12
-                =render partial:'/widgets/image_control',locals:{f:f,id:'background_selector'}
-            =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-xs-12 col-sm-6 form-group", :name=>"yes_no_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
+            =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-xs-12 form-group", :name=>"yes_no_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
           .row
             .col-xs-12.col-sm-6.form-group
               .btn-group.btn-group-justified

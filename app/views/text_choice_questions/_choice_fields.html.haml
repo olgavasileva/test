@@ -1,7 +1,8 @@
-.answer.well.nested-fields.text-created-choice.col-xs-12
+.answer.answer-option.well.nested-fields.text-created-choice.col-xs-12
   .row
-    =f.input :title, label: false, placeholder: "Type a response"
-    -#=link_to_remove_association '<i class="glyphicon glyphicon-remove></i>"', f
-    %a.remove_fields.dynamic{:href=>"#"}
-      %i.glyphicon.glyphicon-remove
+    %a.option-text
+      =f.input :title, label: false, wrapper_html: { class: "question_choice_title"}, placeholder: "Type a response"
+      -#=link_to_remove_association '<i class="glyphicon glyphicon-remove></i>"', f
+  %a.remove_fields.dynamic{:href=>"#"}
+    %i.glyphicon.glyphicon-remove
 

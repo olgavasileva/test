@@ -8,5 +8,6 @@
       .overimage
         =link_to_remove_association f, class: :close do
           %i.glyphicon.glyphicon-remove
-        =render partial:'/widgets/image_control',locals:{f:f,distro: :upload_piramid}
-        .title=f.input :title, label: false, placeholder: "Type a response"
+        .col-xs-12
+          =render partial:'/widgets/image_control',locals:{f:f,distro: :upload_middle}
+        .title.col-xs-12=f.input :title, label: false, placeholder: "Type a response"

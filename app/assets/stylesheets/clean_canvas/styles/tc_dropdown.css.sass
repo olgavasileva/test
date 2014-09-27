@@ -1,3 +1,4 @@
+@import "variables.css.sass"
 .tc-dropdown
   .dropdown-toggler
     position: relative
@@ -28,14 +29,14 @@
       top: 0px
       content: " "
   .dropdown-wrapper
-    border: solid 1px #264e8e
+    border: solid 1px $primary_border_color
     position: relative
     ul.dropdown-menu
       left: auto
       left: -1px
       right: -1px
       width: auto
-      border: solid 1px #264e8e
+      border: solid 1px $primary_border_color
       border-radius: 0 0 3px 3px
       border-top: none
       margin-top: -3px
@@ -51,5 +52,5 @@
         &:nth-child(2n)
           background-color: #ccccff
         &:hover
-          background-color: #2b59a2
+          background-color: $primary_background_color
           color: white

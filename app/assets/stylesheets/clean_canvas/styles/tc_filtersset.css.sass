@@ -1,0 +1,59 @@
+@import "variables.css.sass"
+.filters-list
+
+  .filter-name
+    color:  $primary_color
+    padding-right: 20px
+    position: relative
+    display: inline-block
+    height: 2em
+    margin-top: 1em
+    overflow: hidden
+    cursor: pointer
+    .data-filter
+      position: absolute
+      display: block
+      width: 16px
+      height: 16px
+      bottom: 100%
+      margin-top: -2px
+      width: 0
+    .data-filter-visual
+      position: absolute
+      right: 2px
+      top: 2px
+      &:before
+        color: inherit
+        content: " "
+        text-align: center
+        display: inline-block
+        width: 1.2em
+        height: 1.2em
+        line-height: 1.2em
+
+        font-width: bold
+        vertical-align: middle
+        background-color: white
+        border-style: solid
+        border-width: 1px
+        border-color: currentColor
+    .data-filter:checked~.data-filter-visual
+      &:before
+        content: "√"
+    &.collapse-trigger
+      height: auto
+      min-height: 2em
+      &>.data-filter-visual
+        &:before
+          content: "+"
+          border-style: none
+          font-size: 1.2em
+      .filter-name
+        display: none
+      &>.data-filter:checked
+        &~.data-filter-visual
+          &:before
+            content: "-"
+            font-size: 1.4em
+        &~.filter-name
+          display: inline-block
