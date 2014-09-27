@@ -235,7 +235,7 @@ class TwoCents::Auth < Grape::API
     }
     params do
       requires :instance_token, type:String, desc:'Obtain this from the instances API'
-      requires :password, type: String, regexp: /.{8}.*/, desc:'8 or more character password'
+      requires :password, type: String, regexp: /.{6,20}/, desc:'6-20 character password'
       optional :email, type: String, regexp: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$.?/i, desc:'e.g. oscar@madisononline.com'
       optional :username, type: String, regexp: /^[A-Z0-9\-_ ]{4,20}$/i, desc:'Unique username'
       mutually_exclusive :email, :username
