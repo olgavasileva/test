@@ -7,6 +7,7 @@ class UserPolicy < ApplicationPolicy
   # Any logged in user can follow another user
   def follow?;        true;   end
   def first_question?;true;   end
+  alias :unfollow? :follow?
 
   def dashboard?
     @user == @record && @user.has_role?(:pro)
@@ -35,5 +36,7 @@ class UserPolicy < ApplicationPolicy
   def account?
     @user == @record && @user.has_role?(:pro)
   end
+
+  alias :notifications? :dashboard?
 
 end
