@@ -73,6 +73,7 @@ describe :messages do
 
           describe "Message Output" do
             it {expect(Response.count).to eq 1}
+            it {expect(response.body).to eq 1}
             it {expect(JSON.parse(response.body)['number_of_unread_messages']).to eq 3}
 
             describe "QuestionUpdated" do

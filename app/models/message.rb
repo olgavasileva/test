@@ -18,7 +18,5 @@ class Message < ActiveRecord::Base
     return Message.responses.where("comment is not ?", nil).count
   end
 
-  def body
-    self.type
-  end
+
 end

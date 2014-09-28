@@ -34,15 +34,19 @@ class Response < ActiveRecord::Base
         message = QuestionUpdated.find_by_question_id(self.question_id)
       end
 
+
       message.user_id = self.question.user_id
       message.question_id = self.question_id
       message.response_count = self.question.response_count
       message.comment_count = self.question.comment_count
       message.share_count = self.question.share_count
+      message.body = "You have #{message.response_count} responses to your question \" #{self.question.title}\""
+      message.body = message.body + " and you have #{message.comment_count} comments" if self.comment
 
       message.created_at = Time.zone.now()
       message.read_at = nil
       message.completed_at = Time.zone.now() if self.question.targeting?
+
 
       message.save
 
