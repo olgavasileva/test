@@ -17,6 +17,7 @@ class Question < ActiveRecord::Base
   has_many :target_followers, through: :follower_targets, source: :follower
 
 	scope :active, -> { where state:"active" }
+  scope :currently_targetable, -> { where currently_targetable:true }
 
 	default kind: "public"
 

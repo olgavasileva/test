@@ -12,7 +12,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 
-ActiveRecord::Schema.define(version: 20140928211329) do
+ActiveRecord::Schema.define(version: 20140928234347) do
 
 
   create_table "active_admin_comments", force: true do |t|
@@ -440,6 +440,7 @@ ActiveRecord::Schema.define(version: 20140928211329) do
     t.integer  "targeted_reach"
     t.string   "uuid"
     t.boolean  "anonymous",             default: false
+    t.boolean  "currently_targetable",  default: true
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
