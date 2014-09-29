@@ -1,43 +1,5 @@
 :sass
-  #background_selector
-    font-size: 2.2em
-    border: solid 1px #264e8e
-    padding: 0
-  #image_upload
-    text-align: center
-
-  .option-question-stripe
-    position: absolute
-    max-height: 80%
-    padding: 15px
-    top: 50%
-    margin-top: -43px
-    width: 100%
-    background-color: rgba(0,0,0,0.4)
-    .form-group
-      margin: 0
-      textarea
-        min-height: 1.5em
-        box-shadow: none
-        resize: none
-
-  .question .bgimage
-    position: relative
-
-  .img-responsive
-    width: 100% !important
-    height: auto
-
-  .revealable
-    background-color: transparent
-    border-color: transparent
-    box-shadow: none
-    &:hover, &:focus
-      outline: none
-      border-color: white
-      background-color: rgba(255,255,255,0.2)
-
-.row
+.row.question-builder
   .col-xs-12.col-sm-8.col-sm-push-2
     .openended.panel.panel-default
       .panel-heading
@@ -52,20 +14,20 @@
             .id=f.input :background_image_id, as: :hidden
           .row
             .col-xs-12.col-md-8.col-md-push-2
-              .row.form-group
-                .col-sm-12
+              .row
+                .col-xs-12
                   .question
+                    .title.over_image_title_container
+                      =f.input :title, label: false, placeholder: "Ask Your Question Here", input_html:{class: "appearing-question-title"}
                     .bgimage
-                      .title.option-question-stripe
-                        =f.input :title, label: false, placeholder: "Ask Your Question Here", input_html:{class: :revealable}
                       = responsive_image_tag @question.web_image_url, class: "img-responsive"
 
               .row.form-group
-                .col-md-12
-                  .col-sm-12
+                .col-xs-12
+                  .col-xs-12.btn-primary
                     =render partial:'/widgets/image_control',locals:{f:f,id:'background_selector'}
               .row.form-group
-                =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-12 form-group", :name=>"text_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
+                =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-xs-12 form-group", :name=>"text_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
           .row
             .col-xs-12.col-md-6.form-group
               .btn-group.btn-group-justified

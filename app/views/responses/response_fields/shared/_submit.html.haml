@@ -1,19 +1,18 @@
 :sass
-  .almost-6
-    width: 49%
-    margin-right: -2px
-    &:nth-child(2n)
-      margin-left: 2%
+  .row.submit-skip-edit-continue-button-set
+    clear: both
 
 
-.row.submit-skip-edi-continue-button-set
+.row.submit-skip-edit-continue-button-set
   - if response.question.preview?
-    .form-group.col-xs-12.col-sm-12.col-md-6
+    .col-xs-12.col-md-6.form-group.clearfix
       = link_to "Edit", [:edit, response.question], class: %w{btn btn-default btn-lg col-xs-12}
-    .form-group.col-xs-12.col-sm-12.col-md-6
-      = link_to "Continue", [:target, response.question], class: %w{btn btn-default col-xs-12 btn-lg}
+    .row
+      .form-group.col-xs-12.col-md-6
+        = link_to "Continue", [:target, response.question], class: %w{btn btn-default col-xs-12 btn-lg}
   - else
-    .form-group.col-xs-12.col-sm-12.col-md-6
+    .col-xs-12.col-md-6.form-group.clearfix
       = link_to "Skip", new_question_skipped_item_path(response.question), class: %w{ btn btn-default btn-lg col-xs-12}
-    .form-group.col-xs-12.col-sm-12.col-md-6
-      %button.btn.btn-default.col-xs-12.btn-lg{type: :submit} Submit
+      %br
+    .col-xs-12.col-md-6
+      %button.btn.btn-default.form-group.col-xs-12.btn-lg{type: :submit} Submit

@@ -1,13 +1,12 @@
 .col-sm-6.nested-fields.answer
   .row
-    .choice.imagechooser
+    .question.imagechooser
       .hidden
         .canned{data:{ids:canned_choice_image_ids, urls:canned_choice_image_web_urls}}
         .id=f.input :background_image_id, as: :hidden
       .bgimage= responsive_image_tag f.object.web_image_url, class: "img-responsive"
-      .overimage
+      .over_image_title_container
         =link_to_remove_association f, class: :close do
           %i.glyphicon.glyphicon-remove
-        .col-xs-12
-          =render partial:'/widgets/image_control',locals:{f:f,distro: :upload_middle}
-        .title.col-xs-12=f.input :title, label: false, placeholder: "Type a response"
+        =render partial:'/widgets/image_control',locals:{f:f,distro: :upload_middle}
+        .col-xs-12.title=f.input :title, label: false, placeholder: "Type a response",input_html:{class: 'revealable'}

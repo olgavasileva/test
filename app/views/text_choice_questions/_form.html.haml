@@ -28,7 +28,7 @@
     verrical-align: middle
 
 
-.row
+.row.question-builder
   .col-xs-12.col-md-8.col-md-push-2.col-sm-10.col-sm-push-1
     .textchoice.panel.panel-default
       .panel-heading
@@ -48,7 +48,7 @@
                 .over_image_title_container.title=f.input :title, label: false, input_html: { class: "appearing-question-title"}, placeholder: "Ask Your Question Here"
                 .bgimage= responsive_image_tag @question.web_image_url, class: "img-responsive"
               .col-sm-12
-                =render partial:'/widgets/image_control',locals:{f:f,id:'background_selector'}
+                =render partial:'/widgets/image_control',locals:{f:f,id:'background_selector', base_class: "revert"}
             .col-xs-12.col-sm-6
               =f.simple_fields_for :choices do |choice|
                 = render 'choice_fields', f:choice

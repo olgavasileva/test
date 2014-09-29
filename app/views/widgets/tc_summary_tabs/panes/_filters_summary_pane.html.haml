@@ -1,27 +1,30 @@
 
 .filters-list.col-xs-10.col-xs-push-1.col-sm-8.col-sm-push-2.col-md-6.col-md-push-3.col-lg-4.col-lg-push-4
   %label.filter-name.col-xs-12
-    All
+    .col-xs-8.col-xs-push-2 All
     %input.data-filter{:type=>'checkbox', :data=>{:exclude=>'true', :filter=>''}}
-    .data-filter-visual
+    .data-filter-visual.col-xs-2.col-xs-push-2
   %label.filter-name.col-xs-12
-    Followers
+    .col-xs-8.col-xs-push-2 Followers
     %input.data-filter{:type=>'checkbox', :data=>{:filter=>'follower'}}
-    .data-filter-visual
+    .data-filter-visual.col-xs-2.col-xs-push-2
   %label.filter-name.col-xs-12
-    Following
+    .col-xs-8.col-xs-push-2 Following
     %input.data-filter{:type=>'checkbox', :data=>{:filter=>'following'}}
-    .data-filter-visual
+    .data-filter-visual.col-xs-2.col-xs-push-2
 
-  -if(current_user.groups.count>0)
+  -if(current_user.groups.count>0 || true)
     %label.collapse-trigger.filter-name.col-xs-12{:data=>{:toggle=>'collapse',:target=>'.group-list-item'}}
-      Groups
       %input.data-filter{:type=>'checkbox'}
-      .data-filter-visual
+      .data-filter-visual.col-xs-2
+      .col-xs-8 Groups
+      %label.col-xs-2
+        %input.data-filter{:type=>'checkbox', :data=>{:exclude=>'true',:replace=>'group_id',:filter=>'all_groups'}}
+        .data-filter-visual
       -current_user.groups.all.each do |g|
-        %label.filter-name.col-xs-12
+        %label.filter-name.col-xs-12.filter-name
           =g.name
-          %input.data-filter{:type=>'checkbox', :data=>{:filter=>'group',:value=>"#{g.name}"}}
+          %input.data-filter{:type=>'checkbox', :data=>{:filter=>'group_id',:value=>"#{g.id}"}}
           .data-filter-visual
 
   :javascript
@@ -34,6 +37,7 @@
 
               var filtersList=$(event.originalEvent.currentTarget),
               is_exclusive=!!$(this).data('exclude'),
+              replaces=$(this).data('replace'),
               filter_value=$(this).data('value'),
               filter=$(this).data('filter'),
               filterSet=JSON.parse(filtersList.data('filters-set')||'{}');
@@ -55,6 +59,11 @@
                 }
               }
 
+              if(replaces){
+                delete filterSet[replaces];
+              }
+
+
               filtersList.data('filters-set',JSON.stringify(filterSet));
 
               if(!this.checked){
@@ -62,10 +71,16 @@
               }
 
               if(is_exclusive){
-                filtersList.find('.data-filter[data-filter]').attr('checked',false);
+                var qstring=""
+                if(replaces){
+                  qstring='="'+replaces+'"';
+                }
+
+                filtersList.find('.data-filter[data-filter'+qstring+'], [data-exclude="true"]:not([data-replace])').attr('checked',false);
+
               }
               else{
-                $(event.originalEvent.currentTarget).find('[data-exclude="true"]').attr('checked',false);
+                $(event.originalEvent.currentTarget).find('[data-exclude="true"]:not([data-replace]), [data-replace="'+filter+'"]').attr('checked',false);
               }
 
               this.checked=true;

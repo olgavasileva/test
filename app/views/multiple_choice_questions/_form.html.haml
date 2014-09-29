@@ -1,97 +1,9 @@
 :sass
-  .image_choice_question_choices_title
-    position: relative
-    max-height: 45%
-    &:hover
-      textarea.form-control
-        background-color: rgba(255,255,255,0.2)
-        border-color: #ccccff
-
-    textarea.form-control
-      display: block
-      font-size: 1em
-      width: 100%
-      background-color: transparent
-      border: solid 1px transparent
-      color: white
-      overflow: auto
-      text-align: center
-      resize: none
-      outline: none
-      box-shadow: none
-      margin: 0
-      padding: 0
-      border-radius: 0
-      min-height: 1.5em
-      max-height: 1.5em
-
-
-
-  #background_selector
-    font-size: 2.2em
-    border: solid 1px #264e8e
-    padding: 8px
-    padding-top: 9px
-  #image_upload
-    text-align: center
-  .close-float
-    clear: both
-    float: none
-
-  .image_control
-    text-align: center
-
-
-  .multiple_choice_question_title
-    padding: 10px
-    #multiple_choice_question_title
-      width: 100%
-      text-align: center
-      box-shadow: none
-      resize: none
-
-  .revealable
-    background-color: transparent
-    border-color: transparent
-    resize: none
-    box-shadow: none
-    &:hover, &:focus
-      outline: none
-      border-color: white
-      background-color: rgba(255,255,255,0.2)
-
-  .overimage.add-option
-    background-color: orange
-    color: white
-    text-align: center
-    height: 100%
-    font-size: 3em
-    h3
-      margin-top: 35%
-      margin-bottom: 5%
-      font-size: 1.1em
-
   .close.remove_fields
     margin-right: 10px
 
-  .image-option-title-text
-    display: block
-    font-size: 1em
-    width: 100%
-    background-color: transparent
-    border: solid 1px transparent
-    color: white
-    overflow: auto
-    text-align: center
-    resize: none
-    outline: none
-    box-shadow: none
-    margin: 0
-    padding: 0
-    border-radius: 0
-    min-height: 1.5em
-    max-height: 1.5em
-.row
+
+.row.question-builder
   .col-xs-12.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2
     .multiplechoice.panel.panel-default
       .panel-heading
@@ -105,9 +17,8 @@
           .row.question.form-group
             .col-sm-12
               .title.row
-                .multiple_choice_question_title.text.required.btn-primary
-                  .row
-                    =f.input_field :title, label: false , class: :revealable, placeholder: "Ask Your Question Here"
+                .multiple_choice_question_title.text.required.btn-primary.question-header-style-title
+                  =f.input_field :title, label: false , class: "revealable title", placeholder: "Ask Your Question Here"
 
               .row
                 =f.simple_fields_for :choices do |choice|

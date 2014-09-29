@@ -1,5 +1,5 @@
 .image_control
-  font-size:  2.2rem
+  font-size: 3rem
   a
     text-align: center
   .question-image-uploader
@@ -13,8 +13,26 @@
       bottom: 101%
       margin-bottom: 10px
   .image-nav-control
-    text-align: right
+    text-align: left
     &:last-of-type
-      text-align: left
+      text-align: right
       span
-        margin-left: -5px
+        margin-right: 2px
+
+  &.upload_first
+    .image-nav-control
+      text-align: right
+
+
+  &.revert
+    background-color: $primary_background_color
+    .image-nav-control,
+    .question-image-uploader
+      color: white !important
+
+.btn-primary
+  .image_control
+    .image-nav-control,
+    .question-image-uploader
+      color: white !important
+

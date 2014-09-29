@@ -1,11 +1,12 @@
 -id||=''
+-base_class||=''
 -distro||=:upload_first
--upload_class='col-xs-9 col-sm-9'
--arrows_class='col-xs-1 image-nav-control'
+-upload_class='col-xs-6'
+-arrows_class='col-xs-3 image-nav-control'
 -if(distro==:upload_piramid)
   -upload_class='col-xs-12 form-group'
   -arrows_class='col-xs-6 image-nav-control'
-.image_control.row{:id=>"#{id}"}
+.image_control.row{:id=>"#{id}",:class=>"#{base_class} #{distro}"}
   <Image manipulation tools>
   -if(distro==:upload_piramid || distro==:upload_first)
     %a.question-image-uploader.upload-trigger{:class=>"#{upload_class}"}
