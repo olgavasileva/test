@@ -30,7 +30,7 @@
   .panel-body
     .row
       - @question_types.each do |question_type|
-        .item.col-sm-6
+        .item.col-sm-6.col-xs-12
           = link_to path_for_new(question_type), class: %w(btn btn-default) do
             .row
               .icon.floating-icom=image_tag icon_for(question_type)

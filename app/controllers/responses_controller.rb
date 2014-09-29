@@ -1,5 +1,4 @@
 class ResponsesController < ApplicationController
-
   def new
     question = Question.find params[:question_id]
     question.started!

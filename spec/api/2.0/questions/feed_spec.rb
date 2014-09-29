@@ -117,6 +117,7 @@ describe :feed do
                 q = JSON.parse(response.body)[0]['question']
 
                 expect(q['id']).to eq text_choice_question.id
+                expect(q['uuid']).to eq text_choice_question.uuid
                 expect(q['type']).to eq "TextChoiceQuestion"
                 expect(q['title']).to eq "Text Choice Title"
                 expect(q['description']).to eq "Text Choice Description"
@@ -149,6 +150,7 @@ describe :feed do
               it "should have all required fields" do
                 q = JSON.parse(response.body)[1]['question']
                 expect(q['id']).to eq multiple_choice_question.id
+                expect(q['uuid']).to eq multiple_choice_question.uuid
                 expect(q['type']).to eq "MultipleChoiceQuestion"
                 expect(q['title']).to eq "Multiple Choice Title"
                 expect(q['description']).to eq "Multiple Choice Description"
@@ -187,6 +189,7 @@ describe :feed do
               it "should have all required fields" do
                 q = JSON.parse(response.body)[2]['question']
                 expect(q['id']).to eq image_choice_question.id
+                expect(q['uuid']).to eq image_choice_question.uuid
                 expect(q['type']).to eq "ImageChoiceQuestion"
                 expect(q['title']).to eq "Image Choice Title"
                 expect(q['description']).to eq "Image Choice Description"
@@ -217,6 +220,7 @@ describe :feed do
               it "should have all required fields" do
                 q = JSON.parse(response.body)[3]['question']
                 expect(q['id']).to eq order_question.id
+                expect(q['uuid']).to eq order_question.uuid
                 expect(q['type']).to eq "OrderQuestion"
                 expect(q['title']).to eq "Order Title"
                 expect(q['description']).to eq "Order Description"
@@ -251,6 +255,7 @@ describe :feed do
               it "should have all required fields" do
                 q = JSON.parse(response.body)[4]['question']
                 expect(q['id']).to eq text_question.id
+                expect(q['uuid']).to eq text_question.uuid
                 expect(q['type']).to eq "TextQuestion"
                 expect(q['title']).to eq "Text Title"
                 expect(q['description']).to eq "Text Description"

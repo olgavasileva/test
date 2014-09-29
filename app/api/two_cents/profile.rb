@@ -23,6 +23,8 @@ class TwoCents::Profile < Grape::API
     }
     params do
       requires :auth_token, type:String, desc:'Obtain this from the instances API'
+
+      optional :user_id, type: Integer, desc: "ID of user, defaults to current user's ID"
     end
     post "/", rabl: "profile", http_codes:[
         [200, "402 - Invalid auth token"],
@@ -30,9 +32,7 @@ class TwoCents::Profile < Grape::API
     ] do
       validate_user!
 
-      @user = current_user
-
-
+      @user = User.find(params.fetch(:user_id, current_user.id))
     end
   end
 end

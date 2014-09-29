@@ -39,6 +39,11 @@ body {
     	padding-top: 0px !important;
 	}
 }
+
+.btn.form-group{
+  margin-bottom:20px;
+}
+
 header {
     background-color: rgba(0,0,0,.6);
 }
@@ -591,6 +596,39 @@ header {
 		}
 	}
 
+
+
+}
+@media (min-width: 450px) and( max-width: 767px) {
+  #undertop>div{
+    max-width: 450px;
+    display:block;
+    margin:auto;
+  }
+
 }
 
+@media(max-width: 450px){
+  [class*="col-xs-12"]{
+    padding-left:0 !important;
+    padding-right: 0!important;
+    &>.row{
+      margin-right: 0;
+      margin-left: 0;
+    }
+  }
+  #undertop>div{
+    overflow:hidden;
+    width:100%;
+    margin:0;
+  }
 
+  .select-option{
+    max-height: 100px
+  }
+
+  [class^="col-"] > .floating-question-title {
+    left: 0!important;
+    right: 0!important;
+  }
+}

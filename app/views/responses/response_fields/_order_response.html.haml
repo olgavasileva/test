@@ -9,12 +9,17 @@
   .list-unstyled
     padding-left: 15px
     padding-right: 15px
-.row
-  .col-md-6.col-md-push-3
+
+  #ordered_choices
+    li
+      .panel
+        margin-bottom: 0
+%div
+  .col-xs-12.col-sm-10.col-sm-push-1.col.col-md-8.col-md-push-2
     .row.order-choices
-      .col-md-12.ignore-float
+      .col-xs-12.ignore-float
         = render "responses/response_fields/shared/title", form:form, response:response
-      %ul#orderChoices.list-unstyled
+      %ul#ordered_choices.list-unstyled.col-xs-12
         = form.fields_for :choice_responses do |c|
           %li
             .panel.panel-default.handle
@@ -24,6 +29,7 @@
               = responsive_image_tag(c.object.choice.web_image_url, class: "img-responsive")
     = render "responses/response_fields/shared/comment", form:form, response:response
     = render "responses/response_fields/shared/sharing", form:form, response:response
-    = render "responses/response_fields/shared/anonymous", form:form, response:response
-    %br
+    .form-group
+      = render "responses/response_fields/shared/anonymous", form:form, response:response
+  .col-sm-10.col-sm-push-1.col.col-md-8.col-md-push-2
     = render "responses/response_fields/shared/submit", form:form, response:response

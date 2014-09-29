@@ -91,6 +91,7 @@ describe :register_facebook do
                 it {JSON.parse(response.body)['error_code'].should be_nil}
                 it {JSON.parse(response.body)['error_message'].should be_nil}
                 it {JSON.parse(response.body)['auth_token'].should eq instance.reload.auth_token}
+                it {JSON.parse(response.body)['user_id'].should eq instance.reload.user.id}
                 it {instance.reload.user.should eq authentication.user}
                 it {instance.reload.user.authentications.find_by(uid:fid).id.should eq authentication.id}
               end

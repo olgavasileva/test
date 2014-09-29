@@ -13,7 +13,7 @@ describe 'relationships/followable' do
 
   shared_examples :common do
     it "returns data with expected fields" do
-      expected_keys = %w[id username email name is_following]
+      expected_keys = %w[id username email name group_ids is_following]
       expect(response_body.first.keys).to eq expected_keys
     end
 

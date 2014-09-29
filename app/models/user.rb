@@ -61,6 +61,8 @@ class User < ActiveRecord::Base
   has_many :liked_comment_responses, through: :liked_comments, source: :response
   has_many :responses_with_comments, -> {where "responses.comment IS NOT NULL AND responses.comment != ''"}, class_name: "Response"
 
+  has_many :segments, dependent: :destroy
+
 	before_create :create_remember_token
 
 	VALID_USERNAME_REGEX ||= /\A[a-z0-9\-_]{4,50}\z/i

@@ -164,7 +164,7 @@ class TwoCents::Auth < Grape::API
       user = User.create! name:declared_params[:name], email:declared_params[:email], username:declared_params[:username], password:declared_params[:password], password_confirmation:declared_params[:password]
       instance.update_attributes! user:user, auth_token:"A"+UUID.new.generate
 
-      {auth_token:instance.auth_token}
+      {auth_token:instance.auth_token, user_id: user.id}
     end
 
 
@@ -219,7 +219,7 @@ class TwoCents::Auth < Grape::API
       end
 
       instance.update_attributes! user_id:user.id, auth_token:"A"+UUID.new.generate
-      {auth_token:instance.auth_token}
+      {auth_token:instance.auth_token, user_id: user.id}
     end
 
 
@@ -235,7 +235,7 @@ class TwoCents::Auth < Grape::API
     }
     params do
       requires :instance_token, type:String, desc:'Obtain this from the instances API'
-      requires :password, type: String, regexp: /.{8}.*/, desc:'8 or more character password'
+      requires :password, type: String, regexp: /.{6,20}/, desc:'6-20 character password'
       optional :email, type: String, regexp: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$.?/i, desc:'e.g. oscar@madisononline.com'
       optional :username, type: String, regexp: /^[A-Z0-9\-_ ]{4,20}$/i, desc:'Unique username'
       mutually_exclusive :email, :username
@@ -267,7 +267,7 @@ class TwoCents::Auth < Grape::API
 
       instance.update_attributes auth_token:"A"+UUID.new.generate, user:user
 
-      {auth_token:instance.auth_token, email:user.email, username:user.username}
+      {auth_token:instance.auth_token, email:user.email, username:user.username, user_id:user.id}
     end
 
 
@@ -350,6 +350,19 @@ class TwoCents::Auth < Grape::API
       current_user.update_attributes longitude: longitude, latitude: latitude
 
       {}
+    end
+
+    desc "Return initial info on current user."
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+    end
+    get 'init' do
+      validate_user!
+
+      {
+        has_any_groups: current_user.groups.any?,
+        manages_any_communities: current_user.communities.any?
+      }
     end
 
   end

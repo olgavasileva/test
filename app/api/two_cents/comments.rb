@@ -1,5 +1,20 @@
 class TwoCents::Comments < Grape::API
   resource :comments do
+    helpers do
+      def serialize_response(r)
+        {
+          id: r.id,
+          user_id: r.user_id,
+          comment: r.comment,
+          created_at: r.created_at.to_i,
+          email: r.user.email,
+          ask_count: r.user.questions.count,
+          response_count: r.user.responses.count,
+          comment_count: r.user.responses.with_comment.count,
+          comment_children: r.comment_children.map { |r| serialize_response r }
+        }
+      end
+    end
 
     desc "Return questions with comments for a user"
     params do
@@ -47,13 +62,15 @@ class TwoCents::Comments < Grape::API
       requires :auth_token, type:String, desc: 'Obtain this from the instances API'
       requires :question_id, type:Integer, desc: 'The id of the question'
     end
-    post '/', rabl:"comments", http_codes:[
+    post '/', http_codes:[
       [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"]
     ] do
       question = Question.find declared_params[:question_id]
-      @responses = question.responses_with_comments
+      responses = question.responses_with_comments
+
+      responses.map { |r| serialize_response(r) }
     end
 
 

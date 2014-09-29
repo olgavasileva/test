@@ -1,5 +1,28 @@
 class TwoCents::Questions < Grape::API
   resource :questions do
+    helpers do
+      params :auth do
+        requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+      end
+
+      params :create do
+        requires :category_id, type:Integer, desc:"Category for this question"
+        requires :title, type:String, desc:"Title of question to display to the user"
+        optional :description, type:String, desc:"Description - do we need this?"
+
+        optional :invite_phone_numbers, type: Array, desc: "Phone numbers of people to invite to answer."
+        optional :invite_email_addresses, type: Array, desc: "Email addresses of people to invite to answer."
+        optional :anonymous, type: Boolean, desc: "Whether question is anonymous"
+
+        requires :targets, type: Hash do
+          optional :all, type: Boolean, desc: "Whether question is targeted at all users."
+          optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
+          optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
+          optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
+          optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
+        end
+      end
+    end
 
     #
     # Create a TextChoiceQuestion
@@ -15,25 +38,15 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+      use :auth
+      use :create
 
-      requires :category_id, type:Integer, desc:"Category for this question"
-      requires :title, type:String, desc:"Title of question to display to the user"
-      optional :description, type:String, desc:"Description - do we need this?"
       requires :image_url, type:String, desc:"URL of the overview image"
       requires :rotate, type:Boolean, desc:"True if choices should be presented in a random order", default:false
 
       requires :choices, type:Array do
         requires :title, type:String, desc:"Title of the choice to display to the user"
         requires :rotate, type:Boolean, desc:"This value is logically ANDed with question.rotate", default:true
-      end
-
-      requires :targets, type: Hash do
-        optional :all, type: Boolean, desc: "Whether question is targeted at all users."
-        optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
-        optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
-        optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
-        optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
       end
     end
     post 'text_choice_question', rabl: "question", http_codes:[
@@ -68,7 +81,8 @@ class TwoCents::Questions < Grape::API
         target_all_followers: params[:targets][:all_followers],
         target_all_groups: params[:targets][:all_groups],
         target_follower_ids: params[:targets][:follower_ids],
-        target_group_ids: params[:targets][:group_ids]
+        target_group_ids: params[:targets][:group_ids],
+        anonymous: params[:anonymous]
       }
 
       @question = TextChoiceQuestion.new(question_params)
@@ -91,11 +105,9 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+      use :auth
+      use :create
 
-      requires :category_id, type:Integer, desc:"Category for this question"
-      requires :title, type:String, desc:"Title of question to display to the user"
-      optional :description, type:String, desc:"Description - do we need this?"
       requires :rotate, type:Boolean, desc:"True if choices should be presented in a random order", default:false
       requires :min_responses, type:Integer, desc:"Minimum number of responses that must be selected"
       optional :max_responses, type:Integer, desc:"Maximum number of responses that can be selected.  Defaults to the number of choices."
@@ -105,14 +117,6 @@ class TwoCents::Questions < Grape::API
         requires :image_url, type:String, desc:"URL of the choice image"
         requires :rotate, type:Boolean, desc:"This value is logically ANDed with question.rotate", default:true
         requires :muex, type:Boolean, desc:"If a muex choice is selected, no other choices are alloweed", default:false
-      end
-
-      requires :targets, type: Hash do
-        optional :all, type: Boolean, desc: "Whether question is targeted at all users."
-        optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
-        optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
-        optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
-        optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
       end
     end
     post 'multiple_choice_question', rabl: "question", http_codes:[
@@ -148,7 +152,8 @@ class TwoCents::Questions < Grape::API
         target_all_followers: params[:targets][:all_followers],
         target_all_groups: params[:targets][:all_groups],
         target_follower_ids: params[:targets][:follower_ids],
-        target_group_ids: params[:targets][:group_ids]
+        target_group_ids: params[:targets][:group_ids],
+        anonymous: params[:anonymous]
       }
 
       @question = MultipleChoiceQuestion.new(question_params)
@@ -177,25 +182,15 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+      use :auth
+      use :create
 
-      requires :category_id, type:Integer, desc:"Category for this question"
-      requires :title, type:String, desc:"Title of question to display to the user"
-      optional :description, type:String, desc:"Description - do we need this?"
       requires :rotate, type:Boolean, desc:"True if choices should be presented in a random order", default:false
 
       requires :choices, type:Array do
         requires :title, type:String, desc:"Title of the choice to display to the user"
         requires :image_url, type:String, desc:"URL of the choice image"
         requires :rotate, type:Boolean, desc:"This value is logically ANDed with question.rotate", default:true
-      end
-
-      requires :targets, type: Hash do
-        optional :all, type: Boolean, desc: "Whether question is targeted at all users."
-        optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
-        optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
-        optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
-        optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
       end
     end
     post 'image_choice_question', rabl: "question", http_codes:[
@@ -222,7 +217,8 @@ class TwoCents::Questions < Grape::API
         target_all_followers: params[:targets][:all_followers],
         target_all_groups: params[:targets][:all_groups],
         target_follower_ids: params[:targets][:follower_ids],
-        target_group_ids: params[:targets][:group_ids]
+        target_group_ids: params[:targets][:group_ids],
+        anonymous: params[:anonymous]
       }
 
       @question = ImageChoiceQuestion.new(question_params)
@@ -252,25 +248,15 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+      use :auth
+      use :create
 
-      requires :category_id, type:Integer, desc:"Category for this question"
-      requires :title, type:String, desc:"Title of question to display to the user"
-      optional :description, type:String, desc:"Description - do we need this?"
       requires :rotate, type:Boolean, desc:"True if choices should be presented in a random order", default:false
 
       requires :choices, type:Array do
         requires :title, type:String, desc:"Title of the choice to display to the user"
         requires :image_url, type:String, desc:"URL of the choice image"
         requires :rotate, type:Boolean, desc:"This value is logically ANDed with question.rotate", default:true
-      end
-
-      requires :targets, type: Hash do
-        optional :all, type: Boolean, desc: "Whether question is targeted at all users."
-        optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
-        optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
-        optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
-        optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
       end
     end
     post 'order_question', rabl: "question", http_codes:[
@@ -297,7 +283,8 @@ class TwoCents::Questions < Grape::API
         target_all_followers: params[:targets][:all_followers],
         target_all_groups: params[:targets][:all_groups],
         target_follower_ids: params[:targets][:follower_ids],
-        target_group_ids: params[:targets][:group_ids]
+        target_group_ids: params[:targets][:group_ids],
+        anonymous: params[:anonymous]
       }
 
       @question = OrderQuestion.new(question_params)
@@ -327,24 +314,14 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+      use :auth
+      use :create
 
-      requires :category_id, type:Integer, desc:"Category for this question"
-      requires :title, type:String, desc:"Title of question to display to the user"
       requires :image_url, type:String, desc:"URL of the overview image"
-      optional :description, type:String, desc:"Description - do we need this?"
 
       requires :text_type, type:String, values: TextQuestion::TEXT_TYPES, desc:"Type of text to collect: #{TextQuestion::TEXT_TYPES}"
       requires :min_characters, type:Integer
       requires :max_characters, type:Integer
-
-      requires :targets, type: Hash do
-        optional :all, type: Boolean, desc: "Whether question is targeted at all users."
-        optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
-        optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
-        optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
-        optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
-      end
     end
     post 'text_question', rabl: "question", http_codes:[
       [200, "400 - Invalid params"],
@@ -375,7 +352,8 @@ class TwoCents::Questions < Grape::API
         target_all_followers: params[:targets][:all_followers],
         target_all_groups: params[:targets][:all_groups],
         target_follower_ids: params[:targets][:follower_ids],
-        target_group_ids: params[:targets][:group_ids]
+        target_group_ids: params[:targets][:group_ids],
+        anonymous: params[:anonymous]
       }
 
       @question = TextQuestion.new(question_params)
@@ -398,6 +376,7 @@ class TwoCents::Questions < Grape::API
                     "question": {
                         "type": "TextChoiceQuestion",
                         "id": 1,
+                        "uuid": "SOMEUUID",
                         "title": "Text Choice Title",
                         "description": "Text Choice Description",
                         "image_url": "http://crashmob.com/Example.jpg",
@@ -437,6 +416,7 @@ class TwoCents::Questions < Grape::API
                     "question": {
                         "type": "MultipleChoiceQuestion",
                         "id": 2,
+                        "uuid": "SOMEUUID",
                         "title": "Multiple Choice Title",
                         "description": "Multiple Choice Description",
                         "min_responses": 1,
@@ -483,6 +463,7 @@ class TwoCents::Questions < Grape::API
                     "question": {
                         "type": "ImageChoiceQuestion",
                         "id": 3,
+                        "uuid": "SOMEUUID",
                         "title": "Image Choice Title",
                         "description": "Image Choice Description",
                         "rotate": false,
@@ -516,6 +497,7 @@ class TwoCents::Questions < Grape::API
                     "question": {
                         "type": "OrderQuestion",
                         "id": 4,
+                        "uuid": "SOMEUUID",
                         "title": "Order Title",
                         "description": "Order Description",
                         "rotate": true,
@@ -557,6 +539,7 @@ class TwoCents::Questions < Grape::API
                     "question": {
                         "type": "TextQuestion"
                         "id": 5,
+                        "uuid": "SOMEUUID",
                         "title": "Text Title",
                         "description": "Text Description",
                         "image_url": "http://crashmob.com/Example.jpg",
@@ -575,7 +558,8 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+      use :auth
+
       optional :page, type: Integer, desc: "Page number, starting at 1 - all questions returned if not supplied"
       optional :per_page, type: Integer, default: 15, desc: "Number of questions per page"
     end
@@ -606,7 +590,7 @@ class TwoCents::Questions < Grape::API
 
     desc "Return list of questions asked by a user."
     params do
-      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+      use :auth
 
       optional :user_id, type: Integer, desc: "User ID. Defaults to logged in user's ID."
       optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all questions."
@@ -638,7 +622,7 @@ class TwoCents::Questions < Grape::API
 
     desc "Return list of questions answered by a user."
     params do
-      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+      use :auth
 
       optional :user_id, type: Integer, desc: "User ID. Defaults to logged in user's ID."
       optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all questions."
@@ -670,7 +654,7 @@ class TwoCents::Questions < Grape::API
 
     desc "Return list of a TextQuestion's responses."
     params do
-      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+      use :auth
 
       requires :question_id, type: Integer, desc: "ID of TextQuestion."
       optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all answers."
@@ -741,7 +725,8 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+      use :auth
+
       requires :question_id, type: Integer, desc: 'Question this is a response to'
       optional :comment, type: String, desc: 'Some comment about the question'
       optional :anonymous, type: Boolean, default:false, desc: "True if the user want's to remain anonymous"
@@ -750,6 +735,8 @@ class TwoCents::Questions < Grape::API
       optional :choice_id, type: Integer, desc: 'The single choice selected in a TextChoiceQuestion or ImageChoiceQuestion'
       optional :choice_ids, type: Array, desc: 'The choices selected in a MultipleChoiceQuestion or ordered by an OrderQuestion'
       mutually_exclusive :text, :choice_id, :choice_ids
+
+      optional :comment_parent_id, type: Integer, desc: "Comment parent response's ID."
 
       optional :filter_group, type: Symbol, values:[:all, :friends, :followers, :following, :me], desc: ":all, :friends, :followers, :following, :me"
       optional :filter_gender, type: Symbol, values:[:all, :male, :female], desc: ":all, :male, :female"
@@ -766,8 +753,9 @@ class TwoCents::Questions < Grape::API
 
       @question = Question.find declared_params[:question_id]
 
-      resp_params = params.to_h.slice(
-        'comment', 'anonymous', 'text', 'choice_id', 'choice_ids')
+      resp_param_keys =
+        %w[comment anonymous text choice_id choice_ids comment_parent_id]
+      resp_params = params.to_h.slice(*resp_param_keys)
       resp_params['user_id'] = current_user.id
 
       @question.responses.create!(resp_params)
@@ -802,7 +790,8 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+      use :auth
+
       requires :question_id, type: Integer, desc: 'Question this is a response to'
 
       optional :filter_group, type: Symbol, values:[:all, :friends, :followers, :following, :me], desc: ":all, :friends, :followers, :following, :me"
@@ -823,13 +812,40 @@ class TwoCents::Questions < Grape::API
     end
 
 
+    desc "Return a question's information."
+    params do
+      use :auth
+
+      requires :question_id, type: Integer, desc: "ID of question."
+      optional :user_id, type: Integer, desc: "ID of user for question answer data, defaults to current user's ID."
+    end
+    get 'question' do
+      validate_user!
+
+      @question = Question.find(params[:question_id])
+      @user = User.find(params.fetch(:user_id, current_user.id))
+
+      question_data = JSON.parse(Rabl.render(nil, 'question',
+                                             view_path: 'app/views/api',
+                                             scope: self)).fetch('question')
+      summary_data = JSON.parse(Rabl.render(nil, 'summary',
+                                            view_path: 'app/views/api',
+                                            scope: self)).fetch('summary')
+      user_data = {
+        user_answered: @user.answered_questions.include?(@question)
+      }
+
+      question_data.merge(user_data).merge(summary: summary_data)
+    end
+
+
     #
     # Flag a question as inappropriate
     #
 
     desc "Flag inappropriate question"
     params do
-      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+      use :auth
 
       requires :question_id, type: Integer, desc: 'Question this is a response to'
       requires :reason, type: String, desc: "Reason that question is inappropriate"
@@ -858,7 +874,8 @@ class TwoCents::Questions < Grape::API
 
     desc "Like a question"
     params do
-      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+      use :auth
+
       requires :question_id, type: Integer, desc: 'Question this is a response to'
     end
     post 'like', http_codes:[
@@ -880,7 +897,8 @@ class TwoCents::Questions < Grape::API
 
     desc "Follow a question"
     params do
-      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+      use :auth
+
       requires :question_id, type: Integer, desc: 'Question this is a response to'
     end
     post 'follow', http_codes:[
@@ -902,7 +920,8 @@ class TwoCents::Questions < Grape::API
 
     desc "Start to answer a question"
     params do
-      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+      use :auth
+
       requires :question_id, type: Integer, desc: 'Question this is a response to'
     end
     post 'follow', http_codes:[
@@ -926,7 +945,7 @@ class TwoCents::Questions < Grape::API
     #
     desc "Increment a question's view count"
     params do
-      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+      use :auth
 
       requires :question_id, type: Integer, desc: 'Question this is a response to'
     end
@@ -934,6 +953,38 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       Question.find(params[:question_id]).increment! :view_count
+
+      {}
+    end
+
+    desc "Skip a question."
+    params do
+      use :auth
+
+      requires :question_id, type: Integer, desc: "ID of question."
+    end
+    put 'skip' do
+      validate_user!
+
+      question = Question.find(params[:question_id])
+
+      SkippedItem
+        .where(user_id: current_user.id, question_id: question.id)
+        .first_or_create!
+
+      {}
+    end
+
+    desc "Start a question."
+    params do
+      use :auth
+
+      requires :question_id, type: Integer, desc: "ID of question."
+    end
+    post 'start' do
+      validate_user!
+
+      Question.find(params[:question_id]).increment! :start_count
 
       {}
     end

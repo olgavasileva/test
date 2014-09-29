@@ -48,6 +48,19 @@ describe :profile do
           it {expect(JSON.parse(response.body)['profile']['number_of_comments_left']).to eq 0}
         end
 
+        context "with user_id param" do
+          let(:other_user) { FactoryGirl.create(:user) }
+          let(:params) { {
+            auth_token: auth_token,
+            user_id: other_user.id
+          } }
+
+          it "returns data for that user" do
+            response_body = JSON.parse(response.body)
+            expect(response_body['profile']['user_id']).to eq other_user.id
+          end
+        end
+
       end
     end
 

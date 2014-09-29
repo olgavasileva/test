@@ -1,0 +1,2 @@
+class ChoiceImagePolicy < BackgroundImagePolicy
+end

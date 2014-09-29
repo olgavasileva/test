@@ -43,25 +43,26 @@
         %h2.col-sm-12.text-center
           Please check back later.
       - @questions.each do |question|
-        .col-sm-4
-          =link_to new_question_response_path(question), class: :thumbnail do
-            = responsive_image_tag question.web_image_url
-            .mask
-            .floating-question-title
-              %span=question.title
-            .icon
-              = responsive_image_tag question.category.icon.web.url
-              %small.category= question.category.name
-            .icon2
-              Answered
-              %hr
-              %small (#{@all_responses})
-            .icon3
-              Commented
-              %hr
-              %small (#{@all_comments})
-            .icon4
-              %small ....
+        .col-md-4.col-sm-6
+          .row
+            =link_to new_question_response_path(question), class: :thumbnail do
+              = responsive_image_tag question.web_image_url
+              .mask
+              .floating-question-title
+                %span=question.title
+              .icon
+                = responsive_image_tag question.category.icon.web.url
+                %small.category= question.category.name
+              .icon2
+                Answered
+                %hr
+                %small (#{@all_responses})
+              .icon3
+                Commented
+                %hr
+                %small (#{@all_comments})
+              .icon4
+                %small ....
     .row
       .col-md-2
       .col-sm-8

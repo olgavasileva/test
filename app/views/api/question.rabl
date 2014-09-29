@@ -1,6 +1,6 @@
 object @question => :question
 
-attributes :id, :type, :title, :description, :response_count, :comment_count
+attributes :id, :type, :title, :description, :response_count, :comment_count, :uuid
 attribute :rotate, if: lambda{|q| q.kind_of? ChoiceQuestion}
 attributes :min_responses, :max_responses, if: lambda{|q| q.instance_of? MultipleChoiceQuestion}
 node :image_url, if: lambda{|q| q.instance_of?(TextQuestion) || q.instance_of?(TextChoiceQuestion)} do |q|

@@ -69,38 +69,38 @@
 
 
 
+.row
+  .col-xs-12.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2
+    .prioritizer.panel.panel-default
+      .panel-heading
+        .panel-title
+          =link_to question_types_path do
+            %span.glyphicon.glyphicon-chevron-left
+      .panel-body
+        = simple_form_for @question do |f|
+          =f.input :type, as: :hidden
+          .row
+            .col-sm-8.col-sm-push-2
+              .row.question
+                .col-xs-12
+                  .title
+                    .text.required.questionare-title.btn-primary
+                      =f.input_field :title, label: false , class: "revealable title-text", placeholder: "Ask Your Question Here"
 
-.col-md-8.col-md-push-2
-  .prioritizer.panel.panel-default
-    .panel-heading
-      .panel-title
-        =link_to question_types_path do
-          %span.glyphicon.glyphicon-chevron-left
-    .panel-body
-      = simple_form_for @question do |f|
-        =f.input :type, as: :hidden
-        .row
-          .col-sm-8.col-sm-push-2
-            .row.question
-              .col-sm-12.form-group
-                .title
-                  .form-group.text.required.questionare-title.btn-primary
-                    =f.input_field :title, label: false , class: "revealable title-text", placeholder: "Ask Your Question Here"
+                =f.simple_fields_for :choices do |choice|
+                  = render 'choice_fields', f:choice
 
-              =f.simple_fields_for :choices do |choice|
-                = render 'choice_fields', f:choice
+                .col-xs-12.form-group
+                  =link_to_add_association  f, :choices, class: 'add-option-control col-xs-12' do
+                    %i.glyphicon.glyphicon-plus-sign
+                    Add Option
 
-              .col-xs-12.form-group
-                =link_to_add_association  f, :choices, class: 'add-option-control col-xs-12' do
-                  %i.glyphicon.glyphicon-plus-sign
-                  Add Option
+                =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-xs-12 form-group", :name=>"order_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
 
-              =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-xs-12 form-group", :name=>"order_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
-
-            .row
-              .col-md-6.form-group
-                .btn-group.btn-group-justified
-                  =f.button :submit, "Preview", class: %w(btn-block btn-lg)
-              .col-md-6.form-group
-                .btn-group.btn-group-justified
-                  =f.button :submit, "Continue", class: %w(btn-block btn-lg)
+              .row
+                .col-xs-12.col-md-6.form-group
+                  .btn-group.btn-group-justified
+                    =f.button :submit, "Preview", class: %w(btn-block btn-lg)
+                .col-xs-12.col-md-6.form-group
+                  .btn-group.btn-group-justified
+                    =f.button :submit, "Continue", class: %w(btn-block btn-lg)

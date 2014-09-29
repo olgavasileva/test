@@ -1,10 +1,12 @@
 - case question.type
 - when "TextChoiceQuestion"
   = render "questions/response_fields/text_choice_response", question: question
+- when "YesNoQuestion"
+  = render "questions/response_fields/text_choice_response", question: question
 - when "ImageChoiceQuestion"
   = render "questions/response_fields/image_choice_response", question: question
 - when "MultipleChoiceQuestion"
-  = render "questions/response_fields/multiple_choice_response", question: question
+  = render "questions/response_fields/image_choice_response", question: question
 - when "TextQuestion"
   = render "questions/response_fields/text_response", question: question
 - when "OrderQuestion"

@@ -11,7 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 20140928211329) do
+
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -181,17 +183,6 @@ ActiveRecord::Schema.define(version: 20140928211329) do
   add_index "follower_targets", ["follower_id"], name: "index_follower_targets_on_follower_id", using: :btree
   add_index "follower_targets", ["question_id"], name: "index_follower_targets_on_question_id", using: :btree
 
-  create_table "friendships", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "friend_id"
-    t.string   "status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "friendships", ["friend_id"], name: "index_friendships_on_friend_id", using: :btree
-  add_index "friendships", ["user_id"], name: "index_friendships_on_user_id", using: :btree
-
   create_table "galleries", force: true do |t|
     t.datetime "entries_open"
     t.datetime "entries_close"
@@ -345,17 +336,19 @@ ActiveRecord::Schema.define(version: 20140928211329) do
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
 
   create_table "messages", force: true do |t|
+    t.text     "content"
     t.string   "type"
     t.datetime "read_at"
-    t.datetime "completed_at"
-    t.integer  "response_count"
-    t.integer  "comment_count"
-    t.integer  "share_count"
-    t.integer  "follower_id"
     t.integer  "question_id"
+    t.integer  "response_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "response_count", default: 0
+    t.integer  "comment_count",  default: 0
+    t.integer  "share_count",    default: 0
+    t.datetime "completed_at"
+    t.integer  "follower_id"
     t.string   "body"
   end
 
@@ -445,6 +438,8 @@ ActiveRecord::Schema.define(version: 20140928211329) do
     t.boolean  "target_all_followers",  default: false
     t.boolean  "target_all_groups",     default: false
     t.integer  "targeted_reach"
+    t.string   "uuid"
+    t.boolean  "anonymous",             default: false
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
@@ -475,6 +470,21 @@ ActiveRecord::Schema.define(version: 20140928211329) do
   add_index "relationships", ["follower_id"], name: "index_relationships_on_follower_id", using: :btree
   add_index "relationships", ["leader_id"], name: "index_relationships_on_leader_id", using: :btree
 
+  create_table "response_matchers", force: true do |t|
+    t.integer  "segment_id"
+    t.integer  "question_id"
+    t.text     "regex"
+    t.integer  "first_place_choice_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "type"
+    t.string   "inclusion"
+    t.integer  "choice_id"
+  end
+
+  add_index "response_matchers", ["question_id"], name: "index_response_matchers_on_question_id", using: :btree
+  add_index "response_matchers", ["segment_id"], name: "index_response_matchers_on_segment_id", using: :btree
+
   create_table "responses", force: true do |t|
     t.string   "type"
     t.integer  "user_id"
@@ -487,6 +497,7 @@ ActiveRecord::Schema.define(version: 20140928211329) do
     t.text     "comment"
     t.boolean  "anonymous"
     t.integer  "scene_id"
+    t.integer  "comment_parent_id"
   end
 
   add_index "responses", ["choice_id"], name: "index_responses_on_choice_id", using: :btree
@@ -575,6 +586,17 @@ ActiveRecord::Schema.define(version: 20140928211329) do
 
   add_index "scenes", ["studio_id"], name: "index_scenes_on_studio_id", using: :btree
   add_index "scenes", ["user_id"], name: "index_scenes_on_user_id", using: :btree
+
+  create_table "segments", force: true do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.integer  "potential_reach_count"
+    t.datetime "potential_reach_computed_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "segments", ["user_id"], name: "index_segments_on_user_id", using: :btree
 
   create_table "settings", force: true do |t|
     t.boolean  "enabled"

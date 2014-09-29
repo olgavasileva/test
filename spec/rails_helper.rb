@@ -7,6 +7,8 @@ require 'rspec/rails'
 # For fixture_file_upload
 include ActionDispatch::TestProcess
 
+include RSpec::Mocks::ExampleMethods
+
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
@@ -47,6 +49,11 @@ RSpec.configure do |config|
   config.before(:suite) do
    DatabaseCleaner.strategy = :transaction
    DatabaseCleaner.clean_with :truncation
+  end
+
+  config.before(:each) do
+    mock_montage = instance_double("Magick::ImageList", write:nil)
+    allow(Magick::ImageList).to receive_message_chain(:new, :montage => mock_montage)
   end
 
   config.around(:each) do |example|

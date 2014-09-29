@@ -2,7 +2,7 @@
   .choice-wrapper
     &.col-md-6
       margin: 0
-      margin-bottom: 10px
+
       overflow: hidden
       cursor: pointer
     .img-responsive
@@ -26,22 +26,29 @@
       text-align: center
       color: white
       background-color: rgba(0,0,0,0.3)
-      left: 15px
-      right: 15px
+      left: 0
+      right: 0
       padding-top: 8px
       padding-bottom: 8px
 
-.row
-  .col-md-8.col-md-push-2
-    = render "questions/response_fields/shared/title", question:question
-    .row
+
+
+%div
+  .col-xs-12.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2
+    = render "questions/response_fields/shared/title", question: @question
+    .form-group
       -n=0
-      -question.choices.each do |c|
+      -@question.choices.each do |c|
         -n+=1
         %label.col-sm-6.col-xs-12.choice-wrapper
-          =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
-          %i.response_counter
-            =Integer((((@responses_resume[c.id]||0)/Float(@question.response_count))*100.00).round())
-            \%
-          .option-title=c.title
-    = render "questions/response_fields/shared/sharing", question:question
+          .row
+            =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
+            -divNumber=(@question.response_count>0) ? @question.response_count : 1
+            %i.response_counter
+              =Integer((((@responses_resume[c.id]||0)/Float(divNumber))*100.00).round())
+              \%
+          .option-title
+            =c.title
+  .col-xs-12.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2
+    .form-group
+      = render "questions/response_fields/shared/sharing",question: @question

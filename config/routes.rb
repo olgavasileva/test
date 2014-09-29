@@ -14,6 +14,7 @@ LinkchatApp::Application.routes.draw do
   ActiveAdmin.routes(self)
 
   root 'questions#index'
+  get '/q/:uuid' => 'questions#new_response_from_uuid', as: :question_sharing
   get '/question' => 'users#first_question'
   get '/test' => 'pages#test' if Rails.env.development?
 
@@ -27,17 +28,32 @@ LinkchatApp::Application.routes.draw do
     resources :text_responses
     resources :order_responses
     resources :studio_responses
+
     resources :skipped_items
   end
 
+  resources :response_matchers, only: [:destroy]
+  resources :text_response_matchers, only: [:destroy]
+  resources :choice_response_matchers, only: [:destroy]
+  resources :order_response_matchers, only: [:destroy]
+
   resources :inquiries
   resources :users do
+    resources :segments do
+      get :question_search, on: :member
+
+      resources :response_matchers
+      resources :text_response_matchers
+      resources :choice_response_matchers
+      resources :order_response_matchers
+    end
     get :profile, on: :collection
     get :follow, on: :member
+    get :unfollow, on: :member
     get :dashboard, on: :member
     get :recent_responses, on: :member
+    get :recent_comments, on: :member
     get :campaigns, on: :member
-    get :segments, on: :member
     get :analytics, on: :member
     get :account, on: :member
   end

@@ -17,7 +17,7 @@ describe :text_choice_question do
   end
 
   context "With all required params" do
-    let(:params) {{auth_token:auth_token, category_id:category_id, title:title, image_url:image_url, rotate:rotate, choices:choices, targets: targets}}
+    let(:params) {{auth_token:auth_token, category_id:category_id, title:title, image_url:image_url, rotate:rotate, choices:choices, targets: targets, anonymous: anonymous }}
     let(:auth_token) {}
     let(:category_id) {}
     let(:title) {}
@@ -25,6 +25,7 @@ describe :text_choice_question do
     let(:rotate) {}
     let(:choices) {}
     let(:targets) {}
+    let(:anonymous) {}
 
     context "With an invalid auth token" do
       let(:auth_token) {"INVALID"}
@@ -79,6 +80,7 @@ describe :text_choice_question do
 
               expect(q).to_not be_nil
               expect(q['id']).to_not be_nil
+              expect(q['uuid']).not_to be_nil
               expect(q['type']).to eq "TextChoiceQuestion"
               expect(q['title']).to eq "The Title"
               expect(q['rotate']).to eq true
@@ -110,6 +112,7 @@ describe :text_choice_question do
           end
 
           it_behaves_like :uses_targets
+          it_behaves_like :uses_anonymous
         end
       end
     end
