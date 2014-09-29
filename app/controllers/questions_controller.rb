@@ -44,5 +44,18 @@ class QuestionsController < ApplicationController
     redirect_to new_question_response_path(@question) unless browser.iphone? || browser.ipod? || browser.ipad?
   end
 
+  def update_targetable
+    @question = Question.find params[:id]
+    authorize @question
+
+    @question.update_attribute :currently_targetable, update_targetable_params[:currently_targetable] != 'false'
+
+    render text:"OK"
+  end
+
+  private
+    def update_targetable_params
+      params.require(:question).permit(:currently_targetable)
+    end
 
 end

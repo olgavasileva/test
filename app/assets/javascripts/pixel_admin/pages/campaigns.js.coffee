@@ -4,3 +4,8 @@ $(document).on 'page:change', ->
   $('#campaigns_wrapper .dataTables_filter input').attr('placeholder', 'Search...');
 
   $(".switcher").switcher()
+  $(document).on "change", "[data-active-switcher=true]", (e)->
+    url = $(this).data().url
+    params = {}
+    params[$(this).attr("name")] = this.checked
+    $.post url, params
