@@ -14,11 +14,13 @@ class Message < ActiveRecord::Base
     self.type == "UserFollowed"
   end
 
+  def isQuestionTargeted?
+    self.type == "QuestionTargeted"
+  end
+
   def number_of_messages_unread
     return Message.responses.where("comment is not ?", nil).count
   end
 
-  def body
-    self.type
-  end
+
 end

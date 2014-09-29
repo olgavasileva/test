@@ -21,6 +21,7 @@ LinkchatApp::Application.routes.draw do
   resources :questions, shallow:true do
     get :summary, on: :member
     get :share, on: :member
+    post :update_targetable, on: :member
     resources :responses
     resources :text_choice_responses
     resources :image_choice_responses
@@ -54,7 +55,7 @@ LinkchatApp::Application.routes.draw do
     get :recent_responses, on: :member
     get :recent_comments, on: :member
     get :campaigns, on: :member
-    get :analytics, on: :member
+    get 'analytics/(:question_id)', to:'users#analytics', on: :member, as: :analytics
     get :account, on: :member
   end
 

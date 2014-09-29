@@ -11,7 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140924221528) do
+
+ActiveRecord::Schema.define(version: 20140928234347) do
+
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -337,7 +339,6 @@ ActiveRecord::Schema.define(version: 20140924221528) do
     t.text     "content"
     t.string   "type"
     t.datetime "read_at"
-    t.integer  "other_user_id"
     t.integer  "question_id"
     t.integer  "response_id"
     t.integer  "user_id"
@@ -348,6 +349,7 @@ ActiveRecord::Schema.define(version: 20140924221528) do
     t.integer  "share_count",    default: 0
     t.datetime "completed_at"
     t.integer  "follower_id"
+    t.string   "body"
   end
 
   add_index "messages", ["user_id"], name: "index_messages_on_user_id", using: :btree
@@ -438,6 +440,7 @@ ActiveRecord::Schema.define(version: 20140924221528) do
     t.integer  "targeted_reach"
     t.string   "uuid"
     t.boolean  "anonymous",             default: false
+    t.boolean  "currently_targetable",  default: true
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree

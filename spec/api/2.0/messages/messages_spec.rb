@@ -92,7 +92,6 @@ describe :messages do
 
             describe "Custom" do
               it {expect(JSON.parse(response.body)['messages'][2]['message']['type']).to eq "Custom"}
-              it {expect(JSON.parse(response.body)['messages'][2]['message']['body']).to eq "Custom"}
               it {expect(JSON.parse(response.body)['messages'][2]['message'].count).to eq 5}
             end
 

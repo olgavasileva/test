@@ -131,7 +131,7 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     authorize @user
 
-    @questions = @user.questions
+    @questions = @user.questions.active
 
     render layout: "pixel_admin"
   end
@@ -139,6 +139,8 @@ class UsersController < ApplicationController
   def analytics
     @user = User.find params[:id]
     authorize @user
+
+    @question = Question.find params[:question_id] if params[:question_id]
 
     render layout: "pixel_admin"
   end

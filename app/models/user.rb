@@ -118,7 +118,7 @@ class User < ActiveRecord::Base
   # Do not add questions that have been skipped or answered by this user
   # Do not add questions that are already in this user's feed
   def feed_more_questions num_to_add
-    all_public_questions = Question.where(kind: 'public')
+    all_public_questions = Question.active.currently_targetable.where(kind: 'public')
 
     # small_dataset = all_public_questions.count < 1000 &&  skipped_items.count + responses.count + feed_items.count < 1000
     small_dataset = true # TODO: for now, just use the easier unpotimized selection logic

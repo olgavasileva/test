@@ -39,7 +39,6 @@ class Response < ActiveRecord::Base
     end
 
     def add_and_push_message
-
       if !QuestionUpdated.exists?(:question_id => self.question.id)
         message = QuestionUpdated.new
       else
@@ -51,10 +50,14 @@ class Response < ActiveRecord::Base
       message.response_count = self.question.response_count
       message.comment_count = self.question.comment_count
       message.share_count = self.question.share_count
+      message.body = "You have #{message.response_count} responses to your question \" #{self.question.title}\""
+      message.body = message.body + " and you have #{message.comment_count} comments" if self.comment
+      message.body = message.body + " and your question is completed" if self.question.targeting?
 
       message.created_at = Time.zone.now()
       message.read_at = nil
       message.completed_at = Time.zone.now() if self.question.targeting?
+
 
       message.save
 
