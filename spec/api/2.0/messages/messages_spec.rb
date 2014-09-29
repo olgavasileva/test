@@ -73,7 +73,6 @@ describe :messages do
 
           describe "Message Output" do
             it {expect(Response.count).to eq 1}
-            it {expect(response.body).to eq 1}
             it {expect(JSON.parse(response.body)['number_of_unread_messages']).to eq 3}
 
             describe "QuestionUpdated" do
@@ -93,7 +92,6 @@ describe :messages do
 
             describe "Custom" do
               it {expect(JSON.parse(response.body)['messages'][2]['message']['type']).to eq "Custom"}
-              it {expect(JSON.parse(response.body)['messages'][2]['message']['body']).to eq "Custom"}
               it {expect(JSON.parse(response.body)['messages'][2]['message'].count).to eq 5}
             end
 
