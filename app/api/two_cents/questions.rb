@@ -77,21 +77,19 @@ class TwoCents::Questions < Grape::API
         description:declared_params[:description],
         rotate:declared_params[:rotate],
         background_image:background_image,
-        target_all: params[:targets][:all],
-        target_all_followers: params[:targets][:all_followers],
-        target_all_groups: params[:targets][:all_groups],
-        target_follower_ids: params[:targets][:follower_ids],
-        target_group_ids: params[:targets][:group_ids],
         anonymous: params[:anonymous]
       }
 
       @question = TextChoiceQuestion.new(question_params)
+
 
       declared_params[:choices].each do |choice_params|
         @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate]
       end
 
       @question.save!
+
+      # target = Target.new params[:targets].merge(question:@question)
     end
 
 

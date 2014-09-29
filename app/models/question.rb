@@ -41,7 +41,7 @@ class Question < ActiveRecord::Base
 		DailyAnalytic.increment! :starts, self.user
 	end
 
-    def active?
+  def active?
 		state == "active"
 	end
 
