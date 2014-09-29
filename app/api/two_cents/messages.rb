@@ -1,6 +1,35 @@
 class TwoCents::Messages < Grape::API
   resource :messages do
 
+
+
+    #
+    # Returns the number of unread messages
+    #
+    desc "Update the status of a message", {
+        notes: <<-END
+        This API will update the status of a message which belongs to the current user.
+
+        #### Example response
+
+          {number_of_unread_messages : 4}
+        END
+    }
+    params do
+      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+    end
+    get 'number_of_unread_messages', http_codes:[
+        [200, "400 - Invalid params"],
+        [200, "402 - Invalid auth token"],
+        [200, "403 - Login required"]
+    ] do
+      validate_user!
+
+
+      @number = current_user.number_of_unread_messages
+      { number_of_unread_messages: @number }
+    end
+
     #
     # Update the read status of a message
     #
@@ -50,6 +79,42 @@ class TwoCents::Messages < Grape::API
         fail!(2003, "Failed to update the read status of the message")
       end
     end
+
+
+
+    #
+    # Set all messages in the queue read
+    #
+    desc "Set all messages in the queue read", {
+        notes: <<-END
+        This API will Set all messages in the queue ,which belongs to the current user, read.
+
+                        inputs:
+                          auth_token: token of current user
+
+                        output:
+                          success: empty body {} and success response code
+        END
+    }
+    params do
+      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+    end
+    post 'read_all', http_codes:[
+        [200, "400 - Invalid params"],
+        [200, "402 - Invalid auth token"],
+        [200, "403 - Login required"]
+    ] do
+      validate_user!
+
+      current_user.messages.all().each do |message|
+        message.read_at = Time.zone.now()
+        message.save
+      end
+      status 200
+      {}
+
+    end
+
 
     #
     # Delete a message
@@ -103,44 +168,59 @@ class TwoCents::Messages < Grape::API
     # Return the messages sent to current user
     #
 
-    desc "Return an array of questions and related data for this user.", {
+    desc "Return an array of messages for this user.", {
       notes: <<-END
-        This API will return an ordered list of unanswered questions for this user.
+        This API will return an ordered list of messages for this user.
 
         #### Example response
-            [
-                {
-                    "Message": {
-                        "type": "CommentLikedMessage",
-                        "content": "What a nice Comment! I loved it.",
-                        "read_at": "2014-09-05 18:37:21.818557000 +0000",
-                        "created_at": "2014-09-05 18:37:21.818557000 +0000",
-                    }
-                },
-                {
-                    "Message": {
-                        "type": "DirectQuestionMessage",
-                        "content": "I failed to grab the real meaning of this question. Can you please tell me what it was?",
-                        "read_at": "2014-09-05 18:37:21.818557000 +0000",
-                        "created_at": "2014-09-05 18:37:21.818557000 +0000",
-                    }
-                },
-                {
-                    "Message": {
-                        "type": "QuestionLikedMessage",
-                        "content": "What a nice Question! I loved it.",
-                        "read_at": "2014-09-05 18:37:21.818557000 +0000",
-                        "created_at": "2014-09-05 18:37:21.818557000 +0000",
-                    }
-                },
-
-            ]
+            {
+                "messages":
+                    [
+                        {
+                            "message":
+                              {
+                                  "id": 1,
+                                  "type": "QuestionUpdated",
+                                  "body": "QuestionUpdated",
+                                  "question_id": 123
+                                  "response_count": 3,
+                                  "comment_count": 2,
+                                  "share_count": 2,
+                                  "completed_at": 1231231234,        # timestamp
+                                  "created_at": 1231231234           # timestamp
+                                  "read_at": nil              # timestamp
+                              }
+                        },
+                        {
+                            "message":
+                              {
+                                  "id": 2,
+                                  "type": "UserFollowed",
+                                  "body": "UserFollowed",
+                                  "follower_id": 123,
+                                  "created_at": 1231231234           # timestamp
+                                  "read_at": nil              # timestamp
+                              }
+                        },
+                        {
+                            "message":
+                              {
+                                  "id": 3,
+                                  "type": “Custom”,
+                                  "body": "Custom",
+                                  "created_at": 1231231234           # timestamp
+                                  "read_at": 1231231234              # timestamp
+                              }
+                        }
+                    ],
+                "number_of_unread_messages": 2
+            }
       END
     }
     params do
       requires :auth_token, type:String, desc: 'Obtain this from the instances API'
-      optional :page, type: Integer, desc: "Page number, starting at 1 - all questions returned if not supplied"
-      optional :per_page, type: Integer, default: 15, desc: "Number of questions per page"
+      optional :page, type: Integer, desc: "Page number, starting at 1 - all messages returned if not supplied"
+      optional :per_page, type: Integer, default: 15, desc: "Number of messages per page"
     end
     post '/', rabl: "messages", http_codes:[
       [200, "400 - Invalid params"],
@@ -154,8 +234,7 @@ class TwoCents::Messages < Grape::API
       messages = policy_scope(Message)
 
       @messages = messages.paginate(page:page, per_page:per_page)
+      @number = current_user.number_of_unread_messages
     end
-
-
   end
 end

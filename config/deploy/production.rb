@@ -8,9 +8,9 @@ set :rails_env, 'production'  # If the environment differs from the stage name
 # is considered to be the first unless any hosts have the primary
 # property set.  Don't declare `role :all`, it's a meta role.
 
-role :app, %w{deploy@www.crashmob.com}
-role :web, %w{deploy@www.crashmob.com}
-role :db,  %w{deploy@www.crashmob.com}
+role :app, %w{deploy@ec2-54-165-58-17.compute-1.amazonaws.com}
+role :web, %w{deploy@ec2-54-165-58-17.compute-1.amazonaws.com}
+role :db,  %w{deploy@ec2-54-165-58-17.compute-1.amazonaws.com}
 
 
 # Extended Server Syntax

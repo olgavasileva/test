@@ -1,0 +1,6 @@
+.tab-content.notifications-tab-content
+  %ul.items
+    - @notifications.each do |notification|
+      %li= notification.body
+  .center
+    = will_paginate @notifications

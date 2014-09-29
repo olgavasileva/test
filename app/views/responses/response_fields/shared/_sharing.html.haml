@@ -1,0 +1,102 @@
+:sass
+  .follow-menu
+    padding:  0
+    position: relative
+
+    a
+      text-decoration: none!important
+      text-align: center
+      display: inline-block
+      vertical-align: middle
+      &.vertical-middle
+      margin-top: 14px
+
+    h6.elipsable
+      border-top: solid 1px blue
+      padding-top: 2px
+      margin-top: 2px
+      text-overflow: clip
+      overflow: hidden
+      height: 1.5em
+  .overlay
+    width : 100%
+    height: 100%
+    position: fixed
+    top: 0
+    left: 0
+    background-color: rgba(0,0,0,0.4)
+    z-index: 2000
+    display: none
+    .overlay-action
+      box-shadow: -1px 0px 6px #666
+      padding-top: 15px
+      background-color: white
+      display: none
+      position: absolute
+      top: auto
+      bottom: 0
+      border-radius: 4px 4px 0 0
+
+
+
+.follow-menu
+  .well-wrap.row
+    = link_to "", class:%w(col-xs-5 col-sm-5 ), remote:true do
+      %h5 Posted by
+      %h6.elipsable
+        = @response.question.user.name
+    - if user_signed_in?
+      - if current_user.following? @response.question.user
+        %div
+          %a.col-xs-3.col-sm-4.btn.vertical-middle.btn-default.negative
+            Following
+      - else
+        = link_to "Follow",[:follow, @response.question.user],class:%w(col-xs-3 col-sm-4 btn vertical-middle btn-default negative) , remote: true
+      %a.col-xs-2.col-sm-push-1.col-xs-push-2.vertical-middle.overlay-toggler
+        %h4 ...
+
+.overlay.overlay-toggler
+  .col-xs-12.col-sm-10.col-sm-push-1.col-md-6.col-md-push-3.clearfix.share-popup.overlay-action
+  .col-xs-12.col-sm-10.col-sm-push-1.col-md-6.col-md-push-3.clearfix.report-popup.overlay-action
+    #report_form.col-sm-12.form-group
+      %textarea.col-sm-12{name: 'message', placeholder: 'what do you want us to know?'}
+      %a.col-sm-12.col-md-6
+        Submit
+      %a.col-sm-12.col-md-6.overlay-action-switch{:data=>{:target=>"share-report"}}
+        Dismiss
+  .col-xs-12.col-sm-10.col-sm-push-1.col-md-6.col-md-push-3.clearfix.share-report-popup.overlay-action
+    .cox-xs-12.col-md-4.form-group
+      %a.btn.btn-primary.negative.col-sm-12.overlay-action-switch{:data=>{:target=>"report"}}
+        Report
+    .cox-xs-12.col-md-4.form-group
+      %a.btn.btn-primary.negative.col-sm-12.overlay-action-switch{:data=>{:target=>"report"}}
+        Share
+    .cox-xs-12.col-md-4.form-group
+      %a.btn.btn-primary.negative.col-sm-12.overlay-toggler
+        Cancel
+
+:javascript
+  if(!window.tcHAndlers){
+    window.tcHAndlers={};
+  }
+  $(function(){
+    if(!window.tcHAndlers.overlayHandler){
+      window.tcHAndlers.overlayActionHandler=$('.overlay').on('click','.overlay-action-switch',function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        $('.overlay .overlay-action').hide('fast');
+        var target=$(this).data('target');
+        $('.overlay .overlay-action.'+target+'-popup').show();
+      })
+      $('.overlay-toggler').on('click',function(){
+        event.preventDefault();
+        event.stopPropagation();
+        $('.overlay .overlay-action').hide('fast');
+        var overlay=$('.overlay');
+        var action=overlay.css('display')!=='none'?'hide':'show'
+        overlay[action]();
+        $('.overlay .overlay-action.share-report-popup').show();
+
+       })
+    }
+  })

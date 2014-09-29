@@ -1,12 +1,15 @@
 object @question => :question
 
-attributes :id, :type, :title, :description, :response_count, :comment_count
+attributes :id, :type, :title, :description, :response_count, :comment_count, :uuid
 attribute :rotate, if: lambda{|q| q.kind_of? ChoiceQuestion}
-attributes :min_responses, :max_responses, if: lambda{|q| @question.instance_of? MultipleChoiceQuestion}
+attributes :min_responses, :max_responses, if: lambda{|q| q.instance_of? MultipleChoiceQuestion}
 node :image_url, if: lambda{|q| q.instance_of?(TextQuestion) || q.instance_of?(TextChoiceQuestion)} do |q|
   q.device_image_url
 end
 attributes :text_type, :min_characters, :max_characters, if: lambda{|q| q.instance_of? TextQuestion}
+
+node(:creator_id) { |q| q.user.id }
+node(:creator_name) { |q| q.user.name }
 
 child(:choices, if:lambda{|q| q.kind_of? TextChoiceQuestion}) { attributes :id, :title, :rotate }
 

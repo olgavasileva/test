@@ -1,0 +1,24 @@
+:sass
+  .comment .popover.bottom
+    padding: 0
+    width:  100%
+    display:  block
+    position: relative
+    margin: 0
+    box-shadow: none
+    max-width: none
+    height: auto
+    .arrow
+      left: 24%
+    .form-group.text
+      margin: 0
+      textarea
+        height: 4em
+        border: none
+        resize: none
+        margin: 0
+.form-group
+  .comment
+    .popover.bottom
+      = form.input :comment, as: :text,:placeholder =>"Comment on your response", label: false, input_html:{rows:1}
+      .arrow

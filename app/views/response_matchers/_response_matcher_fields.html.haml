@@ -1,0 +1,13 @@
+- case f.object.question.type
+- when "TextChoiceQuestion", "YesNoQuestion"
+  = render "response_matchers/matcher_fields/text_choice_response", f:f
+- when "ImageChoiceQuestion"
+  = render "response_matchers/matcher_fields/image_choice_response", f:f
+- when "MultipleChoiceQuestion"
+  = render "response_matchers/matcher_fields/multiple_choice_response", f:f
+- when "TextQuestion"
+  = render "response_matchers/matcher_fields/text_response", f:f
+- when "OrderQuestion"
+  = render "response_matchers/matcher_fields/order_response", f:f
+- when "StudioQuestion"
+  = render 'response_matchers/matcher_fields/studio_response', f:f

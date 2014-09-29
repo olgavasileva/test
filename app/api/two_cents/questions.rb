@@ -1,5 +1,28 @@
 class TwoCents::Questions < Grape::API
   resource :questions do
+    helpers do
+      params :auth do
+        requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+      end
+
+      params :create do
+        requires :category_id, type:Integer, desc:"Category for this question"
+        requires :title, type:String, desc:"Title of question to display to the user"
+        optional :description, type:String, desc:"Description - do we need this?"
+
+        optional :invite_phone_numbers, type: Array, desc: "Phone numbers of people to invite to answer."
+        optional :invite_email_addresses, type: Array, desc: "Email addresses of people to invite to answer."
+        optional :anonymous, type: Boolean, desc: "Whether question is anonymous"
+
+        requires :targets, type: Hash do
+          optional :all, type: Boolean, desc: "Whether question is targeted at all users."
+          optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
+          optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
+          optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
+          optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
+        end
+      end
+    end
 
     #
     # Create a TextChoiceQuestion
@@ -8,14 +31,16 @@ class TwoCents::Questions < Grape::API
     desc "Create a text choice question", {
       notes: <<-END
         A TextChoiceQuestion has an overview image and between 2 and 4 text choices of which a user can choose exactly one.
+
+        ## Coming Soon
+        requires :first_name
+
       END
     }
     params do
-      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+      use :auth
+      use :create
 
-      requires :category_id, type:Integer, desc:"Category for this question"
-      requires :title, type:String, desc:"Title of question to display to the user"
-      optional :description, type:String, desc:"Description - do we need this?"
       requires :image_url, type:String, desc:"URL of the overview image"
       requires :rotate, type:Boolean, desc:"True if choices should be presented in a random order", default:false
 
@@ -37,15 +62,34 @@ class TwoCents::Questions < Grape::API
       fail!(2001, "Not more than 4 choice may be provided") if declared_params[:choices].count > 4
 
       category = Category.find declared_params[:category_id]
-      @question = TextChoiceQuestion.create!( user_id:current_user.id,
-                                            category_id:category.id,
-                                            title:declared_params[:title],
-                                            description:declared_params[:description],
-                                            rotate:declared_params[:rotate],
-                                            image:open(declared_params[:image_url]))
-      declared_params[:choices].each do |choice_params|
-        @question.choices.create! title:choice_params[:title], rotate:choice_params[:rotate]
+
+      background_image = if URI(declared_params[:image_url]).scheme.nil?
+        QuestionImage.create!(image:open(declared_params[:image_url]))
+      else
+        QuestionImage.create!(remote_image_url:declared_params[:image_url])
       end
+
+      question_params = {
+        state: "active",
+        user_id:current_user.id,
+        category_id:category.id,
+        title:declared_params[:title],
+        description:declared_params[:description],
+        rotate:declared_params[:rotate],
+        background_image:background_image,
+        anonymous: params[:anonymous]
+      }
+
+      @question = TextChoiceQuestion.new(question_params)
+
+
+      declared_params[:choices].each do |choice_params|
+        @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate]
+      end
+
+      @question.save!
+
+      # target = Target.new params[:targets].merge(question:@question)
     end
 
 
@@ -59,11 +103,9 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+      use :auth
+      use :create
 
-      requires :category_id, type:Integer, desc:"Category for this question"
-      requires :title, type:String, desc:"Title of question to display to the user"
-      optional :description, type:String, desc:"Description - do we need this?"
       requires :rotate, type:Boolean, desc:"True if choices should be presented in a random order", default:false
       requires :min_responses, type:Integer, desc:"Minimum number of responses that must be selected"
       optional :max_responses, type:Integer, desc:"Maximum number of responses that can be selected.  Defaults to the number of choices."
@@ -75,14 +117,56 @@ class TwoCents::Questions < Grape::API
         requires :muex, type:Boolean, desc:"If a muex choice is selected, no other choices are alloweed", default:false
       end
     end
-    post 'multiple_choice_question', http_codes:[
+    post 'multiple_choice_question', rabl: "question", http_codes:[
       [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
-      [200, "403 - Login required"]
+      [200, "403 - Login required"],
+      [200, "2002 - The number of choices must be between 2 and 4"],
+      [200, "2003 - min_responses must be less than or equal to the number of choices"],
+      [200, "2004 - max_responses must be greater than or equal to min_responses"]
     ] do
       validate_user!
 
-      {}
+      num_choices = declared_params[:choices].count
+      min_responses = declared_params[:min_responses]
+      max_responses = declared_params[:max_responses].nil? ? num_choices : declared_params[:max_responses]
+
+      fail!(2002, "The number of choices must be between 2 and 4") unless (2..4).include?(num_choices)
+      fail!(2003, "min_responses must be less than or equal to the number of choices") unless min_responses <= num_choices
+      fail!(2004, "max_responses must be greater than or equal to min_responses") unless max_responses >= min_responses
+
+      category = Category.find declared_params[:category_id]
+
+      question_params = {
+        state: "active",
+        user_id:current_user.id,
+        category_id:category.id,
+        title:declared_params[:title],
+        description:declared_params[:description],
+        rotate:declared_params[:rotate],
+        min_responses:min_responses,
+        max_responses:max_responses,
+        target_all: params[:targets][:all],
+        target_all_followers: params[:targets][:all_followers],
+        target_all_groups: params[:targets][:all_groups],
+        target_follower_ids: params[:targets][:follower_ids],
+        target_group_ids: params[:targets][:group_ids],
+        anonymous: params[:anonymous]
+      }
+
+      @question = MultipleChoiceQuestion.new(question_params)
+
+      declared_params[:choices].each do |choice_params|
+        background_image = if URI(choice_params[:image_url]).scheme.nil?
+          ChoiceImage.create!(image:open(choice_params[:image_url]))
+        else
+          ChoiceImage.create!(remote_image_url:choice_params[:image_url])
+        end
+
+        @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate], muex:choice_params[:muex], background_image:background_image
+      end
+
+      @question.save!
     end
 
 
@@ -96,11 +180,9 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+      use :auth
+      use :create
 
-      requires :category_id, type:Integer, desc:"Category for this question"
-      requires :title, type:String, desc:"Title of question to display to the user"
-      optional :description, type:String, desc:"Description - do we need this?"
       requires :rotate, type:Boolean, desc:"True if choices should be presented in a random order", default:false
 
       requires :choices, type:Array do
@@ -109,14 +191,47 @@ class TwoCents::Questions < Grape::API
         requires :rotate, type:Boolean, desc:"This value is logically ANDed with question.rotate", default:true
       end
     end
-    post 'image_choice_question', http_codes:[
+    post 'image_choice_question', rabl: "question", http_codes:[
       [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
-      [200, "403 - Login required"]
+      [200, "403 - Login required"],
+      [200, "2002 - The number of choices must be between 2 and 4"]
     ] do
       validate_user!
 
-      {}
+      num_choices = declared_params[:choices].count
+      fail!(2002, "The number of choices must be between 2 and 4") unless (2..4).include?(num_choices)
+
+      category = Category.find declared_params[:category_id]
+
+      question_params = {
+        state: "active",
+        user_id:current_user.id,
+        category_id:category.id,
+        title:declared_params[:title],
+        description:declared_params[:description],
+        rotate:declared_params[:rotate],
+        target_all: params[:targets][:all],
+        target_all_followers: params[:targets][:all_followers],
+        target_all_groups: params[:targets][:all_groups],
+        target_follower_ids: params[:targets][:follower_ids],
+        target_group_ids: params[:targets][:group_ids],
+        anonymous: params[:anonymous]
+      }
+
+      @question = ImageChoiceQuestion.new(question_params)
+
+      declared_params[:choices].each do |choice_params|
+        background_image = if URI(choice_params[:image_url]).scheme.nil?
+          ChoiceImage.create!(image:open(choice_params[:image_url]))
+        else
+          ChoiceImage.create!(remote_image_url:choice_params[:image_url])
+        end
+
+        @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate], background_image:background_image
+      end
+
+      @question.save!
     end
 
 
@@ -131,11 +246,9 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+      use :auth
+      use :create
 
-      requires :category_id, type:Integer, desc:"Category for this question"
-      requires :title, type:String, desc:"Title of question to display to the user"
-      optional :description, type:String, desc:"Description - do we need this?"
       requires :rotate, type:Boolean, desc:"True if choices should be presented in a random order", default:false
 
       requires :choices, type:Array do
@@ -144,14 +257,47 @@ class TwoCents::Questions < Grape::API
         requires :rotate, type:Boolean, desc:"This value is logically ANDed with question.rotate", default:true
       end
     end
-    post 'order_question', http_codes:[
+    post 'order_question', rabl: "question", http_codes:[
       [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
-      [200, "403 - Login required"]
+      [200, "403 - Login required"],
+      [200, "2002 - The number of choices must be between 2 and 4"]
     ] do
       validate_user!
 
-      {}
+      num_choices = declared_params[:choices].count
+      fail!(2002, "The number of choices must be between 2 and 4") unless (2..4).include?(num_choices)
+
+      category = Category.find declared_params[:category_id]
+
+      question_params = {
+        state: "active",
+        user_id:current_user.id,
+        category_id:category.id,
+        title:declared_params[:title],
+        description:declared_params[:description],
+        rotate:declared_params[:rotate],
+        target_all: params[:targets][:all],
+        target_all_followers: params[:targets][:all_followers],
+        target_all_groups: params[:targets][:all_groups],
+        target_follower_ids: params[:targets][:follower_ids],
+        target_group_ids: params[:targets][:group_ids],
+        anonymous: params[:anonymous]
+      }
+
+      @question = OrderQuestion.new(question_params)
+
+      declared_params[:choices].each do |choice_params|
+        background_image = if URI(choice_params[:image_url]).scheme.nil?
+          ChoiceImage.create!(image:open(choice_params[:image_url]))
+        else
+          ChoiceImage.create!(remote_image_url:choice_params[:image_url])
+        end
+
+        @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate], background_image:background_image
+      end
+
+      @question.save!
     end
 
 
@@ -166,25 +312,51 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+      use :auth
+      use :create
 
-      requires :category_id, type:Integer, desc:"Category for this question"
-      requires :title, type:String, desc:"Title of question to display to the user"
       requires :image_url, type:String, desc:"URL of the overview image"
-      optional :description, type:String, desc:"Description - do we need this?"
 
       requires :text_type, type:String, values: TextQuestion::TEXT_TYPES, desc:"Type of text to collect: #{TextQuestion::TEXT_TYPES}"
       requires :min_characters, type:Integer
       requires :max_characters, type:Integer
     end
-    post 'text_question', http_codes:[
+    post 'text_question', rabl: "question", http_codes:[
       [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"]
     ] do
       validate_user!
 
-      {}
+      category = Category.find declared_params[:category_id]
+
+      background_image = if URI(declared_params[:image_url]).scheme.nil?
+        QuestionImage.create!(image:open(declared_params[:image_url]))
+      else
+        QuestionImage.create!(remote_image_url:declared_params[:image_url])
+      end
+
+      question_params = {
+        state: "active",
+        user_id:current_user.id,
+        category_id:category.id,
+        title:declared_params[:title],
+        background_image:background_image,
+        description:declared_params[:description],
+        text_type:declared_params[:text_type],
+        min_characters:declared_params[:min_characters],
+        max_characters:declared_params[:max_characters],
+        target_all: params[:targets][:all],
+        target_all_followers: params[:targets][:all_followers],
+        target_all_groups: params[:targets][:all_groups],
+        target_follower_ids: params[:targets][:follower_ids],
+        target_group_ids: params[:targets][:group_ids],
+        anonymous: params[:anonymous]
+      }
+
+      @question = TextQuestion.new(question_params)
+
+      @question.save!
     end
 
 
@@ -202,6 +374,7 @@ class TwoCents::Questions < Grape::API
                     "question": {
                         "type": "TextChoiceQuestion",
                         "id": 1,
+                        "uuid": "SOMEUUID",
                         "title": "Text Choice Title",
                         "description": "Text Choice Description",
                         "image_url": "http://crashmob.com/Example.jpg",
@@ -241,6 +414,7 @@ class TwoCents::Questions < Grape::API
                     "question": {
                         "type": "MultipleChoiceQuestion",
                         "id": 2,
+                        "uuid": "SOMEUUID",
                         "title": "Multiple Choice Title",
                         "description": "Multiple Choice Description",
                         "min_responses": 1,
@@ -287,6 +461,7 @@ class TwoCents::Questions < Grape::API
                     "question": {
                         "type": "ImageChoiceQuestion",
                         "id": 3,
+                        "uuid": "SOMEUUID",
                         "title": "Image Choice Title",
                         "description": "Image Choice Description",
                         "rotate": false,
@@ -320,6 +495,7 @@ class TwoCents::Questions < Grape::API
                     "question": {
                         "type": "OrderQuestion",
                         "id": 4,
+                        "uuid": "SOMEUUID",
                         "title": "Order Title",
                         "description": "Order Description",
                         "rotate": true,
@@ -361,6 +537,7 @@ class TwoCents::Questions < Grape::API
                     "question": {
                         "type": "TextQuestion"
                         "id": 5,
+                        "uuid": "SOMEUUID",
                         "title": "Text Title",
                         "description": "Text Description",
                         "image_url": "http://crashmob.com/Example.jpg",
@@ -379,7 +556,8 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+      use :auth
+
       optional :page, type: Integer, desc: "Page number, starting at 1 - all questions returned if not supplied"
       optional :per_page, type: Integer, default: 15, desc: "Number of questions per page"
     end
@@ -391,12 +569,119 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       page = declared_params[:page]
-      per_page = page ? declared_params[:per_page] : nil
-      questions = policy_scope(Question)
+      per_page = page ? declared_params[:per_page] : 15
 
-      @questions = questions.paginate(page:page, per_page:per_page)
+      @questions = policy_scope(Question).paginate(page: page, per_page:per_page)
+
+      if @questions.count < per_page * page.to_i + per_page + 1
+        current_user.feed_more_questions per_page + 1
+        @questions = policy_scope(Question).paginate(page: page, per_page:per_page)
+      end
+
+      @questions.each{|q| q.viewed!}
     end
 
+
+    #
+    # Return asked questions.
+    #
+
+    desc "Return list of questions asked by a user."
+    params do
+      use :auth
+
+      optional :user_id, type: Integer, desc: "User ID. Defaults to logged in user's ID."
+      optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all questions."
+      optional :per_page, type: Integer, default: 15, desc: "Number of questions per page."
+    end
+    post 'asked' do
+      user_id = params[:user_id]
+      user = user_id.present? ? User.find(user_id) : current_user
+
+      questions = user.questions
+
+      if params[:page]
+        questions = questions.paginate(page: params[:page],
+                                       per_page: params[:per_page])
+      end
+
+      questions.map do |q|
+        {
+          id: q.id,
+          title: q.title
+        }
+      end
+    end
+
+
+    #
+    # Return answered questions.
+    #
+
+    desc "Return list of questions answered by a user."
+    params do
+      use :auth
+
+      optional :user_id, type: Integer, desc: "User ID. Defaults to logged in user's ID."
+      optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all questions."
+      optional :per_page, type: Integer, default: 15, desc: "Number of questions per page."
+    end
+    post 'answered' do
+      user_id = params[:user_id]
+      user = user_id.present? ? User.find(user_id) : current_user
+
+      questions = user.answered_questions
+
+      if params[:page]
+        questions = questions.paginate(page: params[:page],
+                                       per_page: params[:per_page])
+      end
+
+      questions.map do |question|
+        {
+          id: question.id,
+          title: question.title
+        }
+      end
+    end
+
+
+    #
+    # Return a TextQuestion's responses.
+    #
+
+    desc "Return list of a TextQuestion's responses."
+    params do
+      use :auth
+
+      requires :question_id, type: Integer, desc: "ID of TextQuestion."
+      optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all answers."
+      optional :per_page, type: Integer, default: 15, desc: "Number of answers per page."
+    end
+    get 'responses' do
+      validate_user!
+
+      question = TextQuestion.find(params[:question_id])
+
+      unless question.public? || current_user.questions.include?(question)
+        fail! 400, "Question isn't public and doesn't belong to user."
+      end
+
+      responses = question.responses
+
+      if params[:page]
+        responses = responses.paginate(page: params[:page],
+                                       per_page: params[:per_page])
+      end
+
+      responses.map do |r|
+        {
+          id: r.id,
+          user_id: r.user.id,
+          text: r.text
+        }
+      end
+    end
 
     #
     # Submit a user's response
@@ -438,7 +723,8 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+      use :auth
+
       requires :question_id, type: Integer, desc: 'Question this is a response to'
       optional :comment, type: String, desc: 'Some comment about the question'
       optional :anonymous, type: Boolean, default:false, desc: "True if the user want's to remain anonymous"
@@ -447,6 +733,8 @@ class TwoCents::Questions < Grape::API
       optional :choice_id, type: Integer, desc: 'The single choice selected in a TextChoiceQuestion or ImageChoiceQuestion'
       optional :choice_ids, type: Array, desc: 'The choices selected in a MultipleChoiceQuestion or ordered by an OrderQuestion'
       mutually_exclusive :text, :choice_id, :choice_ids
+
+      optional :comment_parent_id, type: Integer, desc: "Comment parent response's ID."
 
       optional :filter_group, type: Symbol, values:[:all, :friends, :followers, :following, :me], desc: ":all, :friends, :followers, :following, :me"
       optional :filter_gender, type: Symbol, values:[:all, :male, :female], desc: ":all, :male, :female"
@@ -462,6 +750,14 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       @question = Question.find declared_params[:question_id]
+
+      resp_param_keys =
+        %w[comment anonymous text choice_id choice_ids comment_parent_id]
+      resp_params = params.to_h.slice(*resp_param_keys)
+      resp_params['user_id'] = current_user.id
+
+      @question.responses.create!(resp_params)
+
       @anonymous = declared_params[:anonymous]
     end
 
@@ -492,7 +788,8 @@ class TwoCents::Questions < Grape::API
       END
     }
     params do
-      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+      use :auth
+
       requires :question_id, type: Integer, desc: 'Question this is a response to'
 
       optional :filter_group, type: Symbol, values:[:all, :friends, :followers, :following, :me], desc: ":all, :friends, :followers, :following, :me"
@@ -513,14 +810,43 @@ class TwoCents::Questions < Grape::API
     end
 
 
+    desc "Return a question's information."
+    params do
+      use :auth
+
+      requires :question_id, type: Integer, desc: "ID of question."
+      optional :user_id, type: Integer, desc: "ID of user for question answer data, defaults to current user's ID."
+    end
+    get 'question' do
+      validate_user!
+
+      @question = Question.find(params[:question_id])
+      @user = User.find(params.fetch(:user_id, current_user.id))
+
+      question_data = JSON.parse(Rabl.render(nil, 'question',
+                                             view_path: 'app/views/api',
+                                             scope: self)).fetch('question')
+      summary_data = JSON.parse(Rabl.render(nil, 'summary',
+                                            view_path: 'app/views/api',
+                                            scope: self)).fetch('summary')
+      user_data = {
+        user_answered: @user.answered_questions.include?(@question)
+      }
+
+      question_data.merge(user_data).merge(summary: summary_data)
+    end
+
+
     #
     # Flag a question as inappropriate
     #
 
     desc "Flag inappropriate question"
     params do
-      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+      use :auth
+
       requires :question_id, type: Integer, desc: 'Question this is a response to'
+      requires :reason, type: String, desc: "Reason that question is inappropriate"
     end
     post 'inappropriate', http_codes:[
       [200, "400 - Invalid params"],
@@ -529,7 +855,12 @@ class TwoCents::Questions < Grape::API
       [200, "403 - Login required"]
     ] do
       validate_user!
-      @question = Question.find declared_params[:question_id]
+
+      QuestionReport.create!(
+        user: current_user,
+        question: Question.find(params[:question_id]),
+        reason: params[:reason]
+      )
 
       {}
     end
@@ -541,7 +872,8 @@ class TwoCents::Questions < Grape::API
 
     desc "Like a question"
     params do
-      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+      use :auth
+
       requires :question_id, type: Integer, desc: 'Question this is a response to'
     end
     post 'like', http_codes:[
@@ -563,7 +895,8 @@ class TwoCents::Questions < Grape::API
 
     desc "Follow a question"
     params do
-      requires :auth_token, type: String, desc: 'Obtain this from the instances API'
+      use :auth
+
       requires :question_id, type: Integer, desc: 'Question this is a response to'
     end
     post 'follow', http_codes:[
@@ -578,5 +911,80 @@ class TwoCents::Questions < Grape::API
       {}
     end
 
+
+    #
+    # Start to answer a question
+    #
+
+    desc "Start to answer a question"
+    params do
+      use :auth
+
+      requires :question_id, type: Integer, desc: 'Question this is a response to'
+    end
+    post 'follow', http_codes:[
+      [200, "400 - Invalid params"],
+      [200, "401 - Couldn't find Question"],
+      [200, "402 - Invalid auth token"],
+      [200, "403 - Login required"]
+    ] do
+      validate_user!
+      @question = Question.find declared_params[:question_id]
+      fail! 401, "Coulnd't find Question" unless @question
+
+      @question.start!
+
+      {}
+    end
+
+
+    #
+    # Increment a question's view count.
+    #
+    desc "Increment a question's view count"
+    params do
+      use :auth
+
+      requires :question_id, type: Integer, desc: 'Question this is a response to'
+    end
+    post 'view' do
+      validate_user!
+
+      Question.find(params[:question_id]).increment! :view_count
+
+      {}
+    end
+
+    desc "Skip a question."
+    params do
+      use :auth
+
+      requires :question_id, type: Integer, desc: "ID of question."
+    end
+    put 'skip' do
+      validate_user!
+
+      question = Question.find(params[:question_id])
+
+      SkippedItem
+        .where(user_id: current_user.id, question_id: question.id)
+        .first_or_create!
+
+      {}
+    end
+
+    desc "Start a question."
+    params do
+      use :auth
+
+      requires :question_id, type: Integer, desc: "ID of question."
+    end
+    post 'start' do
+      validate_user!
+
+      Question.find(params[:question_id]).increment! :start_count
+
+      {}
+    end
   end
 end

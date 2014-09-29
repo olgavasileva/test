@@ -18,7 +18,7 @@ class TwoCents::API < Grape::API
     end
 
     def current_user
-      @current_user ||= begin
+      @current_user ||= if params[:auth_token]
         @instance = Instance.find_by auth_token:params[:auth_token]
         fail! 402, "Invalid auth token" unless @instance
         @instance.user
@@ -47,9 +47,15 @@ class TwoCents::API < Grape::API
   end
 
   mount Auth
-  # mount Users
   mount Questions
   mount Categories
+  mount Comments
+  mount Relationships
+  mount Groups
+  mount Messages
+  mount Studios
+  mount Profile
+  mount Communities
 
   add_swagger_documentation api_version:'2.0', mount_path: "/docs", markdown:true, hide_documentation_path:true
 end

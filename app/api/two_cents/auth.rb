@@ -42,7 +42,15 @@ class TwoCents::Auth < Grape::API
               background_images: [
                 "http://some.url.png",
                 "http://some.other.url.png"
+              ],
+              background_images_retina: [
+                "http://some.url@2x.png",
+                "http://some.other.url@2x.png"
               ]
+              faq_url:"http://some.url.com?page=123"
+              feedback_url:"http://some.url.com?page=124"
+              about_url:"http://some.url.com?page=125"
+              terms_and_conditions_url:"http://some.url.com?page=126"
             }
       END
     }
@@ -80,7 +88,16 @@ class TwoCents::Auth < Grape::API
 
       instance.update_attributes! launch_count:instance.launch_count.to_i + 1, app_version:declared_params[:app_version]
 
-      { instance_token:instance.uuid, api_domain:api_domain, google_gtm:google_gtm, background_images:BackgroundImage.all.map{ |i| i.image_url } }
+      Hash[Setting.enabled.map{|s| [s.key, s.value] }].merge({
+        instance_token:instance.uuid,
+        api_domain:api_domain,
+        background_images:CannedQuestionImage.all.map{ |i| i.device_image_url },
+        background_images_retina:CannedQuestionImage.all.map{ |i| i.retina_device_image_url },
+        background_choice_images:CannedChoiceImage.all.map{ |i| i.device_image_url },
+        background_choice_images_retina:CannedChoiceImage.all.map{ |i| i.retina_device_image_url },
+        background_order_choice_images:CannedOrderChoiceImage.all.map{ |i| i.device_image_url },
+        background_order_choice_images_retina:CannedOrderChoiceImage.all.map{ |i| i.retina_device_image_url }
+      })
     end
 
 
@@ -147,7 +164,7 @@ class TwoCents::Auth < Grape::API
       user = User.create! name:declared_params[:name], email:declared_params[:email], username:declared_params[:username], password:declared_params[:password], password_confirmation:declared_params[:password]
       instance.update_attributes! user:user, auth_token:"A"+UUID.new.generate
 
-      {auth_token:instance.auth_token}
+      {auth_token:instance.auth_token, user_id: user.id}
     end
 
 
@@ -202,7 +219,7 @@ class TwoCents::Auth < Grape::API
       end
 
       instance.update_attributes! user_id:user.id, auth_token:"A"+UUID.new.generate
-      {auth_token:instance.auth_token}
+      {auth_token:instance.auth_token, user_id: user.id}
     end
 
 
@@ -218,7 +235,7 @@ class TwoCents::Auth < Grape::API
     }
     params do
       requires :instance_token, type:String, desc:'Obtain this from the instances API'
-      requires :password, type: String, regexp: /.{8}.*/, desc:'8 or more character password'
+      requires :password, type: String, regexp: /.{6,20}/, desc:'6-20 character password'
       optional :email, type: String, regexp: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$.?/i, desc:'e.g. oscar@madisononline.com'
       optional :username, type: String, regexp: /^[A-Z0-9\-_ ]{4,20}$/i, desc:'Unique username'
       mutually_exclusive :email, :username
@@ -250,7 +267,7 @@ class TwoCents::Auth < Grape::API
 
       instance.update_attributes auth_token:"A"+UUID.new.generate, user:user
 
-      {auth_token:instance.auth_token, email:user.email, username:user.username}
+      {auth_token:instance.auth_token, email:user.email, username:user.username, user_id:user.id}
     end
 
 
@@ -304,6 +321,48 @@ class TwoCents::Auth < Grape::API
       user.send_reset_password_instructions
 
       {}
+    end
+
+    desc "Update logged in user's location"
+    params do
+      requires :instance_token, type: String, desc: "Obtain this from the instance's API"
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API"
+
+      requires :source, type: String, values: %w[IP gps], desc: "Location source"
+      requires :accuracy, type: Integer, desc: "Location accuracy"
+      optional :longitude, type: String, desc: "Location longitude"
+      optional :latitude, type: String, desc: "Location longitude"
+    end
+    post 'location' do
+      validate_instance!
+
+      if params[:source] == 'IP'
+        ip = env['REMOTE_ADDR']
+        longitude, latitude = Geocoder.search(ip).first.coordinates
+      else
+        longitude, latitude = params[:longitude], params[:latitude]
+
+        if longitude.nil? || latitude.nil?
+          fail! 400, "gps source requires longitude and latitude"
+        end
+      end
+
+      current_user.update_attributes longitude: longitude, latitude: latitude
+
+      {}
+    end
+
+    desc "Return initial info on current user."
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+    end
+    get 'init' do
+      validate_user!
+
+      {
+        has_any_groups: current_user.groups.any?,
+        manages_any_communities: current_user.communities.any?
+      }
     end
 
   end

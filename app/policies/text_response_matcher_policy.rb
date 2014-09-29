@@ -1,0 +1,2 @@
+class TextResponseMatcherPolicy < BaseResponseMatcherPolicy
+end

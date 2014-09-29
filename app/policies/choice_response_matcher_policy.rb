@@ -1,0 +1,2 @@
+class ChoiceResponseMatcherPolicy < BaseResponseMatcherPolicy
+end

@@ -1,0 +1,3 @@
+class YesNoQuestionPolicy < TextChoiceQuestionPolicy
+
+end

@@ -1,4 +1,13 @@
 class ApplicationPolicy
+  class Scope
+    attr_reader :user, :scope
+
+    def initialize(user, scope)
+      @user = user
+      @scope = scope
+    end
+  end
+
   attr_reader :user,  # User performing the action
               :record # Instance upon which action is performed
 
@@ -6,6 +15,7 @@ class ApplicationPolicy
 
   def initialize user, record
     raise Pundit::NotAuthorizedError, "Must be signed in." if require_user? && user.blank?
+
     @user   = user
     @record = record
   end

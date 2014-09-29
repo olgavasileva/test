@@ -1,0 +1,93 @@
+:sass
+  .close.remove_fields
+    margin-right: 10px
+
+.row.question-builder
+  .col-xs-12.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2
+    .imagechoice.panel.panel-default
+      .panel-heading
+        .panel-title
+          =link_to question_types_path do
+            %span.glyphicon.glyphicon-chevron-left
+      .panel-body
+        = simple_form_for @question do |f|
+          =f.input :type, as: :hidden
+          =f.input :rotate, as: :hidden
+          .row.question.form-group
+            .col-sm-12
+              .title.row
+                .text.required.image_choice_question_title.btn-primary.question-header-style-title
+                  =f.input_field :title, label: false , class: "revealable title", placeholder: "Ask Your Question Here"
+              .row
+                =f.simple_fields_for :choices do |choice|
+                  = render 'choice_fields', f:choice
+
+                .col-sm-6
+                  .row
+                    =link_to_add_association  f, :choices, class: 'nested-fields answer' do
+                      .choice.imagechooser
+                        .bgimage
+                          = responsive_image_tag f.object.web_image_url, class: "img-responsive transparent"
+                          .overimage.add-option
+                            %h3
+                              Add Option
+                            %i.glyphicon.glyphicon-plus-sign
+
+          .row.form-group
+            =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category", :name=>"image_choice_question[category_id]",:value_field=>"id"}}
+          .row
+            .row
+              .col-md-6.form-group
+                .btn-group.btn-group-justified
+                  =f.button :submit, "Preview", class: %w(btn-block btn-lg)
+              .col-md-6.form-group
+                .btn-group.btn-group-justified
+                  =f.button :submit, "Continue", class: %w(btn-block btn-lg)
+:javascript
+  $(function(){
+      return;
+    window.TextAreaAutoReize=function(elem,level_reposition){
+
+      var timeHandler,
+      parentNode,
+      repositionNode;
+
+      var resize=function(){
+        clearTimeout(timeHandler)
+        $(this).height(0);
+        $(this).height(this.scrollHeight);
+        parentNode.height(parentNode.height());
+        if(repositionNode){
+          repositionNode.css({top:'50%','margin-top':('-'+(repositionNode.outerHeight()/2)+'px'),position:'aboslute'})
+        }
+
+      },
+      delayResize=function(){
+        clearTimeout(timeHandler)
+        timeHandler=setTimeout(resize.bind(this),10);
+      }
+
+      if(!arguments.length || (typeof elem!=='string' && !elem.nodeType)){
+        console.log('selector or DOM node needed');
+        return
+      }
+
+
+      if(typeof elem ==='string'){
+        elem=$(elem);
+      }
+      elem.on('change',resize);
+      elem.on('keydown cut paste drop',delayResize);
+      parentNode=elem.paren();
+      if(typeof level_reposition != 'undefined'){
+        repositionNode=elem;
+        for(i=0; i<level_reposition;i++){
+          repositionNode=repositionNode.parent();
+        }
+      }
+
+      resize.call(elem);
+  }
+    TextAreaAutoReize('.image_choice_question_choices_title textarea');
+
+  })

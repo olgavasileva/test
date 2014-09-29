@@ -1,0 +1,33 @@
+.panel
+  %h3 Sticker Packs
+  .panel_contents
+    - if sc.sticker_packs.empty?
+      %span No sticker packs assigned!
+    - else
+      %span#sticker_packs_response Click and drag to sort
+      .attributes_table
+        %ul#packs-sortable.sortable
+          - sc.studio_sticker_packs.includes(:sticker_pack).each do |ssp|
+            %li.row{id: "sticker_pack_ids_#{ssp.sticker_pack_id}"}
+              = link_to("#{ssp.sticker_pack.display_name}", admin_sticker_pack_path(ssp.sticker_pack))
+.panel
+  %h3 Starting Items
+  .panel_contents
+    .attributes_table
+      %table
+        - if sc.scene
+          %tr.row
+            %th Scene
+            %td= image_tag sc.scene.image.thumb.url
+.panel
+  %h3 Contests
+  .panel_contents
+    .attributes_table
+      %table
+        - if sc.contest.present?
+          %tr.row
+            %th Contest
+            %td= sc.contest.name
+:coffee
+  $ ->
+    sortableList $("#packs-sortable"), "#{order_sticker_packs_admin_studio_path(sc)}"

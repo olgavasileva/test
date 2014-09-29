@@ -1,0 +1,21 @@
+Loading...
+:javascript
+  var app_store_link = "#{ENV['APP_STORE_LINK']}";
+  var question_uuid = "#{@question.uuid}";
+
+  var n = [],
+  i = !1;
+
+  $(window).on("pagehide", function () {
+      n.map(window.clearTimeout)
+  });
+
+  window.location = "statisfy://question?id=" + question_uuid;
+
+  n.push(window.setTimeout(function () {
+      n.splice(0), i = !1, window.location = app_store_link;
+  }, 250));
+
+  n.push(window.setTimeout(function () {
+      i && window.location.reload()
+  }, 500))

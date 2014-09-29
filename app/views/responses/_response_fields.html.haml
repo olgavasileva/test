@@ -1,0 +1,13 @@
+- case response.question.type
+- when "TextChoiceQuestion", "YesNoQuestion"
+  = render "responses/response_fields/text_choice_response", form:form, response:response
+- when "ImageChoiceQuestion"
+  = render "responses/response_fields/image_choice_response", form:form, response:response
+- when "MultipleChoiceQuestion"
+  = render "responses/response_fields/multiple_choice_response", form:form, response:response
+- when "TextQuestion"
+  = render "responses/response_fields/text_response", form:form, response:response
+- when "OrderQuestion"
+  = render "responses/response_fields/order_response", form:form, response:response
+- when "StudioQuestion"
+  = render 'responses/response_fields/studio_response', form:form, response:response

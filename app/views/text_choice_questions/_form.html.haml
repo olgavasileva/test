@@ -1,0 +1,115 @@
+:sass
+  .col-sm-6.not_visible
+    visibility: hidden
+  .img-responsive.scale-buttons
+    margin-top: 3px
+    margin-bottom: 3px
+
+
+
+  .text-created-choice
+    .remove_fields
+      position: absolute
+      right: 10px
+      top: 10px
+      color: white
+      text-decoration: none
+      z-index: 20
+
+  .add-option-control
+    background-color: orange
+    color: white
+    text-align: center
+    height: 100%
+    font-size: 1.7em
+    text-align: center
+    height: 100px
+    line-height: 100px
+    verrical-align: middle
+
+
+.row.question-builder
+  .col-xs-12.col-md-8.col-md-push-2.col-sm-10.col-sm-push-1
+    .textchoice.panel.panel-default
+      .panel-heading
+        .panel-title
+          =link_to question_types_path do
+            %span.glyphicon.glyphicon-chevron-left
+      .panel-body.imagechooser
+        = simple_form_for @question do |f|
+          =f.input :type, as: :hidden
+          =f.input :rotate, as: :hidden
+          .hidden
+            .canned{data:{ids:canned_question_image_ids, urls:canned_question_image_web_urls}}
+            .id=f.input :background_image_id, as: :hidden
+          .row.form-group
+            .col-xs-12.col-sm-6.form-group
+              .question
+                .over_image_title_container.title=f.input :title, label: false, input_html: { class: "appearing-question-title"}, placeholder: "Ask Your Question Here"
+                .bgimage= responsive_image_tag @question.web_image_url, class: "img-responsive"
+              .col-sm-12
+                =render partial:'/widgets/image_control',locals:{f:f,id:'background_selector', base_class: "revert"}
+            .col-xs-12.col-sm-6
+              =f.simple_fields_for :choices do |choice|
+                = render 'choice_fields', f:choice
+
+              .links
+                =link_to_add_association  f, :choices, class: 'add-option-control col-xs-12' do
+                  %i.glyphicon.glyphicon-plus-sign
+                  Add Option
+          .row
+            =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-xs-12 form-group", :name=>"text_choice_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
+
+          .row
+            .col-xs-12.col-sm-6.form-group
+              .btn-group.btn-group-justified
+                =f.button :submit, "Preview", class: %w(btn-block btn-lg)
+            .col-xs-12.col-sm-6.form-group
+              .btn-group.btn-group-justified
+                =f.button :submit, "Continue", class: %w(btn-block btn-lg)
+
+:javascript
+  $(function(){
+
+    window.TextAreaAutoReize=function(elem,level_reposition){
+
+      var timeHandler,
+      repositionNode;
+
+      var resize=function(){
+        clearTimeout(timeHandler)
+        $(this).height(0);
+        $(this).height(this.scrollHeight);
+        if(repositionNode){
+          repositionNode.css({top:'50%','margin-top':('-'+(repositionNode.outerHeight()/2)+'px'),position:'aboslute'})
+        }
+
+      },
+      delayResize=function(){
+        clearTimeout(timeHandler)
+        timeHandler=setTimeout(resize.bind(this),10);
+      }
+
+      if(!arguments.length || (typeof elem!=='string' && !elem.nodeType)){
+        console.log('selector or DOM node needed');
+        return
+      }
+
+
+      if(typeof elem ==='string'){
+        elem=$(elem);
+      }
+      elem.on('change',resize);
+      elem.on('keydown cut paste drop',delayResize);
+      if(typeof level_reposition != 'undefined'){
+        repositionNode=elem;
+        for(i=0; i<level_reposition;i++){
+          repositionNode=repositionNode.parent();
+        }
+      }
+
+
+  }
+    TextAreaAutoReize('#text_choice_question_title',2);
+
+  })

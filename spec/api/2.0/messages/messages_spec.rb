@@ -51,38 +51,50 @@ describe :messages do
         let(:user) {FactoryGirl.create :user}
 
         context "With no questions" do
-          it {expect(JSON.parse(response.body)).to eq []}
+          it {expect(JSON.parse(response.body)['number_of_unread_messages']).to eq 0}
         end
 
-        context "With one of each type of question" do
+        context "With one of each type of message" do
 
-          let(:direct_question_message) {FactoryGirl.create :direct_question_message, user:user}
-          let(:question_liked_message) {FactoryGirl.create :question_liked_message, user:user}
-          let(:comment_liked_message) {FactoryGirl.create :comment_liked_message, user:user}
+          let(:count) { 2 }
+          let(:other_user) {FactoryGirl.create :user}
 
-
+          let(:text_question_1) {FactoryGirl.create(:text_question, kind: 'targeted', user: user)}
+          let(:auto_generate_message_for_question_updated) {
+            FactoryGirl.create(:text_response, question: text_question_1, user: other_user)
+          }
+          let(:auto_generate_message_for_user_followed) {other_user.follow! user}
+          let(:generate_message_for_custom) {FactoryGirl.create :custom, user:user}
           let(:setup_messages) {
-            direct_question_message
-            question_liked_message
-            comment_liked_message
+            auto_generate_message_for_question_updated
+            auto_generate_message_for_user_followed
+            generate_message_for_custom
           }
 
           describe "Message Output" do
-            it {expect(JSON.parse(response.body).count).to eq 3}
+            it {expect(Response.count).to eq 1}
+            it {expect(JSON.parse(response.body)['number_of_unread_messages']).to eq 3}
 
-            describe "DirectQuestionMessage" do
-              it {expect(JSON.parse(response.body)[0]['message']['type']).to eq "DirectQuestionMessage"}
-              it {expect(JSON.parse(response.body)[0]['message']['content']).to eq "This is a direct question message."}
+            describe "QuestionUpdated" do
+              it {expect(JSON.parse(response.body)['messages'][0]['message']['type']).to eq "QuestionUpdated"}
+              it {expect(JSON.parse(response.body)['messages'][0]['message'].count).to eq 10}
+
+              it {expect(JSON.parse(response.body)['messages'][0]['message']['comment_count']).to eq 0}
+              it {expect(JSON.parse(response.body)['messages'][0]['message']['share_count']).to eq 0}
+
             end
 
-            describe "QuestionLikedMessage" do
-              it {expect(JSON.parse(response.body)[1]['message']['type']).to eq "QuestionLikedMessage"}
-              it {expect(JSON.parse(response.body)[1]['message']['content']).to eq "This is a question liked message."}
+
+            describe "UserFollowed" do
+              it {expect(JSON.parse(response.body)['messages'][1]['message']['type']).to eq "UserFollowed"}
+              it {expect(JSON.parse(response.body)['messages'][1]['message'].count).to eq 6}
             end
-            describe "CommentLikedMessage" do
-              it {expect(JSON.parse(response.body)[2]['message']['type']).to eq "CommentLikedMessage"}
-              it {expect(JSON.parse(response.body)[2]['message']['content']).to eq "This is a comment liked message."}
+
+            describe "Custom" do
+              it {expect(JSON.parse(response.body)['messages'][2]['message']['type']).to eq "Custom"}
+              it {expect(JSON.parse(response.body)['messages'][2]['message'].count).to eq 5}
             end
+
           end
         end
       end

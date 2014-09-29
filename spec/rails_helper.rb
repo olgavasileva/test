@@ -7,6 +7,8 @@ require 'rspec/rails'
 # For fixture_file_upload
 include ActionDispatch::TestProcess
 
+include RSpec::Mocks::ExampleMethods
+
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
@@ -49,6 +51,11 @@ RSpec.configure do |config|
    DatabaseCleaner.clean_with :truncation
   end
 
+  config.before(:each) do
+    mock_montage = instance_double("Magick::ImageList", write:nil)
+    allow(Magick::ImageList).to receive_message_chain(:new, :montage => mock_montage)
+  end
+
   config.around(:each) do |example|
     DatabaseCleaner.cleaning do
       example.run
@@ -59,7 +66,7 @@ RSpec.configure do |config|
     LinkchatApp::Application.reload_routes!
 
     # reload all the models - CAUTION: while this is convenient, it causes after_create callbacks to be called twice and warnings on all constant declarations
-    Dir["#{Rails.root}/app/models/**/*.rb"].each{ |model| load model }
+    # Dir["#{Rails.root}/app/models/**/*.rb"].each{ |model| load model }
     FactoryGirl.reload
   end
 

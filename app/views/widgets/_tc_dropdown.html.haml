@@ -1,0 +1,36 @@
+-classes=(attrs[:classes]||'')+' tc-dropdown'
+-value=attrs.has_key?(:value_field)?attrs[:value_field]:attrs[:key]
+-id=(attrs[:id]||('tc_dropdown_'+rand(1000).to_s))
+%div{class:classes, id:id}
+  %div.dropdown-wrapper
+    %a{:class=>["row","dropdown-toggler"],:role=>'button',:data=>{:toggle=>'dropdown',:target=>'#'}}
+      -selected_object=attrs[:options].find{|o| o[value]==attrs[:value]}
+      -sel_text=selected_object.nil? ? attrs[:placeholder]:selected_object[attrs[:key]];
+      .col-xs-9.value-label=sel_text
+      %span{:class=>["caret"], :id=>(id+"_caret")}
+    -if attrs.has_key?(:name)
+      %input{:type=>'hidden', :name=>attrs[:name],:class=>'value-holder',:value=>attrs[:value]}
+    %ul{:class=>["dropdown-menu"],:role=>"menu"}
+      -attrs[:options].each do |c|
+        %li{:class=>["dropdown-menu-item"],:data=>{:value=>c[value]}}
+          =c[attrs[:key]]
+
+:javascript
+  $(function(){
+    if(!window.tcHandlers){
+      window.tcHandlers={};
+    }
+    if(!window.tcHandlers.basic_dropdown){
+
+        window.tcHandlers.basic_dropdown=$('.tc-dropdown').on('click','.dropdown-menu-item',function(){
+                                                 var root=$(this).parent().parent();
+                                                 var text=$(this).html();
+                                                 var value=$(this).attr('data-value')||text;
+                                                 root.find('.value-holder').val(value);
+                                                 root.find('.value-label').html(text);
+
+                                               })
+
+    }
+
+  })

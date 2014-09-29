@@ -1,0 +1,73 @@
+:sass
+  .choice-wrapper
+    overflow: hidden
+    margin-bottom: 0!important
+    &.col-md-6
+      margin: 0
+
+      overflow: hidden
+      cursor: pointer
+    .img-responsive
+      margin: auto
+
+    input[type]:checked~i.glyphicon.glyphicon-ok.selected
+      display: block
+
+
+    i.glyphicon.glyphicon-ok.selected
+      font-size: 1.8em
+      position: absolute
+      right: 25px
+      top: 15px
+      color: white
+      background-color: rgba(0,0,0,0.3)
+      padding: 5px
+      padding-left: 15px
+      padding-right: 15px
+      border: solid 1px white
+      display: none
+
+    .option-title
+      position: absolute
+      bottom: 0
+      text-align: center
+      color: white
+      background-color: rgba(0,0,0,0.3)
+      left: 0
+      right: 0
+      padding-top: 8px
+      padding-bottom: 8px
+
+    &.selected-choice
+      i.glyphicon.glyphicon-ok.selected
+        display: block
+
+    input[type]
+      position: absolute
+      top: -110%
+
+%div
+  .col-xs-12.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2
+    = render "responses/response_fields/shared/title", form:form, response:response
+    .forn-group
+      -n=0
+      -@response.question.choices.each do |c|
+        -n+=1
+
+        %label.col-sm-6.col-xs-12.choice-wrapper
+          .row
+            =check_box_tag("multiple_choice_response[choice_id]",c.id,false,{class:'selected-choice'})
+            =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
+            %i.glyphicon.glyphicon-ok.selected
+            .option-title=c.title
+
+            
+  .col-xs-12.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2
+    .row
+      .col-xs-12.form-group.clearfix
+        = render "responses/response_fields/shared/comment", form:form, response:response
+        = render "responses/response_fields/shared/sharing", form:form, response:response
+        = render "responses/response_fields/shared/anonymous", form:form, response:response
+      .col-xs-12
+        = render "responses/response_fields/shared/submit", form:form, response:response
+

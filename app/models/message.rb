@@ -5,4 +5,22 @@ class Message < ActiveRecord::Base
   def defaults
     self.read_at = nil
   end
+
+  def isQuestionUpdated?
+    self.type == "QuestionUpdated"
+  end
+
+  def isUserFollowed?
+    self.type == "UserFollowed"
+  end
+
+  def isQuestionTargeted?
+    self.type == "QuestionTargeted"
+  end
+
+  def number_of_messages_unread
+    return Message.responses.where("comment is not ?", nil).count
+  end
+
+
 end

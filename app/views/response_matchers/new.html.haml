@@ -1,0 +1,8 @@
+= simple_form_for [:user, :segment, setup_response_matcher(@response_matcher)], remote:true do |f|
+  .form-group
+    %h3=@response_matcher.question.title
+  = f.input :type, as: :hidden
+  = f.association :segment, as: :hidden
+  = f.association :question, as: :hidden
+  = render "response_matcher_fields", f:f
+  =f.submit "Add", class: %w(btn btn-success)
