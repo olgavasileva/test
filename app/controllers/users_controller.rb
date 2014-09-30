@@ -29,6 +29,8 @@ class UsersController < ApplicationController
         question_ids = @user.responses.with_comment.map(&:question_id)
         @questions = Question.where(id: question_ids).page(params[:page])
       end
+    when 'followers'
+      @followers = @user.followers.page(params[:page])
     when 'following'
       leader_ids = @user.leaders.search(name_cont: params[:search_text]).result.map(&:id)
       @leaders = @user.leaders.where(id: leader_ids).page(params[:page])

@@ -1,4 +1,5 @@
 #users-show
+  overflow: visible !important
   .center
     text-align: center
   .top
@@ -37,15 +38,13 @@
           font-size: 22px
   .tab-content
     margin: 12px
-    &.questions-tab-content, &.following-tab-content
-      ul.items
-        margin-top: 10px
     &.following-tab-content
       ul.items
         li
           img
             margin-right: 4px
     ul.items
+      margin-top: 10px
       list-style-type: none
       padding-left: 0
       li
@@ -54,3 +53,8 @@
         margin-bottom: 10px
         &:last-child
           border-width: 0
+        .groups
+          display: inline-block
+  .dropdown-menu.right-menu
+    right: 0
+    left: auto

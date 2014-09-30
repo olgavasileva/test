@@ -1,0 +1,35 @@
+.tab-content.followers-tab-content
+  .center
+    = link_to "Organize Followers", 'javascript:void(0)', class: 'btn btn-default'
+    = link_to "Invite Friends", 'javascript:void(0)', class: 'btn btn-default'
+  %ul.items
+    - @followers.each do |follower|
+      %li
+        = gravatar_for follower.email, default: :identicon, size: 30
+        = link_to follower.name, follower
+        - if @user == current_user
+          .groups
+            - follower.membership_groups.each do |group|
+              = link_to "javascript:removeUserFromGroup(#{follower.id}, #{group.id})" do
+                %span.label.label-warning
+                  = group.name
+                  &times;
+          .pull-right
+            .btn-group
+              %button.btn.btn-default.btn-sm.dropdown-toggle{ data: { toggle: 'dropdown' } }
+                Add to
+                %span.glyphicon.glyphicon-chevron-down
+              %ul.dropdown-menu.right-menu
+                - @user.groups.where.not(id: follower.membership_groups).each do |group|
+                  %li
+                    = link_to group.name, "javascript:addUserToGroup(#{follower.id}, #{group.id})"
+  .center
+    = will_paginate @followers
+  = form_for GroupMember.new, html: { class: 'hidden' } do
+    = hidden_field_tag :user_id
+    = hidden_field_tag :group_id
+    = submit_tag
+  = form_for :group_member, url: group_members_path, method: :delete, html: { id: 'destroy_group_member', class: 'hidden' } do
+    = hidden_field_tag :user_id
+    = hidden_field_tag :group_id
+    = submit_tag
