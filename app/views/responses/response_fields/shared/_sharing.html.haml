@@ -36,7 +36,8 @@
       top: auto
       bottom: 0
       border-radius: 4px 4px 0 0
-
+    ul.shareaholic-share-buttons
+      padding: 0px!important
 
 
 .follow-menu
@@ -55,25 +56,36 @@
       %a.col-xs-2.col-sm-push-1.col-xs-push-2.vertical-middle.overlay-toggler
         %h4 ...
 
-.overlay.overlay-toggler
-  .col-xs-12.col-sm-10.col-sm-push-1.col-md-6.col-md-push-3.clearfix.share-popup.overlay-action
+.overlay
+  .col-xs-10.col-xs-push-1.col-sm-8.col-sm-push-2.col-sm-push-1.col-md-6.col-md-push-3.clearfix.share-popup.overlay-action
+    .row
+      .col-xs-12
+        .shareaholic-canvas.col-xs-6.col-xs-push-3.col-md-8.col-md-push-0{:data=>{:app=>'share_buttons', "app-id"=>'8080962'}}
+        .col-xs-12.col-md-4
+          %button.btn.btn-primary.btn-lg.negative.col-xs-12.form-group.clearfix.overlay-action-switch{:data=>{:target=>"share-report"}}
+            Cancel
   .col-xs-12.col-sm-10.col-sm-push-1.col-md-6.col-md-push-3.clearfix.report-popup.overlay-action
-    #report_form.col-sm-12.form-group
-      %textarea.col-sm-12{name: 'message', placeholder: 'what do you want us to know?'}
-      %a.col-sm-12.col-md-6
-        Submit
-      %a.col-sm-12.col-md-6.overlay-action-switch{:data=>{:target=>"share-report"}}
-        Dismiss
+    .row
+      .col-sm-12
+        .col-xs-12
+          %textarea.col-xs-12.form-group{name: 'message', placeholder: 'what do you want us to know?'}
+        .col-xs-12.col-md-6
+          %button.btn.btn-primary.negative.col-xs-12.clearfix.form-group
+            Submit
+        .col-xs-12.col-md-6
+          %button.btn.btn-primary.negative.col-xs-12.clear-fix.overlay-action-switch.form-group{:data=>{:target=>"share-report"}}
+            Dismiss
   .col-xs-12.col-sm-10.col-sm-push-1.col-md-6.col-md-push-3.clearfix.share-report-popup.overlay-action
-    .cox-xs-12.col-md-4.form-group
-      %a.btn.btn-primary.negative.col-sm-12.overlay-action-switch{:data=>{:target=>"report"}}
-        Report
-    .cox-xs-12.col-md-4.form-group
-      %a.btn.btn-primary.negative.col-sm-12.overlay-action-switch{:data=>{:target=>"report"}}
-        Share
-    .cox-xs-12.col-md-4.form-group
-      %a.btn.btn-primary.negative.col-sm-12.overlay-toggler
-        Cancel
+    .row
+      .cox-sm-12.col-md-4
+        %a.form-group.btn.btn-primary.negative.col-xs-12.overlay-action-switch.clearfix{:data=>{:target=>"report"}}
+          Report
+      .cox-sm-12.col-md-4
+        %a.form-group.btn.btn-primary.negative.col-xs-12.overlay-action-switch.clearfix{:data=>{:target=>"share"}}
+          Share
+      .cox-sm-12.col-md-4
+        %a.form-group.btn.btn-primary.negative.col-xs-12.overlay-toggler.clearfix
+          Cancel
 
 :javascript
   if(!window.tcHAndlers){
@@ -99,4 +111,17 @@
 
        })
     }
+
+    var shr = document.createElement('script');
+    shr.setAttribute('data-cfasync', 'false');
+    shr.src = '//dsms0mj1bbhn4.cloudfront.net/assets/pub/shareaholic.js';
+    shr.type = 'text/javascript'; shr.async = 'true';
+    shr.onload = shr.onreadystatechange = function() {
+      var rs = this.readyState;
+      if (rs && rs != 'complete' && rs != 'loaded') return;
+      var site_id = '09104f8bfbc58034f46a42b21966766d';
+      try { Shareaholic.init(site_id); } catch (e) {}
+    };
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(shr, s);
   })

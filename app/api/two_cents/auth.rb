@@ -148,6 +148,8 @@ class TwoCents::Auth < Grape::API
       requires :username, type: String, regexp: /^[A-Z0-9\-_ ]{4,20}$/i, desc:'Unique username'
       requires :password, type: String, regexp: /.{6,20}/, desc:'6-20 character password'
       requires :name, type: String, desc:"The user's name"
+      requires :birthdate, type: String, desc: '1990-02-06'
+      requires :gender, type:String, desc: 'male'
     end
     post 'register', http_codes:[
         [200, "1001 - Invalid instance token"],
@@ -161,7 +163,14 @@ class TwoCents::Auth < Grape::API
       fail! 1002, "A user with that email is already registered" if User.find_by email:declared_params[:email]
       fail! 1009, "Handle is already taken" if User.find_by username:declared_params[:username]
 
-      user = User.create! name:declared_params[:name], email:declared_params[:email], username:declared_params[:username], password:declared_params[:password], password_confirmation:declared_params[:password]
+      user = User.create! name:declared_params[:name],
+                          email:declared_params[:email],
+                          username:declared_params[:username],
+                          password:declared_params[:password],
+                          password_confirmation:declared_params[:password],
+                          birthdate:Date.strptime(declared_params[:birthdate], '%Y-%m-%d'),
+                          gender:declared_params[:gender]
+
       instance.update_attributes! user:user, auth_token:"A"+UUID.new.generate
 
       {auth_token:instance.auth_token, user_id: user.id}

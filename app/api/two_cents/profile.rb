@@ -6,7 +6,7 @@ class TwoCents::Profile < Grape::API
 
               #### Example response
               {
-                  "profile"": {
+                  "profile": {
                                   "username": "Endre",
                                   "user_id": "1",
                                   "email": "endre1234@gmail.com",
@@ -26,7 +26,7 @@ class TwoCents::Profile < Grape::API
 
       optional :user_id, type: Integer, desc: "ID of user, defaults to current user's ID"
     end
-    post "/", rabl: "profile", http_codes:[
+    post "/", jbuilder: "profile", http_codes:[
         [200, "402 - Invalid auth token"],
         [200, "403 - Login required"]
     ] do

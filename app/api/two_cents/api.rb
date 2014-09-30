@@ -4,7 +4,30 @@ class TwoCents::API < Grape::API
   format :json          # input must be json
   default_format :json  # assume json if no Content-Type is supplied
   default_error_formatter :json
-  formatter :json, Grape::Formatter::Rabl
+  formatter :json, Grape::Formatter::Jbuilder
+
+  before do
+    @start = Time.now.to_f if ENV['API_LOG_LEVEL'] == 'debug'
+  end
+
+  after do
+    logger = Rails.configuration.logger || Rails.logger
+
+    if ENV['API_LOG_LEVEL'] == 'debug'
+      duration = (Time.now.to_f - @start) * 1000
+      params = request.params.except('route_info').to_hash
+      max_param_str_len = params.keys.map{|k|k.to_s.length}.max
+      logger.info({
+        api: "[#{status}] #{request.request_method} #{request.path}",
+        duration: "#{duration.to_i} ms",
+        ip: request.ip,
+        user_agent: request.user_agent,
+        params: params.map{|k,v| "\n#{'%2s' % ''}#{"%-#{max_param_str_len}.#{max_param_str_len}s " % k} #{v}"}.join(""),
+      }.map{|k,v| "#{'%-20.20s' % k} #{v}"}.join("\n"))
+    else
+      logger.info "api: [#{status}] #{request.request_method} #{request.path}"
+    end
+  end
 
   helpers do
     include Pundit

@@ -11,9 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20140928234347) do
-
+ActiveRecord::Schema.define(version: 20140930153518) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -183,6 +181,17 @@ ActiveRecord::Schema.define(version: 20140928234347) do
   add_index "follower_targets", ["follower_id"], name: "index_follower_targets_on_follower_id", using: :btree
   add_index "follower_targets", ["question_id"], name: "index_follower_targets_on_question_id", using: :btree
 
+  create_table "friendships", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "friend_id"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "friendships", ["friend_id"], name: "index_friendships_on_friend_id", using: :btree
+  add_index "friendships", ["user_id"], name: "index_friendships_on_user_id", using: :btree
+
   create_table "galleries", force: true do |t|
     t.datetime "entries_open"
     t.datetime "entries_close"
@@ -272,6 +281,16 @@ ActiveRecord::Schema.define(version: 20140928234347) do
 
   add_index "groups", ["user_id"], name: "index_groups_on_user_id", using: :btree
 
+  create_table "groups_targets", force: true do |t|
+    t.integer  "group_id"
+    t.integer  "target_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "groups_targets", ["group_id"], name: "index_groups_targets_on_group_id", using: :btree
+  add_index "groups_targets", ["target_id"], name: "index_groups_targets_on_target_id", using: :btree
+
   create_table "inclusions", force: true do |t|
     t.integer  "pack_id"
     t.integer  "question_id"
@@ -336,19 +355,17 @@ ActiveRecord::Schema.define(version: 20140928234347) do
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
 
   create_table "messages", force: true do |t|
-    t.text     "content"
     t.string   "type"
     t.datetime "read_at"
+    t.datetime "completed_at"
+    t.integer  "response_count"
+    t.integer  "comment_count"
+    t.integer  "share_count"
+    t.integer  "follower_id"
     t.integer  "question_id"
-    t.integer  "response_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "response_count", default: 0
-    t.integer  "comment_count",  default: 0
-    t.integer  "share_count",    default: 0
-    t.datetime "completed_at"
-    t.integer  "follower_id"
     t.string   "body"
   end
 
@@ -441,6 +458,7 @@ ActiveRecord::Schema.define(version: 20140928234347) do
     t.string   "uuid"
     t.boolean  "anonymous",             default: false
     t.boolean  "currently_targetable",  default: true
+    t.integer  "target_id"
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
@@ -728,6 +746,24 @@ ActiveRecord::Schema.define(version: 20140928234347) do
     t.string "name"
   end
 
+  create_table "targets", force: true do |t|
+    t.boolean  "all_users"
+    t.boolean  "all_followers"
+    t.boolean  "all_groups"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "targets_users", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "target_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "targets_users", ["target_id"], name: "index_targets_users_on_target_id", using: :btree
+  add_index "targets_users", ["user_id"], name: "index_targets_users_on_user_id", using: :btree
+
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -746,6 +782,8 @@ ActiveRecord::Schema.define(version: 20140928234347) do
     t.string   "remember_token"
     t.string   "longitude"
     t.string   "latitude"
+    t.date     "birthdate"
+    t.string   "gender"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
