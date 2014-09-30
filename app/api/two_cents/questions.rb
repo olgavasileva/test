@@ -168,8 +168,8 @@ class TwoCents::Questions < Grape::API
 
       @question.save!
 
-      target = Target.new declared_params[:targets]
-      @question.apply_target! target
+      # target = Target.new declared_params[:targets]
+      # @question.apply_target! target
     end
 
 
@@ -236,8 +236,8 @@ class TwoCents::Questions < Grape::API
 
       @question.save!
 
-      target = Target.new declared_params[:targets]
-      @question.apply_target! target
+      # target = Target.new declared_params[:targets]
+      # @question.apply_target! target
     end
 
 
@@ -305,8 +305,8 @@ class TwoCents::Questions < Grape::API
 
       @question.save!
 
-      target = Target.new declared_params[:targets]
-      @question.apply_target! target
+      # target = Target.new declared_params[:targets]
+      # @question.apply_target! target
     end
 
 
@@ -367,8 +367,8 @@ class TwoCents::Questions < Grape::API
 
       @question.save!
 
-      target = Target.new declared_params[:targets]
-      @question.apply_target! target
+      # target = Target.new declared_params[:targets]
+      # @question.apply_target! target
     end
 
 
