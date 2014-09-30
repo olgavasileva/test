@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe :ssticker_pack do
+describe :sticker_pack do
   let(:params) {{}}
   let(:before_api_call) {}
   before { before_api_call }
@@ -28,9 +28,11 @@ describe :ssticker_pack do
     context "Valid Sticker Pack ID" do
       let(:sticker_pack) {FactoryGirl.create :sticker_pack, display_name:"Test Sticker Pack"}
       let(:sticker_pack_id) {sticker_pack.id}
+      let(:before_api_call) {studio.sticker_packs << sticker_pack}
+
       it {expect(response.status).to eq 201}
       it {expect(JSON.parse(response.body)).to be_present}
-      it {expect(JSON.parse(response.body)['sticker_pack']['display_name']).to eq "Test Sticker Pack"}
+      it {expect(JSON.parse(response.body)['display_name']).to eq "Test Sticker Pack"}
     end
   end
 end

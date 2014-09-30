@@ -56,7 +56,6 @@ describe :messages do
 
         context "With one of each type of message" do
 
-          let(:count) { 2 }
           let(:other_user) {FactoryGirl.create :user}
 
           let(:text_question_1) {FactoryGirl.create(:text_question, kind: 'targeted', user: user)}
@@ -77,7 +76,7 @@ describe :messages do
 
             describe "QuestionUpdated" do
               it {expect(JSON.parse(response.body)['messages'][0]['message']['type']).to eq "QuestionUpdated"}
-              it {expect(JSON.parse(response.body)['messages'][0]['message'].count).to eq 10}
+              it {expect(JSON.parse(response.body)['messages'][0]['message'].keys).to match_array %w(id type body question_id response_count comment_count share_count completed_at created_at read_at)}
 
               it {expect(JSON.parse(response.body)['messages'][0]['message']['comment_count']).to eq 0}
               it {expect(JSON.parse(response.body)['messages'][0]['message']['share_count']).to eq 0}
@@ -87,12 +86,12 @@ describe :messages do
 
             describe "UserFollowed" do
               it {expect(JSON.parse(response.body)['messages'][1]['message']['type']).to eq "UserFollowed"}
-              it {expect(JSON.parse(response.body)['messages'][1]['message'].count).to eq 6}
+              it {expect(JSON.parse(response.body)['messages'][1]['message'].keys).to match_array %w(id type body follower_id created_at read_at)}
             end
 
             describe "Custom" do
               it {expect(JSON.parse(response.body)['messages'][2]['message']['type']).to eq "Custom"}
-              it {expect(JSON.parse(response.body)['messages'][2]['message'].count).to eq 5}
+              it {expect(JSON.parse(response.body)['messages'][2]['message'].keys).to match_array %w(id type body created_at read_at)}
             end
 
           end

@@ -62,7 +62,6 @@ describe :response do
           end
 
           it "should return summary fields" do
-            p response.body
             summary = JSON.parse(response.body)['summary']
 
             expect(summary.keys).to include('choices')
