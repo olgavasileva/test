@@ -15,7 +15,7 @@ class TwoCents::Questions < Grape::API
         optional :anonymous, type: Boolean, desc: "Whether question is anonymous"
 
         requires :targets, type: Hash do
-          optional :all, type: Boolean, desc: "Whether question is targeted at all users."
+          optional :all, type: Boolean, default: false, desc: "Whether question is targeted at all users."
           optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
           optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
           optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
