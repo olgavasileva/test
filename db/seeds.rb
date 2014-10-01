@@ -20,6 +20,8 @@ Setting.where(key: :aws_region).first_or_create!(value: ENV['DEVICE_AWS_REGION']
 Setting.where(key: :aws_bucket).first_or_create!(value: ENV['DEVICE_AWS_BUCKET'])
 Setting.where(key: :share_app).first_or_create!(value: "Check out this app!")
 Setting.where(key: :share_question).first_or_create!(value: "Check out this question!")
+Setting.where(key: :share_community_public).first_or_create!(value: "Check this out!")
+Setting.where(key: :share_community_private).first_or_create!(value: "Check this out!")
 
 %w(Calories Fat Carbohydrates Protein Sugar SaturatedFat Sodium Cholesterol Fiber CaloriesFromFat).each do |key|
   Key.where(key:key).first_or_create!
