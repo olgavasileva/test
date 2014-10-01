@@ -7,7 +7,6 @@ class CreateMessages < ActiveRecord::Migration
       t.integer :response_count
       t.integer :comment_count
       t.integer :share_count
-      t.integer :follower_id
       t.integer :question_id
       t.references :user, index: true
 
