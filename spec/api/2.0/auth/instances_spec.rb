@@ -40,6 +40,9 @@ describe :instances do
       let(:valid_signature) {Digest::SHA2.hexdigest(device_vendor_identifier + ENV["api_shared_secret"].to_s)}
       let(:api_signature) {valid_signature}
 
+      it {expect(parsed_response['share_community_public']).to eq Setting.find_by_key('share_community_public').try(:value) }
+      it {expect(parsed_response['share_community_private']).to eq Setting.find_by_key('share_community_private').try(:value) }
+
       context "When the signature is uppercase" do
         let(:api_signature) {valid_signature.upcase}
 
