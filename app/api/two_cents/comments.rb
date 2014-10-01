@@ -62,7 +62,7 @@ class TwoCents::Comments < Grape::API
       requires :auth_token, type:String, desc: 'Obtain this from the instances API'
       requires :question_id, type:Integer, desc: 'The id of the question'
     end
-    post '/', http_codes:[
+    get http_codes: [
       [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"]
@@ -71,6 +71,23 @@ class TwoCents::Comments < Grape::API
       comments = questions.comments.root
 
       comments.map { |c| serialize_comment(c) }
+    end
+
+    desc "Create a comment."
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+      requires :question_id, type: Integer, desc: "Question for comment."
+      requires :body, type: String, desc: "Comment body."
+    end
+    post do
+      validate_user!
+
+      question = Question.find(params[:question_id])
+      comment = Comment.create!(question_id: params[:question_id],
+                                user_id: current_user.id,
+                                body: params[:body])
+
+      serialize_comment(comment)
     end
 
 
