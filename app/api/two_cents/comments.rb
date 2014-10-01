@@ -1,17 +1,17 @@
 class TwoCents::Comments < Grape::API
   resource :comments do
     helpers do
-      def serialize_response(r)
+      def serialize_comment(c)
         {
-          id: r.id,
-          user_id: r.user_id,
-          comment: r.comment,
-          created_at: r.created_at.to_i,
-          email: r.user.email,
-          ask_count: r.user.questions.count,
-          response_count: r.user.responses.count,
-          comment_count: r.user.responses.with_comment.count,
-          comment_children: r.comment_children.map { |r| serialize_response r }
+          id: c.id,
+          user_id: c.user_id,
+          comment: c.body,
+          created_at: c.created_at.to_i,
+          email: c.user.email,
+          ask_count: c.user.questions.count,
+          response_count: c.user.responses.count,
+          comment_count: c.user.responses.with_comment.count,
+          comment_children: c.children.map { |c| serialize_comment(c) }
         }
       end
     end
@@ -67,10 +67,10 @@ class TwoCents::Comments < Grape::API
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"]
     ] do
-      question = Question.find declared_params[:question_id]
-      responses = question.responses_with_comments
+      questions = Question.find declared_params[:question_id]
+      comments = questions.comments.root
 
-      responses.map { |r| serialize_response(r) }
+      comments.map { |c| serialize_comment(c) }
     end
 
 
@@ -82,16 +82,16 @@ class TwoCents::Comments < Grape::API
       requires :auth_token, type:String, desc: 'Obtain this from the instances API'
       requires :comment_id, type:Integer, desc: 'The id of the comment to like'
     end
-    post 'like', rabl:"comments", http_codes:[
+    post 'like', http_codes:[
       [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"]
     ] do
-      response = Response.find declared_params[:comment_id]
-      response.comment_likers << current_user
-      response.save!
+      comment = Comment.find declared_params[:comment_id]
+      comment.likers << current_user
+      comment.save!
 
-      { num_likes: response.comment_likers.count }
+      { num_likes: comment.likers.count }
     end
 
   end

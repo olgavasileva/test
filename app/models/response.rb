@@ -12,7 +12,6 @@ class Response < ActiveRecord::Base
   validates :user, presence: true
 	validates :question, presence: true
 
-  # Deprecated.
   scope :with_comment, -> { where.not(comment_id: nil) }
 
   after_create :record_analytics
