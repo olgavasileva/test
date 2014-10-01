@@ -20,6 +20,7 @@
 
 .btn-default.negative, .btn-primary.negative
   background-color: transparent
+  background-color: white
   border-style: solid
   border-width: 1px
   border-color: $primary_border_color
@@ -29,3 +30,23 @@
     background-color: $primary_background_color
     *
       color: white!important
+
+footer#footer
+  margin-top: 0
+
+
+#content_constraint
+  display:  block
+  margin: auto
+  .panel
+    background: none !important
+    border: none
+
+
+@media only screen and (min-width : 771px)
+  #content_constraint
+    max-width: 868px
+
+@media only screen and (max-width : 770px)
+  #content_constraint
+    max-width: 700px

@@ -15,7 +15,7 @@
       .panel
         margin-bottom: 0
 %div
-  .col-xs-12.col-sm-10.col-sm-push-1.col.col-md-8.col-md-push-2
+  .col-xs-12
     .row.order-choices
       .col-xs-12.ignore-float
         = render "responses/response_fields/shared/title", form:form, response:response
@@ -29,7 +29,7 @@
               = responsive_image_tag(c.object.choice.web_image_url, class: "img-responsive")
     = render "responses/response_fields/shared/comment", form:form, response:response
     = render "responses/response_fields/shared/sharing", form:form, response:response
-  .col-xs-12.col-sm-10.col-sm-push-1.col.col-md-8.col-md-push-2
+  .col-xs-12
     .row
       .col-xs-12.form-group.clearfix
         = render "responses/response_fields/shared/anonymous", form:form, response:response

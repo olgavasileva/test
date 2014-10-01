@@ -3,8 +3,8 @@
     margin-right: 10px
 
 
-.row.question-builder
-  .col-xs-12.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2
+.row.question-builder#content_constraint
+  .col-xs-12.col-sm-8.col-sm-push-2
     .multiplechoice.panel.panel-default
       .panel-heading
         .panel-title
@@ -23,7 +23,7 @@
               .row
                 =f.simple_fields_for :choices do |choice|
                   = render 'choice_fields', f:choice
-                .col-xs-12.col-sm-6
+                .col-xs-12
                   .row
                     =link_to_add_association  f, :choices, class: 'nested-fields answer' do
                       .choice.imagechooser
@@ -39,9 +39,9 @@
             =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category", :name=>"multiple_choice_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
           .row
             .row
-              .col-md-6.form-group
+              .col-sm-12.form-group
                 .btn-group.btn-group-justified
                   =f.button :submit, "Preview", class: %w(btn-block btn-lg)
-              .col-md-6.form-group
+              .col-sm-12.form-group
                 .btn-group.btn-group-justified
                   =f.button :submit, "Continue", class: %w(btn-block btn-lg)

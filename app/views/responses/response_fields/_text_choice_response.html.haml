@@ -8,17 +8,18 @@
     margin-top: -65px
     background-color: transparent
 
+
 .text-choices.form-group
-  .col-sm-12.col-md-10.col-md-push-1
+  .col-xs-12
     .row
-      .col-xs-12.col-sm-6
+      .col-xs-12
         = responsive_image_tag((response.question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
-        .floating-question-title.col-sm-12
+        .floating-question-title
           %span= response.question.title
         %div
           .col-xs-12
             = render "responses/response_fields/shared/sharing", form:form, response:response
-      .col-xs-12.col-sm-6.btn-group{:data=>{:toggle=>"buttons"}}
+      .col-xs-12.btn-group{:data=>{:toggle=>"buttons"}}
         -cols=(12/response.question.choices.length)+1
         -pc_margin=((10/(response.question.choices.length-1))-1).to_s+'%'
         -border_compensation='-'+(response.question.choices.length*2).to_s+'px'
@@ -27,14 +28,14 @@
         = form.collection_radio_buttons :choice_id, response.question.choices, :id, :title, label:false, wrapper:false, boolean_style: 'inline', item_wrapper_class:"col-xs-12 selectable-option btn"  do |c|
           %label.btn-primary.negative.col-xs-12{style:"margin-bottom:#{pc_margin};"}
             .row
-              %div{:class=>["col-xs-3 col-sm-#{cols}"]}
+              %div{:class=>["col-xs-3"]}
                 = responsive_image_tag((response.question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
             .option-title=c.object.title
             = c.radio_button label:false, boolean_style: 'inline', wrapper:false
             %i.glyphicon.glyphicon-ok.selected
     .row
-      .col-xs-12.col-sm-6.form-group
+      .col-xs-12.form-group
         = render "responses/response_fields/shared/comment", form:form, response:response
-      .col-xs-12.col-sm-6.form-group
+      .col-xs-12.form-group
         = render "responses/response_fields/shared/anonymous", form:form, response:response
     =render "responses/response_fields/shared/submit", form:form, response:response

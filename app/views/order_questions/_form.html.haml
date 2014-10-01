@@ -3,8 +3,9 @@
     margin-right: 10px
 
 
-.row.question-builder
-  .col-xs-12.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2
+
+.row.question-builder#content_constraint
+  .col-xs-12.col-sm-8.col-sm-push-2
     .prioritizer.panel.panel-default
       .panel-heading
         .panel-title
@@ -14,7 +15,7 @@
         = simple_form_for @question do |f|
           =f.input :type, as: :hidden
           .row
-            .col-sm-8.col-sm-push-2
+            .col-sm-12
               .row.question
                 .col-xs-12
                   .title
