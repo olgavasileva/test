@@ -153,6 +153,10 @@ class User < ActiveRecord::Base
     return self.responses.with_comment.count
   end
 
+  def number_of_followers
+    return self.followers.count
+  end
+
   def number_of_unread_messages
     return self.messages.where("read_at is ?", nil).count
   end
