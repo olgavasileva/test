@@ -422,7 +422,7 @@ class TwoCents::Questions < Grape::API
                         ]
                     }
                 },
-                {
+7                {
                     "question": {
                         "type": "MultipleChoiceQuestion",
                         "id": 2,
