@@ -17,6 +17,14 @@ FactoryGirl.define do
     "password#{n}"
   end
 
+  sequence :birthdate do |n|
+    "1990-02-06"
+  end
+
+  sequence :gender do |n|
+    "male"
+  end
+
   sequence :device_vendor_identifier do |n|
     "DeviceVendorIdentifier_#{n}"
   end

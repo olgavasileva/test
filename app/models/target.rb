@@ -1,81 +1,72 @@
-class Target
-  include ActiveModel::Model
+class Target < ActiveRecord::Base
+  belongs_to :user
+  has_many :questions
+  has_and_belongs_to_many :followers, class_name: "User"
+  has_and_belongs_to_many :groups
 
-  attr_accessor(
-    :question,
-    :question_id,
-
-    :all_users,
-
-    :all_followers,
-    :all_groups,
-
-    :follower_ids,
-    :group_ids
-  )
-
-  validates :question_id, presence:true
   validates :all_users, inclusion:{in:[true, false]}
   validates :all_followers, inclusion:{in:[true, false]}
   validates :all_groups, inclusion:{in:[true, false]}
 
-  def question_id= question_id
-    @question_id = question_id
-    @question = Question.find question_id
+  def follower_ids= follower_ids
+    follower_ids.each do |id|
+      self.followers << User.find(id)
+    end if follower_ids.kind_of? Array
   end
 
-  def question= question
-    @question_id = question.id
-    @question = question
+  def group_ids= group_ids
+    group_ids.each do |id|
+      self.groups << Group.find(id)
+    end if group_ids.kind_of? Array
   end
 
   def public?
-    !!@all_users
+    !!all_users
   end
 
 
   # Add the question to all of the appropriate users' feed
   # Will not add a question to a user who already has this question in their feed or skip list
-  def apply_to_user user
+  def apply_to_question question
     target_count = 0
 
     ActiveRecord::Base.transaction do
-      @question.kind = @all_users ? "public" : "targeted"
-      @question.activate!
+      question.kind = all_users ? "public" : "targeted"
+      question.activate!
 
-      if @all_followers
+      if all_followers
         user.followers.each do |follower|
-          if follower.wants_question? @question
-            follower.feed_questions << @question
+          if follower.wants_question? question
+            follower.feed_questions << question
             target_count += 1
           end
         end
-      elsif @follower_ids
-        @follower_ids.each do |follower_id|
-          follower = user.followers.where(id:follower_id).first
-          if follower && follower.wants_question?(@question)
-            follower.feed_questions << @question
+      else
+        followers.each do |follower|
+          if follower.leader == user && follower.wants_question?(question)
+            follower.feed_questions << question
             target_count += 1
           end
         end
       end
 
-      if @all_groups
+      if all_groups
         user.group_members.each do |member|
-          if member.wants_question? @question
-            member.feed_questions << @question
+          if member.wants_question? question
+            member.feed_questions << question
             target_count += 1
           end
         end
-      elsif @group_ids
-        @group_ids.each do |group_id|
-          group = user.groups.where(id:group_id).first
-          group.members.each do |member|
-            if member.wants_question? @question
-              member.feed_questions << @question
-              target_count += 1
+      else
+        groups.each do |group|
+          if group.user == user
+            group.members.each do |member|
+              if member.wants_question? question
+                member.feed_questions << question
+                target_count += 1
+              end
             end
-          end if @group
+          end
         end
       end
     end

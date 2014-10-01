@@ -14,13 +14,15 @@ describe :register do
   end
 
   context "With all required params" do
-    let(:params) {{instance_token:instance_token, email:email, username:username, password:password, name:name}}
+    let(:params) {{instance_token:instance_token, email:email, username:username, password:password, name:name, birthdate:birthdate, gender:gender}}
 
     context "With valid email, username, password, and name params" do
       let(:email) {FactoryGirl.generate :email_address}
       let(:username) {FactoryGirl.generate :username}
       let(:password) {FactoryGirl.generate :password}
       let(:name) {FactoryGirl.generate :name}
+      let(:birthdate) {FactoryGirl.generate :birthdate}
+      let(:gender) {FactoryGirl.generate :gender}
 
       context "With an invalid instance" do
         let(:instance_token) {"INVALID"}

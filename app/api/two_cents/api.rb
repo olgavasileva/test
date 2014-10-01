@@ -4,7 +4,7 @@ class TwoCents::API < Grape::API
   format :json          # input must be json
   default_format :json  # assume json if no Content-Type is supplied
   default_error_formatter :json
-  formatter :json, Grape::Formatter::Rabl
+  formatter :json, Grape::Formatter::Jbuilder
 
   before do
     @start = Time.now.to_f if ENV['API_LOG_LEVEL'] == 'debug'

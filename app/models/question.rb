@@ -1,6 +1,7 @@
 class Question < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :category
+  belongs_to :target
 	has_many :inclusions, dependent: :destroy
 	has_many :packs, through: :inclusions
 	has_many :sharings, dependent: :destroy
@@ -29,6 +30,11 @@ class Question < ActiveRecord::Base
 
   default :uuid do |question|
     "Q"+UUID.new.generate.gsub(/-/, '')
+  end
+
+  def apply_target! target
+    self.update_attribute :target, target
+    target.apply_to_question self
   end
 
 	def viewed!

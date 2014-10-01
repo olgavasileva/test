@@ -15,7 +15,7 @@ class TwoCents::Questions < Grape::API
         optional :anonymous, type: Boolean, desc: "Whether question is anonymous"
 
         requires :targets, type: Hash do
-          optional :all, type: Boolean, desc: "Whether question is targeted at all users."
+          optional :all, type: Boolean, default: false, desc: "Whether question is targeted at all users."
           optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
           optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
           optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
@@ -49,7 +49,7 @@ class TwoCents::Questions < Grape::API
         requires :rotate, type:Boolean, desc:"This value is logically ANDed with question.rotate", default:true
       end
     end
-    post 'text_choice_question', rabl: "question", http_codes:[
+    post 'text_choice_question', jbuilder: "question", http_codes:[
       [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"],
@@ -82,14 +82,14 @@ class TwoCents::Questions < Grape::API
 
       @question = TextChoiceQuestion.new(question_params)
 
-
       declared_params[:choices].each do |choice_params|
         @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate]
       end
 
       @question.save!
 
-      # target = Target.new params[:targets].merge(question:@question)
+      # target = Target.new declared_params[:targets]
+      # @question.apply_target! target
     end
 
 
@@ -117,7 +117,7 @@ class TwoCents::Questions < Grape::API
         requires :muex, type:Boolean, desc:"If a muex choice is selected, no other choices are alloweed", default:false
       end
     end
-    post 'multiple_choice_question', rabl: "question", http_codes:[
+    post 'multiple_choice_question', jbuilder: "question", http_codes:[
       [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"],
@@ -167,6 +167,9 @@ class TwoCents::Questions < Grape::API
       end
 
       @question.save!
+
+      # target = Target.new declared_params[:targets]
+      # @question.apply_target! target
     end
 
 
@@ -191,7 +194,7 @@ class TwoCents::Questions < Grape::API
         requires :rotate, type:Boolean, desc:"This value is logically ANDed with question.rotate", default:true
       end
     end
-    post 'image_choice_question', rabl: "question", http_codes:[
+    post 'image_choice_question', jbuilder: "question", http_codes:[
       [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"],
@@ -232,6 +235,9 @@ class TwoCents::Questions < Grape::API
       end
 
       @question.save!
+
+      # target = Target.new declared_params[:targets]
+      # @question.apply_target! target
     end
 
 
@@ -257,7 +263,7 @@ class TwoCents::Questions < Grape::API
         requires :rotate, type:Boolean, desc:"This value is logically ANDed with question.rotate", default:true
       end
     end
-    post 'order_question', rabl: "question", http_codes:[
+    post 'order_question', jbuilder: "question", http_codes:[
       [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"],
@@ -298,6 +304,9 @@ class TwoCents::Questions < Grape::API
       end
 
       @question.save!
+
+      # target = Target.new declared_params[:targets]
+      # @question.apply_target! target
     end
 
 
@@ -321,7 +330,7 @@ class TwoCents::Questions < Grape::API
       requires :min_characters, type:Integer
       requires :max_characters, type:Integer
     end
-    post 'text_question', rabl: "question", http_codes:[
+    post 'text_question', jbuilder: "question", http_codes:[
       [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"]
@@ -357,6 +366,9 @@ class TwoCents::Questions < Grape::API
       @question = TextQuestion.new(question_params)
 
       @question.save!
+
+      # target = Target.new declared_params[:targets]
+      # @question.apply_target! target
     end
 
 
@@ -410,7 +422,7 @@ class TwoCents::Questions < Grape::API
                         ]
                     }
                 },
-                {
+7                {
                     "question": {
                         "type": "MultipleChoiceQuestion",
                         "id": 2,
@@ -561,7 +573,7 @@ class TwoCents::Questions < Grape::API
       optional :page, type: Integer, desc: "Page number, starting at 1 - all questions returned if not supplied"
       optional :per_page, type: Integer, default: 15, desc: "Number of questions per page"
     end
-    post 'feed', rabl: "questions", http_codes:[
+    post 'feed', jbuilder: "questions", http_codes:[
       [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"]
@@ -741,7 +753,7 @@ class TwoCents::Questions < Grape::API
       optional :filter_geography, type: Symbol, values:[:all, :near_me], desc: ":all, :near_me"
       optional :filter_age_group, type: Symbol, values:[:all, :under_18, :from_19_to_34, :from_35_to_50, :over_50], desc: ":all, :under_18, :from_19_to_34, :from_35_to_50, :over_50"
     end
-    post 'response', rabl: "summary", http_codes:[
+    post 'response', jbuilder: "summary", http_codes:[
       [200, "400 - Invalid params"],
       [200, "401 - Couldn't find Question"],
       [200, "402 - Invalid auth token"],
@@ -797,7 +809,7 @@ class TwoCents::Questions < Grape::API
       optional :filter_geography, type: Symbol, values:[:all, :near_me], desc: ":all, :near_me"
       optional :filter_age_group, type: Symbol, values:[:all, :under_18, :from_19_to_34, :from_35_to_50, :over_50], desc: ":all, :under_18, :from_19_to_34, :from_35_to_50, :over_50"
     end
-    post 'summary', rabl: "summary", http_codes:[
+    post 'summary', jbuilder: "summary", http_codes:[
       [200, "400 - Invalid params"],
       [200, "401 - Couldn't find Question"],
       [200, "402 - Invalid auth token"],
@@ -810,30 +822,55 @@ class TwoCents::Questions < Grape::API
     end
 
 
-    desc "Return a question's information."
+    desc "Return a question's information.", {
+      notes: <<-END
+        Return a question's information.
+
+        #### Example response
+        {
+            "category": {
+                "id": 1,
+                "name": "Name3"
+            },
+            "comment_count": 0,
+            "creator_id": 2,
+            "creator_name": "Name2",
+            "description": null,
+            "id": 1,
+            "response_count": 0,
+            "summary": {
+                "anonymous": null,
+                "choices": [],
+                "comment_count": 0,
+                "creator_id": 2,
+                "creator_name": "Name2",
+                "published_at": 1412038351,
+                "response_count": 0,
+                "share_count": 0,
+                "skip_count": 0,
+                "sponsor": null,
+                "view_count": null
+            },
+            "title": "Name4",
+            "type": null,
+            "user_answered": false,
+            "uuid": "Qfbad26b02a6901324a6e3c075421a6ee"
+        }
+      END
+    }
+
     params do
       use :auth
 
       requires :question_id, type: Integer, desc: "ID of question."
       optional :user_id, type: Integer, desc: "ID of user for question answer data, defaults to current user's ID."
     end
-    get 'question' do
+    get 'question', jbuilder: "question_info" do
       validate_user!
 
       @question = Question.find(params[:question_id])
-      @user = User.find(params.fetch(:user_id, current_user.id))
-
-      question_data = JSON.parse(Rabl.render(nil, 'question',
-                                             view_path: 'app/views/api',
-                                             scope: self)).fetch('question')
-      summary_data = JSON.parse(Rabl.render(nil, 'summary',
-                                            view_path: 'app/views/api',
-                                            scope: self)).fetch('summary')
-      user_data = {
-        user_answered: @user.answered_questions.include?(@question)
-      }
-
-      question_data.merge(user_data).merge(summary: summary_data)
+      user = User.find(params.fetch(:user_id, current_user.id))
+      @user_answered = user.answered_questions.include? @question
     end
 
 

@@ -193,18 +193,6 @@ var psUtils = function() {
             var new_count = parseInt($("#total-fat").text()) + parseInt(sticker_props.Fat);
             $("#total-fat").text(new_count);
         }
-        if (sticker_props.SaturatedFat) {
-            var new_count = parseInt($("#sat-fat").text()) + parseInt(sticker_props.SaturatedFat);
-            $("#sat-fat").text(new_count);
-        }
-        if (sticker_props.Sodium) {
-            var new_count = parseInt($("#sodium-counter").text()) + parseInt(sticker_props.Sodium);
-            $("#sodium-counter").text(new_count);
-        }
-        if (sticker_props.Cholesterol) {
-            var new_count = parseInt($("#cholesterol-counter").text()) + parseInt(sticker_props.Cholesterol);
-            $("#cholesterol-counter").text(new_count);
-        }
         if (sticker_props.Fiber) {
             var new_count = parseInt($("#fiber-counter").text()) + parseInt(sticker_props.Fiber);
             $("#fiber-counter").text(new_count);
@@ -236,18 +224,6 @@ var psUtils = function() {
         if (sticker_props.Fat) {
             var new_count = parseInt($("#total-fat").text()) - parseInt(sticker_props.Fat);
             $("#total-fat").text(new_count);
-        }
-        if (sticker_props.SaturatedFat) {
-            var new_count = parseInt($("#sat-fat").text()) - parseInt(sticker_props.SaturatedFat);
-            $("#sat-fat").text(new_count);
-        }
-        if (sticker_props.Sodium) {
-            var new_count = parseInt($("#sodium-counter").text()) - parseInt(sticker_props.Sodium);
-            $("#sodium-counter").text(new_count);
-        }
-        if (sticker_props.Cholesterol) {
-            var new_count = parseInt($("#cholesterol-counter").text()) - parseInt(sticker_props.Cholesterol);
-            $("#cholesterol-counter").text(new_count);
         }
         if (sticker_props.Fiber) {
             var new_count = parseInt($("#fiber-counter").text()) - parseInt(sticker_props.Fiber);

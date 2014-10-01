@@ -1,8 +1,6 @@
 class TwoCents::Messages < Grape::API
   resource :messages do
 
-
-
     #
     # Returns the number of unread messages
     #
@@ -222,7 +220,7 @@ class TwoCents::Messages < Grape::API
       optional :page, type: Integer, desc: "Page number, starting at 1 - all messages returned if not supplied"
       optional :per_page, type: Integer, default: 15, desc: "Number of messages per page"
     end
-    post '/', rabl: "messages", http_codes:[
+    post '/', jbuilder: "messages", http_codes:[
       [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"]

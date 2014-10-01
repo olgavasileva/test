@@ -40,15 +40,11 @@
           box-sizing: border-box
           padding-top: 5px !important
           padding-bottom: 5px !important
-          &:last-child
-            width: 3em
-            text-align: right
-            &:not(:first-child)
-              display: none
-          .regular-text
+          &.fiber-counter,
+          &.sugar-counter
             padding-left: 10px
 
-          h5, .regular-text
+          h5
             display: block
             position: relative
             .nutrition-value
@@ -63,9 +59,6 @@
     .nutrition-info
       font-size: 1em
       border-bottom: 1px solid black
-  .facts_percent_header.nutrition-info
-    text-align: right
-    display: none
 
   .pack-browser-control
     color: cyan!important
@@ -93,126 +86,20 @@
   .row
     .col-sm-3.invert-float#nutrition_facts_wrapper
       %h3#nutrition-facts Nutrition Facts
-      %h4
-        Serving Size
-        %span#serving_instructions
-          1/4 cup dry(39g)
-        %br
-        Servings per container varies
       %table
         %tr
-          %th{:colspan=>2}
+          %th{colspan: 2}
             Amount Per Serving
-        %tr.nutrition-info
-          %td
-            %h5
-              Calories
-              %span.nutrition-value
-                %span#calorie-counter  0
-          %td
-            Calories from fat
-            %span.nutrition-value
-              %span#calories-from-fat
-                10
-      .facts_percent_header.nutrition-info
-        \%Daily Value*
-      %table
-        %tr.nutrition-info
-          %td
-            %h5
-              Total fat
-              %span.nutrition-value
-                %span#total-fat
-                  0
-                g
-          %td
-            %span.nutrition-value
-              %span#percent-fat
-                0
-            \%
-        %tr.nutrition-info
-          %td
-            .regular-text
-              Saturated fat
-              %span.nutrition-value
-                %span#sat-fat
-                  0
-                g
-          %td
-            %span.nutrition-value
-              %span#percent-sat-fat
-                0
-            \%
-        %tr.nutrition-info
-          %td
-            %h5
-              Cholesterol
-              %span.nutrition-value
-                %span#cholesterol-counter
-                  0
-                mg
-          %td
-            %span.nutrition-value
-              %span#percent-cholesterol-counter
-                0
-            \%
-        %tr.nutrition-info
-          %td
-            %h5
-              Sodium
-              %span.nutrition-value
-                %span#sodium-counter
-                  0
-                g
-          %td
-            %span.nutrition-value
-              %span#percent-sodium-counter
-                0
-            \%
-        %tr.nutrition-info
-          %td
-            %h5
-              Total carbohydrate
-              %span.nutrition-value
-                %span#carbohydrates-counter
-                  0
-                g
-          %td
-            %span.nutrition-value
-              %span#percent-carbohydrates-counter
-                0
-            \%
-        %tr.nutrition-info
-          %td
-            .regular-text
-              Dietary fiber
-              %span.nutrition-value
-                %span#fiber-counter
-                  0
-                g
-          %td
-            %span.nutrition-value
-              %span#percent-fiber-counter
-                0
-            \%
-        %tr.nutrition-info
-          %td
-            .regular-text
-              Sugars
-              %span.nutrition-value
-                %span#sugar-counter
-                  0
-                g
-          %td
-        %tr.nutrition-info
-          %td
-            %h5
-              Protein
-              %span.nutrition-value
-                %span#protein-counter
-                  0
-                g
-          %td
+            -# ['Saturated fat', '', 'g'], ['Cholesterol', '', 'mg'], ['Sodium', 'sodium-counter', 'g']
+        - [['Calories', 'calorie-counter', ''], ['Total Fat', 'total-fat', 'g'], ['Carbohydrates', 'carbohydrates-counter', 'g'], ['Dietary Fiber', 'fiber-counter', 'g'], ['Sugars', 'sugar-counter', 'g'], ['Protein', 'protein-counter', 'g']].each do |label, id, unit|
+          %tr.nutrition-info
+            %td{class:id}
+              %h5
+                = label
+                %span.nutrition-value
+                  %span{id:id}  0
+                  =unit
+
     #ps-breadcrumbs.col-sm-9
       #current-studio-icon
       %h2#current-studio-name

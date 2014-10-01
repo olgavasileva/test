@@ -2,6 +2,10 @@ require 'rails_helper'
 
 describe :profile do
     let(:params) {{}}
+
+    let(:before_api_call) {}
+    before { before_api_call }
+
     before { post "v/2.0/profile", Hash[params].to_json,{"CONTENT_TYPE" => "application/json"}}
 
     let(:params) {{auth_token:auth_token}}
@@ -36,8 +40,13 @@ describe :profile do
 
       context "When a user is associated with the instnace" do
         let(:user) {FactoryGirl.create :user}
+        let(:other_user) {FactoryGirl.create :user}
 
-        it {expect(JSON.parse(response.body)['profile'].count).to eq 7}
+        let(:before_api_call) {
+          other_user.follow! user
+        }
+
+        it {expect(JSON.parse(response.body)['profile'].count).to eq 8}
         context "With no questions answered" do
           it {expect(JSON.parse(response.body)['profile']['number_of_answered_questions']).to eq 0}
         end
@@ -46,6 +55,12 @@ describe :profile do
         end
         context "With no comments left" do
           it {expect(JSON.parse(response.body)['profile']['number_of_comments_left']).to eq 0}
+        end
+        context "With no comments left" do
+          it {expect(JSON.parse(response.body)['profile']['number_of_comments_left']).to eq 0}
+        end
+        context "With one follower" do
+          it {expect(JSON.parse(response.body)['profile']['number_of_followers']).to eq 1}
         end
 
         context "with user_id param" do

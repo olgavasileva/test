@@ -10,11 +10,9 @@ describe 'GET questions/question' do
   let(:response_body) { JSON.parse(response.body) }
   before { get 'v/2.0/questions/question', params }
 
-  it "returns all question data" do
-    keys = %w[id type title description response_count comment_count
-      creator_id creator_name choices category view_count share_count
-      skip_count published_at sponsor anonymous user_answered]
-
-    expect(response_body.keys).to match_array keys
+  describe "response with all question data" do
+    it {expect(response_body.keys).to match_array %w(category choices comment_count creator_id creator_name description id response_count summary title type user_answered uuid)}
+    it {expect(response_body["category"].keys).to match_array %w(id name)}
+    it {expect(response_body["summary"].keys).to match_array %w(anonymous choices comment_count creator_id creator_name published_at response_count share_count skip_count sponsor view_count)}
   end
 end
