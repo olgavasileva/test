@@ -62,7 +62,7 @@ class TwoCents::Comments < Grape::API
       requires :auth_token, type:String, desc: 'Obtain this from the instances API'
       requires :question_id, type:Integer, desc: 'The id of the question'
     end
-    get http_codes: [
+    get nil, http_codes: [
       [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"]
