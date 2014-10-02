@@ -70,7 +70,7 @@ class ApplicationController < ActionController::Base
     end
 
     def initialize_for_apple_push_service
-      APNS.host = 'gateway.sandbox.push.apple.com'
+      APNS.host = 'gateway.push.apple.com'
       # gateway.sandbox.push.apple.com is default
 
       APNS.pem  = Rails.root + 'app/pem/crashmob_dev_push.pem'
