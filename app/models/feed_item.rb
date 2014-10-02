@@ -6,7 +6,13 @@ class FeedItem < ActiveRecord::Base
 
   def add_and_push_message
 
-    message = QuestionTargeted.new
+
+    if !QuestionTargeted.exists?(:user_id => self.user_id)
+      message = QuestionTargeted.new
+    else
+      message = QuestionTargeted.find_by_user_id(self.user_id)
+    end
+
 
     message.user_id = self.question.user_id
     message.question_id = self.question_id

@@ -111,7 +111,7 @@ class User < ActiveRecord::Base
 	end
 
   def wants_question? question
-    feed_items.where(question_id:question).blank? && responses.where(question_id:question).blank? && skipped_items.where(question_id:question).blank?
+    feed_items.where(question_id:question).blank? && responses.where(question_id:question).blank? && skipped_items.where(question_id:question).blank? && questions.where(question_id:question).blank?
   end
 
   # Add more public questions to the feed
@@ -169,6 +169,11 @@ class User < ActiveRecord::Base
 
     def add_and_push_message(followed_user)
 
+        if !UserFollowed.exists?(:user_id => followed_user.id)
+          message = UserFollowed.new
+        else
+          message = UserFollowed.find_by_user_id(followed_user.id)
+        end
         message = UserFollowed.new
         message.follower_id = self.id
         message.user_id = followed_user.id
