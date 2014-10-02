@@ -7,4 +7,14 @@ class OrderQuestion < ChoiceQuestion
   has_many :response_matchers, class_name:"OrderResponseMatcher", foreign_key: :question_id
 
   accepts_nested_attributes_for :choices
+
+  def choice_top_counts
+    top_counts = Hash[choices.map { |c| [c, 0] }]
+
+    responses.each do |response|
+      top_counts[response.top_choice] += 1
+    end
+
+    top_counts
+  end
 end
