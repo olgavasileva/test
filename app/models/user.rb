@@ -150,7 +150,11 @@ class User < ActiveRecord::Base
   end
 
   def number_of_comments_left
-    return self.responses.where("comment is not ?", nil).count
+    return self.responses.with_comment.count
+  end
+
+  def number_of_followers
+    return self.followers.count
   end
 
   def number_of_unread_messages

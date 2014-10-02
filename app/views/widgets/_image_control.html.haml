@@ -48,13 +48,13 @@
             var container=$(this).closest('.canned');
             window.tcHAndlers.uploaderHandlerFile=$('.question-image-uploader input[type="file"]').on('change',function(event){
               var data = new FormData();
-              data.append('background_image', this.files[0]);
+              data.append('image', this.files[0]);
 
               $.ajax({
-                  url: '/background_images',
+                  url: "/#{type}_images",
                   data: data,
                   cache: false,
-                  contentType: false,
+                  contentType: "multipart/form-data",
                   processData: false,
                   type: 'POST',
                   success: function(data){
