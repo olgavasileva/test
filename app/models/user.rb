@@ -169,10 +169,10 @@ class User < ActiveRecord::Base
 
     def add_and_push_message(followed_user)
 
-        if !UserFollowed.exists?(:user_id => followed_user.id)
+        if !UserFollowed.exists?(:follower_id => self.id)
           message = UserFollowed.new
         else
-          message = UserFollowed.find_by_user_id(followed_user.id)
+          message = UserFollowed.find_by_follower_id(self.id)
         end
         message = UserFollowed.new
         message.follower_id = self.id
