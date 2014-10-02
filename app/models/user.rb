@@ -174,10 +174,10 @@ class User < ActiveRecord::Base
         else
           message = UserFollowed.find_by_follower_id(self.id)
         end
-        message = UserFollowed.new
+
         message.follower_id = self.id
         message.user_id = followed_user.id
-        message.created_at = Time.zone.now()
+        message.read_at = Time.zone.now()
 
         message.save
 
