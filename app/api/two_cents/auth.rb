@@ -96,9 +96,7 @@ class TwoCents::Auth < Grape::API
         background_choice_images:CannedChoiceImage.all.map{ |i| i.device_image_url },
         background_choice_images_retina:CannedChoiceImage.all.map{ |i| i.retina_device_image_url },
         background_order_choice_images:CannedOrderChoiceImage.all.map{ |i| i.device_image_url },
-        background_order_choice_images_retina:CannedOrderChoiceImage.all.map{ |i| i.retina_device_image_url },
-        share_community_public: Setting.find_by_key('share_community_public').try(:value),
-        share_community_private: Setting.find_by_key('share_community_private').try(:value)
+        background_order_choice_images_retina:CannedOrderChoiceImage.all.map{ |i| i.retina_device_image_url }
       })
     end
 
