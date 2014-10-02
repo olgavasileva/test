@@ -23,7 +23,7 @@
               .row
                 =f.simple_fields_for :choices do |choice|
                   = render 'choice_fields', f:choice
-                .col-xs-12
+                .col-xs-6
                   .row
                     =link_to_add_association  f, :choices, class: 'nested-fields answer' do
                       .choice.imagechooser

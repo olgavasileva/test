@@ -28,7 +28,7 @@
               .floating-question-title.col-sm-12=c.object.choice.title
               = responsive_image_tag(c.object.choice.web_image_url, class: "img-responsive")
     = render "responses/response_fields/shared/comment", form:form, response:response
-    = render "responses/response_fields/shared/sharing", form:form, response:response
+    = render "responses/response_fields/shared/sharing", form:form, response:response, style_type: "negative"
   .col-xs-12
     .row
       .col-xs-12.form-group.clearfix

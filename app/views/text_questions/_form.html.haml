@@ -25,7 +25,7 @@
               .row.form-group
                 .col-xs-12
                   .col-xs-12.btn-primary
-                    =render partial:'/widgets/image_control',locals:{f:f,id:'background_selector'}
+                    =render partial:'/widgets/image_control',locals:{f:f,id:'background_selector',type: 'question'}
               .row.form-group
                 =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-xs-12 form-group", :name=>"text_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
           .row

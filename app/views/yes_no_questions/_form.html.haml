@@ -31,7 +31,7 @@
                 .over_image_title_container.title=f.input :title, label: false, input_html: { class: "appearing-question-title"},placeholder: "Ask Your Question Here"
                 .bgimage= responsive_image_tag @question.web_image_url, class: "img-responsive"
                 .col-xs-12
-                  =render partial:'/widgets/image_control',locals:{f:f,id:'background_selector',base_class: 'revert'}
+                  =render partial:'/widgets/image_control',locals:{f: f,id: 'background_selector',base_class: 'revert',type: 'question'}
             .col-xs-12
               =f.simple_fields_for :choices do |c|
                 .col-xs-12.form-group.answer-option

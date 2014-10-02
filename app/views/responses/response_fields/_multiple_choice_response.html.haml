@@ -54,7 +54,7 @@
       -@response.question.choices.each do |c|
         -n+=1
 
-        %label.col-xs-12.choice-wrapper
+        %label.col-xs-6.choice-wrapper
           .row
             =check_box_tag("multiple_choice_response[choice_id]",c.id,false,{class:'selected-choice'})
             =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
@@ -66,7 +66,7 @@
     .row
       .col-xs-12.form-group.clearfix
         = render "responses/response_fields/shared/comment", form:form, response:response
-        = render "responses/response_fields/shared/sharing", form:form, response:response
+        = render "responses/response_fields/shared/sharing", form:form, response:response, style_type: "negative"
         = render "responses/response_fields/shared/anonymous", form:form, response:response
       .col-xs-12
         = render "responses/response_fields/shared/submit", form:form, response:response
