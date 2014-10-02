@@ -18,14 +18,45 @@
     box-shadow: none
     resize: none
 
-.btn-default.negative, .btn-primary.negative
-  background-color: transparent
+.btn-default.negative:not(.active), .btn-primary.negative:not(.active)
+
+  background-color: white
   border-style: solid
   border-width: 1px
   border-color: $primary_border_color
   color: $primary_color
+
+.btn-default.transparent-white, .btn-primary.transparent-white
+  background-color: transparent
+  color: white
+  border-width: 1px
+  border-color: white
+
+
   &.active
     color: white!important
     background-color: $primary_background_color
     *
       color: white!important
+
+footer#footer
+  margin-top: 0
+
+
+#content_constraint
+  display:  block
+  margin: auto
+  .panel
+    background: none !important
+    border: none
+    .panel-body
+      background-color: rgba(255,255,255,0.8)
+
+
+@media only screen and (min-width : 771px)
+  #content_constraint
+    max-width: 868px
+
+@media only screen and (max-width : 770px)
+  #content_constraint
+    max-width: 700px
