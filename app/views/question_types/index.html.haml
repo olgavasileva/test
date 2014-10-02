@@ -1,37 +1,53 @@
 :sass
   .question_types .panel-body a
     margin: 0
-    margin-bottom: 15px
   .question_types .panel-body a h1.title
     position: relative
     font-size: 1.7em
     margin: 0
     line-height: 136px
 
+  .btn.btn-transparent
+    background: none!important
+    color: white!important
+    border-style: none
+    border-radius: 0
+    border-bottom-style: solid
+    border-bottom-color: white
+    border-bottom-width: 1px
+    &:active
+      background-color: rgba(255,255,255,0.5)!important
+    &:hover, &:focus
+      background-color: rgba(255,255,255,0.2)!important
+
   .question_types .icon.floating-icom
     position: absolute
-    left: 25px
-    top: 9px
+    left: 10px
+    top: 50%
+    margin-top: -37px
 
   @media (max-width: 995px)
     .question_types .panel-body a h1.title
       padding-left: 65px
 
-.question_types.panel.panel-default
-  .panel-heading
-    .panel-title
-      .row
-        .col-xs-2
-          =link_to root_path do
-            %span.glyphicon.glyphicon-chevron-left
-        .col-xs-8
-          %h3 Ask A Questions
 
-  .panel-body
-    .row
-      - @question_types.each do |question_type|
-        .item.col-sm-6.col-xs-12
-          = link_to path_for_new(question_type), class: %w(btn btn-default) do
-            .row
-              .icon.floating-icom=image_tag icon_for(question_type)
-              %h1.title.col-xs-12=title_for question_type
+.row#content_constraint
+  .col-xs-12.col-sm-8.col-sm-push-2
+    .question_types.panel.panel-default
+      .panel-heading
+        .panel-title
+          .row
+            .col-xs-2
+              =link_to root_path do
+                %span.glyphicon.glyphicon-chevron-left
+            .col-xs-8
+              %h3 Create
+
+      .panel-body
+        .row
+          - @question_types.each do |question_type|
+            .item.col-sm-12
+              = link_to path_for_new(question_type), class: %w(btn btn-transparent) do
+                .row
+                  .icon.floating-icom=image_tag icon_for(question_type)
+                  %h1.title.col-xs-12=title_for question_type
