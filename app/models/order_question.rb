@@ -17,4 +17,14 @@ class OrderQuestion < ChoiceQuestion
 
     top_counts
   end
+
+  def response_ratios
+    ratios = {}
+
+    choice_top_counts.each do |choice, count|
+      ratios[choice] = count / responses.count.to_f
+    end
+
+    ratios
+  end
 end
