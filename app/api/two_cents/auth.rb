@@ -121,11 +121,13 @@ class TwoCents::Auth < Grape::API
 
       validate_instance!
 
-      existing_instance = Instance.find_by push_token:declared_params[:token]
+      token = declared_params[:token].fixup_push_token
+
+      existing_instance = Instance.find_by push_token:token
 
       if instance != existing_instance
         existing_instance.update_attributes! push_token:nil unless existing_instance.nil?
-        instance.update_attributes! push_token:declared_params[:token], push_environment:declared_params[:environment]
+        instance.update_attributes! push_token:token, push_environment:declared_params[:environment]
       end
 
       {}
