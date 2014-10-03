@@ -169,20 +169,19 @@ class User < ActiveRecord::Base
 
     def add_and_push_message(followed_user)
 
-        if !UserFollowed.exists?(:follower_id => self.id)
-          message = UserFollowed.new
+        if UserFollowed.where("follower_id = ? AND user_id = ?", self.id, followed_user.id).exists?
+          message = UserFollowed.where("follower_id = ? AND user_id = ?", self.id, followed_user.id)
         else
-          message = UserFollowed.find_by_follower_id(self.id)
+          message = UserFollowed.new
         end
 
         message.follower_id = self.id
         message.user_id = followed_user.id
-        message.read_at = Time.zone.now()
+        message.read_at = nil
 
         message.save
 
 
-        # APNS.host = 'gateway.push.apple.com'
         # # gateway.sandbox.push.apple.com is default
         #
         # APNS.pem  = Rails.root + 'app/pem/crashmob_dev_push.pem'
