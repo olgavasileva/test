@@ -1,16 +1,21 @@
 :sass
   .row.submit-skip-edit-continue-button-set
     clear: both
+    .btn.negative
+      border-color: transparent
+      background-color: transparent
 
 
 .row.submit-skip-edit-continue-button-set
+  .form-group.clearfix
+  .form-group.clearfix
   - if response.question.preview?
-    .col-xs-12.col-md-6.form-group.clearfix
-      = link_to "Edit", [:edit, response.question], class: %w{btn btn-primary btn-lg col-xs-12}
-    .form-group.col-xs-12.col-md-6.clearfix
-      = link_to "Continue", [:target, response.question], class: %w{btn btn-primary col-xs-12 btn-lg}
+    .col-xs-3.clearfix
+      = link_to "Edit", [:edit, response.question], class: %w{btn btn-primary btn-lg col-xs-12 negative}
+    .col-xs-3.col-xs-push-6.clearfix
+      = link_to "Continue", [:target, response.question], class: %w{btn btn-primary col-xs-12 btn-lg negative}
   - else
-    .col-xs-12.col-md-6.form-group.clearfix
-      = link_to "Skip", new_question_skipped_item_path(response.question), class: %w{ btn btn-primary btn-lg col-xs-12}
-    .col-xs-12.col-md-6.form-group.clearfix
-      %button.btn.btn-primary.col-xs-12.btn-lg{type: :submit} Submit
+    .col-xs-3.clearfix
+      = link_to "Skip", new_question_skipped_item_path(response.question), class: %w{ btn btn-primary negative btn-lg col-xs-12}
+    .col-xs-3.col-xs-push-6.clearfix
+      %button.btn.btn-primary.negative.col-xs-12.btn-lg{type: :submit} Submit

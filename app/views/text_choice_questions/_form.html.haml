@@ -48,7 +48,7 @@
                 .over_image_title_container.title=f.input :title, label: false, input_html: { class: "appearing-question-title"}, placeholder: "Ask Your Question Here"
                 .bgimage= responsive_image_tag @question.web_image_url, class: "img-responsive"
               .col-sm-12
-                =render partial:'/widgets/image_control',locals:{f:f,id:'background_selector', base_class: "revert"}
+                =render partial:'/widgets/image_control',locals:{f:f,id:'background_selector', base_class: "revert",type: 'question'}
             .col-xs-12
               =f.simple_fields_for :choices do |choice|
                 = render 'choice_fields', f:choice
@@ -61,12 +61,10 @@
             =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-xs-12 form-group", :name=>"text_choice_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
 
           .row
-            .col-xs-12.form-group
-              .btn-group.btn-group-justified
-                =f.button :submit, "Preview", class: %w(btn-block btn-lg)
-            .col-xs-12.form-group
-              .btn-group.btn-group-justified
-                =f.button :submit, "Continue", class: %w(btn-block btn-lg)
+            .col-xs-3
+              =f.button :submit, "Preview", class: %w(btn-primary negative transparent no-border btn-lg)
+            .col-xs-4.col-xs-push-5.col-sm-3.col-sm-push-6
+              =f.button :submit, "Continue", class: %w(btn-primary negative transparent no-border btn-lg)
 
 :javascript
   $(function(){
