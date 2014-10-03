@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140930153518) do
+ActiveRecord::Schema.define(version: 20141001204307) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -93,6 +93,21 @@ ActiveRecord::Schema.define(version: 20140930153518) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "comments", force: true do |t|
+    t.text     "body"
+    t.integer  "user_id"
+    t.integer  "question_id"
+    t.integer  "parent_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "response_id"
+  end
+
+  add_index "comments", ["parent_id"], name: "index_comments_on_parent_id", using: :btree
+  add_index "comments", ["question_id"], name: "index_comments_on_question_id", using: :btree
+  add_index "comments", ["response_id"], name: "index_comments_on_response_id", using: :btree
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "communities", force: true do |t|
     t.string   "name"
@@ -335,12 +350,12 @@ ActiveRecord::Schema.define(version: 20140930153518) do
 
   create_table "liked_comments", force: true do |t|
     t.integer  "user_id"
-    t.integer  "response_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "comment_id"
   end
 
-  add_index "liked_comments", ["response_id"], name: "index_liked_comments_on_response_id", using: :btree
+  add_index "liked_comments", ["comment_id"], name: "index_liked_comments_on_comment_id", using: :btree
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
 
   create_table "messages", force: true do |t|
@@ -505,13 +520,13 @@ ActiveRecord::Schema.define(version: 20140930153518) do
     t.integer  "choice_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "comment"
     t.boolean  "anonymous"
     t.integer  "scene_id"
-    t.integer  "comment_parent_id"
+    t.integer  "comment_id"
   end
 
   add_index "responses", ["choice_id"], name: "index_responses_on_choice_id", using: :btree
+  add_index "responses", ["comment_id"], name: "index_responses_on_comment_id", using: :btree
   add_index "responses", ["question_id"], name: "index_responses_on_question_id", using: :btree
   add_index "responses", ["user_id"], name: "index_responses_on_user_id", using: :btree
 

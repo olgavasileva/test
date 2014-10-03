@@ -1,14 +1,22 @@
 require 'rails_helper'
 
-describe :comments do
+describe 'GET /comments' do
   let(:instance) { FactoryGirl.create :instance, :authorized, :logged_in }
-  let(:answer) { FactoryGirl.create :text_response, comment: "Some comment" }
+  let(:answer) {
+    response = FactoryGirl.create(:text_response, :with_comment)
+    response.comment.question = response.question # todo: obviate need for this
+    response.comment.save!
+    response
+  }
   let(:question) { answer.question }
 
-  let(:params) {{ auth_token: instance.auth_token, question_id: question.id }}
+  let(:params) { {
+    auth_token: instance.auth_token,
+    question_id: question.id
+  } }
   let(:response_body) { JSON.parse(response.body) }
 
-  before { post 'v/2.0/comments', params }
+  before { get 'v/2.0/comments', params }
 
   it "responds with comments data" do
     keys = %w[id user_id comment created_at email ask_count response_count
