@@ -10,6 +10,14 @@
         width: 100%
         padding: 0
         margin: 0
+
+    >.close
+      position: absolute
+      left: auto
+      right: 5px
+      top: 5px
+      i:before
+        text-shadow: 1px 1px 0px white
     .over_image_title_container
       overflow: visible
       .title
@@ -19,7 +27,8 @@
       color: white
       font-size: 22px
       position: absolute
-      top: 40%
+      top: 50%
+      margin-top: -28px
 
 //.answer.choice
   background-color: $cm_blue
@@ -64,23 +73,22 @@
       width: 100%
       position: absolute
       bottom: 0
+      font-size: 3rem
       &.add-option
-      background-color: orange
-      color: white
-      text-align: center
-      height: 100%
-      font-size: 3em
-      h3
-        margin-top: 35%
-        margin-bottom: 5%
-        font-size: 1.1em
-
+        background-color: orange
+        color: white
+        text-align: center
+        height: 100%
+        h3
+          margin-top: 35%
+          margin-bottom: 5%
+          font-size: 1.1em
 
     .title
       background-color: $cm_smoke
-      padding: 25px 15px 10px 15px
+      padding: 5px
       color: white
-      font-size: 22px
+
 
   .question
     .over_image_title_container
@@ -90,7 +98,7 @@
       .title
         textarea
           display: block
-          font-size: 2rem
+          font-size: 1.4rem
           width: 100%
           background-color: transparent
           border: solid 1px transparent
@@ -103,17 +111,21 @@
           margin: 0
           padding: 0
           border-radius: 0
-          min-height: 5.8rem
-          max-height: 5.8rem
+          min-height: 4.2rem
+          max-height: 4.2rem
 
 
       .image_control
         font-size: 4rem
         position: absolute
-        bottom: 200%
-        width: 100%
+        bottom: 165%
         width: 100%
 
+  &.imagechoice,
+  &.multiplechoice
+    .question.imagechooser
+      .image_control
+        bottom: 140%
 
   &.prioritizer
     .question.imagechooser

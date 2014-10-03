@@ -4,7 +4,7 @@ $(document).on "page:load", ->
   init_order_response()
 
 init_order_response = ->
-  $list = $('#orderChoices')
+  $list = $('#ordered_choices')
   $list.sortable
     handle: '.handle'
     update: ->
