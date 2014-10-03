@@ -108,6 +108,33 @@ describe :summary do
             ].map(&:stringify_keys)
           end
         end
+
+        context "with an OrderQuestion with responses" do
+          let(:question) do
+            question = FactoryGirl.create :order_question
+
+            question.choices = FactoryGirl.create_list(
+              :order_choice, 4, question: question)
+
+            question.responses = FactoryGirl.create_list(
+              :order_response, 3, choices: question.choices)
+            question.responses << FactoryGirl.create(
+              :order_response, choices: question.choices.reverse)
+
+            question
+          end
+          let(:question_id) {question.id}
+          let(:choices_data) { JSON.parse(response.body)['summary']['choices'] }
+
+          it "returns correct choices data" do
+            expect(choices_data).to match_array [
+              { id: question.choices[0].id, response_ratio: 0.75, top_count: 3 },
+              { id: question.choices[1].id, response_ratio: 0.0, top_count: 0 },
+              { id: question.choices[2].id, response_ratio: 0.0, top_count: 0 },
+              { id: question.choices[3].id, response_ratio: 0.25, top_count: 1 }
+            ].map(&:stringify_keys)
+          end
+        end
       end
     end
   end

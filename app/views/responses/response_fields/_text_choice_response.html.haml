@@ -25,8 +25,8 @@
         -border_compensation='-'+(response.question.choices.length*2).to_s+'px'
         %div.equalizer-sm.hidden-lg
         %div.equalizer-md.hidden-lg.hidden-sm
-        = form.collection_radio_buttons :choice_id, response.question.choices, :id, :title, label:false, wrapper:false, boolean_style: 'inline', item_wrapper_class:"col-xs-12 selectable-option btn"  do |c|
-          %label.btn-primary.negative.col-xs-12{style:"margin-bottom:#{pc_margin};"}
+        = form.collection_radio_buttons :choice_id, response.question.choices, :id, :title, label:false, wrapper:false, boolean_style: 'inline', item_wrapper_class:"col-xs-12 selectable-option btn form-group clearfix"  do |c|
+          %label.btn-primary.negative.col-xs-12
             .row
               %div{:class=>["col-xs-3"]}
                 = responsive_image_tag((response.question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")

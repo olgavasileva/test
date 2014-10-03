@@ -6,8 +6,9 @@
   border-color: transparent
   &:hover, &:focus
     outline: none
-    border-color: white
-    background-color: rgba(255,255,255,0.2)
+
+    border: solid 1px  white !important
+    background-color: rgba(255,255,255,0.2) !important
 
 
 .question-header-style-title
@@ -25,12 +26,18 @@
   border-width: 1px
   border-color: $primary_border_color
   color: $primary_color
+  font-size: 1.7rem
 
 .btn-default.transparent-white, .btn-primary.transparent-white
   background-color: transparent
   color: white
   border-width: 1px
   border-color: white
+
+.btn-default.transparent, .btn-primary.transparent
+  background-color: transparent !important
+.btn-default.no-border, .btn-primary.no-border
+  border-color: transparent !important
 
 
   &.active
