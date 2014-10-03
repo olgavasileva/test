@@ -1,5 +1,5 @@
 :sass
-.row.question-builder
+.row.question-builder#content_constraint
   .col-xs-12.col-sm-8.col-sm-push-2
     .openended.panel.panel-default
       .panel-heading
@@ -13,7 +13,7 @@
             .canned{data:{ids:canned_question_image_ids, urls:canned_question_image_web_urls}}
             .id=f.input :background_image_id, as: :hidden
           .row
-            .col-xs-12.col-md-8.col-md-push-2
+            .col-xs-12
               .row
                 .col-xs-12
                   .question
@@ -25,13 +25,11 @@
               .row.form-group
                 .col-xs-12
                   .col-xs-12.btn-primary
-                    =render partial:'/widgets/image_control',locals:{f:f,id:'background_selector'}
+                    =render partial:'/widgets/image_control',locals:{f:f,id:'background_selector',type: 'question'}
               .row.form-group
                 =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-xs-12 form-group", :name=>"text_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
           .row
-            .col-xs-12.col-md-6.form-group
-              .btn-group.btn-group-justified
-                =f.button :submit, "Preview", class: %w(btn-block btn-lg)
-            .col-xs-12.col-md-6.form-group
-              .btn-group.btn-group-justified
-                =f.button :submit, "Continue", class: %w(btn-block btn-lg)
+            .col-xs-3
+              =f.button :submit, "Preview", class: %w(btn-primary negative transparent no-border btn-lg)
+            .col-xs-4.col-xs-push-5.col-sm-3.col-sm-push-6
+              =f.button :submit, "Continue", class: %w(btn-primary negative transparent no-border btn-lg)

@@ -77,6 +77,11 @@ class TwoCents::Questions < Grape::API
         description:declared_params[:description],
         rotate:declared_params[:rotate],
         background_image:background_image,
+        target_all: params[:targets][:all],
+        target_all_followers: params[:targets][:all_followers],
+        target_all_groups: params[:targets][:all_groups],
+        target_follower_ids: params[:targets][:follower_ids],
+        target_group_ids: params[:targets][:group_ids],
         anonymous: params[:anonymous]
       }
 
@@ -387,6 +392,8 @@ class TwoCents::Questions < Grape::API
                         "type": "TextChoiceQuestion",
                         "id": 1,
                         "uuid": "SOMEUUID",
+                        "creator_id": 123,
+                        "creator_name": "creator_username",
                         "title": "Text Choice Title",
                         "description": "Text Choice Description",
                         "image_url": "http://crashmob.com/Example.jpg",
@@ -422,11 +429,13 @@ class TwoCents::Questions < Grape::API
                         ]
                     }
                 },
-                {
+7                {
                     "question": {
                         "type": "MultipleChoiceQuestion",
                         "id": 2,
                         "uuid": "SOMEUUID",
+                        "creator_id": 123,
+                        "creator_name": "creator_username",
                         "title": "Multiple Choice Title",
                         "description": "Multiple Choice Description",
                         "min_responses": 1,
@@ -474,6 +483,8 @@ class TwoCents::Questions < Grape::API
                         "type": "ImageChoiceQuestion",
                         "id": 3,
                         "uuid": "SOMEUUID",
+                        "creator_id": 123,
+                        "creator_name": "creator_username",
                         "title": "Image Choice Title",
                         "description": "Image Choice Description",
                         "rotate": false,
@@ -508,6 +519,8 @@ class TwoCents::Questions < Grape::API
                         "type": "OrderQuestion",
                         "id": 4,
                         "uuid": "SOMEUUID",
+                        "creator_id": 123,
+                        "creator_name": "creator_username",
                         "title": "Order Title",
                         "description": "Order Description",
                         "rotate": true,
@@ -550,6 +563,8 @@ class TwoCents::Questions < Grape::API
                         "type": "TextQuestion"
                         "id": 5,
                         "uuid": "SOMEUUID",
+                        "creator_id": 123,
+                        "creator_name": "creator_username",
                         "title": "Text Title",
                         "description": "Text Description",
                         "image_url": "http://crashmob.com/Example.jpg",

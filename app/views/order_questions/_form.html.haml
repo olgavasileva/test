@@ -3,8 +3,9 @@
     margin-right: 10px
 
 
-.row.question-builder
-  .col-xs-12.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2
+
+.row.question-builder#content_constraint
+  .col-xs-12.col-sm-8.col-sm-push-2
     .prioritizer.panel.panel-default
       .panel-heading
         .panel-title
@@ -14,7 +15,7 @@
         = simple_form_for @question do |f|
           =f.input :type, as: :hidden
           .row
-            .col-sm-8.col-sm-push-2
+            .col-sm-12
               .row.question
                 .col-xs-12
                   .title
@@ -35,9 +36,7 @@
                 =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-xs-12 form-group", :name=>"order_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
 
               .row
-                .col-xs-12.col-md-6.form-group
-                  .btn-group.btn-group-justified
-                    =f.button :submit, "Preview", class: %w(btn-block btn-lg)
-                .col-xs-12.col-md-6.form-group
-                  .btn-group.btn-group-justified
-                    =f.button :submit, "Continue", class: %w(btn-block btn-lg)
+                .col-xs-3
+                  =f.button :submit, "Preview", class: %w(btn-primary negative transparent no-border btn-lg)
+                .col-xs-4.col-xs-push-5.col-sm-3.col-sm-push-6
+                  =f.button :submit, "Continue", class: %w(btn-primary negative transparent no-border btn-lg)

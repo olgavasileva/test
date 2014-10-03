@@ -159,6 +159,8 @@ describe :feed do
                 expect(q['max_responses']).to eq 2
                 expect(q['comment_count']).to eq 0
                 expect(q['response_count']).to eq 0
+                expect(q['creator_name']).to eq multiple_choice_question.user.username
+                expect(q['creator_id']).to eq multiple_choice_question.user.id
 
 
                 choices = q['choices']

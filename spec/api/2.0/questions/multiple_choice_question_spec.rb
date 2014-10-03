@@ -90,7 +90,7 @@ describe :multiple_choice_question do
               expect(q['comment_count']).to eq 0
               expect(q['response_count']).to eq 0
               expect(q['creator_id']).to eq user.id
-              expect(q['creator_name']).to eq user.name
+              expect(q['creator_name']).to eq user.username
             end
           end
 
