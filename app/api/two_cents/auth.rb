@@ -112,7 +112,7 @@ class TwoCents::Auth < Grape::API
     }
     params do
       requires :instance_token, type:String, desc:'Obtain this from the instances API'
-      requires :token, type: String, regexp: /^[0-9A-F]{64}$/i, desc:'e.g. "0000000000000000000000000000000000000000000000000000000000000000"'
+      requires :token, type: String, regexp: /^<?([0-9A-F]{8} ?){8}>?$/i, desc:'e.g. "0000000000000000000000000000000000000000000000000000000000000000"'
       requires :environment, type: String, values:%w{production development}, desc:'Possible values: production|development'
     end
     post 'push_token', http_codes: [
