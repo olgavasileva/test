@@ -115,6 +115,73 @@ class TwoCents::Messages < Grape::API
 
 
     #
+    # Set all messages in the queue read
+    #
+    desc "Set all messages in the queue read", {
+        notes: <<-END
+        This API will Set all messages in the queue ,which belongs to the current user, read.
+
+                                inputs:
+                                  auth_token: token of current user
+
+                                output:
+                                  success: empty body {} and success response code
+        END
+    }
+    params do
+      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+    end
+    post 'read_all', http_codes:[
+        [200, "400 - Invalid params"],
+        [200, "402 - Invalid auth token"],
+        [200, "403 - Login required"]
+    ] do
+      validate_user!
+
+      current_user.messages.all().each do |message|
+        message.read_at = Time.zone.now()
+        message.save
+      end
+      status 200
+      {}
+
+    end
+
+
+    #
+    # Set all messages in the queue read
+    #
+    desc "Delete all messages in the queue", {
+        notes: <<-END
+        This API will Delete all messages in the queue ,which belongs to the current user.
+
+                                inputs:
+                                  auth_token: token of current user
+
+                                output:
+                                  success: empty body {} and success response code
+        END
+    }
+    params do
+      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
+    end
+    post 'delete_all', http_codes:[
+        [200, "400 - Invalid params"],
+        [200, "402 - Invalid auth token"],
+        [200, "403 - Login required"]
+    ] do
+      validate_user!
+
+      current_user.messages.all().each do |message|
+        message.destroy!
+      end
+      
+      status 200
+      {}
+
+    end
+
+    #
     # Delete a message
     #
     desc "Delete a message", {

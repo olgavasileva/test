@@ -79,9 +79,11 @@ class TwoCents::Relationships < Grape::API
     end
     get 'followable' do
       # TODO: optimize
-      users = current_user.leaders.search(q: params[:search_text]).result
-      users += User.search(q: params[:search_text]).result
-      users.uniq!
+      # users = current_user.leaders.search(q: params[:search_text]).result
+      # users += User.search(q: params[:search_text]).result
+      # users.uniq!
+
+      users = User.where("username like ?", "%#{params[:search_text]}%").order(:username)
 
       if params[:page]
         users = users.paginate(page: params[:page],

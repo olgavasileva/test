@@ -77,6 +77,11 @@ class TwoCents::Questions < Grape::API
         description:declared_params[:description],
         rotate:declared_params[:rotate],
         background_image:background_image,
+        target_all: params[:targets][:all],
+        target_all_followers: params[:targets][:all_followers],
+        target_all_groups: params[:targets][:all_groups],
+        target_follower_ids: params[:targets][:follower_ids],
+        target_group_ids: params[:targets][:group_ids],
         anonymous: params[:anonymous]
       }
 
