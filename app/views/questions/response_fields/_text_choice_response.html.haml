@@ -59,24 +59,22 @@
     padding-right: 10px
     border: solid 1px white
 
-.row.text-choices.form-group
-  .col-md-4.col-md-push-2.col-sm-6.col-xs-12
-    = responsive_image_tag((question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
-    .floating-question-title
-      %span= question.title
-    %div
-      .col-xs-12
-        -#= render "responses/response_fields/shared/sharing", form:form, response:response
-  .col-xs-12.col-sm-6.col-md-4.col-md-push-2.btn-group{:data=>{:toggle=>"buttons"}}
-    -cols=(12/question.choices.length)+1
-    -pc_margin=(10/(question.choices.length-1)).to_s+'%'
-    %div.equalizer-sm.hidden-lg
-    %div.equalizer-md.hidden-lg.hidden-sm
-    -question.choices.all.each do |c|
-      .col-xs-12.selectable-option.btn
-        %label.btn-primary.col-xs-12{style:"margin-bottom:#{pc_margin};"}
+.text-choices.form-group
+  .col-xs-12
+    .row
+      = responsive_image_tag((question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
+      .floating-question-title
+        %span= question.title
+      %div
+        .col-xs-12
+        -#= render "questions/response_fields/shared/sharing", question: question
+    .col-xs-12.btn-group
+      %div.equalizer-sm.hidden-lg
+      %div.equalizer-md.hidden-lg.hidden-sm
+      -question.choices.all.each do |c|
+        %label.btn-primary.negative.col-xs-12
           .row
-            %div{:class=>["col-xs-4 col-sm-4 col-md-#{cols}"]}
+            %div.col-xs-3
               = responsive_image_tag((question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
           .option-title=c.title
           -divNumber=(@question.response_count>0) ? @question.response_count : 1
@@ -84,11 +82,3 @@
             =Integer((((@responses_resume[c.id]||0)/Float(divNumber))*100.00).round())
             \%
 
--#.row.form-group
-  .col-sm-6.col-md-4.col-md-push-2
-    = render "responses/response_fields/shared/comment", form:form, response:response
-  .col-sm-6.col-md-4.col-md-push-2
-    = render "responses/response_fields/shared/anonymous", form:form, response:response
--#.row
-  .col-md-8.col-md-push-2
-    = render "responses/response_fields/shared/submit", form:form, response:response

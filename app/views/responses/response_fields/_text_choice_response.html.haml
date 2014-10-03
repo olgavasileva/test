@@ -28,7 +28,7 @@
         = form.collection_radio_buttons :choice_id, response.question.choices, :id, :title, label:false, wrapper:false, boolean_style: 'inline', item_wrapper_class:"col-xs-12 selectable-option btn form-group clearfix"  do |c|
           %label.btn-primary.negative.col-xs-12
             .row
-              %div{:class=>["col-xs-3"]}
+              %div.col-xs-3
                 = responsive_image_tag((response.question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
             .option-title=c.object.title
             = c.radio_button label:false, boolean_style: 'inline', wrapper:false
