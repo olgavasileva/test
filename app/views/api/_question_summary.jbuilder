@@ -1,7 +1,10 @@
 resp_ratios = @question.try :response_ratios
+choice_top_counts = @question.try :choice_top_counts
+
 json.choices @question.choices do |c|
   json.id c.id
   json.response_ratio resp_ratios[c]
+  json.top_count choice_top_counts[c] unless choice_top_counts.nil?
 end
 json.response_count @question.responses.count
 json.view_count @question.view_count
