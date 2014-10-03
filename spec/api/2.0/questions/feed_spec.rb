@@ -159,6 +159,8 @@ describe :feed do
                 expect(q['max_responses']).to eq 2
                 expect(q['comment_count']).to eq 0
                 expect(q['response_count']).to eq 0
+                expect(q['creator_name']).to eq multiple_choice_question.user.username
+                expect(q['creator_id']).to eq multiple_choice_question.user.id
 
 
                 choices = q['choices']
@@ -280,10 +282,8 @@ describe :feed do
           end
 
           context "When the text_choice_question has been responded to by another user" do
-            let(:before_api_call) {FactoryGirl.create :text_choice_response, question:text_choice_question, choice:text_choice1, comment:comment}
-
             context "With no comment" do
-              let(:comment) {}
+              let(:before_api_call) {FactoryGirl.create :text_choice_response, question:text_choice_question, choice:text_choice1}
 
               it {expect(JSON.parse(response.body).count).to eq all_questions.count}
               it {expect(JSON.parse(response.body)[0]['question']['id']).to eq text_choice_question.id}
@@ -292,7 +292,7 @@ describe :feed do
             end
 
             context "With a comment" do
-              let(:comment) {"A Comment"}
+              let(:before_api_call) {FactoryGirl.create :text_choice_response, :with_comment, question:text_choice_question, choice:text_choice1}
 
               it {expect(JSON.parse(response.body).count).to eq all_questions.count}
               it {expect(JSON.parse(response.body)[0]['question']['id']).to eq text_choice_question.id}

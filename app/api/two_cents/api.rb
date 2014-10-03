@@ -8,9 +8,7 @@ class TwoCents::API < Grape::API
 
   before do
     @start = Time.now.to_f if ENV['API_LOG_LEVEL'] == 'debug'
-  end
 
-  after do
     logger = Rails.configuration.logger || Rails.logger
 
     if ENV['API_LOG_LEVEL'] == 'debug'
@@ -26,6 +24,17 @@ class TwoCents::API < Grape::API
       }.map{|k,v| "#{'%-20.20s' % k} #{v}"}.join("\n"))
     else
       logger.info "api: [#{status}] #{request.request_method} #{request.path}"
+    end
+  end
+
+  after do
+    if ENV['API_LOG_LEVEL'] == 'debug'
+      logger = Rails.configuration.logger || Rails.logger
+      duration = (Time.now.to_f - @start) * 1000
+      logger.info({
+        api: "[#{status}] #{request.request_method} #{request.path}",
+        duration: "#{duration.to_i} ms",
+      }.map{|k,v| "#{'%-20.20s' % k} #{v}"}.join("\n"))
     end
   end
 

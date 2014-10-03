@@ -52,4 +52,8 @@ FactoryGirl.define do
   sequence :sample_image_url do |n|
     File.join(Rails.root, "spec","factories","fixtures","images","Example.jpg")
   end
+
+  sequence :body do |n|
+    "Body #{n}"
+  end
 end

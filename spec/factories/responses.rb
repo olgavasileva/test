@@ -3,6 +3,10 @@
 FactoryGirl.define do
   factory :response do
     user
+
+    trait :with_comment do
+      comment {FactoryGirl.create :comment, question:question}
+    end
   end
 
   factory :image_response, parent: :response, class: "ImageResponse" do

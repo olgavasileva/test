@@ -8,8 +8,8 @@ describe OrderQuestion do
   }
 
   before do
-    2.times { OrderResponse.create!(question: subject, choices: subject.choices) }
-    3.times { OrderResponse.create!(question: subject, choices: subject.choices.reverse) }
+    2.times { FactoryGirl.create :order_response, question: subject, choices: subject.choices }
+    3.times { FactoryGirl.create :order_response, question: subject, choices: subject.choices.reverse }
     subject.reload
   end
 
