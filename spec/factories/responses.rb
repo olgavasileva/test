@@ -5,7 +5,7 @@ FactoryGirl.define do
     user
 
     trait :with_comment do
-      comment
+      comment {FactoryGirl.create :comment, question:question}
     end
   end
 

@@ -2,6 +2,6 @@ FactoryGirl.define do
   factory :comment do
     user
     question
-    body "first"
+    body
   end
 end

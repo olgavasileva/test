@@ -11,8 +11,7 @@ describe Response do
     it "is responses whose comment parent is self" do
       q = FactoryGirl.create(:question)
       r1 = FactoryGirl.create(:response, question_id: q.id)
-      r2 = FactoryGirl.create(:response, question_id: q.id,
-                                         comment_parent_id: r1.id)
+      r2 = FactoryGirl.create(:response, question_id: q.id)
 
       expect(r1.comment_children).to eq [r2]
     end
