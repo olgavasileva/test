@@ -9,7 +9,6 @@ class TextChoiceQuestion < ChoiceQuestion
 
   accepts_nested_attributes_for :choices
 
-  delegate :web_image_url, to: :background_image
-  delegate :device_image_url, to: :background_image
-  delegate :retina_device_image_url, to: :background_image
+  delegate :web_image_url, :device_image_url, :retina_device_image_url,
+    to: :background_image, allow_nil: true
 end
