@@ -1,13 +1,15 @@
-.navbar.navbar-fixed-top{role: "navigation"}
+.navbar.navbar-inverse.navbar-fixed-top.sticky{role: "navigation"}
   .container
     .navbar-header
-      %button.navbar-toggle.pull-right{data:{target: "#main-nav", toggle: "collapse"}, type: :button}
-        %span.sr-only Menu
+      %button.navbar-toggle.collapsed.pull-right{data:{target: "#main-nav", toggle: "collapse"}, type: :button}
+        %span.sr-only Toggle navigation
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-      = link_to root_path, class:"navbar-brand" do
-        = image_tag 'statisfy-logo.png'
-        %h1.hide Statisfy
+      - if user_signed_in?
+        = link_to "Hi #{current_user.username}", [current_user], class:"navbar-brand"
+      - else
+        = link_to root_path, class:"navbar-brand" do
+          %strong Crashmob
     #main-nav.collapse.navbar-collapse{:role => "navigation"}
       = render_navigation
