@@ -21,6 +21,7 @@
                 .title.row
                   .multiple_choice_question_title.text.required.btn-primary.question-header-style-title
                     =f.input_field :title, label: false , class: "revealable title", placeholder: "Ask Your Question Here"
+                    =render partial:'/widgets/char_counter',locals:{:selector => ".multiple_choice_question_title .revealable.title"}
 
                 .row
                   =f.simple_fields_for :choices do |choice|

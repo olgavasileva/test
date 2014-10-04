@@ -20,6 +20,8 @@
                 .title.row
                   .text.required.image_choice_question_title.btn-primary.question-header-style-title
                     =f.input_field :title, label: false , class: "revealable title", placeholder: "Ask Your Question Here"
+                    =render partial:'/widgets/char_counter',locals:{:selector => ".image_choice_question_title .revealable.title"}
+
                 .row
                   =f.simple_fields_for :choices do |choice|
                     = render 'choice_fields', f:choice
