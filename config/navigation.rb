@@ -54,7 +54,7 @@ SimpleNavigation::Configuration.run do |navigation|
     #                            against the current URI.  You may also use a proc, or the symbol <tt>:subpath</tt>.
     #
 
-    primary.dom_class = %w{nav navbar-nav navbar-right}
+    primary.dom_class = %w{nav navbar-nav nav-text-light navbar-right}
 
     primary.item :get_app, 'Get the App', '#'
 
