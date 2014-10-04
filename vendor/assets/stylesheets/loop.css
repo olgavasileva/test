@@ -173,6 +173,62 @@
 }
 
 
+/* ------------------ TWITTER STREAM ------------------ */
+.twitter-stream {
+  text-align: center;
+  padding: 40px 0;
+  #background-color: #00aeef;
+  background-color: #2691d9;
+}
+@media screen and (max-width: 480px) {
+  .twitter-stream {
+    padding: 25px 0;
+  }
+}
+.twitter-stream .twitter-icon {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 20px;
+  background-color: #00a6e7;
+}
+.twitter-stream .twitter-icon i {
+  font-size: 30px;
+  line-height: 50px;
+  color: #36c3ff;
+}
+.twitter-stream #tweet ul {
+  list-style-type: none;
+}
+.twitter-stream #tweet ul li {
+  color: #fff;
+}
+.twitter-stream #tweet ul li a {
+  text-decoration: underline;
+  color: #fff;
+  text-overflow: ellipsis;
+}
+.twitter-stream #tweet ul li a span {
+  word-wrap: break-word;
+}
+.twitter-stream #tweet ul li a:hover {
+  text-decoration: none;
+}
+.twitter-stream #tweet ul li .timePosted {
+  font-size: 0.8em;
+}
+
+
 /* ------------------ FOOTER ------------------ */
 #footer {
   padding-top: 20px;
