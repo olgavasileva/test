@@ -124,6 +124,240 @@
 }
 
 
+/* ------------------ HERO UNIT ------------------ */
+.hero-unit {
+  position: relative;
+  height: 100%;
+}
+.hero-unit.hero-light .hero-content .hero-text .hero-heading,
+.hero-unit.hero-light .hero-content .hero-text p {
+  color: #fff;
+}
+.hero-unit .hero-bg-pattern {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
+  opacity: 0.2;
+  width: 100%;
+  height: 100%;
+  background-image: url('../img/noise_lines_@2X.png?1342797527');
+  background-repeat: repeat;
+}
+.hero-unit .hero-content {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  margin-top: -10em;
+  z-index: 2;
+}
+@media screen and (max-width: 768px) {
+  .hero-unit .hero-content {
+    text-align: center;
+    margin-top: -100px;
+  }
+}
+@media screen and (min-width: 321px) and (max-width: 480px) {
+  .hero-unit .hero-content {
+    margin-top: -40px;
+  }
+}
+@media screen and (max-width: 320px) {
+  .hero-unit .hero-content {
+    margin-top: -60px;
+  }
+}
+.hero-unit .hero-content .hero-text .hero-heading,
+.hero-unit .hero-content .hero-text p {
+  font-family: "Dosis", sans-serif;
+  color: #fff;
+  font-weight: 300;
+}
+.hero-unit .hero-content .hero-text .hero-heading {
+  font-size: 5em;
+}
+.hero-unit .hero-content .hero-text .hero-heading .name {
+  border-bottom: 2px solid #fff;
+}
+@media screen and (max-width: 768px) {
+  .hero-unit .hero-content .hero-text .hero-heading {
+    font-size: 4em;
+  }
+}
+@media screen and (max-width: 480px) {
+  .hero-unit .hero-content .hero-text .hero-heading {
+    font-size: 2em;
+  }
+}
+.hero-unit .hero-content .hero-text .looper {
+  margin-top: 20px;
+}
+.hero-unit .hero-content .hero-text p {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+  font-size: 2em;
+  color: #fff;
+  padding: 0 10px;
+}
+@media screen and (max-width: 768px) {
+  .hero-unit .hero-content .hero-text p {
+    font-size: 1.5em;
+  }
+}
+@media screen and (max-width: 480px) {
+  .hero-unit .hero-content .hero-text p {
+    font-size: 1.3em;
+  }
+}
+.hero-unit .hero-content .hero-buttons {
+  z-index: 2;
+}
+.hero-unit .hero-content .hero-buttons .btn {
+  margin: 0 5px;
+  font-weight: 400;
+}
+@media screen and (max-width: 480px) {
+  .hero-unit .hero-content .hero-buttons .btn {
+    margin-bottom: 10px;
+  }
+}
+.hero-unit .hero-content .hero-buttons #btn-about {
+  padding: 15px 41px;
+}
+.hero-unit .hero-content .hero-buttons #btn-contact {
+  padding: 15px 30px;
+}
+@media screen and (max-width: 480px) {
+  .hero-unit .hero-content .hero-buttons #btn-about, .hero-unit .hero-content .hero-buttons #btn-contact {
+    padding: 5px 11px;
+  }
+}
+.hero-unit .slide-caption {
+  padding-bottom: 50px;
+  margin: 0 auto;
+}
+@media screen and (max-width: 480px) {
+  .hero-unit .slide-caption {
+    padding-bottom: 0;
+  }
+}
+.hero-unit .slideshow .slide-navigation #prevslide,
+.hero-unit .slideshow .slide-navigation #nextslide {
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-transition-property: background;
+  -moz-transition-property: background;
+  -o-transition-property: background;
+  transition-property: background;
+  -webkit-transition-duration: 0.1s;
+  -moz-transition-duration: 0.1s;
+  -o-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-transition-timing-function: linear;
+  -moz-transition-timing-function: linear;
+  -o-transition-timing-function: linear;
+  transition-timing-function: linear;
+  position: absolute;
+  top: 50%;
+  margin-top: -30px;
+  width: 60px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.1);
+  font-size: 3em;
+  line-height: 1.2;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  z-index: 9;
+}
+.hero-unit .slideshow .slide-navigation #nextslide {
+  right: 0;
+}
+.hero-unit .slideshow ul#slide-list {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+}
+@media screen and (max-width: 768px) {
+  .hero-unit .slideshow ul#slide-list {
+    display: none;
+  }
+}
+.hero-unit .slideshow ul#slide-list li a {
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  -ms-border-radius: 15px;
+  -o-border-radius: 15px;
+  border-radius: 15px;
+  -webkit-transition-property: background-color, border-color;
+  -moz-transition-property: background-color, border-color;
+  -o-transition-property: background-color, border-color;
+  transition-property: background-color, border-color;
+  -webkit-transition-duration: 0.2s;
+  -moz-transition-duration: 0.2s;
+  -o-transition-duration: 0.2s;
+  transition-duration: 0.2s;
+  -webkit-transition-timing-function: linear;
+  -moz-transition-timing-function: linear;
+  -o-transition-timing-function: linear;
+  transition-timing-function: linear;
+  display: block;
+  width: 15px;
+  height: 15px;
+  text-indent: -9999px;
+  border: 2px solid #fff;
+  cursor: pointer;
+}
+.hero-unit .slideshow ul#slide-list li a:hover {
+  background-color: #e6e6e6;
+}
+.hero-unit .slideshow ul#slide-list li.current-slide a {
+  background-color: #e6e6e6;
+}
+.hero-unit #controls #pauseplay,
+.hero-unit #controls #video-volume {
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  cursor: pointer;
+  color: #fff;
+}
+.hero-unit #controls #pauseplay:hover,
+.hero-unit #controls #video-volume:hover {
+  text-decoration: none;
+  color: #e6e6e6;
+}
+.hero-unit #controls #pauseplay i,
+.hero-unit #controls #video-volume i {
+  display: block;
+  width: 10px;
+  margin-left: -8px;
+}
+.hero-unit #controls #video-volume {
+  z-index: 9999;
+}
+@media screen and (max-width: 768px) {
+  .hero-unit #controls {
+    display: none;
+  }
+}
+
+/* the animation is taken form animate.css */
+.looper.slide.down .item {
+  -webkit-animation-name: slideInDown;
+  animation-name: slideInDown;
+}
+.looper.slide.down .item.active.go {
+  -webkit-animation-name: fadeOut;
+  animation-name: fadeOut;
+}
+
+
 /* --------------------- */
 /* SECTION
 /* --------------------- */
@@ -144,7 +378,8 @@
   margin-bottom: 50px;
 }
 .section-heading h2, .section-heading p {
-  font-family: "Dosis", sans-serif;
+  font-family: "Dosis", sans-serif !important;
+  font-weight: 300;
 }
 .section-heading h2 {
   font-size: 3em;
