@@ -1,4 +1,4 @@
-%img.blured-background{src: "http://wallown.com/wp-content/uploads/2014/06/cool_backgrounds_mac_apple.jpg"}
+%img.blured-background{src: "#{@response.question.web_image_url||image_path("fallback/choice1.png")}"}
 .row#content_constraint
   .col-xs-12.col-sm-8.col-sm-push-2.img-overlay
     .panel.panel-default
