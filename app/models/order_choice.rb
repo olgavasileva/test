@@ -8,6 +8,7 @@ class OrderChoice < Choice
 
   validates :background_image, presence: true
 
-  delegate :web_image_url, :device_image_url, :retina_device_image_url,
-    to: :background_image, allow_nil: true
+  delegate :web_image_url, to: :background_image
+  delegate :device_image_url, to: :background_image
+  delegate :retina_device_image_url, to: :background_image
 end
