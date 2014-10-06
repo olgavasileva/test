@@ -60,16 +60,14 @@ class Response < ActiveRecord::Base
       self.user.instances.each do |instance|
         next unless instance.push_token.present?
 
-        APNS.send_notification(instance.push_token, :alert => 'Hello iPhone!', :badge => 0, :sound => 'default',
-                                                                       :other => {:type => message.type,
-                                                                                  :created_at => message.created_at,
-                                                                                  :read_at => message.read_at,
-                                                                                  :question_id => message.question_id,
-                                                                                  :response_count => message.response_count,
-                                                                                  :comment_count => message.comment_count,
-                                                                                  :share_count => message.share_count,
-                                                                                  :completed_at => message.completed_at
-                                                                       })
+        instance.push alert:'Hello iPhone!', badge:0, sound:true, other: {type: message.type,
+                                                                          created_at: message.created_at,
+                                                                          read_at: message.read_at,
+                                                                          question_id: message.question_id,
+                                                                          response_count: message.response_count,
+                                                                          comment_count: message.comment_count,
+                                                                          share_count: message.share_count,
+                                                                          completed_at: message.completed_at }
       end
 
     end
