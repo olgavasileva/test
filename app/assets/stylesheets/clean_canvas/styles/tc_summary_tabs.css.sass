@@ -1,0 +1,31 @@
+.stats-tabs.nav.nav-tabs
+  border-color: $primary_border_color
+  background-color: white
+  border-width: 1px
+  border-style: ridge
+  padding-right: 0
+  padding-bottom: 1px
+  li
+    padding: 0
+    a
+      margin: 0
+      border: none !important
+      text-align: center
+      border-radius: 0
+      .glyphicon
+        font-size: 2em
+      &:hover
+        background-color: white
+        color: $primary_color
+    &.active
+      a
+        background-color: $primary_background_color
+        color: white
+        &:hover
+          background-color: $primary_background_color
+          color: white
+          cursor: default
+
+.tab-content.stats-tabs-content
+  .tab-pane
+    min-height: 340px

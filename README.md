@@ -45,3 +45,41 @@
 
       When the UI requests a page beyond the end of the feed, the feed will attempt to fill in from public questions.  If there are no appropriate public questions available, the feed will return whatever remains (i.e. from 0 to max number of questions on a page)
 
+display: block;
+font-size: 1.4rem;
+width: 100%;
+background-color: transparent;
+border: solid 1px transparent;
+color: white;
+overflow: auto;
+text-align: center;
+resize: none;
+outline: none;
+-webkit-box-shadow: none;
+box-shadow: none;
+margin: 0;
+padding: 0;
+border-radius: 0;
+min-height: 4.2rem;
+max-height: 4.2rem;
+/* vertical-align: middle; */
+
+
+question-builder .question .over_image_title_container {
+overflow: visible;
+background-color: rgba(87, 87, 87, 0.75);
+padding: 5px;
+width: 100%;
+color: white;
+font-size: 22px;
+position: absolute;
+top: 40%;
+}
+
+imagechoice .question .over_image_title_container .image_control, .multiplechoice .question .over_image_title_container .image_control, .prioritizer .question .over_image_title_container .image_control {
+font-size: 4rem;
+position: absolute;
+bottom: 165%;
+width: 100%;
+width: 100%;
+}

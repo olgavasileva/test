@@ -112,7 +112,7 @@ class TwoCents::Auth < Grape::API
     }
     params do
       requires :instance_token, type:String, desc:'Obtain this from the instances API'
-      requires :token, type: String, regexp: /^[0-9A-F]{64}$/i, desc:'e.g. "0000000000000000000000000000000000000000000000000000000000000000"'
+      requires :token, type: String, regexp: /^<?([0-9A-F]{8} ?){8}>?$/i, desc:'e.g. "0000000000000000000000000000000000000000000000000000000000000000"'
       requires :environment, type: String, values:%w{production development}, desc:'Possible values: production|development'
     end
     post 'push_token', http_codes: [
@@ -121,11 +121,13 @@ class TwoCents::Auth < Grape::API
 
       validate_instance!
 
-      existing_instance = Instance.find_by push_token:declared_params[:token]
+      token = declared_params[:token].fixup_push_token
+
+      existing_instance = Instance.find_by push_token:token
 
       if instance != existing_instance
         existing_instance.update_attributes! push_token:nil unless existing_instance.nil?
-        instance.update_attributes! push_token:declared_params[:token], push_environment:declared_params[:environment]
+        instance.update_attributes! push_token:token, push_environment:declared_params[:environment]
       end
 
       {}

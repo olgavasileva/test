@@ -23,6 +23,20 @@ Setting.where(key: :share_question).first_or_create!(value: "Check out this ques
 Setting.where(key: :share_community_public).first_or_create!(value: "Check this out!")
 Setting.where(key: :share_community_private).first_or_create!(value: "Check this out!")
 
+#
+# Push notification setup
+#
+
+push_app_name = 'Statisfy'
+Rpush::Apns::App.where(name:push_app_name,environment:"development").first_or_create(connections:1, certificate:File.read("#{Rails.root}/certs/crashmob_dev_push.pem"))
+Rpush::Apns::App.where(name:push_app_name,environment:"production").first_or_create(connections:1, certificate:File.read("#{Rails.root}/certs/crashmob_production_push.pem"))
+Instance.where(push_app_name:nil).each{|i|i.update_attribute :push_app_name, push_app_name}
+
+
+#
+# Keys for studio
+#
+
 %w(Calories Fat Carbohydrates Protein Sugar SaturatedFat Sodium Cholesterol Fiber CaloriesFromFat).each do |key|
   Key.where(key:key).first_or_create!
 end

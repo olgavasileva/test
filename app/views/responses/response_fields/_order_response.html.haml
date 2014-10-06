@@ -14,6 +14,13 @@
     li
       .panel
         margin-bottom: 0
+      .handle-indicator
+        position: absolute
+        top: 50%
+        margin-top: -5rem
+        right: 2px
+        color: white
+        font-size: 5rem
 %div
   .col-xs-12
     .row.order-choices
@@ -25,6 +32,8 @@
             .panel.panel-default.handle
               = c.input :order_choice_id, as: :hidden
               = c.input :position, as: :hidden
+              .handle-indicator
+                %span.glyphicon.glyphicon-resize-vertical
               .floating-question-title.col-sm-12=c.object.choice.title
               = responsive_image_tag(c.object.choice.web_image_url, class: "img-responsive")
     = render "responses/response_fields/shared/comment", form:form, response:response

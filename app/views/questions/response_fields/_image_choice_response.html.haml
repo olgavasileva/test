@@ -8,18 +8,23 @@
     .img-responsive
       margin: auto
 
-    .response_counter
-      text-align: right
-      font-size: 1.3em
-      width: 4em
+    input[type]:checked~i.glyphicon.glyphicon-ok.selected
+      display: block
+
+
+    i.glyphicon.glyphicon-ok.selected
+      font-size: 1.8em
       position: absolute
-      right: 10px
-      top: 10px
+      right: 25px
+      top: 15px
       color: white
       background-color: rgba(0,0,0,0.3)
-      padding-left: 10px
-      padding-right: 10px
+      padding: 5px
+      padding-left: 15px
+      padding-right: 15px
       border: solid 1px white
+      display: none
+
     .option-title
       position: absolute
       bottom: 0
@@ -31,16 +36,22 @@
       padding-top: 8px
       padding-bottom: 8px
 
+    &.selected-choice
+      i.glyphicon.glyphicon-ok.selected
+        display: block
 
+    input[type]
+      position: absolute
+      top: -110%
 
 %div
-  .col-xs-12.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2
+  .col-xs-12
     = render "questions/response_fields/shared/title", question: @question
     .form-group
       -n=0
       -@question.choices.each do |c|
         -n+=1
-        %label.col-sm-6.col-xs-12.choice-wrapper
+        %label.col-xs-6.choice-wrapper
           .row
             =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
             -divNumber=(@question.response_count>0) ? @question.response_count : 1
@@ -49,6 +60,6 @@
               \%
           .option-title
             =c.title
-  .col-xs-12.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2
+  .col-xs-12
     .form-group
-      = render "questions/response_fields/shared/sharing",question: @question
+      = render "questions/response_fields/shared/sharing",question: @question, style_type: "negative"

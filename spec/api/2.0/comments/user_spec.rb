@@ -10,8 +10,7 @@ describe 'comments/user' do
   let(:response_body) { JSON.parse(response.body) }
 
   before { FactoryGirl.create_list(:text_response, count,
-                                   user: instance.user,
-                                   comment: "first!") }
+                                   :with_comment, user: instance.user) }
 
   shared_examples :correct_fields do
     it "responds with correct data fields" do
@@ -38,8 +37,7 @@ describe 'comments/user' do
     let(:params) { common_params.merge(user_id: user.id) }
 
     before { FactoryGirl.create_list(:text_response, count,
-                                     user: user,
-                                     comment: "first!") }
+                                     :with_comment, user: user) }
     before { request.call }
 
     it "responds with data for all given user's comments" do
