@@ -175,7 +175,7 @@ class TwoCents::Messages < Grape::API
       current_user.messages.all().each do |message|
         message.destroy!
       end
-      
+
       status 200
       {}
 
