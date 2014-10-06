@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141001204307) do
+ActiveRecord::Schema.define(version: 20141006195631) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -359,16 +359,19 @@ ActiveRecord::Schema.define(version: 20141001204307) do
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
 
   create_table "messages", force: true do |t|
+    t.text     "content"
     t.string   "type"
     t.datetime "read_at"
-    t.datetime "completed_at"
-    t.integer  "response_count"
-    t.integer  "comment_count"
-    t.integer  "share_count"
+    t.integer  "other_user_id"
     t.integer  "question_id"
+    t.integer  "response_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "response_count", default: 0
+    t.integer  "comment_count",  default: 0
+    t.integer  "share_count",    default: 0
+    t.datetime "completed_at"
     t.integer  "follower_id"
     t.string   "body"
   end
@@ -591,6 +594,8 @@ ActiveRecord::Schema.define(version: 20141001204307) do
     t.datetime "fail_after"
     t.boolean  "processing",                         default: false,     null: false
     t.integer  "priority"
+    t.text     "url_args"
+    t.string   "category"
   end
 
   add_index "rpush_notifications", ["app_id", "delivered", "failed", "deliver_after"], name: "index_rapns_notifications_multi", using: :btree
