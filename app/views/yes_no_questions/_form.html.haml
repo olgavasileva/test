@@ -14,10 +14,11 @@
 .row.question-builder#content_constraint
   .col-xs-12.col-sm-8.col-sm-push-2
     .yesno.panel.panel-default
-      .panel-heading
-        .panel-title
-          =link_to question_types_path do
-            %span.glyphicon.glyphicon-chevron-left
+      .panel-heading.col-xs-12
+        .panel-title.row
+          .col-xs-3
+            =link_to question_types_path do
+              %span.glyphicon.glyphicon-chevron-left
       .panel-body.imagechooser
         = simple_form_for @question do |f|
           =f.input :type, as: :hidden
@@ -28,7 +29,10 @@
           .row
             .col-xs-12.form-group
               .question
-                .over_image_title_container.title=f.input :title, label: false, input_html: { class: "appearing-question-title"},placeholder: "Ask Your Question Here"
+                .over_image_title_container.title
+                  =f.input :title, label: false, input_html: { class: "appearing-question-title"},placeholder: "Ask Your Question Here"
+                  =render partial:'/widgets/char_counter',locals:{:selector => ".over_image_title_container .appearing-question-title"}
+
                 .bgimage= responsive_image_tag @question.web_image_url, class: "img-responsive"
                 .col-xs-12
                   =render partial:'/widgets/image_control',locals:{f: f,id: 'background_selector',base_class: 'revert',type: 'question'}

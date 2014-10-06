@@ -5,10 +5,11 @@
 .row.question-builder#content_constraint
   .col-xs-12.col-sm-8.col-sm-push-2
     .imagechoice.panel.panel-default
-      .panel-heading
-        .panel-title
-          =link_to question_types_path do
-            %span.glyphicon.glyphicon-chevron-left
+      .panel-heading.col-xs-12
+        .panel-title.row
+          .col-xs-3
+            =link_to question_types_path do
+              %span.glyphicon.glyphicon-chevron-left
       .panel-body
         .col-xs-12
           = simple_form_for @question do |f|
@@ -19,6 +20,8 @@
                 .title.row
                   .text.required.image_choice_question_title.btn-primary.question-header-style-title
                     =f.input_field :title, label: false , class: "revealable title", placeholder: "Ask Your Question Here"
+                    =render partial:'/widgets/char_counter',locals:{:selector => ".image_choice_question_title .revealable.title"}
+
                 .row
                   =f.simple_fields_for :choices do |choice|
                     = render 'choice_fields', f:choice
