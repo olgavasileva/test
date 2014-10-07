@@ -1,34 +1,7 @@
-.panel.panel-default
-  .panel-heading
-    .panel-title
-      .row
-        .col-xs-3.col-sm-2
-        .col-xs-6.col-sm-8
-        .col-xs-3.col-sm-2.text-right
-          =link_to demo_registration_path do
-            %span.glyphicon.glyphicon-chevron-right
-  .panel-body.response
-    %br
-    %br
-    %h2.text-center Welcome
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %h3.text-center
-      .btn-group-vertical
-        = link_to demo_registration_path, class: %w(btn btn-default btn-group btn-lg) do
-          %span.glyphicon.glyphicon-plus
-          Sign Up
-        = link_to demo_login_path, class: %w(btn btn-success btn-group btn-lg) do
-          %span.glyphicon.glyphicon-ok
-          Sign In
-    %br
-    %br
+= render 'hero_unit'
+= render 'works'
+
+%h1 Questions
+
+= render 'contact'
+= render 'twitter_stream'
