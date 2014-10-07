@@ -35,6 +35,8 @@
   hr
     margin: 3px
 
+= render 'hero_unit'
+= render 'works'
 
 #portfolio
   .container
@@ -70,3 +72,6 @@
     .row
       .col-sm-12.text-center
         = will_paginate @questions
+
+= render 'contact'
+= render 'twitter_stream'
