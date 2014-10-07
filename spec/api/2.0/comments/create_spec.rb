@@ -8,7 +8,7 @@ describe 'POST /comments' do
     auth_token: instance.auth_token,
     question_id: question.id,
     parent_id: parent.id,
-    body: "tl;dr"
+    content: "tl;dr"
   } }
   let(:request) { -> { post 'v/2.0/comments', params } }
   let(:response_body) { JSON.parse(response.body) }
