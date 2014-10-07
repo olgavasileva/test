@@ -15,6 +15,7 @@
 #
 
 #= require_tree ./clean_canvas/theme
+#= require_tree ../../../vendor/assets/javascripts/loop
 
 #
 # Other
