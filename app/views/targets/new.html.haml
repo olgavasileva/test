@@ -1,5 +1,5 @@
-%h1=current_user.username
 = simple_form_for @target, url:question_targets_path(@question, @target) do |f|
+  = f.association :user, as: :hidden
   .panel.panel-default
     .panel-heading
       %h2.panel-title Send To

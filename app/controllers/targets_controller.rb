@@ -9,7 +9,7 @@ class TargetsController < ApplicationController
 
   def create
     question = Question.find params[:question_id]
-    target = Target.new target_params
+    target = question.build_target target_params
     authorize question.target
 
     target.save!
@@ -23,6 +23,6 @@ class TargetsController < ApplicationController
 
   protected
     def target_params
-      params.require(:target).permit(:question_id, :all_users, :all_followers, :all_groups, :follower_ids, :group_ids)
+      params.require(:target).permit(:question_id, :all_users, :all_followers, :all_groups, :user_id)
     end
 end
