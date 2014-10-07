@@ -1,4 +1,5 @@
 class PagesController < ApplicationController
+  skip_before_action :authenticate_user!
   skip_after_action :verify_authorized
   before_action :find_recent_questions
 
@@ -20,9 +21,15 @@ class PagesController < ApplicationController
     @response = StudioQuestion.first.responses.new user: current_user
   end
 
-  # For demo only
   def welcome
-    session[:demo] = true
+    if current_user.present?
+      redirect_to questions_path
+      return
+    end
+
+    @questions = policy_scope(Question).paginate(page: 1, per_page: 8)
+
+    render :welcome, layout: 'welcome'
   end
 
   # For demo only

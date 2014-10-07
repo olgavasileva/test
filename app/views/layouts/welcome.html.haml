@@ -6,7 +6,7 @@
 %html.gt-ie8.gt-ie9.not-ie
   / <![endif]
   %head
-    %title= full_title(yield(:title))
+    %title Statisfy | Discover what the world thinks!
 
     %meta{"http-equiv" => "Content-Type", content: "text/html; charset=utf-8"}
     %meta{name: :viewport, content: "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"}/
@@ -24,25 +24,13 @@
     /[if lt IE 9]
       <script src="assets/javascripts/ie.min.js"></script>
 
-  %body#clean-canvas.pull-top
-    #main-wrapper
-      #content-wrapper
-        = render 'layouts/shared/header'
-        - if flash.present?
-          #flash
-            - flash.each do |key, value|
-              = content_tag(:div, value, class: "alert alert-#{key}")
-        #undertop.container
-          = yield
-        = render 'layouts/clean_canvas/footer'
+  %body#clean-canvas.pull-top.fullscreen-image-background.welcome
+    = render 'layouts/shared/header'
+    - if flash.present?
+      #flash
+        - flash.each do |key, value|
+          = content_tag(:div, value, class: "alert alert-#{key}")
+    = yield
+    = render 'layouts/clean_canvas/footer'
 
     = debug(params) if Rails.env.development?
-
-
-:javascript
-  $(function(){
-    setTimeout(function(){
-      $('#flash').hide('slow');
-    },5000);
-
-  })
