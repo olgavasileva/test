@@ -1,3 +1,95 @@
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+body.welcome {
+  padding-top: 0;
+
+  /* --------------------- */
+  /* BUTTONS
+  /* --------------------- */
+  .btn {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    -o-border-radius: 0;
+    border-radius: 0;
+    -webkit-transition-property: border-color;
+    -moz-transition-property: border-color;
+    -o-transition-property: border-color;
+    transition-property: border-color;
+    -webkit-transition-duration: 0.2s;
+    -moz-transition-duration: 0.2s;
+    -o-transition-duration: 0.2s;
+    transition-duration: 0.2s;
+    -webkit-transition-timing-function: linear;
+    -moz-transition-timing-function: linear;
+    -o-transition-timing-function: linear;
+    transition-timing-function: linear;
+  }
+
+  .btn-lg {
+    border-width: 6px;
+  }
+
+  .btn-sm {
+    border-width: 3px;
+  }
+
+  .btn-xs {
+    border-width: 2px;
+  }
+
+  .btn-info {
+    #background-color: #00aeef;
+    #border-color: #00aeef;
+    background-color: #2691d9;
+    border-color: #2691d9;
+  }
+  .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active {
+    #background-color: #00aeef;
+    background-color: #2691d9; 
+    #border-color: #009bd5;
+    border-color: #ffffff;
+  }
+
+  .btn-primary {
+    background-color: #ffae3f;
+    border-color: #ffae3f;
+  }
+  .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
+    background-color: #ffae3f;
+    border-color: #ffa325;
+  }
+
+  .btn-primary.disabled,
+  .btn-primary[disabled] {
+    background-color: #ffc472;
+    border-color: #ffae3f;
+  }
+  .btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled:active, .btn-primary.disabled.active,
+  .btn-primary[disabled]:hover,
+  .btn-primary[disabled]:focus,
+  .btn-primary[disabled]:active,
+  .btn-primary[disabled].active {
+    background-color: #ffc472;
+    border-color: #ffae3f;
+  }
+}
+
+body.fullscreen-image-background {
+  background-image: image-url('welcome-bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+@media screen and (min-width: 1025px) {
+  body.fullscreen-image-background {
+    background-attachment: fixed;
+  }
+}
+
 /* --------------------- */
 /* NAVIGATION BAR
 /* --------------------- */
@@ -167,12 +259,13 @@
 }
 .hero-unit .hero-content .hero-text .hero-heading,
 .hero-unit .hero-content .hero-text p {
-  font-family: "Dosis", sans-serif;
+  font-family: "Dosis", sans-serif !important;
   color: #fff;
   font-weight: 300;
 }
 .hero-unit .hero-content .hero-text .hero-heading {
   font-size: 5em;
+  line-height: 80px;
 }
 .hero-unit .hero-content .hero-text .hero-heading .name {
   border-bottom: 2px solid #fff;

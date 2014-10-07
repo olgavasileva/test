@@ -23,6 +23,8 @@ class PagesController < ApplicationController
 
   def welcome
     redirect_to questions_path if current_user.present?
+
+    render :welcome, layout: 'welcome'
   end
 
   # For demo only

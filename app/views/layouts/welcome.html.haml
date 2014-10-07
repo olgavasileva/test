@@ -24,16 +24,13 @@
     /[if lt IE 9]
       <script src="assets/javascripts/ie.min.js"></script>
 
-  %body#clean-canvas.pull-top
-    #main-wrapper
-      #content-wrapper
-        = render 'layouts/shared/header'
-        - if flash.present?
-          #flash
-            - flash.each do |key, value|
-              = content_tag(:div, value, class: "alert alert-#{key}")
-        #undertop.container
-          = yield
-        = render 'layouts/clean_canvas/footer'
+  %body#clean-canvas.pull-top.fullscreen-image-background.welcome
+    = render 'layouts/shared/header'
+    - if flash.present?
+      #flash
+        - flash.each do |key, value|
+          = content_tag(:div, value, class: "alert alert-#{key}")
+    = yield
+    = render 'layouts/clean_canvas/footer'
 
     = debug(params) if Rails.env.development?
