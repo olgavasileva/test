@@ -782,7 +782,7 @@ class TwoCents::Questions < Grape::API
 
       response = @question.responses.create!(resp_params)
 
-      if params.has_key? :comment
+      if params[:comment].present?
         response.comment = Comment.create!(body: params[:comment],
                                            user: response.user,
                                            question: response.question,
