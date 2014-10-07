@@ -77,17 +77,20 @@ class TwoCents::Comments < Grape::API
     params do
       requires :auth_token, type: String, desc: "Obtain this from the instance's API."
       requires :question_id, type: Integer, desc: "Question for comment."
-      requires :body, type: String, desc: "Comment body."
+      optional :content, type: String, desc: "Comment body."
     end
     post do
       validate_user!
 
       question = Question.find(params[:question_id])
-      comment = Comment.create!(question_id: params[:question_id],
-                                user_id: current_user.id,
-                                body: params[:body])
+      if params[:content].present?
+        comment = Comment.create!(question_id: params.fetch(:question_id),
+                                  user_id: current_user.id,
+                                  body: params.fetch(:content),
+                                  parent_id: params[:parent_id])
 
-      serialize_comment(comment)
+        serialize_comment(comment)
+      end
     end
 
 
