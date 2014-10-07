@@ -24,7 +24,6 @@ class Target < ActiveRecord::Base
     !!all_users
   end
 
-
   # Add the question to all of the appropriate users' feed
   # Will not add a question to a user who already has this question in their feed or skip list
   def apply_to_question question

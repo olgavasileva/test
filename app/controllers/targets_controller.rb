@@ -1,14 +1,14 @@
 class TargetsController < ApplicationController
   def new
-    @target = Target.new question_id:params[:question_id]
-    authorize @target
-
+    @question = Question.find params[:question_id]
+    @target = current_user.targets.build
     @followers = current_user.followers
     @groups = current_user.groups
+    authorize @target
   end
 
   def create
-    question = Question.find target_params[:question_id]
+    question = Question.find params[:question_id]
     target = Target.new target_params
     authorize question.target
 
