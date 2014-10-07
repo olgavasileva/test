@@ -1,7 +1,28 @@
 = render 'hero_unit'
 = render 'works'
 
-%h1 Questions
+#gallery_container.row
+  - @questions.each do |question|
+    .col-md-3.col-sm-4
+      .row
+        =link_to new_question_response_path(question), class: :thumbnail do
+          = responsive_image_tag question.web_image_url
+          .mask
+          .floating-question-title
+            %span=question.title
+          .icon
+            = responsive_image_tag question.category.icon.web.url
+            %small.category= question.category.name
+          .icon2
+            Answered
+            %hr
+            %small (#{@all_responses})
+          .icon3
+            Commented
+            %hr
+            %small (#{@all_comments})
+          .icon4
+            %small ....
 
 = render 'contact'
 = render 'twitter_stream'
