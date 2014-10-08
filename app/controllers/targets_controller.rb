@@ -14,7 +14,7 @@ class TargetsController < ApplicationController
 
     target.save!
     target_count = question.apply_target! target  # TODO - do this on a background resque queue or delayed job - it will take time when there are lots of users
-    reports = @target.public? ? ["the public feed"] : []
+    reports = target.public? ? ["the public feed"] : []
     reports << view_context.pluralize( target_count, "direct feed") if target_count > 0
 
     flash[:alert] = "Question added to #{ reports.join " and " }."

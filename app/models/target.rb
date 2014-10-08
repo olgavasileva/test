@@ -8,17 +8,7 @@ class Target < ActiveRecord::Base
   validates :all_followers, inclusion:{in:[true, false]}
   validates :all_groups, inclusion:{in:[true, false]}
 
-  def follower_ids= follower_ids
-    follower_ids.each do |id|
-      self.followers << User.find(id)
-    end if follower_ids.kind_of? Array
-  end
-
-  def group_ids= group_ids
-    group_ids.each do |id|
-      self.groups << Group.find(id)
-    end if group_ids.kind_of? Array
-  end
+  after_initialize :set_defaults
 
   def public?
     !!all_users
@@ -72,4 +62,12 @@ class Target < ActiveRecord::Base
 
     target_count
   end
+
+  private
+
+    def set_defaults
+      self.all_users = false if all_users.nil?
+      self.all_followers = false if all_followers.nil?
+      self.all_groups = false if all_groups.nil?
+    end
 end
