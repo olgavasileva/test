@@ -16,11 +16,6 @@ class Response < ActiveRecord::Base
     "Override me!"
   end
 
-  # Deprecated.
-  def comment_children
-    comment.children
-  end
-
   protected
 
     def record_analytics

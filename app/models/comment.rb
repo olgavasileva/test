@@ -19,6 +19,4 @@ class Comment < ActiveRecord::Base
       commentable.question
     end
   end
-
-  # scope :root, -> { where(parent_id: nil) }
 end
