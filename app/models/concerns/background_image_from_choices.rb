@@ -2,17 +2,13 @@ module BackgroundImageFromChoices
   extend ActiveSupport::Concern
 
   included do
-    before_create :generate_background_image_from_choices
-
-    def background_image
-      generate_background_image_from_choices if super.nil?
-
-      super
-    end
+    after_initialize :generate_background_image_from_choices
 
     private
 
     def generate_background_image_from_choices
+      return unless background_image.nil?
+
       choice_images = choices[0..3].map { |c| c.background_image.image.url }
 
       return if choice_images.empty?
