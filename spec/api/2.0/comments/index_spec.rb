@@ -3,10 +3,8 @@ require 'rails_helper'
 describe 'GET /comments' do
   let(:instance) { FactoryGirl.create :instance, :authorized, :logged_in }
   let(:answer) {
-    response = FactoryGirl.create(:text_response, :with_comment)
-    response.comment.question = response.question # todo: obviate need for this
-    response.comment.save!
-    response
+    response_comment = FactoryGirl.create :text_response_comment
+    response_comment.commentable
   }
   let(:question) { answer.question }
 
@@ -23,6 +21,7 @@ describe 'GET /comments' do
               comment_count comment_children]
 
     expect(response_body).to be_instance_of Array
+    expect(response_body.count).to eq 1
     expect(response_body.first.keys).to match_array keys
   end
 end

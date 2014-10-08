@@ -1,18 +1,13 @@
 class Response < ActiveRecord::Base
-
-
-
   belongs_to :user
   belongs_to :question
-  belongs_to :comment
+  has_one :comment, as: :commentable
   has_many :liked_comments, dependent: :destroy
   has_many :comment_likers, through: :liked_comments, source: :user
   has_many :contest_response_votes, dependent: :destroy
 
   validates :user, presence: true
 	validates :question, presence: true
-
-  scope :with_comment, -> { where.not(comment_id: nil) }
 
   after_create :record_analytics
   after_create :add_and_push_message

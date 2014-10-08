@@ -5,19 +5,19 @@
       Recent Comments
     .panel-heading-controls
       .panel-heading-text
-        =paginate @recent_responses_with_comments, remote: true
+        =paginate @recent_comments, remote: true
 
   .widget-comments.panel-body.tab-content-padding
     .panel-padding.no-padding-vr
-      - @recent_responses_with_comments.each do |r|
+      - @recent_comments.each do |c|
         .comment
-          =gravatar_for r.user.email, class: %w(comment-avatar)
+          =gravatar_for c.user.email, class: %w(comment-avatar)
           .comment-body
             .comment-by
-              =r.user.username
+              =c.user.username
               commented on
-              =link_to r.question.title, [r.question], title: ""
-            .comment-text= r.comment
+              =link_to c.question.title, [c.question], title: ""
+            .comment-text= c.comment
             .comment-actions
               =link_to '#' do
                 %i.fa.fa-pencil>
@@ -26,5 +26,5 @@
                 %i.fa.fa-times>
                 Remove
               %span.pull-right
-                =time_ago_in_words r.created_at
+                =time_ago_in_words c.created_at
                 ago

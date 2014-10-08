@@ -96,6 +96,8 @@ group :development do
 
   gem 'better_errors'               # More useful error pages in development
   gem 'binding_of_caller'           # Enables advanced features of better_errors
+
+  gem 'xray-rails'                  # Reveal your UI's bones cmd-shift-x in browser
 end
 
 group :development, :test do

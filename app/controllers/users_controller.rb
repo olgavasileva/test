@@ -26,7 +26,7 @@ class UsersController < ApplicationController
         @questions = @user.answered_questions.page(params[:page])
       when 'commented'
         # todo: optimize
-        question_ids = @user.responses.with_comment.map(&:question_id)
+        question_ids = @user.comments.map{|c| c.question.id}
         @questions = Question.where(id: question_ids).page(params[:page])
       end
     when 'followers'
@@ -126,7 +126,7 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     authorize @user
 
-    @recent_responses_with_comments = @user.responses_to_questions_with_comments.order("responses.created_at DESC").kpage(params[:page]).per(5)
+    @recent_comments = @user.comments_on_questions_and_responses.order("comments.created_at DESC").kpage(params[:page].per(5))
   end
 
   def campaigns

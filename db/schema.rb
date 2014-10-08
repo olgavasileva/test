@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141007152011) do
+ActiveRecord::Schema.define(version: 20141008024059) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -97,16 +97,12 @@ ActiveRecord::Schema.define(version: 20141007152011) do
   create_table "comments", force: true do |t|
     t.text     "body"
     t.integer  "user_id"
-    t.integer  "question_id"
-    t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "response_id"
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
   end
 
-  add_index "comments", ["parent_id"], name: "index_comments_on_parent_id", using: :btree
-  add_index "comments", ["question_id"], name: "index_comments_on_question_id", using: :btree
-  add_index "comments", ["response_id"], name: "index_comments_on_response_id", using: :btree
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "communities", force: true do |t|

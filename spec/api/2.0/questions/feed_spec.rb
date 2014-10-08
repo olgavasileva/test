@@ -292,7 +292,10 @@ describe :feed do
             end
 
             context "With a comment" do
-              let(:before_api_call) {FactoryGirl.create :text_choice_response, :with_comment, question:text_choice_question, choice:text_choice1}
+              let(:before_api_call) {
+                response = FactoryGirl.create :text_choice_response, question:text_choice_question, choice:text_choice1
+                response.create_comment user:response.user, body:"Some comment"
+              }
 
               it {expect(JSON.parse(response.body).count).to eq all_questions.count}
               it {expect(JSON.parse(response.body)[0]['question']['id']).to eq text_choice_question.id}

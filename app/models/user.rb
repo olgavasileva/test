@@ -51,16 +51,29 @@ class User < ActiveRecord::Base
   has_many :instances, dependent: :destroy
 	has_many :authentications, dependent: :destroy
 	has_many :devices, through: :instances
+
+  # Questions asked by this user
 	has_many :questions, dependent: :destroy
+
+  # Responses to this user's questions
   has_many :responses_to_questions, through: :questions, source: :responses
-  has_many :responses_to_questions_with_comments, -> {where "responses.comment IS NOT NULL AND responses.comment != ''"}, through: :questions, source: :responses
+
   has_many :questions_skips, through: :questions, source: :skips
 	has_many :packs, dependent: :destroy
 	has_many :sharings, foreign_key: "sender_id", dependent: :destroy
 	has_many :reverse_sharings, foreign_key: "receiver_id", class_name: "Sharing", dependent: :destroy
   has_many :liked_comments
   has_many :liked_comment_responses, through: :liked_comments, source: :response
-  has_many :responses_with_comments, -> {where "responses.comment IS NOT NULL AND responses.comment != ''"}, class_name: "Response"
+
+  # Comments made by this user
+  has_many :comments, dependent: :destroy
+  has_many :question_comments, -> {where commentable_type:"Question"}, class_name: "Comment"
+  has_many :response_comments, -> {where commentable_type:"Response"}, class_name: "Comment"
+  has_many :comment_comments, -> {where commentable_type:"Comment"}, class_name: "Comment"
+
+  # Comments made by other users about this user's responses or questions
+  has_many :comments_on_its_responses, through: :responses_to_questions, source: :comment
+  has_many :comments_on_its_questions, through: :questions, source: :comments
 
   has_many :segments, dependent: :destroy
 
@@ -73,6 +86,11 @@ class User < ActiveRecord::Base
 						uniqueness: { case_sensitive: false }
 	validates :name, length: { maximum: 50 }
 	validates :terms_and_conditions, acceptance: true
+
+  # Comments made by other users about this user's questions and responses
+  def comments_on_questions_and_responses
+    Comment.find(comments_on_its_questions.pluck("comments.id") + comments_on_its_responses.pluck("comments.id"))
+  end
 
   # Enable saving users without a password if they have another authenication scheme
   def password_required?
@@ -151,7 +169,7 @@ class User < ActiveRecord::Base
   end
 
   def number_of_comments_left
-    return self.responses.with_comment.count
+    return self.comments.count
   end
 
   def number_of_followers

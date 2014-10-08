@@ -10,8 +10,8 @@ class TwoCents::Comments < Grape::API
           email: c.user.email,
           ask_count: c.user.questions.count,
           response_count: c.user.responses.count,
-          comment_count: c.user.responses.with_comment.count,
-          comment_children: c.children.map { |c| serialize_comment(c) }
+          comment_count: c.user.comments.count,
+          comment_children: c.comments.map { |c| serialize_comment(c) }
         }
       end
     end
@@ -25,20 +25,20 @@ class TwoCents::Comments < Grape::API
       optional :per_page, type: Integer, default: 15, desc: "Number of questions per page."
     end
     post 'user' do
-      user_id = params[:user_id]
+      user_id = declared_params[:user_id]
       user = user_id.present? ? User.find(user_id) : current_user
 
-      responses = user.responses.with_comment
+      questions = user.comments.map{|c|c.question}.uniq
 
-      if params[:page]
-        responses = responses.paginate(page: params[:page],
-                                       per_page: params[:per_page])
+      if declared_params[:page]
+        questions = questions.paginate(page: declared_params[:page],
+                                       per_page: declared_params[:per_page])
       end
 
-      responses.map do |r|
+      questions.map do |q|
         {
-          question_id: r.question.id,
-          question_title: r.question.title
+          question_id: q.id,
+          question_title: q.title
         }
       end
     end
@@ -67,8 +67,8 @@ class TwoCents::Comments < Grape::API
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"]
     ] do
-      questions = Question.find declared_params[:question_id]
-      comments = questions.comments.root
+      question = Question.find declared_params[:question_id]
+      comments = question.comments + question.response_comments
 
       comments.map { |c| serialize_comment(c) }
     end
@@ -84,11 +84,13 @@ class TwoCents::Comments < Grape::API
     post do
       validate_user!
 
-      question = Question.find(params[:question_id])
-      comment = Comment.create!(question_id: params.fetch(:question_id),
-                                user_id: current_user.id,
-                                body: params.fetch(:content),
-                                parent_id: params[:parent_id])
+      commentable = if declared_params[:parent_id].present?
+        Comment.find declared_params[:parent_id]
+      else
+        Question.find(params[:question_id])
+      end
+
+      comment = commentable.comments.create user:current_user, body:declared_params[:content]
 
       serialize_comment(comment)
     end

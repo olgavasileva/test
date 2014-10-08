@@ -6,9 +6,7 @@ class Question < ActiveRecord::Base
 	has_many :packs, through: :inclusions
 	has_many :sharings, dependent: :destroy
 	has_many :responses, dependent: :destroy
-  has_many :comments, dependent: :destroy
   has_many :users,  through: :responses
-	has_many :responses_with_comments, -> { where.not(comment_id: nil) }, class_name: "Response"
 	has_many :feed_items, dependent: :destroy
 	has_many :skips, class_name:"SkippedItem", dependent: :destroy
   has_many :choices
@@ -17,6 +15,8 @@ class Question < ActiveRecord::Base
   has_many :target_groups, through: :group_targets, source: :group
   has_many :follower_targets
   has_many :target_followers, through: :follower_targets, source: :follower
+  has_many :comments, as: :commentable
+  has_many :response_comments, through: :responses, source: :comment
 
 	scope :active, -> { where state:"active" }
   scope :currently_targetable, -> { where currently_targetable:true }
@@ -83,7 +83,7 @@ class Question < ActiveRecord::Base
 	end
 
 	def comment_count
-		responses_with_comments.count
+		comments.count + response_comments.count
 	end
 
 	def share_count
