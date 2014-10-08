@@ -17,6 +17,7 @@ class Question < ActiveRecord::Base
   has_many :target_followers, through: :follower_targets, source: :follower
   has_many :comments, as: :commentable
   has_many :response_comments, through: :responses, source: :comment
+  has_many :inappropriate_flags, dependent: :destroy
 
 	scope :active, -> { where state:"active" }
   scope :currently_targetable, -> { where currently_targetable:true }
