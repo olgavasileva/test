@@ -161,6 +161,7 @@ describe :feed do
                 expect(q['response_count']).to eq 0
                 expect(q['creator_name']).to eq multiple_choice_question.user.username
                 expect(q['creator_id']).to eq multiple_choice_question.user.id
+                expect(q['image_url']).not_to be_nil
 
 
                 choices = q['choices']
@@ -199,6 +200,7 @@ describe :feed do
                 expect(q['category']['name']).to eq "Category 2"
                 expect(q['comment_count']).to eq 0
                 expect(q['response_count']).to eq 0
+                expect(q['image_url']).not_to be_nil
 
 
                 choices = q['choices']
@@ -230,6 +232,7 @@ describe :feed do
                 expect(q['category']['name']).to eq "Category 1"
                 expect(q['comment_count']).to eq 0
                 expect(q['response_count']).to eq 0
+                expect(q['image_url']).not_to be_nil
 
 
                 choices = q['choices']

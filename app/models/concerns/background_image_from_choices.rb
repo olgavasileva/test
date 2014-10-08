@@ -4,6 +4,12 @@ module BackgroundImageFromChoices
   included do
     before_create :generate_background_image_from_choices
 
+    def background_image
+      generate_background_image_from_choices if super.nil?
+
+      super
+    end
+
     private
 
     def generate_background_image_from_choices

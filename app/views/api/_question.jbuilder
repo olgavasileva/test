@@ -6,7 +6,7 @@ json.rotate question.rotate if question.kind_of? ChoiceQuestion
 
 json.(question, :min_responses, :max_responses) if question.kind_of? MultipleChoiceQuestion
 
-json.image_url question.device_image_url if question.kind_of?(TextQuestion) || question.kind_of?(TextChoiceQuestion)
+json.image_url question.device_image_url
 
 json.(question, :text_type, :min_characters, :max_characters) if question.kind_of? TextQuestion
 
