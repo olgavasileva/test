@@ -76,11 +76,6 @@ class Question < ActiveRecord::Base
 		self.save!
 	end
 
-  def web_image_url
-    # TODO: show a representation of the set of responses for some question types
-    "fallback/choice1.png"  # For now, just show something
-  end
-
 	def included_by?(pack)
 		self.inclusions.find_by(pack_id: pack.id)
 	end
