@@ -8,6 +8,8 @@ class Target < ActiveRecord::Base
   validates :all_followers, inclusion:{in:[true, false]}
   validates :all_groups, inclusion:{in:[true, false]}
 
+  after_initialize :set_defaults
+
   def public?
     !!all_users
   end
@@ -60,4 +62,12 @@ class Target < ActiveRecord::Base
 
     target_count
   end
+
+  private
+
+    def set_defaults
+      self.all_users = false if all_users.nil?
+      self.all_followers = false if all_followers.nil?
+      self.all_groups = false if all_groups.nil?
+    end
 end

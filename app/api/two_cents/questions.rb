@@ -15,7 +15,7 @@ class TwoCents::Questions < Grape::API
         optional :anonymous, type: Boolean, desc: "Whether question is anonymous"
 
         requires :targets, type: Hash do
-          optional :all, type: Boolean, default: false, desc: "Whether question is targeted at all users."
+          optional :all_users, type: Boolean, default: false, desc: "Whether question is targeted at all users."
           optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
           optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
           optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
@@ -77,11 +77,6 @@ class TwoCents::Questions < Grape::API
         description:declared_params[:description],
         rotate:declared_params[:rotate],
         background_image:background_image,
-        target_all: params[:targets][:all],
-        target_all_followers: params[:targets][:all_followers],
-        target_all_groups: params[:targets][:all_groups],
-        target_follower_ids: params[:targets][:follower_ids],
-        target_group_ids: params[:targets][:group_ids],
         anonymous: params[:anonymous]
       }
 
@@ -93,8 +88,8 @@ class TwoCents::Questions < Grape::API
 
       @question.save!
 
-      # target = Target.new declared_params[:targets]
-      # @question.apply_target! target
+      target = Target.create! params[:targets].to_h.merge(user: current_user)
+      @question.apply_target! target
     end
 
 
@@ -151,11 +146,6 @@ class TwoCents::Questions < Grape::API
         rotate:declared_params[:rotate],
         min_responses:min_responses,
         max_responses:max_responses,
-        target_all: params[:targets][:all],
-        target_all_followers: params[:targets][:all_followers],
-        target_all_groups: params[:targets][:all_groups],
-        target_follower_ids: params[:targets][:follower_ids],
-        target_group_ids: params[:targets][:group_ids],
         anonymous: params[:anonymous]
       }
 
@@ -173,8 +163,8 @@ class TwoCents::Questions < Grape::API
 
       @question.save!
 
-      # target = Target.new declared_params[:targets]
-      # @question.apply_target! target
+      target = Target.create! params[:targets].to_h.merge(user: current_user)
+      @question.apply_target! target
     end
 
 
@@ -219,11 +209,6 @@ class TwoCents::Questions < Grape::API
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
-        target_all: params[:targets][:all],
-        target_all_followers: params[:targets][:all_followers],
-        target_all_groups: params[:targets][:all_groups],
-        target_follower_ids: params[:targets][:follower_ids],
-        target_group_ids: params[:targets][:group_ids],
         anonymous: params[:anonymous]
       }
 
@@ -241,8 +226,8 @@ class TwoCents::Questions < Grape::API
 
       @question.save!
 
-      # target = Target.new declared_params[:targets]
-      # @question.apply_target! target
+      target = Target.create! params[:targets].to_h.merge(user: current_user)
+      @question.apply_target! target
     end
 
 
@@ -288,11 +273,6 @@ class TwoCents::Questions < Grape::API
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
-        target_all: params[:targets][:all],
-        target_all_followers: params[:targets][:all_followers],
-        target_all_groups: params[:targets][:all_groups],
-        target_follower_ids: params[:targets][:follower_ids],
-        target_group_ids: params[:targets][:group_ids],
         anonymous: params[:anonymous]
       }
 
@@ -310,8 +290,8 @@ class TwoCents::Questions < Grape::API
 
       @question.save!
 
-      # target = Target.new declared_params[:targets]
-      # @question.apply_target! target
+      target = Target.create! params[:targets].to_h.merge(user: current_user)
+      @question.apply_target! target
     end
 
 
@@ -360,11 +340,6 @@ class TwoCents::Questions < Grape::API
         text_type:declared_params[:text_type],
         min_characters:declared_params[:min_characters],
         max_characters:declared_params[:max_characters],
-        target_all: params[:targets][:all],
-        target_all_followers: params[:targets][:all_followers],
-        target_all_groups: params[:targets][:all_groups],
-        target_follower_ids: params[:targets][:follower_ids],
-        target_group_ids: params[:targets][:group_ids],
         anonymous: params[:anonymous]
       }
 
@@ -372,8 +347,8 @@ class TwoCents::Questions < Grape::API
 
       @question.save!
 
-      # target = Target.new declared_params[:targets]
-      # @question.apply_target! target
+      target = Target.create! params[:targets].to_h.merge(user: current_user)
+      @question.apply_target! target
     end
 
 
