@@ -22,6 +22,8 @@ module BackgroundImageFromChoices
       montage.write(file.path)
 
       self.background_image = QuestionImage.create!(image: file)
+
+      save!
     end
   end
 end
