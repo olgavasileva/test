@@ -1,3 +1,4 @@
+# Obsolete
 class GroupTarget < ActiveRecord::Base
   belongs_to :question
   belongs_to :group

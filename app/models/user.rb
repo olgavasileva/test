@@ -130,7 +130,7 @@ class User < ActiveRecord::Base
 	end
 
   def wants_question? question
-    feed_items.where(question_id:question).blank? && responses.where(question_id:question).blank? && skipped_items.where(question_id:question).blank? && questions.where(question_id:question).blank?
+    feed_items.where(question_id:question).blank? && responses.where(question_id:question).blank? && skipped_items.where(question_id:question).blank? && questions.where(id:question).blank?
   end
 
   # Add more public questions to the feed
