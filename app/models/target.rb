@@ -8,18 +8,6 @@ class Target < ActiveRecord::Base
   validates :all_followers, inclusion:{in:[true, false]}
   validates :all_groups, inclusion:{in:[true, false]}
 
-  def follower_ids= follower_ids
-    follower_ids.each do |id|
-      self.followers << User.find(id)
-    end if follower_ids.kind_of? Array
-  end
-
-  def group_ids= group_ids
-    group_ids.each do |id|
-      self.groups << Group.find(id)
-    end if group_ids.kind_of? Array
-  end
-
   def public?
     !!all_users
   end
