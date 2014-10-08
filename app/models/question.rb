@@ -2,6 +2,8 @@ class Question < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :category
   belongs_to :target
+  belongs_to :background_image
+
 	has_many :inclusions, dependent: :destroy
 	has_many :packs, through: :inclusions
 	has_many :sharings, dependent: :destroy
@@ -29,6 +31,10 @@ class Question < ActiveRecord::Base
 	validates :title, presence: true, length: { maximum: 250 }
 	validates :state, presence: true, inclusion: {in: %w(preview targeting active)}
 	validates :kind, inclusion: {in: %w(public targeted)}
+
+  delegate :web_image_url, to: :background_image
+  delegate :device_image_url, to: :background_image
+  delegate :retina_device_image_url, to: :background_image
 
   default :uuid do |question|
     "Q"+UUID.new.generate.gsub(/-/, '')
