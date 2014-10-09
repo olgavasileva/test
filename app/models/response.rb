@@ -12,7 +12,7 @@ class Response < ActiveRecord::Base
   after_create :record_analytics
   after_create :add_and_push_message
 
-  accepts_nested_attributes_for :comment
+  accepts_nested_attributes_for :comment, reject_if: proc { |attributes| attributes['body'].blank? }
 
   def description
     "Override me!"

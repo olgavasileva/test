@@ -1,11 +1,14 @@
 :sass
-  .almost-8
+  a.almost-8
     background-color: #cecece
     width: 100%
     margin: 0px
     padding: 17px
     font-size: 18px
     color: #fff
+    text-align: center
+    color: white
+    display: block
   hr
     margin: 3px
 
@@ -39,7 +42,4 @@
     .row
       .col-md-2
       .col-sm-8
-        %button.almost-8 Show More
-    .row
-      .col-sm-12.text-center
-        = will_paginate @questions
+        = link_to_next_page @questions, 'Show More', class:%w(almost-8)
