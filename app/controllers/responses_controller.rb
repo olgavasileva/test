@@ -12,7 +12,6 @@ class ResponsesController < ApplicationController
   end
 
   def create
-    binding.pry
     @response = Response.new response_params
     authorize @response
 
