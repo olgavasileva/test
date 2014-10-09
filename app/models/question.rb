@@ -22,14 +22,16 @@ class Question < ActiveRecord::Base
   has_many :inappropriate_flags, dependent: :destroy
 
 	scope :active, -> { where state:"active" }
+  scope :suspended, -> { where state:"suspended" }
   scope :currently_targetable, -> { where currently_targetable:true }
+  scope :inappropriate, -> { includes(:inappropriate_flags).having("count(inappropriate_flags.id) > 0") }
 
 	default kind: "public"
 
 	validates :user, presence: true
 	validates :category, presence: true
 	validates :title, presence: true, length: { maximum: 250 }
-	validates :state, presence: true, inclusion: {in: %w(preview targeting active)}
+	validates :state, presence: true, inclusion: {in: %w(preview targeting active suspended)}
 	validates :kind, inclusion: {in: %w(public targeted)}
   validates :background_image, presence:true
 
@@ -46,6 +48,11 @@ class Question < ActiveRecord::Base
     target.apply_to_question self
   end
 
+  def suspend!
+    update_attribute :state, "suspended"
+    self.feed_items.destroy_all
+  end
+
 	def viewed!
 		update_attribute :view_count, (view_count.to_i + 1)
 		DailyAnalytic.increment! :views, self.user
@@ -59,6 +66,10 @@ class Question < ActiveRecord::Base
   def active?
 		state == "active"
 	end
+
+  def suspended?
+    state == "suspended"
+  end
 
 	def preview?
 		state == "preview"
