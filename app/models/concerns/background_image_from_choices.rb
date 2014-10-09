@@ -2,7 +2,7 @@ module BackgroundImageFromChoices
   extend ActiveSupport::Concern
 
   included do
-    after_initialize :generate_background_image_from_choices
+    before_save :generate_background_image_from_choices
 
     private
 
@@ -22,8 +22,6 @@ module BackgroundImageFromChoices
       montage.write(file.path)
 
       self.background_image = QuestionImage.create!(image: file)
-
-      save!
     end
   end
 end
