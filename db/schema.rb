@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141008175001) do
+ActiveRecord::Schema.define(version: 20141009032633) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -296,6 +296,7 @@ ActiveRecord::Schema.define(version: 20141008175001) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "reason"
   end
 
   add_index "inappropriate_flags", ["question_id"], name: "index_inappropriate_flags_on_question_id", using: :btree

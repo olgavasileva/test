@@ -887,8 +887,8 @@ class TwoCents::Questions < Grape::API
     ] do
       validate_user!
 
-      # question = Question.find params[:question_id]
-      # current_user.inappropriate_flags.create! question:question
+      question = Question.find declared_params[:question_id]
+      current_user.inappropriate_flags.create! question:question, reason:declared_params[:reason]
 
       QuestionReport.create!(
         user: current_user,
