@@ -102,7 +102,7 @@ end
 
 group :development, :test do
   gem 'pry'
-  gem 'pry-debugger'                # Allow stepping and breakpoints in pry console
+  gem 'pry-byebug'                  # Allow stepping and breakpoints in pry console
   gem 'pry-rails'                   # Use pry in the console
   gem 'spring'
 end

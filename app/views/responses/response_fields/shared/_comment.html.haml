@@ -20,5 +20,8 @@
 .form-group
   .comment
     .popover.bottom
-      = form.input :comment, as: :text,:placeholder =>"Comment on your response", label: false, input_html:{rows:1}
+      = form.simple_fields_for :comment do |c|
+        = c.input :body, as: :text,:placeholder =>"Comment on your response", label: false, input_html:{rows:1}
+        = c.input :user_id, as: :hidden
+        = c.input :commentable_id, as: :hidden
       .arrow

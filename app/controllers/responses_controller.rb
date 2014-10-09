@@ -4,6 +4,7 @@ class ResponsesController < ApplicationController
     question.started!
 
     @response = question.responses.new user: current_user
+    @response.build_comment user:current_user
     authorize @response
 
     @next_question = next_question question
@@ -11,6 +12,7 @@ class ResponsesController < ApplicationController
   end
 
   def create
+    binding.pry
     @response = Response.new response_params
     authorize @response
 

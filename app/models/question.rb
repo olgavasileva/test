@@ -31,6 +31,7 @@ class Question < ActiveRecord::Base
 	validates :title, presence: true, length: { maximum: 250 }
 	validates :state, presence: true, inclusion: {in: %w(preview targeting active)}
 	validates :kind, inclusion: {in: %w(public targeted)}
+  validates :background_image, presence:true
 
   delegate :web_image_url, to: :background_image
   delegate :device_image_url, to: :background_image
