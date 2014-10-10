@@ -1,3 +1,5 @@
+require 'will_paginate/array'
+
 class UsersController < ApplicationController
   def profile
     @user = current_user
@@ -32,8 +34,13 @@ class UsersController < ApplicationController
     when 'followers'
       @followers = @user.followers.page(params[:page])
     when 'following'
-      leader_ids = @user.leaders.search(name_cont: params[:search_text]).result.map(&:id)
-      @leaders = @user.leaders.where(id: leader_ids).page(params[:page])
+      # todo: optimize
+      leaders = @user.leaders.search(name_cont: params[:search_text]).result
+      @users = leaders
+      if @user == current_user
+        unleaders = User.where.not(id: leaders).search(name_cont: params[:search_text]).result
+        @users += unleaders
+      end
     end
   end
 
