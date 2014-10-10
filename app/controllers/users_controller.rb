@@ -38,7 +38,7 @@ class UsersController < ApplicationController
       leaders = @user.leaders.search(name_cont: params[:search_text]).result
       @users = leaders
       if @user == current_user
-        unleaders = User.where.not(id: leaders).search(name_cont: params[:search_text]).result
+        unleaders = User.where.not(id: leaders + [current_user]).search(name_cont: params[:search_text]).result
         @users += unleaders
       end
     end
