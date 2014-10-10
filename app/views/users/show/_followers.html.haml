@@ -1,7 +1,8 @@
 .tab-content.followers-tab-content
-  .center
-    = link_to "Organize Followers", 'javascript:void(0)', class: 'btn btn-default'
-    = link_to "Invite Friends", 'javascript:void(0)', class: 'btn btn-default'
+  - if @user == current_user
+    .center
+      = link_to "Organize Followers", 'javascript:void(0)', class: 'btn btn-default'
+      = link_to "Invite Friends", 'javascript:void(0)', class: 'btn btn-default'
   %ul.items
     - @followers.each do |follower|
       %li
