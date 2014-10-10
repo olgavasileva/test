@@ -37,7 +37,7 @@ class QuestionsControllerBase < ApplicationController
   def target
     @question = question_class.send :find, params[:id]
     authorize @question
-    redirect_to new_target_path(question_id:@question)
+    redirect_to new_question_target_path(@question)
   end
 
   def share

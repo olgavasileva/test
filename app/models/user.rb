@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :answered_questions, through: :responses, source: :question
   has_many :skipped_items, dependent: :destroy
   has_many :skipped_questions, through: :skipped_items, source: :question
+  has_many :inappropriate_flags, dependent: :destroy
 
   has_many :groups, dependent: :destroy
   has_many :group_members, through: :groups, source: :user
@@ -23,6 +24,7 @@ class User < ActiveRecord::Base
   has_many :community_members, through: :communities, source: :user
   has_many :community_memberships, class_name: 'CommunityMember'
   has_many :membership_communities, through: :community_memberships, source: :community
+  has_many :targets, dependent: :destroy
 
   has_many :messages, dependent: :destroy
 
@@ -50,16 +52,29 @@ class User < ActiveRecord::Base
   has_many :instances, dependent: :destroy
 	has_many :authentications, dependent: :destroy
 	has_many :devices, through: :instances
+
+  # Questions asked by this user
 	has_many :questions, dependent: :destroy
+
+  # Responses to this user's questions
   has_many :responses_to_questions, through: :questions, source: :responses
-  has_many :responses_to_questions_with_comments, -> {where "responses.comment IS NOT NULL AND responses.comment != ''"}, through: :questions, source: :responses
+
   has_many :questions_skips, through: :questions, source: :skips
 	has_many :packs, dependent: :destroy
 	has_many :sharings, foreign_key: "sender_id", dependent: :destroy
 	has_many :reverse_sharings, foreign_key: "receiver_id", class_name: "Sharing", dependent: :destroy
   has_many :liked_comments
   has_many :liked_comment_responses, through: :liked_comments, source: :response
-  has_many :responses_with_comments, -> {where "responses.comment IS NOT NULL AND responses.comment != ''"}, class_name: "Response"
+
+  # Comments made by this user
+  has_many :comments, dependent: :destroy
+  has_many :question_comments, -> {where commentable_type:"Question"}, class_name: "Comment"
+  has_many :response_comments, -> {where commentable_type:"Response"}, class_name: "Comment"
+  has_many :comment_comments, -> {where commentable_type:"Comment"}, class_name: "Comment"
+
+  # Comments made by other users about this user's responses or questions
+  has_many :comments_on_its_responses, through: :responses_to_questions, source: :comment
+  has_many :comments_on_its_questions, through: :questions, source: :comments
 
   has_many :segments, dependent: :destroy
 
@@ -72,6 +87,11 @@ class User < ActiveRecord::Base
 						uniqueness: { case_sensitive: false }
 	validates :name, length: { maximum: 50 }
 	validates :terms_and_conditions, acceptance: true
+
+  # Comments made by other users about this user's questions and responses
+  def comments_on_questions_and_responses
+    Comment.find(comments_on_its_questions.pluck("comments.id") + comments_on_its_responses.pluck("comments.id"))
+  end
 
   # Enable saving users without a password if they have another authenication scheme
   def password_required?
@@ -111,7 +131,7 @@ class User < ActiveRecord::Base
 	end
 
   def wants_question? question
-    feed_items.where(question_id:question).blank? && responses.where(question_id:question).blank? && skipped_items.where(question_id:question).blank? && questions.where(question_id:question).blank?
+    feed_items.where(question_id:question).blank? && responses.where(question_id:question).blank? && skipped_items.where(question_id:question).blank? && questions.where(id:question).blank?
   end
 
   # Add more public questions to the feed
@@ -150,7 +170,7 @@ class User < ActiveRecord::Base
   end
 
   def number_of_comments_left
-    return self.responses.with_comment.count
+    return self.comments.count
   end
 
   def number_of_followers
@@ -169,51 +189,28 @@ class User < ActiveRecord::Base
 
     def add_and_push_message(followed_user)
 
-        # if UserFollowed.where("follower_id = ? AND user_id = ?", self.id, followed_user.id).exists?
-        #   message = UserFollowed.where("follower_id = ? AND user_id = ?", self.id, followed_user.id)
-        # else
-        #
-        # end
+      # if UserFollowed.where("follower_id = ? AND user_id = ?", self.id, followed_user.id).exists?
+      #   message = UserFollowed.where("follower_id = ? AND user_id = ?", self.id, followed_user.id)
+      # else
+      #
+      # end
 
-        message = UserFollowed.new
+      message = UserFollowed.new
 
-        message.follower_id = self.id
-        message.user_id = followed_user.id
-        message.read_at = nil
+      message.follower_id = self.id
+      message.user_id = followed_user.id
+      message.read_at = nil
 
-        message.save
+      message.save
 
+      followed_user.instances.each do |instance|
+        next unless instance.push_token.present?
 
-        # APNS.host = 'gateway.push.apple.com'
-        # # gateway.sandbox.push.apple.com is default
-        #
-        # APNS.pem  = Rails.root + 'app/pem/crashmob_dev_push.pem'
-        #
-        # # this is the file you just created
-        #
-        # APNS.port = 2195
-
-
-
-        followed_user.instances.each do |instance|
-          next unless instance.push_token.present?
-
-          APNS.send_notification(instance.push_token, :alert => 'Hello iPhone!', :badge => 0, :sound => 'default',
-                                 :other => {:type => message.type,
-                                            :created_at => message.created_at,
-                                            :read_at => message.read_at,
-                                            :follower_id => message.follower_id
-                                 })
-        end
-
-
-        # followed_user.instances.each { |instance| APNS.send_notification(instance.push_token, :alert => 'Hello iPhone!', :badge => 1, :sound => 'default',
-        #                                                                  :other => {:type => message.type,
-        #                                                                             :created_at => message.created_at,
-        #                                                                             :read_at => message.read_at,
-        #                                                                             :follower_id => message.follower_id
-        #                                                                  }) }
-
-
+        instance.push alert:'Hello iPhone!', badge:0, sound:true, other: {type: message.type,
+                                                                          created_at: message.created_at,
+                                                                          read_at: message.read_at,
+                                                                          follower_id: message.follower_id }
+      end
     end
+
 end

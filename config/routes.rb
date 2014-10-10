@@ -13,7 +13,7 @@ LinkchatApp::Application.routes.draw do
 
   ActiveAdmin.routes(self)
 
-  root 'questions#index'
+  root 'pages#welcome'
   get '/q/:uuid' => 'questions#new_response_from_uuid', as: :question_sharing
   get '/question' => 'users#first_question'
   get '/test' => 'pages#test' if Rails.env.development?
@@ -29,6 +29,7 @@ LinkchatApp::Application.routes.draw do
     resources :text_responses
     resources :order_responses
     resources :studio_responses
+    resources :targets
 
     resources :skipped_items
   end
@@ -97,9 +98,6 @@ LinkchatApp::Application.routes.draw do
   resources :question_images
   resources :choice_images
   resources :order_choice_images
-
-  resources :targets
-
 
   mount TwoCents::API =>'/'
   get "/docs" => 'docs#index'

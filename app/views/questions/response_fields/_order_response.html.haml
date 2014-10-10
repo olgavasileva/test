@@ -23,6 +23,6 @@
         -question.choices.all.each do |c|
           %li
             .panel.panel-default.handle
-              .floating-question-title.col-sm-12=c.object.choice.title
+              .floating-question-title.col-sm-12=c.title
               = responsive_image_tag(c.web_image_url, class: "img-responsive")
     = render "questions/response_fields/shared/sharing", question:question

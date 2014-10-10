@@ -1,4 +1,3 @@
-=f.input :inclusion, as: :radio_buttons, collection: ResponseMatcher::INCLUSION_COLLECTION, label_method: :last, value_method: :first
 = f.label "Top choice"
 .clear
 = f.collection_radio_buttons(:first_place_choice_id, f.object.question.choices, :id, :title, item_wrapper_class: :horizontal) do |choice|

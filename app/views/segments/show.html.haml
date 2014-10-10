@@ -20,5 +20,4 @@
               %span.glyphicon.glyphicon-search
             =search_field_tag :search, "", id: :question_search, data:{callback: question_search_user_segment_url(current_user, @segment)}, placeholder: "Search for a question", class: %w(form-control)
         .col-sm-7
-          .input-group
-            #search_results
+          #search_results

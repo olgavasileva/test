@@ -20,7 +20,6 @@
     font-size: 1em
     width: 96%
     background-color: transparent
-    border: solid 1px transparent
     color: white
     overflow: hidden
     text-align: center
@@ -32,6 +31,16 @@
     padding: 0
     border-radius: 0
     margin: auto
+    &::-webkit-input-placeholder
+      color: white
+    &:-moz-placeholder
+      color: white
+    &::-moz-placeholder
+      color: white
+    &:-ms-input-placeholder
+      color: white
+  &:not(.has-error) textarea.form-control
+    border: solid 1px transparent
 
 .over_image_title_container
   max-height: 80%
@@ -40,18 +49,38 @@
   margin-top: -43px
   .form-group
     margin: 0
-  .appearing-question-title
-    background-color: transparent
-    border-color: transparent
-    width: 100%
-    color: white
-    font-size: 0.7em
-    margin: 0
-    resize: none
-    max-height: 100%
-    &:focus
-      background-color: rgba(0,0,0,0.2)
-      border-color: #ccccff
-    &:hover
-      background-color: rgba(0,0,0,0.3)
-      border-color: #ccccff
+
+    .appearing-question-title
+      background-color: transparent
+      width: 100%
+      color: white
+      font-size: 0.7em
+      margin: 0
+      resize: none
+      max-height: 100%
+      &:focus
+        background-color: rgba(0,0,0,0.2)
+      &:hover
+        background-color: rgba(0,0,0,0.3)
+      &::-webkit-input-placeholder
+        color: white
+      &:-moz-placeholder
+        color: white
+      &::-moz-placeholder
+        color: white
+      &:-ms-input-placeholder
+        color: white
+
+  .help-block
+    text-shadow: -2px 0px 18px white
+    font-size: 1.6rem
+
+    &:not(.has-error)
+      .appearing-question-title
+        border-color: transparent
+        &:focus
+          border-color: #ccccff
+        &:hover
+          border-color: #ccccff
+
+

@@ -75,7 +75,6 @@ gem 'roo'                           # Roo provides an interface to Open Office, 
 gem 'rubyzip'                       # rubyzip is a ruby library for reading and writing zip files
 gem 'creek', '~> 1.0.3'             # Configurable streaming aggregator
 gem 'rpush'
-gem 'apns'
 gem 'browser'                       # Browser detection
 
 # pixel admin
@@ -97,11 +96,13 @@ group :development do
 
   gem 'better_errors'               # More useful error pages in development
   gem 'binding_of_caller'           # Enables advanced features of better_errors
+
+  gem 'xray-rails'                  # Reveal your UI's bones cmd-shift-x in browser
 end
 
 group :development, :test do
   gem 'pry'
-  gem 'pry-debugger'                # Allow stepping and breakpoints in pry console
+  gem 'pry-byebug'                  # Allow stepping and breakpoints in pry console
   gem 'pry-rails'                   # Use pry in the console
   gem 'spring'
 end

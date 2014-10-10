@@ -3,7 +3,7 @@ class ResponseMatchersController < ApplicationController
 
   def new
     @question = Question.find params[:question_id]
-    @response_matcher = @question.response_matchers.new segment:@segment
+    @response_matcher = @question.response_matchers.new segment:@segment, inclusion:'respond'
     authorize @response_matcher
     render layout: false
   end

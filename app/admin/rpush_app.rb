@@ -1,4 +1,5 @@
 ActiveAdmin.register Rpush::Apns::App, as: "Push Apps" do
+  menu parent: 'Push'
 
   index do
     column :name

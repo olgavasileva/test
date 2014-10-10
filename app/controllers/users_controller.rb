@@ -1,3 +1,5 @@
+require 'will_paginate/array'
+
 class UsersController < ApplicationController
   def profile
     @user = current_user
@@ -26,14 +28,19 @@ class UsersController < ApplicationController
         @questions = @user.answered_questions.page(params[:page])
       when 'commented'
         # todo: optimize
-        question_ids = @user.responses.with_comment.map(&:question_id)
+        question_ids = @user.comments.map{|c| c.question.id}
         @questions = Question.where(id: question_ids).page(params[:page])
       end
     when 'followers'
       @followers = @user.followers.page(params[:page])
     when 'following'
-      leader_ids = @user.leaders.search(name_cont: params[:search_text]).result.map(&:id)
-      @leaders = @user.leaders.where(id: leader_ids).page(params[:page])
+      # todo: optimize
+      leaders = @user.leaders.search(name_cont: params[:search_text]).result
+      @users = leaders
+      if @user == current_user
+        unleaders = User.where.not(id: leaders + [current_user]).search(name_cont: params[:search_text]).result
+        @users += unleaders
+      end
     end
   end
 
@@ -42,6 +49,10 @@ class UsersController < ApplicationController
     authorize @user
 
     current_user.follow! @user
+
+    alerts[:notice] = "Followed #{@user.name}."
+
+    redirect_to :back
   end
 
   def unfollow
@@ -126,7 +137,7 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     authorize @user
 
-    @recent_responses_with_comments = @user.responses_to_questions_with_comments.order("responses.created_at DESC").kpage(params[:page]).per(5)
+    @recent_comments = @user.comments_on_questions_and_responses.order("comments.created_at DESC").kpage(params[:page].per(5))
   end
 
   def campaigns

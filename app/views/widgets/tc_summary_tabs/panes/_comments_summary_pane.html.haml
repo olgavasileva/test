@@ -9,15 +9,14 @@
     position: relative
     font-size: 1.3rem
 
-    .avatar
+    .avatar img
       border-radius: 50%
-      border-style: solid
-      border-color: #cccc99
       width: 60px
       height: 60px
       left: 10px
       top: 30px
       position: absolute
+
     .user_name
       font-weight: bold
       font-size: 1.1em
@@ -25,11 +24,11 @@
     .posted_date
       font-size: 0.8em
       color:  gray
--question.responses_with_comments.all.each do |c|
+- (question.response_comments + question.comments).each do |c|
   .comment
-    .avatar
+    .avatar=gravatar_for c.user.email, default: :identicon
     %span.user_name
       =c.user.username
     %span.posted_date
       =c.created_at.to_formatted_s(:long)
-    %p=c.comment
+    %p=c.body

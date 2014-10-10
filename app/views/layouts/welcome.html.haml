@@ -1,0 +1,36 @@
+!!!
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+:plain
+  <!--[if gt IE 9] -->
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %title Statisfy | Discover what the world thinks!
+
+    %meta{"http-equiv" => "Content-Type", content: "text/html; charset=utf-8"}
+    %meta{name: :viewport, content: "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"}/
+    = csrf_meta_tags
+
+
+    / Open Sans font from Google CDN
+    %link{href: "http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic", rel: "stylesheet", type: "text/css"}/
+    %link{href: "http://fonts.googleapis.com/css?family=Open+Sans:400italic,300,400,700", rel: "stylesheet", type: "text/css"}/
+    %link{href: "http://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700", rel: "stylesheet", type: "text/css"}/
+
+    = stylesheet_link_tag "clean_canvas", media: "all", "data-turbolinks-track" => true
+    = javascript_include_tag "clean_canvas", "data-turbolinks-track" => true
+
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+
+  %body#clean-canvas.pull-top.fullscreen-image-background.welcome
+    = render 'layouts/shared/header'
+    - if flash.present?
+      #flash
+        - flash.each do |key, value|
+          = content_tag(:div, value, class: "alert alert-#{key}")
+    = yield
+    = render 'layouts/clean_canvas/footer'
+
+    = debug(params) if Rails.env.development?

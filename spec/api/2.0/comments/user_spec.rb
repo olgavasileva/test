@@ -9,8 +9,7 @@ describe 'comments/user' do
   let(:request) { -> { post 'v/2.0/comments/user', params } }
   let(:response_body) { JSON.parse(response.body) }
 
-  before { FactoryGirl.create_list(:text_response, count,
-                                   :with_comment, user: instance.user) }
+  before { FactoryGirl.create_list :text_response_comment, count, user: instance.user }
 
   shared_examples :correct_fields do
     it "responds with correct data fields" do
@@ -36,8 +35,7 @@ describe 'comments/user' do
     let(:user) { FactoryGirl.create(:user) }
     let(:params) { common_params.merge(user_id: user.id) }
 
-    before { FactoryGirl.create_list(:text_response, count,
-                                     :with_comment, user: user) }
+    before { FactoryGirl.create_list :text_response_comment, count, user: user }
     before { request.call }
 
     it "responds with data for all given user's comments" do

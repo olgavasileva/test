@@ -1,14 +1,24 @@
 .img-responsive
   width: 100%
-
 .revealable
   background-color: transparent
-  border-color: transparent
+  &::-webkit-input-placeholder
+  color: white
+  &:-moz-placeholder
+    color: white
+  &::-moz-placeholder
+    color: white
+  &:-ms-input-placeholder
+    color: white
   &:hover, &:focus
-    outline: none
-
-    border: solid 1px  white !important
     background-color: rgba(255,255,255,0.2) !important
+
+*:not(.has-error)
+  >.revealable
+    border-color: transparent
+    &:hover, &:focus
+      outline: none
+      border: solid 1px  white !important
 
 
 .question-header-style-title

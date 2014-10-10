@@ -13,6 +13,7 @@
 
 ActiveRecord::Schema.define(version: 20141010174614) do
 
+
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
     t.text     "body"
@@ -97,16 +98,12 @@ ActiveRecord::Schema.define(version: 20141010174614) do
   create_table "comments", force: true do |t|
     t.text     "body"
     t.integer  "user_id"
-    t.integer  "question_id"
-    t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "response_id"
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
   end
 
-  add_index "comments", ["parent_id"], name: "index_comments_on_parent_id", using: :btree
-  add_index "comments", ["question_id"], name: "index_comments_on_question_id", using: :btree
-  add_index "comments", ["response_id"], name: "index_comments_on_response_id", using: :btree
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "communities", force: true do |t|
@@ -306,6 +303,17 @@ ActiveRecord::Schema.define(version: 20141010174614) do
   add_index "groups_targets", ["group_id"], name: "index_groups_targets_on_group_id", using: :btree
   add_index "groups_targets", ["target_id"], name: "index_groups_targets_on_target_id", using: :btree
 
+  create_table "inappropriate_flags", force: true do |t|
+    t.integer  "question_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "reason"
+  end
+
+  add_index "inappropriate_flags", ["question_id"], name: "index_inappropriate_flags_on_question_id", using: :btree
+  add_index "inappropriate_flags", ["user_id"], name: "index_inappropriate_flags_on_user_id", using: :btree
+
   create_table "inclusions", force: true do |t|
     t.integer  "pack_id"
     t.integer  "question_id"
@@ -370,6 +378,7 @@ ActiveRecord::Schema.define(version: 20141010174614) do
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
 
   create_table "messages", force: true do |t|
+    t.text     "content"
     t.string   "type"
     t.datetime "read_at"
     t.datetime "completed_at"
@@ -378,9 +387,15 @@ ActiveRecord::Schema.define(version: 20141010174614) do
     t.integer  "share_count"
     t.integer  "follower_id"
     t.integer  "question_id"
+    t.integer  "response_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "response_count", default: 0
+    t.integer  "comment_count",  default: 0
+    t.integer  "share_count",    default: 0
+    t.datetime "completed_at"
+    t.integer  "follower_id"
     t.string   "body"
   end
 
@@ -603,6 +618,8 @@ ActiveRecord::Schema.define(version: 20141010174614) do
     t.datetime "fail_after"
     t.boolean  "processing",                         default: false,     null: false
     t.integer  "priority"
+    t.text     "url_args"
+    t.string   "category"
   end
 
   add_index "rpush_notifications", ["app_id", "delivered", "failed", "deliver_after"], name: "index_rapns_notifications_multi", using: :btree
@@ -768,7 +785,10 @@ ActiveRecord::Schema.define(version: 20141010174614) do
     t.boolean  "all_groups"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
   end
+
+  add_index "targets", ["user_id"], name: "index_targets_on_user_id", using: :btree
 
   create_table "targets_users", force: true do |t|
     t.integer  "user_id"

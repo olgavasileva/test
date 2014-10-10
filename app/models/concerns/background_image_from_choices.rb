@@ -2,11 +2,13 @@ module BackgroundImageFromChoices
   extend ActiveSupport::Concern
 
   included do
-    before_create :generate_background_image_from_choices
+    before_validation :generate_background_image_from_choices
 
     private
 
     def generate_background_image_from_choices
+      return unless background_image.nil?
+
       choice_images = choices[0..3].map { |c| c.background_image.image.url }
 
       return if choice_images.empty?
@@ -19,7 +21,7 @@ module BackgroundImageFromChoices
 
       montage.write(file.path)
 
-      self.background_image = QuestionImage.create!(image: file)
+      self.background_image = QuestionImage.new(image: file)
     end
   end
 end

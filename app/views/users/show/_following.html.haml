@@ -1,13 +1,15 @@
 .tab-content.following-tab-content
-  = form_tag user_path(@user), method: 'get' do
-    = hidden_field_tag(:tab, 'following')
-    = text_field_tag(:search_text, params[:search_text], placeholder: "Find people...", class: 'form-control')
+  - if @user == current_user
+    = form_tag user_path(@user), method: 'get' do
+      = hidden_field_tag(:tab, 'following')
+      = text_field_tag(:search_text, params[:search_text], placeholder: "Find people...", class: 'form-control')
   %ul.items
-    - @leaders.each do |leader|
+    - @users.each do |user|
       %li
-        = gravatar_for leader.email, default: :identicon, size: 30
-        = link_to leader.name, leader
+        = gravatar_for user.email, default: :identicon, size: 30
+        = link_to user.name, user
         - if @user == current_user
-          = link_to "Unfollow", unfollow_user_path(leader), class: "btn btn-sm btn-default pull-right"
-  .center
-    = will_paginate @leaders
+          - if @user.following? user
+            = link_to "Unfollow", unfollow_user_path(user), class: "btn btn-sm btn-default pull-right"
+          - else
+            = link_to "Follow", follow_user_path(user), class: "btn btn-sm btn-default pull-right"

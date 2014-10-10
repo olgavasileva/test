@@ -1,10 +1,7 @@
 class Response < ActiveRecord::Base
-
-
-
   belongs_to :user
   belongs_to :question
-  belongs_to :comment
+  has_one :comment, as: :commentable
   has_many :liked_comments, dependent: :destroy
   has_many :comment_likers, through: :liked_comments, source: :user
   has_many :contest_response_votes, dependent: :destroy
@@ -12,18 +9,13 @@ class Response < ActiveRecord::Base
   validates :user, presence: true
 	validates :question, presence: true
 
-  scope :with_comment, -> { where.not(comment_id: nil) }
-
   after_create :record_analytics
   after_create :add_and_push_message
 
+  accepts_nested_attributes_for :comment, reject_if: proc { |attributes| attributes['body'].blank? }
+
   def description
     "Override me!"
-  end
-
-  # Deprecated.
-  def comment_children
-    comment.children
   end
 
   protected
@@ -60,16 +52,14 @@ class Response < ActiveRecord::Base
       self.user.instances.each do |instance|
         next unless instance.push_token.present?
 
-        APNS.send_notification(instance.push_token, :alert => 'Hello iPhone!', :badge => 0, :sound => 'default',
-                                                                       :other => {:type => message.type,
-                                                                                  :created_at => message.created_at,
-                                                                                  :read_at => message.read_at,
-                                                                                  :question_id => message.question_id,
-                                                                                  :response_count => message.response_count,
-                                                                                  :comment_count => message.comment_count,
-                                                                                  :share_count => message.share_count,
-                                                                                  :completed_at => message.completed_at
-                                                                       })
+        instance.push alert:'Hello iPhone!', badge:0, sound:true, other: {type: message.type,
+                                                                          created_at: message.created_at,
+                                                                          read_at: message.read_at,
+                                                                          question_id: message.question_id,
+                                                                          response_count: message.response_count,
+                                                                          comment_count: message.comment_count,
+                                                                          share_count: message.share_count,
+                                                                          completed_at: message.completed_at }
       end
 
     end

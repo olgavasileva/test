@@ -4,6 +4,7 @@ class ResponsesController < ApplicationController
     question.started!
 
     @response = question.responses.new user: current_user
+    @response.build_comment user:current_user
     authorize @response
 
     @next_question = next_question question
