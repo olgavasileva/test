@@ -1042,5 +1042,19 @@ class TwoCents::Questions < Grape::API
 
       {}
     end
+
+    desc "Share a question."
+    params do
+      use :auth
+
+      requires :question_id, type: Integer, desc: "ID of question."
+    end
+    post 'share' do
+      validate_user!
+
+      Question.find(params[:question_id]).increment! :share_count
+
+      {}
+    end
   end
 end

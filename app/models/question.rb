@@ -86,8 +86,8 @@ class Question < ActiveRecord::Base
 		responses_with_comments.count
 	end
 
-	def share_count
-		0
+	def share_counts
+		self.share_count
 	end
 
 	def skip_count
