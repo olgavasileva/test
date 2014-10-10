@@ -9,4 +9,7 @@
         = gravatar_for user.email, default: :identicon, size: 30
         = link_to user.name, user
         - if @user == current_user
-          = link_to "Unfollow", unfollow_user_path(user), class: "btn btn-sm btn-default pull-right"
+          - if @user.following? user
+            = link_to "Unfollow", unfollow_user_path(user), class: "btn btn-sm btn-default pull-right"
+          - else
+            = link_to "Follow", follow_user_path(user), class: "btn btn-sm btn-default pull-right"
