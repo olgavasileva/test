@@ -49,6 +49,10 @@ class UsersController < ApplicationController
     authorize @user
 
     current_user.follow! @user
+
+    alerts[:notice] = "Followed #{@user.name}."
+
+    redirect_to :back
   end
 
   def unfollow
