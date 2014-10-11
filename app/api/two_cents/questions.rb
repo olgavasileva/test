@@ -766,6 +766,8 @@ class TwoCents::Questions < Grape::API
                                            )
       end
 
+      current_user.feed_items.where(question_id:@question.id).destroy_all
+
       @anonymous = declared_params[:anonymous]
     end
 
