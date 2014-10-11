@@ -39,6 +39,8 @@ class Question < ActiveRecord::Base
   delegate :device_image_url, to: :background_image
   delegate :retina_device_image_url, to: :background_image
 
+  default share_count: 0
+
   default :uuid do |question|
     "Q"+UUID.new.generate.gsub(/-/, '')
   end
