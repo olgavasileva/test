@@ -762,7 +762,8 @@ class TwoCents::Questions < Grape::API
         response.comment = Comment.create!(body: params[:comment],
                                            user: response.user,
                                            #question: response.question,
-                                           response: response)
+                                           #response: response
+                                           )
       end
 
       @anonymous = declared_params[:anonymous]
