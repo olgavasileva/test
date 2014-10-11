@@ -48,10 +48,14 @@
               %span.label.label-warning
                 = group.name
             .col-xs-3
-              = link_to 'javascript:void(0)' do
-                .glyphicon.glyphicon-pencil
+              .col-xs-12
+                = link_to "javascript:toggleEditGroup(#{group.id})" do
+                  .glyphicon.glyphicon-pencil
+              .col-xs-12
+                = form_for group, html: { style: 'display: none' } do |f|
+                  = f.text_field :name, class: 'form-control'
             .col-xs-3
-              = link_to 'javascript:void(0)' do
+              = link_to group, method: :delete do
                 .glyphicon.glyphicon-remove
         %br
         .row
@@ -70,4 +74,4 @@
               = f.submit "Join Group!", class: 'btn btn-primary'
       .modal-footer
         %button.btn.btn-default{ data: { dismiss: 'modal' } } Close
-        %button.btn.btn-primary Done
+        %button.btn.btn-primary{ data: { dismiss: 'modal' } } Done
