@@ -1,0 +1,14 @@
+.tab-content.communities-tab-content
+  .center
+    .btn-group
+      = link_to "Join a community",
+                user_path(@user, tab: 'communities', subtab: 'join'),
+                class: "btn btn-default #{'active' if @subtab == 'join'}"
+      = link_to "Create a community",
+                user_path(@user, tab: 'communities', subtab: 'create'),
+                class: "btn btn-default #{'active' if @subtab == 'create'}"
+      = link_to "My communities",
+                user_path(@user, tab: 'communities', subtab: 'my'),
+                class: "btn btn-default #{'active' if @subtab == 'my'}"
+  %br
+  = render "users/show/personal/#{@subtab}"

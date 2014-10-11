@@ -17,7 +17,7 @@ class UsersController < ApplicationController
 
     case @tab
     when 'notifications'
-      authorize @user, :notifications?
+      authorize @user, :show_notifications?
 
       @notifications = @user.messages.page(params[:page])
     when 'questions'
@@ -32,6 +32,19 @@ class UsersController < ApplicationController
         # todo: optimize
         question_ids = @user.comments.map{|c| c.question.id}
         @questions = Question.where(id: question_ids).page(params[:page])
+      end
+    when 'communities'
+      default_subtab = @user == current_user ? 'join' : 'my'
+      @subtab = params.fetch(:subtab, default_subtab)
+
+      case @subtab
+      when 'join'
+        authorize @user, :show_join_communities?
+
+        @communities = Community.search(name_cont: params[:search_text]).result
+      when 'create'
+        authorize @user, :show_create_community?
+      when 'my'
       end
     when 'followers'
       @followers = @user.followers.page(params[:page])

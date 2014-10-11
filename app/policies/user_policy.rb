@@ -37,7 +37,15 @@ class UserPolicy < ApplicationPolicy
     @user == @record && @user.has_role?(:pro)
   end
 
-  def notifications?
+  def show_notifications?
+    @user == @record
+  end
+
+  def show_join_communities?
+    @user == @record
+  end
+
+  def show_create_community?
     @user == @record
   end
 end

@@ -1,0 +1,10 @@
+= form_tag user_path(@user), method: 'get' do
+  = hidden_field_tag(:tab, 'communities')
+  = hidden_field_tag(:subtab, 'join')
+  = text_field_tag(:search_text, params[:search_text], placeholder: "Find communities to join...", class: 'form-control')
+
+%br
+
+%ul
+  - @communities.each do |community|
+    %li= community.name
