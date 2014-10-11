@@ -22,5 +22,9 @@ class Message < ActiveRecord::Base
     return Message.responses.where("comment is not ?", nil).count
   end
 
+  def read?
+    read_at.present?
+  end
+
 
 end

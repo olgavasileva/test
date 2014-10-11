@@ -1,6 +1,8 @@
 require 'will_paginate/array'
 
 class UsersController < ApplicationController
+  after_action :read_all_messages, only: :show, if: Proc.new { @tab == 'notifications' }
+
   def profile
     @user = current_user
     authorize @user
@@ -165,4 +167,9 @@ class UsersController < ApplicationController
     render layout: "pixel_admin"
   end
 
+  private
+
+  def read_all_messages
+    @user.read_all_messages
+  end
 end

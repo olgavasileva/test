@@ -104,10 +104,8 @@ class TwoCents::Messages < Grape::API
     ] do
       validate_user!
 
-      current_user.messages.all().each do |message|
-        message.read_at = Time.zone.now()
-        message.save
-      end
+      current_user.read_all_messages
+
       status 200
       {}
 

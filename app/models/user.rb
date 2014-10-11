@@ -161,6 +161,10 @@ class User < ActiveRecord::Base
     self.feed_questions += new_questions
   end
 
+  def read_all_messages
+    messages.find_each { |m| m.update_attributes(read_at: Time.zone.now) }
+  end
+
   def number_of_answered_questions
     return Response.where(user_id:id).count
   end

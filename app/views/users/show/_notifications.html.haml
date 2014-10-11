@@ -1,6 +1,11 @@
 .tab-content.notifications-tab-content
   %ul.items
     - @notifications.each do |notification|
-      %li= notification.body
+      %li
+        .pull-left
+          = notification.body
+        - unless notification.read?
+          .pull-right
+            .badge.badge-warning New
   .center
     = will_paginate @notifications
