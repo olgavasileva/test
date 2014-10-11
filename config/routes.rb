@@ -60,6 +60,7 @@ LinkchatApp::Application.routes.draw do
     get :account, on: :member
   end
 
+  resources :groups
   resources :group_members
 
   resources :question_types
