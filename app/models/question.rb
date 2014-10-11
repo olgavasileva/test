@@ -100,9 +100,6 @@ class Question < ActiveRecord::Base
 		comments.count + response_comments.count
 	end
 
-	def share_counts
-		self.share_count
-	end
 
 	def skip_count
 		skips.count

@@ -715,6 +715,7 @@ class TwoCents::Questions < Grape::API
                 comment_count:500,
                 share_count:150,
                 skip_count:1000,
+                start_count:500,
                 published_at: "June 5, 2014",
                 sponsor: "Some Person" or nil,
                 creator_id: <User ID of creator>,
@@ -842,6 +843,7 @@ class TwoCents::Questions < Grape::API
                 "response_count": 0,
                 "share_count": 0,
                 "skip_count": 0,
+                "start_count": 0,
                 "sponsor": null,
                 "view_count": null
             },
