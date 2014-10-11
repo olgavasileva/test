@@ -6,7 +6,7 @@
   %ul.items
     - @followers.each do |follower|
       %li
-        = gravatar_for follower.email, default: :identicon, size: 30
+        = gravatar_for follower.email, default: :identicon, size: 20
         = link_to follower.name, follower
         - if @user == current_user
           .groups
