@@ -70,7 +70,7 @@ class SegmentsController < ApplicationController
 
   private
     def find_user
-      @user = User.find_by params[:user_id]
+      @user = User.find_by id:params[:user_id]
     end
 
     def segment_params
