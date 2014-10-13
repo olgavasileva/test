@@ -90,7 +90,7 @@ class User < ActiveRecord::Base
 
   # Comments made by other users about this user's questions and responses
   def comments_on_questions_and_responses
-    Comment.find(comments_on_its_questions.pluck("comments.id") + comments_on_its_responses.pluck("comments.id"))
+    Comment.where id:(comments_on_its_questions.pluck("comments.id") + comments_on_its_responses.pluck("comments.id"))
   end
 
   # Enable saving users without a password if they have another authenication scheme

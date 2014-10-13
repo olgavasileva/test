@@ -108,7 +108,7 @@ class UsersController < ApplicationController
     completes = @user.questions.map{|q| q.response_count }.sum
     skips = @user.questions.map{|q| q.skip_count }.sum
     comments = @user.questions.map{|q| q.comment_count }.sum
-    shares = @user.questions.map{|q| q.share_count }.sum
+    shares = @user.questions.map{|q| q.share_count.to_i }.sum
 
     @campaign_data = [
       { label: "Reach", value: reach },
@@ -152,7 +152,7 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     authorize @user
 
-    @recent_comments = @user.comments_on_questions_and_responses.order("comments.created_at DESC").kpage(params[:page].per(5))
+    @recent_comments = @user.comments_on_questions_and_responses.order("comments.created_at DESC").kpage(params[:page]).per(5)
   end
 
   def campaigns
