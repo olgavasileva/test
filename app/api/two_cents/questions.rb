@@ -640,9 +640,12 @@ class TwoCents::Questions < Grape::API
       end
 
       questions.map do |question|
+        response = user.responses.where(question_id: question.id).first
+
         {
           id: question.id,
-          title: question.title
+          title: question.title,
+          responded_at: response.created_at
         }
       end
     end
