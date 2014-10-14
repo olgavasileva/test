@@ -5,6 +5,29 @@
 
 %br
 
-%ul
+%ul.join-communities-list
   - @communities.each do |community|
-    %li= community.name
+    %li
+      .col-xs-5.info
+        = community.name
+        %br
+        Members:
+        = community.members.count
+      .col-xs-4.controls
+        = link_to 'javascript:void(0)' do
+          %span.fa.fa-info-circle
+        = link_to 'javascript:void(0)' do
+          %span.fa.fa-unlock-alt
+      .col-xs-3.alt-controls
+        - if community.member_users.include? current_user
+          = link_to "Joined", "javascript:removeUserFromCommunity(#{current_user.id}, #{community.id})", class: 'btn btn-default'
+        - else
+          = link_to "Join", "javascript:addUserToCommunity(#{current_user.id}, #{community.id})", class: 'btn btn-default'
+= form_for CommunityMember.new, html: { class: 'hidden' } do
+  = hidden_field_tag :user_id
+  = hidden_field_tag :community_id
+  = submit_tag
+= form_for :community_member, url: community_members_path, method: :delete, html: { id: 'destroy_community_member', class: 'hidden' } do
+  = hidden_field_tag :user_id
+  = hidden_field_tag :community_id
+  = submit_tag
