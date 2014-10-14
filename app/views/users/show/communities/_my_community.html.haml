@@ -1,0 +1,17 @@
+%li
+  .col-xs-5.info
+    = my_community.name
+    %br
+    Members:
+    = my_community.members.count
+  .col-xs-offset-4.col-xs-3.alt-controls
+    - if my_community.member_users.include? current_user
+      = link_to "Delete", my_community, method: :delete, class: 'btn btn-primary'
+  .col-xs-9.controls
+    = link_to 'javascript:void(0)' do
+      %span.fa.fa-info-circle
+  .col-xs-3
+    = link_to 'javascript:void(0)', class: 'btn btn-default btn-xs' do
+      Invite people to
+      %br
+      this community

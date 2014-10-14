@@ -13,6 +13,20 @@ class CommunitiesController < ApplicationController
     redirect_to :back
   end
 
+  def destroy
+    community = Community.find(params[:id])
+
+    authorize community
+
+    if community.destroy
+      flash[:notice] = "Community \"#{community.name}\" was deleted."
+    else
+      flash[:alert] = community.errors.full_messages.join('; ')
+    end
+
+    redirect_to :back
+  end
+
   private
 
   def community_params

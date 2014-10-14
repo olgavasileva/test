@@ -11,4 +11,4 @@
                 user_path(@user, tab: 'communities', subtab: 'my'),
                 class: "btn btn-default #{'active' if @subtab == 'my'}"
   %br
-  = render "users/show/personal/#{@subtab}"
+  = render "users/show/communities/#{@subtab}"

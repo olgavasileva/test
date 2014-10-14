@@ -45,6 +45,8 @@ class UsersController < ApplicationController
       when 'create'
         authorize @user, :show_create_community?
       when 'my'
+        @member_communities = @user.membership_communities
+        @communities = @user.communities
       end
     when 'followers'
       @followers = @user.followers.page(params[:page])
