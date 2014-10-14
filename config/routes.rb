@@ -62,6 +62,7 @@ LinkchatApp::Application.routes.draw do
 
   resources :groups
   resources :group_members
+  resources :communities
   resources :community_members
 
   resources :question_types

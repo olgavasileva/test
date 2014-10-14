@@ -1,0 +1,27 @@
+= form_for Community.new do |f|
+  .row
+    .col-xs-12
+      = f.text_field :name, class: 'form-control',  placeholder: "Group Name..."
+  %br
+  .row
+    .col-xs-6 Public or Private?
+    .col-xs-6
+      .btn-group{ data: { toggle: 'buttons' } }
+        %label.btn.btn-primary.btn-sm.active
+          = f.radio_button :private, false
+          Public
+        %label.btn.btn-primary.btn-sm
+          = f.radio_button :private, true
+          Private
+  %br
+  .row
+    .col-xs-offset-6.col-xs-6
+      = f.password_field :password, class: 'form-control', placeholder: "Group Password (if private)"
+  %br
+  .row
+    .col-xs-12
+      = f.text_area :description, class: 'form-control', placeholder: "Describe your group here..."
+  %br
+  .row
+    .center
+      = f.submit "Create group!", class: 'btn btn-primary'
