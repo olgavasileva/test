@@ -4,7 +4,7 @@
     = link_to "", class:%w(col-xs-5 col-sm-5 ), remote:true do
       %h5 Posted by
       %h6.elipsable
-        = @question.user.name
+        = @question.user.username
     - if user_signed_in?
       - if current_user.following? @question.user
         %div

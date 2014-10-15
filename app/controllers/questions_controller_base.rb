@@ -12,7 +12,7 @@ class QuestionsControllerBase < ApplicationController
     if @question.save
       redirect_to @question.preview? ? new_question_response_path(@question) : [:target, @question]
     else
-      flash[:error] = "There was a problem creating your question."
+      flash[:error] = @question.errors.full_messages.join('; ')
       render "new"
     end
   end
