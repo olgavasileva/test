@@ -640,9 +640,12 @@ class TwoCents::Questions < Grape::API
       end
 
       questions.map do |question|
+        response = user.responses.where(question_id: question.id).first
+
         {
           id: question.id,
-          title: question.title
+          title: question.title,
+          responded_at: response.created_at
         }
       end
     end
@@ -715,6 +718,7 @@ class TwoCents::Questions < Grape::API
                 comment_count:500,
                 share_count:150,
                 skip_count:1000,
+                start_count:500,
                 published_at: "June 5, 2014",
                 sponsor: "Some Person" or nil,
                 creator_id: <User ID of creator>,
@@ -760,9 +764,12 @@ class TwoCents::Questions < Grape::API
       if params[:comment].present?
         response.comment = Comment.create!(body: params[:comment],
                                            user: response.user,
-                                           question: response.question,
-                                           response: response)
+                                           #question: response.question,
+                                           #response: response
+                                           )
       end
+
+      current_user.feed_items.where(question_id:@question.id).destroy_all
 
       @anonymous = declared_params[:anonymous]
     end
@@ -842,6 +849,7 @@ class TwoCents::Questions < Grape::API
                 "response_count": 0,
                 "share_count": 0,
                 "skip_count": 0,
+                "start_count": 0,
                 "sponsor": null,
                 "view_count": null
             },
@@ -1017,6 +1025,20 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       Question.find(params[:question_id]).increment! :start_count
+
+      {}
+    end
+
+    desc "Share a question."
+    params do
+      use :auth
+
+      requires :question_id, type: Integer, desc: "ID of question."
+    end
+    post 'share' do
+      validate_user!
+
+      Question.find(params[:question_id]).increment! :share_count
 
       {}
     end

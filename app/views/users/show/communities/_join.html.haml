@@ -1,0 +1,17 @@
+= form_tag user_path(@user), method: 'get' do
+  = hidden_field_tag(:tab, 'communities')
+  = hidden_field_tag(:subtab, 'join')
+  = text_field_tag(:search_text, params[:search_text], placeholder: "Find communities to join...", class: 'form-control')
+
+%br
+
+%ul.communities-list
+  = render partial: 'users/show/communities/community', collection: @communities
+= form_for CommunityMember.new, html: { class: 'hidden' } do
+  = hidden_field_tag :user_id
+  = hidden_field_tag :community_id
+  = submit_tag
+= form_for :community_member, url: community_members_path, method: :delete, html: { id: 'destroy_community_member', class: 'hidden' } do
+  = hidden_field_tag :user_id
+  = hidden_field_tag :community_id
+  = submit_tag

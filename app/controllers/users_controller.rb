@@ -1,6 +1,8 @@
 require 'will_paginate/array'
 
 class UsersController < ApplicationController
+  after_action :read_all_messages, only: :show, if: Proc.new { @tab == 'notifications' }
+
   def profile
     @user = current_user
     authorize @user
@@ -15,7 +17,7 @@ class UsersController < ApplicationController
 
     case @tab
     when 'notifications'
-      authorize @user, :notifications?
+      authorize @user, :show_notifications?
 
       @notifications = @user.messages.page(params[:page])
     when 'questions'
@@ -30,6 +32,21 @@ class UsersController < ApplicationController
         # todo: optimize
         question_ids = @user.comments.map{|c| c.question.id}
         @questions = Question.where(id: question_ids).page(params[:page])
+      end
+    when 'communities'
+      default_subtab = @user == current_user ? 'join' : 'my'
+      @subtab = params.fetch(:subtab, default_subtab)
+
+      case @subtab
+      when 'join'
+        authorize @user, :show_join_communities?
+
+        @communities = Community.search(name_cont: params[:search_text]).result
+      when 'create'
+        authorize @user, :show_create_community?
+      when 'my'
+        @member_communities = @user.membership_communities
+        @communities = @user.communities
       end
     when 'followers'
       @followers = @user.followers.page(params[:page])
@@ -93,7 +110,7 @@ class UsersController < ApplicationController
     completes = @user.questions.map{|q| q.response_count }.sum
     skips = @user.questions.map{|q| q.skip_count }.sum
     comments = @user.questions.map{|q| q.comment_count }.sum
-    shares = @user.questions.map{|q| q.share_count }.sum
+    shares = @user.questions.map{|q| q.share_count.to_i }.sum
 
     @campaign_data = [
       { label: "Reach", value: reach },
@@ -137,7 +154,7 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     authorize @user
 
-    @recent_comments = @user.comments_on_questions_and_responses.order("comments.created_at DESC").kpage(params[:page].per(5))
+    @recent_comments = @user.comments_on_questions_and_responses.order("comments.created_at DESC").kpage(params[:page]).per(5)
   end
 
   def campaigns
@@ -165,4 +182,9 @@ class UsersController < ApplicationController
     render layout: "pixel_admin"
   end
 
+  private
+
+  def read_all_messages
+    @user.read_all_messages
+  end
 end

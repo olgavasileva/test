@@ -1,7 +1,7 @@
 #users-show
   .container
-    @media (max-width: 480px)
-      padding: 0
+    max-width: 550px
+    padding: 0
   overflow: visible !important
   .center
     text-align: center
@@ -46,6 +46,19 @@
         li
           img
             margin-right: 4px
+    &.communities-tab-content
+      ul.communities-list
+        list-style-type: none
+        padding-left: 0
+        li
+          .info
+            font-size: 13px
+          .controls
+            font-size: 36px
+            a
+              &:first-child
+                margin-right: 4px
+          .alt-controls
     ul.items
       margin-top: 10px
       list-style-type: none
@@ -61,3 +74,5 @@
   .dropdown-menu.right-menu
     right: 0
     left: auto
+  .badge-warning
+    background: #f0ad4e

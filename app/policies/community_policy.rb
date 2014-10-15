@@ -1,6 +1,10 @@
-class GroupMemberPolicy < ApplicationPolicy
+class CommunityPolicy < ApplicationPolicy
   def create?
     @user.present?
+  end
+
+  def update?
+    @user == @record.user
   end
 
   def destroy?

@@ -1,4 +1,4 @@
-class GroupMemberPolicy < ApplicationPolicy
+class CommunityMemberPolicy < ApplicationPolicy
   def create?
     @user.present?
   end

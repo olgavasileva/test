@@ -1,10 +1,8 @@
 class Message < ActiveRecord::Base
   belongs_to :user
-  before_create :defaults
 
-  def defaults
-    self.read_at = nil
-  end
+  default read_at: nil
+  default share_count: 0
 
   def isQuestionUpdated?
     self.type == "QuestionUpdated"
@@ -20,6 +18,10 @@ class Message < ActiveRecord::Base
 
   def number_of_messages_unread
     return Message.responses.where("comment is not ?", nil).count
+  end
+
+  def read?
+    read_at.present?
   end
 
 

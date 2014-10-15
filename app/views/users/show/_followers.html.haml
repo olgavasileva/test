@@ -6,7 +6,7 @@
   %ul.items
     - @followers.each do |follower|
       %li
-        = gravatar_for follower.email, default: :identicon, size: 30
+        = gravatar_for follower.email, default: :identicon, size: 20
         = link_to follower.name, follower
         - if @user == current_user
           .groups
@@ -43,30 +43,35 @@
         %h4.modal-title Manage Follower Groups
       .modal-body
         .row{ style: 'font-size: 1.2em' }
-          - mock_groups = (1..3).to_a.map { |n| Group.new(name: "Group #{n}") }
-          - (@user.groups + mock_groups).each do |group|
+          - @user.groups.each do |group|
             .col-xs-6
               %span.label.label-warning
                 = group.name
             .col-xs-3
-              = link_to 'javascript:void(0)' do
-                .glyphicon.glyphicon-pencil
+              .col-xs-12
+                = link_to "javascript:toggleEditGroup(#{group.id})" do
+                  .glyphicon.glyphicon-pencil
+              .col-xs-12
+                = form_for group, html: { style: 'display: none' } do |f|
+                  = f.text_field :name, class: 'form-control'
             .col-xs-3
-              = link_to 'javascript:void(0)' do
+              = link_to group, method: :delete do
                 .glyphicon.glyphicon-remove
         %br
         .row
-          .col-xs-7
-            = text_field_tag :group_name, nil, placeholder: "New group", class: 'form-control'
-          .col-xs-5
-            = button_tag "Add Group!", class: 'btn btn-primary'
+          = form_for Group.new do |f|
+            .col-xs-7
+              = f.text_field :name, placeholder: "New group", class: 'form-control'
+            .col-xs-5
+              = f.submit "Add Group!", class: 'btn btn-primary'
         %br
         .row
-          .col-xs-7
-            = text_field_tag :group_name, nil, placeholder: "Enter Group Name...", class: 'form-control'
-            = password_field_tag :group_password, nil, placeholder: "Enter Group Password...", class: 'form-control'
-          .col-xs-5
-            = button_tag "Join Group!", class: 'btn btn-primary'
+          = form_for GroupMember.new do |f|
+            .col-xs-7
+              = text_field_tag :group_name, nil, placeholder: "Enter Group Name...", class: 'form-control'
+              = password_field_tag :group_password, nil, placeholder: "Enter Group Password...", class: 'form-control'
+            .col-xs-5
+              = f.submit "Join Group!", class: 'btn btn-primary'
       .modal-footer
         %button.btn.btn-default{ data: { dismiss: 'modal' } } Close
-        %button.btn.btn-primary Done
+        %button.btn.btn-primary{ data: { dismiss: 'modal' } } Done

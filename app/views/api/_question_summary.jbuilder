@@ -11,6 +11,7 @@ json.view_count @question.view_count
 json.comment_count @question.comment_count
 json.share_count @question.share_count
 json.skip_count @question.skip_count
+json.start_count @question.start_count
 json.published_at @question.created_at.to_i
 json.sponsor nil
 json.creator_id @question.user.id
