@@ -22,7 +22,7 @@
             %span.count= @user.followers.count
             followers
         - if @user != current_user
-          =link_to "Follow", user_path(@user), class: 'btn btn-default'
+          = link_to "Follow", user_path(@user), class: 'btn btn-default'
       .clearfix
     %ul.nav.nav-tabs
       - if @user == current_user
