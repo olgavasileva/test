@@ -14,16 +14,18 @@ jQuery( function($){
 	/* MAIN NAVIGATION
 	/*---------------------*/
 		
-	$(window).on('scroll', function(){
-		if( $(window).width() > 1024 ) {
-			if( $(document).scrollTop() > 150 ) {
-				setNavbarLight();
-			}else {
-				setNavbarTransparent();
-			}
-		}
-	});	
-	
+  if ( $('#welcome').length ) {
+    $(window).on('scroll', function(){
+      if( $(window).width() > 1024 ) {
+        if( $(document).scrollTop() > 150 ) {
+          setNavbarLight();
+        }else {
+          setNavbarTransparent();
+        }
+      }
+    });	
+  } 
+
 	function toggleNavbar() {
 		if( ($(window).width() > 1024) && ($(document).scrollTop() <= 150) ) {
 			setNavbarTransparent();
@@ -32,7 +34,7 @@ jQuery( function($){
 		}
 	}
 
-	toggleNavbar();
+	//toggleNavbar();
 
 	$(window).resize( function() {
 		toggleNavbar();	
