@@ -19,8 +19,6 @@
           .col-xs-12
           = render "questions/response_fields/shared/sharing", question: question
       .col-xs-12.btn-group
-        %div.equalizer-sm.hidden-lg
-        %div.equalizer-md.hidden-lg.hidden-sm
         -question.choices.all.each do |c|
           .col-xs-12.selectable-option.btn.form-group.clearfix
             %label.btn-primary.negative.col-xs-12
