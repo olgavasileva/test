@@ -595,12 +595,15 @@ class TwoCents::Questions < Grape::API
       optional :user_id, type: Integer, desc: "User ID. Defaults to logged in user's ID."
       optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all questions."
       optional :per_page, type: Integer, default: 15, desc: "Number of questions per page."
+      optional :reverse, type: Boolean, default: false, desc: "Whether to reverse order."
     end
     post 'asked' do
       user_id = params[:user_id]
       user = user_id.present? ? User.find(user_id) : current_user
 
-      questions = user.questions
+      questions = user.questions.order(:created_at)
+
+      questions = questions.reverse if params[:reverse]
 
       if params[:page]
         questions = questions.paginate(page: params[:page],
@@ -627,12 +630,15 @@ class TwoCents::Questions < Grape::API
       optional :user_id, type: Integer, desc: "User ID. Defaults to logged in user's ID."
       optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all questions."
       optional :per_page, type: Integer, default: 15, desc: "Number of questions per page."
+      optional :reverse, type: Boolean, default: false, desc: "Whether to reverse order."
     end
     post 'answered' do
       user_id = params[:user_id]
       user = user_id.present? ? User.find(user_id) : current_user
 
-      questions = user.answered_questions
+      responses = user.responses.order(:created_at)
+      responses = responses.reverse if params[:reverse]
+      questions = responses.map(&:question).uniq
 
       if params[:page]
         questions = questions.paginate(page: params[:page],

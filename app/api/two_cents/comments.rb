@@ -23,12 +23,15 @@ class TwoCents::Comments < Grape::API
       optional :user_id, type: Integer, desc: "User ID. Defaults to logged in user's ID."
       optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all questions."
       optional :per_page, type: Integer, default: 15, desc: "Number of questions per page."
+      optional :reverse, type: Boolean, default: false, desc: "Whether to reverse order."
     end
     post 'user' do
       user_id = declared_params[:user_id]
       user = user_id.present? ? User.find(user_id) : current_user
 
-      questions = user.comments.map{|c|c.question}.uniq
+      comments = user.comments.order(:created_at)
+      comments = comments.reverse if params[:reverse]
+      questions = comments.map(&:question).uniq
 
       if declared_params[:page]
         questions = questions.paginate(page: declared_params[:page],

@@ -70,4 +70,12 @@ describe :answered do
     end
   end
 
+  context "with reverse" do
+    let(:params) { common_params.merge(reverse: true) }
+
+    before { request.call }
+
+    include_examples :correct_fields
+  end
+
 end
