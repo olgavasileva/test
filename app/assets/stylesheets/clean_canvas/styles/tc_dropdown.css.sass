@@ -1,6 +1,9 @@
 @import "variables.css.sass"
 .tc-dropdown
   margin-top: 5px
+  margin-bottom: 60px!important
+  &.form-group
+    margin-bottom: 60px!important
   .dropdown-toggler
     position: relative
     cursor: pointer
@@ -51,8 +54,10 @@
         font-size: 1.1em
         padding-left: 10px
         padding-right: 10px
-        &:nth-child(2n)
+        color: $primary_color
+        &:nth-child(2n+1)
           background-color: #ccccff
         &:hover
           background-color: $primary_background_color
           color: white
+          cursor: pointer

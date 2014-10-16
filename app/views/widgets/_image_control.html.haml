@@ -9,59 +9,67 @@
 .image_control.row{:id=>"#{id}",:class=>"#{base_class} #{distro}"}
   <Image manipulation tools>
   -if(distro==:upload_piramid || distro==:upload_first)
-    %a.question-image-uploader.upload-trigger{:class=>"#{upload_class}"}
+    %button.question-image-uploader.transparent.upload-trigger{:class=>"#{upload_class}",:type=>:button}
       %span.glyphicon.glyphicon-camera
       %input{:type=>'file'}
   =link_to '#', class:[:prev_image,"#{arrows_class}"] do
     %span.glyphicon.glyphicon-chevron-left
   -if(distro==:upload_middle)
-    %a.question-image-uploader.upload-trigger.centered{:class=>"#{upload_class}"}
+    %button.question-image-uploader.transparent.upload-trigger.centered{:class=>"#{upload_class}",:type=>:button}
       %span.glyphicon.glyphicon-camera
       %input{:type=>'file'}
   =link_to '#', class:[:next_image,"#{arrows_class}"] do
     %span.glyphicon.glyphicon-chevron-right
   -if(distro==:upload_last)
-    %a.question-image-uploader.upload-trigger{:class=>"#{upload_class}"}
+    %button.question-image-uploader.transparent.upload-trigger{:class=>"#{upload_class}",:type=>:button}
       %span.glyphicon.glyphicon-camera
       %input{:type=>'file'}
 
 :javascript
+
+
+
+
+  function registerHandlers(){
+    console.log('registering');
+    $('body').off('click','.question-image-uploader');
+    window.tcHandlers.uploaderHandlerTrigger=$('body').on('click','.question-image-uploader',function(event){
+      $(this).find('[type="file"]')[0].click();
+    })
+
+    var container=$(this).closest('.canned');
+    $('.question-image-uploader input[type="file"]').off('change');
+    window.tcHandlers.uploaderHandlerFile=$('.question-image-uploader input[type="file"]').on('change',function(event){
+      var data = new FormData();
+      data.append('image', this.files[0]);
+      $.ajax({
+        url: "/#{type}_images",
+        data: data,
+        cache: false,
+        contentType: "multipart/form-data",
+        processData: false,
+        type: 'POST',
+        success: function(data){
+          alert(data);
+        }
+      });
+    })
+  }
+
+  if(window.tcHandlers){
+    registerHandlers();
+  }else{
+    $(registerHandlers);
+  }
+
+
   if(!window.tcHandlers){
-    window.tcHandlers={};
-  }
-  if(!window.tcHandlers.usedImages){
-    window.tcHandlers.usedImages=[];
-  }
-  window.tcHandlers.usedImages.push("#{f.object.web_image_url}");
+      window.tcHandlers={};
+    }
+    if(!window.tcHandlers.usedImages){
+      window.tcHandlers.usedImages=[];
+    }
+    window.tcHandlers.usedImages.push("#{f.object.web_image_url}");
 
-  $(function(){
-      if(!window.tcHandlers){
-        window.tcHandlers={};
-      }
-      if(!window.tcHandlers.uploaderHandlerTrigger){
-          window.tcHandlers.uploaderHandlerTrigger=$('.question-image-uploader').on('click',function(event){
-          //event.preventDefault();
-            $(this).find('[type="file"]')[0].click();
-          })
-      }
-      if(!window.tcHandlers.uploaderHandlerFile){
-          var container=$(this).closest('.canned');
-          window.tcHandlers.uploaderHandlerFile=$('.question-image-uploader input[type="file"]').on('change',function(event){
-            var data = new FormData();
-            data.append('image', this.files[0]);
 
-            $.ajax({
-                url: "/#{type}_images",
-                data: data,
-                cache: false,
-                contentType: "multipart/form-data",
-                processData: false,
-                type: 'POST',
-                success: function(data){
-                    alert(data);
-                }
-            });
 
-          })
-      }
-  })
