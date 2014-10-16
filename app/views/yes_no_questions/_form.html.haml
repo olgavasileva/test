@@ -38,9 +38,9 @@
                   =render partial:'/widgets/image_control',locals:{f: f,id: 'background_selector',base_class: 'revert',type: 'question'}
             .col-xs-12
               =f.simple_fields_for :choices do |c|
-                .col-xs-12.form-group.answer-option
+                .col-xs-12.form-group.answer-option.textchoice
                   %div.row
-                    %a.btn.btn-primary.col-xs-12.option-text
+                    %a.btn.btn-primary.col-xs-12.option-text.answer-option
                       .row
                         .col-xs-2.not_visible
                           .bgimage
