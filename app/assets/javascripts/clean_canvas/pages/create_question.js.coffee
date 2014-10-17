@@ -54,7 +54,7 @@ $ ->
   $(document).on 'click','.question-image-uploader',(e)->
     $(this).find('[type="file"]')[0].click()
 
-  $('.question-image-uploader input[type="file"]').on 'change',(e)->
+  $(document).on 'change','.question-image-uploader input[type="file"]',(e)->
     type=$(this).data('image-type')
     data = new FormData()
     data.append('image', this.files[0])
@@ -68,3 +68,13 @@ $ ->
       success: (data)->
         alert(data)
     })
+
+  $(document).on 'click','.tc-dropdown .dropdown-menu-item', ()->
+    root=$(this).parent().parent()
+    text=$(this).html()
+    value=$(this).attr('data-value')||text
+    root.find('.value-holder').val(value)
+    root.find('.value-label').html(text)
+
+
+  return null
