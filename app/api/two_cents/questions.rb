@@ -27,8 +27,8 @@ class TwoCents::Questions < Grape::API
 
         message_to_send = generate_message_from_question(question)
 
-        send_text_message (phone_numbers, message_to_send)  if (phone_numbers)
-        UserMailer.deliver_notification (email_addresses, message_to_send) if (email_addresses)
+        send_text_message phone_numbers, message_to_send  if (phone_numbers)
+        UserMailer.deliver_notification email_addresses, message_to_send if (email_addresses)
 
       end
 
