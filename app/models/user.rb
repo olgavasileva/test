@@ -134,31 +134,43 @@ class User < ActiveRecord::Base
     feed_items.where(question_id:question).blank? && responses.where(question_id:question).blank? && skipped_items.where(question_id:question).blank? && questions.where(id:question).blank?
   end
 
-  # Add more public questions to the feed
-  # Do not add questions that have been skipped or answered by this user
-  # Do not add questions that are already in this user's feed
-  def feed_more_questions num_to_add
-    all_public_questions = Question.active.currently_targetable.where(kind: 'public')
+  def feed_more_questions(count)
+    # Potential questions are in active state.
+    potential_questions = Question.active
 
-    # small_dataset = all_public_questions.count < 1000 &&  skipped_items.count + responses.count + feed_items.count < 1000
-    small_dataset = true # TODO: for now, just use the easier unpotimized selection logic
+    # Potential questions have not been in the user's feed.
+    used_questions = feed_questions + answered_questions + skipped_questions
+    potential_questions = questions.where.not(id: used_questions)
 
-    new_questions = if small_dataset
-      # TODO: This is inefficient for very large datasets - optimize when needed
-      candidate_ids = all_public_questions.where.not(id:skipped_questions.pluck("questions.id") + answered_questions.pluck("questions.id") + feed_questions.pluck("questions.id"))
-      Question.where(id:candidate_ids.sample(num_to_add)).order("CASE WHEN questions.position IS NULL THEN 1 ELSE 0 END ASC").order("questions.position ASC").order("RAND()")
-    else
-      # Grabbing random items from a small sample is prone to too many misses, so only do this on a larger dataset
-      new_questions = []
-      num_candidates = all_public_questions.count
-      while new_questions.count < num_to_add
-        candidate = all_public_questions.order(:id).offset(rand(num_candidates)).limit(1)
-        new_questions << candidate if wants_question?(candidate)
-      end
-      new_questions
-    end
+    # Questions are in a specific order.
+    questions = []
 
-    self.feed_questions += new_questions
+    # 1) special case
+
+    # 2) sponsored
+
+    #   a) targeted
+
+    #   b) untargeted
+
+    # 3) directly targeted
+
+    # 4) staff
+
+    # 5) followed users
+
+    #   a) created & shared
+
+    #   b) completed & shared
+
+    #   c) created & not shared
+
+    # 6) top scoring
+
+    # 7) random
+    questions += Question.where.not(id: questions).order_by_rand
+
+    self.feed_questions += questions.first(count)
   end
 
   def read_all_messages
