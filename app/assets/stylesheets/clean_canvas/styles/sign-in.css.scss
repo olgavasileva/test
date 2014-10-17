@@ -268,14 +268,15 @@
   width: 96px;
   height: 30px; }
 #sign_in2 .signin_box {
-  float: right; }
+  /*float: right;*/
+}
 #sign_in2 .signin_box .box {
-  float: right;
+  #float: right;
   box-shadow: 0 0 5px 0 #eeeeee;
   background: white;
   border: 1px solid #DFDFDF;
   border-radius: 5px;
-  width: 90%;
+  /*width: 90%;*/
   padding: 35px 0 30px; }
 #sign_in2 .signin_box .box .box_cont {
   margin: 0 auto;
