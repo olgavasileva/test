@@ -6,7 +6,7 @@
         .panel-title
           .row
             .col-xs-3
-              - if !@response.question.preview?
+              - if @response.question.preview?
                 =link_to ([:edit, @response.question]) do
                   %span.glyphicon.glyphicon-chevron-left
               - else
@@ -14,7 +14,7 @@
                   %span.glyphicon.glyphicon-chevron-left
             .col-xs-6
             .col-xs-3
-              - if !@response.question.preview?
+              - if @response.question.preview?
                 = link_to "Continue", [:target, @response.question]
               - else
                 =link_to root_path do
