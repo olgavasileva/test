@@ -150,6 +150,9 @@ class User < ActiveRecord::Base
     questions = []
 
     # 1) special case
+    questions += potential_questions.where(special: true).order_by_rand
+
+    return questions.first(count) if questions.count >= count
 
     # 2) sponsored
     #   a) targeted
@@ -157,7 +160,7 @@ class User < ActiveRecord::Base
 
     # 3) directly targeted
     targets = TargetsUser.where(user_id: id).map(&:target)
-    questions += potential_questions.where(target_id: direct_targets)
+    questions += potential_questions.where(target_id: targets)
                                     .where.not(id: questions)
                                     .order_by_rand
 
