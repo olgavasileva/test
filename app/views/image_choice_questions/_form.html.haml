@@ -4,7 +4,7 @@
 
 .row.question-builder#content_constraint
   .col-xs-12.col-sm-8.col-sm-push-2
-    .imagechoice.panel.panel-default
+    = simple_form_for @question,:html=>{class:"imagechoice panel panel-default"} do |f|
       .panel-heading.col-xs-12
         .panel-title.row
           .col-xs-3
@@ -12,7 +12,7 @@
               %span.glyphicon.glyphicon-chevron-left
       .panel-body
         .col-xs-12
-          = simple_form_for @question do |f|
+          %div
             =f.input :type, as: :hidden
             =f.input :rotate, as: :hidden
             .row.question.form-group
