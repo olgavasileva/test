@@ -13,14 +13,17 @@
 
 .row.question-builder#content_constraint
   .col-xs-12.col-sm-8.col-sm-push-2
-    .yesno.panel.panel-default
+    = simple_form_for @question, :html=>{class:"yesno panel panel-default"} do |f|
       .panel-heading.col-xs-12
         .panel-title.row
           .col-xs-3
             =link_to question_types_path do
               %span.glyphicon.glyphicon-chevron-left
+          .col-xs-6.col-xs-push-3
+            =f.button :submit, "Preview", class: %w(btn-primary negative transparent no-border btn-lg)
+
       .panel-body.imagechooser
-        = simple_form_for @question do |f|
+        %div
           =f.input :type, as: :hidden
           =f.input :rotate, as: :hidden
           .hidden
@@ -49,15 +52,6 @@
                       =c.input :title, label: false, wrapper_html: { class: "question_choice_title"}, placeholder: "Type a response"
           .row
             =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-xs-12 form-group", :name=>"yes_no_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
-          .form-group.clearfix
-          .form-group.clearfix
-          .form-group.clearfix
-          .row
-            .col-xs-3
-              =f.button :submit, "Preview", class: %w(btn-primary negative transparent no-border btn-lg)
-            .col-xs-4.col-xs-push-5.col-sm-3.col-sm-push-6
-              =f.button :submit, "Continue", class: %w(btn-primary negative transparent no-border btn-lg)
-
 :javascript
   $(function(){
 

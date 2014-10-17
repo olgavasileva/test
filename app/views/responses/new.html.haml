@@ -1,20 +1,27 @@
 %img.blured-background{src: "#{@response.question.web_image_url||image_path("fallback/choice1.png")}"}
 .row#content_constraint
   .col-xs-12.col-sm-8.col-sm-push-2.img-overlay
-    .panel.panel-default
+    = simple_form_for [:question, setup_response(@response)], :html=>{class:"panel panel-default"} do |form|
       .panel-heading
         .panel-title
           .row
-            .col-xs-3.col-sm-2
-              =link_to root_path do
-                %span.glyphicon.glyphicon-chevron-left
-            .col-xs-6.col-sm-8
-            .col-xs-3.col-sm-2
-              =link_to root_path do
-                %span.glyphicon.glyphicon-chevron-right
+            .col-xs-3
+              - if !@response.question.preview?
+                =link_to ([:edit, @response.question]) do
+                  %span.glyphicon.glyphicon-chevron-left
+              - else
+                =link_to root_path do
+                  %span.glyphicon.glyphicon-chevron-left
+            .col-xs-6
+            .col-xs-3
+              - if !@response.question.preview?
+                = link_to "Continue", [:target, @response.question]
+              - else
+                =link_to root_path do
+                  %span.glyphicon.glyphicon-chevron-right
       .panel-body.response
         .row
-          = simple_form_for [:question, setup_response(@response)] do |form|
+          %div
             = form.association :question, as: :hidden
             = form.association :user, as: :hidden
             = form.input :type, as: :hidden

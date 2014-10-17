@@ -10,6 +10,8 @@
           .col-xs-3
             =link_to question_types_path do
               %span.glyphicon.glyphicon-chevron-left
+          .col-xs-6.col-xs-push-3
+            =f.button :submit, "Preview", class: %w(btn-primary negative transparent no-border btn-lg)
       .panel-body
         .col-xs-12
           %div
@@ -39,12 +41,6 @@
 
             .row.form-group
               =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category", :name=>"image_choice_question[category_id]",:value_field=>"id"}}
-            .row
-              .row
-                .col-xs-3
-                  =f.button :submit, "Preview", class: %w(btn-primary negative transparent no-border btn-lg)
-                .col-xs-4.col-xs-push-5.col-sm-3.col-sm-push-6
-                  =f.button :submit, "Continue", class: %w(btn-primary negative transparent no-border btn-lg)
 :javascript
   $(function(){
       return;

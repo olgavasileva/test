@@ -29,6 +29,12 @@
     box-shadow: none
     resize: none
 
+.btn-default,
+.btn-primary
+  background-color: $primary_background_color
+  &:hover
+    background-color: $primary_background_color_hover
+
 .btn-default.negative:not(.active), .btn-primary.negative:not(.active)
 
   background-color: white
@@ -121,9 +127,12 @@ footer#footer
     border-bottom-style: none
   background-color: #f5f5f5
 
-
-  .btn-default,
-  .btn-primary
-    background-color: $primary_background_color
-    &:hover
-      background-color: $primary_background_color_hover
+form.panel
+  &>.panel-heading
+    .col-xs-3,
+    .col-xs-6
+      .btn
+        padding: 0
+      text-align: left !important
+      &:last-child
+        text-align: right !important
