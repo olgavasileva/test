@@ -53,6 +53,11 @@ gem 'gravatar_for'
 gem 'font-awesome-rails'  # Used by pixel-admin - The Font-Awesome web fonts and stylesheets as a Rails engine for use with the asset pipeline
 gem "animate-rails"       # Used by pixel-admin
 
+
+
+gem 'twilio-ruby'       # Used by backend for sending SMS messages to invited users
+
+
 gem 'grape',            # API DSL
   github: 'intridea/grape'
 gem 'grape-rabl'        # rabl for Grape rendering

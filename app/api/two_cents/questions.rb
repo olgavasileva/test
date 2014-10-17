@@ -22,6 +22,43 @@ class TwoCents::Questions < Grape::API
           optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
         end
       end
+
+      def send_email_or_sms_to_invited_users(question, phone_numbers, email_addresses)
+
+        message_to_send = generate_message_from_question(question)
+
+        send_text_message (phone_numbers, message_to_send)  if (phone_numbers)
+        UserMailer.deliver_notification (email_addresses, message_to_send) if (email_addresses)
+
+      end
+
+      def send_text_message(phone_numbers, message_to_send)
+        number_to_send_to = params[:number_to_send_to]
+
+
+
+        @twilio_client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_AUTH_TOKEN']
+
+        twilio_phone_number = ENV['TWILIO_FROM']
+
+        phone_numbers.each do |number_to_send_to|
+
+          @twilio_client.account.sms.messages.create(
+              :from => "+1#{twilio_phone_number}",
+              :to => number_to_send_to,
+              :body => message_to_send
+          )
+
+        end
+
+      end
+
+      def generate_message_from_question(question)
+        "Hi! This is #{question.user.username}. Check this awesome question: \"#{question.title}\" on Statisfy"
+      end
+
+
+
     end
 
     #
@@ -87,6 +124,9 @@ class TwoCents::Questions < Grape::API
       end
 
       @question.save!
+
+      # Send SMS Message or Email to invited contacts
+      send_email_or_sms_to_invited_users @question, params[:invite_phone_numbers], params[:invite_email_addresses]
 
       target = Target.create! params[:targets].to_h.merge(user: current_user)
       @question.apply_target! target
@@ -163,6 +203,9 @@ class TwoCents::Questions < Grape::API
 
       @question.save!
 
+      # Send SMS Message or Email to invited contacts
+      send_email_or_sms_to_invited_users @question, params[:invite_phone_numbers], params[:invite_email_addresses]
+
       target = Target.create! params[:targets].to_h.merge(user: current_user)
       @question.apply_target! target
     end
@@ -225,6 +268,10 @@ class TwoCents::Questions < Grape::API
       end
 
       @question.save!
+
+      # Send SMS Message or Email to invited contacts
+      send_email_or_sms_to_invited_users @question, params[:invite_phone_numbers], params[:invite_email_addresses]
+
 
       target = Target.create! params[:targets].to_h.merge(user: current_user)
       @question.apply_target! target
@@ -290,6 +337,10 @@ class TwoCents::Questions < Grape::API
 
       @question.save!
 
+      # Send SMS Message or Email to invited contacts
+      send_email_or_sms_to_invited_users @question, params[:invite_phone_numbers], params[:invite_email_addresses]
+
+
       target = Target.create! params[:targets].to_h.merge(user: current_user)
       @question.apply_target! target
     end
@@ -346,6 +397,10 @@ class TwoCents::Questions < Grape::API
       @question = TextQuestion.new(question_params)
 
       @question.save!
+
+      # Send SMS Message or Email to invited contacts
+      send_email_or_sms_to_invited_users @question, params[:invite_phone_numbers], params[:invite_email_addresses]
+
 
       target = Target.create! params[:targets].to_h.merge(user: current_user)
       @question.apply_target! target

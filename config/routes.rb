@@ -102,6 +102,7 @@ LinkchatApp::Application.routes.draw do
   resources :choice_images
   resources :order_choice_images
 
+
   mount TwoCents::API =>'/'
   get "/docs" => 'docs#index'
 
