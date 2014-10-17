@@ -21,7 +21,7 @@
       .col-xs-12.btn-group
         -question.choices.all.each do |c|
           .col-xs-12.selectable-option.btn.form-group.clearfix
-            %label.btn-primary.negative.col-xs-12
+            %label.btn-primary.col-xs-12
               .row
                 %div.col-xs-3
                   = responsive_image_tag((question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")

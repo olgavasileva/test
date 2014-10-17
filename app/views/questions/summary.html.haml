@@ -14,14 +14,15 @@
 %img.blured-background{src: "#{@question.web_image_url||image_path("fallback/choice1.png")}"}
 .row#content_constraint
   .col-xs-12.col-sm-8.col-sm-push-2.img-overlay
-    .panel.panel-default
+    .panel.panel-default.form
       .panel-heading
         .panel-title
           .row
-            .col-xs-6.col-xs-push-3.col-sm-8.col-sm-push-2
+            .col-xs-3
+            .col-xs-6
               Question Results
             - if @next_question
-              .col-xs-3.col-sm-2
+              .col-xs-3
                 = link_to new_question_response_path(@next_question) do
                   %span.glyphicon.glyphicon-chevron-right
       .panel-body.summary
