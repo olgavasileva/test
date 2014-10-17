@@ -163,11 +163,17 @@ class User < ActiveRecord::Base
     return questions.first(count) if questions.count >= count
 
     # 4) staff
-    #   a) targeted
-    #   b) untargeted
     staff = Group.find_by_name("Staff").try(:users) || []
-    questions += potential_questions.where(user_id: staff)
+
+    #   a) targeted
+    questions += potential_questions.where(user_id: staff, target_id: targets)
                                     .where.not(id: questions).order_by_rand
+
+    return questions.first(count) if questions.count >= count
+
+    #   b) untargeted
+    questions += potential_questions.where.not(id: questions, target_id: targets)
+                                    .where(user_id: staff).order_by_rand
 
     return questions.first(count) if questions.count >= count
 
@@ -194,9 +200,13 @@ class User < ActiveRecord::Base
     return questions.first(count) if questions.count >= count
 
     # 6) top scoring
+    questions += potential_questions.where.not(id: questions)
+                                    .order('score DESC')
 
-    # 7) random
-    questions += Question.where.not(id: questions).order_by_rand
+    return questions.first(count) if questions.count >= count
+
+    # 7) random public
+    questions += Question.where.not(id: questions).order_by_rand.limit(10)
 
     questions.first(count)
   end
