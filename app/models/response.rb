@@ -11,6 +11,7 @@ class Response < ActiveRecord::Base
 
   after_create :record_analytics
   after_create :add_and_push_message
+  after_create :modify_question_score
 
   accepts_nested_attributes_for :comment, reject_if: proc { |attributes| attributes['body'].blank? }
 
@@ -62,5 +63,9 @@ class Response < ActiveRecord::Base
                                                                           completed_at: message.completed_at }
       end
 
+    end
+
+    def modify_question_score
+      question.increment! :score, comment.present? ? 1.5 : 1.0
     end
 end
