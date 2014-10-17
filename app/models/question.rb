@@ -45,7 +45,7 @@ class Question < ActiveRecord::Base
     "Q"+UUID.new.generate.gsub(/-/, '')
   end
 
-  # before_create :add_creation_score
+  before_create :add_creation_score
 
   def apply_target! target
     self.update_attribute :target, target
@@ -108,4 +108,11 @@ class Question < ActiveRecord::Base
 	def skip_count
 		skips.count
 	end
+
+  private
+
+  def add_creation_score
+    self.score ||= 0
+    self.score += comment.present? ? 1.5 : 1.0
+  end
 end
