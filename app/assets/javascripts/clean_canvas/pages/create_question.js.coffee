@@ -1,3 +1,9 @@
+if !window.tcHandlers
+  window.tcHandlers={}
+
+window.tcHandlers.usedImages=[]
+
+
 $ ->
   change_image_by = (delta, scope) ->
     if(!window.tcHAndlers)
@@ -44,3 +50,21 @@ $ ->
   $(document).on "click", ".image_control a.prev_image", (e)->
     e.preventDefault()
     change_image_by -1, $(this).closest(".imagechooser")
+
+  $(document).on 'click','.question-image-uploader',(e)->
+    $(this).find('[type="file"]')[0].click()
+
+  $('.question-image-uploader input[type="file"]').on 'change',(e)->
+    type=$(this).data('image-type')
+    data = new FormData()
+    data.append('image', this.files[0])
+    $.ajax({
+      url: "/"+type+"_images",
+      data: data,
+      cache: false,
+      contentType: "multipart/form-data",
+      processData: false,
+      type: 'POST',
+      success: (data)->
+        alert(data)
+    })
