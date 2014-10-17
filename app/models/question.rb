@@ -45,6 +45,8 @@ class Question < ActiveRecord::Base
     "Q"+UUID.new.generate.gsub(/-/, '')
   end
 
+  before_create :add_creation_score
+
   def apply_target! target
     self.update_attribute :target, target
     target.apply_to_question self

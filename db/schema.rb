@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141010174614) do
+ActiveRecord::Schema.define(version: 20141017025551) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -366,16 +366,19 @@ ActiveRecord::Schema.define(version: 20141010174614) do
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
 
   create_table "messages", force: true do |t|
+    t.text     "content"
     t.string   "type"
     t.datetime "read_at"
-    t.datetime "completed_at"
-    t.integer  "response_count"
-    t.integer  "comment_count"
-    t.integer  "share_count"
+    t.integer  "other_user_id"
     t.integer  "question_id"
+    t.integer  "response_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "response_count", default: 0
+    t.integer  "comment_count",  default: 0
+    t.integer  "share_count",    default: 0
+    t.datetime "completed_at"
     t.integer  "follower_id"
     t.string   "body"
   end
@@ -462,15 +465,16 @@ ActiveRecord::Schema.define(version: 20141010174614) do
     t.integer  "studio_id"
     t.integer  "view_count"
     t.integer  "start_count"
-    t.boolean  "target_all",            default: false
-    t.boolean  "target_all_followers",  default: false
-    t.boolean  "target_all_groups",     default: false
+    t.boolean  "target_all",                                    default: false
+    t.boolean  "target_all_followers",                          default: false
+    t.boolean  "target_all_groups",                             default: false
     t.integer  "targeted_reach"
     t.string   "uuid"
-    t.boolean  "anonymous",             default: false
-    t.boolean  "currently_targetable",  default: true
+    t.boolean  "anonymous",                                     default: false
+    t.boolean  "currently_targetable",                          default: true
     t.integer  "target_id"
     t.integer  "share_count"
+    t.decimal  "score",                 precision: 5, scale: 2, default: 0.0
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree

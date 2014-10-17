@@ -75,6 +75,8 @@ gem 'wirble'
 
 gem 'geocoder'          # Geolocation
 
+gem 'randumb'           # Query results random ordering
+
 gem 'acts-as-taggable-on'           # A tagging plugin for Rails applications that allows for custom tagging along dynamic contexts
 gem 'roo'                           # Roo provides an interface to Open Office, Excel, and Google Spreadsheets
 gem 'rubyzip'                       # rubyzip is a ruby library for reading and writing zip files

@@ -24,7 +24,11 @@ class User < ActiveRecord::Base
   has_many :community_members, through: :communities, source: :user
   has_many :community_memberships, class_name: 'CommunityMember'
   has_many :membership_communities, through: :community_memberships, source: :community
+
   has_many :targets, dependent: :destroy
+
+  has_many :targets_users
+  has_many :following_targets, through: :targets_users, source: :target
 
   has_many :messages, dependent: :destroy
 
@@ -134,31 +138,81 @@ class User < ActiveRecord::Base
     feed_items.where(question_id:question).blank? && responses.where(question_id:question).blank? && skipped_items.where(question_id:question).blank? && questions.where(id:question).blank?
   end
 
-  # Add more public questions to the feed
-  # Do not add questions that have been skipped or answered by this user
-  # Do not add questions that are already in this user's feed
-  def feed_more_questions num_to_add
-    all_public_questions = Question.active.currently_targetable.where(kind: 'public')
+  def next_feed_questions(count = 10)
+    # Potential questions are in active state.
+    potential_questions = Question.active
 
-    # small_dataset = all_public_questions.count < 1000 &&  skipped_items.count + responses.count + feed_items.count < 1000
-    small_dataset = true # TODO: for now, just use the easier unpotimized selection logic
+    # Potential questions have not been in the user's feed.
+    used_questions = feed_questions + answered_questions + skipped_questions
+    potential_questions = questions.where.not(id: used_questions)
 
-    new_questions = if small_dataset
-      # TODO: This is inefficient for very large datasets - optimize when needed
-      candidate_ids = all_public_questions.where.not(id:skipped_questions.pluck("questions.id") + answered_questions.pluck("questions.id") + feed_questions.pluck("questions.id"))
-      Question.where(id:candidate_ids.sample(num_to_add)).order("CASE WHEN questions.position IS NULL THEN 1 ELSE 0 END ASC").order("questions.position ASC").order("RAND()")
-    else
-      # Grabbing random items from a small sample is prone to too many misses, so only do this on a larger dataset
-      new_questions = []
-      num_candidates = all_public_questions.count
-      while new_questions.count < num_to_add
-        candidate = all_public_questions.order(:id).offset(rand(num_candidates)).limit(1)
-        new_questions << candidate if wants_question?(candidate)
-      end
-      new_questions
-    end
+    # Questions are in a specific order.
+    questions = []
 
-    self.feed_questions += new_questions
+    # 1) special case
+
+    # 2) sponsored
+    #   a) targeted
+    #   b) untargeted
+
+    # 3) directly targeted
+    targets = TargetsUser.where(user_id: id).map(&:target)
+    questions += potential_questions.where(target_id: targets)
+                                    .where.not(id: questions).order_by_rand
+
+    return questions.first(count) if questions.count >= count
+
+    # 4) staff
+    staff = Group.find_by_name("Staff").try(:users) || []
+
+    #   a) targeted
+    questions += potential_questions.where(user_id: staff, target_id: targets)
+                                    .where.not(id: questions).order_by_rand
+
+    return questions.first(count) if questions.count >= count
+
+    #   b) untargeted
+    questions += potential_questions.where.not(id: questions, target_id: targets)
+                                    .where(user_id: staff).order_by_rand
+
+    return questions.first(count) if questions.count >= count
+
+    # 5) followed users
+
+    #   a) created & shared
+    questions += potential_questions.where(user_id: leaders)
+                                    .where.not(share_count: 0, id: questions)
+
+    return questions.first(count) if questions.count >= count
+
+    #   b) completed & shared
+    responses = Response.where(user_id: leaders)
+    questions += potential_questions.where(id: responses.map(&:question))
+                                    .where.not(share_count: 0, id: questions)
+
+    return questions.first(count) if questions.count >= count
+
+    #   c) created & not shared
+    questions += potential_questions.where(user_id: leaders)
+                                    .where(share_count: [0, nil])
+                                    .where.not(id: questions)
+
+    return questions.first(count) if questions.count >= count
+
+    # 6) top scoring
+    questions += potential_questions.where.not(id: questions)
+                                    .order('score DESC')
+
+    return questions.first(count) if questions.count >= count
+
+    # 7) random public
+    questions += Question.where.not(id: questions).order_by_rand.limit(10)
+
+    questions.first(count)
+  end
+
+  def feed_more_questions(count)
+    self.feed_questions += next_feed_questions(count)
   end
 
   def read_all_messages
