@@ -39,7 +39,7 @@ class TwoCents::Questions < Grape::API
 
         @twilio_client = Twilio::REST::Client.new 'ACdafefacb4838c29e007d7774518deb49', '08563af4fa237873b5143023d2896a9c'
 
-        twilio_phone_number = '6179823804'
+        twilio_phone_number = '6178741849'
 
         phone_numbers.each do |number_to_send_to|
 
