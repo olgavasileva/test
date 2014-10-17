@@ -24,7 +24,11 @@ class User < ActiveRecord::Base
   has_many :community_members, through: :communities, source: :user
   has_many :community_memberships, class_name: 'CommunityMember'
   has_many :membership_communities, through: :community_memberships, source: :community
+
   has_many :targets, dependent: :destroy
+
+  has_many :targets_users
+  has_many :following_targets, through: :targets_users, source: :target
 
   has_many :messages, dependent: :destroy
 
@@ -134,7 +138,7 @@ class User < ActiveRecord::Base
     feed_items.where(question_id:question).blank? && responses.where(question_id:question).blank? && skipped_items.where(question_id:question).blank? && questions.where(id:question).blank?
   end
 
-  def feed_more_questions(count)
+  def next_feed_questions(count = 10)
     # Potential questions are in active state.
     potential_questions = Question.active
 
@@ -148,29 +152,57 @@ class User < ActiveRecord::Base
     # 1) special case
 
     # 2) sponsored
-
     #   a) targeted
-
     #   b) untargeted
 
     # 3) directly targeted
+    targets = TargetsUser.where(user_id: id).map(&:target)
+    questions += potential_questions.where(target_id: targets)
+                                    .where.not(id: questions).order_by_rand
+
+    return questions.first(count) if questions.count >= count
 
     # 4) staff
+    #   a) targeted
+    #   b) untargeted
+    staff = Group.find_by_name("Staff").try(:users) || []
+    questions += potential_questions.where(user_id: staff)
+                                    .where.not(id: questions).order_by_rand
+
+    return questions.first(count) if questions.count >= count
 
     # 5) followed users
 
     #   a) created & shared
+    questions += potential_questions.where(user_id: leaders)
+                                    .where.not(share_count: 0, id: questions)
+
+    return questions.first(count) if questions.count >= count
 
     #   b) completed & shared
+    responses = Response.where(user_id: leaders)
+    questions += potential_questions.where(id: responses.map(&:question))
+                                    .where.not(share_count: 0, id: questions)
+
+    return questions.first(count) if questions.count >= count
 
     #   c) created & not shared
+    questions += potential_questions.where(user_id: leaders)
+                                    .where(share_count: [0, nil])
+                                    .where.not(id: questions)
+
+    return questions.first(count) if questions.count >= count
 
     # 6) top scoring
 
     # 7) random
     questions += Question.where.not(id: questions).order_by_rand
 
-    self.feed_questions += questions.first(count)
+    questions.first(count)
+  end
+
+  def feed_more_questions(count)
+    self.feed_questions += next_feed_questions(count)
   end
 
   def read_all_messages
