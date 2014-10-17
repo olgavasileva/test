@@ -10,7 +10,7 @@
 /tmp
 
 # Ignore other unneeded files.
-# config/application.yml
+config/application.yml
 config/database.yml
 config/aws.yml
 doc/
