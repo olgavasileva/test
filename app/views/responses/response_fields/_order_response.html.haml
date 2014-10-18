@@ -44,3 +44,9 @@
         = render "responses/response_fields/shared/anonymous", form:form, response:response
       .col-xs-12
         = render "responses/response_fields/shared/submit", form:form, response:response
+
+:javascript
+  if( window.$$$dom_ready){
+    $('#ordered_choices').sortable();
+  }
+
