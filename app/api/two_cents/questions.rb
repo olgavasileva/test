@@ -57,6 +57,9 @@ class TwoCents::Questions < Grape::API
         "Hi! This is #{question.user.username}. Check this awesome question: \"#{question.title}\" on Statisfy"
       end
 
+      def after_id_to_end(records, id)
+        records[records.pluck(:id).index(id) + 1..-1]
+      end
 
 
     end
@@ -636,6 +639,49 @@ class TwoCents::Questions < Grape::API
       end
 
       @questions.each{|q| q.viewed!}
+    end
+
+    desc "Return feed questions."
+    params do
+      use :auth
+
+      optional :after_id, type: Integer,
+        desc: "ID of question before start of list."
+      optional :count, type: Integer, default: 15,
+        desc: "Number of questions to return."
+    end
+    # todo: cleanup
+    get '/', jbuilder: 'questions' do
+      validate_user!
+
+      user = current_user
+      after_id = params[:after_id]
+      count = params[:count]
+
+      if after_id.nil?
+        until user.feed_questions.count > count
+          next_questions = user.reload.next_feed_questions
+          break if next_questions.empty?
+          user.feed_questions << next_questions
+        end
+
+        @questions = user.feed_questions.first(count)
+      else
+        until user.feed_questions.pluck(:id).include?(after_id) \
+          && after_id_to_end(user.feed_questions, after_id).count > count
+
+          next_questions = user.reload.next_feed_questions
+          break if next_questions.empty?
+          user.feed_questions << next_questions
+        end
+
+        unless user.feed_questions.pluck(:id).include?(after_id)
+          @questions = []
+          return
+        end
+
+        @questions = after_id_to_end(user.feed_questions, after_id).first(count)
+      end
     end
 
 
