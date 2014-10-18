@@ -72,6 +72,8 @@ GEM
       activemodel (= 4.1.1)
       activesupport (= 4.1.1)
       arel (~> 5.0.0)
+    activerecord_any_of (1.2)
+      rails (>= 3.2.13, < 5)
     activesupport (4.1.1)
       i18n (~> 0.6, >= 0.6.9)
       json (~> 1.7, >= 1.7.7)
@@ -495,6 +497,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin!
   activeadmin-sortable
+  activerecord_any_of
   acts-as-taggable-on
   acts_as_list
   animate-rails

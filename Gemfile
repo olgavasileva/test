@@ -57,6 +57,8 @@ gem "animate-rails"       # Used by pixel-admin
 
 gem 'twilio-ruby'       # Used by backend for sending SMS messages to invited users
 
+gem 'activerecord_any_of' # where.any_of
+
 
 gem 'grape',            # API DSL
   github: 'intridea/grape'

@@ -150,6 +150,9 @@ class User < ActiveRecord::Base
     questions = []
 
     # 1) special case
+    questions += potential_questions.where(special: true).order_by_rand
+
+    return questions.first(count) if questions.count >= count
 
     # 2) sponsored
     #   a) targeted
@@ -158,22 +161,26 @@ class User < ActiveRecord::Base
     # 3) directly targeted
     targets = TargetsUser.where(user_id: id).map(&:target)
     questions += potential_questions.where(target_id: targets)
-                                    .where.not(id: questions).order_by_rand
+                                    .where.not(id: questions)
+                                    .order_by_rand
 
     return questions.first(count) if questions.count >= count
 
     # 4) staff
     staff = Group.find_by_name("Staff").try(:users) || []
+    staff_questions = potential_questions.where(user_id: staff)
 
     #   a) targeted
-    questions += potential_questions.where(user_id: staff, target_id: targets)
-                                    .where.not(id: questions).order_by_rand
+    targets += Target.where(user_id: staff)
+                     .where.any_of(all_users: true, all_followers: true, all_groups: true)
+    targets += GroupsTarget.where(group_id: groups, user_id: staff).map(&:target)
+    questions += staff_questions.where.not(id: questions).order_by_rand
 
     return questions.first(count) if questions.count >= count
 
     #   b) untargeted
-    questions += potential_questions.where.not(id: questions, target_id: targets)
-                                    .where(user_id: staff).order_by_rand
+    questions += staff_questions.where.not(id: questions, target_id: targets)
+                                .order_by_rand
 
     return questions.first(count) if questions.count >= count
 
