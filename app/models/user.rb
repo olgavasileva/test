@@ -213,7 +213,7 @@ class User < ActiveRecord::Base
     return questions.first(count) if questions.count >= count
 
     # 7) random public
-    questions += Question.where.not(id: questions).order_by_rand.limit(10)
+    questions += potential_questions.where.not(id: questions).order_by_rand.limit(10)
 
     questions.first(count)
   end
