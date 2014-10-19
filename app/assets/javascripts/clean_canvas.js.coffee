@@ -23,7 +23,7 @@
 
 #= require hisrc
 #= require toastr
-
+#= require growlyflash/growlyflash
 
 #
 # Page files

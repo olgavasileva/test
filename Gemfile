@@ -87,6 +87,7 @@ gem 'rpush'
 gem 'browser'                       # Browser detection
 
 # pixel admin
+gem 'growlyflash'
 gem 'morrisjs-rails'                # js: good-looking charts shouldn't be difficult
 gem 'raphael-rails'                 # js: Cross-browser vector graphics the easy way (required by morrisjs-rails)
 gem 'jquery-slimscroll-rails'       # js: transforms any div into a scrollable area with a nice scrollbar

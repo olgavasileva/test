@@ -45,6 +45,7 @@
 #
 
 #= require_tree ./pixel_admin/pages
+#= require growlyflash/growlyflash
 
 # Asyncronously load DOM elements from partials after page is loaded
 $(document).on "page:change", ->
