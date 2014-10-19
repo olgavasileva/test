@@ -43,6 +43,7 @@ gem 'carrierwave'       # Image uploading and access
 gem 'fog'               # Cloud services intergration into carrierwave (e.g. s3)
 gem 'rmagick',          # Image manipulation
   require: false
+gem 'rdiscount'         # Markdown conversion (for contest header)
 
 gem 'activeadmin-sortable'
 gem 'acts_as_list'

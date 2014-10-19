@@ -20,6 +20,14 @@ class ResponsesController < ApplicationController
 
       if session[:demo]
         redirect_to question_path
+      elsif session[:contest_uuid]
+        contest = Contest.find_by uuid:session[:contest_uuid]
+        next_question = contest.next_question(@response.question)
+        if next_question
+          redirect_to new_question_response_path(next_question)
+        else
+          redirect_to contest_vote_path(contest.uuid)
+        end
       else
         redirect_to summary_question_path(@response.question)
       end
