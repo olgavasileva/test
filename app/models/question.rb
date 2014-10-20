@@ -113,6 +113,6 @@ class Question < ActiveRecord::Base
 
   def add_creation_score
     self.score ||= 0
-    self.score += comment.present? ? 1.5 : 1.0
+    self.score += comments.present? ? 1.5 : 1.0
   end
 end
