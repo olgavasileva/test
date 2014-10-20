@@ -23,7 +23,7 @@
 
 #= require hisrc
 #= require toastr
-
+#= require gritter
 
 #
 # Page files
