@@ -15,6 +15,11 @@ class Contest < ActiveRecord::Base
     questions_surveys.where(question_id:question).first.lower_items.first.try(:question)
   end
 
+  def vote_id_for_response response
+    reponse_votes = contest_response_votes.where(response_id:response.id).first_or_create
+    reponse_votes.id if reponse_votes
+  end
+
   def vote_for_response! response
     reponse_votes = contest_response_votes.where(response_id:response.id).first_or_create
     reponse_votes.increment_vote_count!

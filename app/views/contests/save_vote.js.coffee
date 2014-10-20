@@ -1,1 +1,1 @@
-alert("Vote Accepted")
+$.gritter.add title:"Notice", text:'<%=j @notice %>'
