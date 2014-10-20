@@ -6,7 +6,7 @@ class MultipleChoiceQuestion < ChoiceQuestion
   has_many :responses, class_name:"MultipleChoiceResponse", foreign_key: :question_id
 
   default min_responses: 2
-  default max_responses: nil
+  default max_responses: 2
 
   validates :min_responses, presence:true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :max_responses, numericality: { only_integer: true, greater_than_or_equal_to: :min_responses, allow_nil: true }
