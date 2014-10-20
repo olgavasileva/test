@@ -1,0 +1,2 @@
+class StudioResponsePolicy < ResponsePolicy
+end

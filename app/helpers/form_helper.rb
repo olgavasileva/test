@@ -4,6 +4,8 @@ module FormHelper
       response.question.choices.each do |choice|
         response.choice_responses.build choice:choice
       end
+    elsif response.kind_of? StudioResponse
+      response.build_scene user:current_user, studio:response.question.studio
     end
 
     response

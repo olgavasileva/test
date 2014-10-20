@@ -10,4 +10,5 @@ class ContestPolicy < ApplicationPolicy
   def new_user? ;     true;             end
   def question? ;     true;             end
   def vote? ;         @user.present? ;  end
+  def save_vote? ;    @user.present? ;  end
 end

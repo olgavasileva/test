@@ -3,6 +3,8 @@ class StudioResponse < Response
 
   validates :scene, presence: true
 
+  accepts_nested_attributes_for :scene
+
   def description
     "A Scene"
   end

@@ -21,6 +21,7 @@ LinkchatApp::Application.routes.draw do
   post '/contests/new_user' => 'contests#new_user', as: :new_contest_user
   get '/contests/:uuid/vote' => 'contests#vote', as: :contest_vote
   get '/contests/:uuid/question/:quid' => 'contests#question', as: :contest_question
+  post '/contests/:uuid/vote/:response_id' => 'contests#save_vote', as: :save_vote
 
   resources :questions, shallow:true do
     get :summary, on: :member

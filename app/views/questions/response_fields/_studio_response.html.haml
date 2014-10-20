@@ -1,2 +1,6 @@
-.panel-body.response
-  = render "pages/photoshoot"
+%div
+  .col-xs-12
+    = render "questions/response_fields/shared/title", question: @question
+  .col-xs-12
+    .form-group
+      = render "questions/response_fields/shared/sharing",question: @question, style_type: "negative"

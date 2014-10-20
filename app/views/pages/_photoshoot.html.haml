@@ -78,7 +78,7 @@
 
 
 
-#photoshootinfo.hidden{data:{studio_id:@response.question.studio.id, studio_name:@response.question.studio.display_name || @response.question.studio.name, logged_in:user_signed_in?, question_id:@response.question.id}}
+#photoshootinfo.hidden{data:{studio_id:question.studio.id, studio_name:question.studio.display_name || question.studio.name, logged_in:user_signed_in?, question_id:question.id}}
 - if @scene.present?
   #sceneinfo.hidden{data:{stickers:@scene.stickers, scene_id:@scene.id, scene_user_id:@scene.user_id, share_link:@scene.share_link('link', current_user)}}
 
@@ -103,7 +103,7 @@
     #ps-breadcrumbs.col-sm-9
       #current-studio-icon
       %h2#current-studio-name
-      =link_to "", '#', id: "ps-save", data:{'btn-role' => :save}
+      / =link_to "", '#', id: "ps-save", data:{'btn-role' => :save}
       =link_to "Clear All", '#', id: "ps-clear-all", class: %w(btn btn-gary-dark ps-btn-gray)
       .ps-undo-redo
         %button#ps-undo.btn.btn-gary-dark.ps-btn-gray.ps-btn-disabled{data:{"btn-role" => :undo}}
@@ -204,6 +204,10 @@
     .center
       %button.ps-btn-yellow Set
 
+= render 'pages/sticker_packs'
+= render 'pages/sticker_pack_details'
+
+= content_for :modals do
   #clear-scene-modal.modal.fade
     .modal-dialog
       .modal-content
@@ -220,6 +224,3 @@
         .modal-footer
           %button.btn.btn-default{type: :button, data:{dismiss: :modal}} Cancel
           %button.btn.btn-primary#clear-all{type: :button, data:{dismiss: :modal, "btn-role" => "clear all"}} Clear
-
-= render 'pages/sticker_packs'
-= render 'pages/sticker_pack_details'

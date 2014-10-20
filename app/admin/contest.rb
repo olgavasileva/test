@@ -6,6 +6,7 @@ ActiveAdmin.register Contest do
   index do
     column :id
     column :name
+    column :key_question
     column "Sign Up URL" do |c|
       contest_sign_up_url(c.uuid)
     end
@@ -28,7 +29,7 @@ ActiveAdmin.register Contest do
   form do |f|
     f.inputs do
       f.input :survey
-      f.input :key_question
+      f.input :key_question, collection: f.object.questions
       f.input :name
       f.input :heading_markdown
     end
