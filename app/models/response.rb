@@ -2,8 +2,6 @@ class Response < ActiveRecord::Base
   belongs_to :user
   belongs_to :question
   has_one :comment, as: :commentable
-  has_many :liked_comments, dependent: :destroy
-  has_many :comment_likers, through: :liked_comments, source: :user
   has_many :contest_response_votes, dependent: :destroy
 
   validates :user, presence: true
