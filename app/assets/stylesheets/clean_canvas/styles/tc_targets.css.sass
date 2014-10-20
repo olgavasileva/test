@@ -1,0 +1,31 @@
+@import "variables"
+#target_builder
+  background-color: $primary_background_color !important
+  input[type=checkbox]
+    margin-left: -28px
+    &:after
+      display: block
+      vertical-align: top
+      width: 18px
+      height: 18px
+      line-height: 7px
+      text-align: center
+      font-size: 3rem
+      background-color: $primary_background_color
+      border: solid 1px white
+      content: " "
+      font-weight: 200
+      margin-top: -3px
+      color: white
+    &:checked
+      &:after
+        content: '\2713'
+
+  .checkbox
+    label
+      padding-left: 30px
+      font-size: 2rem
+      color: white
+      line-height: 16px
+      &.collection_check_boxes
+        padding-left: 0
