@@ -23,6 +23,10 @@
           .col-xs-12.collapse-parent.col-sm-8.col-sm-push-2
             = f.input :all_groups, input_html:{class: %w(collapser)}
             = f.collection_check_boxes :groups, @groups, :id, :name, item_wrapper_class: %w(row checkbox collapsable collapsable-item)
+          .col-xs-12.collapse-parent.col-sm-8.col-sm-push-2
+            .checkbox
+              = check_box_tag :anonymous, true
+              = label_tag :anonymous, "Post this question anonymously"
 
   :javascript
     function alterTargetClases(){
