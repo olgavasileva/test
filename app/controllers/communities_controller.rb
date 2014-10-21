@@ -10,7 +10,7 @@ class CommunitiesController < ApplicationController
       flash[:alert] = community.errors.full_messages.join('; ')
     end
 
-    redirect_to :back
+    redirect_to invite_community_path(community)
   end
 
   def destroy
@@ -25,6 +25,12 @@ class CommunitiesController < ApplicationController
     end
 
     redirect_to :back
+  end
+
+  def invite
+    @community = Community.find(params.fetch(:id))
+
+    authorize @community
   end
 
   private

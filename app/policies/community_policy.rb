@@ -10,4 +10,8 @@ class CommunityPolicy < ApplicationPolicy
   def destroy?
     @user == @record.user
   end
+
+  def invite?
+    @user == @record.user
+  end
 end

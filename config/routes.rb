@@ -72,7 +72,9 @@ LinkchatApp::Application.routes.draw do
     delete '/' => 'group_members#destroy', on: :collection
   end
 
-  resources :communities
+  resources :communities do
+    get :invite, on: :member
+  end
 
   resources :community_members do
     delete '/' => 'community_members#destroy', on: :collection
