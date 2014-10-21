@@ -144,7 +144,7 @@ class User < ActiveRecord::Base
 
     # Potential questions have not been in the user's feed.
     used_questions = feed_questions + answered_questions + skipped_questions
-    potential_questions = questions.where.not(id: used_questions)
+    potential_questions = potential_questions.where.not(id: used_questions)
 
     # Questions are in a specific order.
     questions = []
