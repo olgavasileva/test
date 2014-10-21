@@ -3,7 +3,7 @@ class Relationship < ActiveRecord::Base
 	belongs_to :leader, class_name: "User"
 
 	validates :follower, presence: true
-	validates :leader, presence: true
+	validates :leader, presence: true, uniqueness: { scope: :follower_id }
 
   # Leader's groups that follower is member of.
   def groups

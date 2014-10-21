@@ -19,7 +19,10 @@
             %span.count= @user.followers.count
             followers
         - if @user != current_user
-          = link_to "Follow", user_path(@user), class: 'btn btn-default'
+          - if current_user.following? @user
+            = link_to "Unfollow", unfollow_user_path(@user), class: "btn btn-default"
+          - else
+            = link_to "Follow", follow_user_path(@user), class: 'btn btn-default'
       .clearfix
     %ul.nav.nav-tabs
       - if @user == current_user
