@@ -5,6 +5,7 @@ DEVELOPER_NAME:
 
 api_shared_secret:
 app_name: Statisfy
+app_store_id: 918625793
 
 AWS_ACCESS_KEY: AKIAIN5Q6OH423Q7PHJQ
 AWS_SECRET_ACCESS_KEY: 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
