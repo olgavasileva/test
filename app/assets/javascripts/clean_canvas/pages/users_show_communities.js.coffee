@@ -9,4 +9,4 @@ $ ->
     $form = $('form#destroy_community_member')
     $form.find('input#user_id').val(userId)
     $form.find('input#community_id').val(communityId)
-    #$form.submit()
+    $form.submit()

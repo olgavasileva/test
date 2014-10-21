@@ -16,9 +16,7 @@ class CommunityMembersController < ApplicationController
   end
 
   def destroy
-    community = Group.find(params.fetch(:community_id))
-    member = CommunityMember.new(user_id: params.fetch(:user_id),
-                                 community_id: community.id)
+    member = CommunityMember.where(params.slice(:user_id, :community_id)).first
 
     authorize member
 

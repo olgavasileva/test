@@ -8,9 +8,13 @@
     = link_to 'javascript:void(0)' do
       %span.fa.fa-info-circle
     = link_to 'javascript:void(0)' do
-      %span.fa.fa-unlock-alt
+      - if community.private?
+        %span.fa.fa-lock
+      - else
+        %span.fa.fa-unlock-alt
   .col-xs-3.alt-controls
     - if community.member_users.include? current_user
       = link_to "Unsubscribe", "javascript:removeUserFromCommunity(#{current_user.id}, #{community.id})", class: 'btn btn-default'
     - else
       = link_to "Join", "javascript:addUserToCommunity(#{current_user.id}, #{community.id})", class: 'btn btn-default'
+  .clearfix
