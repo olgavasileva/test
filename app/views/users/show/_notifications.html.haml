@@ -2,8 +2,7 @@
   %ul.items
     - @notifications.each do |notification|
       %li
-        .pull-left
-          = notification.body
+        = notification.body
         - unless notification.read?
           .pull-right
             .badge.badge-warning New
