@@ -9,5 +9,5 @@ $ ->
     $form = $('form#destroy_group_member')
     $form.find('input#user_id').val(userId)
     $form.find('input#group_id').val(groupId)
-    #$form.submit()
+    $form.submit()
 
