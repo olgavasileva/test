@@ -18,7 +18,7 @@ class TargetsController < ApplicationController
     reports << view_context.pluralize( target_count, "direct feed") if target_count > 0
 
     flash[:alert] = "Question added to #{ reports.join " and " }."
-    redirect_to :root
+    redirect_to results_question_path(question)
   end
 
   protected

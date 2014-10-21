@@ -1,0 +1,11 @@
+%p
+  Your question
+  = @question.title
+  \... is posted!
+
+= link_to "Share this question!", share_question_path(@question)
+= link_to "Answer this question!", new_question_response_path(@question)
+= link_to "Ask another question...", question_types_path
+= link_to "Home", root_path
+
+%p Now that your question is posted you should consider sharing your question on your social grid!
