@@ -76,5 +76,11 @@ $ ->
     root.find('.value-holder').val(value)
     root.find('.value-label').html(text)
 
+  $(document).on 'keydown','.remove-default-text, .remove-default-text textarea', ()->
+    $(this).val('');
+    node=$(this).parent();
+    $(this).removeClass('remove-default-text');
+    $(node).removeClass('remove-default-text');
+
 
   return null

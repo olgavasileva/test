@@ -8,4 +8,4 @@
       %i.glyphicon.glyphicon-remove
     .over_image_title_container
       =render partial:'/widgets/image_control',locals:{f:f,distro: :upload_middle,type: 'question'}
-      .col-xs-12.title=f.input :title, label: false, placeholder: "Type a response",input_html:{class: 'revealable'}
+      .col-xs-12.title=f.input :title, label: false, input_html:{class: 'revealable remove-default-text'}
