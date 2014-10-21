@@ -15,6 +15,8 @@ module BackgroundImageFromChoices
 
       montage = Magick::ImageList.new(*choice_images).montage do |m|
         m.tile = '2x2'
+        m.background_color = '#a4a5a9'
+        m.geometry = '160x160+0+0'
       end
 
       file = Tempfile.new(['question_image', '.jpg'])
