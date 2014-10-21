@@ -15,17 +15,26 @@
         .row
           %h2.body_title
             Who are you sending this to
-          .col-xs-12
+          .col-xs-12.col-sm-8.col-sm-push-2.bordered
             = f.input :all_users
-          .col-xs-12.collapse-parent
+          .col-xs-12.collapse-parent.col-sm-8.col-sm-push-2
             = f.input :all_followers, input_html:{class: %w(collapser)}
-            = f.collection_check_boxes :followers, @followers, :id, :username, item_wrapper_class: %w(col-xs-8 checkbox col-xs-offset-4 collapsable)
-          .col-xs-12.collapse-parent
+            = f.collection_check_boxes :followers, @followers, :id, :username, item_wrapper_class: %w(row checkbox collapsable collapsable-item)
+          .col-xs-12.collapse-parent.col-sm-8.col-sm-push-2
             = f.input :all_groups, input_html:{class: %w(collapser)}
-            = f.collection_check_boxes :groups, @groups, :id, :name, item_wrapper_class: %w(col-xs-8 checkbox col-xs-offset-4 collapsable)
+            = f.collection_check_boxes :groups, @groups, :id, :name, item_wrapper_class: %w(row checkbox collapsable collapsable-item)
 
+  :javascript
+    function alterTargetClases(){
+      $('.collapsable-item>label' ).addClass('col-xs-11 col-xs-push-1 col-sm-7 col-sm-push-5')
+    }
+    if($){
+      alterTargetClases
+    }
+    $(
+      alterTargetClases
+    )
 
-  = f.submit class:%(btn btn-default)
 
   :coffee
     $ ->
