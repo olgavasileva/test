@@ -15,22 +15,32 @@
         .row
           %h2.body_title
             Who are you sending this to
-          .col-xs-12.col-sm-8.col-sm-push-2.bordered
+          .col-xs-12.bordered
             = f.input :all_users
-          .col-xs-12.collapse-parent.col-sm-8.col-sm-push-2
+          .col-xs-12.collapse-parent
             = f.input :all_followers, input_html:{class: %w(collapser)}
             = f.collection_check_boxes :followers, @followers, :id, :username, item_wrapper_class: %w(row checkbox collapsable collapsable-item)
-          .col-xs-12.collapse-parent.col-sm-8.col-sm-push-2
+          .col-xs-12.collapse-parent
             = f.input :all_groups, input_html:{class: %w(collapser)}
             = f.collection_check_boxes :groups, @groups, :id, :name, item_wrapper_class: %w(row checkbox collapsable collapsable-item)
-          .col-xs-12.collapse-parent.col-sm-8.col-sm-push-2
-            .checkbox
-              = check_box_tag :anonymous, true
-              = label_tag :anonymous, "Post this question anonymously"
+
+        #anonymous_container.col-xs-12
+          .row
+            .col-xs-9.col-xs-push-1
+              .checkbox
+                = check_box_tag :anonymous, true
+                %label{:for=>'anonymous'}
+                  Post this question
+                  %br
+                  anonymously
+            .col-xs-1
+              %a.info-holder{:href=>"",:data=>{:message=>"Your message here"}}
+                %span.fa.fa-info-circle
 
   :javascript
     function alterTargetClases(){
-      $('.collapsable-item>label' ).addClass('col-xs-11 col-xs-push-1 col-sm-7 col-sm-push-5')
+      $('.collapsable-item>label' ).addClass('col-xs-11 col-xs-push-1')
+      $('#target_builder .col-sm-9.col-sm-offset-3').removeClass('col-sm-9').removeClass('col-sm-offset-3');
     }
     if($){
       alterTargetClases
