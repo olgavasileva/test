@@ -67,8 +67,7 @@ class UsersController < ApplicationController
 
     current_user.follow! @user
 
-    alerts[:notice] = "Followed #{@user.name}."
-
+    flash[:notice] = "Followed #{@user.name}."
     redirect_to :back
   end
 
