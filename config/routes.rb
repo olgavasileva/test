@@ -36,6 +36,7 @@ LinkchatApp::Application.routes.draw do
     resources :order_responses
     resources :studio_responses
     resources :targets
+    resources :enterprise_targets
 
     resources :skipped_items
   end
@@ -62,6 +63,7 @@ LinkchatApp::Application.routes.draw do
     get :recent_responses, on: :member
     get :recent_comments, on: :member
     get :campaigns, on: :member
+    get :new_campaign, on: :member
     get 'analytics/(:question_id)', to:'users#analytics', on: :member, as: :analytics
     get :account, on: :member
   end

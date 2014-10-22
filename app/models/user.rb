@@ -26,6 +26,7 @@ class User < ActiveRecord::Base
   has_many :membership_communities, through: :community_memberships, source: :community
 
   has_many :targets, dependent: :destroy
+  has_many :enterprise_targets, dependent: :destroy
 
   has_many :targets_users
   has_many :following_targets, through: :targets_users, source: :target

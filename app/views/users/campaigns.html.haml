@@ -7,7 +7,7 @@
           =link_to '#', class: %w(btn btn-sm btn-success btn-labeled) do
             %span.btn-label.glyphicon.glyphicon-download-alt
             Export to .csv
-          =link_to question_types_path, class: %w(btn btn-sm btn-primary btn-labeled) do
+          =link_to [:new_campaign, current_user], class: %w(btn btn-sm btn-primary btn-labeled) do
             %span.btn-label.icon.fa.fa-plus
             Create Campaign
 .table-primary

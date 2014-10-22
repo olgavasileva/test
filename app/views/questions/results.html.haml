@@ -13,7 +13,7 @@
           %h2.body_title
             Your question
             = @question.title
-            $br
+            %br
             \... is posted!
           = link_to "Share this question!", share_question_path(@question), class: %w(btn btn-primary white-border btn-lg col-xs-10 col-xs-offset-1)
           .separator

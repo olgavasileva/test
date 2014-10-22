@@ -66,7 +66,7 @@ $ ->
       processData: false,
       type: 'POST',
       success: (data)->
-        alert(data)
+        console.log(data)
     })
 
   $(document).on 'click','.tc-dropdown .dropdown-menu-item', ()->
