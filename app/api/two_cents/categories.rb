@@ -21,7 +21,7 @@ class TwoCents::Categories < Grape::API
             ]
       END
     }
-    post "/", rabl: "categories", http_codes:[
+    post "/", jbuilder: "categories", http_codes:[
       [200, "400 - Invalid params"]
     ] do
       @categories = policy_scope Category

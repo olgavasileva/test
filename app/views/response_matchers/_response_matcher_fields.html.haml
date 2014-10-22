@@ -1,0 +1,27 @@
+.panel-body
+  =f.input :inclusion, label: false, as: :radio_buttons, collection: ResponseMatcher::INCLUSION_COLLECTION, label_method: :last, value_method: :first, input_html: {class: %w(inclusion col-xs-12)}
+.panel-body
+  .row
+    .col-xs-12
+      .specific_choices.collapse
+        - case f.object.question.type
+        - when "TextChoiceQuestion", "YesNoQuestion"
+          = render "response_matchers/matcher_fields/text_choice_response", f:f
+        - when "ImageChoiceQuestion"
+          = render "response_matchers/matcher_fields/image_choice_response", f:f
+        - when "MultipleChoiceQuestion"
+          = render "response_matchers/matcher_fields/multiple_choice_response", f:f
+        - when "TextQuestion"
+          = render "response_matchers/matcher_fields/text_response", f:f
+        - when "OrderQuestion"
+          = render "response_matchers/matcher_fields/order_response", f:f
+        - when "StudioQuestion"
+          = render 'response_matchers/matcher_fields/studio_response', f:f
+
+:coffee
+  $ ->
+    $(".inclusion").change ->
+      if $('.inclusion[value=specific]').prop('checked')
+        $(".specific_choices").slideDown()
+      else
+        $(".specific_choices").slideUp()

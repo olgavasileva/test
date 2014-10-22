@@ -1,106 +1,40 @@
 :sass
-
-  .questionare-title
-    padding: 10px
-    .title-text
-      width: 100%
-      text-align: center
-      box-shadow: none
-      resize: none
-
-  .revealable
-    background-color: transparent
-    border-color: transparent
-    color: white
-    &:hover, &:focus
-      outline: none
-      border-color: white
-      background-color: rgba(255,255,255,0.2)
-
-  .add-option-control
-    background-color: orange
-    color: white
-    text-align: center
-    height: 100%
-    font-size: 2.2em
-    text-align: center
-    height: 120px
-    line-height: 120px
-    verrical-align: middle
   .close.remove_fields
     margin-right: 10px
 
 
-  .choice.imagechooser
-    .bgimage
-      position: relative
-      min-height: 130px
-      .overimage
-        position: absolute
-        width: 100%
-        bottom: 0
-        .image_control
-          font-size: 2.3em
-          text-align: center
-        .image-choice-footer
-          font-size: 1em
 
-  .image-choice-footer
-    background-color: rgba(87, 87, 87, 0.75)
-    padding: 15px
-    color: white
-    font-size: 22px
+.row.question-builder#content_constraint
+  .col-xs-12.col-sm-8.col-sm-push-2
+    = simple_form_for @question, :html=>{class:"prioritizer panel panel-default"} do |f|
+      .panel-heading.col-xs-12
+        .panel-title.row
+          .col-xs-3
+            =link_to question_types_path do
+              %span.glyphicon.glyphicon-chevron-left
+          .col-xs-6.col-xs-push-3
+            =f.button :submit, "Preview", class: %w(btn-primary negative transparent no-border btn-lg)
+      .panel-body
+        %div
+          =f.input :type, as: :hidden
+          .row
+            .col-sm-12
+              .row.question
+                .col-xs-12
+                  .title
+                    .text.required.questionare-title.btn-primary.question-header-style-title
+                      =f.input_field :title, label: false , class: "revealable title", placeholder: "Ask Your Question Here"
+                      =render partial:'/widgets/char_counter',locals:{:selector => ".questionare-title .revealable.title"}
 
-    .form-group
-      margin: 0
-    textarea
-      display: block
-      font-size: 1em
-      width: 100%
-      overflow: auto
-      text-align: center
-      margin: 0
-      padding: 0
-      border-radius: 0
-      min-height: 1.5em
-      max-height: 1.5em
-      box-shadow: none
-      resize: none
+                =f.simple_fields_for :choices do |choice|
+                  = render 'choice_fields', f:choice
 
-
-
-
-.col-md-8.col-md-push-2
-  .prioritizer.panel.panel-default
-    .panel-heading
-      .panel-title
-        =link_to question_types_path do
-          %span.glyphicon.glyphicon-chevron-left
-    .panel-body
-      = simple_form_for @question do |f|
-        =f.input :type, as: :hidden
-        .row
-          .col-sm-8.col-md-push-2
-            .row.question
-              .col-sm-12.form-group
-                .title
-                  .form-group.text.required.questionare-title.btn-primary
-                    =f.input_field :title, label: false , class: "revealable title-text", placeholder: "Ask Your Question Here"
-
-              =f.simple_fields_for :choices do |choice|
-                = render 'choice_fields', f:choice
-
-              .col-xs-12.form-group
-                =link_to_add_association  f, :choices, class: 'add-option-control col-xs-12' do
-                  %i.glyphicon.glyphicon-plus-sign
-                  Add Option
-
-              =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-sm-12 form-group", :name=>"order_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
-
-            .row
-              .col-md-6
-                .btn-group.btn-group-justified
-                  =f.button :submit, "Preview", class: %w(btn-block btn-lg)
-              .col-md-6
-                .btn-group.btn-group-justified
-                  =f.button :submit, "Continue", class: %w(btn-block btn-lg)
+                .col-xs-12
+                  =link_to_add_association  f, :choices, class: 'nested-fields answer' do
+                    .choice
+                      .overimage.add-option
+                        %h3
+                          Add Option
+                        %i.glyphicon.glyphicon-plus-sign
+              .row
+                =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-xs-12 form-group", :name=>"order_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}

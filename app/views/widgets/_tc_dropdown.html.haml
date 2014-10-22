@@ -14,23 +14,3 @@
       -attrs[:options].each do |c|
         %li{:class=>["dropdown-menu-item"],:data=>{:value=>c[value]}}
           =c[attrs[:key]]
-
-:javascript
-  $(function(){
-    if(!window.tcHandlers){
-      window.tcHandlers={};
-    }
-    if(!window.tcHandlers.basic_dropdown){
-
-        window.tcHandlers.basic_dropdown=$('.tc-dropdown').on('click','.dropdown-menu-item',function(){
-                                                 var root=$(this).parent().parent();
-                                                 var text=$(this).html();
-                                                 var value=$(this).attr('data-value')||text;
-                                                 root.find('.value-holder').val(value);
-                                                 root.find('.value-label').html(text);
-
-                                               })
-
-    }
-
-  })

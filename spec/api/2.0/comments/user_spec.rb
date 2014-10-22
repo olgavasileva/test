@@ -9,9 +9,7 @@ describe 'comments/user' do
   let(:request) { -> { post 'v/2.0/comments/user', params } }
   let(:response_body) { JSON.parse(response.body) }
 
-  before { FactoryGirl.create_list(:text_response, count,
-                                   user: instance.user,
-                                   comment: "first!") }
+  before { FactoryGirl.create_list :text_response_comment, count, user: instance.user }
 
   shared_examples :correct_fields do
     it "responds with correct data fields" do
@@ -37,9 +35,7 @@ describe 'comments/user' do
     let(:user) { FactoryGirl.create(:user) }
     let(:params) { common_params.merge(user_id: user.id) }
 
-    before { FactoryGirl.create_list(:text_response, count,
-                                     user: user,
-                                     comment: "first!") }
+    before { FactoryGirl.create_list :text_response_comment, count, user: user }
     before { request.call }
 
     it "responds with data for all given user's comments" do
@@ -70,5 +66,13 @@ describe 'comments/user' do
         expect(response_body.count).to eq per_page
       end
     end
+  end
+
+  context "with reverse" do
+    let(:params) { common_params.merge(reverse: true) }
+
+    before { request.call }
+
+    include_examples :correct_fields
   end
 end

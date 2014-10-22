@@ -1,0 +1,22 @@
+.table-primary
+  %table.table.table-striped.table-bordered#campaigns{cellpadding:0, cellspacing:0, border:0}
+    %thead
+      %tr
+        %th.bg-default{colspan:4} Your market segments
+      %tr
+        %th Name
+        %th.text-center Questions
+        %th.text-center Potential Reach
+        %th.text-center Options
+    %tbody
+      - @segments.each do |s|
+        %tr
+          %td=s.name
+          %td.text-center=s.response_matchers.count
+          %td.text-center 123
+          %td.text-center
+            =link_to "Manage", [@user, s]
+            |
+            =link_to "Rename", [:edit, @user, s], data:{toggle: :modal, target: '#modal'}, remote: true
+            |
+            =link_to "Delete", [@user, s], data: { confirm: "Are you sure?" }, method: :delete, remote: true

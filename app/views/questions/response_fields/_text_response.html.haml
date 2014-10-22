@@ -1,0 +1,38 @@
+:sass
+  .text-choices
+    position: relative
+    .popover.bottom.text-answer
+      padding: 0
+      display:  block
+      position: relative
+      margin-top: 0
+      box-shadow: none
+      max-width: none
+      height: auto
+      .arrow
+        left: 12.5%
+      .form-group.text
+        margin: 0
+        textarea
+          height: 6em
+          border: none
+          resize: none
+          margin: 0
+    .follow-menu
+      margin-top: -65px
+      background-color: transparent
+
+    .btn-default.negative
+      background-color: transparent
+      color: white
+      border-color: white
+
+.row.form-group
+  .col-xs-12
+    .col-xs-12
+      = responsive_image_tag((question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
+      .floating-question-title
+        %span= question.title
+      %div
+        .col-xs-12
+          = render "questions/response_fields/shared/sharing", question:question

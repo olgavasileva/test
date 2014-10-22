@@ -1,0 +1,12 @@
+- submit ||= "Submit"
+- remote ||= false
+.modal-dialog
+  = simple_form_for [@user, @segment], remote:remote do |f|
+    .modal-header
+      = link_to 'x', '#', data:{dismiss: :modal}, class:%w(close)
+      %h3.modal-title New Segment
+      .modal-body
+        = f.input :name, label: "Segment Name", placeholder: "Describe this segment"
+      .modal-footer
+        = link_to 'Cancel', '#', data:{dismiss: :modal}, class:%w(btn btn-default)
+        = f.submit submit, class: %w(btn btn-primary)

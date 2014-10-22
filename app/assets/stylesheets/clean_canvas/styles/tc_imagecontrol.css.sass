@@ -1,0 +1,47 @@
+.image_control
+  font-size: 3rem
+  line-height: 1rem
+  a
+    text-align: center
+  .question-image-uploader
+    position: relative
+    overflow: hidden
+    text-align: left
+    &.centered
+      text-align: center
+    input
+      position: absolute
+      bottom: 101%
+      margin-bottom: 10px
+  .image-nav-control
+    text-align: left
+    text-shadow: 0 1px 0.8px white
+    &:last-of-type
+      text-align: right
+      span
+        margin-right: 2px
+
+  &.upload_first
+    .image-nav-control
+      text-align: right
+
+
+  &.revert
+    background-color: $primary_background_color
+    .image-nav-control,
+    .question-image-uploader
+      color: white !important
+
+button.transparent
+  background: none !important
+  border: none !important
+  box-shadow: none !important
+  outline: none !important
+  text-shadow: 0 1px 0.8px white
+
+.btn-primary
+  .image_control
+    .image-nav-control,
+    .question-image-uploader
+      color: white !important
+

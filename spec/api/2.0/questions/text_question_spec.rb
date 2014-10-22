@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative 'shared_create_examples'
 
 describe :text_question do
   let(:params) {{}}
@@ -16,7 +17,7 @@ describe :text_question do
   end
 
   context "With all required params" do
-    let(:params) {{auth_token:auth_token, category_id:category_id, title:title, image_url:image_url, text_type:text_type, min_characters:min_characters, max_characters:max_characters }}
+    let(:params) {{auth_token:auth_token, category_id:category_id, title:title, image_url:image_url, text_type:text_type, min_characters:min_characters, max_characters:max_characters, targets: targets, anonymous: anonymous }}
     let(:auth_token) {}
     let(:category_id) {}
     let(:title) {}
@@ -24,6 +25,8 @@ describe :text_question do
     let(:text_type) {}
     let(:min_characters) {}
     let(:max_characters) {}
+    let(:targets) {}
+    let(:anonymous) {}
 
     context "Witout a valid text_type value" do
       it {expect(response.status).to eq 200}
@@ -86,6 +89,7 @@ describe :text_question do
 
                 expect(q).to_not be_nil
                 expect(q['id']).to_not be_nil
+                expect(q['uuid']).not_to be_nil
                 expect(q['type']).to eq "TextQuestion"
                 expect(q['title']).to eq "The Title"
                 expect(q['category']['id']).to eq category.id
@@ -96,8 +100,13 @@ describe :text_question do
                 expect(q['max_characters']).to eq 100
                 expect(q['comment_count']).to eq 0
                 expect(q['response_count']).to eq 0
+                expect(q['creator_id']).to eq user.id
+                expect(q['creator_name']).to eq user.username
               end
             end
+
+            it_behaves_like :uses_targets
+            it_behaves_like :uses_anonymous
           end
         end
       end

@@ -1,17 +1,63 @@
-= simple_form_for @target do |f|
-  = f.input :question_id, as: :hidden
-  .panel.panel-default
-    .panel-heading
-      %h2.panel-title Send To
-    .panel-body
-      .row
-        .col-sm-4
-          = f.input :all_users, as: :boolean
-        .col-sm-4
-          = f.input :all_followers, as: :boolean
-          = f.input :follower_ids, as: :check_boxes, collection: current_user.followers, label:""
-        .col-sm-4
-          = f.input :all_groups, as: :boolean
-          = f.input :group_ids, as: :check_boxes, collection: current_user.groups, label:""
+= simple_form_for @target, url:question_targets_path(@question, @target),:html=>{id:'content_constraint'} do |f|
+  = f.association :user, as: :hidden
+  .col-xs-12.col-sm-8.col-sm-push-2
+    .form.panel.panel-default
+      .panel-heading
+        .panel-title
+          .row
+            .col-xs-3
+            .col-xs-6
+              %h3 Targeting
+            .col-xs-3
+              =f.button :submit, "Publish", class: %w(btn-primary negative transparent no-border btn-lg)
 
-  = f.submit class:%(btn btn-default)
+      #target_builder.panel-body
+        .row
+          %h2.body_title
+            Who are you sending this to
+          .col-xs-12.bordered
+            = f.input :all_users
+          .col-xs-12.collapse-parent
+            = f.input :all_followers, input_html:{class: %w(collapser)}
+            = f.collection_check_boxes :followers, @followers, :id, :username, item_wrapper_class: %w(row checkbox collapsable collapsable-item)
+          .col-xs-12.collapse-parent
+            = f.input :all_groups, input_html:{class: %w(collapser)}
+            = f.collection_check_boxes :groups, @groups, :id, :name, item_wrapper_class: %w(row checkbox collapsable collapsable-item)
+        %input{:type=>'hidden',:value=>false,:name=>:anonymous}
+        #anonymous_container.col-xs-12
+          .row
+            .col-xs-9.col-xs-push-1
+              .checkbox
+                = check_box_tag :anonymous, true
+                %label{:for=>'anonymous'}
+                  Post this question
+                  %br
+                  anonymously
+            .col-xs-1
+              %a.info-holder{:href=>"",:data=>{:message=>"Your message here"}}
+                %span.fa.fa-info-circle
+
+  :javascript
+    function alterTargetClases(){
+      $('.collapsable-item>label' ).addClass('col-xs-11 col-xs-push-1')
+      $('#target_builder .col-sm-9.col-sm-offset-3').removeClass('col-sm-9').removeClass('col-sm-offset-3');
+    }
+    if($){
+      alterTargetClases
+    }
+    $(
+      alterTargetClases
+    )
+
+
+  :coffee
+    $ ->
+      $(document).on "change", ".collapser", ->
+        $target = $(this).closest(".collapse-parent").find(".collapsable")
+        if $(this).prop("checked")
+          console.log $target
+          $target.fadeOut()
+        else
+          console.log $target
+          $target.fadeIn()
+

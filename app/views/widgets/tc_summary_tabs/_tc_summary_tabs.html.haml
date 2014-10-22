@@ -1,0 +1,24 @@
+%ul.col-xs-12.nav.nav-tabs.stats-tabs{:role=>"tablist"}
+  %li.active.col-xs-6
+    %a.btn-primary.negative{:href=>"#comments_pane", :role=>"tab", :data=>{:toggle=>"tab"}}
+      %span.glyphicon.glyphicon-comment
+      %br
+      Comments
+  -#%li.col-xs-4
+    %a.btn-primary.negative{:href=>"#filter_pane", :role=>"tab", :data=>{:toggle=>"tab"}}
+      %span.glyphicon.glyphicon-filter
+      %br
+      Filter
+  %li.col-xs-6
+    %a.btn-primary.negative{:href=>"#stats_pane", :role=>"tab", :data=>{:toggle=>"tab"}}
+      %span.glyphicon.glyphicon-stats
+      %br
+      Stats
+
+.tab-content.stats-tabs-content.row
+  .tab-pane.col-xs-12.active#comments_pane
+    =render 'widgets/tc_summary_tabs/panes/comments_summary_pane',question:@question
+  -#.tab-pane.col-xs-12#filter_pane
+    =render 'widgets/tc_summary_tabs/panes/filters_summary_pane',locals:{user:current_user}
+  .tab-pane.col-xs-12#stats_pane
+    =render 'widgets/tc_summary_tabs/panes/stats_summary_pane',locals:{user:current_user}

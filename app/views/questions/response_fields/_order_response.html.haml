@@ -1,0 +1,28 @@
+:sass
+  .ignore-float
+    float: none !important
+    clear: both
+
+  .img-responsive
+    max-height: 160px
+
+  .list-unstyled
+    padding-left: 15px
+    padding-right: 15px
+
+  #ordered_choices
+    li
+      .panel
+        margin-bottom: 0
+%div
+  .col-xs-12
+    .row.order-choices
+      .col-xs-12.ignore-float
+        = render "questions/response_fields/shared/title", question:question
+      %ul#ordered_choices.list-unstyled.col-xs-12
+        -question.choices.all.each do |c|
+          %li
+            .panel.panel-default.handle
+              .floating-question-title.col-sm-12=c.title
+              = responsive_image_tag(c.web_image_url, class: "img-responsive")
+    = render "questions/response_fields/shared/sharing", question:question

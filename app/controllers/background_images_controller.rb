@@ -1,9 +1,11 @@
 class BackgroundImagesController < ApplicationController
   def create
     model = controller_name.classify.constantize
-    object = model.create! image_params
+    object = model.new(image_params)
+    authorize object
+    object.save!
 
-    respond json: object
+    render json: { id: object.id, image_url: object.image_url }
   end
 
   private

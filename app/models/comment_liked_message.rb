@@ -1,0 +1,3 @@
+class CommentLikedMessage < Message
+
+end

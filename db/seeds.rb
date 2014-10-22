@@ -18,6 +18,24 @@ Setting.where(key: :aws_access_key).first_or_create!(value: ENV['DEVICE_AWS_ACCE
 Setting.where(key: :aws_secret_access_key).first_or_create!(value: ENV['DEVICE_AWS_SECRET_ACCESS_KEY'])
 Setting.where(key: :aws_region).first_or_create!(value: ENV['DEVICE_AWS_REGION'])
 Setting.where(key: :aws_bucket).first_or_create!(value: ENV['DEVICE_AWS_BUCKET'])
+Setting.where(key: :share_app).first_or_create!(value: "Check out this app!")
+Setting.where(key: :share_question).first_or_create!(value: "Check out this question!")
+Setting.where(key: :share_community_public).first_or_create!(value: "Check this out!")
+Setting.where(key: :share_community_private).first_or_create!(value: "Check this out!")
+
+#
+# Push notification setup
+#
+
+push_app_name = 'Statisfy'
+Rpush::Apns::App.where(name:push_app_name,environment:"development").first_or_create(connections:1, certificate:File.read("#{Rails.root}/certs/crashmob_dev_push.pem"))
+Rpush::Apns::App.where(name:push_app_name,environment:"production").first_or_create(connections:1, certificate:File.read("#{Rails.root}/certs/crashmob_production_push.pem"))
+Instance.where(push_app_name:nil).each{|i|i.update_attribute :push_app_name, push_app_name}
+
+
+#
+# Keys for studio
+#
 
 %w(Calories Fat Carbohydrates Protein Sugar SaturatedFat Sodium Cholesterol Fiber CaloriesFromFat).each do |key|
   Key.where(key:key).first_or_create!
@@ -78,38 +96,32 @@ def seed_image filename
   File.join "db","seeds",filename
 end
 
-private_category = Category.where(name:"Private").first_or_create!(icon:open(seed_image "categories/PrivateConvo150.png"))
-animals = Category.where(name:"Animals").first_or_create!(icon:open(seed_image "categories/Animals150.png"))
-art_and_culture = Category.where(name:"Art & Culture").first_or_create!(icon:open(seed_image "categories/ArtAndCulture150.png"))
-motors_and_gears = Category.where(name:"Motors and Gears").first_or_create!(icon:open(seed_image "categories/MotorsAndGears150.png"))
-cleberities = Category.where(name:"Cleberities").first_or_create!(icon:open(seed_image "categories/Celebs150.png"))
-diy_and_crafts = Category.where(name:"DIY & Crafts").first_or_create!(icon:open(seed_image "categories/DIYAndCrafts150.png"))
-movies_and_tv = Category.where(name:"Movies & TV").first_or_create!(icon:open(seed_image "categories/MoviesAndTV150.png"))
-food_and_drink = Category.where(name:"Food & Drink").first_or_create!(icon:open(seed_image "categories/FoodAndDrink150.png"))
-lifestyle = Category.where(name:"Lifestyle").first_or_create!(icon:open(seed_image "categories/LifeStyle150.png"))
-geek_and_gaming = Category.where(name:"Geek & Gaming").first_or_create!(icon:open(seed_image "categories/GeekAndGaming150.png"))
-fashion_and_beauty = Category.where(name:"Fashion & Beauty").first_or_create!(icon:open(seed_image "categories/FashionAndBeauty150.png"))
-health_and_fitness = Category.where(name:"Health & Fitness").first_or_create!(icon:open(seed_image "categories/HealthAndFitness150.png"))
-news_and_history = Category.where(name:"News & History").first_or_create!(icon:open(seed_image "categories/NewsAndHistory150.png"))
-holiday_and_events = Category.where(name:"Holiday & Events").first_or_create!(icon:open(seed_image "categories/HolidayAndEvents150.png"))
-home_and_garden = Category.where(name:"Home & Garden").first_or_create!(icon:open(seed_image "categories/HomeAndGarden150.png"))
-humor = Category.where(name:"Humor").first_or_create!(icon:open(seed_image "categories/Humor150.png"))
-family = Category.where(name:"Family").first_or_create!(icon:open(seed_image "categories/Family150.png"))
-sports_and_outdoors = Category.where(name:"Sports & Outdoors").first_or_create!(icon:open(seed_image "categories/SportsAndOutdoors150.png"))
-photography = Category.where(name:"Photography").first_or_create!(icon:open(seed_image "categories/Photography150.png"))
-consumer = Category.where(name:"Consumer").first_or_create!(icon:open(seed_image "categories/Consumer150.png"))
-science_and_nature = Category.where(name:"Science & Nature").first_or_create!(icon:open(seed_image "categories/ScienceAndNature150.png"))
-technology = Category.where(name:"Technology").first_or_create!(icon:open(seed_image "categories/Technology150.png"))
-places_and_travel = Category.where(name:"Places & Travel").first_or_create!(icon:open(seed_image "categories/PlacesAndTravel150.png"))
-weddings = Category.where(name:"Weddings").first_or_create!(icon:open(seed_image "categories/Weddings150.png"))
-relationships = Category.where(name:"Relationships").first_or_create!(icon:open(seed_image "categories/Relationship150.png"))
-politics = Category.where(name:"Politics").first_or_create!(icon:open(seed_image "categories/Politics150.png"))
-business_and_finance = Category.where(name:"Business & Finance").first_or_create!(icon:open(seed_image "categories/BusinessAndFinance150.png"))
-values = Category.where(name:"Values").first_or_create!(icon:open(seed_image "categories/Values150.png"))
-music = Category.where(name:"Music").first_or_create!(icon:open(seed_image "categories/Music150.png"))
-entertainment = Category.where(name:"Entertainment").first_or_create!(icon:open(seed_image "categories/Entertainment150.png"))
-books = Category.where(name:"Books").first_or_create!(icon:open(seed_image "categories/Books150.png"))
-other = Category.where(name:"Other").first_or_create!(icon:open(seed_image "categories/Other150.png"))
+# Revised to match v20140905
+satisfied = Category.where(name:"Are you statisfied?").first_or_create!(icon:open(seed_image "AreYouStatisfied150.png"))
+celebs = Category.where(name:"Celebrities & Pop").first_or_create!(icon:open(seed_image "CelebritiesAndPop150.png"))
+dating = Category.where(name:"Dating & Relationships").first_or_create!(icon:open(seed_image "DatingAndRelationship150.png"))
+entertainment = Category.where(name:"Entertainment").first_or_create!(icon:open(seed_image "Entertainment150.png"))
+fashion = Category.where(name:"Fashion").first_or_create!(icon:open(seed_image "Fashion150.png"))
+feminism = Category.where(name:"Feminisms for the World").first_or_create!(icon:open(seed_image "FeminismsForTheWorld150.png"))
+food_and_drink = Category.where(name:"Food & Drink").first_or_create!(icon:open(seed_image "FoodAndDrink150.png"))
+geek = Category.where(name:"Geek & Gaming").first_or_create!(icon:open(seed_image "GeekAndGaming150.png"))
+health = Category.where(name:"Health & Fitness").first_or_create!(icon:open(seed_image "HealthAndFitness150.png"))
+hacks = Category.where(name:"Life Hacks").first_or_create!(icon:open(seed_image "LifeHacks150.png"))
+life = Category.where(name:"Life").first_or_create!(icon:open(seed_image "Life150.png"))
+lol = Category.where(name:"LOL").first_or_create!(icon:open(seed_image "LOL150.png"))
+news = Category.where(name:"News").first_or_create!(icon:open(seed_image "News150.png"))
+omg = Category.where(name:"OMG").first_or_create!(icon:open(seed_image "OMG150.png"))
+politics = Category.where(name:"Politics").first_or_create!(icon:open(seed_image "Politics150.png"))
+shit = Category.where(name:"Shit you should know").first_or_create!(icon:open(seed_image "StuffYouShouldKnow.png"))
+sports = Category.where(name:"Sports").first_or_create!(icon:open(seed_image "Sports150.png"))
+tech = Category.where(name:"Tech").first_or_create!(icon:open(seed_image "Technology150.png"))
+awkward = Category.where(name:"That’s awkward").first_or_create!(icon:open(seed_image "ThatsAkward150.png"))
+busy = Category.where(name:"The art of looking busy").first_or_create!(icon:open(seed_image "TheArtOfLookingBusy.png"))
+travel = Category.where(name:"Travel").first_or_create!(icon:open(seed_image "Travel150.png"))
+rather = Category.where(name:"Would You Rather").first_or_create!(icon:open(seed_image "WouldYouRather150.png"))
+wtf = Category.where(name:"WTF").first_or_create!(icon:open(seed_image "WTF150.png"))
+science = Category.where(name:"Science").first_or_create!(icon:open(seed_image "Science150.png"))
+nsfw = Category.where(name:"Not Safe For Work (NSFW)").first_or_create!(icon:open(seed_image "NSFW150.png"))
 
 #
 # Questions

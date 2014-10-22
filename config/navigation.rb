@@ -54,18 +54,22 @@ SimpleNavigation::Configuration.run do |navigation|
     #                            against the current URI.  You may also use a proc, or the symbol <tt>:subpath</tt>.
     #
 
-    primary.dom_class = %w{nav navbar-nav navbar-right}
+    primary.dom_class = %w{nav navbar-nav nav-text-light navbar-right}
 
-    primary.item :get_app, 'Get the App', '#'
+    primary.item :home, 'Home', root_path
 
     if user_signed_in?
-      primary.item :dashboard, 'Enterprise', [:dashboard, current_user], if: -> { Pundit.policy(current_user, User).dashboard?}
-      primary.item :feed, 'Question Feed', root_path
+      primary.item :get_app, 'Get the App', '#'
+      primary.item :dashboard_item, 'Enterprise', [:dashboard, current_user], if: -> { Pundit.policy(current_user, current_user).dashboard?}
+      primary.item :feed, 'Question Feed', questions_path
+      primary.item :account, 'My Account', user_path(current_user)
       primary.item :logout, 'Logout', destroy_user_session_path, method: :delete
       if (params[:controller]=='responses' && params[:action]=='new')||(params[:controller]=='questions')
         primary.item :ask, "<span class='glyphicon glyphicon glyphicon-edit'></span> New Question".html_safe, question_types_path
       end
     else
+      primary.item :get_statisfy, 'Get Statisfy', '#'
+      primary.item :help, 'Help', '#'
       primary.item :sign_up, 'Sign Up', new_user_registration_path
       primary.item :sign_in, 'Sign In', new_user_session_path
     end

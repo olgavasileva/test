@@ -54,7 +54,8 @@ describe :summary do
           multiple_choice_question star_question percent_question
           order_question]
 
-        question_types.each do |question_type|
+        # question_types.each do |question_type|
+        [question_types.first].each do |question_type|
           context "With a #{question_type.to_s.classify}" do
             let(:question) {FactoryGirl.create question_type}
             let(:question_id) {question.id}
@@ -104,6 +105,33 @@ describe :summary do
               { id: question.choices[1].id, response_ratio: 0.6 },
               { id: question.choices[2].id, response_ratio: 0.2 },
               { id: question.choices[3].id, response_ratio: 0.2 }
+            ].map(&:stringify_keys)
+          end
+        end
+
+        context "with an OrderQuestion with responses" do
+          let(:question) do
+            question = FactoryGirl.create :order_question
+
+            question.choices = FactoryGirl.create_list(
+              :order_choice, 4, question: question)
+
+            question.responses = FactoryGirl.create_list(
+              :order_response, 3, choices: question.choices)
+            question.responses << FactoryGirl.create(
+              :order_response, choices: question.choices.reverse)
+
+            question
+          end
+          let(:question_id) {question.id}
+          let(:choices_data) { JSON.parse(response.body)['summary']['choices'] }
+
+          it "returns correct choices data" do
+            expect(choices_data).to match_array [
+              { id: question.choices[0].id, response_ratio: 0.75, top_count: 3 },
+              { id: question.choices[1].id, response_ratio: 0.0, top_count: 0 },
+              { id: question.choices[2].id, response_ratio: 0.0, top_count: 0 },
+              { id: question.choices[3].id, response_ratio: 0.25, top_count: 1 }
             ].map(&:stringify_keys)
           end
         end

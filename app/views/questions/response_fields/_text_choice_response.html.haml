@@ -1,0 +1,33 @@
+:sass
+  .equalizer-md
+    margin-bottom: 3%
+  .equalizer-sm
+    margin-bottom: 1.3%
+
+  .follow-menu
+    margin-top: -65px
+    background-color: transparent
+
+.text-choices.form-group
+  .col-xs-12
+    .row
+      .col-xs-12
+        = responsive_image_tag((question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
+        .floating-question-title
+          %span= question.title
+        %div
+          .col-xs-12
+          = render "questions/response_fields/shared/sharing", question: question
+      .col-xs-12.btn-group
+        -question.choices.all.each do |c|
+          .col-xs-12.selectable-option.btn.form-group.clearfix
+            %label.btn-primary.col-xs-12
+              .row
+                %div.col-xs-3
+                  = responsive_image_tag((question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
+              .option-title=c.title
+              -divNumber=(@question.response_count>0) ? @question.response_count : 1
+              %i.response_counter
+                =Integer((((@responses_resume[c.id]||0)/Float(divNumber))*100.00).round())
+                \%
+

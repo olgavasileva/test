@@ -1,4 +1,8 @@
+require 'will_paginate/array'
+
 class UsersController < ApplicationController
+  after_action :read_all_messages, only: :show, if: Proc.new { @tab == 'notifications' }
+
   def profile
     @user = current_user
     authorize @user
@@ -7,6 +11,54 @@ class UsersController < ApplicationController
   def show
     @user = User.find params[:id]
     authorize @user
+
+    default_tab = @user == current_user ? 'notifications' : 'questions'
+    @tab = params.fetch(:tab, default_tab)
+
+    case @tab
+    when 'notifications'
+      authorize @user, :show_notifications?
+
+      @notifications = @user.messages.page(params[:page])
+    when 'questions'
+      @subtab = params.fetch(:subtab, 'asked')
+
+      case @subtab
+      when 'asked'
+        @questions = @user.questions.page(params[:page])
+      when 'answered'
+        @questions = @user.answered_questions.page(params[:page])
+      when 'commented'
+        # todo: optimize
+        question_ids = @user.comments.map{|c| c.question.id}
+        @questions = Question.where(id: question_ids).page(params[:page])
+      end
+    when 'communities'
+      default_subtab = @user == current_user ? 'join' : 'my'
+      @subtab = params.fetch(:subtab, default_subtab)
+
+      case @subtab
+      when 'join'
+        authorize @user, :show_join_communities?
+
+        @communities = Community.search(name_cont: params[:search_text]).result
+      when 'create'
+        authorize @user, :show_create_community?
+      when 'my'
+        @member_communities = @user.membership_communities
+        @communities = @user.communities
+      end
+    when 'followers'
+      @followers = @user.followers.page(params[:page])
+    when 'following'
+      # todo: optimize
+      leaders = @user.leaders.search(name_cont: params[:search_text]).result
+      @users = leaders
+      if @user == current_user
+        unleaders = User.where.not(id: leaders + [current_user]).search(name_cont: params[:search_text]).result
+        @users += unleaders
+      end
+    end
   end
 
   def follow
@@ -14,6 +66,19 @@ class UsersController < ApplicationController
     authorize @user
 
     current_user.follow! @user
+
+    flash[:notice] = "Followed #{@user.name}."
+    redirect_to :back
+  end
+
+  def unfollow
+    @user = User.find params[:id]
+    authorize @user
+
+    current_user.leaders.delete(@user)
+
+    flash[:notice] = "Stopped following #{@user.name}."
+    redirect_to :back
   end
 
   def first_question
@@ -37,36 +102,88 @@ class UsersController < ApplicationController
     authorize @user
 
     # TODO - lazy load this data
+    reach = @user.questions.sum(:view_count)
+    targeted_reach = @user.questions.map{|q| q.targeted_reach.to_i }.sum
+    viral_reach = reach - targeted_reach
+    engagements = @user.questions.sum(:start_count)
+    completes = @user.questions.map{|q| q.response_count }.sum
+    skips = @user.questions.map{|q| q.skip_count }.sum
+    comments = @user.questions.map{|q| q.comment_count }.sum
+    shares = @user.questions.map{|q| q.share_count.to_i }.sum
+
     @campaign_data = [
-      { label: "Targeted Reach", value: @user.questions.map{|q| q.targeted_reach }.sum },
-      { label: "Views", value: @user.questions.sum(:view_count) },
-      { label: "Engagements", value: @user.questions.sum(:start_count) },
-      { label: "Completes", value: @user.questions.map{|q| q.response_count }.sum },
-      { label: "Skips", value: @user.questions.map{|q| q.skip_count }.sum },
-      { label: "Comments", value: @user.questions.map{|q| q.comment_count }.sum  },
-      { label: "Shares", value: @user.questions.map{|q| q.share_count }.sum  }
+      { label: "Reach", value: reach },
+      { label: "Engagements", value: engagements },
+      { label: "Completes", value: completes },
+      { label: "Skips", value: skips },
+      { label: "Comments", value: comments },
+      { label: "Shares", value: shares }
     ]
 
-    # TODO - lazy load this data
-    @recent_question_actions = QuestionAction.recent_actions(@user, Time.now - 6.hours)
+    if reach != 0
+      @viral_rate = viral_reach.to_f / reach
+      @engagement_rate = engagements.to_f / reach
+      @complete_rate = completes.to_f / reach
+    end
 
-    @dummy_comment_data = [
-      { email: "james@kirk.com", name: "Jim", url: '#', campaign_name: "Campaign 1", campaign_url: '#', text: "This was an awesome question!", date: 5.minutes.ago },
-      { email: "scotty@engineering.com", name: "James", url: '#', campaign_name: "Campaign 1", campaign_url: '#', text: "This was another awesome question!", date: 7.minutes.ago },
-      { email: "leonard@mccoy.com", name: "Leonard", url: '#', campaign_name: "Campaign 1", campaign_url: '#', text: "This was an great question!", date: 12.minutes.ago },
-      { email: "uhura@thebridge.com", name: "Nyota", url: '#', campaign_name: "Campaign 1", campaign_url: '#', text: "This was asked just in time!", date: 23.minutes.ago },
-      { email: "hikaru@sulu.com", name: "Hikaru", url: '#', campaign_name: "Campaign 1", campaign_url: '#', text: "Who came up with this one?!", date: 45.minutes.ago },
-      { email: "spock@vulcan.com", name: "Spock", url: '#', campaign_name: "Campaign 1", campaign_url: '#', text: "Please ask more like this!", date: 123.minutes.ago },
-      { email: "patrick@stewart.com", name: "Captain", url: '#', campaign_name: "Campaign 1", campaign_url: '#', text: "What a rare thing to konw about!", date: 1234.minutes.ago }
-    ]
+    @responses_by_day_data = (0..29).to_a.reverse.map{|days_ago| {day: (Date.today - days_ago).to_formatted_s(:sql), v: DailyAnalytic.fetch(:responses, Date.today - days_ago, @user)}}
 
-    @dummy_complete_data = [
-      { email: "arthur@fillingstation.com", date: 1.week.ago, response: "That's what she said.", response_url: '#', name: "Fonzie", url: '#' },
-      { email: "ralph@malph.com", date: 2.weeks.ago, response: "That's what he said.", response_url: '#', name: "Ralph", url: '#' },
-      { email: "ritchie@cunningham.com", date: 3.weeks.ago, response: "That's what I always say.", response_url: '#', name: "Richard", url: '#' },
-      { email: "jonie@cunningham.com", date: 2.months.ago, response: "Wait, who said that?.", response_url: '#', name: "Jonie", url: '#' }
-    ]
+    engagements_yesterday = DailyAnalytic.fetch(:starts, Date.today - 1, @user)
+    engagements_day_before = DailyAnalytic.fetch(:starts, Date.today - 2, @user)
+    @engagement_increase_rate = engagements_yesterday.to_f / engagements_day_before - 1 unless engagements_day_before == 0
+    @engagement_data_points = (0..29).to_a.reverse.map{|days_ago| DailyAnalytic.fetch(:starts, Date.today - days_ago, @user)}
+
+    @reach_today = DailyAnalytic.fetch(:views, Date.today, @user)
+
+    @targeted_reach = targeted_reach
+    @viral_reach = viral_reach
+    @reach_data_points = (0..29).to_a.reverse.map{|days_ago| DailyAnalytic.fetch(:views, Date.today - days_ago, @user)}
 
     render layout: "pixel_admin"
+  end
+
+  def recent_responses
+    @user = User.find params[:id]
+    authorize @user
+
+    @recent_responses = @user.responses_to_questions.order("responses.created_at DESC").kpage(params[:page]).per(5)
+  end
+
+  def recent_comments
+    @user = User.find params[:id]
+    authorize @user
+
+    @recent_comments = @user.comments_on_questions_and_responses.order("comments.created_at DESC").kpage(params[:page]).per(5)
+  end
+
+  def campaigns
+    @user = User.find params[:id]
+    authorize @user
+
+    @questions = @user.questions.active
+
+    render layout: "pixel_admin"
+  end
+
+  def analytics
+    @user = User.find params[:id]
+    authorize @user
+
+    @question = Question.find params[:question_id] if params[:question_id]
+
+    render layout: "pixel_admin"
+  end
+
+  def account
+    @user = User.find params[:id]
+    authorize @user
+
+    render layout: "pixel_admin"
+  end
+
+  private
+
+  def read_all_messages
+    @user.read_all_messages
   end
 end

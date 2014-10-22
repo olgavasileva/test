@@ -1,0 +1,23 @@
+#padded_wrapper
+  %ul.breadcrumb.breadcrumb-page
+    .breadcrumb-label.text-light-gray You are here:
+    %li=link_to "Home", root_path
+    %li=link_to "Segment List", [current_user, :segments]
+    %li.active=link_to @segment.name, '#'
+  %h1 Segment Management
+  %p To effectively segment the group and find your market.
+
+  .table-primary#matcher_list=render 'matcher_table', segment:@segment
+
+  .panel.panel-default
+    .panel-heading
+      %h2.panel-title Segmented Groups
+    .panel-body
+      .row
+        .col-sm-5
+          .input-group
+            %span.input-group-addon
+              %span.glyphicon.glyphicon-search
+            =search_field_tag :search, "", id: :question_search, data:{callback: question_search_user_segment_url(current_user, @segment)}, placeholder: "Search for a question", class: %w(form-control)
+        .col-sm-7
+          #search_results

@@ -1,2 +1,186 @@
 .img-responsive
   width: 100%
+.revealable
+  background-color: transparent
+  &::-webkit-input-placeholder
+  color: white
+  &:-moz-placeholder
+    color: white
+  &::-moz-placeholder
+    color: white
+  &:-ms-input-placeholder
+    color: white
+  &:hover, &:focus
+    background-color: rgba(255,255,255,0.2) !important
+
+*:not(.has-error)
+  >.revealable
+    border-color: transparent
+    &:hover, &:focus
+      outline: none
+      border: solid 1px  white !important
+
+
+.question-header-style-title
+  padding: 10px
+  .title
+    width: 100%
+    text-align: center
+    box-shadow: none
+    resize: none
+
+.btn-default,
+.btn-primary
+  background-color: $primary_background_color
+  &:hover
+    background-color: $primary_background_color_hover
+
+.btn-default.negative:not(.active), .btn-primary.negative:not(.active)
+  background-color: white
+  border-style: solid
+  border-width: 1px
+  border-color: $primary_border_color
+  color: $primary_color
+  font-size: 1.7rem
+
+.btn.white-border
+  border-color: white !important
+
+
+.btn-default.transparent-white, .btn-primary.transparent-white
+  background-color: transparent
+  color: white
+  border-width: 1px
+  border-color: white
+
+.btn-default.transparent, .btn-primary.transparent
+  background-color: transparent !important
+.btn-default.no-border, .btn-primary.no-border
+  border-color: transparent !important
+  &.active
+    color: white!important
+    background-color: $primary_background_color
+    *
+      color: white!important
+
+footer#footer
+  margin-top: 0
+
+
+#content_constraint
+  display:  block
+  margin: auto
+  .panel
+    border: none
+    .panel-body
+      background-color: #f5f5f5
+
+
+@media only screen and (min-width : 771px)
+  #content_constraint
+    max-width: 868px
+    &.StudioQuestion
+      max-width: none
+
+@media only screen and (max-width : 770px)
+  #content_constraint
+    max-width: 700px
+    &.StudioQuestion
+      max-width: none
+
+
+
+.panel-title
+  text-align: center
+.blured-background
+  position: absolute
+  top: 0
+  left: 0
+  left: -20%
+  width: 140%
+  min-height: 120%
+  z-index: 0
+  filter: blur(3px)
+  -webkit-filter: blur(30px)
+  -moz-filter: blur(30px)
+  -o-filter: blur(30px)
+  -ms-filter: blur(30px)
+  filter: url(blur.svg#blur)
+  filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='6')
+.img-overlay
+  z-index: 3
+
+.form-group
+  margin-bottom: 0!important
+
+.panel-body
+  padding-top: 0
+
+.selectable-option
+  margin-right: -1px
+  margin-left: -1px
+  width: auto
+  display: block
+  label
+    margin-bottom: 0
+  &:first-child
+    margin-top: 10px
+
+#undertop .panel-default
+
+  .panel-heading
+    border-bottom-style: none
+  background-color: #f5f5f5
+
+form.panel,
+.form.panel
+  &>.panel-heading
+    .col-xs-3,
+    .col-xs-6
+      color: $primary_color
+      .btn
+        padding: 0
+        font-size: 2.2rem
+      &:first-child
+        text-align: left !important
+      &:last-child
+        text-align: right !important
+  .panel-body
+    h2.body_title
+      background-color: rgba(255,255,255,0.1)
+      color: white
+      text-align: center
+      margin-top: 0
+      margin-bottom: 30px
+      padding: 10px
+      padding-top: 15px
+      padding-bottom: 15px
+
+body
+
+  #main-wrapper
+    height: 100%
+    #content-wrapper
+      height: 100%
+      #undertop
+        min-height: 100%
+
+#jpreOverlay
+  background-color: rgba(0,0,0,0.2)
+  #jpreLoader
+    font-size: 4rem
+    color: white
+    width: 100%
+    text-align: center
+    text-shadow: 0 1px 6px black
+    font-weight: 200
+    #jpreBar
+      height: 0 !important
+      border-bottom: solid 1px white
+      box-shadow: 0 1px 6px black
+    #jprePercentage
+
+
+.separator
+  clear: both
+  float: none

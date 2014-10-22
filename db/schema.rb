@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140909003238) do
+ActiveRecord::Schema.define(version: 20141018225636) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -94,6 +94,76 @@ ActiveRecord::Schema.define(version: 20140909003238) do
     t.datetime "updated_at"
   end
 
+  create_table "comments", force: true do |t|
+    t.text     "body"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
+  end
+
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+
+  create_table "communities", force: true do |t|
+    t.string   "name"
+    t.boolean  "private",               default: false
+    t.string   "password"
+    t.string   "password_confirmation"
+    t.text     "description"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "communities", ["user_id"], name: "index_communities_on_user_id", using: :btree
+
+  create_table "community_members", force: true do |t|
+    t.integer  "community_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "community_members", ["community_id"], name: "index_community_members_on_community_id", using: :btree
+  add_index "community_members", ["user_id"], name: "index_community_members_on_user_id", using: :btree
+
+  create_table "contest_response_votes", force: true do |t|
+    t.integer  "contest_id"
+    t.integer  "response_id"
+    t.integer  "vote_count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "contest_response_votes", ["contest_id"], name: "index_contest_response_votes_on_contest_id", using: :btree
+  add_index "contest_response_votes", ["response_id"], name: "index_contest_response_votes_on_response_id", using: :btree
+
+  create_table "contests", force: true do |t|
+    t.integer  "survey_id"
+    t.integer  "key_question_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+    t.string   "uuid"
+    t.text     "heading_markdown"
+    t.text     "heading_html"
+  end
+
+  add_index "contests", ["key_question_id"], name: "index_contests_on_key_question_id", using: :btree
+  add_index "contests", ["survey_id"], name: "index_contests_on_survey_id", using: :btree
+
+  create_table "daily_analytics", force: true do |t|
+    t.integer  "user_id"
+    t.string   "metric"
+    t.integer  "total"
+    t.date     "date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "daily_analytics", ["user_id", "metric", "date"], name: "index_daily_analytics_on_user_id_and_metric_and_date", using: :btree
+
   create_table "devices", force: true do |t|
     t.string   "device_vendor_identifier"
     t.string   "platform"
@@ -114,6 +184,16 @@ ActiveRecord::Schema.define(version: 20140909003238) do
 
   add_index "feed_items", ["question_id"], name: "index_feed_items_on_question_id", using: :btree
   add_index "feed_items", ["user_id"], name: "index_feed_items_on_user_id", using: :btree
+
+  create_table "follower_targets", force: true do |t|
+    t.integer  "question_id"
+    t.integer  "follower_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "follower_targets", ["follower_id"], name: "index_follower_targets_on_follower_id", using: :btree
+  add_index "follower_targets", ["question_id"], name: "index_follower_targets_on_question_id", using: :btree
 
   create_table "galleries", force: true do |t|
     t.datetime "entries_open"
@@ -185,6 +265,16 @@ ActiveRecord::Schema.define(version: 20140909003238) do
   add_index "group_members", ["group_id"], name: "index_group_members_on_group_id", using: :btree
   add_index "group_members", ["user_id"], name: "index_group_members_on_user_id", using: :btree
 
+  create_table "group_targets", force: true do |t|
+    t.integer  "question_id"
+    t.integer  "group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "group_targets", ["group_id"], name: "index_group_targets_on_group_id", using: :btree
+  add_index "group_targets", ["question_id"], name: "index_group_targets_on_question_id", using: :btree
+
   create_table "groups", force: true do |t|
     t.string   "name"
     t.integer  "user_id"
@@ -193,6 +283,27 @@ ActiveRecord::Schema.define(version: 20140909003238) do
   end
 
   add_index "groups", ["user_id"], name: "index_groups_on_user_id", using: :btree
+
+  create_table "groups_targets", force: true do |t|
+    t.integer  "group_id"
+    t.integer  "target_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "groups_targets", ["group_id"], name: "index_groups_targets_on_group_id", using: :btree
+  add_index "groups_targets", ["target_id"], name: "index_groups_targets_on_target_id", using: :btree
+
+  create_table "inappropriate_flags", force: true do |t|
+    t.integer  "question_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "reason"
+  end
+
+  add_index "inappropriate_flags", ["question_id"], name: "index_inappropriate_flags_on_question_id", using: :btree
+  add_index "inappropriate_flags", ["user_id"], name: "index_inappropriate_flags_on_user_id", using: :btree
 
   create_table "inclusions", force: true do |t|
     t.integer  "pack_id"
@@ -249,13 +360,30 @@ ActiveRecord::Schema.define(version: 20140909003238) do
 
   create_table "liked_comments", force: true do |t|
     t.integer  "user_id"
-    t.integer  "response_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "comment_id"
   end
 
-  add_index "liked_comments", ["response_id"], name: "index_liked_comments_on_response_id", using: :btree
+  add_index "liked_comments", ["comment_id"], name: "index_liked_comments_on_comment_id", using: :btree
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
+
+  create_table "messages", force: true do |t|
+    t.string   "type"
+    t.datetime "read_at"
+    t.datetime "completed_at"
+    t.integer  "response_count"
+    t.integer  "comment_count"
+    t.integer  "share_count"
+    t.integer  "question_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "follower_id"
+    t.string   "body"
+  end
+
+  add_index "messages", ["user_id"], name: "index_messages_on_user_id", using: :btree
 
   create_table "order_choices_responses", force: true do |t|
     t.integer  "order_choice_id"
@@ -301,6 +429,17 @@ ActiveRecord::Schema.define(version: 20140909003238) do
     t.float    "percent"
   end
 
+  create_table "question_reports", force: true do |t|
+    t.integer  "question_id"
+    t.integer  "user_id"
+    t.text     "reason"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "question_reports", ["question_id"], name: "index_question_reports_on_question_id", using: :btree
+  add_index "question_reports", ["user_id"], name: "index_question_reports_on_user_id", using: :btree
+
   create_table "questions", force: true do |t|
     t.integer  "user_id"
     t.integer  "category_id"
@@ -326,6 +465,17 @@ ActiveRecord::Schema.define(version: 20140909003238) do
     t.integer  "studio_id"
     t.integer  "view_count"
     t.integer  "start_count"
+    t.boolean  "target_all",                                    default: false
+    t.boolean  "target_all_followers",                          default: false
+    t.boolean  "target_all_groups",                             default: false
+    t.integer  "targeted_reach"
+    t.string   "uuid"
+    t.boolean  "anonymous",                                     default: false
+    t.boolean  "currently_targetable",                          default: true
+    t.integer  "target_id"
+    t.integer  "share_count"
+    t.decimal  "score",                 precision: 5, scale: 2, default: 0.0
+    t.boolean  "special",                                       default: false
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
@@ -333,6 +483,17 @@ ActiveRecord::Schema.define(version: 20140909003238) do
   add_index "questions", ["created_at"], name: "index_questions_on_created_at", using: :btree
   add_index "questions", ["kind"], name: "index_questions_on_kind", using: :btree
   add_index "questions", ["user_id"], name: "index_questions_on_user_id", using: :btree
+
+  create_table "questions_surveys", force: true do |t|
+    t.integer  "question_id"
+    t.integer  "survey_id"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "questions_surveys", ["question_id"], name: "index_questions_surveys_on_question_id", using: :btree
+  add_index "questions_surveys", ["survey_id"], name: "index_questions_surveys_on_survey_id", using: :btree
 
   create_table "relationships", force: true do |t|
     t.integer  "follower_id"
@@ -345,6 +506,21 @@ ActiveRecord::Schema.define(version: 20140909003238) do
   add_index "relationships", ["follower_id"], name: "index_relationships_on_follower_id", using: :btree
   add_index "relationships", ["leader_id"], name: "index_relationships_on_leader_id", using: :btree
 
+  create_table "response_matchers", force: true do |t|
+    t.integer  "segment_id"
+    t.integer  "question_id"
+    t.text     "regex"
+    t.integer  "first_place_choice_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "type"
+    t.string   "inclusion"
+    t.integer  "choice_id"
+  end
+
+  add_index "response_matchers", ["question_id"], name: "index_response_matchers_on_question_id", using: :btree
+  add_index "response_matchers", ["segment_id"], name: "index_response_matchers_on_segment_id", using: :btree
+
   create_table "responses", force: true do |t|
     t.string   "type"
     t.integer  "user_id"
@@ -354,12 +530,13 @@ ActiveRecord::Schema.define(version: 20140909003238) do
     t.integer  "choice_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "comment"
     t.boolean  "anonymous"
     t.integer  "scene_id"
+    t.integer  "comment_id"
   end
 
   add_index "responses", ["choice_id"], name: "index_responses_on_choice_id", using: :btree
+  add_index "responses", ["comment_id"], name: "index_responses_on_comment_id", using: :btree
   add_index "responses", ["question_id"], name: "index_responses_on_question_id", using: :btree
   add_index "responses", ["user_id"], name: "index_responses_on_user_id", using: :btree
 
@@ -374,6 +551,66 @@ ActiveRecord::Schema.define(version: 20140909003238) do
   add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
+  create_table "rpush_apps", force: true do |t|
+    t.string   "name",                                null: false
+    t.string   "environment"
+    t.text     "certificate"
+    t.string   "password"
+    t.integer  "connections",             default: 1, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "type",                                null: false
+    t.string   "auth_key"
+    t.string   "client_id"
+    t.string   "client_secret"
+    t.string   "access_token"
+    t.datetime "access_token_expiration"
+  end
+
+  create_table "rpush_feedback", force: true do |t|
+    t.string   "device_token", limit: 64, null: false
+    t.datetime "failed_at",               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "app_id"
+  end
+
+  add_index "rpush_feedback", ["device_token"], name: "index_rpush_feedback_on_device_token", using: :btree
+
+  create_table "rpush_notifications", force: true do |t|
+    t.integer  "badge"
+    t.string   "device_token",      limit: 64
+    t.string   "sound",                              default: "default"
+    t.string   "alert"
+    t.text     "data"
+    t.integer  "expiry",                             default: 86400
+    t.boolean  "delivered",                          default: false,     null: false
+    t.datetime "delivered_at"
+    t.boolean  "failed",                             default: false,     null: false
+    t.datetime "failed_at"
+    t.integer  "error_code"
+    t.text     "error_description"
+    t.datetime "deliver_after"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "alert_is_json",                      default: false
+    t.string   "type",                                                   null: false
+    t.string   "collapse_key"
+    t.boolean  "delay_while_idle",                   default: false,     null: false
+    t.text     "registration_ids",  limit: 16777215
+    t.integer  "app_id",                                                 null: false
+    t.integer  "retries",                            default: 0
+    t.string   "uri"
+    t.datetime "fail_after"
+    t.boolean  "processing",                         default: false,     null: false
+    t.integer  "priority"
+    t.text     "url_args"
+    t.string   "category"
+  end
+
+  add_index "rpush_notifications", ["app_id", "delivered", "failed", "deliver_after"], name: "index_rapns_notifications_multi", using: :btree
+  add_index "rpush_notifications", ["delivered", "failed"], name: "index_rpush_notifications_multi", using: :btree
+
   create_table "scenes", force: true do |t|
     t.text     "canvas_json"
     t.integer  "user_id"
@@ -387,6 +624,17 @@ ActiveRecord::Schema.define(version: 20140909003238) do
 
   add_index "scenes", ["studio_id"], name: "index_scenes_on_studio_id", using: :btree
   add_index "scenes", ["user_id"], name: "index_scenes_on_user_id", using: :btree
+
+  create_table "segments", force: true do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.integer  "potential_reach_count"
+    t.datetime "potential_reach_computed_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "segments", ["user_id"], name: "index_segments_on_user_id", using: :btree
 
   create_table "settings", force: true do |t|
     t.boolean  "enabled"
@@ -494,6 +742,12 @@ ActiveRecord::Schema.define(version: 20140909003238) do
   add_index "studios", ["scene_id"], name: "index_studios_on_scene_id", using: :btree
   add_index "studios", ["sticker_pack_id"], name: "index_studios_on_sticker_pack_id", using: :btree
 
+  create_table "surveys", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "taggings", force: true do |t|
     t.integer  "tag_id"
     t.integer  "taggable_id"
@@ -510,6 +764,27 @@ ActiveRecord::Schema.define(version: 20140909003238) do
   create_table "tags", force: true do |t|
     t.string "name"
   end
+
+  create_table "targets", force: true do |t|
+    t.boolean  "all_users"
+    t.boolean  "all_followers"
+    t.boolean  "all_groups"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+  end
+
+  add_index "targets", ["user_id"], name: "index_targets_on_user_id", using: :btree
+
+  create_table "targets_users", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "target_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "targets_users", ["target_id"], name: "index_targets_users_on_target_id", using: :btree
+  add_index "targets_users", ["user_id"], name: "index_targets_users_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -529,6 +804,8 @@ ActiveRecord::Schema.define(version: 20140909003238) do
     t.string   "remember_token"
     t.string   "longitude"
     t.string   "latitude"
+    t.date     "birthdate"
+    t.string   "gender"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

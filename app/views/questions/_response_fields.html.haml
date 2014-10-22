@@ -1,0 +1,15 @@
+- case question.type
+- when "TextChoiceQuestion"
+  = render "questions/response_fields/text_choice_response", question: question
+- when "YesNoQuestion"
+  = render "questions/response_fields/text_choice_response", question: question
+- when "ImageChoiceQuestion"
+  = render "questions/response_fields/image_choice_response", question: question
+- when "MultipleChoiceQuestion"
+  = render "questions/response_fields/image_choice_response", question: question
+- when "TextQuestion"
+  = render "questions/response_fields/text_response", question: question
+- when "OrderQuestion"
+  = render "questions/response_fields/order_response", question: question
+- when "StudioQuestion"
+  = render 'questions/response_fields/studio_response', question: question

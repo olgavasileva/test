@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative 'shared_create_examples'
 
 describe :multiple_choice_question do
   let(:params) {{}}
@@ -16,13 +17,15 @@ describe :multiple_choice_question do
   end
 
   context "With all required params" do
-    let(:params) {{auth_token:auth_token, category_id:category_id, title:title, min_responses:min_responses, rotate:rotate, choices:choices}}
+    let(:params) {{auth_token:auth_token, category_id:category_id, title:title, min_responses:min_responses, rotate:rotate, choices:choices, targets: targets, anonymous: anonymous }}
     let(:auth_token) {}
     let(:category_id) {}
     let(:title) {}
     let(:rotate) {}
     let(:min_responses) {}
     let(:choices) {}
+    let(:targets) {}
+    let(:anonymous) {}
 
     context "With an invalid auth token" do
       let(:auth_token) {"INVALID"}
@@ -77,6 +80,7 @@ describe :multiple_choice_question do
 
               expect(q).to_not be_nil
               expect(q['id']).to_not be_nil
+              expect(q['uuid']).not_to be_nil
               expect(q['type']).to eq "MultipleChoiceQuestion"
               expect(q['title']).to eq "The Title"
               expect(q['rotate']).to eq true
@@ -85,6 +89,8 @@ describe :multiple_choice_question do
               expect(q['min_responses']).to eq 0
               expect(q['comment_count']).to eq 0
               expect(q['response_count']).to eq 0
+              expect(q['creator_id']).to eq user.id
+              expect(q['creator_name']).to eq user.username
             end
           end
 
@@ -111,6 +117,9 @@ describe :multiple_choice_question do
               expect(choices[2]['choice']['image_url']).not_to be_nil
             end
           end
+
+          it_behaves_like :uses_targets
+          it_behaves_like :uses_anonymous
         end
       end
     end

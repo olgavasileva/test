@@ -13,13 +13,21 @@ LinkchatApp::Application.routes.draw do
 
   ActiveAdmin.routes(self)
 
-  root 'questions#index'
+  root 'pages#welcome'
+  get '/q/:uuid' => 'questions#new_response_from_uuid', as: :question_sharing
   get '/question' => 'users#first_question'
   get '/test' => 'pages#test' if Rails.env.development?
+  get '/contests/:uuid/sign_up' => 'contests#sign_up', as: :contest_sign_up
+  post '/contests/new_user' => 'contests#new_user', as: :new_contest_user
+  get '/contests/:uuid/vote' => 'contests#vote', as: :contest_vote
+  get '/contests/:uuid/question/:quid' => 'contests#question', as: :contest_question
+  post '/contests/:uuid/vote/:response_id' => 'contests#save_vote', as: :save_vote
 
   resources :questions, shallow:true do
     get :summary, on: :member
     get :share, on: :member
+    get :results, on: :member
+    post :update_targetable, on: :member
     resources :responses
     resources :text_choice_responses
     resources :image_choice_responses
@@ -27,14 +35,49 @@ LinkchatApp::Application.routes.draw do
     resources :text_responses
     resources :order_responses
     resources :studio_responses
+    resources :targets
+
     resources :skipped_items
   end
 
+  resources :response_matchers, only: [:destroy]
+  resources :text_response_matchers, only: [:destroy]
+  resources :choice_response_matchers, only: [:destroy]
+  resources :order_response_matchers, only: [:destroy]
+
   resources :inquiries
   resources :users do
+    resources :segments do
+      get :question_search, on: :member
+
+      resources :response_matchers
+      resources :text_response_matchers
+      resources :choice_response_matchers
+      resources :order_response_matchers
+    end
     get :profile, on: :collection
     get :follow, on: :member
+    get :unfollow, on: :member
     get :dashboard, on: :member
+    get :recent_responses, on: :member
+    get :recent_comments, on: :member
+    get :campaigns, on: :member
+    get 'analytics/(:question_id)', to:'users#analytics', on: :member, as: :analytics
+    get :account, on: :member
+  end
+
+  resources :groups
+
+  resources :group_members do
+    delete '/' => 'group_members#destroy', on: :collection
+  end
+
+  resources :communities do
+    get :invite, on: :member
+  end
+
+  resources :community_members do
+    delete '/' => 'community_members#destroy', on: :collection
   end
 
   resources :question_types
@@ -73,8 +116,6 @@ LinkchatApp::Application.routes.draw do
   resources :question_images
   resources :choice_images
   resources :order_choice_images
-
-  resources :targets
 
 
   mount TwoCents::API =>'/'

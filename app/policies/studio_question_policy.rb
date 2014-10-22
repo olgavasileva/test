@@ -1,0 +1,2 @@
+class StudioQuestionPolicy < QuestionPolicy
+end

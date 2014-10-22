@@ -1,14 +1,15 @@
 :sass
-  .almost-6
-    width: 49%
-    margin-right: -2px
-    &:nth-child(2n)
-      margin-left: 2%
-.row
-  .col-xs-12
-    - if response.question.preview?
-      = link_to "Edit", [:edit, response.question], class: %w{btn btn-default almost-6 btn-lg}
-      = link_to "Continue", [:target, response.question], class: %w{btn btn-default almost-6 btn-lg}
-    - else
-      = link_to "Skip", new_question_skipped_item_path(response.question), class: %w{btn btn-default almost-6 btn-lg}
-      %button.btn.btn-default.almost-6.btn-lg{type: :submit} Submit
+  .row.submit-skip-edit-continue-button-set
+    clear: both
+    .btn.negative
+      border-color: transparent
+      background-color: transparent
+
+- if !response.question.preview?
+  .row.submit-skip-edit-continue-button-set
+    .form-group.clearfix
+    .form-group.clearfix
+    .col-xs-3.clearfix
+      = link_to "Skip", new_question_skipped_item_path(response.question), class: %w{ btn btn-primary negative btn-lg col-xs-12}
+    .col-xs-3.col-xs-push-6.clearfix
+      %button.btn.btn-primary.negative.col-xs-12.btn-lg{type: :submit} Submit

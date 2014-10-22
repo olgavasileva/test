@@ -1,0 +1,17 @@
+#padded_wrapper
+  %ul.breadcrumb.breadcrumb-page
+    .breadcrumb-label.text-light-gray You are here:
+    %li=link_to "Home", root_path
+    %li.active=link_to "Segment List", '#'
+  %p.row
+    .col-sm-6 SEGMENT LIST
+    .col-sm-6.text-right-not-xs
+      =link_to [:new, @user, :segment], class: %w(btn btn-sm btn-danger btn-labeled), remote: true, data:{toggle: :modal, target: '#modal'} do
+        %span.btn-label.icon.fa.fa-plus
+        Create New Segment
+
+    %p.col-sm-12 Segments give you the power to create a custom audience that will receive your question.
+
+#segment_table=render "segment_table"
+
+#modal.modal.fade{role: :dialog}

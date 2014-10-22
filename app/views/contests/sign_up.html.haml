@@ -1,0 +1,23 @@
+#sign_up2
+  .container
+    %br
+    %br
+    .row.login
+      .col-sm-6.col-sm-push-3.signin_box
+        .box
+          .text-center= @contest.heading_html.html_safe
+          .box_cont
+            .form
+              = simple_form_for @user, as: "user", url: new_contest_user_path, class: "form-inline" do |f|
+                / = devise_error_messages!
+                .form-group.w-icon
+                  = f.input :username, label: false, placeholder: "Enter a Username", class:%w{form-control input-lg}
+                .form-group.w-icon
+                  = f.input :email, label: false, placeholder: "Enter your E-mail", class:%w{form-control input-lg}
+                .form-group.w-icon
+                  = f.input :password, autocomplete: "off", label: false, placeholder: "Enter a Password", class:%w{form-control input-lg}
+                .form-group.w-icon
+                  = f.input :password_confirmation, autocomplete: "off", label: false, placeholder: "Confirm your Password", class:%w{form-control input-lg}
+                %br
+                .form-group.w-icon
+                  = f.submit "Continue"

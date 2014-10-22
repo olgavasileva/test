@@ -1,8 +1,12 @@
 class ApplicationController < ActionController::Base
   include Pundit
 
+  before_action :authenticate_user!
+
   before_action :find_recent_questions
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
+
+  before_action :set_csp
 
   # Verify that controller actions are authorized. Optional, but good.
   after_action :verify_authorized,  except: :index, unless: :devise_controller?
@@ -24,6 +28,11 @@ class ApplicationController < ActionController::Base
   def after_sign_out_path_for resource
     session[:demo] = nil
     super resource
+  end
+
+  def redirect_to(options = {}, response_status = {})
+    ::Rails.logger.error("Redirected by #{caller(1).first rescue "unknown"}")
+    super(options, response_status)
   end
 
   protected
@@ -65,5 +74,10 @@ class ApplicationController < ActionController::Base
 
     def find_recent_questions
       @recent_questions ||= ::Question.order("created_at DESC").limit(2)
+    end
+
+    def set_csp
+      # response.headers['Content-Security-Policy'] = "default-src 'self' *; style-src 'self' * 'unsafe-inline'; script-src 'self' 'unsafe-eval'"
+      # response.headers['Access-Control-Allow-Origin'] = '*'
     end
 end

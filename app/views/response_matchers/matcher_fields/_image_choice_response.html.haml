@@ -1,0 +1,4 @@
+= f.label "Choices"
+.clear
+= f.collection_radio_buttons(:choice_id, f.object.question.choices, :id, :title, item_wrapper_class: :horizontal) do |choice|
+  = choice.label { choice.radio_button + image_tag(choice.object.background_image.web_image_url)  }

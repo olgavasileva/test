@@ -33,6 +33,23 @@ var psUI = function() {
             return false;
         });
 
+        $("form#new_studio_response").submit(function(e) {
+            // Move the studio info into the studio field
+            var ret = new $.Deferred();
+            ret.done(function(scene) {
+                if (JSON.parse(scene).objects.length == 0) {
+                    alert("Please create a scene.");
+                    e.preventDefault();
+                } else {
+                    $("#studio_response_scene_attributes_canvas_json").val(scene);
+                    // console.log(psCanvas().getContext().toDataURL("image/png"));
+                }
+            });
+
+            $(document).trigger("ps.canvas.serializer.serialize", [ret]);
+            return true;
+        });
+
         $("#ps-enter-contest").click(function() {
             $("#enter-contest-dialog").dialog("open");
             return false;
@@ -209,7 +226,7 @@ var psUI = function() {
         body.append('<div class="overlay"></div>');
 
         body.find(".overlay").css({
-            'background': 'rgba(0, 0, 0, .5)',
+            'background': 'rgba(0, 0, 0, 0.0)',
             'width': '100%', //ps_frame.width(),
             'height': '100%', //ps_frame.height(),
             'position': 'absolute',
@@ -404,7 +421,7 @@ var psUI = function() {
                 //        console.log("top " + ui.position.top);
                 //        console.log("offset " + ui.offset.top);
                 ui.position.top = ui.offset.top - $("#studio-wrapper").offset().top;
-                ui.position.left = ui.offset.left - $("#pack-drawer").width();
+                ui.position.left = ui.offset.left - $("#pack-drawer").offset().left;
             }
         }).on('click', function() {
             var data = $(this).find('img').data();

@@ -1,6 +1,4 @@
 class TwoCents::Studios < Grape::API
-  formatter :json, Grape::Formatter::Jbuilder
-
   helpers do
     def studio
       @studio = Studio.find(params[:studio_id]) rescue (fail! 4400, "Studio with ID #{params[:studio_id]} not found")
@@ -89,7 +87,7 @@ class TwoCents::Studios < Grape::API
         [200, "4400 - Studio not found"],
         [200, "4401 - Sticker Pack not found"]
     ] do
-        @sticker_pack = sticker_pack
+      @sticker_pack = sticker_pack
     end
 
     desc "Get all the enabled stickers in a sticker pack", {

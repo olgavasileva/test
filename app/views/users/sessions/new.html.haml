@@ -6,35 +6,9 @@
       .section_header
         %h3
       .row.login
-        .col-sm-5.left_box
-          %h4 Log in to your account
-          .perk_box
-            .perk
-              %span.icos.ico1
-              %p
-                %strong Lorem alteration
-                in some form  injected humour these randomised words .
-            .perk
-              %span.icos.ico2
-              %p
-                %strong There are many variations
-                of passages of Lorem alteration in some form  injected humour these randomised words.
-            .perk
-              %span.icos.ico3
-              %p
-                %strong Alteration in some form
-                injected humour these randomised words.
-        .col-sm-6.signin_box
+        .col-sm-6.col-sm-push-3.signin_box
           .box
             .box_cont
-              .social
-                = link_to image_tag("clean_canvas/face.png"), '#', class:%w(circle facebook)
-                = link_to image_tag("clean_canvas/twt.png"), '#', class:%w(circle twitter)
-                = link_to image_tag("clean_canvas/gplus.png"), '#', class:%w(circle gplus)
-              .division
-                .line.l
-                %span or
-                .line.r
               .form
                 = form_for resource, as: resource_name, url: session_path(resource_name), class: "form-inline" do |f|
                   = devise_error_messages!

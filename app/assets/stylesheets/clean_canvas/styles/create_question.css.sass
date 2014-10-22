@@ -1,30 +1,55 @@
-.yesno,
-.textchoice
+@import "variables.css.sass"
+.question-builder
   .question
+    overflow: hidden
     position: relative
-
     .bgimage
       img
         width: 100%
         padding: 0
         margin: 0
 
-    .title
+    >.close
+      position: absolute
+      left: auto
+      right: 5px
+      top: 5px
+      i:before
+        text-shadow: 1px 1px 0px white
+    .over_image_title_container
+      overflow: visible
       background-color: $cm_smoke
-      padding: 25px 15px 10px 15px
+      padding: 10px 15px 10px 15px
       width: 100%
       color: white
       font-size: 22px
       position: absolute
-      top: 40%
+      top: 50%
+      margin-top: -28px
+      .image_control
+        color: $primary_color
 
-  .answer
-    background-color: $cm_blue
-    height: 158px
+  textarea
+    &~.help-block
+      margin: 0 !important
+      position: absolute !important
+      font-size: 1.6rem !important
+      color: white !important
+      top: -13px !important
+      right: 14px !important
+      text-shadow: 0 1px 1px red !important
+
+//.answer.choice
+  background-color: $cm_blue
+  height: 158px
 
 .textchoice
   .answer
     height: 100px
+
+  .answer-option.btn
+    margin-top: 5px
+
 
 .textchoice,
 .imagechoice,
@@ -42,12 +67,12 @@
   .answer+.answer+.answer+.answer+.links a.add_fields
     display: none
 
-.imagechoice,
-.multiplechoice
 
+.imagechoice,
+.multiplechoice,
+.prioritizer
   .choice
     position: relative
-
     .bgimage
       img
         width: 100%
@@ -58,9 +83,77 @@
       width: 100%
       position: absolute
       bottom: 0
+      font-size: 3rem
+      &.add-option
+        background-color: $energized
+        color: white
+        text-align: center
+        height: 100%
+        h3
+          margin-top: 35%
+          margin-bottom: 5%
+          font-size: 1.1em
 
     .title
       background-color: $cm_smoke
-      padding: 25px 15px 10px 15px
+      padding: 5px
       color: white
-      font-size: 22px
+
+
+  .question
+    .over_image_title_container
+      top: auto
+      margin-top: 0
+      bottom: 0
+      .title
+        textarea
+          display: block
+          font-size: 1.4rem
+          width: 100%
+          background-color: transparent
+          border: solid 1px transparent
+          color: white
+          overflow: auto
+          text-align: center
+          resize: none
+          outline: none
+          box-shadow: none
+          margin: 0
+          padding: 0
+          border-radius: 0
+          min-height: 4.2rem
+          max-height: 4.2rem
+
+
+      .image_control
+        font-size: 4rem
+        position: absolute
+        bottom: 165%
+        width: 100%
+
+  &.imagechoice,
+  &.multiplechoice
+    .question.imagechooser
+      .image_control
+        bottom: 140%
+
+  &.prioritizer
+    .question.imagechooser
+      margin-bottom: 5px
+      max-height: 160px
+      .image_control
+        bottom: 100%
+
+    .choice
+      .overimage
+        position: static
+        h3
+          margin-top: 0
+      .image_control
+        bottom: 100%
+
+.counter-for
+  text-align: right
+  font-size: 1.2rem
+  color: white
+

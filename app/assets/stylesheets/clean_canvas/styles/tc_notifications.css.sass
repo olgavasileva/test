@@ -1,0 +1,15 @@
+.alert
+  position: fixed
+  top: 53px
+  z-index: 10
+  width: 100%!important
+  .close
+    cursor: pointer
+
+.alert-error
+  @extend .alert-danger
+
+.alert-alert
+  @extend .alert-info
+.alert-notice
+  @extend .alert-success

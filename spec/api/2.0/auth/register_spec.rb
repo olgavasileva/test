@@ -14,13 +14,15 @@ describe :register do
   end
 
   context "With all required params" do
-    let(:params) {{instance_token:instance_token, email:email, username:username, password:password, name:name}}
+    let(:params) {{instance_token:instance_token, email:email, username:username, password:password, name:name, birthdate:birthdate, gender:gender}}
 
     context "With valid email, username, password, and name params" do
       let(:email) {FactoryGirl.generate :email_address}
       let(:username) {FactoryGirl.generate :username}
       let(:password) {FactoryGirl.generate :password}
       let(:name) {FactoryGirl.generate :name}
+      let(:birthdate) {FactoryGirl.generate :birthdate}
+      let(:gender) {FactoryGirl.generate :gender}
 
       context "With an invalid instance" do
         let(:instance_token) {"INVALID"}
@@ -84,6 +86,7 @@ describe :register do
             it {expect(User.find_by(username:username.downcase)).to eq User.find_by(email:email)}
             it {Instance.find_by(uuid:instance_token).user.id.should eq User.find_by(email:email).id}
             it {JSON.parse(response.body)['auth_token'].should eq Instance.find_by(uuid:instance_token).auth_token}
+            it {JSON.parse(response.body)['user_id'].should eq User.find_by(email: email).id}
 
             it {User.find_by(email:email).name.should eq name}
             it "The user should be tied to the instance" do

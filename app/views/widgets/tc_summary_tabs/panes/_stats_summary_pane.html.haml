@@ -1,0 +1,61 @@
+:sass
+  $primary:#357ebd
+  .stats-list
+    .row
+      border-bottom: solid 1px $primary
+      color: #204E8A
+      font-size: 1.3em
+      div
+        display: inline-block
+        min-height: 2em
+        line-height: 2em
+        &:last-child
+          text-align: right
+
+
+.stats-list.col-xs-12
+  .row
+    .col-xs-10.col-xs-push-1.col-sm-7
+      Responses
+    .col-xs-11.col-sm-5
+      =@question.responses.count
+  .row
+    .col-xs-10.col-xs-push-1.col-sm-7
+      Views
+    .col-xs-11.col-sm-5
+      0
+  .row
+    .col-xs-10.col-xs-push-1.col-sm-7
+      Comments
+    .col-xs-11.col-sm-5
+      =@question.comment_count
+  .row
+    .col-xs-10.col-xs-push-1.col-sm-7
+      Shares
+    .col-xs-11.col-sm-5
+      =@question.share_count
+  .row
+    .col-xs-10.col-xs-push-1.col-sm-7
+      Skip
+    .col-xs-11.col-sm-5
+      =@question.skip_count
+  .row
+    .col-xs-10.col-xs-push-1.col-sm-7
+      Published
+    .col-xs-11.col-sm-5
+      =time_ago_in_words @question.updated_at
+  .row
+    .col-xs-10.col-xs-push-1.col-sm-7
+      Sponsor
+    .col-xs-11.col-sm-5
+      None
+  .row
+    .col-xs-10.col-xs-push-1.col-sm-7
+      Created by
+    .col-xs-11.col-sm-5
+      =User.first.name
+  .row
+    .col-xs-10.col-xs-push-1.col-sm-7
+      Access
+    .col-xs-11.col-sm-5
+      =@anonymous ? "Anonymous" : "Public"

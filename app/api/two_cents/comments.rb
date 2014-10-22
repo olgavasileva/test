@@ -1,5 +1,20 @@
 class TwoCents::Comments < Grape::API
   resource :comments do
+    helpers do
+      def serialize_comment(c)
+        {
+          id: c.id,
+          user_id: c.user_id,
+          comment: c.body,
+          created_at: c.created_at.to_i,
+          email: c.user.email,
+          ask_count: c.user.questions.count,
+          response_count: c.user.responses.count,
+          comment_count: c.user.comments.count,
+          comment_children: c.comments.map { |c| serialize_comment(c) }
+        }
+      end
+    end
 
     desc "Return questions with comments for a user"
     params do
@@ -8,22 +23,25 @@ class TwoCents::Comments < Grape::API
       optional :user_id, type: Integer, desc: "User ID. Defaults to logged in user's ID."
       optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all questions."
       optional :per_page, type: Integer, default: 15, desc: "Number of questions per page."
+      optional :reverse, type: Boolean, default: false, desc: "Whether to reverse order."
     end
     post 'user' do
-      user_id = params[:user_id]
+      user_id = declared_params[:user_id]
       user = user_id.present? ? User.find(user_id) : current_user
 
-      responses = user.responses.with_comment
+      comments = user.comments.order(:created_at)
+      comments = comments.reverse if params[:reverse]
+      questions = comments.map(&:question).uniq
 
-      if params[:page]
-        responses = responses.paginate(page: params[:page],
-                                       per_page: params[:per_page])
+      if declared_params[:page]
+        questions = questions.paginate(page: declared_params[:page],
+                                       per_page: declared_params[:per_page])
       end
 
-      responses.map do |r|
+      questions.map do |q|
         {
-          question_id: r.question.id,
-          question_title: r.question.title
+          question_id: q.id,
+          question_title: q.title
         }
       end
     end
@@ -47,13 +65,37 @@ class TwoCents::Comments < Grape::API
       requires :auth_token, type:String, desc: 'Obtain this from the instances API'
       requires :question_id, type:Integer, desc: 'The id of the question'
     end
-    post '/', rabl:"comments", http_codes:[
+    get nil, http_codes: [
       [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"]
     ] do
       question = Question.find declared_params[:question_id]
-      @responses = question.responses_with_comments
+      comments = question.comments + question.response_comments
+
+      comments.map { |c| serialize_comment(c) }
+    end
+
+    desc "Create a comment."
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      requires :question_id, type: Integer, desc: "Comment question ID."
+      requires :content, type: String, desc: "Comment body content."
+      optional :parent_id, type: Integer, desc: "Parent comment ID."
+    end
+    post do
+      validate_user!
+
+      commentable = if declared_params[:parent_id].present?
+        Comment.find declared_params[:parent_id]
+      else
+        Question.find(params[:question_id])
+      end
+
+      comment = commentable.comments.create user:current_user, body:declared_params[:content]
+
+      serialize_comment(comment)
     end
 
 
@@ -65,16 +107,16 @@ class TwoCents::Comments < Grape::API
       requires :auth_token, type:String, desc: 'Obtain this from the instances API'
       requires :comment_id, type:Integer, desc: 'The id of the comment to like'
     end
-    post 'like', rabl:"comments", http_codes:[
+    post 'like', http_codes:[
       [200, "400 - Invalid params"],
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"]
     ] do
-      response = Response.find declared_params[:comment_id]
-      response.comment_likers << current_user
-      response.save!
+      comment = Comment.find declared_params[:comment_id]
+      comment.likers << current_user
+      comment.save!
 
-      { num_likes: response.comment_likers.count }
+      { num_likes: comment.likers.count }
     end
 
   end

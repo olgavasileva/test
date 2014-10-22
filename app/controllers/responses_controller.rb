@@ -1,10 +1,10 @@
 class ResponsesController < ApplicationController
-
   def new
     question = Question.find params[:question_id]
     question.started!
 
     @response = question.responses.new user: current_user
+    @response.build_comment user:current_user
     authorize @response
 
     @next_question = next_question question
@@ -20,6 +20,14 @@ class ResponsesController < ApplicationController
 
       if session[:demo]
         redirect_to question_path
+      elsif session[:contest_uuid]
+        contest = Contest.find_by uuid:session[:contest_uuid]
+        next_question = contest.next_question(@response.question)
+        if next_question
+          redirect_to new_question_response_path(next_question)
+        else
+          redirect_to contest_vote_path(contest.uuid)
+        end
       else
         redirect_to summary_question_path(@response.question)
       end

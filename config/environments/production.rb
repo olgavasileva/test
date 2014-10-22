@@ -80,5 +80,16 @@ LinkchatApp::Application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
-  config.action_mailer.default_url_options = { host: 'crashmob.com' }
+  config.action_mailer.default_url_options = { host: 'statisfy.co' }
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+      :address              => ENV['SMTP_ADDRESS'],
+      :port                 => 25,
+      :domain               => 'statisfy.co',
+      :user_name            => ENV['SMTP_USER_NAME'],
+      :password             => ENV['SMTP_PASSWORD'],
+      :authentication       => 'login',
+      :enable_starttls_auto => true  }
+
 end
