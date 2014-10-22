@@ -23,7 +23,7 @@
           .col-xs-12.collapse-parent
             = f.input :all_groups, input_html:{class: %w(collapser)}
             = f.collection_check_boxes :groups, @groups, :id, :name, item_wrapper_class: %w(row checkbox collapsable collapsable-item)
-
+        %input{:type=>'hidden',:value=>false,:name=>:anonymous}
         #anonymous_container.col-xs-12
           .row
             .col-xs-9.col-xs-push-1

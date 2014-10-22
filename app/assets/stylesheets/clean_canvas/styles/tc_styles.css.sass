@@ -36,13 +36,16 @@
     background-color: $primary_background_color_hover
 
 .btn-default.negative:not(.active), .btn-primary.negative:not(.active)
-
   background-color: white
   border-style: solid
   border-width: 1px
   border-color: $primary_border_color
   color: $primary_color
   font-size: 1.7rem
+
+.btn.white-border
+  border-color: white !important
+
 
 .btn-default.transparent-white, .btn-primary.transparent-white
   background-color: transparent
@@ -54,8 +57,6 @@
   background-color: transparent !important
 .btn-default.no-border, .btn-primary.no-border
   border-color: transparent !important
-
-
   &.active
     color: white!important
     background-color: $primary_background_color
@@ -150,7 +151,8 @@ form.panel,
       color: white
       text-align: center
       margin-top: 0
-      margin-bottom: 15px
+      margin-bottom: 30px
+      padding: 10px
       padding-top: 15px
       padding-bottom: 15px
 
@@ -177,3 +179,8 @@ body
       border-bottom: solid 1px white
       box-shadow: 0 1px 6px black
     #jprePercentage
+
+
+.separator
+  clear: both
+  float: none
