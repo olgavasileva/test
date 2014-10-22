@@ -19,7 +19,7 @@
         %h2.col-sm-12.text-center
           Please check back later.
       - @questions.each do |question|
-        .col-md-4.col-sm-6
+        .col-md-3.col-sm-4.col-xs-12
           .row
             =link_to new_question_response_path(question), class: :thumbnail do
               = responsive_image_tag question.web_image_url
