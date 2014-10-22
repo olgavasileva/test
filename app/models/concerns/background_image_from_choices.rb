@@ -13,16 +13,18 @@ module BackgroundImageFromChoices
 
       return if choice_images.empty?
 
-      tile, geometry = if self.kind_of?(OrderQuestion)
-        ['1x4','160x80+0+0']
+      if self.kind_of?(OrderQuestion)
+        montage = Magick::ImageList.new(*choice_images).montage do |m|
+          m.tile = '1x4'
+          m.background_color = '#a4a5a9'
+          m.geometry = '160x80+0+0'
+        end
       else
-        ['2x2','160x160+0+0']
-      end
-
-      montage = Magick::ImageList.new(*choice_images).montage do |m|
-        m.tile = tile
-        m.background_color = '#a4a5a9'
-        m.geometry = geometry
+        montage = Magick::ImageList.new(*choice_images).montage do |m|
+          m.tile = '2x2'
+          m.background_color = '#a4a5a9'
+          m.geometry = '160x160+0+0'
+        end
       end
 
       file = Tempfile.new(['question_image', '.jpg'])
