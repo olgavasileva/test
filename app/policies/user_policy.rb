@@ -9,43 +9,60 @@ class UserPolicy < ApplicationPolicy
   def first_question?;true;   end
   alias :unfollow? :follow?
 
+  def is_owner?
+    @user == @record
+  end
+
+  def is_pro?
+    @user.has_role?(:pro)
+  end
+
+
   def dashboard?
-    @user == @record && @user.has_role?(:pro)
+    is_owner? && is_pro?
   end
 
   def recent_responses?
-    @user == @record && @user.has_role?(:pro)
+    is_owner? && is_pro?
   end
 
   def recent_comments?
-    @user == @record && @user.has_role?(:pro)
+    is_owner? && is_pro?
   end
 
   def campaigns?
-    @user == @record && @user.has_role?(:pro)
+    is_owner? && is_pro?
+  end
+
+  def new_campaign?
+    is_owner? && is_pro?
+  end
+
+  def create_campaign?
+    is_owner? && is_pro?
   end
 
   def segments?
-    @user == @record && @user.has_role?(:pro)
+    is_owner? && is_pro?
   end
 
   def analytics?
-    @user == @record && @user.has_role?(:pro)
+    is_owner? && is_pro?
   end
 
   def account?
-    @user == @record && @user.has_role?(:pro)
+    is_owner? && is_pro?
   end
 
   def show_notifications?
-    @user == @record
+    is_owner?
   end
 
   def show_join_communities?
-    @user == @record
+    is_owner?
   end
 
   def show_create_community?
-    @user == @record
+    is_owner?
   end
 end

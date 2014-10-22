@@ -165,6 +165,16 @@ class UsersController < ApplicationController
     render layout: "pixel_admin"
   end
 
+  def new_campaign
+    @user = User.find params[:id]
+    authorize @user
+
+    # When we're creating a question from the enterprise dashboard, keep track so we can target properly
+    session[:use_enterprise_targeting] = true
+
+    redirect_to [:question_types]
+  end
+
   def analytics
     @user = User.find params[:id]
     authorize @user

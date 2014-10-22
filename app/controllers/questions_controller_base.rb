@@ -37,7 +37,12 @@ class QuestionsControllerBase < ApplicationController
   def target
     @question = question_class.send :find, params[:id]
     authorize @question
-    redirect_to new_question_target_path(@question)
+
+    if session[:use_enterprise_targeting]
+      redirect_to new_question_enterprise_target_path(@question)
+    else
+      redirect_to new_question_target_path(@question)
+    end
   end
 
   def share
