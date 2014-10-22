@@ -1,9 +1,9 @@
 = render 'hero_unit'
 = render 'works'
 
-#gallery_container#welcome.row
+#gallery_container.welcome.row
   - @questions.each do |question|
-    .col-md-3.col-sm-4
+    .col-md-3.col-sm-4.col-xs-12
       .row
         =link_to new_question_response_path(question), class: :thumbnail do
           = responsive_image_tag question.web_image_url
