@@ -16,12 +16,12 @@
           %h2.body_title
             Who are you sending this to
           .col-xs-12.bordered
-            = f.input :all_users
+            = f.input :all_users, label: "Statisfy Universe"
           .col-xs-12.collapse-parent
-            = f.input :all_followers, input_html:{class: %w(collapser)}
+            = f.input :all_followers, label: "Statisfy Followers", input_html:{class: %w(collapser)}
             = f.collection_check_boxes :followers, @followers, :id, :username, item_wrapper_class: %w(row checkbox collapsable collapsable-item)
           .col-xs-12.collapse-parent
-            = f.input :all_groups, input_html:{class: %w(collapser)}
+            = f.input :all_groups, label: "Statisfy Groups", input_html:{class: %w(collapser)}
             = f.collection_check_boxes :groups, @groups, :id, :name, item_wrapper_class: %w(row checkbox collapsable collapsable-item)
         %input{:type=>'hidden',:value=>false,:name=>:anonymous}
         #anonymous_container.col-xs-12
