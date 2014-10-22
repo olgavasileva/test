@@ -1,5 +1,6 @@
 class BackgroundImagesController < ApplicationController
   def create
+    binding.pry
     model = controller_name.classify.constantize
     object = model.new(image_params)
     authorize object

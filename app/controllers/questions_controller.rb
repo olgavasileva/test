@@ -16,7 +16,6 @@ class QuestionsController < ApplicationController
   end
 
   def summary
-
     @question = Question.find params[:id]
     authorize @question
 
@@ -51,6 +50,11 @@ class QuestionsController < ApplicationController
     @question.update_attribute :currently_targetable, update_targetable_params[:currently_targetable] != 'false'
 
     render text:"OK"
+  end
+
+  def results
+    @question = Question.find params[:id]
+    authorize @question
   end
 
   private

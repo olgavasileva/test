@@ -25,4 +25,17 @@ class GroupMembersController < ApplicationController
 
     redirect_to :back
   end
+
+  def destroy
+    member = GroupMember.where(params.slice(:user_id, :group_id)).first
+    authorize member
+
+    if member.destroy
+      flash[:notice] = "Removed user from group."
+    else
+      flash[:alert] = member.errors.full_messages.join('; ')
+    end
+
+    redirect_to :back
+  end
 end

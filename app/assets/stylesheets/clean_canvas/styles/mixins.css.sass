@@ -8,12 +8,13 @@
   background: linear-gradient(to bottom,  rgba(113,147,202,1) 0%,rgba(23,19,49,1) 15%,rgba(23,19,49,1) 85%,rgba(113,147,202,1) 100%)
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7193ca', endColorstr='#7193ca',GradientType=0 )
   color: white
-  li
-    a
-      color: white
-    &.active
+  ul.nav
+    li
       a
-        color: #428bca
+        color: white
+      &.active
+        a
+          color: #428bca
 
 @mixin lite-bg
   @include dark-bg

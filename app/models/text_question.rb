@@ -2,7 +2,7 @@ class TextQuestion < Question
   TEXT_TYPES ||= %w(email phone freeform)
 
   has_many :responses, class_name:"TextResponse", foreign_key: :question_id
-  has_many :response_matchers, class_name:"TextResponseMatcher", foreign_key: :question_id
+  has_many :response_matchers, class_name:"TextResponseMatcher", foreign_key: :question_id, dependent: :destroy
 
   default text_type: "freeform"
   default min_characters: 1

@@ -18,9 +18,9 @@ jQuery( function($){
     $(window).on('scroll', function(){
       if( $(window).width() > 1024 ) {
         if( $(document).scrollTop() > 150 ) {
-          setNavbarLight();
+          //setNavbarLight();
         }else {
-          setNavbarTransparent();
+          //setNavbarTransparent();
         }
       }
     });	
@@ -28,9 +28,9 @@ jQuery( function($){
 
 	function toggleNavbar() {
 		if( ($(window).width() > 1024) && ($(document).scrollTop() <= 150) ) {
-			setNavbarTransparent();
+			//setNavbarTransparent();
 		} else {
-			setNavbarLight();
+			//setNavbarLight();
 		}
 	}
 

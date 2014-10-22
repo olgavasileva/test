@@ -67,8 +67,7 @@ class UsersController < ApplicationController
 
     current_user.follow! @user
 
-    alerts[:notice] = "Followed #{@user.name}."
-
+    flash[:notice] = "Followed #{@user.name}."
     redirect_to :back
   end
 
@@ -164,6 +163,16 @@ class UsersController < ApplicationController
     @questions = @user.questions.active
 
     render layout: "pixel_admin"
+  end
+
+  def new_campaign
+    @user = User.find params[:id]
+    authorize @user
+
+    # When we're creating a question from the enterprise dashboard, keep track so we can target properly
+    session[:use_enterprise_targeting] = true
+
+    redirect_to [:question_types]
   end
 
   def analytics

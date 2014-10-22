@@ -4,6 +4,6 @@ class GroupMemberPolicy < ApplicationPolicy
   end
 
   def destroy?
-    @user == @record.user
+    @user == @record.group.user
   end
 end

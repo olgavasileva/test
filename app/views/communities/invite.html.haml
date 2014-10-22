@@ -1,0 +1,10 @@
+#communities-invite
+  .container
+    %h2
+      Invite your friends to join your community:
+      %br
+      = @community.name
+    %hr
+    = link_to "Invite friends to join this community", '#', class: 'btn btn-primary btn-lg'
+    %br
+    = link_to "Done", user_path(@community.user, tab: 'communities', subtab: 'my'), class: 'btn btn-primary btn-lg'

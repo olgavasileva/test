@@ -26,6 +26,7 @@ LinkchatApp::Application.routes.draw do
   resources :questions, shallow:true do
     get :summary, on: :member
     get :share, on: :member
+    get :results, on: :member
     post :update_targetable, on: :member
     resources :responses
     resources :text_choice_responses
@@ -35,6 +36,7 @@ LinkchatApp::Application.routes.draw do
     resources :order_responses
     resources :studio_responses
     resources :targets
+    resources :enterprise_targets
 
     resources :skipped_items
   end
@@ -61,14 +63,24 @@ LinkchatApp::Application.routes.draw do
     get :recent_responses, on: :member
     get :recent_comments, on: :member
     get :campaigns, on: :member
+    get :new_campaign, on: :member
     get 'analytics/(:question_id)', to:'users#analytics', on: :member, as: :analytics
     get :account, on: :member
   end
 
   resources :groups
-  resources :group_members
-  resources :communities
-  resources :community_members
+
+  resources :group_members do
+    delete '/' => 'group_members#destroy', on: :collection
+  end
+
+  resources :communities do
+    get :invite, on: :member
+  end
+
+  resources :community_members do
+    delete '/' => 'community_members#destroy', on: :collection
+  end
 
   resources :question_types
 

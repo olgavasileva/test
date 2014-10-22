@@ -40,7 +40,7 @@
     .modal-content
       .modal-header
         %button.close{data: { dismiss: 'modal' } } &times;
-        %h4.modal-title Manage Follower Groups
+        %h4.modal-title Organize Followers
       .modal-body
         .row{ style: 'font-size: 1.2em' }
           - @user.groups.each do |group|
@@ -64,14 +64,6 @@
               = f.text_field :name, placeholder: "New group", class: 'form-control'
             .col-xs-5
               = f.submit "Add Group!", class: 'btn btn-primary'
-        %br
-        .row
-          = form_for GroupMember.new do |f|
-            .col-xs-7
-              = text_field_tag :group_name, nil, placeholder: "Enter Group Name...", class: 'form-control'
-              = password_field_tag :group_password, nil, placeholder: "Enter Group Password...", class: 'form-control'
-            .col-xs-5
-              = f.submit "Join Group!", class: 'btn btn-primary'
       .modal-footer
         %button.btn.btn-default{ data: { dismiss: 'modal' } } Close
         %button.btn.btn-primary{ data: { dismiss: 'modal' } } Done

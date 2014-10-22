@@ -48,8 +48,7 @@
                         .col-xs-2.not_visible
                           .bgimage
                             = responsive_image_tag @question.web_image_url, class: "img-responsive scale-buttons"
-                      -#=text_area_tag(:title, label: false, placeholder:"Type a response",class:"selectable-choice-text col-sm-12")
-                      =c.input :title, label: false, wrapper_html: { class: "question_choice_title"}, placeholder: "Type a response"
+                      =c.input :title, label: false, wrapper_html: { class: "question_choice_title  remove-default-text"}
           .row
             =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-xs-12 form-group", :name=>"yes_no_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
 :javascript

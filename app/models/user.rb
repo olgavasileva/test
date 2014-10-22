@@ -26,6 +26,7 @@ class User < ActiveRecord::Base
   has_many :membership_communities, through: :community_memberships, source: :community
 
   has_many :targets, dependent: :destroy
+  has_many :enterprise_targets, dependent: :destroy
 
   has_many :targets_users
   has_many :following_targets, through: :targets_users, source: :target
@@ -67,8 +68,6 @@ class User < ActiveRecord::Base
 	has_many :packs, dependent: :destroy
 	has_many :sharings, foreign_key: "sender_id", dependent: :destroy
 	has_many :reverse_sharings, foreign_key: "receiver_id", class_name: "Sharing", dependent: :destroy
-  has_many :liked_comments
-  has_many :liked_comment_responses, through: :liked_comments, source: :response
 
   # Comments made by this user
   has_many :comments, dependent: :destroy
@@ -144,7 +143,7 @@ class User < ActiveRecord::Base
 
     # Potential questions have not been in the user's feed.
     used_questions = feed_questions + answered_questions + skipped_questions
-    potential_questions = questions.where.not(id: used_questions)
+    potential_questions = potential_questions.where.not(id: used_questions)
 
     # Questions are in a specific order.
     questions = []

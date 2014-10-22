@@ -94,7 +94,20 @@
 			top: jpreOptions.loaderVPos,
 			left: Math.round((50 / $(window).width()) * posWidth) + '%'
 		});
-		
+
+
+    if(jpreOptions.showPercentage) {
+      jPer = $('<div></div>')
+        .attr('id', 'jprePercentage')
+        .css({
+          position: 'relative',
+          height: '100%'
+        })
+        .appendTo(jLoader)
+        .html('Loading...');
+    }
+
+
 		jBar = $('<div></div>')
 		.attr('id', 'jpreBar')
 		.css({
@@ -102,17 +115,7 @@
 			height: '100%'
 		})
 		.appendTo(jLoader);
-		
-		if(jpreOptions.showPercentage) {
-			jPer = $('<div></div>')
-			.attr('id', 'jprePercentage')
-			.css({
-				position: 'relative',
-				height: '100%'
-			})
-			.appendTo(jLoader)
-			.html('Loading...');
-		}
+
 		if( !jpreOptions.autoclose ) {
 			jButton = $('<div></div>')
 			.attr('id', 'jpreButton')

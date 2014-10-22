@@ -10,4 +10,4 @@
         %i.glyphicon.glyphicon-remove
       .over_image_title_container
         =render partial:'/widgets/image_control',locals:{f:f,distro: :upload_middle,type: 'choice'}
-        .title=f.input :title, label: false, placeholder: "Type a response",input_html:{class: 'title revealable'}
+        .title=f.input :title, label: false,input_html:{class: 'title revealable remove-default-text'}
