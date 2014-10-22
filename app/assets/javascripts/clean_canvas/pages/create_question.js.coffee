@@ -57,7 +57,7 @@ $ ->
   $(document).on 'change','.question-image-uploader input[type="file"]',(e)->
     type=$(this).data('image-type')
     data = new FormData()
-    data.append('image', this.files[0])
+    data.append((type+"_image[image]"), this.files[0])
     $.ajax({
       url: "/"+type+"_images",
       data: data,
