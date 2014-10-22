@@ -407,11 +407,11 @@ ActiveRecord::Schema.define(version: 20141022154840) do
     t.integer  "response_count"
     t.integer  "comment_count"
     t.integer  "share_count"
-    t.integer  "follower_id"
     t.integer  "question_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "follower_id"
     t.text     "body"
   end
 
