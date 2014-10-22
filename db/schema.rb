@@ -216,6 +216,17 @@ ActiveRecord::Schema.define(version: 20141022154840) do
   add_index "follower_targets", ["follower_id"], name: "index_follower_targets_on_follower_id", using: :btree
   add_index "follower_targets", ["question_id"], name: "index_follower_targets_on_question_id", using: :btree
 
+  create_table "friendships", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "friend_id"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "friendships", ["friend_id"], name: "index_friendships_on_friend_id", using: :btree
+  add_index "friendships", ["user_id"], name: "index_friendships_on_user_id", using: :btree
+
   create_table "galleries", force: true do |t|
     t.datetime "entries_open"
     t.datetime "entries_close"
@@ -390,20 +401,17 @@ ActiveRecord::Schema.define(version: 20141022154840) do
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
 
   create_table "messages", force: true do |t|
-    t.text     "content"
     t.string   "type"
     t.datetime "read_at"
-    t.integer  "other_user_id"
+    t.datetime "completed_at"
+    t.integer  "response_count"
+    t.integer  "comment_count"
+    t.integer  "share_count"
+    t.integer  "follower_id"
     t.integer  "question_id"
-    t.integer  "response_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "response_count", default: 0
-    t.integer  "comment_count",  default: 0
-    t.integer  "share_count",    default: 0
-    t.datetime "completed_at"
-    t.integer  "follower_id"
     t.text     "body"
   end
 
