@@ -1,0 +1,23 @@
+= simple_form_for @enterprise_target, url:question_enterprise_targets_path(@question, @enterprise_target), html: {id: :xcontent_constraint} do |f|
+  = f.association :user, as: :hidden
+  .panel.panel-default
+    .panel-heading
+      .panel-title
+        .row
+          .col-xs-12
+            %h3 Campaign Targeting
+
+    .panel-body
+      .row
+        %h2.body_title
+          Choose who you would like to target.
+        .col-xs-12
+          = f.input :min_age
+          = f.input :max_age
+        .col-xs-12
+          = f.input :gender, collection: [['Men and Women', 'both'], %w(Men male), %w(Women female)], include_blank: false
+        .col-xs-12
+          =f.collection_check_boxes :segment_ids, @enterprise_target.user.segments, :id, :name, item_wrapper_class: %w(checkbox)
+        .col-xs-12
+          =f.button :submit, "Continue", class: %w(btn-primary negative transparent no-border btn-lg)
+
