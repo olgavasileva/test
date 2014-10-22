@@ -1,7 +1,7 @@
 # Add application configuration variables here, as shown below.
 #
 
-DEVELOPER_NAME:
+DEVELOPER_NAME: Borys
 
 api_shared_secret:
 
