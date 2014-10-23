@@ -216,17 +216,6 @@ ActiveRecord::Schema.define(version: 20141023042331) do
   add_index "follower_targets", ["follower_id"], name: "index_follower_targets_on_follower_id", using: :btree
   add_index "follower_targets", ["question_id"], name: "index_follower_targets_on_question_id", using: :btree
 
-  create_table "friendships", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "friend_id"
-    t.string   "status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "friendships", ["friend_id"], name: "index_friendships_on_friend_id", using: :btree
-  add_index "friendships", ["user_id"], name: "index_friendships_on_user_id", using: :btree
-
   create_table "galleries", force: true do |t|
     t.datetime "entries_open"
     t.datetime "entries_close"
