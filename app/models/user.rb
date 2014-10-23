@@ -91,6 +91,8 @@ class User < ActiveRecord::Base
 	validates :name, length: { maximum: 50 }
 	validates :terms_and_conditions, acceptance: true
 
+  mount_uploader :avatar, UserAvatarUploader
+
   # Comments made by other users about this user's questions and responses
   def comments_on_questions_and_responses
     Comment.where id:(comments_on_its_questions.pluck("comments.id") + comments_on_its_responses.pluck("comments.id"))

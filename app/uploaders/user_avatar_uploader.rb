@@ -1,0 +1,2 @@
+class UserAvatarUploader < RetinaImageUploader
+end
