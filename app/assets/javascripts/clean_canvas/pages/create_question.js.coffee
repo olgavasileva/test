@@ -82,7 +82,5 @@ $ ->
     $(this).removeClass('remove-default-text');
     $(node).removeClass('remove-default-text');
 
-  $(document).on 'page:change', () ->
-    $.gritter.removeAll()
 
   return null
