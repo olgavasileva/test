@@ -5,9 +5,6 @@ class EnterpriseTargetsController < ApplicationController
     @question = Question.find params.fetch(:question_id)
     @enterprise_target = current_user.enterprise_targets.build
     authorize @enterprise_target
-
-    # Done building the campaign so next time, they can target however is appropriate
-    session.delete :use_enterprise_targeting
   end
 
   def create
@@ -17,6 +14,9 @@ class EnterpriseTargetsController < ApplicationController
 
     if @enterprise_target.save
       target_count = @enterprise_target.apply_to_question @question  # TODO - do this on a background resque queue or delayed job - it will take time when there are lots of users
+
+      # Done building the campaign so next time, they can target however is appropriate
+      session.delete :use_enterprise_targeting
 
       flash[:alert] = "Question added to #{ view_context.pluralize( target_count, "direct feed") }."
       redirect_to [:dashboard, current_user]
