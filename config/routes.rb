@@ -19,8 +19,8 @@ LinkchatApp::Application.routes.draw do
   get '/test' => 'pages#test' if Rails.env.development?
   get '/contests/:uuid/sign_up' => 'contests#sign_up', as: :contest_sign_up
   post '/contests/new_user' => 'contests#new_user', as: :new_contest_user
-  get '/contests/:uuid/vote' => 'contests#vote', as: :contest_vote
-  get '/contests/:uuid/question/:quid' => 'contests#question', as: :contest_question
+  get '/gallery/:uuid' => 'contests#vote', as: :contest_vote
+  get '/contests/:uuid/q/:quid' => 'contests#question', as: :contest_question
   post '/contests/:uuid/vote/:response_id' => 'contests#save_vote', as: :save_vote
 
   resources :questions, shallow:true do

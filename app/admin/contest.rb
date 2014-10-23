@@ -7,8 +7,8 @@ ActiveAdmin.register Contest do
     column :id
     column :name
     column :key_question
-    column "Sign Up URL" do |c|
-      contest_sign_up_url(c.uuid)
+    column "Gallery URL" do |c|
+      link_to "Gallery URL", contest_vote_url(c.uuid)
     end
     actions
   end
