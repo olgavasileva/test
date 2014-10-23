@@ -15,12 +15,18 @@ $ ->
     url=''
     $image = $(scope).find(".bgimage img")
     $id_field = $(scope).find(".id input")
-
-    ids = $(scope).find(".canned").data("ids")
-    urls = $(scope).find(".canned").data("urls")
+    canned=$(scope).find(".canned");
+    ids = canned.data("ids")
+    urls = canned.data("urls")
     max = urls.length
-
+    local_url=$image.attr("src")
     i = $.inArray $image.attr("src"), urls
+
+    if i<0
+      urls.unshift local_url
+      i=0
+      canned.data("urls",urls)
+      ids.unshift($id_field.val());
 
     if i >= 0
       i = i + delta
@@ -58,6 +64,7 @@ $ ->
     type=$(this).data('image-type')
     data = new FormData()
     data.append((type+"_image[image]"), this.files[0])
+
     $.ajax({
       url: "/"+type+"_images",
       data: data,
@@ -66,7 +73,19 @@ $ ->
       processData: false,
       type: 'POST',
       success: (data)->
-        console.log(data)
+        scope=$(this).closest(".imagechooser")
+        $image = $(scope).find(".bgimage img")
+        $id_field = $(scope).find(".id input")
+        canned=$(scope).find(".canned");
+        ids = canned.data("ids")
+        urls = canned.data("urls")
+        ids.unshift(data.id)
+        urls.unshift(data.url)
+        canned.data('ids',ids)
+        canned.data('urls',urls)
+        $image.attrs('src',data.url)
+        $id_field.val(data.id)
+
     })
 
   $(document).on 'click','.tc-dropdown .dropdown-menu-item', ()->
