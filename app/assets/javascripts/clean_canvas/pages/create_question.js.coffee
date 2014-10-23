@@ -95,11 +95,13 @@ $ ->
     root.find('.value-holder').val(value)
     root.find('.value-label').html(text)
 
-  $(document).on 'keydown','.remove-default-text, .remove-default-text textarea', ()->
+  $(document).on 'keydown','.remove-default-text, .rem ove-default-text textarea', ()->
     $(this).val('');
     node=$(this).parent();
     $(this).removeClass('remove-default-text');
     $(node).removeClass('remove-default-text');
 
+  $(document).on 'page:change', () ->
+    $.gritter.removeAll()
 
   return null

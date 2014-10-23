@@ -40,6 +40,10 @@
               .icon4
                 %small ....
     .row
-      .col-md-2
-      .col-sm-8
-        = link_to_next_page @questions, 'Show More', class:%w(almost-8)
+      .col-sm-12.text-center
+        = will_paginate @questions
+
+    -#.row
+    -#  .col-md-2
+    -#  .col-sm-8
+    -#    = link_to_next_page @questions, 'Show More', class:%w(almost-8)
