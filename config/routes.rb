@@ -57,15 +57,19 @@ LinkchatApp::Application.routes.draw do
       resources :order_response_matchers
     end
     get :profile, on: :collection
-    get :follow, on: :member
-    get :unfollow, on: :member
-    get :dashboard, on: :member
-    get :recent_responses, on: :member
-    get :recent_comments, on: :member
-    get :campaigns, on: :member
-    get :new_campaign, on: :member
-    get 'analytics/(:question_id)', to:'users#analytics', on: :member, as: :analytics
-    get :account, on: :member
+    member do
+      get :follow
+      get :unfollow
+      get :dashboard
+      get :recent_responses
+      get :recent_comments
+      get :campaigns
+      get :new_campaign
+      get 'analytics/(:question_id)', to:'users#analytics', as: :analytics
+      get 'question_analytics/:question_id', to:'users#question_analytics', as: :question_analytics
+      get :question_search
+      get :account
+    end
   end
 
   resources :groups

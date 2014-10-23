@@ -5,7 +5,7 @@ $(document).on 'page:change', ->
     source: (request, response)->
       $.get $("#question_search").data().callback, {term:request.term}, (data) ->
         result = $.map data, (hash, index) ->
-          {value: hash.title, id:hash.id, url:hash.matcher_url}
+          {value: hash.title, id:hash.id, url:hash.load_url}
         response result
 
     focus: (event, ui) ->

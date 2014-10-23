@@ -19,8 +19,8 @@
         useTransparentGif: false,
         transparentGifSrc: 'data:image/gif;base64,R0lGODlhAQABAIAAAMz/AAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==',
         minKbpsForHighBandwidth: 300,
-        speedTestUri: 'question_bg/redtriangle.png',
-        speedTestKB: 41,
+        speedTestUri: 'speedtest.png',
+        speedTestKB: 44,
         speedTestExpireMinutes: 30,
         forcedBandwidth: false,
         srcIsLowResolution: true

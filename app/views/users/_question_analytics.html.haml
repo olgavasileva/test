@@ -1,11 +1,44 @@
 - question ||= nil
 
-.todo TODO: Show a question search box here
-
 - if question
-  %p
-    These are the analytics for
-    %em=question.title
-    .todo TODO: Show analytics here
+  .row
+    .col-sm-8
+      .panel.panel-default
+        .panel-heading
+          %h2.panel-title Question Analytics
+        .panel-body
+          .row.response
+            %div= render "questions/response_fields", question:question
+    .col-sm-4
+      .panel.panel-default
+        .panel-heading
+          %h2.panel-title
+            %i.menu-icon.fa.fa-bar-chart-o
+            %span.mm-text Statistics
+        %table.table
+          %tr
+            %td Total Reach
+            %td.text-right= question.view_count.to_i
+          %tr
+            %td Targeted Reach
+            %td.text-right= question.targeted_reach.to_i
+          %tr
+            %td Viral Reach
+            %td.text-right= question.view_count.to_i - question.targeted_reach.to_i
+          %tr
+            %td Engagements
+            %td.text-right= question.start_count
+          %tr
+            %td Completes
+            %td.text-right= question.response_count
+          %tr
+            %td Skips
+            %td.text-right= question.skip_count
+          %tr
+            %td Comments
+            %td.text-right= question.comment_count
+          %tr
+            %td Shares
+            %td.text-right= question.share_count.to_i
 - else
   Select a question

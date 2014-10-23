@@ -19,15 +19,15 @@
           .col-xs-12
           = render "questions/response_fields/shared/sharing", question: question
       .col-xs-12.btn-group
-        -question.choices.all.each do |c|
+        - total_response_count = question.responses.count
+        - question.choices.each do |c|
           .col-xs-12.selectable-option.btn.form-group.clearfix
             %label.btn-primary.col-xs-12
               .row
                 %div.col-xs-3
                   = responsive_image_tag((question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
               .option-title=c.title
-              -divNumber=(@question.response_count>0) ? @question.response_count : 1
               %i.response_counter
-                =Integer((((@responses_resume[c.id]||0)/Float(divNumber))*100.00).round())
-                \%
+                - if total_response_count > 0
+                  = number_to_percentage 100 * c.responses.count.to_f / total_response_count.to_f, precision: 0
 

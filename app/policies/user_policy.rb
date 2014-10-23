@@ -50,7 +50,19 @@ class UserPolicy < ApplicationPolicy
     is_owner? && is_pro?
   end
 
+  def question_analytics?
+    is_owner? && is_pro?
+  end
+
+  def question_search?
+    is_owner? && is_pro?
+  end
+
   def account?
+    is_owner? && is_pro?
+  end
+
+  def update?
     is_owner? && is_pro?
   end
 
