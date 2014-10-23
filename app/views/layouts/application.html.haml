@@ -19,8 +19,7 @@
     = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true
     = javascript_include_tag "application", "data-turbolinks-track" => true
     :sass
-      #main-wrapper,
-      #content-wrapper
+      #main-wrapper, #content-wrapper
         padding: 0
 
       .navbar.sticky
@@ -35,9 +34,11 @@
       #content-wrapper
         = render 'layouts/shared/header'
         - if flash.present?
-          #flash
-            - flash.each do |key, value|
-              = content_tag(:div, value, class: "alert alert-#{key}")
+          - flash.each do |key, value|
+            = js add_gritter(value, image: false, title: key.titleize, sticky: false, time: 2000)
+          -##flash
+          -#  - flash.each do |key, value|
+          -#    = content_tag(:div, value, class: "alert alert-#{key}")
         #undertop.container
           = yield
         = render 'layouts/shared/footer'
