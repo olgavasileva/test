@@ -14,7 +14,7 @@ class TwoCents::Questions < Grape::API
         optional :invite_email_addresses, type: Array, desc: "Email addresses of people to invite to answer."
         optional :anonymous, type: Boolean, desc: "Whether question is anonymous"
 
-        requires :targets, type: Hash do
+        optional :targets, type: Hash do
           optional :all_users, type: Boolean, default: false, desc: "Whether question is targeted at all users."
           optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
           optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
