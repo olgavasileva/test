@@ -1,4 +1,5 @@
 class ContestsController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:sign_up, :new_user, :vote, :save_vote]
   before_action :maintain_vote_info, only: :save_vote
 
   def sign_up

@@ -19,8 +19,8 @@ LinkchatApp::Application.routes.draw do
   get '/test' => 'pages#test' if Rails.env.development?
   get '/contests/:uuid/sign_up' => 'contests#sign_up', as: :contest_sign_up
   post '/contests/new_user' => 'contests#new_user', as: :new_contest_user
-  get '/contests/:uuid/vote' => 'contests#vote', as: :contest_vote
-  get '/contests/:uuid/question/:quid' => 'contests#question', as: :contest_question
+  get '/gallery/:uuid' => 'contests#vote', as: :contest_vote
+  get '/contests/:uuid/q/:quid' => 'contests#question', as: :contest_question
   post '/contests/:uuid/vote/:response_id' => 'contests#save_vote', as: :save_vote
 
   resources :questions, shallow:true do
@@ -57,15 +57,19 @@ LinkchatApp::Application.routes.draw do
       resources :order_response_matchers
     end
     get :profile, on: :collection
-    get :follow, on: :member
-    get :unfollow, on: :member
-    get :dashboard, on: :member
-    get :recent_responses, on: :member
-    get :recent_comments, on: :member
-    get :campaigns, on: :member
-    get :new_campaign, on: :member
-    get 'analytics/(:question_id)', to:'users#analytics', on: :member, as: :analytics
-    get :account, on: :member
+    member do
+      get :follow
+      get :unfollow
+      get :dashboard
+      get :recent_responses
+      get :recent_comments
+      get :campaigns
+      get :new_campaign
+      get 'analytics/(:question_id)', to:'users#analytics', as: :analytics
+      get 'question_analytics/:question_id', to:'users#question_analytics', as: :question_analytics
+      get :question_search
+      get :account
+    end
   end
 
   resources :groups

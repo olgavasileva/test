@@ -46,20 +46,20 @@
 
 %div
   .col-xs-12
-    = render "questions/response_fields/shared/title", question: @question
+    = render "questions/response_fields/shared/title", question: question
     .form-group
-      -n=0
-      -@question.choices.each do |c|
-        -n+=1
+      - n=0
+      - total_response_count = question.responses.count
+      - question.choices.each do |c|
+        - n+=1
         %label.col-xs-6.choice-wrapper
           .row
-            =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
-            -divNumber=(@question.response_count>0) ? @question.response_count : 1
+            = responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
             %i.response_counter
-              =Integer((((@responses_resume[c.id]||0)/Float(divNumber))*100.00).round())
-              \%
+              - if total_response_count > 0
+                = number_to_percentage 100 * c.responses.count.to_f / total_response_count.to_f, precision: 0
           .option-title
             =c.title
   .col-xs-12
     .form-group
-      = render "questions/response_fields/shared/sharing",question: @question, style_type: "negative"
+      = render "questions/response_fields/shared/sharing",question: question, style_type: "negative"

@@ -685,6 +685,19 @@ class TwoCents::Questions < Grape::API
     end
 
 
+    desc "Delete a question"
+    params do
+      use :auth
+
+      requires :id, type: Integer, desc: "ID of quesion."
+    end
+    delete do
+      Question.find(params[:id]).destroy!
+
+      {}
+    end
+
+
     #
     # Return asked questions.
     #

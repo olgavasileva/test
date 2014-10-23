@@ -1,1 +1,16 @@
-Account managemetn goes heres
+.panel
+  .panel-heading
+    %h2.panel-title
+      .row
+        .col-sm-6 ACCOUNT MANAGEMENT
+  .panel-body
+    .col-sm-5
+      = simple_form_for @user do |f|
+        = f.input :username, disabled: true
+        = f.input :company_name
+        = f.input :email
+        = f.input :password, label: "New Password", hint: "(Leave blank if you don't want to change it)", autocomplete: :off
+        = f.input :password_confirmation, autocomplete: :off
+        = f.input :current_password, hint: "(We need your current password to confirm your changes)"
+
+        = f.submit "Save Changes", class: %w(btn btn-primary)

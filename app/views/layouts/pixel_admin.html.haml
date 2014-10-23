@@ -29,7 +29,7 @@
       = render 'layouts/pixel_admin/side_menu'
       #content-wrapper
         - flash.each do |key, value|
-          = js add_gritter(value, image: false, title: key.titleize, sticky: false)
+          = js add_gritter(value, image: false, title: key.titleize, sticky: false, time: 2000)
         = yield
       #main-menu-bg
 
