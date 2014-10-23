@@ -13,5 +13,6 @@ class EnterpriseTarget < ActiveRecord::Base
 
   def apply_to_question question
     # TODO
+    question.activate!
   end
 end
