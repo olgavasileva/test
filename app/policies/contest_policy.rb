@@ -9,6 +9,6 @@ class ContestPolicy < ApplicationPolicy
   def sign_up?  ;     true;             end
   def new_user? ;     true;             end
   def question? ;     true;             end
-  def vote? ;         @user.present? ;  end
-  def save_vote? ;    @user.present? ;  end
+  def vote? ;         true;             end
+  def save_vote? ;    true;             end
 end

@@ -64,7 +64,7 @@ class SegmentsController < ApplicationController
 
     search_term = params[:term]
     questions = Question.where("title like ?", "%#{search_term}%").select([:id, :title])
-    response = questions.map{|q| {id:q.id, title:q.title, matcher_url:view_context.new_user_segment_response_matcher_url(@user, @segment, question_id:q)}}
+    response = questions.map{|q| {id:q.id, title:q.title, load_url:view_context.new_user_segment_response_matcher_url(@user, @segment, question_id:q)}}
     render json:response
   end
 

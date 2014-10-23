@@ -179,9 +179,27 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     authorize @user
 
-    @question = Question.find params[:question_id] if params[:question_id]
+    @question = @user.questions.find params[:question_id] if params[:question_id]
 
     render layout: "pixel_admin"
+  end
+
+  def question_analytics
+    @user = User.find params[:id]
+    authorize @user
+
+    @question = @user.questions.find params[:question_id] if params[:question_id]
+    render layout: false
+  end
+
+  def question_search
+    @user = User.find params[:id]
+    authorize @user
+
+    search_term = params[:term]
+    questions = @user.questions.where("title like ?", "%#{search_term}%").select([:id, :title])
+    response = questions.map{|q| {id:q.id, title:q.title, load_url:view_context.question_analytics_user_url(@user, question_id:q)}}
+    render json:response
   end
 
   def account
@@ -191,9 +209,27 @@ class UsersController < ApplicationController
     render layout: "pixel_admin"
   end
 
+  def update
+    @user = User.find params[:id]
+    authorize @user
+
+    if @user.update_with_password user_params
+      # Sign in the user by passing validation in case their password changed
+      sign_in @user, bypass: true
+      flash[:notice] = "Account Settings Changed"
+      redirect_to [:account, @user]
+    else
+      render "account", layout: "pixel_admin"
+    end
+  end
+
   private
 
-  def read_all_messages
-    @user.read_all_messages
-  end
+    def read_all_messages
+      @user.read_all_messages
+    end
+
+    def user_params
+      params.required(:user).permit(:company_name, :email, :password, :password_confirmation, :current_password)
+    end
 end
