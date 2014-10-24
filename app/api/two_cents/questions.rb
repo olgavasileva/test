@@ -891,8 +891,11 @@ class TwoCents::Questions < Grape::API
 
       response = @question.responses.create!(resp_params)
 
-      if params[:comment].present?
-        response.comment = Comment.create!(body: params[:comment],
+      # Backwards-compatibility hackery
+      comment = params[:comment] || params[:text]
+
+      if comment.present?
+        response.comment = Comment.create!(body: comment,
                                            user: response.user,
                                            #question: response.question,
                                            #response: response
