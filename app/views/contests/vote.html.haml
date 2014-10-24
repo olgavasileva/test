@@ -12,4 +12,4 @@
         .col-sm-3
           =link_to save_vote_path(@contest.uuid, r.id), method: :post, class: :thumbnail, remote: true do
             =image_tag(r.scene.image.thumb.url)
-            =pluralize(@contest.votes_for_response(r), "vote")
+            =number_to_percentage @contest.percent_votes_for_response(r), precision: 0

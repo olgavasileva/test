@@ -30,6 +30,11 @@ class Contest < ActiveRecord::Base
     response_votes ? response_votes.vote_count.to_i : 0
   end
 
+  def percent_votes_for_response response
+    all_votes = contest_response_votes.sum(:vote_count)
+    100 * votes_for_response(response).to_f / contest_response_votes.sum(:vote_count) if all_votes > 0
+  end
+
   private
     def convert_heading
       self.heading_html = RDiscount.new(heading_markdown, :filter_html).to_html unless heading_markdown.nil?
