@@ -1,3 +1,5 @@
 %h2 Vote for your favorite scene
 - @studioResponses.each do |r|
   =link_to image_tag(r.scene.image.thumb.url), save_vote_path(@contest.uuid, r.id), method: :post, class: :thumbnail, remote: true
+
+%h2= link_to "Enter the contest!", contest_sign_up_path(@contest.uuid)
