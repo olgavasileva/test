@@ -16,8 +16,9 @@ class TwoCents::Questions < Grape::API
 
         optional :targets, type: Hash do
           optional :all_users, type: Boolean, default: false, desc: "Whether question is targeted at all users."
-          optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
-          optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
+          optional :all, type: Boolean, default: false, desc: "Alias for `all_users`."
+          optional :all_followers, type: Boolean, default: false, desc: "Whether question is targeted at all creator's followers."
+          optional :all_groups, type: Boolean, default: false, desc: "Whether question is targeted at all creator's groups."
           optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
           optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
         end
@@ -61,6 +62,23 @@ class TwoCents::Questions < Grape::API
         records[records.pluck(:id).index(id) + 1..-1]
       end
 
+
+      def create_question_target(question, params)
+        params = params.to_h
+
+        target = Target.create!(
+          user: current_user,
+          all_users: params['all_users'] || params['all'],
+          all_followers: params['all_followers'],
+          all_groups: params['all_groups'],
+          follower_ids: params['follower_ids'],
+          group_ids: params['group_ids']
+        )
+
+        question.apply_target! target
+
+        target
+      end
 
     end
 
@@ -131,8 +149,7 @@ class TwoCents::Questions < Grape::API
       # Send SMS Message or Email to invited contacts
       send_email_or_sms_to_invited_users @question, params[:invite_phone_numbers], params[:invite_email_addresses]
 
-      target = Target.create! params[:targets].to_h.merge(user: current_user)
-      @question.apply_target! target
+      create_question_target(@question, params[:targets])
     end
 
 
@@ -209,8 +226,7 @@ class TwoCents::Questions < Grape::API
       # Send SMS Message or Email to invited contacts
       send_email_or_sms_to_invited_users @question, params[:invite_phone_numbers], params[:invite_email_addresses]
 
-      target = Target.create! params[:targets].to_h.merge(user: current_user)
-      @question.apply_target! target
+      create_question_target(@question, params[:targets])
     end
 
 
@@ -275,9 +291,7 @@ class TwoCents::Questions < Grape::API
       # Send SMS Message or Email to invited contacts
       send_email_or_sms_to_invited_users @question, params[:invite_phone_numbers], params[:invite_email_addresses]
 
-
-      target = Target.create! params[:targets].to_h.merge(user: current_user)
-      @question.apply_target! target
+      create_question_target(@question, params[:targets])
     end
 
 
@@ -343,9 +357,7 @@ class TwoCents::Questions < Grape::API
       # Send SMS Message or Email to invited contacts
       send_email_or_sms_to_invited_users @question, params[:invite_phone_numbers], params[:invite_email_addresses]
 
-
-      target = Target.create! params[:targets].to_h.merge(user: current_user)
-      @question.apply_target! target
+      create_question_target(@question, params[:targets])
     end
 
 
@@ -404,9 +416,7 @@ class TwoCents::Questions < Grape::API
       # Send SMS Message or Email to invited contacts
       send_email_or_sms_to_invited_users @question, params[:invite_phone_numbers], params[:invite_email_addresses]
 
-
-      target = Target.create! params[:targets].to_h.merge(user: current_user)
-      @question.apply_target! target
+      create_question_target(@question, params[:targets])
     end
 
 
