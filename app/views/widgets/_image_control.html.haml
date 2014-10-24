@@ -26,4 +26,12 @@
     %button.question-image-uploader.transparent.upload-trigger{:class=>"#{upload_class}",:type=>:button,:data=>{:image=>{:type=>type}}}
       %span.glyphicon.glyphicon-camera
       %span.glyphicon.glyphicon-refresh
-      %input{:type=>'file',:data=>{:image=>{:type=>type}}}
+
+  :javascript
+    if(!window.tcHAndlers){
+      window.tcHAndlers={};
+    }
+    if(!window.tcHAndlers.usedImages){
+      window.tcHAndlers.usedImages=[];
+    }
+    window.tcHAndlers.usedImages.push("#{f.object.web_image_url}");

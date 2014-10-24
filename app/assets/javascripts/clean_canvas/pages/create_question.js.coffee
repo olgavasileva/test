@@ -1,12 +1,7 @@
-$(document).on "page:load", ->
-  if !window.tcHandlers
-    window.tcHandlers={}
-  window.tcHandlers.usedImages=[]
+
 
 
 $ ->
-  window.tcHandlers={}
-  window.tcHandlers.usedImages=[]
   change_image_by = (delta, scope) ->
     if(!window.tcHAndlers)
       window.tcHAndlers={}

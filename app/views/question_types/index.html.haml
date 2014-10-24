@@ -60,3 +60,8 @@
                 .row
                   .icon.floating-icom=image_tag icon_for(question_type)
                   %h1.title.col-xs-12=title_for question_type
+:javascript
+  if(!window.tcHAndlers){
+    window.tcHAndlers={};
+  }
+  window.tcHAndlers.usedImages=[];
