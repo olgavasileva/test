@@ -98,11 +98,16 @@ $ ->
     root.find('.value-holder').val(value)
     root.find('.value-label').html(text)
 
-  $(document).on 'keydown','.remove-default-text, .rem ove-default-text textarea', ()->
-    $(this).val('');
-    node=$(this).parent();
-    $(this).removeClass('remove-default-text');
-    $(node).removeClass('remove-default-text');
+  $(document).on 'keydown','textarea.remove-default-text, .remove-default-text textarea', ()->
+    $(this).val('')
+    node=$(this).parent()
+    $(this).removeClass('remove-default-text')
+    $(node).removeClass('remove-default-text')
+    $(this).closest('.help-block').remove()
 
+  $(document).on 'keydown','.has-error textarea, .has-error input', ()->
+    failed=$(this).closest('.has-error')
+    failed.find('.help-block').remove()
+    failed.removeClass('has-error')
 
   return null
