@@ -32,7 +32,7 @@ class Target < ActiveRecord::Base
         end
       else
         followers.each do |follower|
-          if follower.leader == user && follower.wants_question?(question)
+          if follower.leaders.include?(user) && follower.wants_question?(question)
             follower.feed_questions << question
             target_count += 1
           end
@@ -49,9 +49,9 @@ class Target < ActiveRecord::Base
       else
         groups.each do |group|
           if group.user == user
-            group.members.each do |member|
-              if member.wants_question? question
-                member.feed_questions << question
+            group.member_users.each do |member_user|
+              if member_user.wants_question? question
+                member_user.feed_questions << question
                 target_count += 1
               end
             end

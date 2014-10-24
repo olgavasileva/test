@@ -1,7 +1,4 @@
-if !window.tcHandlers
-  window.tcHandlers={}
 
-window.tcHandlers.usedImages=[]
 
 
 $ ->
@@ -15,12 +12,18 @@ $ ->
     url=''
     $image = $(scope).find(".bgimage img")
     $id_field = $(scope).find(".id input")
-
-    ids = $(scope).find(".canned").data("ids")
-    urls = $(scope).find(".canned").data("urls")
+    canned=$(scope).find(".canned");
+    ids = canned.data("ids")
+    urls = canned.data("urls")
     max = urls.length
-
+    local_url=$image.attr("src")
     i = $.inArray $image.attr("src"), urls
+
+    if i<0
+      urls.unshift local_url
+      i=0
+      canned.data("urls",urls)
+      ids.unshift($id_field.val());
 
     if i >= 0
       i = i + delta
@@ -52,12 +55,18 @@ $ ->
     change_image_by -1, $(this).closest(".imagechooser")
 
   $(document).on 'click','.question-image-uploader',(e)->
+    if $(this).hasClass 'uploading'
+      return
     $(this).find('[type="file"]')[0].click()
 
   $(document).on 'change','.question-image-uploader input[type="file"]',(e)->
     type=$(this).data('image-type')
+
     data = new FormData()
     data.append((type+"_image[image]"), this.files[0])
+    scope=$(this).closest(".imagechooser")
+    parent=$(this).parent()
+    parent.addClass('uploading');
     $.ajax({
       url: "/"+type+"_images",
       data: data,
@@ -66,7 +75,20 @@ $ ->
       processData: false,
       type: 'POST',
       success: (data)->
-        console.log(data)
+        $image = $(scope).find(".bgimage img")
+        $id_field = $(scope).find(".id input")
+        canned=$(scope).find(".canned");
+        ids = canned.data("ids")
+        urls = canned.data("urls")
+        ids.unshift(data.id)
+        urls.unshift(data.image_url)
+        canned.data('ids',ids)
+        canned.data('urls',urls)
+        $image.attr('src',data.image_url)
+        $id_field.val(data.id)
+      complete:()->
+        parent.removeClass('uploading');
+
     })
 
   $(document).on 'click','.tc-dropdown .dropdown-menu-item', ()->
@@ -76,11 +98,16 @@ $ ->
     root.find('.value-holder').val(value)
     root.find('.value-label').html(text)
 
-  $(document).on 'keydown','.remove-default-text, .rem ove-default-text textarea', ()->
-    $(this).val('');
-    node=$(this).parent();
-    $(this).removeClass('remove-default-text');
-    $(node).removeClass('remove-default-text');
+  $(document).on 'keydown','textarea.remove-default-text, .remove-default-text textarea', ()->
+    $(this).val('')
+    node=$(this).parent()
+    $(this).removeClass('remove-default-text')
+    $(node).removeClass('remove-default-text')
+    $(this).closest('.help-block').remove()
 
+  $(document).on 'keydown','.has-error textarea, .has-error input', ()->
+    failed=$(this).closest('.has-error')
+    failed.find('.help-block').remove()
+    failed.removeClass('has-error')
 
   return null
