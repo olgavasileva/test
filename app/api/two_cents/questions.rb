@@ -429,7 +429,7 @@ class TwoCents::Questions < Grape::API
                         "creator_name": "creator_username",
                         "title": "Text Choice Title",
                         "description": "Text Choice Description",
-                        "image_url": "http://crashmob.com/Example.jpg",
+                        "image_url": "http://statisfy.co/Example.jpg",
                         "rotate": true,
                         "response_count": 8,
                         "comment_count": 5,
@@ -486,7 +486,7 @@ class TwoCents::Questions < Grape::API
                                     "id": 4,
                                     "muex": true,
                                     "rotate": true,
-                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "image_url": "http://statisfy.co/Example.jpg",
                                     "title": "Multiple Choice 1"
                                 }
                             },
@@ -495,7 +495,7 @@ class TwoCents::Questions < Grape::API
                                     "id": 5,
                                     "muex": false,
                                     "rotate": true,
-                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "image_url": "http://statisfy.co/Example.jpg",
                                     "title": "Multiple Choice 2"
                                 }
                             },
@@ -504,7 +504,7 @@ class TwoCents::Questions < Grape::API
                                     "id": 6,
                                     "muex": true,
                                     "rotate": false,
-                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "image_url": "http://statisfy.co/Example.jpg",
                                     "title": "Multiple Choice 3"
                                 }
                             }
@@ -531,7 +531,7 @@ class TwoCents::Questions < Grape::API
                             {
                                 "choice": {
                                     "id": 7,
-                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "image_url": "http://statisfy.co/Example.jpg",
                                     "rotate": false,
                                     "title": "Image Choice 1"
                                 }
@@ -539,7 +539,7 @@ class TwoCents::Questions < Grape::API
                             {
                                 "choice": {
                                     "id": 8,
-                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "image_url": "http://statisfy.co/Example.jpg",
                                     "rotate": false,
                                     "title": "Image Choice 2"
                                 }
@@ -567,7 +567,7 @@ class TwoCents::Questions < Grape::API
                             {
                                 "choice": {
                                     "id": 9,
-                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "image_url": "http://statisfy.co/Example.jpg",
                                     "rotate": true,
                                     "title": "Order Choice 1"
                                 }
@@ -575,7 +575,7 @@ class TwoCents::Questions < Grape::API
                             {
                                 "choice": {
                                     "id": 10,
-                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "image_url": "http://statisfy.co/Example.jpg",
                                     "rotate": true,
                                     "title": "Order Choice 2"
                                 }
@@ -583,7 +583,7 @@ class TwoCents::Questions < Grape::API
                             {
                                 "choice": {
                                     "id": 11,
-                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "image_url": "http://statisfy.co/Example.jpg",
                                     "rotate": false,
                                     "title": "Order Choice 3"
                                 }
@@ -600,7 +600,7 @@ class TwoCents::Questions < Grape::API
                         "creator_name": "creator_username",
                         "title": "Text Title",
                         "description": "Text Description",
-                        "image_url": "http://crashmob.com/Example.jpg",
+                        "image_url": "http://statisfy.co/Example.jpg",
                         "text_type": "freeform" | "email" | "phone",
                         "min_characters": 1,
                         "max_characters": 100,

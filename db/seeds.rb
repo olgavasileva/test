@@ -10,10 +10,10 @@
 # API Settings (served in instance call)
 #
 Setting.where(key: :google_gtm).first_or_create!(value: nil)
-Setting.where(key: :faq_url).first_or_create!(value: "http://www.crashmob.com/?page_id=668")
-Setting.where(key: :feedback_url).first_or_create!(value: "http://www.crashmob.com/?page_id=674")
-Setting.where(key: :about_url).first_or_create!(value: "http://www.crashmob.com/?page_id=670")
-Setting.where(key: :terms_and_conditions_url).first_or_create!(value: "http://www.crashmob.com/?page_id=672")
+Setting.where(key: :faq_url).first_or_create!(value: "http://www.statisfy.co/?page_id=668")
+Setting.where(key: :feedback_url).first_or_create!(value: "http://www.statisfy.co/?page_id=674")
+Setting.where(key: :about_url).first_or_create!(value: "http://www.statisfy.co/?page_id=670")
+Setting.where(key: :terms_and_conditions_url).first_or_create!(value: "http://www.statisfy.co/?page_id=672")
 Setting.where(key: :aws_access_key).first_or_create!(value: ENV['DEVICE_AWS_ACCESS_KEY'])
 Setting.where(key: :aws_secret_access_key).first_or_create!(value: ENV['DEVICE_AWS_SECRET_ACCESS_KEY'])
 Setting.where(key: :aws_region).first_or_create!(value: ENV['DEVICE_AWS_REGION'])
@@ -46,7 +46,7 @@ end
 #
 
 Role.where(name:"pro").first_or_create!
-user = User.where(username:'crashmob').first_or_create!(name:"Question Master",email:'question-master@crashmob.com',password:"dirty socks",password_confirmation:"dirty socks")
+user = User.where(username:'crashmob').first_or_create!(name:"Question Master",email:'question-master@statisfy.co',password:"dirty socks",password_confirmation:"dirty socks")
 user.add_role :pro
 
 
