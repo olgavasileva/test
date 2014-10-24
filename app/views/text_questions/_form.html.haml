@@ -20,7 +20,7 @@
               .row
                 .col-xs-12
                   .question
-                    .title.over_image_title_container
+                    .title.over_image_title_container.auto-center
                       =f.input :title, label: false, placeholder: "Ask Your Question Here", input_html:{class: "appearing-question-title"}
                       =render partial:'/widgets/char_counter',locals:{:selector => ".appearing-question-title"}
 

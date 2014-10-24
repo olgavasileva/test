@@ -1,6 +1,3 @@
-
-
-
 $ ->
   change_image_by = (delta, scope) ->
     if(!window.tcHAndlers)
@@ -109,5 +106,10 @@ $ ->
     failed=$(this).closest('.has-error')
     failed.find('.help-block').remove()
     failed.removeClass('has-error')
+
+  $(document).on 'keydown cut paste drop','.auto-center textarea, textarea.auto-center', ()->
+    setTimeout(customAutoResize.bind(this),10)
+
+
 
   return null
