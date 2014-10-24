@@ -10,7 +10,7 @@ FactoryGirl.define do
   end
 
   sequence :email_address do |n|
-    "someone#{n}@crashmob.com"
+    "someone#{n}@statisfy.co"
   end
 
   sequence :password do |n|

@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default from: "donotreply@crashmob.com"
+  default from: "donotreply@statisfy.co"
 
   def notification(target_emails, message_to_send)
 

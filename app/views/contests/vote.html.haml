@@ -1,5 +1,15 @@
-%h2 Vote for your favorite scene
-- @studioResponses.each do |r|
-  =link_to image_tag(r.scene.image.thumb.url), save_vote_path(@contest.uuid, r.id), method: :post, class: :thumbnail, remote: true
+.panel.panel-default
+  .panel-body
+    %h1 Heading Here
+    %h2= link_to "Enter the contest!", contest_sign_up_path(@contest.uuid)
 
-%h2= link_to "Enter the contest!", contest_sign_up_path(@contest.uuid)
+.panel.panel-default
+  .panel-heading
+    %h2.panel-title Vote for your favorite scene
+  .panel-body
+    .row
+      - @studioResponses.each do |r|
+        .col-sm-3
+          =link_to save_vote_path(@contest.uuid, r.id), method: :post, class: :thumbnail, remote: true do
+            =image_tag(r.scene.image.thumb.url)
+            =number_to_percentage @contest.percent_votes_for_response(r), precision: 0
