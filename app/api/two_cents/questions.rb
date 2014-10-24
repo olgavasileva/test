@@ -762,7 +762,7 @@ class TwoCents::Questions < Grape::API
 
       responses = user.responses.order(:created_at)
       responses = responses.reverse if params[:reverse]
-      questions = responses.map(&:question).uniq
+      questions = responses.map(&:question).uniq.compact
 
       if params[:page]
         questions = questions.paginate(page: params[:page],
