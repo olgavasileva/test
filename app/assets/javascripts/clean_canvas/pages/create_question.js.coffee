@@ -58,13 +58,18 @@ $ ->
     change_image_by -1, $(this).closest(".imagechooser")
 
   $(document).on 'click','.question-image-uploader',(e)->
+    if $(this).hasClass 'uploading'
+      return
     $(this).find('[type="file"]')[0].click()
 
   $(document).on 'change','.question-image-uploader input[type="file"]',(e)->
     type=$(this).data('image-type')
+
     data = new FormData()
     data.append((type+"_image[image]"), this.files[0])
-
+    scope=$(this).closest(".imagechooser")
+    parent=$(this).parent()
+    parent.addClass('uploading');
     $.ajax({
       url: "/"+type+"_images",
       data: data,
@@ -73,18 +78,19 @@ $ ->
       processData: false,
       type: 'POST',
       success: (data)->
-        scope=$(this).closest(".imagechooser")
         $image = $(scope).find(".bgimage img")
         $id_field = $(scope).find(".id input")
         canned=$(scope).find(".canned");
         ids = canned.data("ids")
         urls = canned.data("urls")
         ids.unshift(data.id)
-        urls.unshift(data.url)
+        urls.unshift(data.image_url)
         canned.data('ids',ids)
         canned.data('urls',urls)
-        $image.attrs('src',data.url)
+        $image.attr('src',data.image_url)
         $id_field.val(data.id)
+      complete:()->
+        parent.removeClass('uploading');
 
     })
 

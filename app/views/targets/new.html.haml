@@ -23,8 +23,15 @@
           .col-xs-12.collapse-parent
             = f.input :all_groups, label: "Statisfy Groups", input_html:{class: %w(collapser)}
             = f.collection_check_boxes :groups, @groups, :id, :name, item_wrapper_class: %w(row checkbox collapsable collapsable-item)
+          .col-xs-12#share_text2.non-selectable
+            .checkbox
+              %label.col-xs-6
+                Iwant to share this question on my social grid like Facebook, Twitter and more..
+              .col-xs-1.col-xs-push-5
+                %a.info-holder{:href=>"",:data=>{:toggle=>"modal",:target=>"#share_modal"}}
+                  %span.fa.fa-info-circle
         %input{:type=>'hidden',:value=>false,:name=>:anonymous}
-        #anonymous_container.col-xs-12
+        #anonymous_container.col-xs-12.non-selectable
           .row
             .col-xs-9.col-xs-push-1
               .checkbox
@@ -34,33 +41,25 @@
                   %br
                   anonymously
             .col-xs-1
-              %a.info-holder{:href=>"",:data=>{:toggle=>"modal",:target=>"#info_modal"}}data-toggle="modal"
+              %a.info-holder{:href=>"",:data=>{:toggle=>"modal",:target=>"#privacy_modal"}}
                 %span.fa.fa-info-circle
 
-#info_modal.modal.fade{:tabindex=>"-1",:role=>"dialog",:data=>{:aria=>{:labelledby=>"myModalLabel",:hidden=>"true"}}}>
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-
+#privacy_modal.modal.fade{:tabindex=>"-1",:role=>"dialog",:data=>{:aria=>{:labelledby=>"privacy_modal",:hidden=>"true"}}}>
+  .modal-dialog.modal-sm
+    .modal-content
+      .modal-body
+        Your question will be anonymous.
+      .modal-footer
+        %button.btn.btn-link.btn-lg{:typee=>"button",:data=>{:dismiss=>"modal"}}
+          Close
+#share_modal.modal.fade{:tabindex=>"-1",:role=>"dialog",:data=>{:aria=>{:labelledby=>"share_modal",:hidden=>"true"}}}>
+  .modal-dialog.modal-sm
+    .modal-content
+      .modal-body
+        You will be able to share your question on the following screen.
+      .modal-footer
+        %button.btn.btn-link.btn-lg{:typee=>"button",:data=>{:dismiss=>"modal"}}
+          Close
 
   :javascript
     function alterTargetClases(){
