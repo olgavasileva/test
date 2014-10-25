@@ -95,6 +95,11 @@ var psUI = function() {
 
         $("#ps-clear-all").click(clearAll);
 
+        $('#download_image').click(function(){
+            this.href=$('#ps-canvas')[0].toDataURL();
+            this.download=('Scene_'+Date.now());
+        })
+
         $(document).on('click', '.sticker-pack-wrapper', function(e) {
             e.preventDefault();
             var data = $(e.currentTarget).data();

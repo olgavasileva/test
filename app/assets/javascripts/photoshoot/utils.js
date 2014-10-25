@@ -89,7 +89,7 @@ var psUtils = function() {
      */
     this.getStickerByImageURL = function(imgUrl) {
         return _.find(stickersDB, function(sticker) {
-            return sticker.image_url == imgUrl;
+            return sticker.image_url == imgUrl || sticker.img_2_url == imgUrl;
         });
     };
 
