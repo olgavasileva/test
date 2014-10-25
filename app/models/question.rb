@@ -8,9 +8,11 @@ class Question < ActiveRecord::Base
 	has_many :packs, through: :inclusions
 	has_many :sharings, dependent: :destroy
 	has_many :responses, dependent: :destroy
+  has_many :response_users, through: :responses, source: :user
   has_many :users,  through: :responses
 	has_many :feed_items, dependent: :destroy
 	has_many :skips, class_name:"SkippedItem", dependent: :destroy
+  has_many :skip_users, through: :skips, source: :user
   has_many :choices
   has_many :question_reports
   has_many :group_targets
