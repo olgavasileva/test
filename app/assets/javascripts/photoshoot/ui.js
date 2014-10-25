@@ -42,7 +42,7 @@ var psUI = function() {
                     e.preventDefault();
                 } else {
                     $("#studio_response_scene_attributes_canvas_json").val(scene);
-                    // console.log(psCanvas().getContext().toDataURL("image/png"));
+                    console.log(psCanvas().getContext().toDataURL("image/png"));
                 }
             });
 
@@ -97,10 +97,15 @@ var psUI = function() {
 
         $('#preview_image').click(function(){
           var newWindow=window.open();
-          var html='<img src="'+$('#ps-canvas')[0].toDataURL()+'">';
+          var html='<img src="'+psCanvas().getContext().toDataURL("image/png")+'">';
           newWindow.document.write(html);
             /*this.href=;
             this.download=('Scene_'+Date.now());*/
+        })
+
+        $('#download_image').click(function(){
+          this.href=psCanvas().getContext().toDataURL("image/png");
+          this.download=('Scene_'+Date.now());
         })
 
         $(document).on('click', '.sticker-pack-wrapper', function(e) {
