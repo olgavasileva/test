@@ -9,7 +9,7 @@ class Contest < ActiveRecord::Base
     "C"+UUID.new.generate.gsub(/-/, '')
   end
 
-  before_save :convert_heading
+  before_save :convert_headings
 
   def next_question question
     questions_surveys.where(question_id:question).first.lower_items.first.try(:question)
@@ -36,8 +36,9 @@ class Contest < ActiveRecord::Base
   end
 
   private
-    def convert_heading
+    def convert_headings
       self.heading_html = RDiscount.new(heading_markdown, :filter_html).to_html unless heading_markdown.nil?
+      self.gallery_heading_html = RDiscount.new(gallery_heading_markdown, :filter_html).to_html unless gallery_heading_markdown.nil?
     end
 
 

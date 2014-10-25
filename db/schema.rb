@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141023042331) do
+ActiveRecord::Schema.define(version: 20141025163638) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -148,6 +148,8 @@ ActiveRecord::Schema.define(version: 20141023042331) do
     t.string   "uuid"
     t.text     "heading_markdown"
     t.text     "heading_html"
+    t.text     "gallery_heading_markdown"
+    t.text     "gallery_heading_html"
   end
 
   add_index "contests", ["key_question_id"], name: "index_contests_on_key_question_id", using: :btree
@@ -390,16 +392,19 @@ ActiveRecord::Schema.define(version: 20141023042331) do
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
 
   create_table "messages", force: true do |t|
+    t.text     "content"
     t.string   "type"
     t.datetime "read_at"
-    t.datetime "completed_at"
-    t.integer  "response_count"
-    t.integer  "comment_count"
-    t.integer  "share_count"
+    t.integer  "other_user_id"
     t.integer  "question_id"
+    t.integer  "response_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "response_count", default: 0
+    t.integer  "comment_count",  default: 0
+    t.integer  "share_count",    default: 0
+    t.datetime "completed_at"
     t.integer  "follower_id"
     t.text     "body"
   end
