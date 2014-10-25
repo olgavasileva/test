@@ -107,10 +107,19 @@ var psCanvas = function() {
      *
      */
     function placeBackground(data) {
-        canvas.setBackgroundImage(data.src, function() {
-            canvas.renderAll();
-            $(document).trigger("ps.canvas.undoredo.addToHistory");
-        });
+        var d=psUtils().getStickerById(data.id);
+
+      var fImage=new fabric.Image(d.imageObject, {
+        originX: 'left',
+        originY: 'top',
+        left: 0,
+        top: 0
+      });
+      canvas.setBackgroundImage(fImage, function() {
+          canvas.renderAll();
+          $(document).trigger("ps.canvas.undoredo.addToHistory");
+      });
+
     }
 
     /**

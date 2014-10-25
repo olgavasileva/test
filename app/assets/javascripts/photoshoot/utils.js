@@ -7,13 +7,20 @@ var psUtils = function() {
         return psUtils.prototype._instance;
     }
     psUtils.prototype._instance = this;
-
-    var stickersDB = {};
-    var packsDB = {};
-    //    var menusDB = [];
-    var packOrder = [];
-    var currentPackId = {};
-
+  //    var menusDB = [];
+    var stickersDB = {},
+      packsDB = {},
+      packOrder = [],
+      currentPackId = {},
+    stickerPropsList={
+      Calories:{node_id:"#calorie-counter"},
+      Protein:{node_id:"#protein-counter"},
+      Sugar:{node_id:"#sugar-counter"},
+      Carbohydrates:{node_id:"#carbohydrates-counter"},
+      Fat:{node_id:"#total-fat"},
+      Fiber:{node_id:"#fiber-counter"},
+      CaloriesFromFat:{node_id:"#calories-from-fat"}
+    };
     /**
      * Returns menu item info by hash path
      */
@@ -90,8 +97,8 @@ var psUtils = function() {
      *
      */
     this.setStickers = function(stickers) {
-        _.each(stickers, function(s) {
-            stickersDB[s.id] = s;
+        _.each(stickers, function(sticker) {
+            stickersDB[sticker.id] = sticker;
         });
     };
 
@@ -172,67 +179,31 @@ var psUtils = function() {
     }
 
     this.stickerAddedToCanvas = function(stickerId) {
-        var sticker_props = this.getStickerById(stickerId).properties
-        if (sticker_props.Calories) {
-            var new_calorie_count = parseInt($("#calorie-counter").text()) + parseInt(sticker_props.Calories);
-            $("#calorie-counter").text(new_calorie_count);
+      var new_value,
+          prop,
+          stickerProps = this.getStickerById(stickerId).properties
+      for(prop in stickerPropsList){
+        if(!stickerProps[prop]){
+          continue;
         }
-        if (sticker_props.Protein) {
-            var new_protein_count = parseInt($("#protein-counter").text()) + parseInt(sticker_props.Protein);
-            $("#protein-counter").text(new_protein_count);
-        }
-        if (sticker_props.Sugar) {
-            var new_sugar_count = parseInt($("#sugar-counter").text()) + parseInt(sticker_props.Sugar);
-            $("#sugar-counter").text(new_sugar_count);
-        }
-        if (sticker_props.Carbohydrates) {
-            var new_carbohydrates_count = parseInt($("#carbohydrates-counter").text()) + parseInt(sticker_props.Carbohydrates);
-            $("#carbohydrates-counter").text(new_carbohydrates_count);
-        }
-        if (sticker_props.Fat) {
-            var new_count = parseInt($("#total-fat").text()) + parseInt(sticker_props.Fat);
-            $("#total-fat").text(new_count);
-        }
-        if (sticker_props.Fiber) {
-            var new_count = parseInt($("#fiber-counter").text()) + parseInt(sticker_props.Fiber);
-            $("#fiber-counter").text(new_count);
-        }
-        if (sticker_props.CaloriesFromFat) {
-            var new_count = parseInt($("#calories-from-fat").text()) + parseInt(sticker_props.CaloriesFromFat);
-            $("#calories-from-fat").text(new_count);
-        }
+        stickerPropsList[prop].node=stickerPropsList[prop].node || $(stickerPropsList[prop].node_id);
+        new_value = (+stickerPropsList[prop].node.text()) +(+stickerProps[prop]);
+        stickerPropsList[prop].node.text(new_count);
+      }
     }
 
     this.stickerRemovedFromCanvas = function(stickerId) {
-        var sticker_props = this.getStickerById(stickerId).properties
-        if (sticker_props.Calories) {
-            var new_calorie_count = parseInt($("#calorie-counter").text()) - parseInt(sticker_props.Calories);
-            $("#calorie-counter").text(new_calorie_count);
+      var new_value,
+        prop,
+        stickerProps = this.getStickerById(stickerId).properties
+      for(prop in stickerPropsList){
+        if(!stickerProps[prop]){
+          continue;
         }
-        if (sticker_props.Protein) {
-            var new_protein_count = parseInt($("#protein-counter").text()) - parseInt(sticker_props.Protein);
-            $("#protein-counter").text(new_protein_count);
-        }
-        if (sticker_props.Sugar) {
-            var new_sugar_count = parseInt($("#sugar-counter").text()) - parseInt(sticker_props.Sugar);
-            $("#sugar-counter").text(new_sugar_count);
-        }
-        if (sticker_props.Carbohydrates) {
-            var new_carbohydrates_count = parseInt($("#carbohydrates-counter").text()) - parseInt(sticker_props.Carbohydrates);
-            $("#carbohydrates-counter").text(new_carbohydrates_count);
-        }
-        if (sticker_props.Fat) {
-            var new_count = parseInt($("#total-fat").text()) - parseInt(sticker_props.Fat);
-            $("#total-fat").text(new_count);
-        }
-        if (sticker_props.Fiber) {
-            var new_count = parseInt($("#fiber-counter").text()) - parseInt(sticker_props.Fiber);
-            $("#fiber-counter").text(new_count);
-        }
-        if (sticker_props.CaloriesFromFat) {
-            var new_count = parseInt($("#calories-from-fat").text()) - parseInt(sticker_props.CaloriesFromFat);
-            $("#calories-from-fat").text(new_count);
-        }
+        stickerPropsList[prop].node=stickerPropsList[prop].node || $(stickerPropsList[prop].node_id);
+        new_value = (+stickerPropsList[prop].node.text())-(+stickerProps[prop]);
+        stickerPropsList[prop].node.text(new_count);
+      }
     }
 };
 
