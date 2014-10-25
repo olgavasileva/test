@@ -15,14 +15,14 @@ module BackgroundImageFromChoices
 
       if self.kind_of?(OrderQuestion)
         montage = Magick::ImageList.new(*choice_images).montage do |m|
-          m.tile = '1x4'
           m.background_color = '#a4a5a9'
-          m.geometry = '160x80+0+0'
+          m.tile = '1x4'
+          m.geometry = '320x80+0+0'
         end
       else
         montage = Magick::ImageList.new(*choice_images).montage do |m|
-          m.tile = '2x2'
           m.background_color = '#a4a5a9'
+          m.tile = '2x2'
           m.geometry = '160x160+0+0'
         end
       end
