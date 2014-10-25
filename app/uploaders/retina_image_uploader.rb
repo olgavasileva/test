@@ -10,13 +10,13 @@ class RetinaImageUploader < UploaderBase
 
   # This generates 2 versions for the given name - e.g. :web and :retina_web
   # Use these with responsive_image_tag, which will look for the retina_* version.
-  def self.responsive_version name = :web, standard_size = [320,0]
+  def self.responsive_version name = :web, standard_size = [320,0], process = :resize_and_pad
     version name do
-      process resize_and_pad: standard_size
+      process process => standard_size
     end
 
     version "retina_#{name}" do
-      process resize_and_pad: standard_size.map{|s| s*2}
+      process process => standard_size.map{|s| s*2}
 
       # returns @2x for retina version
       def full_filename(for_file)
