@@ -364,6 +364,7 @@ GEM
       i18n
       polyamorous (~> 1.1)
     raphael-rails (2.1.2)
+    rb-readline (0.5.1)
     rdiscount (2.1.6)
     rdoc (4.1.1)
       json (~> 1.4)
@@ -555,6 +556,7 @@ DEPENDENCIES
   rails_12factor
   randumb
   raphael-rails
+  rb-readline
   rdiscount
   rmagick
   rolify
