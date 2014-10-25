@@ -15,18 +15,13 @@ class StickerPack < ActiveRecord::Base
 
   scope :enabled, -> { where.not disabled: true }
 
+  # Modify the updated time of the studios on save so app knows the sticker packs need to be re-loaded
+  before_save :touch_studios
   before_validation :ensure_disabled_set
 
   validates :display_name, presence: true
   validates :disabled, inclusion: {in:[true, false]}
 
-  # Modify the updated time of the studios on save so app knows the sticker packs need to be re-loaded
-  before_save do
-    studios.each do |studio|
-      studio.touch
-      studio.save
-    end
-  end
 
   def enabled_stickers
     Rails.cache.fetch("#{Rails.env}:#{self.id}:stickers".hash.to_s, expires_in: sticker_ttl) do
@@ -51,5 +46,11 @@ class StickerPack < ActiveRecord::Base
 
     def ensure_disabled_set
       self.disabled = false if disabled.nil?
+      true
+    end
+
+    def touch_studios
+      studios.each{|s| s.touch}
+      true
     end
 end

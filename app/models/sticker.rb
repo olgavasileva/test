@@ -22,21 +22,19 @@ class Sticker < ActiveRecord::Base
   scope :enabled, -> { where.not disabled: true }
 
   before_validation :ensure_disabled_set
+  before_create :set_priority_value
+  before_save :set_image_geometry
+  before_save :touch_sticker_packs
 
   validates :display_name, presence: true
   validates :priority, numericality: true
   validates :type, inclusion: {in: TYPES}
   validates :disabled, inclusion: {in:[true, false]}
 
-  before_create :set_priority_value
-  before_save :set_image_geometry
 
-  # Modify the updated time of the sticker packs on save so app knows the stickers need to be re-loaded
-  after_save do
-    sticker_packs.each do |sticker_pack|
-      sticker_pack.touch
-      sticker_pack.save
-    end
+  def touch_sticker_packs
+    sticker_packs.each{|sp|sp.touch}
+    true
   end
 
   scope :backgrounds, -> {where(type: 'Background')}
@@ -56,6 +54,7 @@ class Sticker < ActiveRecord::Base
       self.image_height = geo.try(:[], :height)
       self.image_width = geo.try(:[], :width)
     end
+    true
   end
 
   def set_priority_value
@@ -63,9 +62,11 @@ class Sticker < ActiveRecord::Base
       # add it to the end if the admin hasn't set a priority
       self.priority = Sticker.maximum(:priority).to_i + 1
     end
+    true
   end
 
   def ensure_disabled_set
     self.disabled = false if disabled.nil?
+    true
   end
 end
