@@ -1,7 +1,7 @@
 ActiveAdmin.register Contest do
   menu parent: 'Surveys'
 
-  permit_params :name, :key_question_id, :survey_id, :heading_markdown
+  permit_params :name, :key_question_id, :survey_id, :heading_markdown, :gallery_heading_markdown
 
   index do
     column :id
@@ -18,7 +18,10 @@ ActiveAdmin.register Contest do
       row :id
       rows :name
       row "Heading" do
-        c.heading_html.html_safe
+        c.heading_html.to_s.html_safe
+      end
+      row "Gallery Heading" do
+        c.gallery_heading_html.to_s.html_safe
       end
 
       row :created_at
@@ -32,6 +35,7 @@ ActiveAdmin.register Contest do
       f.input :key_question, collection: f.object.questions
       f.input :name
       f.input :heading_markdown
+      f.input :gallery_heading_markdown
     end
     f.actions
   end
