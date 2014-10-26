@@ -188,7 +188,7 @@ var psUtils = function() {
         }
         stickerPropsList[prop].node=stickerPropsList[prop].node || $(stickerPropsList[prop].node_id);
         new_value = (+stickerPropsList[prop].node.text()) +(+stickerProps[prop]);
-        stickerPropsList[prop].node.text(new_count);
+        stickerPropsList[prop].node.text(new_value);
       }
     }
 
@@ -202,7 +202,7 @@ var psUtils = function() {
         }
         stickerPropsList[prop].node=stickerPropsList[prop].node || $(stickerPropsList[prop].node_id);
         new_value = (+stickerPropsList[prop].node.text())-(+stickerProps[prop]);
-        stickerPropsList[prop].node.text(new_count);
+        stickerPropsList[prop].node.text(new_value);
       }
     }
 };
