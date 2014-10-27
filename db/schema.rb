@@ -392,19 +392,16 @@ ActiveRecord::Schema.define(version: 20141025163638) do
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
 
   create_table "messages", force: true do |t|
-    t.text     "content"
     t.string   "type"
     t.datetime "read_at"
-    t.integer  "other_user_id"
+    t.datetime "completed_at"
+    t.integer  "response_count"
+    t.integer  "comment_count"
+    t.integer  "share_count"
     t.integer  "question_id"
-    t.integer  "response_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "response_count", default: 0
-    t.integer  "comment_count",  default: 0
-    t.integer  "share_count",    default: 0
-    t.datetime "completed_at"
     t.integer  "follower_id"
     t.text     "body"
   end

@@ -385,15 +385,15 @@ var psUI = function() {
           }
 
           setTimeout(function () {
-            image.src = sticker.image_url;
-          }, 1000);
+            image.src = sticker.image_url+'?trash='+Date.now();
+          }, 100);
         }
         else{
           setTimeout(function () {
             var imgTag = document.getElementById('sticker_' + sticker.id);
             imgTag.src = sticker.img_2_url;
 
-          }, 1000);
+          }, 100);
         }
       });
 
@@ -422,15 +422,15 @@ var psUI = function() {
           }
 
           setTimeout(function () {
-            image.src = sticker.image_url;
-          }, 1000);
+            image.src = sticker.image_url+'?trash='+Date.now();
+          }, 100);
         }
         else{
           setTimeout(function () {
             var imgTag = document.getElementById('sticker_' + sticker.id);
             imgTag.src = sticker.img_2_url;
 
-          }, 1000);
+          }, 100);
         }
       });
 
