@@ -6,6 +6,8 @@ class Scene < ActiveRecord::Base
   has_many :gallery_elements, :dependent => :destroy
   mount_uploader :image, SceneImageUploader
 
+  attr_accessor :base64_image
+
   def self.factory user, scene_data, studio, canvas_height=nil, canvas_width=nil, gallery_id=nil, image=nil
     Scene.new.process user, scene_data, studio, canvas_height=nil, canvas_width=nil, gallery_id=nil, image=nil
   end
