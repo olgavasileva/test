@@ -26,6 +26,7 @@
     SURVEY_ID = 0;
     QUESTION_ID = 0;
     THIRD_PARTY_ID = 0;
+    PS_MAX_STICKERS_ALLOWED=5;
 })();
 
 $(function() {
