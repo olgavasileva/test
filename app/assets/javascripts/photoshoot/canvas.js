@@ -50,6 +50,10 @@ var psCanvas = function() {
             /* activeClass: "ui-state-default", */
             /* hoverClass: "ui-state-hover", */
             drop: function(e, ui) {
+              if(psUtils().isPackLimitReached()){
+                return;
+              }
+              psUtils().increaseStickersUsedCount();
                 //	      		if( psUI().isMenuMovedNow() ){
                 //	      			return;
                 //	      		}

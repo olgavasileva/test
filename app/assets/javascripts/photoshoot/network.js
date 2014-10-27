@@ -124,10 +124,19 @@ var psNetwork = function() {
         }).done(function(data) {
             if (data.stickers != null || data.backgrounds != null) {
                 var stickers = {};
-                if (data.stickers != null)
-                    stickers['stickers'] = data.stickers;
-                if (data.backgrounds != null)
-                    stickers['backgrounds'] = data.backgrounds;
+                if (data.stickers != null){
+                  stickers['stickers'] = data.stickers.map(function(sticker){
+                    sticker.pack_id=sticker_pack_id;
+                    return sticker;
+                  });
+                }
+
+                if (data.backgrounds != null){
+                  stickers['backgrounds'] = data.backgrounds.map(function(sticker){
+                    sticker.pack_id=sticker_pack_id;
+                    return sticker;
+                  });
+                }
                 dfd.resolve(stickers);
             } else {
                 dfd.reject();
