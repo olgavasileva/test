@@ -25,7 +25,7 @@ module QuestionTypeHelper
     when question_type.type == ImageChoiceQuestion
       "Pick One"
     when question_type.type == MultipleChoiceQuestion
-      "Pick Many"
+      "Pick Two"
     when question_type.type == TextQuestion
       "Open Ended"
     when question_type.type == OrderQuestion

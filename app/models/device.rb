@@ -11,4 +11,9 @@ class Device < ActiveRecord::Base
 	def owned_by? user
 		self.instances.find_by(user_id: user.id).present?
 	end
+
+	# For now, we only have ios devices
+	def ios?
+		true
+	end
 end

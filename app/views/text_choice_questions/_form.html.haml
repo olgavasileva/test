@@ -4,39 +4,18 @@
   .img-responsive.scale-buttons
     margin-top: 3px
     margin-bottom: 3px
-
-
-
-  .text-created-choice
-    .remove_fields
-      position: absolute
-      right: 10px
-      top: 10px
-      color: white
-      text-decoration: none
-      z-index: 20
-
-  .add-option-control
-    background-color: orange
-    color: white
-    text-align: center
-    height: 100%
-    font-size: 1.7em
-    text-align: center
-    height: 100px
-    line-height: 100px
-    verrical-align: middle
-
-
 .row.question-builder#content_constraint
   .col-xs-12.col-sm-8.col-sm-push-2
-    .textchoice.panel.panel-default
-      .panel-heading
-        .panel-title
-          =link_to question_types_path do
-            %span.glyphicon.glyphicon-chevron-left
+    = simple_form_for @question,:html=> { class: 'textchoice panel panel-default' }  do |f|
+      .panel-heading.col-xs-12
+        .panel-title.row
+          .col-xs-3
+            =link_to question_types_path do
+              %span.glyphicon.glyphicon-chevron-left
+          .col-xs-6.col-xs-push-3
+            =f.button :submit, "Preview", class: %w(btn-primary negative transparent no-border btn-lg)
       .panel-body.imagechooser
-        = simple_form_for @question do |f|
+        %div
           =f.input :type, as: :hidden
           =f.input :rotate, as: :hidden
           .hidden
@@ -45,7 +24,10 @@
           .row.form-group
             .col-xs-12.form-group
               .question
-                .over_image_title_container.title=f.input :title, label: false, input_html: { class: "appearing-question-title"}, placeholder: "Ask Your Question Here"
+                .over_image_title_container.title
+                  =f.input :title, label: false, input_html: { class: "appearing-question-title"}, placeholder: "Ask Your Question Here"
+                  =render partial:'/widgets/char_counter',locals:{:selector => ".over_image_title_container .appearing-question-title"}
+
                 .bgimage= responsive_image_tag @question.web_image_url, class: "img-responsive"
               .col-sm-12
                 =render partial:'/widgets/image_control',locals:{f:f,id:'background_selector', base_class: "revert",type: 'question'}
@@ -59,13 +41,6 @@
                   Add Option
           .row
             =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-xs-12 form-group", :name=>"text_choice_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
-
-          .row
-            .col-xs-3
-              =f.button :submit, "Preview", class: %w(btn-primary negative transparent no-border btn-lg)
-            .col-xs-4.col-xs-push-5.col-sm-3.col-sm-push-6
-              =f.button :submit, "Continue", class: %w(btn-primary negative transparent no-border btn-lg)
-
 :javascript
   $(function(){
 
@@ -79,7 +54,7 @@
         $(this).height(0);
         $(this).height(this.scrollHeight);
         if(repositionNode){
-          repositionNode.css({top:'50%','margin-top':('-'+(repositionNode.outerHeight()/2)+'px'),position:'aboslute'})
+          repositionNode.css({top:'50%','margin-top':('-'+(repositionNode.outerHeight()/2)+'px'),position:'absolute'})
         }
 
       },

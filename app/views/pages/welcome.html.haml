@@ -1,34 +1,26 @@
-.panel.panel-default
-  .panel-heading
-    .panel-title
+= render 'hero_unit'
+= render 'works'
+
+#gallery_container.welcome.row
+  - @questions.each do |question|
+    .col-md-3.col-sm-4.col-xs-12
       .row
-        .col-xs-3.col-sm-2
-        .col-xs-6.col-sm-8
-        .col-xs-3.col-sm-2.text-right
-          =link_to demo_registration_path do
-            %span.glyphicon.glyphicon-chevron-right
-  .panel-body.response
-    %br
-    %br
-    %h2.text-center Welcome
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %h3.text-center
-      .btn-group-vertical
-        = link_to demo_registration_path, class: %w(btn btn-default btn-group btn-lg) do
-          %span.glyphicon.glyphicon-plus
-          Sign Up
-        = link_to demo_login_path, class: %w(btn btn-success btn-group btn-lg) do
-          %span.glyphicon.glyphicon-ok
-          Sign In
-    %br
-    %br
+        =link_to new_question_response_path(question), class: :thumbnail do
+          = responsive_image_tag question.web_image_url
+          .mask
+          .floating-question-title
+            %span=question.title
+          .icon
+            = responsive_image_tag question.category.icon.web.url
+            %small.category= question.category.name
+          .icon2
+            Answered
+            %hr
+            %small (#{@all_responses})
+          .icon3
+            Commented
+            %hr
+            %small (#{@all_comments})
+
+= render 'contact'
+= render 'twitter_stream'

@@ -25,7 +25,7 @@ class OrderResponse < Response
   end
 
   def description
-    top_choices_response.choice.id
+    top_choice.id
   end
 
   def top_choice

@@ -22,6 +22,7 @@ ActiveAdmin.register Survey do
 
   form do |f|
     f.inputs do
+      f.input :name
       f.input :contests, as: :check_boxes, label_method: :name
     end
     f.actions

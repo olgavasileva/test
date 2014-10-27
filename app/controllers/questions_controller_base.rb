@@ -12,7 +12,7 @@ class QuestionsControllerBase < ApplicationController
     if @question.save
       redirect_to @question.preview? ? new_question_response_path(@question) : [:target, @question]
     else
-      flash[:error] = "There was a problem creating your question."
+      flash[:error] = @question.errors.full_messages.join('; ')
       render "new"
     end
   end
@@ -37,7 +37,12 @@ class QuestionsControllerBase < ApplicationController
   def target
     @question = question_class.send :find, params[:id]
     authorize @question
-    redirect_to new_target_path(question_id:@question)
+
+    if session[:use_enterprise_targeting]
+      redirect_to new_question_enterprise_target_path(@question)
+    else
+      redirect_to new_question_target_path(@question)
+    end
   end
 
   def share

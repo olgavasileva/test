@@ -1,3 +1,3 @@
-class CommentLikedMessage < Message 
+class CommentLikedMessage < Message
 
 end

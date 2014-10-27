@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'PUT questions/skip' do
-  let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
+  let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in, :can_push) }
   let(:question) { FactoryGirl.create(:question) }
   let(:params) { {
     auth_token: instance.auth_token,

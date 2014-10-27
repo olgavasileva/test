@@ -41,15 +41,16 @@
 
 .row#content_constraint
   .col-xs-12.col-sm-8.col-sm-push-2
-    .question_types.panel.panel-default
+    .question_types.panel.panel-default.form
       .panel-heading
         .panel-title
           .row
-            .col-xs-2
+            .col-xs-3
               =link_to root_path do
                 %span.glyphicon.glyphicon-chevron-left
-            .col-xs-8
+            .col-xs-6
               %h3 Create
+            .col-xs-3
 
       .panel-body
         .row
@@ -59,3 +60,8 @@
                 .row
                   .icon.floating-icom=image_tag icon_for(question_type)
                   %h1.title.col-xs-12=title_for question_type
+:javascript
+  if(!window.tcHAndlers){
+    window.tcHAndlers={};
+  }
+  window.tcHAndlers.usedImages=[];

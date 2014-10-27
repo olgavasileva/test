@@ -6624,8 +6624,20 @@ fabric.Shadow = fabric.util.createClass(/** @lends fabric.Shadow.prototype */ {
      * @return {fabric.Canvas} thisArg
      * @chainable
      */
-    setBackgroundImage: function (url, callback, options) {
-      fabric.util.loadImage(url, function(img) {
+    setBackgroundImage: function (source, callback, options) {
+      if( typeof source === 'object'){
+        this.backgroundImage = source;
+        if (options && ('backgroundImageOpacity' in options)) {
+          this.backgroundImageOpacity = options.backgroundImageOpacity;
+        }
+        if (options && ('backgroundImageStretch' in options)) {
+          this.backgroundImageStretch = options.backgroundImageStretch;
+        }
+        callback && callback();
+        return this;
+      }
+
+      fabric.util.loadImage(source, function(img) {
         this.backgroundImage = img;
         if (options && ('backgroundImageOpacity' in options)) {
           this.backgroundImageOpacity = options.backgroundImageOpacity;

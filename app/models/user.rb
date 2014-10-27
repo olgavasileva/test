@@ -8,11 +8,15 @@ class User < ActiveRecord::Base
          authentication_keys:[:login], reset_password_keys:[:login]
 
   has_many :responses, dependent: :destroy
+  has_many :order_responses, class_name: "OrderResponse"
+  has_many :choice_responses, class_name: "ChoiceResponse"
+  has_many :multiple_choice_responses, class_name: "MultipleChoiceResponse"
   has_many :feed_items, dependent: :destroy
   has_many :feed_questions, through: :feed_items, source: :question
   has_many :answered_questions, through: :responses, source: :question
   has_many :skipped_items, dependent: :destroy
   has_many :skipped_questions, through: :skipped_items, source: :question
+  has_many :inappropriate_flags, dependent: :destroy
 
   has_many :groups, dependent: :destroy
   has_many :group_members, through: :groups, source: :user
@@ -23,6 +27,12 @@ class User < ActiveRecord::Base
   has_many :community_members, through: :communities, source: :user
   has_many :community_memberships, class_name: 'CommunityMember'
   has_many :membership_communities, through: :community_memberships, source: :community
+
+  has_many :targets, dependent: :destroy
+  has_many :enterprise_targets, dependent: :destroy
+
+  has_many :targets_users
+  has_many :following_targets, through: :targets_users, source: :target
 
   has_many :messages, dependent: :destroy
 
@@ -50,16 +60,27 @@ class User < ActiveRecord::Base
   has_many :instances, dependent: :destroy
 	has_many :authentications, dependent: :destroy
 	has_many :devices, through: :instances
+
+  # Questions asked by this user
 	has_many :questions, dependent: :destroy
+
+  # Responses to this user's questions
   has_many :responses_to_questions, through: :questions, source: :responses
-  has_many :responses_to_questions_with_comments, -> {where "responses.comment IS NOT NULL AND responses.comment != ''"}, through: :questions, source: :responses
+
   has_many :questions_skips, through: :questions, source: :skips
 	has_many :packs, dependent: :destroy
 	has_many :sharings, foreign_key: "sender_id", dependent: :destroy
 	has_many :reverse_sharings, foreign_key: "receiver_id", class_name: "Sharing", dependent: :destroy
-  has_many :liked_comments
-  has_many :liked_comment_responses, through: :liked_comments, source: :response
-  has_many :responses_with_comments, -> {where "responses.comment IS NOT NULL AND responses.comment != ''"}, class_name: "Response"
+
+  # Comments made by this user
+  has_many :comments, dependent: :destroy
+  has_many :question_comments, -> {where commentable_type:"Question"}, class_name: "Comment"
+  has_many :response_comments, -> {where commentable_type:"Response"}, class_name: "Comment"
+  has_many :comment_comments, -> {where commentable_type:"Comment"}, class_name: "Comment"
+
+  # Comments made by other users about this user's responses or questions
+  has_many :comments_on_its_responses, through: :responses_to_questions, source: :comment
+  has_many :comments_on_its_questions, through: :questions, source: :comments
 
   has_many :segments, dependent: :destroy
 
@@ -72,6 +93,12 @@ class User < ActiveRecord::Base
 						uniqueness: { case_sensitive: false }
 	validates :name, length: { maximum: 50 }
 	validates :terms_and_conditions, acceptance: true
+  validates :gender, inclusion: {in: %w(male female), allow_nil: true}
+
+  # Comments made by other users about this user's questions and responses
+  def comments_on_questions_and_responses
+    Comment.where id:(comments_on_its_questions.pluck("comments.id") + comments_on_its_responses.pluck("comments.id"))
+  end
 
   # Enable saving users without a password if they have another authenication scheme
   def password_required?
@@ -111,34 +138,95 @@ class User < ActiveRecord::Base
 	end
 
   def wants_question? question
-    feed_items.where(question_id:question).blank? && responses.where(question_id:question).blank? && skipped_items.where(question_id:question).blank? && questions.where(question_id:question).blank?
+    feed_items.where(question_id:question).blank? && responses.where(question_id:question).blank? && skipped_items.where(question_id:question).blank? && questions.where(id:question).blank?
   end
 
-  # Add more public questions to the feed
-  # Do not add questions that have been skipped or answered by this user
-  # Do not add questions that are already in this user's feed
-  def feed_more_questions num_to_add
-    all_public_questions = Question.active.currently_targetable.where(kind: 'public')
+  def next_feed_questions(count = 10)
+    # Potential questions are in active state.
+    potential_questions = Question.active
 
-    # small_dataset = all_public_questions.count < 1000 &&  skipped_items.count + responses.count + feed_items.count < 1000
-    small_dataset = true # TODO: for now, just use the easier unpotimized selection logic
+    # Potential questions have not been in the user's feed.
+    used_questions = feed_questions + answered_questions + skipped_questions
+    potential_questions = potential_questions.where.not(id: used_questions)
 
-    new_questions = if small_dataset
-      # TODO: This is inefficient for very large datasets - optimize when needed
-      candidate_ids = all_public_questions.where.not(id:skipped_questions.pluck("questions.id") + answered_questions.pluck("questions.id") + feed_questions.pluck("questions.id"))
-      Question.where(id:candidate_ids.sample(num_to_add)).order("CASE WHEN questions.position IS NULL THEN 1 ELSE 0 END ASC").order("questions.position ASC").order("RAND()")
-    else
-      # Grabbing random items from a small sample is prone to too many misses, so only do this on a larger dataset
-      new_questions = []
-      num_candidates = all_public_questions.count
-      while new_questions.count < num_to_add
-        candidate = all_public_questions.order(:id).offset(rand(num_candidates)).limit(1)
-        new_questions << candidate if wants_question?(candidate)
-      end
-      new_questions
-    end
+    # Questions are in a specific order.
+    questions = []
 
-    self.feed_questions += new_questions
+    # 1) special case
+    questions += potential_questions.where(special: true).order_by_rand
+
+    return questions.first(count) if questions.count >= count
+
+    # 2) sponsored
+    #   a) targeted
+    #   b) untargeted
+
+    # 3) directly targeted
+    targets = TargetsUser.where(user_id: id).map(&:target)
+    questions += potential_questions.where(target_id: targets)
+                                    .where.not(id: questions)
+                                    .order_by_rand
+
+    return questions.first(count) if questions.count >= count
+
+    # 4) staff
+    staff = Group.find_by_name("Staff").try(:users) || []
+    staff_questions = potential_questions.where(user_id: staff)
+
+    #   a) targeted
+    targets += Target.where(user_id: staff)
+                     .where.any_of(all_users: true, all_followers: true, all_groups: true)
+    targets += GroupsTarget.where(group_id: groups, user_id: staff).map(&:target)
+    questions += staff_questions.where.not(id: questions).order_by_rand
+
+    return questions.first(count) if questions.count >= count
+
+    #   b) untargeted
+    questions += staff_questions.where.not(id: questions, target_id: targets)
+                                .order_by_rand
+
+    return questions.first(count) if questions.count >= count
+
+    # 5) followed users
+
+    #   a) created & shared
+    questions += potential_questions.where(user_id: leaders)
+                                    .where.not(share_count: 0, id: questions)
+
+    return questions.first(count) if questions.count >= count
+
+    #   b) completed & shared
+    responses = Response.where(user_id: leaders)
+    questions += potential_questions.where(id: responses.map(&:question))
+                                    .where.not(share_count: 0, id: questions)
+
+    return questions.first(count) if questions.count >= count
+
+    #   c) created & not shared
+    questions += potential_questions.where(user_id: leaders)
+                                    .where(share_count: [0, nil])
+                                    .where.not(id: questions)
+
+    return questions.first(count) if questions.count >= count
+
+    # 6) top scoring
+    questions += potential_questions.where.not(id: questions)
+                                    .order('score DESC')
+
+    return questions.first(count) if questions.count >= count
+
+    # 7) random public
+    questions += potential_questions.where.not(id: questions).order_by_rand.limit(10)
+
+    questions.first(count)
+  end
+
+  def feed_more_questions(count)
+    self.feed_questions += next_feed_questions(count)
+  end
+
+  def read_all_messages
+    messages.find_each { |m| m.update_attributes(read_at: Time.zone.now) }
   end
 
   def number_of_answered_questions
@@ -150,7 +238,7 @@ class User < ActiveRecord::Base
   end
 
   def number_of_comments_left
-    return self.responses.with_comment.count
+    return self.comments.count
   end
 
   def number_of_followers
@@ -169,51 +257,28 @@ class User < ActiveRecord::Base
 
     def add_and_push_message(followed_user)
 
-        # if UserFollowed.where("follower_id = ? AND user_id = ?", self.id, followed_user.id).exists?
-        #   message = UserFollowed.where("follower_id = ? AND user_id = ?", self.id, followed_user.id)
-        # else
-        #
-        # end
+      # if UserFollowed.where("follower_id = ? AND user_id = ?", self.id, followed_user.id).exists?
+      #   message = UserFollowed.where("follower_id = ? AND user_id = ?", self.id, followed_user.id)
+      # else
+      #
+      # end
 
-        message = UserFollowed.new
+      message = UserFollowed.new
 
-        message.follower_id = self.id
-        message.user_id = followed_user.id
-        message.read_at = nil
+      message.follower_id = self.id
+      message.user_id = followed_user.id
+      message.read_at = nil
 
-        message.save
+      message.save
 
+      followed_user.instances.each do |instance|
+        next unless instance.push_token.present?
 
-        # APNS.host = 'gateway.push.apple.com'
-        # # gateway.sandbox.push.apple.com is default
-        #
-        # APNS.pem  = Rails.root + 'app/pem/crashmob_dev_push.pem'
-        #
-        # # this is the file you just created
-        #
-        # APNS.port = 2195
-
-
-
-        followed_user.instances.each do |instance|
-          next unless instance.push_token.present?
-
-          APNS.send_notification(instance.push_token, :alert => 'Hello iPhone!', :badge => 0, :sound => 'default',
-                                 :other => {:type => message.type,
-                                            :created_at => message.created_at,
-                                            :read_at => message.read_at,
-                                            :follower_id => message.follower_id
-                                 })
-        end
-
-
-        # followed_user.instances.each { |instance| APNS.send_notification(instance.push_token, :alert => 'Hello iPhone!', :badge => 1, :sound => 'default',
-        #                                                                  :other => {:type => message.type,
-        #                                                                             :created_at => message.created_at,
-        #                                                                             :read_at => message.read_at,
-        #                                                                             :follower_id => message.follower_id
-        #                                                                  }) }
-
-
+        instance.push alert:'Hello iPhone!', badge:0, sound:true, other: {type: message.type,
+                                                                          created_at: message.created_at,
+                                                                          read_at: message.read_at,
+                                                                          follower_id: message.follower_id }
+      end
     end
+
 end

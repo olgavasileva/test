@@ -5,7 +5,9 @@ class ApplicationController < ActionController::Base
 
   before_action :find_recent_questions
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
-  before_action :initialize_for_apple_push_service
+
+  before_action :set_csp
+
   # Verify that controller actions are authorized. Optional, but good.
   after_action :verify_authorized,  except: :index, unless: :devise_controller?
   after_action :verify_policy_scoped, only: :index, unless: :devise_controller?
@@ -26,6 +28,11 @@ class ApplicationController < ActionController::Base
   def after_sign_out_path_for resource
     session[:demo] = nil
     super resource
+  end
+
+  def redirect_to(options = {}, response_status = {})
+    ::Rails.logger.error("Redirected by #{caller(1).first rescue "unknown"}")
+    super(options, response_status)
   end
 
   protected
@@ -69,15 +76,8 @@ class ApplicationController < ActionController::Base
       @recent_questions ||= ::Question.order("created_at DESC").limit(2)
     end
 
-    def initialize_for_apple_push_service
-      APNS.host = 'gateway.sandbox.push.apple.com'
-      # gateway.sandbox.push.apple.com is default
-
-      APNS.pem  = Rails.root + 'app/pem/crashmob_dev_push.pem'
-
-      # this is the file you just created
-
-      APNS.port = 2195
-      # this is also the default. Shouldn't ever have to set this, but just in case Apple goes crazy, you can.
+    def set_csp
+      # response.headers['Content-Security-Policy'] = "default-src 'self' *; style-src 'self' * 'unsafe-inline'; script-src 'self' 'unsafe-eval'"
+      # response.headers['Access-Control-Allow-Origin'] = '*'
     end
 end

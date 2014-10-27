@@ -1,44 +1,49 @@
+:sass
 #users-show
-  .top
-    .left
-      .avatar-container
-        = link_to "https://en.gravatar.com", target: :_blank do
-          - gravatar_for @user.email, default: :identicon
-      %h3.name= @user.username
-    .right
-      .stats
-        %p.stat
-          %span.count= @user.questions.count
-          questions
-        %p.stat
-          %span.count= @user.responses.count
-          answers
-        %p.stat
-          %span.count= @user.followers.count
-          followers
-      - if @user != current_user
-        =link_to "Follow", user_path(@user), class: 'btn btn-default'
-    .clearfix
-  %ul.nav.nav-tabs
-    - if @user == current_user
-      %li{class: ('active' if @tab == 'notifications')}
-        = link_to user_path(@user, tab: 'notifications') do
-          %i.icon.fa.fa-star
-          Notifications
-    %li{class: ('active' if @tab == 'questions')}
-      = link_to user_path(@user, tab: 'questions') do
-        %i.icon.fa.fa-comment
-        Questions
-    %li{class: ('active' if @tab == 'communities')}
-      = link_to user_path(@user, tab: 'communities') do
-        %i.icon.fa.fa-ellipsis-h
-        Communities
-    %li{class: ('active' if @tab == 'followers')}
-      = link_to user_path(@user, tab: 'followers') do
-        %i.icon.fa.fa-users
-        Followers
-    %li{class: ('active' if @tab == 'following')}
-      = link_to user_path(@user, tab: 'following') do
-        %i.icon.fa.fa-plus-circle
-        Following
-  = render "users/show/#{@tab}"
+  .container
+    .top
+      .left
+        .avatar-container
+          = link_to "https://en.gravatar.com", target: :_blank do
+            - gravatar_for @user.email, default: :identicon
+        %h3.name= @user.username
+      .right
+        .stats
+          %p.stat
+            %span.count= @user.questions.count
+            questions
+          %p.stat
+            %span.count= @user.responses.count
+            answers
+          %p.stat
+            %span.count= @user.followers.count
+            followers
+        - if @user != current_user
+          - if current_user.following? @user
+            = link_to "Unfollow", unfollow_user_path(@user), class: "btn btn-default"
+          - else
+            = link_to "Follow", follow_user_path(@user), class: 'btn btn-default'
+      .clearfix
+    %ul.nav.nav-tabs
+      - if @user == current_user
+        %li{class: ('active' if @tab == 'notifications')}
+          = link_to user_path(@user, tab: 'notifications') do
+            %i.icon.fa.fa-star
+            Notifications
+      %li{class: ('active' if @tab == 'questions')}
+        = link_to user_path(@user, tab: 'questions') do
+          %i.icon.fa.fa-comment
+          Questions
+      %li{class: ('active' if @tab == 'communities')}
+        = link_to user_path(@user, tab: 'communities') do
+          %i.icon.fa.fa-ellipsis-h
+          Communities
+      %li{class: ('active' if @tab == 'followers')}
+        = link_to user_path(@user, tab: 'followers') do
+          %i.icon.fa.fa-users
+          Followers
+      %li{class: ('active' if @tab == 'following')}
+        = link_to user_path(@user, tab: 'following') do
+          %i.icon.fa.fa-plus-circle
+          Following
+    = render "users/show/#{@tab}"

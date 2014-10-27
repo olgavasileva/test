@@ -15,6 +15,7 @@
 #
 
 #= require_tree ./clean_canvas/theme
+#= require_tree ../../../vendor/assets/javascripts/loop
 
 #
 # Other
@@ -22,7 +23,7 @@
 
 #= require hisrc
 #= require toastr
-
+#= require gritter
 
 #
 # Page files

@@ -27,6 +27,7 @@ ActiveAdmin.register User do
   end
 
   filter :email
+  filter :username
   filter :current_sign_in_at
   filter :sign_in_count
   filter :created_at
@@ -48,6 +49,9 @@ ActiveAdmin.register User do
         u.roles.map{|r|r.name}.join ", "
       end
       rows :current_sign_in_at, :sign_in_count, :created_at
+      row :push_tokens do
+        simple_format u.instances.where("push_token is not NULL").order("updated_at DESC").map{|i| "#{time_ago_in_words i.updated_at} ago: #{i.push_token}"}.join("\n")
+      end
     end
   end
 

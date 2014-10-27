@@ -1,28 +1,25 @@
-%footer#footer
+%footer#footer.section
   .container
-    .row
-      .recent-questions.col-md-4
-        %h2 Recent Questions
-        - @recent_questions.each do |q|
-          .row
-            - modal_id = "footer-modal-#{q.id}"
-            .modal.fade.modal-blur{id:modal_id, role: :dialog, style: "display: none;", tabindex: "-1"}
-              .modal-dialog.modal-sm
-                .modal-content
-            = link_to question_path(q), "data-toggle" => "modal", "data-target" => "##{modal_id}", role: :dialog, "data-id" => q.id, class: :mask, id: :open do
-              .col-md-2.thumb= image_tag q.category.icon.web.url
-              .col-md-10
-                .date= q.created_at.strftime("%a, %d %b")
-                .title= q.title
-                %br
-      .col-md-4
-        %h2 Contact
-        #inquiry= render "inquiries/form"
-      .nav.col-md-4
-        %h2 More
-        = render_navigation context: :footer
-    .row.credits
-      .col-md-12
-        .row.copyright
-          .col-md-12
-            © 2014 Crashmob. All rights reserved.
+    %p.copyright.pull-left &copy; 2014. Statisfy, Inc. All Rights Reserved.
+    %p.copyright.pull-right
+      = link_to "Home", root_path
+      |
+      = link_to "Get the App", 'http://about.statisfy.co/prelaunch/'
+      |
+      = link_to "Sign Up", new_user_registration_path
+      |
+      = link_to "Login", new_user_session_path
+      |
+      = link_to "Help", 'http://about.statisfy.co/webfaq/'
+      |
+      = link_to "Contact Us", 'http://about.statisfy.co/contactus/'
+      |
+      = link_to "Blog", 'http://about.statisfy.co/blog'
+      |
+      = link_to "For Business", 'http://business.statisfy.co/'
+      |
+      = link_to "Terms and Privacy", 'http://about.statisfy.co/tos/'
+      |
+      = link_to "Campus Ambassadors", 'http://about.statisfy.co/campus-ambassador-program/'
+      |
+      = link_to "For Communities", 'http://about.statisfy.co/for-communities/'

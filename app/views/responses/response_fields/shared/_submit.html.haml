@@ -5,16 +5,10 @@
       border-color: transparent
       background-color: transparent
 
-
-.row.submit-skip-edit-continue-button-set
-  .form-group.clearfix
-  .form-group.clearfix
-  - if response.question.preview?
-    .col-xs-3.clearfix
-      = link_to "Edit", [:edit, response.question], class: %w{btn btn-primary btn-lg col-xs-12 negative}
-    .col-xs-3.col-xs-push-6.clearfix
-      = link_to "Continue", [:target, response.question], class: %w{btn btn-primary col-xs-12 btn-lg negative}
-  - else
+- if !response.question.preview?
+  .row.submit-skip-edit-continue-button-set
+    .form-group.clearfix
+    .form-group.clearfix
     .col-xs-3.clearfix
       = link_to "Skip", new_question_skipped_item_path(response.question), class: %w{ btn btn-primary negative btn-lg col-xs-12}
     .col-xs-3.col-xs-push-6.clearfix

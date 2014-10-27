@@ -1,0 +1,45 @@
+.counter-for{data:{target: "#{selector}"}}
+
+:javascript
+  if(!window.tcHanlers){
+    window.tcHanlers={};
+  }
+
+  if(!window.tcCharCounters){
+    window.tcCharCounters={}
+  }
+
+  $(function(){
+    $('.counter-for').each(function(idx,node){
+      var watcher=node;
+      var target=$($(node).data('target'));
+      target.addClass('being-counted')
+      setTimeout(function(){
+        var timestamp=Date.now();
+        target.data('watcher',timestamp);
+        var max=target.attr('maxlength')||250;
+        target.attr('maxlength',max)
+        window.tcCharCounters[timestamp]={
+          max:(max),
+          node:watcher
+        };
+        window.tcCharCounters[timestamp].left=window.tcCharCounters[timestamp].max
+        $(watcher).text(max);
+      },10)
+    });
+
+    $('body').on('keydown','.being-counted',watcher);
+    $('body').on('keyup','.being-counted',watcher);
+    $('body').on('mousedown','.being-counted',watcher);
+    $('body').on('mouseup','.being-counted',watcher);
+
+
+    function watcher (event){
+      var watcher=window.tcCharCounters[$(this).data('watcher')];
+      var observed=$(this).val().length;
+      watcher.left=watcher.max-observed;
+      watcher.left=watcher.left<0?0:watcher.left;
+      $(watcher.node).text(watcher.left)
+    }
+
+  })

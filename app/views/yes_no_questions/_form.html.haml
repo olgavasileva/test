@@ -13,13 +13,17 @@
 
 .row.question-builder#content_constraint
   .col-xs-12.col-sm-8.col-sm-push-2
-    .yesno.panel.panel-default
-      .panel-heading
-        .panel-title
-          =link_to question_types_path do
-            %span.glyphicon.glyphicon-chevron-left
+    = simple_form_for @question, :html=>{class:"yesno panel panel-default"} do |f|
+      .panel-heading.col-xs-12
+        .panel-title.row
+          .col-xs-3
+            =link_to question_types_path do
+              %span.glyphicon.glyphicon-chevron-left
+          .col-xs-6.col-xs-push-3
+            =f.button :submit, "Preview", class: %w(btn-primary negative transparent no-border btn-lg)
+
       .panel-body.imagechooser
-        = simple_form_for @question do |f|
+        %div
           =f.input :type, as: :hidden
           =f.input :rotate, as: :hidden
           .hidden
@@ -28,32 +32,25 @@
           .row
             .col-xs-12.form-group
               .question
-                .over_image_title_container.title=f.input :title, label: false, input_html: { class: "appearing-question-title"},placeholder: "Ask Your Question Here"
+                .over_image_title_container.title
+                  =f.input :title, label: false, input_html: { class: "appearing-question-title"},placeholder: "Ask Your Question Here"
+                  =render partial:'/widgets/char_counter',locals:{:selector => ".over_image_title_container .appearing-question-title"}
+
                 .bgimage= responsive_image_tag @question.web_image_url, class: "img-responsive"
                 .col-xs-12
                   =render partial:'/widgets/image_control',locals:{f: f,id: 'background_selector',base_class: 'revert',type: 'question'}
             .col-xs-12
               =f.simple_fields_for :choices do |c|
-                .col-xs-12.form-group.answer-option
+                .col-xs-12.form-group.answer-option.textchoice
                   %div.row
-                    %a.btn.btn-primary.col-xs-12.option-text
+                    %a.btn.btn-primary.col-xs-12.option-text.answer-option
                       .row
                         .col-xs-2.not_visible
                           .bgimage
                             = responsive_image_tag @question.web_image_url, class: "img-responsive scale-buttons"
-                      -#=text_area_tag(:title, label: false, placeholder:"Type a response",class:"selectable-choice-text col-sm-12")
-                      =c.input :title, label: false, wrapper_html: { class: "question_choice_title"}, placeholder: "Type a response"
+                      =c.input :title, label: false, wrapper_html: { class: "question_choice_title  remove-default-text"}
           .row
             =render partial:'/widgets/tc_dropdown', locals:{attrs:{:value=>@question.category,:key=>'name',:options=>Category.all,:placeholder=>"Select a Category",:classes=>"col-xs-12 form-group", :name=>"yes_no_question[category_id]",:value_field=>"id",:value=>@question[:category_id]}}
-          .form-group.clearfix
-          .form-group.clearfix
-          .form-group.clearfix
-          .row
-            .col-xs-3
-              =f.button :submit, "Preview", class: %w(btn-primary negative transparent no-border btn-lg)
-            .col-xs-4.col-xs-push-5.col-sm-3.col-sm-push-6
-              =f.button :submit, "Continue", class: %w(btn-primary negative transparent no-border btn-lg)
-
 :javascript
   $(function(){
 

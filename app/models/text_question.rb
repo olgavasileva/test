@@ -2,8 +2,7 @@ class TextQuestion < Question
   TEXT_TYPES ||= %w(email phone freeform)
 
   has_many :responses, class_name:"TextResponse", foreign_key: :question_id
-  has_many :response_matchers, class_name:"TextResponseMatcher", foreign_key: :question_id
-  belongs_to :background_image
+  has_many :response_matchers, class_name:"TextResponseMatcher", foreign_key: :question_id, dependent: :destroy
 
   default text_type: "freeform"
   default min_characters: 1
@@ -15,8 +14,4 @@ class TextQuestion < Question
   validates :background_image, presence: true
 
   default background_image_id: lambda{ |q| CannedQuestionImage.pluck(:id).sample }
-
-  delegate :web_image_url, to: :background_image
-  delegate :device_image_url, to: :background_image
-  delegate :retina_device_image_url, to: :background_image
 end

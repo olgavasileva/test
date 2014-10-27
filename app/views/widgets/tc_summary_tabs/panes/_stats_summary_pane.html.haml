@@ -13,49 +13,49 @@
           text-align: right
 
 
-.stats-list.col-xs-12.col-sm-push-1.col-sm-10.col-md-push-2.col-md-8.col-lg-push-3.col-lg-6
+.stats-list.col-xs-12
   .row
-    .col-xs-12.col-sm-7
+    .col-xs-10.col-xs-push-1.col-sm-7
       Responses
-    .col-xs-12.col-sm-5
+    .col-xs-11.col-sm-5
       =@question.responses.count
   .row
-    .col-xs-12.col-sm-7
+    .col-xs-10.col-xs-push-1.col-sm-7
       Views
-    .col-xs-12.col-sm-5
+    .col-xs-11.col-sm-5
       0
   .row
-    .col-xs-12.col-sm-7
+    .col-xs-10.col-xs-push-1.col-sm-7
       Comments
-    .col-xs-12.col-sm-5
+    .col-xs-11.col-sm-5
       =@question.comment_count
   .row
-    .col-xs-12.col-sm-7
+    .col-xs-10.col-xs-push-1.col-sm-7
       Shares
-    .col-xs-12.col-sm-5
+    .col-xs-11.col-sm-5
       =@question.share_count
   .row
-    .col-xs-12.col-sm-7
+    .col-xs-10.col-xs-push-1.col-sm-7
       Skip
-    .col-xs-12.col-sm-5
+    .col-xs-11.col-sm-5
       =@question.skip_count
   .row
-    .col-xs-12.col-sm-7
+    .col-xs-10.col-xs-push-1.col-sm-7
       Published
-    .col-xs-12.col-sm-5
+    .col-xs-11.col-sm-5
       =time_ago_in_words @question.updated_at
   .row
-    .col-xs-12.col-sm-7
+    .col-xs-10.col-xs-push-1.col-sm-7
       Sponsor
-    .col-xs-12.col-sm-5
+    .col-xs-11.col-sm-5
       None
   .row
-    .col-xs-12.col-sm-7
+    .col-xs-10.col-xs-push-1.col-sm-7
       Created by
-    .col-xs-12.col-sm-5
+    .col-xs-11.col-sm-5
       =User.first.name
   .row
-    .col-xs-12.col-sm-7
+    .col-xs-10.col-xs-push-1.col-sm-7
       Access
-    .col-xs-12.col-sm-5
+    .col-xs-11.col-sm-5
       =@anonymous ? "Anonymous" : "Public"

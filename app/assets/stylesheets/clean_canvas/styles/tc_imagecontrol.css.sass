@@ -1,7 +1,9 @@
 .image_control
   font-size: 3rem
+  line-height: 1rem
   a
     text-align: center
+    color:  white!important
   .question-image-uploader
     position: relative
     overflow: hidden
@@ -12,8 +14,21 @@
       position: absolute
       bottom: 101%
       margin-bottom: 10px
+    span.glyphicon.glyphicon-refresh
+      display: none
+    &.uploading
+      span.glyphicon.glyphicon-refresh
+        display: block
+        -animation: spin .7s infinite linear
+        -webkit-animation: spin2 .7s infinite linear
+      span.glyphicon.glyphicon-camera
+        display: none
+
+  button
+    color: white
   .image-nav-control
     text-align: left
+    text-shadow: 0 1px 0.8px $primary_background_color
     &:last-of-type
       text-align: right
       span
@@ -30,9 +45,28 @@
     .question-image-uploader
       color: white !important
 
+button.transparent
+  background: none !important
+  border: none !important
+  box-shadow: none !important
+  outline: none !important
+  text-shadow: 0 1px 0.8px white
+
 .btn-primary
   .image_control
     .image-nav-control,
     .question-image-uploader
       color: white !important
 
+@-webkit-keyframes spin2
+  from
+    -webkit-transform: rotate(0deg)
+  to
+    -webkit-transform: rotate(360deg)
+
+
+@keyframes spin
+  from
+    transform: scale(1) rotate(0deg)
+  to
+    transform: scale(1) rotate(360deg)

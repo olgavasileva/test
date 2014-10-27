@@ -33,6 +33,23 @@ var psUI = function() {
             return false;
         });
 
+        $("form#new_studio_response").submit(function(e) {
+            // Move the studio info into the studio field
+            var ret = new $.Deferred();
+            ret.done(function(scene) {
+                if (JSON.parse(scene).objects.length == 0) {
+                    alert("Please create a scene.");
+                    e.preventDefault();
+                } else {
+                    $("#studio_response_scene_attributes_canvas_json").val(scene);
+                    // console.log(psCanvas().getContext().toDataURL("image/png"));
+                }
+            });
+
+            $(document).trigger("ps.canvas.serializer.serialize", [ret]);
+            return true;
+        });
+
         $("#ps-enter-contest").click(function() {
             $("#enter-contest-dialog").dialog("open");
             return false;
@@ -77,6 +94,14 @@ var psUI = function() {
         $("#ps-help").click(showHelp);
 
         $("#ps-clear-all").click(clearAll);
+
+        $('#preview_image').click(function(){
+          var newWindow=window.open();
+          var html='<img src="'+$('#ps-canvas')[0].toDataURL()+'">';
+          newWindow.document.write(html);
+            /*this.href=;
+            this.download=('Scene_'+Date.now());*/
+        })
 
         $(document).on('click', '.sticker-pack-wrapper', function(e) {
             e.preventDefault();
@@ -331,6 +356,83 @@ var psUI = function() {
     }
 
     function renderPackDetails(pack) {
+      pack.stickers.forEach(function(sticker) {
+        if (!sticker.img_2_url) {
+          var image = new Image();
+          image.crossOrigin = "Anonymous";
+          image.onload = function () {
+            $('<canvas>').attr({
+              id:('canvas_' + sticker.id)
+            }).css({
+              width: image.width + 'px',
+              height: image.height + 'px'
+            }).appendTo('body');
+            var canvasObj=$('#canvas_'+sticker.id);
+            canvasObj.attr('width',this.width);
+            canvasObj.attr('height',this.height);
+            var canvasContext=canvasObj[0].getContext('2d');
+            canvasContext.drawImage(this,0,0);
+            sticker.img_2_url=canvasObj[0].toDataURL();
+            sticker.imageObject=this;
+            var imgTag = document.getElementById('sticker_' + sticker.id);
+            imgTag.src = sticker.img_2_url;
+            canvasObj.remove();
+          }
+
+          setTimeout(function () {
+            image.src = sticker.image_url;
+          }, 1000);
+        }
+        else{
+          setTimeout(function () {
+            var imgTag = document.getElementById('sticker_' + sticker.id);
+            imgTag.src = sticker.img_2_url;
+
+          }, 1000);
+        }
+      });
+
+      pack.backgrounds.forEach(function(sticker) {
+        if (!sticker.img_2_url) {
+          var image = new Image();
+          image.crossOrigin = "Anonymous";
+          image.onload = function () {
+            $('<canvas>').attr({
+              id:('canvas_' + sticker.id)
+            }).css({
+              width: image.width + 'px',
+              height: image.height + 'px'
+            }).appendTo('body');
+            var canvasObj=$('#canvas_'+sticker.id);
+            canvasObj.attr('width',this.width);
+            canvasObj.attr('height',this.height);
+            var canvasContext=canvasObj[0].getContext('2d');
+            canvasContext.drawImage(this,0,0);
+            sticker.img_2_url=canvasObj[0].toDataURL();
+
+            var imgTag = document.getElementById('sticker_' + sticker.id);
+            imgTag.src = sticker.img_2_url;
+            sticker.imageObject=imgTag;
+            canvasObj.remove();
+          }
+
+          setTimeout(function () {
+            image.src = sticker.image_url;
+          }, 1000);
+        }
+        else{
+          setTimeout(function () {
+            var imgTag = document.getElementById('sticker_' + sticker.id);
+            imgTag.src = sticker.img_2_url;
+
+          }, 1000);
+        }
+      });
+
+
+
+
+
         $(document).trigger('ui.createStickerItems.before');
         var source = $('#sticker-pack-detail').html();
         var template = Handlebars.compile(source);
@@ -404,7 +506,7 @@ var psUI = function() {
                 //        console.log("top " + ui.position.top);
                 //        console.log("offset " + ui.offset.top);
                 ui.position.top = ui.offset.top - $("#studio-wrapper").offset().top;
-                ui.position.left = ui.offset.left - $("#pack-drawer").width();
+                ui.position.left = ui.offset.left - $("#pack-drawer").offset().left;
             }
         }).on('click', function() {
             var data = $(this).find('img').data();

@@ -1,11 +1,12 @@
 .tab-content.followers-tab-content
-  .center
-    = link_to "Organize Followers", 'javascript:void(0)', class: 'btn btn-default'
-    = link_to "Invite Friends", 'javascript:void(0)', class: 'btn btn-default'
+  - if @user == current_user
+    .center
+      = link_to "Organize Followers", 'javascript:void(0)', class: 'btn btn-default', data: { toggle: 'modal', target: '#organize-followers' }
+      = link_to "Invite Friends", 'javascript:void(0)', class: 'btn btn-default'
   %ul.items
     - @followers.each do |follower|
       %li
-        = gravatar_for follower.email, default: :identicon, size: 30
+        = gravatar_for follower.email, default: :identicon, size: 20
         = link_to follower.name, follower
         - if @user == current_user
           .groups
@@ -33,3 +34,36 @@
     = hidden_field_tag :user_id
     = hidden_field_tag :group_id
     = submit_tag
+
+#organize-followers.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{data: { dismiss: 'modal' } } &times;
+        %h4.modal-title Organize Followers
+      .modal-body
+        .row{ style: 'font-size: 1.2em' }
+          - @user.groups.each do |group|
+            .col-xs-6
+              %span.label.label-warning
+                = group.name
+            .col-xs-3
+              .col-xs-12
+                = link_to "javascript:toggleEditGroup(#{group.id})" do
+                  .glyphicon.glyphicon-pencil
+              .col-xs-12
+                = form_for group, html: { style: 'display: none' } do |f|
+                  = f.text_field :name, class: 'form-control'
+            .col-xs-3
+              = link_to group, method: :delete do
+                .glyphicon.glyphicon-remove
+        %br
+        .row
+          = form_for Group.new do |f|
+            .col-xs-7
+              = f.text_field :name, placeholder: "New group", class: 'form-control'
+            .col-xs-5
+              = f.submit "Add Group!", class: 'btn btn-primary'
+      .modal-footer
+        %button.btn.btn-default{ data: { dismiss: 'modal' } } Close
+        %button.btn.btn-primary{ data: { dismiss: 'modal' } } Done

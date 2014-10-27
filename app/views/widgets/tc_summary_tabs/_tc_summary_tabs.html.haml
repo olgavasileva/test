@@ -1,45 +1,15 @@
-:sass
-  .stats-tabs.nav.nav-tabs
-    border-color: #357ebd
-    background-color: #357ebd
-    border-width: 1px
-    border-style: ridge
-    padding-right: 0
-    padding-bottom: 1px
-    li
-      padding: 0
-      a
-        margin: 0
-        border: none !important
-        text-align: center
-        border-radius: 0
-        .glyphicon
-          font-size: 2em
-        &:hover
-          background-color: #357ebd
-      &.active
-        a
-          color: #357ebd
-          &:hover
-            background-color: white
-            cursor: default
-
-  .tab-content.stats-tabs-content
-    .tab-pane
-      min-height: 337px
-
 %ul.col-xs-12.nav.nav-tabs.stats-tabs{:role=>"tablist"}
-  %li.active.col-xs-4
+  %li.active.col-xs-6
     %a.btn-primary.negative{:href=>"#comments_pane", :role=>"tab", :data=>{:toggle=>"tab"}}
       %span.glyphicon.glyphicon-comment
       %br
       Comments
-  %li.col-xs-4
+  -#%li.col-xs-4
     %a.btn-primary.negative{:href=>"#filter_pane", :role=>"tab", :data=>{:toggle=>"tab"}}
       %span.glyphicon.glyphicon-filter
       %br
       Filter
-  %li.col-xs-4
+  %li.col-xs-6
     %a.btn-primary.negative{:href=>"#stats_pane", :role=>"tab", :data=>{:toggle=>"tab"}}
       %span.glyphicon.glyphicon-stats
       %br
@@ -48,7 +18,7 @@
 .tab-content.stats-tabs-content.row
   .tab-pane.col-xs-12.active#comments_pane
     =render 'widgets/tc_summary_tabs/panes/comments_summary_pane',question:@question
-  .tab-pane.col-xs-12#filter_pane
+  -#.tab-pane.col-xs-12#filter_pane
     =render 'widgets/tc_summary_tabs/panes/filters_summary_pane',locals:{user:current_user}
   .tab-pane.col-xs-12#stats_pane
     =render 'widgets/tc_summary_tabs/panes/stats_summary_pane',locals:{user:current_user}

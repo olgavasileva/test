@@ -1,8 +1,7 @@
 .answer.answer-option.nested-fields.text-created-choice.col-xs-12.btn.btn-primary
   .row
     %a.option-text
-      =f.input :title, label: false, wrapper_html: { class: "question_choice_title"}, placeholder: "Type a response"
-      -#=link_to_remove_association '<i class="glyphicon glyphicon-remove></i>"', f
+      =f.input :title, label: false, wrapper_html: { class: "question_choice_title remove-default-text"}
   %a.remove_fields.dynamic{:href=>"#"}
     %i.glyphicon.glyphicon-remove
 

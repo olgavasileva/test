@@ -1,7 +1,5 @@
-
+@import "variables.css.sass"
 .question-builder
-  .panel:first-of-type
-    box-shadow: 0 0 2000px white
   .question
     overflow: hidden
     position: relative
@@ -20,7 +18,6 @@
         text-shadow: 1px 1px 0px white
     .over_image_title_container
       overflow: visible
-      .title
       background-color: $cm_smoke
       padding: 10px 15px 10px 15px
       width: 100%
@@ -29,6 +26,18 @@
       position: absolute
       top: 50%
       margin-top: -28px
+      .image_control
+        color: $primary_color
+
+  textarea
+    &~.help-block
+      margin: 0 !important
+      position: absolute !important
+      font-size: 1.6rem !important
+      color: white !important
+      top: -13px !important
+      right: 14px !important
+      text-shadow: 0 1px 1px red !important
 
 //.answer.choice
   background-color: $cm_blue
@@ -39,7 +48,8 @@
     height: 100px
 
   .answer-option.btn
-    margin-bottom: 20px
+    margin-top: 5px
+
 
 .textchoice,
 .imagechoice,
@@ -75,7 +85,7 @@
       bottom: 0
       font-size: 3rem
       &.add-option
-        background-color: orange
+        background-color: $energized
         color: white
         text-align: center
         height: 100%
@@ -142,4 +152,8 @@
       .image_control
         bottom: 100%
 
+.counter-for
+  text-align: right
+  font-size: 1.2rem
+  color: white
 

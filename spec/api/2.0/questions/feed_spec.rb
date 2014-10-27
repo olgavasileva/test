@@ -161,6 +161,7 @@ describe :feed do
                 expect(q['response_count']).to eq 0
                 expect(q['creator_name']).to eq multiple_choice_question.user.username
                 expect(q['creator_id']).to eq multiple_choice_question.user.id
+                expect(q['image_url']).not_to be_nil
 
 
                 choices = q['choices']
@@ -199,6 +200,7 @@ describe :feed do
                 expect(q['category']['name']).to eq "Category 2"
                 expect(q['comment_count']).to eq 0
                 expect(q['response_count']).to eq 0
+                expect(q['image_url']).not_to be_nil
 
 
                 choices = q['choices']
@@ -230,6 +232,7 @@ describe :feed do
                 expect(q['category']['name']).to eq "Category 1"
                 expect(q['comment_count']).to eq 0
                 expect(q['response_count']).to eq 0
+                expect(q['image_url']).not_to be_nil
 
 
                 choices = q['choices']
@@ -292,7 +295,10 @@ describe :feed do
             end
 
             context "With a comment" do
-              let(:before_api_call) {FactoryGirl.create :text_choice_response, :with_comment, question:text_choice_question, choice:text_choice1}
+              let(:before_api_call) {
+                response = FactoryGirl.create :text_choice_response, question:text_choice_question, choice:text_choice1
+                response.create_comment user:response.user, body:"Some comment"
+              }
 
               it {expect(JSON.parse(response.body).count).to eq all_questions.count}
               it {expect(JSON.parse(response.body)[0]['question']['id']).to eq text_choice_question.id}

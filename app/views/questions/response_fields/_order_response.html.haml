@@ -14,15 +14,15 @@
     li
       .panel
         margin-bottom: 0
-%div.response
-  .col-xs-12.col-sm-10.col-sm-push-1.col.col-md-8.col-md-push-2
+%div
+  .col-xs-12
     .row.order-choices
       .col-xs-12.ignore-float
         = render "questions/response_fields/shared/title", question:question
-      %ul#order_choices.list-unstyled.col-xs-12
+      %ul#ordered_choices.list-unstyled.col-xs-12
         -question.choices.all.each do |c|
           %li
             .panel.panel-default.handle
-              .title=c.title
+              .floating-question-title.col-sm-12=c.title
               = responsive_image_tag(c.web_image_url, class: "img-responsive")
     = render "questions/response_fields/shared/sharing", question:question

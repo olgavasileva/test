@@ -15,7 +15,7 @@ describe :answered do
 
   shared_examples :correct_fields do
     it "responds with correct data fields" do
-      keys = %w[id title]
+      keys = %w[id title responded_at]
 
       response_body.each do |data|
         expect(data.keys).to match_array keys
@@ -68,6 +68,14 @@ describe :answered do
         expect(response_body.count).to eq per_page
       end
     end
+  end
+
+  context "with reverse" do
+    let(:params) { common_params.merge(reverse: true) }
+
+    before { request.call }
+
+    include_examples :correct_fields
   end
 
 end

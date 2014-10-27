@@ -1,4 +1,6 @@
 class BackgroundImagesController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: :create
+
   def create
     model = controller_name.classify.constantize
     object = model.new(image_params)

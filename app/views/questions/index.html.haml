@@ -1,40 +1,16 @@
 :sass
-  .almost-8
+  a.almost-8
     background-color: #cecece
     width: 100%
     margin: 0px
     padding: 17px
     font-size: 18px
     color: #fff
-  .icon2
-    position: absolute
-    bottom: 20px
-    left: 33%
     text-align: center
-    font-size: 12px
-    color: #fff
-    font-weight: bold
-
-  .icon3
-    position: absolute
-    bottom: 20px
-    left: 53%
-    text-align: center
-    font-size: 12px
-    color: #fff
-    font-weight: bold
-  .icon4
-    position: absolute
-    bottom: 20px
-    left: 85%
-    text-align: center
-    font-size: 26px
-    color: #fff
-    font-weight: bold
-
+    color: white
+    display: block
   hr
     margin: 3px
-
 
 #portfolio
   .container
@@ -43,7 +19,7 @@
         %h2.col-sm-12.text-center
           Please check back later.
       - @questions.each do |question|
-        .col-md-4.col-sm-6
+        .col-md-3.col-sm-4.col-xs-12
           .row
             =link_to new_question_response_path(question), class: :thumbnail do
               = responsive_image_tag question.web_image_url
@@ -61,12 +37,11 @@
                 Commented
                 %hr
                 %small (#{@all_comments})
-              .icon4
-                %small ....
-    .row
-      .col-md-2
-      .col-sm-8
-        %button.almost-8 Show More
     .row
       .col-sm-12.text-center
         = will_paginate @questions
+
+    -#.row
+    -#  .col-md-2
+    -#  .col-sm-8
+    -#    = link_to_next_page @questions, 'Show More', class:%w(almost-8)

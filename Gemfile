@@ -43,6 +43,7 @@ gem 'carrierwave'       # Image uploading and access
 gem 'fog'               # Cloud services intergration into carrierwave (e.g. s3)
 gem 'rmagick',          # Image manipulation
   require: false
+gem 'rdiscount'         # Markdown conversion (for contest header)
 
 gem 'activeadmin-sortable'
 gem 'acts_as_list'
@@ -52,6 +53,13 @@ gem 'gravatar_for'
 
 gem 'font-awesome-rails'  # Used by pixel-admin - The Font-Awesome web fonts and stylesheets as a Rails engine for use with the asset pipeline
 gem "animate-rails"       # Used by pixel-admin
+
+
+
+gem 'twilio-ruby'       # Used by backend for sending SMS messages to invited users
+
+gem 'activerecord_any_of' # where.any_of
+
 
 gem 'grape',            # API DSL
   github: 'intridea/grape'
@@ -70,15 +78,17 @@ gem 'wirble'
 
 gem 'geocoder'          # Geolocation
 
+gem 'randumb'           # Query results random ordering
+
 gem 'acts-as-taggable-on'           # A tagging plugin for Rails applications that allows for custom tagging along dynamic contexts
 gem 'roo'                           # Roo provides an interface to Open Office, Excel, and Google Spreadsheets
 gem 'rubyzip'                       # rubyzip is a ruby library for reading and writing zip files
 gem 'creek', '~> 1.0.3'             # Configurable streaming aggregator
 gem 'rpush'
-gem 'apns'
 gem 'browser'                       # Browser detection
 
 # pixel admin
+gem 'gritter'
 gem 'morrisjs-rails'                # js: good-looking charts shouldn't be difficult
 gem 'raphael-rails'                 # js: Cross-browser vector graphics the easy way (required by morrisjs-rails)
 gem 'jquery-slimscroll-rails'       # js: transforms any div into a scrollable area with a nice scrollbar
@@ -97,12 +107,15 @@ group :development do
 
   gem 'better_errors'               # More useful error pages in development
   gem 'binding_of_caller'           # Enables advanced features of better_errors
+
+  gem 'xray-rails'                  # Reveal your UI's bones cmd-shift-x in browser
 end
 
 group :development, :test do
   gem 'pry'
-  gem 'pry-debugger'                # Allow stepping and breakpoints in pry console
+  gem 'pry-byebug'                  # Allow stepping and breakpoints in pry console
   gem 'pry-rails'                   # Use pry in the console
+  gem 'rb-readline'                 # Readline in binding.pry
   gem 'spring'
 end
 

@@ -1,0 +1,1 @@
+$.gritter.add title:"Notice", text:'<%=j @notice %>'

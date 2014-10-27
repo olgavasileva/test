@@ -22,14 +22,14 @@
     /[if lt IE 9]
       <script src="assets/javascripts/ie.min.js"></script>
 
-  %body.theme-default
+  %body.theme-default.pixeladmin
 
     #main-wrapper
       = render 'layouts/shared/header'
       = render 'layouts/pixel_admin/side_menu'
       #content-wrapper
         - flash.each do |key, value|
-          = content_tag(:div, value, class: "alert alert-#{key}")
+          = js add_gritter(value, image: false, title: key.titleize, sticky: false, time: 2000)
         = yield
       #main-menu-bg
 

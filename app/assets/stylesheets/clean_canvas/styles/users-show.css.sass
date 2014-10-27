@@ -1,4 +1,14 @@
 #users-show
+  .btn-default
+    background-color: #ffae3f
+    border-color: white
+    &:hover
+      background-color: #ffa325
+  .container
+    @include lite-bg
+    max-width: 550px
+    padding: 20px 0
+    border-radius: 5px
   overflow: visible !important
   .center
     text-align: center
@@ -13,7 +23,7 @@
         width: 75px
         height: 75px
         border-radius: 38px
-        border: 1px solid #252528
+        border: 1px solid white
         overflow: hidden
       .name
         margin-top: 8px
@@ -38,17 +48,39 @@
           font-size: 22px
   .tab-content
     margin: 12px
+    ul.items
+      li
+        a
+          color: white
+    &.followers-tab-content
+      ul.dropdown-menu
+        li
+          a
+            color: #262626
     &.following-tab-content
       ul.items
         li
           img
             margin-right: 4px
+    &.communities-tab-content
+      ul.communities-list
+        list-style-type: none
+        padding-left: 0
+        li
+          .info
+            font-size: 13px
+          .controls
+            font-size: 36px
+            a
+              &:first-child
+                margin-right: 4px
+          .alt-controls
     ul.items
       margin-top: 10px
       list-style-type: none
       padding-left: 0
       li
-        border-bottom: 1px solid #252528
+        border-bottom: 1px solid white
         padding-bottom: 10px
         margin-bottom: 10px
         &:last-child
@@ -58,3 +90,5 @@
   .dropdown-menu.right-menu
     right: 0
     left: auto
+  .badge-warning
+    background: #f0ad4e

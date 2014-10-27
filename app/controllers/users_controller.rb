@@ -1,4 +1,8 @@
+require 'will_paginate/array'
+
 class UsersController < ApplicationController
+  after_action :read_all_messages, only: :show, if: Proc.new { @tab == 'notifications' }
+
   def profile
     @user = current_user
     authorize @user
@@ -13,7 +17,7 @@ class UsersController < ApplicationController
 
     case @tab
     when 'notifications'
-      authorize @user, :notifications?
+      authorize @user, :show_notifications?
 
       @notifications = @user.messages.page(params[:page])
     when 'questions'
@@ -26,14 +30,34 @@ class UsersController < ApplicationController
         @questions = @user.answered_questions.page(params[:page])
       when 'commented'
         # todo: optimize
-        question_ids = @user.responses.with_comment.map(&:question_id)
+        question_ids = @user.comments.map{|c| c.question.id}
         @questions = Question.where(id: question_ids).page(params[:page])
+      end
+    when 'communities'
+      default_subtab = @user == current_user ? 'join' : 'my'
+      @subtab = params.fetch(:subtab, default_subtab)
+
+      case @subtab
+      when 'join'
+        authorize @user, :show_join_communities?
+
+        @communities = Community.search(name_cont: params[:search_text]).result
+      when 'create'
+        authorize @user, :show_create_community?
+      when 'my'
+        @member_communities = @user.membership_communities
+        @communities = @user.communities
       end
     when 'followers'
       @followers = @user.followers.page(params[:page])
     when 'following'
-      leader_ids = @user.leaders.search(name_cont: params[:search_text]).result.map(&:id)
-      @leaders = @user.leaders.where(id: leader_ids).page(params[:page])
+      # todo: optimize
+      leaders = @user.leaders.search(name_cont: params[:search_text]).result
+      @users = leaders
+      if @user == current_user
+        unleaders = User.where.not(id: leaders + [current_user]).search(name_cont: params[:search_text]).result
+        @users += unleaders
+      end
     end
   end
 
@@ -42,6 +66,9 @@ class UsersController < ApplicationController
     authorize @user
 
     current_user.follow! @user
+
+    flash[:notice] = "Followed #{@user.name}."
+    redirect_to :back
   end
 
   def unfollow
@@ -82,7 +109,7 @@ class UsersController < ApplicationController
     completes = @user.questions.map{|q| q.response_count }.sum
     skips = @user.questions.map{|q| q.skip_count }.sum
     comments = @user.questions.map{|q| q.comment_count }.sum
-    shares = @user.questions.map{|q| q.share_count }.sum
+    shares = @user.questions.map{|q| q.share_count.to_i }.sum
 
     @campaign_data = [
       { label: "Reach", value: reach },
@@ -126,7 +153,7 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     authorize @user
 
-    @recent_responses_with_comments = @user.responses_to_questions_with_comments.order("responses.created_at DESC").kpage(params[:page]).per(5)
+    @recent_comments = @user.comments_on_questions_and_responses.order("comments.created_at DESC").kpage(params[:page]).per(5)
   end
 
   def campaigns
@@ -138,13 +165,41 @@ class UsersController < ApplicationController
     render layout: "pixel_admin"
   end
 
+  def new_campaign
+    @user = User.find params[:id]
+    authorize @user
+
+    # When we're creating a question from the enterprise dashboard, keep track so we can target properly
+    session[:use_enterprise_targeting] = true
+
+    redirect_to [:question_types]
+  end
+
   def analytics
     @user = User.find params[:id]
     authorize @user
 
-    @question = Question.find params[:question_id] if params[:question_id]
+    @question = @user.questions.find params[:question_id] if params[:question_id]
 
     render layout: "pixel_admin"
+  end
+
+  def question_analytics
+    @user = User.find params[:id]
+    authorize @user
+
+    @question = @user.questions.find params[:question_id] if params[:question_id]
+    render layout: false
+  end
+
+  def question_search
+    @user = User.find params[:id]
+    authorize @user
+
+    search_term = params[:term]
+    questions = @user.questions.where("title like ?", "%#{search_term}%").select([:id, :title])
+    response = questions.map{|q| {id:q.id, title:q.title, load_url:view_context.question_analytics_user_url(@user, question_id:q)}}
+    render json:response
   end
 
   def account
@@ -154,4 +209,27 @@ class UsersController < ApplicationController
     render layout: "pixel_admin"
   end
 
+  def update
+    @user = User.find params[:id]
+    authorize @user
+
+    if @user.update_with_password user_params
+      # Sign in the user by passing validation in case their password changed
+      sign_in @user, bypass: true
+      flash[:notice] = "Account Settings Changed"
+      redirect_to [:account, @user]
+    else
+      render "account", layout: "pixel_admin"
+    end
+  end
+
+  private
+
+    def read_all_messages
+      @user.read_all_messages
+    end
+
+    def user_params
+      params.required(:user).permit(:company_name, :email, :password, :password_confirmation, :current_password)
+    end
 end

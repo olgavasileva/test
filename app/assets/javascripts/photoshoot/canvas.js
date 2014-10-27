@@ -107,10 +107,19 @@ var psCanvas = function() {
      *
      */
     function placeBackground(data) {
-        canvas.setBackgroundImage(data.src, function() {
-            canvas.renderAll();
-            $(document).trigger("ps.canvas.undoredo.addToHistory");
-        });
+        var d=psUtils().getStickerById(data.id);
+
+      var fImage=new fabric.Image(d.imageObject, {
+        originX: 'left',
+        originY: 'top',
+        left: 0,
+        top: 0
+      });
+      canvas.setBackgroundImage(d.imageObject, function() {
+          canvas.renderAll();
+          $(document).trigger("ps.canvas.undoredo.addToHistory");
+      });
+
     }
 
     /**
@@ -120,31 +129,29 @@ var psCanvas = function() {
         var sticker = psUtils().getStickerById(data.id);
         var scaled = this.scaleProportionally(sticker);
 
-        fabric.Image.fromURL(data.src, function(oImg) {
-            oImg.set("psOrigWidth", data.width);
-            oImg.set("psOrigHeight", data.height);
-            oImg.set("psType", data.type);
-            oImg.set("psItemId", data.id);
-            oImg.set("width", scaled.width);
-            oImg.set("height", scaled.height);
-            oImg.set("left", x + Math.round(scaled.width / 2));
-            oImg.set("top", y + Math.round(scaled.height / 2));
+        var oImg=new fabric.Image(sticker.imageObject);
+        oImg.set("psOrigWidth", data.width);
+        oImg.set("psOrigHeight", data.height);
+        oImg.set("psType", data.type);
+        oImg.set("psItemId", data.id);
+        oImg.set("width", scaled.width);
+        oImg.set("height", scaled.height);
+        oImg.set("left", x + Math.round(scaled.width / 2));
+        oImg.set("top", y + Math.round(scaled.height / 2));
 
-            // keep the same rotation angle as a target object
-            if (sticker.properties.fit_to_model == 1) {
-                var activeObject = canvas.getActiveObject() || canvas.getActiveGroup();
-                if (activeObject != null) {
-                    oImg.set("angle", activeObject.angle);
-                }
-            }
+        if (sticker.properties.fit_to_model == 1) {
+          var activeObject = canvas.getActiveObject() || canvas.getActiveGroup();
+          if (activeObject != null) {
+            oImg.set("angle", activeObject.angle);
+          }
+        }
+        oImg.lockUniScaling = true;
+        canvas.add(oImg);
+        canvas.renderAll();
+        canvas.setActiveObject(oImg);
+        $(document).trigger("ps.canvas.stickermenu.showContextMenu", [oImg]);
+        $(document).trigger("ps.canvas.undoredo.addToHistory");
 
-            oImg.lockUniScaling = true;
-            canvas.add(oImg);
-            canvas.renderAll();
-            canvas.setActiveObject(oImg);
-            $(document).trigger("ps.canvas.stickermenu.showContextMenu", [oImg]);
-            $(document).trigger("ps.canvas.undoredo.addToHistory");
-        });
     }
 
     /**
