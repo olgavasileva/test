@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   def index
-    per_page = 6
+    per_page = 8
     @questions = policy_scope(Question).kpage(params[:page]).per(per_page)
 
     if session[:demo]
