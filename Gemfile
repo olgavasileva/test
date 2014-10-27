@@ -115,6 +115,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-byebug'                  # Allow stepping and breakpoints in pry console
   gem 'pry-rails'                   # Use pry in the console
+  gem 'rb-readline'                 # Readline in binding.pry
   gem 'spring'
 end
 

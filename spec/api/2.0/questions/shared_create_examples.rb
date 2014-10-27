@@ -28,6 +28,18 @@ shared_examples :uses_targets do
       expect(follower.feed_items.map(&:question_id)).to include question_id
     end
   end
+
+  context "with `all` target param" do
+    let(:targets) {{
+      all: true
+    }}
+
+    it "creates a target for all users" do
+      target = Target.last
+
+      expect(target.all_users).to be_truthy
+    end
+  end
 end
 
 shared_examples :uses_anonymous do

@@ -14,42 +14,47 @@ jQuery( function($){
 	/* MAIN NAVIGATION
 	/*---------------------*/
 		
-  if ( $('#welcome').length ) {
-    $(window).on('scroll', function(){
-      if( $(window).width() > 1024 ) {
-        if( $(document).scrollTop() > 150 ) {
-          //setNavbarLight();
-        }else {
-          //setNavbarTransparent();
-        }
-      }
-    });	
-  } 
 
 	function toggleNavbar() {
 		if( ($(window).width() > 1024) && ($(document).scrollTop() <= 150) ) {
-			//setNavbarTransparent();
+			setNavbarTransparent();
 		} else {
-			//setNavbarLight();
+			setNavbarLight();
 		}
 	}
 
-	//toggleNavbar();
-
-	$(window).resize( function() {
-		toggleNavbar();	
-	});
-
 	/* navbar setting functions */
 	function setNavbarLight() {
-		$('.navbar').addClass('navbar-light');
-    $('.navbar-brand img').attr('src', '<%= image_url('statisfy-logo.png') %>');
+    if ( $('.welcome').length ) {
+      $('.navbar').addClass('navbar-light');
+      $('.navbar-brand img').attr('src', '<%= image_url('statisfy-logo.png') %>');
+    }
 	}
 
 	function setNavbarTransparent() {
-		$('.navbar').removeClass('navbar-light');
-    $('.navbar-brand img').attr('src', '<%= image_url('statisfy-logo-white.png') %>');
+
+    if ( $('.welcome').length ) {
+      $('.navbar').removeClass('navbar-light');
+      $('.navbar-brand img').attr('src', '<%= image_url('statisfy-logo-white.png') %>');
+    } 
 	}
+
+  // todo: optimize
+  $(window).on('scroll', function(){
+    if( $(window).width() > 1024 ) {
+      if( $(document).scrollTop() > 150 ) {
+        setNavbarLight();
+      }else {
+        setNavbarTransparent();
+      }
+    }
+  });	
+
+  $(window).resize( function() {
+    toggleNavbar();	
+  });
+
+  toggleNavbar();
 
 	// hide collapsible menu
 	$('.navbar-nav li a').click( function() {

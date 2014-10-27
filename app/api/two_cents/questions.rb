@@ -14,10 +14,11 @@ class TwoCents::Questions < Grape::API
         optional :invite_email_addresses, type: Array, desc: "Email addresses of people to invite to answer."
         optional :anonymous, type: Boolean, desc: "Whether question is anonymous"
 
-        requires :targets, type: Hash do
+        optional :targets, type: Hash do
           optional :all_users, type: Boolean, default: false, desc: "Whether question is targeted at all users."
-          optional :all_followers, type: Boolean, desc: "Whether question is targeted at all creator's followers."
-          optional :all_groups, type: Boolean, desc: "Whether question is targeted at all creator's groups."
+          optional :all, type: Boolean, default: false, desc: "Alias for `all_users`."
+          optional :all_followers, type: Boolean, default: false, desc: "Whether question is targeted at all creator's followers."
+          optional :all_groups, type: Boolean, default: false, desc: "Whether question is targeted at all creator's groups."
           optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
           optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
         end
@@ -61,6 +62,23 @@ class TwoCents::Questions < Grape::API
         records[records.pluck(:id).index(id) + 1..-1]
       end
 
+
+      def create_question_target(question, params)
+        params = params.to_h
+
+        target = Target.create!(
+          user: current_user,
+          all_users: params['all_users'] || params['all'],
+          all_followers: params['all_followers'],
+          all_groups: params['all_groups'],
+          follower_ids: params['follower_ids'],
+          group_ids: params['group_ids']
+        )
+
+        question.apply_target! target
+
+        target
+      end
 
     end
 
@@ -131,8 +149,7 @@ class TwoCents::Questions < Grape::API
       # Send SMS Message or Email to invited contacts
       send_email_or_sms_to_invited_users @question, params[:invite_phone_numbers], params[:invite_email_addresses]
 
-      target = Target.create! params[:targets].to_h.merge(user: current_user)
-      @question.apply_target! target
+      create_question_target(@question, params[:targets])
     end
 
 
@@ -209,8 +226,7 @@ class TwoCents::Questions < Grape::API
       # Send SMS Message or Email to invited contacts
       send_email_or_sms_to_invited_users @question, params[:invite_phone_numbers], params[:invite_email_addresses]
 
-      target = Target.create! params[:targets].to_h.merge(user: current_user)
-      @question.apply_target! target
+      create_question_target(@question, params[:targets])
     end
 
 
@@ -275,9 +291,7 @@ class TwoCents::Questions < Grape::API
       # Send SMS Message or Email to invited contacts
       send_email_or_sms_to_invited_users @question, params[:invite_phone_numbers], params[:invite_email_addresses]
 
-
-      target = Target.create! params[:targets].to_h.merge(user: current_user)
-      @question.apply_target! target
+      create_question_target(@question, params[:targets])
     end
 
 
@@ -343,9 +357,7 @@ class TwoCents::Questions < Grape::API
       # Send SMS Message or Email to invited contacts
       send_email_or_sms_to_invited_users @question, params[:invite_phone_numbers], params[:invite_email_addresses]
 
-
-      target = Target.create! params[:targets].to_h.merge(user: current_user)
-      @question.apply_target! target
+      create_question_target(@question, params[:targets])
     end
 
 
@@ -404,9 +416,7 @@ class TwoCents::Questions < Grape::API
       # Send SMS Message or Email to invited contacts
       send_email_or_sms_to_invited_users @question, params[:invite_phone_numbers], params[:invite_email_addresses]
 
-
-      target = Target.create! params[:targets].to_h.merge(user: current_user)
-      @question.apply_target! target
+      create_question_target(@question, params[:targets])
     end
 
 
@@ -429,7 +439,7 @@ class TwoCents::Questions < Grape::API
                         "creator_name": "creator_username",
                         "title": "Text Choice Title",
                         "description": "Text Choice Description",
-                        "image_url": "http://crashmob.com/Example.jpg",
+                        "image_url": "http://statisfy.co/Example.jpg",
                         "rotate": true,
                         "response_count": 8,
                         "comment_count": 5,
@@ -486,7 +496,7 @@ class TwoCents::Questions < Grape::API
                                     "id": 4,
                                     "muex": true,
                                     "rotate": true,
-                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "image_url": "http://statisfy.co/Example.jpg",
                                     "title": "Multiple Choice 1"
                                 }
                             },
@@ -495,7 +505,7 @@ class TwoCents::Questions < Grape::API
                                     "id": 5,
                                     "muex": false,
                                     "rotate": true,
-                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "image_url": "http://statisfy.co/Example.jpg",
                                     "title": "Multiple Choice 2"
                                 }
                             },
@@ -504,7 +514,7 @@ class TwoCents::Questions < Grape::API
                                     "id": 6,
                                     "muex": true,
                                     "rotate": false,
-                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "image_url": "http://statisfy.co/Example.jpg",
                                     "title": "Multiple Choice 3"
                                 }
                             }
@@ -531,7 +541,7 @@ class TwoCents::Questions < Grape::API
                             {
                                 "choice": {
                                     "id": 7,
-                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "image_url": "http://statisfy.co/Example.jpg",
                                     "rotate": false,
                                     "title": "Image Choice 1"
                                 }
@@ -539,7 +549,7 @@ class TwoCents::Questions < Grape::API
                             {
                                 "choice": {
                                     "id": 8,
-                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "image_url": "http://statisfy.co/Example.jpg",
                                     "rotate": false,
                                     "title": "Image Choice 2"
                                 }
@@ -567,7 +577,7 @@ class TwoCents::Questions < Grape::API
                             {
                                 "choice": {
                                     "id": 9,
-                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "image_url": "http://statisfy.co/Example.jpg",
                                     "rotate": true,
                                     "title": "Order Choice 1"
                                 }
@@ -575,7 +585,7 @@ class TwoCents::Questions < Grape::API
                             {
                                 "choice": {
                                     "id": 10,
-                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "image_url": "http://statisfy.co/Example.jpg",
                                     "rotate": true,
                                     "title": "Order Choice 2"
                                 }
@@ -583,7 +593,7 @@ class TwoCents::Questions < Grape::API
                             {
                                 "choice": {
                                     "id": 11,
-                                    "image_url": "http://crashmob.com/Example.jpg",
+                                    "image_url": "http://statisfy.co/Example.jpg",
                                     "rotate": false,
                                     "title": "Order Choice 3"
                                 }
@@ -600,7 +610,7 @@ class TwoCents::Questions < Grape::API
                         "creator_name": "creator_username",
                         "title": "Text Title",
                         "description": "Text Description",
-                        "image_url": "http://crashmob.com/Example.jpg",
+                        "image_url": "http://statisfy.co/Example.jpg",
                         "text_type": "freeform" | "email" | "phone",
                         "min_characters": 1,
                         "max_characters": 100,
@@ -752,7 +762,7 @@ class TwoCents::Questions < Grape::API
 
       responses = user.responses.order(:created_at)
       responses = responses.reverse if params[:reverse]
-      questions = responses.map(&:question).uniq
+      questions = responses.map(&:question).uniq.compact
 
       if params[:page]
         questions = questions.paginate(page: params[:page],
@@ -881,8 +891,11 @@ class TwoCents::Questions < Grape::API
 
       response = @question.responses.create!(resp_params)
 
-      if params[:comment].present?
-        response.comment = Comment.create!(body: params[:comment],
+      # Backwards-compatibility hackery
+      comment = params[:comment] || params[:text]
+
+      if comment.present?
+        response.comment = Comment.create!(body: comment,
                                            user: response.user,
                                            #question: response.question,
                                            #response: response

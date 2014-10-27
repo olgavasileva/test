@@ -5,7 +5,7 @@ ActiveAdmin.setup do |config|
   # Set the title that is displayed on the main layout
   # for each of the active admin pages.
   #
-  config.site_title = "Crashmob"
+  config.site_title = "Statisfy"
   config.site_title_link = :root
 
   # Set the link url for the title. For example, to take

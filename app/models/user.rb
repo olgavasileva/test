@@ -8,6 +8,9 @@ class User < ActiveRecord::Base
          authentication_keys:[:login], reset_password_keys:[:login]
 
   has_many :responses, dependent: :destroy
+  has_many :order_responses, class_name: "OrderResponse"
+  has_many :choice_responses, class_name: "ChoiceResponse"
+  has_many :multiple_choice_responses, class_name: "MultipleChoiceResponse"
   has_many :feed_items, dependent: :destroy
   has_many :feed_questions, through: :feed_items, source: :question
   has_many :answered_questions, through: :responses, source: :question
@@ -90,6 +93,7 @@ class User < ActiveRecord::Base
 						uniqueness: { case_sensitive: false }
 	validates :name, length: { maximum: 50 }
 	validates :terms_and_conditions, acceptance: true
+  validates :gender, inclusion: {in: %w(male female), allow_nil: true}
 
   # Comments made by other users about this user's questions and responses
   def comments_on_questions_and_responses

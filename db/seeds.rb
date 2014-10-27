@@ -6,14 +6,17 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+puts "Seeding database..."
+
 #
 # API Settings (served in instance call)
 #
+puts "Creating Settings..."
 Setting.where(key: :google_gtm).first_or_create!(value: nil)
-Setting.where(key: :faq_url).first_or_create!(value: "http://www.crashmob.com/?page_id=668")
-Setting.where(key: :feedback_url).first_or_create!(value: "http://www.crashmob.com/?page_id=674")
-Setting.where(key: :about_url).first_or_create!(value: "http://www.crashmob.com/?page_id=670")
-Setting.where(key: :terms_and_conditions_url).first_or_create!(value: "http://www.crashmob.com/?page_id=672")
+Setting.where(key: :faq_url).first_or_create!(value: "http://www.statisfy.co/?page_id=668")
+Setting.where(key: :feedback_url).first_or_create!(value: "http://www.statisfy.co/?page_id=674")
+Setting.where(key: :about_url).first_or_create!(value: "http://www.statisfy.co/?page_id=670")
+Setting.where(key: :terms_and_conditions_url).first_or_create!(value: "http://www.statisfy.co/?page_id=672")
 Setting.where(key: :aws_access_key).first_or_create!(value: ENV['DEVICE_AWS_ACCESS_KEY'])
 Setting.where(key: :aws_secret_access_key).first_or_create!(value: ENV['DEVICE_AWS_SECRET_ACCESS_KEY'])
 Setting.where(key: :aws_region).first_or_create!(value: ENV['DEVICE_AWS_REGION'])
@@ -27,6 +30,7 @@ Setting.where(key: :share_community_private).first_or_create!(value: "Check this
 # Push notification setup
 #
 
+puts "Setting up push notifications..."
 push_app_name = 'Statisfy'
 Rpush::Apns::App.where(name:push_app_name,environment:"development").first_or_create(connections:1, certificate:File.read("#{Rails.root}/certs/crashmob_dev_push.pem"))
 Rpush::Apns::App.where(name:push_app_name,environment:"production").first_or_create(connections:1, certificate:File.read("#{Rails.root}/certs/crashmob_production_push.pem"))
@@ -37,6 +41,7 @@ Instance.where(push_app_name:nil).each{|i|i.update_attribute :push_app_name, pus
 # Keys for studio
 #
 
+puts "Creating Keys..."
 %w(Calories Fat Carbohydrates Protein Sugar SaturatedFat Sodium Cholesterol Fiber CaloriesFromFat).each do |key|
   Key.where(key:key).first_or_create!
 end
@@ -45,8 +50,9 @@ end
 # Users
 #
 
+puts "Creating Users..."
 Role.where(name:"pro").first_or_create!
-user = User.where(username:'crashmob').first_or_create!(name:"Question Master",email:'question-master@crashmob.com',password:"dirty socks",password_confirmation:"dirty socks")
+user = User.where(username:'crashmob').first_or_create!(name:"Question Master",email:'question-master@statisfy.co',password:"dirty socks",password_confirmation:"dirty socks")
 user.add_role :pro
 
 
@@ -54,18 +60,21 @@ def background_image filename
   File.join "db","seeds","backgrounds",filename
 end
 
+puts "Creating CannedQuestionImages..."
 question_image_files = %w(bluegrunge.png bluetriangle.png bluetriangular.png bluewall.png greengrunge.png greentriangle.png greentriangular.png greenwall.png redgrunge.png redtriangle.png redtriangular.png redwall.png yellowgrunge.png yellowtriangle.png yellowtriangular.png yellowwall.png)
 existing_file_paths = CannedQuestionImage.all.map{|f|f.image.path}
 question_image_files.each_with_index do |image_file, position|
   CannedQuestionImage.create image:open(background_image image_file) unless existing_file_paths.find {|fp| fp.match /#{image_file}$/}
 end
 
+puts "Creating CannedChoiceImages..."
 choice_image_files = %w(bluegrunge.png bluetriangle.png bluetriangular.png bluewall.png greengrunge.png greentriangle.png greentriangular.png greenwall.png redgrunge.png redtriangle.png redtriangular.png redwall.png yellowgrunge.png yellowtriangle.png yellowtriangular.png yellowwall.png)
 existing_file_paths = CannedChoiceImage.all.map{|f|f.image.path}
 choice_image_files.each_with_index do |image_file, position|
   CannedChoiceImage.create image:open(background_image image_file) unless existing_file_paths.find {|fp| fp.match /#{image_file}$/}
 end
 
+puts "Creating CannedOrderChoiceImages..."
 order_choice_image_files = %w(bluegrunge.png bluetriangle.png bluetriangular.png bluewall.png greengrunge.png greentriangle.png greentriangular.png greenwall.png redgrunge.png redtriangle.png redtriangular.png redwall.png yellowgrunge.png yellowtriangle.png yellowtriangular.png yellowwall.png)
 existing_file_paths = CannedOrderChoiceImage.all.map{|f|f.image.path}
 order_choice_image_files.each_with_index do |image_file, position|
@@ -97,6 +106,7 @@ def seed_image filename
 end
 
 # Revised to match v20140905
+puts "Creating Categories..."
 satisfied = Category.where(name:"Are you statisfied?").first_or_create!(icon:open(seed_image "AreYouStatisfied150.png"))
 celebs = Category.where(name:"Celebrities & Pop").first_or_create!(icon:open(seed_image "CelebritiesAndPop150.png"))
 dating = Category.where(name:"Dating & Relationships").first_or_create!(icon:open(seed_image "DatingAndRelationship150.png"))
@@ -132,6 +142,7 @@ nsfw = Category.where(name:"Not Safe For Work (NSFW)").first_or_create!(icon:ope
 ##
 # Demo questions
 
+puts "Creating Questions..."
 existing_question_image_file_paths = QuestionImage.all.map{|f|f.image.path}
 
 image_file = "breakfast-cereals.jpg"
@@ -151,6 +162,7 @@ image_file = "fruit_and_nut_gifts.jpg"
 i = QuestionImage.create image:open(seed_image image_file) unless existing_question_image_file_paths.find {|fp| fp.match /#{image_file}$/}
 q = TextQuestion.where(title:"What ingredients do you like to add to your cereal?").first_or_create!(state:"active",category:food_and_drink,user:user, text_type:"freeform", min_characters:1, max_characters:200, background_image_id:i.id)
 
+puts "Done seeding."
 
 ##
 # Sample questions

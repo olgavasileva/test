@@ -3,7 +3,7 @@
 #
 
 everypage = ->
-  $('img').hisrc(srcIsLowResolution:false)
+  # $('img').hisrc(srcIsLowResolution:false)
 
 # This is to accomodate turbolinks loads
 $(document).on "page:load", ->

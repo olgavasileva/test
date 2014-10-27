@@ -17,4 +17,24 @@ class ResponseMatcher < ActiveRecord::Base
   def specific_responders?
     inclusion && inclusion.to_sym == :specific
   end
+
+  # Returns an AREL object
+  def matched_users
+    case inclusion
+    when "skip"
+      question.skip_users
+    when "respond"
+      question.response_users
+    when "specific"
+      matched_users_for_specific_response
+    end
+  end
+
+  protected
+    # Must return an AREL object
+    def matched_users_for_specific_response
+      if specific_responders?
+        raise NotImplementedError.new("All subclasses must implement matched_users_for_specific_response.")
+      end
+    end
 end

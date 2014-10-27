@@ -17,7 +17,7 @@
       setTimeout(function(){
         var timestamp=Date.now();
         target.data('watcher',timestamp);
-        var max=target.attr('maxlength')||255;
+        var max=target.attr('maxlength')||250;
         target.attr('maxlength',max)
         window.tcCharCounters[timestamp]={
           max:(max),

@@ -151,7 +151,7 @@ class TwoCents::Auth < Grape::API
       requires :password, type: String, regexp: /.{6,20}/, desc:'6-20 character password'
       requires :name, type: String, desc:"The user's name"
       requires :birthdate, type: String, desc: '1990-02-06'
-      requires :gender, type:String, desc: 'male'
+      requires :gender, type:String, values: %w{male female}, desc: 'male or female'
     end
     post 'register', http_codes:[
         [200, "1001 - Invalid instance token"],
