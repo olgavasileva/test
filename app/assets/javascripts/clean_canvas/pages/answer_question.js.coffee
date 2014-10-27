@@ -7,8 +7,3 @@ $ ->
       e.preventDefault()
       e.stopPropagation()
 
-  $(document).on 'submit','form[action*="studio_responses"]',(e)->
-    e.preventDefault();
-    e.stopPropagation();
-    alert('got it');
-    return false;

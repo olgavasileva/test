@@ -171,12 +171,32 @@ var psUtils = function() {
         return packsDB[key]; //Get it
     };
 
+    this.isPackLimitReached=function(pack_id){
+      var pack=(pack_id || pack_id===0)?this.getPackByID(pack_id):this.getCurrentPack();
+      return (pack.stickersUseCounter>=PS_MAX_STICKERS_ALLOWED)
+    };
+
+    this.increaseStickersUsedCount=function(pack_id){
+      return this.alterStickersUsedCount(1,pack_id);
+    };
+
+    this.decreaseStickersUsedCount=function(pack_id){
+      return this.alterStickersUsedCount(-1,pack_id);
+
+    };
+
+    this.alterStickersUsedCount=function(val,pack_id){
+      var pack=pack_id?this.getPackByID(pack_id):this.getCurrentPack()
+      pack.stickersUseCounter=pack.stickersUseCounter||0;
+      return pack.stickersUseCounter+=(+val);
+    };
+
     this.getUrlParameterByName = function(name) {
         name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
             results = regex.exec(location.search);
         return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
+    };
 
     this.stickerAddedToCanvas = function(stickerId) {
       var new_value,
@@ -188,23 +208,25 @@ var psUtils = function() {
         }
         stickerPropsList[prop].node=stickerPropsList[prop].node || $(stickerPropsList[prop].node_id);
         new_value = (+stickerPropsList[prop].node.text()) +(+stickerProps[prop]);
-        stickerPropsList[prop].node.text(new_count);
+        stickerPropsList[prop].node.text(new_value);
       }
-    }
+    };
 
     this.stickerRemovedFromCanvas = function(stickerId) {
       var new_value,
         prop,
-        stickerProps = this.getStickerById(stickerId).properties
+        sticker=this.getStickerById(stickerId),
+        stickerProps =sticker.properties;
+        this.decreaseStickersUsedCount(sticker.pack_id);
       for(prop in stickerPropsList){
         if(!stickerProps[prop]){
           continue;
         }
         stickerPropsList[prop].node=stickerPropsList[prop].node || $(stickerPropsList[prop].node_id);
         new_value = (+stickerPropsList[prop].node.text())-(+stickerProps[prop]);
-        stickerPropsList[prop].node.text(new_count);
+        stickerPropsList[prop].node.text(new_value);
       }
-    }
+    };
 };
 
 if (typeof exports != 'undefined') {

@@ -3,5 +3,6 @@
     = s.input :studio_id, as: :hidden
     = s.input :user_id, as: :hidden
     = s.input :canvas_json, as: :hidden
+    = s.input :base64_image, as: :hidden
   =render "pages/photoshoot", question:response.question
   =render "responses/response_fields/shared/submit", form:form, response:response

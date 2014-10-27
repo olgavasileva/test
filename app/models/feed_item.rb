@@ -3,10 +3,31 @@ class FeedItem < ActiveRecord::Base
   belongs_to :question
 
   # after_create :add_and_push_message
-
-  protected
   def add_and_push_message
 
+
+    message = QuestionTargeted.new
+
+    question = self.question
+    targeted_user = self.user
+
+    message.user_id = self.user_id
+    message.question_id = question.question_id
+
+    user_name = question.anonymous? ? "Someone" : question.user.username
+    message.body = "#{user_name} has a question for you"
+
+    message.save
+
+    targeted_user.instances.each do |instance|
+      next unless instance.push_token.present?
+
+      instance.push alert:'Hello iPhone!', badge:0, sound:true, other: {:type => message.type,
+                                                                        :created_at => message.created_at,
+                                                                        :read_at => message.read_at,
+                                                                        :question_id => message.question_id,
+                                                                        :body => message.body }
+    end
 
     # if !QuestionTargeted.exists?(:user_id => self.user_id)
     #   message = QuestionTargeted.new
@@ -39,4 +60,5 @@ class FeedItem < ActiveRecord::Base
     # end
 
   end
+
 end
