@@ -9,6 +9,7 @@ class FeedItem < ActiveRecord::Base
     message = QuestionTargeted.new
 
     question = self.question
+    targeted_user = self.user
 
     message.user_id = self.user_id
     message.question_id = question.question_id
