@@ -82,7 +82,7 @@ class Target < ActiveRecord::Base
       message = QuestionTargeted.new
 
       message.user_id = targeted_user.id
-      message.question_id = question.question_id
+      message.question_id = question.id
 
       user_name = question.anonymous? ? "Someone" : question.user.username
       message.body = "#{user_name} has a question for you"
