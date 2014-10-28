@@ -98,6 +98,8 @@ gem 'easy_as_pie'                   # js+: Rails wrapper for easy-pie-chart
 gem 'jquery-datatables-rails', '~> 2.2.3'
 gem "select2-rails"                 # js: jQuery based replacement for select boxes
 
+gem 'rack-cors', require: 'rack/cors'
+
 group :development do
 
   gem 'sqlite3'
