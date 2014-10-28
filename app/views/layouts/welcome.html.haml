@@ -30,7 +30,7 @@
     - if flash.present?
       #flash
         - flash.each do |key, value|
-          = js add_gritter(value, image: false, title: key.titleize, sticky: false, time: 2000)
+          = js add_gritter(value, image: false, title: key.titleize, sticky: false, time: 2000, class_name: "gritter")
           -#= content_tag(:div, value, class: "alert alert-#{key}")
     = yield
     = render 'layouts/clean_canvas/footer'
