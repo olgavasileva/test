@@ -7,9 +7,9 @@ set :branch, "labs"
 # is considered to be the first unless any hosts have the primary
 # property set.  Don't declare `role :all`, it's a meta role.
 
-role :app, %w{deploy@labs.crashmob.com}
-role :web, %w{deploy@labs.crashmob.com}
-role :db,  %w{deploy@labs.crashmob.com}
+role :app, %w{deploy@labs.statisfy.co}
+role :web, %w{deploy@labs.statisfy.co}
+role :db,  %w{deploy@labs.statisfy.co}
 
 
 # Extended Server Syntax
