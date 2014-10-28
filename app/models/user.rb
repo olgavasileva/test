@@ -249,6 +249,10 @@ class User < ActiveRecord::Base
     return self.messages.where("read_at is ?", nil).count
   end
 
+  def name
+    read_attribute(:name) || username
+  end
+
 	protected
 
 		def create_remember_token
