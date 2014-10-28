@@ -85,6 +85,9 @@ GEM
     acts_as_list (0.4.0)
       activerecord (>= 3.0)
     addressable (2.3.6)
+    airbrake (4.1.0)
+      builder
+      multi_json
     animate-rails (1.0.7)
       rails
     arbre (1.0.2)
@@ -503,6 +506,7 @@ DEPENDENCIES
   activerecord_any_of
   acts-as-taggable-on
   acts_as_list
+  airbrake
   animate-rails
   attribute_defaults
   autoprefixer-rails

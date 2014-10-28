@@ -1,0 +1,27 @@
+#works.section.works
+  .section-heading
+    %h2 ASK. ANSWER. CONNECT.
+    %p Discover what the world thinks!
+    %hr
+  .section-content
+    %ul.list-inline.work-item-filters
+    #gallery_container.welcome.row
+      - @questions.each do |question|
+        .col-md-3.col-sm-4.col-xs-12
+          .row
+            =link_to new_question_response_path(question), class: :thumbnail do
+              = responsive_image_tag question.web_image_url
+              .mask
+              .floating-question-title
+                %span=question.title
+              .icon
+                = responsive_image_tag question.category.icon.web.url
+                %small.category= question.category.name
+              .icon2
+                Answered
+                %hr
+                %small (#{@all_responses})
+              .icon3
+                Commented
+                %hr
+                %small (#{@all_comments})
