@@ -33,8 +33,9 @@
         - if flash.present?
           - flash.each do |key, value|
             = js add_gritter(value, image: false, title: key.titleize, sticky: false, time: 2000, class_name: "gritter" )
-        %ul.list-inline.work-item-filters
-        = yield
+        #undertop.container
+          %ul.list-inline.work-item-filters
+          = yield
         = render 'layouts/clean_canvas/footer'
 
     = yield :modals if content_for :modals
