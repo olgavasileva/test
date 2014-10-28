@@ -19,7 +19,7 @@ class QuestionsControllerBase < ApplicationController
 
   def edit
     @question = question_class.send :find, params[:id]
-    #authorize @question
+    authorize @question
   end
 
   def update
