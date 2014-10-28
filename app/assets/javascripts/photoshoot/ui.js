@@ -114,6 +114,7 @@ var psUI = function() {
           $('.upper-canvas.ui-droppable').width(new_width);
           $('#ps-canvas').height(new_height);
           $('.upper-canvas.ui-droppable').height(new_height);
+          $('#ps-desktop').height(new_height);
         }
 
         $(document).on('click', '.sticker-pack-wrapper', function(e) {

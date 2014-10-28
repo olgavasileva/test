@@ -78,8 +78,7 @@ var photoshoot = function() {
     });
     $("#ps-desktop").css({
         width: cw,
-        height: ch,
-        minHeight: ch
+        height: ch
     });
     canvas.setDimensions(cw, ch);
     $("#pack-wrapper").css('height', ch - 31);
