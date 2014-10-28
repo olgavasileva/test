@@ -1,0 +1,2 @@
+class OrderChoiceImagePolicy < BackgroundImagePolicy
+end

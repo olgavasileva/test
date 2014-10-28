@@ -13,9 +13,17 @@ class ResponsesController < ApplicationController
 
   def create
     @response = Response.new response_params
+
     authorize @response
 
     if @response.save
+      # Special case for TextQuestion: create comment matching response.
+      if @response.question.is_a?(TextQuestion) && @response.comment.nil?
+        Comment.create(body: @response.text, user: @response.user,
+                       commentable_type: "Question",
+                       commentable_id: @response.question_id)
+      end
+
       current_user.feed_items.where(question:@response.question).destroy_all
 
       if session[:demo]
