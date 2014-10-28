@@ -41,7 +41,7 @@ module LinkchatApp
     require Rails.root.join("lib/custom_public_exceptions")
     config.exceptions_app = CustomPublicExceptions.new(Rails.public_path)
 
-    config.middleware.insert_before "ActionDispatch::Static", "Rack::Cors" do
+    config.middleware.insert_before "Rack::Lock", "Rack::Cors" do
       allow do
         origins '*'
         resource '/v/2.0/*', headers: :any, methods: %i[get post put patch delete]
