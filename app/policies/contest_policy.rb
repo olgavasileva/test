@@ -11,4 +11,5 @@ class ContestPolicy < ApplicationPolicy
   def question? ;     true;             end
   def vote? ;         true;             end
   def save_vote? ;    true;             end
+  def scores? ;       true;             end
 end

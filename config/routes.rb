@@ -25,6 +25,7 @@ LinkchatApp::Application.routes.draw do
   get '/gallery/:uuid' => 'contests#vote', as: :contest_vote
   get '/contests/:uuid/q/:quid' => 'contests#question', as: :contest_question
   post '/contests/:uuid/vote/:response_id' => 'contests#save_vote', as: :save_vote
+  post '/contests/:uuid/scores' => 'contests#scores', as: :scores
 
   resources :questions, shallow:true do
     get :summary, on: :member

@@ -27,7 +27,7 @@ class ContestsController < ApplicationController
     authorize @contest
 
     if @contest.key_question.kind_of? StudioQuestion
-      @studioResponses = @contest.key_question.responses
+      @studio_responses = @contest.key_question.responses
     else
       redirect_to :root
     end
@@ -49,6 +49,17 @@ class ContestsController < ApplicationController
       add_to_vote_info vote_id
       @notice = "Vote Recorded"
     end
+  end
+
+  def scores
+    @contest = Contest.find_by uuid:params[:uuid]
+    authorize @contest
+
+    scores = @contest.key_question.responses.map do |r|
+      {id: r.id, score:view_context.number_to_percentage(@contest.percent_votes_for_response(r), precision: 0)}
+    end
+
+    render json: scores
   end
 
   private
