@@ -95,18 +95,22 @@ var psUI = function() {
 
         $("#ps-clear-all").click(clearAll);
 
-        $('#preview_image').click(function(){
-          var newWindow=window.open();
-          var html='<img src="'+psCanvas().getContext().toDataURL("image/png")+'">';
-          newWindow.document.write(html);
-            /*this.href=;
-            this.download=('Scene_'+Date.now());*/
+        $('#show_hide_facts').click(function(){
+          var facts=$('#nutrition-facts-wrapper-content'),
+          $_this=$(this),
+          details_visible=facts.css('display')!=='none',
+          newText=details_visible?'Show Facts':'Hide Facts',
+          action=details_visible?'hide':'show';
+          facts[action]();
+          $_this.text(newText);
         })
 
-        $('#download_image').click(function(){
-          this.href=psCanvas().getContext().toDataURL("image/png");
-          this.download=('Scene_'+Date.now());
-        })
+
+        window.onresize=function(){
+          var new_width=$('#ps-desktop').width();
+          $('#ps-canvas').width(new_width);
+          $('.upper-canvas.ui-droppable').width(new_width);
+        }
 
         $(document).on('click', '.sticker-pack-wrapper', function(e) {
             e.preventDefault();
