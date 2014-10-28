@@ -80,6 +80,8 @@ gem 'geocoder'          # Geolocation
 
 gem 'randumb'           # Query results random ordering
 
+gem 'airbrake'          # Error tracking
+
 gem 'acts-as-taggable-on'           # A tagging plugin for Rails applications that allows for custom tagging along dynamic contexts
 gem 'roo'                           # Roo provides an interface to Open Office, Excel, and Google Spreadsheets
 gem 'rubyzip'                       # rubyzip is a ruby library for reading and writing zip files
@@ -95,6 +97,8 @@ gem 'jquery-slimscroll-rails'       # js: transforms any div into a scrollable a
 gem 'easy_as_pie'                   # js+: Rails wrapper for easy-pie-chart
 gem 'jquery-datatables-rails', '~> 2.2.3'
 gem "select2-rails"                 # js: jQuery based replacement for select boxes
+
+gem 'rack-cors', require: 'rack/cors'
 
 group :development do
 

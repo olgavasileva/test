@@ -42,7 +42,7 @@ var psUI = function() {
                     e.preventDefault();
                 } else {
                     $("#studio_response_scene_attributes_canvas_json").val(scene);
-                    console.log(psCanvas().getContext().toDataURL("image/png"));
+                    $("#studio_response_scene_attributes_base64_image").val(psCanvas().getContext().toDataURL("image/png"));
                 }
             });
 

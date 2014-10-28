@@ -37,5 +37,15 @@ module LinkchatApp
     config.middleware.use(Rack::Config) do |env|
       env['api.tilt.root'] = Rails.root.join "app", "views", "api"
     end
+
+    require Rails.root.join("lib/custom_public_exceptions")
+    config.exceptions_app = CustomPublicExceptions.new(Rails.public_path)
+
+    config.middleware.insert_before "Warden::Manager", "Rack::Cors" do
+      allow do
+        origins '*'
+        resource '/v/2.0/*', headers: :any, methods: %i[get post put patch delete]
+      end
+    end
   end
 end
