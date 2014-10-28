@@ -1,7 +1,7 @@
 class QuestionPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user
+      if user && !user.anonymous?
         user.feed_questions.order("CASE WHEN questions.position IS NULL THEN 1 ELSE 0 END ASC").order("questions.position ASC").order("questions.kind ASC").order("questions.created_at DESC")
       else
         Question.active.order("CASE WHEN questions.position IS NULL THEN 1 ELSE 0 END ASC").order("questions.position ASC").order("RAND()")

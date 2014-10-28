@@ -95,6 +95,19 @@ class User < ActiveRecord::Base
 	validates :terms_and_conditions, acceptance: true
   validates :gender, inclusion: {in: %w(male female), allow_nil: true}
 
+  def self.anonymous_user
+    @anonymous_user ||= User.find_by username:"anonymous"
+    if @anonymous_user.nil?
+      @anonymous_user = User.new username:"anonymous", email:"anonymous@statisfy.co"
+      @anonymous_user.save validate:false
+    end
+    @anonymous_user
+  end
+
+  def anonymous?
+    username == 'anonymous'
+  end
+
   # Comments made by other users about this user's questions and responses
   def comments_on_questions_and_responses
     Comment.where id:(comments_on_its_questions.pluck("comments.id") + comments_on_its_responses.pluck("comments.id"))

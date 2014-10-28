@@ -17,7 +17,7 @@
             .comment-by
               =r.user.username
               responded to
-              =link_to r.question.title, [r.question], title: ""
+              =link_to r.question.title, analytics_user_path(@user, r.question), title: ""
             .comment-text
               = link_to [r], class: %w(ticket-title), title: "" do
                 =r.description
