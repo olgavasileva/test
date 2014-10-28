@@ -17,25 +17,6 @@ describe Question do
 
   describe :choice_question do
     let(:q) { FactoryGirl.create :choice_question }
-
-    describe :response_ratios do
-      it "returns choice response ratios" do
-        q.choices = FactoryGirl.create_list(:choice, 4, question: q)
-
-        q.responses = FactoryGirl.create_list(:choice_response, 3,
-                                             choice: q.choices[0])
-
-        q.responses << FactoryGirl.create(:choice_response,
-                                         choice: q.choices[1])
-
-        expect(q.response_ratios).to eq(
-          q.choices[0] => 0.75,
-          q.choices[1] => 0.25,
-          q.choices[2] => 0,
-          q.choices[3] => 0
-        )
-      end
-    end
   end
 
   describe :text_choice_question do
