@@ -8,6 +8,8 @@ class Scene < ActiveRecord::Base
 
   attr_accessor :base64_image
 
+  before_validation :convert_image
+
   def self.factory user, scene_data, studio, canvas_height=nil, canvas_width=nil, gallery_id=nil, image=nil
     Scene.new.process user, scene_data, studio, canvas_height=nil, canvas_width=nil, gallery_id=nil, image=nil
   end
@@ -26,6 +28,21 @@ class Scene < ActiveRecord::Base
     self.add_to_gallery(Gallery.my_gallery(user))
     (self.add_to_gallery(Gallery.find(params[:gallery_id])) rescue nil) unless gallery_id.nil?
     self
+  end
+
+  def convert_image
+    if base64_image
+      tempfile = Tempfile.new("fileupload")
+      begin
+        tempfile.binmode
+        result = Base64.decode64(base64_image.gsub(/^data:image\/(png|jpg);base64,/,''))
+        tempfile.write(result)
+        self.image = open(tempfile)
+      ensure
+        tempfile.close
+        tempfile.unlink
+      end
+    end
   end
 
   def save_image(image_data)
