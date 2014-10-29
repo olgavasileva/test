@@ -4,6 +4,9 @@
       %li
         - if (notification.isQuestionUpdated? || notification.isQuestionTargeted?) && notification.question.present?
           = link_to notification.body, new_question_response_path(question_id:notification.question_id)
+        - elsif notification.isUserFollowed? && notification.follower_id.present?
+          - follower = User.find notification.follower_id
+          = link_to notification.body, follower
         - else
           = notification.body
         - unless notification.read?
