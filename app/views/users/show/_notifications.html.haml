@@ -3,7 +3,7 @@
     - @notifications.each do |notification|
       %li
         - if notification.isQuestionUpdated? || notification.isQuestionTargeted?
-          = link_to notification.body, responses_question_path(notification.question)
+          = link_to notification.body, new_question_response_path(notification.question)
         - unless notification.read?
           .pull-right
             .badge.badge-warning New
