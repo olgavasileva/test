@@ -30,7 +30,7 @@ class UsersController < ApplicationController
         @questions = @user.answered_questions.page(params[:page])
       when 'commented'
         # todo: optimize
-        question_ids = @user.comments.map{|c| c.question.id unless c.question.present?}
+        question_ids = @user.comments.map{|c| c.question.id if c.question.present?}
         @questions = Question.where(id: question_ids).page(params[:page])
       end
     when 'communities'
