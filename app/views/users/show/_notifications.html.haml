@@ -2,7 +2,7 @@
   %ul.items
     - @notifications.each do |notification|
       %li
-        - if notification.question_id? && notification.isQuestionUpdated? || notification.isQuestionTargeted?
+        - if !notification.question.nil? && notification.isQuestionUpdated? || notification.isQuestionTargeted?
           = link_to notification.body, new_question_response_path(notification.question)
         - else
           = notification.body
