@@ -17,7 +17,7 @@
               - if @response.question.preview?
                 = link_to "Continue", [:target, @response.question]
               - else
-                =link_to root_path do
+                =link_to new_question_skipped_item_path(@response.question) do
                   %span.glyphicon.glyphicon-chevron-right
       .panel-body.response
         .row
