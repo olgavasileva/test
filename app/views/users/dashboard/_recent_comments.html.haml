@@ -16,7 +16,7 @@
             .comment-by
               =c.user.username
               commented on
-              =link_to c.question.title, [c.question], title: ""
+              =link_to c.question.title, analytics_user_path(@user, c.question), title: ""
             .comment-text= c.body
             .comment-actions
               =link_to '#' do

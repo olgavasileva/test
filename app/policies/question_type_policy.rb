@@ -5,5 +5,7 @@ class QuestionTypePolicy < ApplicationPolicy
     end
   end
 
-  def index?  ; true; end
+  def index?
+    !@user.anonymous?
+  end
 end
