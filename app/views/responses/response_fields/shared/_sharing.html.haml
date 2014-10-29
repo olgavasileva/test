@@ -19,7 +19,7 @@
   .col-xs-10.col-xs-push-1.col-sm-8.col-sm-push-2.col-sm-push-1.col-md-6.col-md-push-3.clearfix.share-popup.overlay-action
     .row
       .col-xs-12
-        .shareaholic-canvas.col-xs-6.col-xs-push-3.col-md-8.col-md-push-0{:data=>{:app=>'share_buttons', "app-id"=>'8080962'}}
+        .shareaholic-canvas.col-xs-6.col-xs-push-3.col-md-8.col-md-push-0{:data=>{:app=>'share_buttons', "app-id"=>'11628254'}}
         .col-xs-12.col-md-4
           %button.btn.btn-primary.btn-lg.negative.col-xs-12.form-group.clearfix.overlay-action-switch{:data=>{:target=>"share-report"}}
             Cancel
@@ -59,7 +59,7 @@
         var target=$(this).data('target');
         $('.overlay .overlay-action.'+target+'-popup').show();
       })
-      $('.overlay-toggler').on('click',function(){
+      $('.overlay-toggler').on('click',function(event){
         event.preventDefault();
         event.stopPropagation();
         $('.overlay .overlay-action').hide('fast');
