@@ -111,6 +111,7 @@ class UsersController < ApplicationController
     comments = @user.questions.map{|q| q.comment_count }.sum
     shares = @user.questions.map{|q| q.share_count.to_i }.sum
 
+
     @campaign_data = [
       { label: "Reach", value: reach },
       { label: "Engagements", value: engagements },
