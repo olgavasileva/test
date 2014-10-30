@@ -30,5 +30,6 @@
     %span.user_name
       =c.user.username
     %span.posted_date
-      = time_ago_in_words(c.created_at) ago
+      =time_ago_in_words(c.created_at)
+      ago
     %p=c.body
