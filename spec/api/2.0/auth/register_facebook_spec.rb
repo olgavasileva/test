@@ -14,7 +14,8 @@ describe :register_facebook do
   end
 
   context "With all required params" do
-    let(:params) {{instance_token:instance_token, facebook_token:facebook_token, username:username}}
+    let(:params) {{instance_token:instance_token, facebook_token:facebook_token, username:username, birthdate:birthdate}}
+    let(:birthdate) {Date.current - 20.years}
 
     context "With valid facebook_token and username params" do
       let(:facebook_token) {"some_token"}

@@ -7,7 +7,7 @@ class BackgroundImagesController < ApplicationController
     authorize object
     object.save!
 
-    render json: { id: object.id, image_url: object.image_url }
+    render json: { id: object.id, image_url: object.web_image_url }
   end
 
   private

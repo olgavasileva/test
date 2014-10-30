@@ -30,19 +30,19 @@
               .col-xs-1.col-xs-push-5
                 %a.info-holder{:href=>"",:data=>{:toggle=>"modal",:target=>"#share_modal"}}
                   %span.fa.fa-info-circle
-        %input{:type=>'hidden',:value=>false,:name=>:anonymous}
-        #anonymous_container.col-xs-12.non-selectable
-          .row
-            .col-xs-9.col-xs-push-1
-              .checkbox
-                = check_box_tag :anonymous, true
-                %label{:for=>'anonymous'}
-                  Post this question
-                  %br
-                  anonymously
-            .col-xs-1
-              %a.info-holder{:href=>"",:data=>{:toggle=>"modal",:target=>"#privacy_modal"}}
-                %span.fa.fa-info-circle
+          %input{:type=>'hidden',:value=>false,:name=>:anonymous}
+          #anonymous_container.col-xs-12.non-selectable
+            .row
+              .col-xs-9.col-xs-push-1
+                .checkbox
+                  = check_box_tag :anonymous, true
+                  %label{:for=>'anonymous'}
+                    Post this question
+                    %br
+                    anonymously
+              .col-xs-1
+                %a.info-holder{:href=>"",:data=>{:toggle=>"modal",:target=>"#privacy_modal"}}
+                  %span.fa.fa-info-circle
 
 #privacy_modal.modal.fade{:tabindex=>"-1",:role=>"dialog",:data=>{:aria=>{:labelledby=>"privacy_modal",:hidden=>"true"}}}>
   .modal-dialog.modal-sm
