@@ -94,6 +94,8 @@ class User < ActiveRecord::Base
 	validates :name, length: { maximum: 50 }
 	validates :terms_and_conditions, acceptance: true
   validates :gender, inclusion: {in: %w(male female), allow_nil: true}
+  validates :birthdate, presence: true
+  validate :over_13
 
   def self.anonymous_user
     @anonymous_user ||= User.find_by username:"anonymous"
@@ -266,6 +268,10 @@ class User < ActiveRecord::Base
     read_attribute(:name) || username
   end
 
+  def under_13?
+    birthdate > 13.years.ago
+  end
+
 	protected
 
 		def create_remember_token
@@ -296,6 +302,14 @@ class User < ActiveRecord::Base
                                                                           read_at: message.read_at,
                                                                           follower_id: message.follower_id }
       end
+    end
+
+  private
+
+    def over_13
+      return if birthdate.nil?
+
+      errors.add(:birthdate, "can't be before 13 years ago") if under_13?
     end
 
 end
