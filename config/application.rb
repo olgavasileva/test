@@ -44,7 +44,7 @@ module LinkchatApp
     config.middleware.insert_before "Warden::Manager", "Rack::Cors" do
       allow do
         origins '*'
-        resource '/v/2.0/*', headers: :any, methods: %i[get post put patch delete]
+        resource '/v/2.0/*', headers: :any, methods: %i[get post put patch delete options]
       end
     end
   end

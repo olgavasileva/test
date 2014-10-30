@@ -94,6 +94,21 @@ class User < ActiveRecord::Base
 	validates :name, length: { maximum: 50 }
 	validates :terms_and_conditions, acceptance: true
   validates :gender, inclusion: {in: %w(male female), allow_nil: true}
+  validates :birthdate, presence: true
+  validate :over_13
+
+  def self.anonymous_user
+    @anonymous_user ||= User.find_by username:"anonymous"
+    if @anonymous_user.nil?
+      @anonymous_user = User.new username:"anonymous", email:"anonymous@statisfy.co"
+      @anonymous_user.save validate:false
+    end
+    @anonymous_user
+  end
+
+  def anonymous?
+    username == 'anonymous'
+  end
 
   # Comments made by other users about this user's questions and responses
   def comments_on_questions_and_responses
@@ -249,6 +264,14 @@ class User < ActiveRecord::Base
     return self.messages.where("read_at is ?", nil).count
   end
 
+  def name
+    read_attribute(:name) || username
+  end
+
+  def under_13?
+    birthdate > 13.years.ago
+  end
+
 	protected
 
 		def create_remember_token
@@ -279,6 +302,14 @@ class User < ActiveRecord::Base
                                                                           read_at: message.read_at,
                                                                           follower_id: message.follower_id }
       end
+    end
+
+  private
+
+    def over_13
+      return if birthdate.nil?
+
+      errors.add(:birthdate, "can't be before 13 years ago") if under_13?
     end
 
 end

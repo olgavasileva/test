@@ -22,14 +22,13 @@ class PagesController < ApplicationController
   end
 
   def welcome
-    if current_user.present?
+    if user_signed_in?
       redirect_to questions_path
-      return
+    else
+      @questions = policy_scope(Question).paginate(page: 1, per_page: 8)
+
+      render :welcome, layout: 'welcome'
     end
-
-    @questions = policy_scope(Question).paginate(page: 1, per_page: 8)
-
-    render :welcome, layout: 'welcome'
   end
 
   # For demo only

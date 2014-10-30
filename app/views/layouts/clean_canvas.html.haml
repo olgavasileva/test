@@ -32,7 +32,7 @@
         = render 'layouts/shared/header'
         - if flash.present?
           - flash.each do |key, value|
-            = js add_gritter(value, image: false, title: key.titleize, sticky: false, time: 2000 )
+            = js add_gritter(value, image: false, title: key.titleize, sticky: false, time: 2000, class_name: "gritter" )
         #undertop.container
           = yield
         = render 'layouts/clean_canvas/footer'
