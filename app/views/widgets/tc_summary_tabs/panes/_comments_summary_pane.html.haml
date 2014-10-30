@@ -30,5 +30,5 @@
     %span.user_name
       =c.user.username
     %span.posted_date
-      =c.created_at.to_formatted_s(:long)
+      = time_ago_in_words(c.created_at) ago
     %p=c.body
