@@ -1,7 +1,7 @@
 -style_type||='transparent-white'
 .share-follow-menu{class:"#{style_type}"}
   .well-wrap.row
-    = link_to "", class:%w(col-xs-5 col-sm-5 ), remote:true do
+    = link_to "", @question.user, class:%w(col-xs-5 col-sm-5 ), remote:true do
       %h5 Posted by
       %h6.elipsable
         = @question.user.username
