@@ -7,11 +7,9 @@
         = @response.question.user.username
     - if user_signed_in?
       - if current_user.following? @response.question.user
-        %div
-          %a.col-xs-3.col-sm-4.btn.vertical-middle.btn-default{class: "#{style_type}"}
-            Following
+        = link_to "Following",[:unfollow, @response.question.user],class:"col-xs-3 col-sm-4 btn vertical-middle btn-default #{style_type}"
       - else
-        = link_to "Follow",[:follow, @response.question.user],class:"col-xs-3 col-sm-4 btn vertical-middle btn-default #{style_type}" , remote: true
+        = link_to "Follow",[:follow, @response.question.user],class:"col-xs-3 col-sm-4 btn vertical-middle btn-default #{style_type}"
       %a.col-xs-2.col-sm-push-1.col-xs-push-2.vertical-middle.overlay-toggler
         %h4 ...
 
