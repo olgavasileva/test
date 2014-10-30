@@ -78,7 +78,6 @@ class Target < ActiveRecord::Base
 
     def add_and_push_message(targeted_user, question)
 
-
       message = QuestionTargeted.new
 
       message.user_id = targeted_user.id

@@ -192,6 +192,7 @@ class TwoCents::Auth < Grape::API
       requires :instance_token, type:String, desc:'Obtain this from the instances API'
       requires :username, type: String, regexp: /^[A-Z0-9\-_ ]{4,20}$/i, desc:'Unique username'
       requires :facebook_token, type: String, desc:"Token obtained from facebook's auth API"
+      requires :birthdate, type: String, desc:"The user's birthdate - must be over 13"
     end
     post 'register/facebook', http_codes:[
         [200, "1001 - Invalid instance token"],
@@ -222,7 +223,7 @@ class TwoCents::Auth < Grape::API
         authentication.user
       else
         user = User.find_by email:fb_profile['email']
-        user = User.new name:fb_profile['name'], email:fb_profile['email'], username:declared_params[:username] unless user
+        user = User.new name:fb_profile['name'], email:fb_profile['email'], username:declared_params[:username], birthdate:declared_params[:birthdate] unless user
 
         user.authentications.new provider:"facebook", uid:fb_profile['id'], token:declared_params[:facebook_token]
         user.save!

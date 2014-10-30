@@ -7,6 +7,6 @@
   %ul.items
     - @questions.each do |question|
       %li
-        = link_to question.title, new_question_response_path(question)
+        = link_to question.title, @user.answered_questions.where(id:question).blank? ? new_question_response_path(question) : summary_question_path(question)
   .center
     = will_paginate @questions

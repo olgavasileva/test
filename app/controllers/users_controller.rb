@@ -30,7 +30,7 @@ class UsersController < ApplicationController
         @questions = @user.answered_questions.page(params[:page])
       when 'commented'
         # todo: optimize
-        question_ids = @user.comments.map{|c| c.question.id}
+        question_ids = @user.comments.map{|c| c.question.id if c.question.present?}
         @questions = Question.where(id: question_ids).page(params[:page])
       end
     when 'communities'
@@ -110,6 +110,7 @@ class UsersController < ApplicationController
     skips = @user.questions.map{|q| q.skip_count }.sum
     comments = @user.questions.map{|q| q.comment_count }.sum
     shares = @user.questions.map{|q| q.share_count.to_i }.sum
+
 
     @campaign_data = [
       { label: "Reach", value: reach },
@@ -230,6 +231,6 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.required(:user).permit(:company_name, :email, :password, :password_confirmation, :current_password)
+      params.required(:user).permit(:company_name, :email, :password, :password_confirmation, :current_password, :gender, :birthdate)
     end
 end

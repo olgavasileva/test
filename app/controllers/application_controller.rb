@@ -1,7 +1,16 @@
 class ApplicationController < ActionController::Base
   include Pundit
 
-  before_action :authenticate_user!
+  # Always use user_signed_in? in stead of testing current_user since current_user may be the "anonymous" user
+  def user_signed_in?
+    !!current_user && !current_user.anonymous?
+  end
+
+  # This will _always_ return a valid user - either the currently signed in user or the anonymous user if noone is signed in
+  # Call user_signed_in? to find out if anyone is actually sigend in
+  def current_user
+    @devise_current_user ||= warden.authenticate(:scope => :user) || User.anonymous_user
+  end
 
   before_action :find_recent_questions
   before_action :configure_devise_permitted_parameters, if: :devise_controller?

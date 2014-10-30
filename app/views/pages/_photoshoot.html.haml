@@ -181,7 +181,7 @@
         Friends
 
   #thanku-dialog{title:"Your design looks fab!"}
-    - if current_user
+    - if user_signed_in?
       %p.lead Your design was saved to your Photo Gallery!
 
     #post-save-container.container

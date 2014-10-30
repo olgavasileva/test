@@ -212,7 +212,10 @@
 #sign_in2 .section_header {
   margin-bottom: 50px; }
 #sign_in2 .section_header h3 {
-  margin: 0; }
+  margin: 0;
+  width: 100%;
+  text-align: center;
+}
 #sign_in2 .section_header h3 span {
   font-size: 18px;
   line-height: 20px; }
