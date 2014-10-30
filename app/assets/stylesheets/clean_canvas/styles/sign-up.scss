@@ -190,12 +190,12 @@
           margin: 0;
         }
 
-        input[type="text"] {
-          border-radius: 3px;
-          font-size: 16px;
+        input {
           margin-bottom: 16px;
-          height: 37px;
-          color: black;
+
+          &#user_password {
+            margin-bottom: 8px;
+          }
         }
 
         input[type="submit"] {
