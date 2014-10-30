@@ -23,7 +23,7 @@
                   .form-group.w-icon
                     = f.label :birthdate, class: 'col-sm-3 input-lg'
                     .col-sm-7
-                      = f.date_field :birthdate, class: 'form-control input-lg'
+                      = f.date_field :birthdate, placeholder: "YYYY-MM-DD", class: 'form-control input-lg'
                     .col-sm-2
                       = link_to '#' do
                         %span.fa.fa-info-circle{ style: 'font-size: 48px' }
