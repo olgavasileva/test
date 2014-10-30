@@ -1,13 +1,13 @@
 class ResponsesController < ApplicationController
   def new
-    question = Question.find params[:question_id]
-    question.started!
+    @question = Question.find params[:question_id]
+    @question.started!
 
-    @response = question.responses.new user: current_user
+    @response = @question.responses.new user: current_user
     @response.build_comment user:current_user
     authorize @response
 
-    @next_question = next_question question
+    @next_question = next_question @question
     @just_answered = params[:just_answered]
   end
 
