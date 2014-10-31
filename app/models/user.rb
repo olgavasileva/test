@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          authentication_keys:[:login], reset_password_keys:[:login]
 
+  belongs_to :user_avatar
+
   has_many :responses, dependent: :destroy
   has_many :feed_items, dependent: :destroy
   has_many :feed_questions, through: :feed_items, source: :question
@@ -90,8 +92,6 @@ class User < ActiveRecord::Base
 						uniqueness: { case_sensitive: false }
 	validates :name, length: { maximum: 50 }
 	validates :terms_and_conditions, acceptance: true
-
-  mount_uploader :avatar, UserAvatarUploader
 
   # Comments made by other users about this user's questions and responses
   def comments_on_questions_and_responses
