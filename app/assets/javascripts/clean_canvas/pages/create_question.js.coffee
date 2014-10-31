@@ -110,6 +110,9 @@ $ ->
   $(document).on 'keydown cut paste drop','.auto-center textarea, textarea.auto-center', ()->
     setTimeout(customAutoResize.bind(this),10)
 
+  $('#content_constraint').submit ->
+    $('#content_constraint input[type=submit]').addClass('disabled')
+
 
 
   return null
