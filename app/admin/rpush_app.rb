@@ -1,6 +1,8 @@
 ActiveAdmin.register Rpush::Apns::App, as: "Push Apps" do
   menu parent: 'Push'
 
+  permit_params :name, :environment, :certificate, :password, :connections
+
   index do
     column :name
     column :environment
