@@ -43,6 +43,7 @@ class Question < ActiveRecord::Base
   delegate :retina_device_image_url, to: :background_image
 
   default share_count: 0
+  default view_count: 1   # Creator has "viewed" it
 
   default :uuid do |question|
     "Q"+UUID.new.generate.gsub(/-/, '')
