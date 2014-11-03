@@ -3,7 +3,7 @@
     %a.btn-primary.negative{:href=>"#comments_pane", :role=>"tab", :data=>{:toggle=>"tab"}}
       %span.glyphicon.glyphicon-comment
       %br
-      Comments
+      = @question.is_a?(TextQuestion) ? "Answers" : "Comments"
   -#%li.col-xs-4
     %a.btn-primary.negative{:href=>"#filter_pane", :role=>"tab", :data=>{:toggle=>"tab"}}
       %span.glyphicon.glyphicon-filter

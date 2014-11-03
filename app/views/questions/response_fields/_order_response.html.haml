@@ -14,6 +14,8 @@
     li
       .panel
         margin-bottom: 0
+  .well-wrap.row
+    color: #357ebd
 %div
   .col-xs-12
     .row.order-choices
@@ -25,4 +27,4 @@
             .panel.panel-default.handle
               .floating-question-title.col-sm-12=c.title
               = responsive_image_tag(c.web_image_url, class: "img-responsive")
-    = render "questions/response_fields/shared/sharing", question:question
+    = render "questions/response_fields/shared/sharing", question:question, style_type: 'blue'
