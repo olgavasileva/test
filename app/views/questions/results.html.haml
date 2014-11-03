@@ -11,8 +11,9 @@
       #response_builder.panel-body
         .row
           %h2.body_title
-            Your question
+            Your question "
             = @question.title
+            \"
             %br
             \... is posted!
           = link_to "Share this question!", 'javascript:$(".shareaholic-canvas").toggle()', class: %w(btn btn-primary white-border btn-lg col-xs-10 col-xs-offset-1)
