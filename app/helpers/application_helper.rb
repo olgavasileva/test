@@ -34,4 +34,8 @@ module ApplicationHelper
 
     image_tag(src, options)
   end
+
+  def get_the_app_path
+    "https://itunes.apple.com/us/app/statisfy/id918625793?mt=8"
+  end
 end
