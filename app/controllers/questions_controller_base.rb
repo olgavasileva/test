@@ -10,7 +10,7 @@ class QuestionsControllerBase < ApplicationController
     authorize @question
 
     if @question.save
-      redirect_to @question.preview? ? new_question_response_path(@question) : [:target, @question]
+      redirect_to @question.preview? ? preview_question_path(@question) : [:target, @question]
     else
       flash[:error] = @question.errors.full_messages.join('; ')
       render "new"

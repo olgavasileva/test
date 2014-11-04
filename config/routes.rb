@@ -28,6 +28,7 @@ LinkchatApp::Application.routes.draw do
   post '/contests/:uuid/scores' => 'contests#scores', as: :scores
 
   resources :questions, shallow:true do
+    get :preview, on: :member
     get :summary, on: :member
     get :share, on: :member
     get :results, on: :member

@@ -19,6 +19,7 @@ class QuestionPolicy < ApplicationPolicy
   def target?;  @user.present? && !@user.anonymous? && @record.user == @user; end
   def enable?;  @user.present? && !@user.anonymous? && @record.user == @user; end
   def results?;  @user.present? && !@user.anonymous? && @record.user == @user; end
+  def preview?;  @user.present? && !@user.anonymous? && @record.user == @user; end
   def update_targetable?; @user.present? && !@user.anonymous? && @record.user == @user; end
 
   def new_response_from_uuid?; true; end

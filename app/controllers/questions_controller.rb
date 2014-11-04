@@ -27,6 +27,14 @@ class QuestionsController < ApplicationController
     authorize @question
   end
 
+  def preview
+    @question = Question.find(params[:id])
+    authorize @question
+
+    @response = @question.responses.new(user: current_user)
+    @response.build_comment(user: current_user)
+  end
+
   def new_response_from_uuid
     @question = Question.find_by uuid:params[:uuid]
     authorize @question
