@@ -3,7 +3,8 @@
   = render partial: 'users/show/communities/community', collection: @member_communities
 
 %h3 Communities I manage
-.center
-  = link_to "Create a community", user_path(tab: 'communities', subtab: 'create'), class: 'btn btn-default'
+- if @user == current_user
+  .center
+    = link_to "Create a community", user_path(tab: 'communities', subtab: 'create'), class: 'btn btn-default'
 %ul.items.communities-list
   = render partial: 'users/show/communities/my_community', collection: @communities
