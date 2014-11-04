@@ -25,36 +25,21 @@ jQuery( function($){
 
 	/* navbar setting functions */
 	function setNavbarLight() {
-    if ( $('.welcome').length ) {
-      $('.navbar').addClass('navbar-light');
-      $('.navbar-brand img').attr('src', '<%= image_url('statisfy-logo.png') %>');
-    }
+    $('.navbar').addClass('navbar-light');
+    $('.navbar-brand img').attr('src', '<%= image_url('statisfy-logo.png') %>');
 	}
 
 	function setNavbarTransparent() {
-
-    if ( $('.welcome').length ) {
-      $('.navbar').removeClass('navbar-light');
-      $('.navbar-brand img').attr('src', '<%= image_url('statisfy-logo-white.png') %>');
-    } 
+    $('.navbar').removeClass('navbar-light');
+    $('.navbar-brand img').attr('src', '<%= image_url('statisfy-logo-white.png') %>');
 	}
 
-  // todo: optimize
-  $(window).on('scroll', function(){
-    if( $(window).width() > 1024 ) {
-      if( $(document).scrollTop() > 150 ) {
-        setNavbarLight();
-      }else {
-        setNavbarTransparent();
-      }
-    }
-  });	
+  if ( $('.welcome').length ) {
+    $(window).on('scroll', $.throttle(500, toggleNavbar));
+    $(window).resize($.throttle(500, toggleNavbar));
 
-  $(window).resize( function() {
-    toggleNavbar();	
-  });
-
-  toggleNavbar();
+    toggleNavbar();
+  }
 
 	// hide collapsible menu
 	$('.navbar-nav li a').click( function() {

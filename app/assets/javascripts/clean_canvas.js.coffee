@@ -24,6 +24,7 @@
 #= require hisrc
 #= require toastr
 #= require gritter
+#= require jquery.ba-throttle-debounce
 
 #
 # Page files
