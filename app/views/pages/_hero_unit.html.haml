@@ -1,0 +1,21 @@
+#hero-unit.hero-unit
+  .hero-content.text-right
+    .container
+      .row
+        .col-lg-7.col-lg-offset-5
+          #slidecaption.slide-caption
+            .hero-text
+              %h3.hero-heading
+                ASK. ANSWER.
+                %span.name CONNECT.
+              .looper.slide.down{"data-interval" => "3000", "data-looper" => "go"}
+                .looper-inner
+                  .item.animated
+                    %p Discover what your world thinks!
+          .hero-buttons
+            =link_to new_user_registration_path, class:%w(btn-about btn btn-info btn-lg) do
+              %i.fa.fa-arrow-circle-o-down
+              GET STARTED
+            =link_to get_the_app_path, class:%w(btn-contact btn btn-primary btn-lg) do
+              %i.fa.fa-apple
+              GET THE APP
