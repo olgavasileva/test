@@ -32,7 +32,6 @@ class TwoCents::Comments < Grape::API
       comments = user.comments.order(:created_at)
       comments = comments.reverse if params[:reverse]
       questions = comments.map(&:question).uniq.compact
-      puts questions
 
       if declared_params[:page]
         questions = questions.paginate(page: declared_params[:page],
