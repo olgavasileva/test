@@ -2,7 +2,7 @@ class UserPolicy < ApplicationPolicy
   def require_user?;  true;   end
   def index?;         false;  end
   def profile?;       true;   end
-  def show?;          true;   end
+  def show?;          !@user.anonymous?;   end
 
   # Any logged in user can follow another user
   def follow?;        true;   end
