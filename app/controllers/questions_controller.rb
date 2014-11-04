@@ -37,9 +37,16 @@ class QuestionsController < ApplicationController
 
   def new_response_from_uuid
     @question = Question.find_by uuid:params[:uuid]
-    authorize @question
+    @question ||= Question.find_by id:params[:uuid]   # 11/4/14 temporary fix for device using ID in stead of UUID in links
 
-    redirect_to new_question_response_path(@question) unless browser.iphone? || browser.ipod? || browser.ipad?
+    if @question.present?
+      authorize @question
+
+      redirect_to new_question_response_path(@question) unless browser.iphone? || browser.ipod? || browser.ipad?
+    else
+      authorize Question, :index?
+      redirect_to :root
+    end
   end
 
   def update_targetable
