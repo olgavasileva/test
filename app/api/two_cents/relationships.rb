@@ -83,7 +83,9 @@ class TwoCents::Relationships < Grape::API
       # users += User.search(q: params[:search_text]).result
       # users.uniq!
 
-      users = User.where("username like ?", "%#{params[:search_text]}%").order(:username)
+      users = User.where("username like ?", "%#{params[:search_text]}%")
+                  .where.not(id: current_user.id)
+                  .order(:username)
 
       if params[:page]
         users = users.paginate(page: params[:page],
