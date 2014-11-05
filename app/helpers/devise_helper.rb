@@ -7,12 +7,19 @@ module DeviseHelper
       count: resource.errors.count,
       resource: resource.class.model_name.human.downcase)
 
+    flash[sentence] = messages
+    # html = <<-HTML
+    # <div class="alert alert-danger alert-block">
+    #   <button type="button" class="close" data-dismiss="alert">x</button>
+    #   <h4>#{sentence}</h4>
+    #   #{messages}
+    # </div>
+    # HTML
+    #
+    # html.html_safe
+
     html = <<-HTML
-    <div class="alert alert-danger alert-block">
-      <button type="button" class="close" data-dismiss="alert">x</button>
-      <h4>#{sentence}</h4>
-      #{messages}
-    </div>
+
     HTML
 
     html.html_safe
