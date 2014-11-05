@@ -6,6 +6,8 @@
         .panel-title
           .row
             .col-xs-3
+              =link_to preview_question_path(@question) do
+                %span.glyphicon.glyphicon-chevron-left
             .col-xs-6
               %h3 Targeting
             .col-xs-3
