@@ -1,3 +1,3 @@
 $(function() {
-  $('#user_birthdate').datepicker({ dateFormat: 'yy-mm-dd' });
+  $('[data-toggle=popover]').popover()
 });
