@@ -156,14 +156,14 @@ class TwoCents::Auth < Grape::API
     post 'register', http_codes:[
         [200, "1001 - Invalid instance token"],
         [200, "1002 - A user with that email is already registered"],
-        [200, "1009 - Handle is already taken"],
+        [200, "1009 - The Username is already taken"],
         [200, "400 - Missing required params"]
       ] do
 
       validate_instance!
 
       fail! 1002, "A user with that email is already registered" if User.find_by email:declared_params[:email]
-      fail! 1009, "Handle is already taken" if User.find_by username:declared_params[:username]
+      fail! 1009, "The Username is already taken" if User.find_by username:declared_params[:username]
 
       user = User.create! name:declared_params[:name],
                           email:declared_params[:email],
