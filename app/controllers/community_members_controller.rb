@@ -1,6 +1,6 @@
 class CommunityMembersController < ApplicationController
   def create
-    community = Group.find(params.fetch(:community_id))
+    community = Community.find(params.fetch(:community_id))
     member = CommunityMember.new(user_id: params.fetch(:user_id),
                                  community_id: community.id)
 

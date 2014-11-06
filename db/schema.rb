@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141025163638) do
+ActiveRecord::Schema.define(version: 20141031023656) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -809,6 +809,12 @@ ActiveRecord::Schema.define(version: 20141025163638) do
   add_index "targets_users", ["target_id"], name: "index_targets_users_on_target_id", using: :btree
   add_index "targets_users", ["user_id"], name: "index_targets_users_on_user_id", using: :btree
 
+  create_table "user_avatars", force: true do |t|
+    t.string   "image"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -830,10 +836,12 @@ ActiveRecord::Schema.define(version: 20141025163638) do
     t.date     "birthdate"
     t.string   "gender"
     t.string   "company_name"
+    t.integer  "user_avatar_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["user_avatar_id"], name: "index_users_on_user_avatar_id", using: :btree
 
   create_table "users_roles", id: false, force: true do |t|
     t.integer "user_id"
