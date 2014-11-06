@@ -1,7 +1,7 @@
 class SkippedItemsController < ApplicationController
   def new
     question = Question.find params[:question_id]
-    @skipped_item = question.skips.new user:current_user
+    @skipped_item = question.skips.first_or_initialize(user: current_user)
     authorize @skipped_item
 
     if @skipped_item.save
