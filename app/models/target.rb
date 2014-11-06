@@ -91,11 +91,11 @@ class Target < ActiveRecord::Base
       targeted_user.instances.each do |instance|
         next unless instance.push_token.present?
 
-        instance.push alert:'Hello iPhone!', badge:0, sound:true, other: {:type => message.type,
-                                                                          :created_at => message.created_at,
-                                                                          :read_at => message.read_at,
-                                                                          :question_id => message.question_id,
-                                                                          :body => message.body }
+        instance.push alert:message.body, badge:targeted_user.messages.count, sound:true, other: {type: message.type,
+                                                                                                  created_at: message.created_at,
+                                                                                                  read_at: message.read_at,
+                                                                                                  question_id: message.question_id,
+                                                                                                  body: message.body }
       end
 
       # if !QuestionTargeted.exists?(:user_id => self.user_id)

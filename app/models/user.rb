@@ -307,7 +307,7 @@ class User < ActiveRecord::Base
       followed_user.instances.each do |instance|
         next unless instance.push_token.present?
 
-        instance.push alert:'Hello iPhone!', badge:0, sound:true, other: {type: message.type,
+        instance.push alert:"#{username} followed you", badge:messages.count, sound:true, other: {type: message.type,
                                                                           created_at: message.created_at,
                                                                           read_at: message.read_at,
                                                                           follower_id: message.follower_id }
