@@ -1,5 +1,5 @@
 set :deploy_to, "/app/#{fetch :application}/staging"
-set :branch, "staging"
+set :branch, "staging-1.11"
 
 # Simple Role Syntax
 # ==================
