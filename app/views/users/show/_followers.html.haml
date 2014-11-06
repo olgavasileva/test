@@ -2,8 +2,6 @@
   - if @user == current_user
     .center
       = link_to "Organize Followers", 'javascript:void(0)', class: 'btn btn-default', data: { toggle: 'modal', target: '#organize-followers' }
-      = link_to "Invite Friends", 'javascript:$(".shareaholic-canvas").toggle()', class: 'btn btn-default'
-      .shareaholic-canvas{ data: { app: 'share_buttons', 'app-id' => 8080962, link: new_question_response_url(@question) }, style: 'display: none' }
   %ul.items
     - @followers.each do |follower|
       %li
