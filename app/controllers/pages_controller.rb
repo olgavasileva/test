@@ -31,6 +31,21 @@ class PagesController < ApplicationController
     end
   end
 
+  def rpush_check
+    begin
+      pid=IO.read(File.join(Rails.root.to_s, "tmp", 'rpush.pid').to_s).to_i
+      Process.kill 0, pid
+      render text: "rpush is running"
+    rescue
+      if params[:start].present?
+        `bundle exec rpush start -e #{Rails.env}`
+        render text: "started rpush - it was not running"
+      else
+        render text: "rpush is not running"
+      end
+    end
+  end
+
   # For demo only
   def gallery
   end

@@ -381,7 +381,7 @@ GEM
       nokogiri
       rubyzip
       spreadsheet (> 0.6.4)
-    rpush (2.1.0)
+    rpush (2.2.0)
       activesupport
       multi_json (~> 1.0)
       net-http-persistent
