@@ -33,7 +33,7 @@ class PagesController < ApplicationController
 
   def rpush_check
     begin
-      pid=IO.read(File.join(Rails.root.to_s, "tmp", 'rpush.pid').to_s).to_i
+      pid=IO.read(File.join(Rails.root.to_s, 'tmp', 'pids', 'rpush.pid').to_s).to_i
       Process.kill 0, pid
       render text: "rpush is running"
     rescue
