@@ -3,6 +3,9 @@
     .center
       = link_to "Organize Followers", 'javascript:void(0)', class: 'btn btn-default', data: { toggle: 'modal', target: '#organize-followers' }
   %ul.items
+    -if @followers.empty?
+      %h3
+        There are no followers.
     - @followers.each do |follower|
       %li
         = gravatar_for follower.email, default: :identicon, size: 20

@@ -1,5 +1,7 @@
 .tab-content.notifications-tab-content
   %ul.items
+    - if @notifications.empty?
+      %h3 There are no notifications.
     - @notifications.each do |notification|
       %li
         - if (notification.isQuestionUpdated? || notification.isQuestionTargeted?) && notification.question.present?

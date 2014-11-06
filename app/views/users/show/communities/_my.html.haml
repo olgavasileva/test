@@ -1,5 +1,7 @@
 %h3 Communities I am a member of
 %ul.items.communities-list
+  - if @member_communities.empty?
+    %h4 There are no member communities.
   = render partial: 'users/show/communities/community', collection: @member_communities
 
 %h3 Communities I manage
@@ -7,4 +9,6 @@
   .center
     = link_to "Create a community", user_path(tab: 'communities', subtab: 'create'), class: 'btn btn-default'
 %ul.items.communities-list
+  - if @communities.empty?
+    %h4 There are no managing communities.
   = render partial: 'users/show/communities/my_community', collection: @communities
