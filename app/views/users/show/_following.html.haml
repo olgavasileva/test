@@ -4,6 +4,8 @@
       = hidden_field_tag(:tab, 'following')
       = text_field_tag(:search_text, params[:search_text], placeholder: "Find people...", class: 'form-control')
   %ul.items
+    - if @users.empty?
+      %h3 There are no matching users.
     - @users.each do |user|
       %li
         = gravatar_for user.email, default: :identicon, size: 20

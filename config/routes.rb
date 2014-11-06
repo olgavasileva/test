@@ -2,7 +2,7 @@ LinkchatApp::Application.routes.draw do
   match "/404" => "errors#error404", via: [ :get, :post, :patch, :delete ]
   match "/500" => "errors#error500", via: [ :get, :post, :patch, :delete ]
 
-  devise_for :users
+  devise_for :users, controllers: { registrations: 'users/registrations' }
   devise_scope :user do
     get 'campaign' => 'devise/registrations#new', as: :demo_registration
     get 'campaign_login' => 'devise/sessions#new', as: :demo_login
