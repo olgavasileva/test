@@ -1,4 +1,4 @@
-json.(question, :id, :type, :title, :description, :response_count, :comment_count, :uuid)
+json.(question, :id, :type, :title, :description, :response_count, :comment_count, :uuid, :created_at)
 json.creator_id question.user.id
 json.creator_name question.user.username
 

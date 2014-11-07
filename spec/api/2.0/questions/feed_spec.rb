@@ -123,6 +123,7 @@ describe :feed do
                 expect(q['description']).to eq "Text Choice Description"
                 expect(q['rotate']).to eq true
                 expect(q['category']['name']).to eq "Category 1"
+                expect(q['created_at']).to_not be_nil
                 expect(q['image_url']).not_to be_nil
                 expect(q['comment_count']).to eq 0
                 expect(q['response_count']).to eq 0
@@ -162,6 +163,7 @@ describe :feed do
                 expect(q['creator_name']).to eq multiple_choice_question.user.username
                 expect(q['creator_id']).to eq multiple_choice_question.user.id
                 expect(q['image_url']).not_to be_nil
+                expect(q['created_at']).to_not be_nil
 
 
                 choices = q['choices']
@@ -200,6 +202,7 @@ describe :feed do
                 expect(q['category']['name']).to eq "Category 2"
                 expect(q['comment_count']).to eq 0
                 expect(q['response_count']).to eq 0
+                expect(q['created_at']).to_not be_nil
                 expect(q['image_url']).not_to be_nil
 
 
@@ -233,6 +236,7 @@ describe :feed do
                 expect(q['comment_count']).to eq 0
                 expect(q['response_count']).to eq 0
                 expect(q['image_url']).not_to be_nil
+                expect(q['created_at']).to_not be_nil
 
 
                 choices = q['choices']
@@ -271,6 +275,7 @@ describe :feed do
                 expect(q['max_characters']).to eq 100
                 expect(q['comment_count']).to eq 0
                 expect(q['response_count']).to eq 0
+                expect(q['created_at']).to_not be_nil
               end
             end
           end
