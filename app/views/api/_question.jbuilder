@@ -1,6 +1,7 @@
-json.(question, :id, :type, :title, :description, :response_count, :comment_count, :uuid, :created_at)
+json.(question, :id, :type, :title, :description, :response_count, :comment_count, :uuid)
 json.creator_id question.user.id
 json.creator_name question.user.username
+json.created_at question.created_at.to_i
 
 json.rotate question.rotate if question.kind_of? ChoiceQuestion
 
