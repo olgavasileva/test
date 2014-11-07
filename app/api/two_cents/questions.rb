@@ -745,7 +745,8 @@ class TwoCents::Questions < Grape::API
       questions.map do |q|
         {
           id: q.id,
-          title: q.title
+          title: q.title,
+          created_at: q.created_at
         }
       end
     end
