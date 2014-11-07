@@ -2,8 +2,7 @@ json.choices @question.choices do |c|
   json.id c.id
   top_count = c.try :top_count
   json.top_count top_count unless top_count.nil?
-  json.response_ratio top_count unless top_count.nil? # client is useing this value as if it were top_count
-  # json.response_ratio c.response_ratio
+  json.response_ratio c.respond_to?(:top_count) ? c.top_count : c.response_ratio
 end
 json.response_count @question.responses.count
 json.view_count [@question.view_count.to_i, @question.responses.count, @question.skip_count.to_i].max
