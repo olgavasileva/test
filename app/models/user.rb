@@ -104,7 +104,7 @@ class User < ActiveRecord::Base
 	validates :name, length: { maximum: 50 }
 	validates :terms_and_conditions, acceptance: true
   validates :gender, inclusion: {in: %w(male female), allow_nil: true}
-  validates :birthdate, presence: true
+  validates :birthdate, presence: true, on: :create
   validate :over_13
 
   def self.anonymous_user
