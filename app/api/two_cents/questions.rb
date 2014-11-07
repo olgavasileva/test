@@ -628,8 +628,8 @@ class TwoCents::Questions < Grape::API
     params do
       use :auth
 
-      optional :page, type: Integer, desc: "Page number, starting at 1 - all questions returned if not supplied"
-      optional :per_page, type: Integer, default: 15, desc: "Number of questions per page"
+      optional :page, type: Integer, desc: "[deprecated] Page number, starting at 1 - all questions returned if not supplied"
+      optional :per_page, type: Integer, default: 15, desc: "[deprecated] Number of questions per page"
     end
     post 'feed', jbuilder: "questions", http_codes:[
       [200, "400 - Invalid params"],
@@ -638,14 +638,22 @@ class TwoCents::Questions < Grape::API
     ] do
       validate_user!
 
-      page = declared_params[:page]
-      per_page = page ? declared_params[:per_page] : 15
+      User.increment_counter(:feed_page, current_user.id)
+
+      page = current_user.reload.feed_page
+      per_page = 15
 
       @questions = policy_scope(Question).paginate(page: page, per_page:per_page)
 
-      if @questions.count < per_page * page.to_i + per_page + 1
-        current_user.feed_more_questions per_page + 1
+      # If fewer questions than expected, add more feed items and redo.
+      if @questions.to_a.count < per_page
+        current_user.feed_more_questions(per_page)
         @questions = policy_scope(Question).paginate(page: page, per_page:per_page)
+
+        # If still fewer questions than expected, reset feed page for next request.
+        if @questions.to_a.count < per_page
+          current_user.update_attributes(feed_page: 0)
+        end
       end
 
       @questions.each{|q| q.viewed!}
