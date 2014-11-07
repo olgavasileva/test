@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
          :recoverable, :timeoutable, :trackable, :validatable,
          authentication_keys:[:login], reset_password_keys:[:login]
 
+  belongs_to :user_avatar
+
   has_many :responses, dependent: :destroy
   has_many :order_responses, class_name: "OrderResponse"
   has_many :choice_responses, class_name: "ChoiceResponse"
