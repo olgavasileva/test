@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
          :recoverable, :timeoutable, :trackable, :validatable,
          authentication_keys:[:login], reset_password_keys:[:login]
 
+  belongs_to :user_avatar
+
   has_many :responses, dependent: :destroy
   has_many :order_responses, class_name: "OrderResponse"
   has_many :choice_responses, class_name: "ChoiceResponse"
@@ -104,7 +106,7 @@ class User < ActiveRecord::Base
 	validates :name, length: { maximum: 50 }
 	validates :terms_and_conditions, acceptance: true
   validates :gender, inclusion: {in: %w(male female), allow_nil: true}
-  validates :birthdate, presence: true
+  validates :birthdate, presence: true, on: :create
   validate :over_13
 
   def self.anonymous_user
@@ -130,11 +132,11 @@ class User < ActiveRecord::Base
     (authentications.empty? || !password.blank?) && super
   end
 
- 	def User.new_remember_token
+ 	def self.new_remember_token
 	    SecureRandom.urlsafe_base64
 	end
 
-	def User.encrypt(token)
+	def self.encrypt(token)
 		Digest::SHA1.hexdigest(token.to_s)
 	end
 
@@ -307,7 +309,7 @@ class User < ActiveRecord::Base
       followed_user.instances.each do |instance|
         next unless instance.push_token.present?
 
-        instance.push alert:'Hello iPhone!', badge:0, sound:true, other: {type: message.type,
+        instance.push alert:"#{username} followed you", badge:messages.count, sound:true, other: {type: message.type,
                                                                           created_at: message.created_at,
                                                                           read_at: message.read_at,
                                                                           follower_id: message.follower_id }

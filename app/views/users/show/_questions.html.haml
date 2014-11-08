@@ -5,8 +5,13 @@
       = link_to "Answered", user_path(@user, tab: 'questions', subtab: 'answered'), class: "btn btn-default #{'active' if @subtab == 'answered'}"
       = link_to "Commented", user_path(@user, tab: 'questions', subtab: 'commented'), class: "btn btn-default #{'active' if @subtab == 'commented'}"
   %ul.items
+    - if @questions.empty?
+      %h3
+        There are no
+        = @subtab
+        questions.
     - @questions.each do |question|
       %li
-        = link_to question.title, @user.answered_questions.where(id:question).blank? ? new_question_response_path(question) : summary_question_path(question)
+        = link_to question.title, current_user.answered_questions.where(id: question).blank? ? new_question_response_path(question) : summary_question_path(question)
   .center
     = will_paginate @questions

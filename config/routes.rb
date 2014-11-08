@@ -13,6 +13,7 @@ LinkchatApp::Application.routes.draw do
   get '/studio' => 'pages#studio' unless Rails.env.production?
   get '/welcome' => 'pages#welcome' unless Rails.env.production?
   get '/gallery' => 'pages#gallery' unless Rails.env.production?
+  get '/rpush_check' => 'pages#rpush_check'
 
   ActiveAdmin.routes(self)
 

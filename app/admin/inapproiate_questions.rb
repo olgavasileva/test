@@ -15,7 +15,9 @@ ActiveAdmin.register Question, as: "InappropriateQuestion"  do
 
   index do
     column :id
-    column :title
+    column "Title" do |q|
+      link_to q.title, question_sharing_path(q.uuid), target: :_blank
+    end
     column "Created" do |q|
       "#{time_ago_in_words q.created_at} ago"
     end

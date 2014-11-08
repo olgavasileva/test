@@ -73,7 +73,7 @@ describe :register do
             it {expect(response.status).to eq 200}
             it {JSON.parse(response.body).should_not be_nil}
             it {JSON.parse(response.body)['error_code'].should eq 1009}
-            it {JSON.parse(response.body)['error_message'].should match /Handle is already taken/}
+            it {JSON.parse(response.body)['error_message'].should match /is already taken/}
           end
 
           context "When a user with the email doesn't already exist" do

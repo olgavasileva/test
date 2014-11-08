@@ -1,21 +1,22 @@
-%img.blured-background{src: @response.question.web_image_url || image_path("fallback/choice1.png")}
-.row#content_constraint{class: @response.question.type}
-  .col-xs-12.col-sm-8.col-sm-push-2.img-overlay
-    = # note: form does not work, but it is not intended to be submitted
-    = simple_form_for [:question, setup_response(@response)], url: { action: :create }, :html=>{class:"panel panel-default"} do |form|
-      .panel-heading
-        .panel-title
+.question-preview
+  %img.blured-background{src: @response.question.web_image_url || image_path("fallback/choice1.png")}
+  .row#content_constraint{class: @response.question.type}
+    .col-xs-12.col-sm-8.col-sm-push-2.img-overlay
+      = # note: form does not work, but it is not intended to be submitted
+      = simple_form_for [:question, setup_response(@response)], url: { action: :create }, :html=>{class:"panel panel-default"} do |form|
+        .panel-heading
+          .panel-title
+            .row
+              .col-xs-3
+                =link_to ([:edit, @response.question]) do
+                  %span.glyphicon.glyphicon-chevron-left
+              .col-xs-6
+              .col-xs-3
+                = link_to "Continue", [:target, @response.question]
+        .panel-body.response
           .row
-            .col-xs-3
-              =link_to ([:edit, @response.question]) do
-                %span.glyphicon.glyphicon-chevron-left
-            .col-xs-6
-            .col-xs-3
-              = link_to "Continue", [:target, @response.question]
-      .panel-body.response
-        .row
-          %div
-            = form.association :question, as: :hidden
-            = form.association :user, as: :hidden
-            = form.input :type, as: :hidden
-            = render "responses/response_fields", form:form, response:@response
+            %div
+              = form.association :question, as: :hidden
+              = form.association :user, as: :hidden
+              = form.input :type, as: :hidden
+              = render "responses/response_fields", form:form, response:@response

@@ -53,9 +53,8 @@ describe 'relationships/followable' do
 
     before { request.call }
 
-    it "returns all users" do
-      expect(response_ids).to match_array User.all.map(&:id)
-      expect(response_body.count).to eq User.count
+    it "returns all users except self" do
+      expect(response_ids).to match_array User.all.map(&:id) - [instance.user.id]
     end
 
     include_examples :common

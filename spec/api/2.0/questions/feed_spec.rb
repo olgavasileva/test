@@ -123,6 +123,7 @@ describe :feed do
                 expect(q['description']).to eq "Text Choice Description"
                 expect(q['rotate']).to eq true
                 expect(q['category']['name']).to eq "Category 1"
+                expect(q['created_at']).to_not be_nil
                 expect(q['image_url']).not_to be_nil
                 expect(q['comment_count']).to eq 0
                 expect(q['response_count']).to eq 0
@@ -162,6 +163,7 @@ describe :feed do
                 expect(q['creator_name']).to eq multiple_choice_question.user.username
                 expect(q['creator_id']).to eq multiple_choice_question.user.id
                 expect(q['image_url']).not_to be_nil
+                expect(q['created_at']).to_not be_nil
 
 
                 choices = q['choices']
@@ -200,6 +202,7 @@ describe :feed do
                 expect(q['category']['name']).to eq "Category 2"
                 expect(q['comment_count']).to eq 0
                 expect(q['response_count']).to eq 0
+                expect(q['created_at']).to_not be_nil
                 expect(q['image_url']).not_to be_nil
 
 
@@ -233,6 +236,7 @@ describe :feed do
                 expect(q['comment_count']).to eq 0
                 expect(q['response_count']).to eq 0
                 expect(q['image_url']).not_to be_nil
+                expect(q['created_at']).to_not be_nil
 
 
                 choices = q['choices']
@@ -271,6 +275,7 @@ describe :feed do
                 expect(q['max_characters']).to eq 100
                 expect(q['comment_count']).to eq 0
                 expect(q['response_count']).to eq 0
+                expect(q['created_at']).to_not be_nil
               end
             end
           end
@@ -304,6 +309,37 @@ describe :feed do
               it {expect(JSON.parse(response.body)[0]['question']['id']).to eq text_choice_question.id}
               it {expect(JSON.parse(response.body)[0]['question']['comment_count']).to eq 1}
               it {expect(JSON.parse(response.body)[0]['question']['response_count']).to eq 1}
+            end
+          end
+
+          context "with less than 15 questions in response" do
+            it "resets user's feed_page to 0" do
+              expect(instance.user.reload.feed_page).to eq 0
+            end
+          end
+
+          context "with more than 15 questions in response" do
+            let(:setup_questions) {
+              4.times { all_questions.each { |q| q.dup.save } }
+
+              text_choice1
+              text_choice2
+              text_choice3
+
+              multiple_choice1
+              multiple_choice2
+              multiple_choice3
+
+              image_choice1
+              image_choice2
+
+              order_choice1
+              order_choice2
+              order_choice3
+            }
+
+            it "increments user's feed_page" do
+              expect(instance.user.reload.feed_page).to eq 1
             end
           end
         end

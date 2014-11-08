@@ -12,6 +12,9 @@ ActiveAdmin.register User do
     end
     column :current_sign_in_at
     column :sign_in_count
+    column "Items in Feed" do |u|
+      link_to u.feed_items.count, admin_user_feed_items_path(u)
+    end
     column :created_at
     column "Responses" do |u|
       link_to "Clear all #{pluralize u.responses.count, "response"} and reset the feed", reset_admin_user_path(u), method: :delete
