@@ -5,6 +5,23 @@
       %br
       = @community.name
     %hr
-    = link_to "Invite friends to join this community", '#', class: 'btn btn-primary btn-lg'
+    = link_to "Invite friends to join this community", 'javascript:$(".shareaholic-canvas").toggle()', class: 'btn btn-primary btn-lg'
+    .shareaholic-canvas{ data: { app: 'share_buttons', 'app-id' => 8080962, link: user_url(@community.user, tab: 'communities') }, style: 'display: none' }
     %br
     = link_to "Done", user_path(@community.user, tab: 'communities', subtab: 'my'), class: 'btn btn-primary btn-lg'
+
+:javascript
+  $(function() {
+    var shr = document.createElement('script');
+    shr.setAttribute('data-cfasync', 'false');
+    shr.src = '//dsms0mj1bbhn4.cloudfront.net/assets/pub/shareaholic.js';
+    shr.type = 'text/javascript'; shr.async = 'true';
+    shr.onload = shr.onreadystatechange = function() {
+      var rs = this.readyState;
+      if (rs && rs != 'complete' && rs != 'loaded') return;
+      var site_id = '09104f8bfbc58034f46a42b21966766d';
+      try { Shareaholic.init(site_id); } catch (e) {}
+    };
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(shr, s);
+  });

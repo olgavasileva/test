@@ -746,7 +746,7 @@ class TwoCents::Questions < Grape::API
         {
           id: q.id,
           title: q.title,
-          created_at: q.created_at
+          created_at: q.created_at.to_i
         }
       end
     end
