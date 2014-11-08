@@ -993,7 +993,8 @@ class TwoCents::Questions < Grape::API
                 "skip_count": 0,
                 "start_count": 0,
                 "sponsor": null,
-                "view_count": null
+                "view_count": null,
+                "created_at": 1415488652
             },
             "title": "Name4",
             "type": null,
@@ -1006,14 +1007,21 @@ class TwoCents::Questions < Grape::API
     params do
       use :auth
 
-      requires :question_id, type: Integer, desc: "ID of question."
+      optional :question_id, type: Integer, desc: "ID of question."
+      optional :question_uuid, type: String, desc: "uuid of question"
+      mutually_exclusive :question_id, :question_uuid
       optional :user_id, type: Integer, desc: "ID of user for question answer data, defaults to current user's ID."
     end
     get 'question', jbuilder: "question_info" do
       validate_user!
 
-      @question = Question.find(params[:question_id])
-      user = User.find(params.fetch(:user_id, current_user.id))
+      @question = if declared_params[:question_id]
+        Question.find declared_params[:question_id]
+      else
+        Question.find_by_uuid declared_params[:question_uuid]
+      end
+
+      user = User.find declared_params.fetch(:user_id, current_user.id)
       @user_answered = user.answered_questions.include? @question
     end
 
