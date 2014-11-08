@@ -1,4 +1,5 @@
 set :deploy_to, "/app/#{fetch :application}/staging"
+set :rails_env, 'staging'  # If the environment differs from the stage name
 set :branch, "staging-1.11"
 
 # Simple Role Syntax

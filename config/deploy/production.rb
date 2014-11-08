@@ -1,6 +1,7 @@
 set :branch, "master"
 set :deploy_to, "/app/#{fetch :application}/production"
-set :rails_env, 'production-1.11'  # If the environment differs from the stage name
+set :rails_env, 'production'  # If the environment differs from the stage name
+set :branch, "production-1.11"
 
 # Simple Role Syntax
 # ==================
