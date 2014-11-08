@@ -55,7 +55,7 @@ class TwoCents::Questions < Grape::API
       end
 
       def generate_message_from_question(question)
-        "Hi! This is #{question.user.username}. Check this awesome question: \"#{question.title}\" on Statisfy"
+        "Hi! This is #{question.user.username}. Check this awesome question: \"#{question.title}\" on Statisfy. Link: \"#{question_sharing_path(question.uuid)}\""
       end
 
       def after_id_to_end(records, id)
@@ -74,6 +74,7 @@ class TwoCents::Questions < Grape::API
           follower_ids: params['follower_ids'],
           group_ids: params['group_ids']
         )
+
 
         question.apply_target! target
 
