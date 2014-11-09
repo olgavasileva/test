@@ -9,11 +9,13 @@
         .col-sm-6.col-sm-push-3.signin_box
           .box
             .box_cont
+              .section_header
+                %h3 Sign In
               .form
                 = form_for resource, as: resource_name, url: session_path(resource_name), class: "form-inline" do |f|
                   = devise_error_messages!
-                  = f.text_field :login, autofocus: true, placeholder:"Username or Email", class:%w{form-control}
-                  = f.password_field :password, autocomplete: "off", placeholder: "Password", class:%w{form-control}
+                  = f.text_field :login, autofocus: true, placeholder:"Username or Email", class:%w{form-control input-lg}
+                  = f.password_field :password, autocomplete: "off", placeholder: "Password", class:%w{form-control input-lg}
                   = f.submit "sign in"
                   .forgot
                     %span Don’t have an account?
