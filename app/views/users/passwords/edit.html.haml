@@ -1,14 +1,22 @@
-%h2 Change your password
-= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
-  = devise_error_messages!
-  = f.hidden_field :reset_password_token
-  %div
-    = f.label :password, "New password"
-    %br/
-    = f.password_field :password, autofocus: true, autocomplete: "off"
-  %div
-    = f.label :password_confirmation, "Confirm new password"
-    %br/
-    = f.password_field :password_confirmation, autocomplete: "off"
-  %div= f.submit "Change my password"
-= render "devise/shared/links"
+#sign_in2
+  .container
+    .section_header
+      %h3
+    .row.login
+      .col-sm-6.col-sm-push-3.signin_box
+        .box
+          .box_cont
+            .section_header
+              %h3 Change your password
+            .form
+              = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
+                = devise_error_messages!
+                = f.hidden_field :reset_password_token
+                .form-group= f.password_field :password, autofocus: true, autocomplete: "off", placeholder: "New password", class:%w{form-control input-lg}
+                .form-group= f.password_field :password_confirmation, autocomplete: "off", placeholder: "Confirm new password", class:%w{form-control input-lg}
+                %div= f.submit "Change my password"
+              %br
+              .text-center
+                =link_to "Sign up", new_user_registration_path
+                |
+                =link_to "Sign in", new_user_session_path

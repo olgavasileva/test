@@ -2,6 +2,7 @@ Loading...
 :javascript
   var app_store_link = "#{ENV['APP_STORE_LINK']}";
   var question_uuid = "#{@question.uuid}";
+  var question_id = "#{@question.id}";
 
   var n = [],
   i = !1;
@@ -10,7 +11,7 @@ Loading...
       n.map(window.clearTimeout)
   });
 
-  window.location = "statisfy://question?id=" + question_uuid;
+  window.location = "statisfy://question?id=" + question_id;
 
   n.push(window.setTimeout(function () {
       n.splice(0), i = !1, window.location = app_store_link;
