@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-describe 'POST /users/avatar' do
+describe 'POST /profile/avatar' do
   let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
   let(:params) { {
     auth_token: instance.auth_token,
     image_url: FactoryGirl.generate(:sample_image_url)
   } }
-  let(:request) { -> { post 'v/2.0/users/avatar', params }}
+  let(:request) { -> { post 'v/2.0/profile/avatar', params }}
 
   it "creates a user avatar" do
     expect { request.call }.to change { UserAvatar.count }.by 1
