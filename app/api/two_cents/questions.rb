@@ -56,6 +56,7 @@ class TwoCents::Questions < Grape::API
 
       def generate_message_from_question(question)
         "Hi! This is #{question.user.username}. Check this awesome question: \"#{question.title}\" on Statisfy"
+
       end
 
       def after_id_to_end(records, id)
