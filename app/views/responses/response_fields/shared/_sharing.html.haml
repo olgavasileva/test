@@ -2,7 +2,7 @@
 -style_type||='transparent-white'
 .share-follow-menu{class:"#{style_type}"}
   .well-wrap.row
-    = link_to current_user.anonymous? ? '' : user_path(@question.user), class:%w(col-xs-5 col-sm-5 ) do
+    = link_to user_path(@question.user), class:%w(col-xs-5 col-sm-5 ) do
       %h5 Posted by
       %h6.elipsable
         = @question.user.username
