@@ -178,5 +178,18 @@ class TwoCents::Relationships < Grape::API
       {}
     end
 
+    desc "Invite many people to become users"
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      optional :email_addresses, type: Array, default: [], desc: "People's email addresses."
+      optional :phone_numbers, type: Array, default: [], desc: "People's phone numbers."
+    end
+    put 'invite_many' do
+      validate_user!
+
+      {}
+    end
+
   end
 end
