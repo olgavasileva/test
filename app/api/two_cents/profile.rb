@@ -34,27 +34,26 @@ class TwoCents::Profile < Grape::API
     ] do
       validate_user!
 
-      @user = User.find(params.fetch(:user_id, current_user.id))
+      @user = User.find(declared_params.fetch(:user_id, current_user.id))
     end
 
 
 
     desc "Upload avatar."
     params do
+      requires :auth_token, type:String, desc:'Obtain this from the instances API'
       requires :image_url, type: String, desc: "URL to avatar image."
     end
     post 'avatar' do
       validate_user!
 
-      image_url = params[:image_url]
+      image_url = declared_params[:image_url]
 
       if URI(image_url).scheme.nil?
-        UserAvatar.create!(user: current_user, image: open(image_url))
+        current_user.create_user_avatar! image: open(image_url)
       else
-        UserAvatar.create!(user: current_user, remote_image_url: image_url)
+        current_user.create_user_avatar! remote_image_url: image_url
       end
-
-      current_user.save!
 
       {}
     end

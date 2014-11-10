@@ -14,7 +14,14 @@ describe 'comments/user' do
   shared_examples :correct_fields do
     it "responds with correct data fields" do
       response_body.each do |data|
-        expect(data.keys).to match_array %w[question_id question_title]
+        fields = %w[question_id question_title last_commented_at]
+        expect(data.keys).to match_array fields
+      end
+    end
+
+    it "has last commented at for each question" do
+      response_body.each do |data|
+        expect(data['last_commented_at']).to_not be_nil
       end
     end
   end

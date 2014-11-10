@@ -39,9 +39,17 @@ class TwoCents::Comments < Grape::API
       end
 
       questions.map do |q|
+        last_commented_at =  q.comments.where(id: comments)
+                              .order('created_at DESC').first
+                              .try(:created_at).try(:to_i) || 0
+        last_commented_at2 = q.response_comments.where(id: comments)
+                              .order('created_at DESC').first
+                              .try(:created_at).try(:to_i) || 0
+
         {
           question_id: q.id,
-          question_title: q.title
+          question_title: q.title,
+          last_commented_at: [last_commented_at, last_commented_at2].max
         }
       end
     end

@@ -67,7 +67,12 @@ class ApplicationController < ActionController::Base
 
     def user_not_authorized
       flash[:error] = "You are not authorized to perform this action."
-      redirect_to request.headers["Referer"] || root_path
+      if user_signed_in?
+        redirect_to request.headers["Referer"] || root_path
+      else
+        session['user_return_to'] = request.headers["Referer"]
+        redirect_to new_user_session_path
+      end
     end
 
     def layout_by_resource

@@ -6,12 +6,14 @@
       .col-sm-6.col-sm-push-3.signin_box
         .box
           .box_cont
-            .form
+            .section_header
               %h3 Forgot your password?
+            .form
               =form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
                 =devise_error_messages!
-                %div=f.text_field :login, autofocus: true, placeholder: "Username or Email"
-                %div=f.submit "Send me reset password instructions"
+                .form-group=f.text_field :login, autofocus: true, placeholder: "Username or Email", class:%w{form-control input-lg}
+                .form-group=f.submit "Send me reset password instructions", class:%w{form-control input-lg}
+              %br
               .text-center
                 =link_to "Sign up", new_user_registration_path
                 |
