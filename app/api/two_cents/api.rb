@@ -74,8 +74,11 @@ class TwoCents::API < Grape::API
     Rack::Response.new({error_code: 401, error_message: e.message}.to_json, 200, "Content-Type" => "application/json").finish
   end
 
-  rescue_from :all do |e|
-    Rack::Response.new({error_code: 500, error_message: e.message}.to_json, 200, "Content-Type" => "application/json").finish
+  unless Rails.env.development? || Rails.env.test?
+    rescue_from :all do |e|
+      Airbrake.notify_or_ignore(e, cgi_data: ENV.to_hash)
+      Rack::Response.new({error_code: 500, error_message: "Something went wrong."}.to_json, 200, "Content-Type" => "application/json").finish
+    end
   end
 
   mount Auth
