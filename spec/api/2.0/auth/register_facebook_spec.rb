@@ -81,7 +81,7 @@ describe :register_facebook do
 
                 it {response.status.should eq 200}
                 it {JSON.parse(response.body)['error_code'].should eq 1009}
-                it {JSON.parse(response.body)['error_message'].should match /Handle is already taken/}
+                it {JSON.parse(response.body)['error_message'].should match /Username is already taken/}
               end
 
               context "When there is an existing authentication with this fid" do
