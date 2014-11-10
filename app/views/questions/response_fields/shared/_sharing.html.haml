@@ -1,16 +1,16 @@
 -style_type||='transparent-white'
 .share-follow-menu{class:"#{style_type}"}
   .well-wrap.row
-    = link_to "", class:%w(col-xs-5 col-sm-5 ), remote:true do
+    = link_to user_path(@question.user), class:%w(col-xs-5 col-sm-5 ), remote:true do
       %h5 Posted by
       %h6.elipsable
         = @question.user.username
     - if user_signed_in?
       - if @question.user != current_user
         - if current_user.following? @question.user
-          = link_to "Unfollow",[:unfollow, @question.user],class:"col-xs-3 col-sm-4 btn vertical-middle btn-default #{style_type}" 
+          = link_to "Unfollow",[:unfollow, @question.user],class:"col-xs-3 col-sm-4 btn vertical-middle btn-default #{style_type}"
         - else
-          = link_to "Follow",[:follow, @question.user],class:"col-xs-3 col-sm-4 btn vertical-middle btn-default #{style_type}" 
+          = link_to "Follow",[:follow, @question.user],class:"col-xs-3 col-sm-4 btn vertical-middle btn-default #{style_type}"
       - else
         .col-xs-3.col-sm-4
       %a.col-xs-2.col-sm-push-1.col-xs-push-2.vertical-middle.overlay-toggler
