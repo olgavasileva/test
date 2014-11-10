@@ -25,6 +25,8 @@ class TargetsController < ApplicationController
 
   protected
     def target_params
-      params.require(:target).permit(:question_id, :all_users, :all_followers, :all_groups, :user_id)
+      params.require(:target).permit(
+        :question_id, :all_users, :all_followers, :all_groups, :user_id,
+        follower_ids: [], group_ids: [])
     end
 end
