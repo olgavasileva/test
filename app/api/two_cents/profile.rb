@@ -41,6 +41,7 @@ class TwoCents::Profile < Grape::API
 
     desc "Upload avatar."
     params do
+      requires :auth_token, type:String, desc:'Obtain this from the instances API'
       requires :image_url, type: String, desc: "URL to avatar image."
     end
     post 'avatar' do
