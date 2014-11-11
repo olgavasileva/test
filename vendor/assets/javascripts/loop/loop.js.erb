@@ -34,12 +34,21 @@ jQuery( function($){
     $('.navbar-brand img').attr('src', '<%= image_url('statisfy-logo-white.png') %>');
 	}
 
-  if ( $('.welcome').length ) {
-    $(window).on('scroll', $.throttle(500, toggleNavbar));
-    $(window).resize($.throttle(500, toggleNavbar));
-
-    toggleNavbar();
+  function scrollHandler() {
+    $.throttle(500, toggleNavbar);
   }
+
+  $(document).on('page:change', function() {
+    $(window).off('scroll', scrollHandler);
+    $(window).off('resize', scrollHandler);
+
+    if ( $('.welcome').length ) {
+      $(window).on('scroll', scrollHandler);
+      $(window).on('resize', scrollHandler);
+
+      toggleNavbar();
+    }
+  });
 
 	// hide collapsible menu
 	$('.navbar-nav li a').click( function() {
