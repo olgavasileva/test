@@ -182,5 +182,18 @@ class TwoCents::Communities < Grape::API
 
       {}
     end
+
+    desc "Invite multiple people to join"
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      optional :email_addresses, type: Array, default: [], desc: "People's email addresses."
+      optional :phone_numbers, type: Array, default: [], desc: "People's phone numbers."
+    end
+    put 'summon_multiple' do
+      validate_user!
+
+      {}
+    end
   end
 end
