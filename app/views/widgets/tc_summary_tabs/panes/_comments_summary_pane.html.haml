@@ -26,7 +26,7 @@
       color:  gray
 - (question.response_comments + question.comments).each do |c|
   .comment
-    .avatar=gravatar_for c.user.email, default: :identicon
+    .avatar=gravatar_tag c.user.email, default: :identicon
     %span.user_name
       =c.user.username
     %span.posted_date

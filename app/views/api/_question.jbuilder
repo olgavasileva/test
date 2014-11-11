@@ -2,7 +2,7 @@ json.(question, :id, :type, :title, :description, :response_count, :comment_coun
 if question.kind_of? YesNoQuestion
   json.type "TextChoiceQuestion"
 else
-  json.type
+  json.type question.type
 end
 json.creator_id question.user.id
 json.creator_name question.user.username

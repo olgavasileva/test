@@ -199,13 +199,13 @@ class TwoCents::Auth < Grape::API
         [200, "1002 - Could not access facebook profile"],
         [200, "1003 - Facebook profile has no email"],
         [200, "1004 - Facebook profile has no name"],
-        [200, "1009 - Handle is already taken"],
+        [200, "1009 - Username is already taken"],
         [200, "400 - Missing required params"]
       ] do
 
       validate_instance!
 
-      fail! 1009, "Handle is already taken" if User.find_by username:declared_params[:username]
+      fail! 1009, "Username is already taken" if User.find_by username:declared_params[:username]
 
       begin
         graph = Koala::Facebook::API.new declared_params[:facebook_token]
@@ -242,7 +242,7 @@ class TwoCents::Auth < Grape::API
         One of email or username is requried.
 
         #### Example response
-            { auth_token: "SOME_STRING", email: "your@address.com", username: "Your Handle" }
+            { auth_token: "SOME_STRING", email: "your@address.com", username: "Your Username" }
       END
     }
     params do
@@ -255,7 +255,7 @@ class TwoCents::Auth < Grape::API
     post 'login', http_codes: [
         [200, "1001 - Invalid instance token"],
         [200, "1004 - Email not found"],
-        [200, "1005 - Handle not found"],
+        [200, "1005 - Username not found, try again"],
         [200, "1006 - Neither email nor username supplied"],
         [200, "1007 - Only one of email ane username are allowed"],
         [200, "1008 - Wrong password"],
@@ -272,7 +272,7 @@ class TwoCents::Auth < Grape::API
         fail! 1004, "Email not found" unless user
       else
         user = User.find_by username:declared_params[:username]
-        fail! 1005, "Handle not found" unless user
+        fail! 1005, "Username not found, try again" unless user
       end
 
       fail! 1008, "Wrong password" unless user.valid_password? declared_params[:password]

@@ -40,6 +40,7 @@ class TwoCents::API < Grape::API
 
   helpers do
     include Pundit
+    include Gravatarify::Helper
 
     def declared_params
       declared(params, include_missing: false)

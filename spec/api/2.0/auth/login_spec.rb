@@ -155,7 +155,7 @@ describe :login do
             it {expect(response.headers["Content-Type"]).to eq "application/json"}
             it {expect(JSON.parse(response.body)).to_not be_nil}
             it {expect(JSON.parse(response.body)['error_code']).to eq 1005}
-            it {expect(JSON.parse(response.body)['error_message']).to match /Handle not found/}
+            it {expect(JSON.parse(response.body)['error_message']).to match /Username not found/}
           end
 
           context "When a user with the username adready exists" do
