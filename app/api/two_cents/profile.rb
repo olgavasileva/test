@@ -1,7 +1,7 @@
 class TwoCents::Profile < Grape::API
   resource :profile do
     desc "Return the profile of current user", {
-        notes: <<-END
+      notes: <<-END
         This API will return the profile of current user.
 
               #### Example response
@@ -39,24 +39,44 @@ class TwoCents::Profile < Grape::API
 
 
 
-    desc "Upload avatar."
+    desc "Upload user's avatar"
     params do
+      requires :auth_token, type:String, desc:'Obtain this from the instances API'
       requires :image_url, type: String, desc: "URL to avatar image."
     end
-    post 'avatar' do
+    post 'headshot' do
       validate_user!
 
       image_url = params[:image_url]
 
       if URI(image_url).scheme.nil?
-        UserAvatar.create!(user: current_user, image: open(image_url))
+        UserAvatar.create! user:current_user, image: open(image_url)
       else
-        UserAvatar.create!(user: current_user, remote_image_url: image_url)
+        UserAvatar.create! user:current_user, image: image_url
       end
 
-      current_user.save!
-
       {}
+    end
+
+    desc "Get user's avatar", {
+      notes: <<-END
+        This API will return the avatar for the current user or given user, if supplied.
+        Will return the url to the gravatar based on their email if they have not supplied a custom headshot.
+
+              #### Example response
+              {
+                  "avatar_url": "http://gravatar.com/avatar/2dfca61aac39cb1700dd73295a9ff160.jpg?d=identicon"
+              }
+        END
+    }
+    params do
+      requires :auth_token, type: String, desc:'Obtain this from the instances API'
+      optional :user_id, type: Integer, desc: "User ID. Defaults to logged in user's ID."
+    end
+    get 'headshot', jbuilder:'headshot' do
+      validate_user!
+
+      @user = declared_params[:user_id] ? User.find(declared_params[:user_id]) : current_user
     end
 
   end

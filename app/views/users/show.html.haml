@@ -5,7 +5,7 @@
       .left
         .avatar-container
           = link_to "https://en.gravatar.com", target: :_blank do
-            - gravatar_for @user.email, default: :identicon
+            - gravatar_tag @user.email, default: :identicon
         %h3.name= @user.username
       .right
         .stats

@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
          :recoverable, :timeoutable, :trackable, :validatable,
          authentication_keys:[:login], reset_password_keys:[:login]
 
-  belongs_to :user_avatar
+  belongs_to :avatar, class_name: "UserAvatar", foreign_key: :user_avatar_id
 
   has_many :responses, dependent: :destroy
   has_many :order_responses, class_name: "OrderResponse"

@@ -12,7 +12,7 @@
       - @recent_responses.each do |r|
         .comment
           .comment-avatar
-            =gravatar_for r.user.email, class: %w(comment-avatar)
+            =gravatar_tag r.user.email, default: :identicon, class: %w(comment-avatar)
           .comment-body
             .comment-by
               =r.user.username
