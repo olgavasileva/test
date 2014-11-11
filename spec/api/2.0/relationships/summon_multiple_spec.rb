@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'PUT relationships/invite_many' do
+describe 'PUT /relationships/summon_multiple' do
   let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
   let(:params) { {
     auth_token: instance.auth_token,
@@ -9,7 +9,7 @@ describe 'PUT relationships/invite_many' do
   } }
   let(:response_body) { JSON.parse(response.body) }
 
-  before { put 'v/2.0/relationships/invite_many', params }
+  before { put 'v/2.0/relationships/summon_multiple', params }
 
   it "responds with blank data" do
     expect(response_body).to eq Hash.new

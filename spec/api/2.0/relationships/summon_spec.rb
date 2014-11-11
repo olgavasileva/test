@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-describe 'relationships/invite' do
+describe 'PUT /relationships/summon' do
   let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
   let(:common_params) { {
     auth_token: instance.auth_token,
   } }
   let(:other_params) { Hash.new }
   let(:params) { common_params.merge(other_params) }
-  let(:request) { -> { post 'v/2.0/relationships/invite', params } }
+  let(:request) { -> { put 'v/2.0/relationships/summon', params } }
   let(:response_body) { JSON.parse(response.body) }
 
   before { request.call }
