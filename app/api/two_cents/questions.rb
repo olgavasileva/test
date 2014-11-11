@@ -59,7 +59,7 @@ class TwoCents::Questions < Grape::API
         # "Hi! This is #{question.user.username}. Check this awesome question: \"#{question.title}\" on Statisfy. Link: \"#{question_sharing_path(question.uuid)}\""
         # "Hi! This is #{question.user.username}. Check this awesome question: \"#{question.title}\" on Statisfy."
 
-        "Hi! This is #{question.user.username}. Check this awesome question: \"#{question.title}\" on Statisfy. Link: \"#{Rails.application.routes.url_helpers.question_sharing_path(question.uuid)}\""
+        "Hi! This is #{question.user.username}. Check out this awesome question: \"#{question.title}\" on Statisfy. http://#{Rails.env}.statisfy.co#{Rails.application.routes.url_helpers.question_sharing_path(question.uuid)}\""
       end
 
       def after_id_to_end(records, id)
