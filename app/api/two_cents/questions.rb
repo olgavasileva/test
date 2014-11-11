@@ -57,7 +57,9 @@ class TwoCents::Questions < Grape::API
       def generate_message_from_question(question)
         # TODO: When fixing this, please run specs to verify that it works
         # "Hi! This is #{question.user.username}. Check this awesome question: \"#{question.title}\" on Statisfy. Link: \"#{question_sharing_path(question.uuid)}\""
-        "Hi! This is #{question.user.username}. Check this awesome question: \"#{question.title}\" on Statisfy."
+        # "Hi! This is #{question.user.username}. Check this awesome question: \"#{question.title}\" on Statisfy."
+
+        "Hi! This is #{question.user.username}. Check this awesome question: \"#{question.title}\" on Statisfy. Link: \"#{Rails.application.routes.url_helpers.question_sharing_path(question.uuid)}\""
       end
 
       def after_id_to_end(records, id)
