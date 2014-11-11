@@ -9,15 +9,13 @@
           .box_cont
             .form
               = simple_form_for @user, as: "user", url: new_contest_user_path, class: "form-inline" do |f|
-                / = devise_error_messages!
-                .form-group.w-icon
-                  = f.input :username, label: false, placeholder: "Enter a Username", class:%w{form-control input-lg}
-                .form-group.w-icon
-                  = f.input :email, label: false, placeholder: "Enter your E-mail", class:%w{form-control input-lg}
-                .form-group.w-icon
-                  = f.input :password, autocomplete: "off", label: false, placeholder: "Enter a Password", class:%w{form-control input-lg}
-                .form-group.w-icon
-                  = f.input :password_confirmation, autocomplete: "off", label: false, placeholder: "Confirm your Password", class:%w{form-control input-lg}
+                = # @user.errors.full_messages
+                .form-group= f.input :username, label: false, placeholder: "Enter a Username"
+                .form-group= f.input :email, label: false, placeholder: "Enter your E-mail"
+                .form-group= f.input :birthdate, placeholder: "Birthdate", start_year: Date.today.year - 90, end_year: Date.today.year - 12, order: [:month, :day, :year]
+                %br
+                .form-group= f.input :password, autocomplete: "off", label: false, placeholder: "Enter a Password"
+                .form-group= f.input :password_confirmation, autocomplete: "off", label: false, placeholder: "Confirm your Password"
                 %br
                 .form-group.w-icon
                   = f.submit "Continue"

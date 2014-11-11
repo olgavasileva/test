@@ -12,7 +12,8 @@ class Contest < ActiveRecord::Base
   before_save :convert_headings
 
   def next_question question
-    questions_surveys.where(question_id:question).first.lower_items.first.try(:question)
+    q = questions_surveys.where(question_id:question).first
+    q.lower_items.first.try(:question) unless q.nil?
   end
 
   def vote_id_for_response response

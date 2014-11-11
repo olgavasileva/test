@@ -9,6 +9,7 @@
   .form-group.clearfix
   .form-group.clearfix
   .col-xs-3.clearfix
-    = link_to "Skip", new_question_skipped_item_path(response.question), class: %w{ btn btn-primary negative btn-lg col-xs-12}
+    - if @show_skip_button
+      = link_to "Skip", new_question_skipped_item_path(response.question), class: %w{ btn btn-primary negative btn-lg col-xs-12}
   .col-xs-3.col-xs-push-6.clearfix
     %button.btn.btn-primary.negative.col-xs-12.btn-lg{type: :submit} Submit

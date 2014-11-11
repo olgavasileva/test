@@ -6,12 +6,14 @@
         .panel-title
           .row
             .col-xs-3
-              =link_to root_path do
-                %span.glyphicon.glyphicon-chevron-left
+              - if @show_root_button
+                =link_to root_path do
+                  %span.glyphicon.glyphicon-chevron-left
             .col-xs-6
             .col-xs-3
-              =link_to new_question_skipped_item_path(@response.question) do
-                %span.glyphicon.glyphicon-chevron-right
+              - if @show_skip_button
+                =link_to new_question_skipped_item_path(@response.question) do
+                  %span.glyphicon.glyphicon-chevron-right
       .panel-body.response
         .row
           %div

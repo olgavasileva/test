@@ -71,6 +71,7 @@ SimpleNavigation::Configuration.run do |navigation|
       primary.item :help, 'Help', 'http://about.statisfy.co/webfaq/ '
       primary.item :sign_up, 'Sign Up', new_user_registration_path
       primary.item :sign_in, 'Sign In', new_user_session_path
+      primary.item :exit_contest, 'Exit the Contest', exit_contest_path if !!session[:contest_uuid]
     end
   end
 end

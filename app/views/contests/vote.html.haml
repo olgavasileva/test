@@ -1,3 +1,4 @@
+- can_vote = policy(@contest).save_vote?
 .panel.panel-default
   .panel-body
     = @contest.gallery_heading_html.html_safe
@@ -5,11 +6,15 @@
 
 .panel.panel-default
   .panel-heading
-    %h2.panel-title Vote for your favorite scene
+    - if can_vote
+      %h2.panel-title Vote for your favorite scenes
+    - else
+      %h2.panel-title=link_to "Enter to vote your favorite scenes", contest_sign_up_path(@contest.uuid)
   .panel-body
     .row#studio_responses
       - @studio_responses.each do |r|
         .col-sm-3{style:"height: 303px;"}
-          =link_to save_vote_path(@contest.uuid, r.id), method: :post, class: :thumbnail, remote: true do
+          - path = can_vote ? save_vote_path(@contest.uuid, r.id) : '#'
+          =link_to path, method: :post, class: :thumbnail, remote: true do
             =image_tag(r.scene.image.thumb.url)
             #score{data:{id:r.id}}=number_to_percentage @contest.percent_votes_for_response(r), precision: 0

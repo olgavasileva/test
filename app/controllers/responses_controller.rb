@@ -9,6 +9,8 @@ class ResponsesController < ApplicationController
 
     @next_question = next_question @question
     @just_answered = params[:just_answered]
+    @show_skip_button = !session[:contest_uuid]
+    @show_root_button = !session[:contest_uuid]
   end
 
   def create
@@ -41,7 +43,11 @@ class ResponsesController < ApplicationController
       end
     else
       flash[:alert] = @response.errors.full_messages.join ", "
+      @response.build_comment user:current_user unless @response.comment.present?
+      @question = @response.question
       @next_question = next_question @response.question
+      @show_skip_button = !session[:contest_uuid]
+      @show_root_button = !session[:contest_uuid]
       render "new"
     end
   end

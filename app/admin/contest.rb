@@ -1,7 +1,7 @@
 ActiveAdmin.register Contest do
   menu parent: 'Surveys'
 
-  permit_params :name, :key_question_id, :survey_id, :heading_markdown, :gallery_heading_markdown
+  permit_params :name, :key_question_id, :survey_id, :heading_markdown, :gallery_heading_markdown, :allow_anonymous_votes
 
   index do
     column :id
@@ -10,13 +10,15 @@ ActiveAdmin.register Contest do
     column "Gallery URL" do |c|
       link_to "Gallery URL", contest_vote_url(c.uuid)
     end
+    column :allow_anonymous_votes
     actions
   end
 
   show do |c|
     attributes_table do
       row :id
-      rows :name
+      row :name
+      row :allow_anonymous_votes
       row "Heading" do
         c.heading_html.to_s.html_safe
       end
@@ -34,6 +36,7 @@ ActiveAdmin.register Contest do
       f.input :survey
       f.input :key_question, collection: f.object.questions
       f.input :name
+      f.input :allow_anonymous_votes
       f.input :heading_markdown
       f.input :gallery_heading_markdown
     end

@@ -21,6 +21,7 @@ LinkchatApp::Application.routes.draw do
   get '/q/:uuid' => 'questions#new_response_from_uuid', as: :question_sharing
   get '/question' => 'users#first_question'
   get '/test' => 'pages#test' if Rails.env.development?
+  get '/contests/exit' => 'contests#exit_contest', as: :exit_contest
   get '/contests/:uuid/sign_up' => 'contests#sign_up', as: :contest_sign_up
   post '/contests/new_user' => 'contests#new_user', as: :new_contest_user
   get '/gallery/:uuid' => 'contests#vote', as: :contest_vote

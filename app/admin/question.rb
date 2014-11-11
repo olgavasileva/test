@@ -14,6 +14,7 @@ ActiveAdmin.register Question do
     column :title
     column :kind
     column :position
+    column :require_comment
     column "In Feeds" do |q|
       q.feed_items.count
     end
@@ -25,6 +26,7 @@ ActiveAdmin.register Question do
       f.input :position
       f.input :category
       f.input :title
+      f.input :require_comment
     end
     f.actions
   end

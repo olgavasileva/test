@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141106231819) do
+ActiveRecord::Schema.define(version: 20141111200554) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(version: 20141106231819) do
     t.text     "heading_html"
     t.text     "gallery_heading_markdown"
     t.text     "gallery_heading_html"
+    t.boolean  "allow_anonymous_votes",    default: false
   end
 
   add_index "contests", ["key_question_id"], name: "index_contests_on_key_question_id", using: :btree
@@ -502,6 +503,7 @@ ActiveRecord::Schema.define(version: 20141106231819) do
     t.integer  "share_count"
     t.decimal  "score",                 precision: 5, scale: 2, default: 0.0
     t.boolean  "special",                                       default: false
+    t.boolean  "require_comment",                               default: false
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree

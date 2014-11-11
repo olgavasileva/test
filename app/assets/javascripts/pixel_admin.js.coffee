@@ -51,3 +51,7 @@
 $(document).on "page:change", ->
   $('[data-lazy]').each ->
     $.getScript $(this).data().lazy
+
+  $(".datepicker").datepicker
+    changeMonth:true
+    changeYear:true

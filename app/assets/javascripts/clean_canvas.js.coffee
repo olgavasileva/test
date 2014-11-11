@@ -32,3 +32,11 @@
 
 #= require_tree ./clean_canvas/pages
 #= require photoshoot/main
+
+$(document).on "page:change", ->
+  $(".datepicker").datepicker
+    changeMonth:true
+    changeYear:true
+    minDate: "-20Y"
+    maxDate: 0
+    dateFormat:'yy-mm-dd'

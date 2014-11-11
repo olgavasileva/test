@@ -2,6 +2,14 @@ class ContestsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:sign_up, :new_user, :vote, :save_vote]
   before_action :maintain_vote_info, only: :save_vote
 
+  def exit_contest
+    @contest = Contest.find_by uuid:session[:contest_uuid]
+    authorize @contest
+
+    session.delete :contest_uuid
+    redirect_to :root
+  end
+
   def sign_up
     @contest = Contest.find_by uuid:params[:uuid]
     authorize @contest
@@ -64,7 +72,7 @@ class ContestsController < ApplicationController
 
   private
     def user_params
-      params.require(:user).permit(:username, :email, :password, :password_confirmation)
+      params.require(:user).permit(:username, :email, :birthdate, :password, :password_confirmation)
     end
 
     def maintain_vote_info

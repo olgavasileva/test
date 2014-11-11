@@ -6,6 +6,7 @@ class Response < ActiveRecord::Base
 
   validates :user, presence: true
 	validates :question, presence: true
+  validate :comment_if_required
 
   after_create :record_analytics
   after_create :add_and_push_message
@@ -66,4 +67,14 @@ class Response < ActiveRecord::Base
     def modify_question_score
       question.increment! :score, comment.present? ? 1.5 : 1.0
     end
+
+
+  private
+
+    def comment_if_required
+      if question.require_comment
+        errors.add(:comments, "A comment is required") unless comment.present?
+      end
+    end
+
 end
