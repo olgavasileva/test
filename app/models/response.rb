@@ -68,11 +68,8 @@ class Response < ActiveRecord::Base
       question.increment! :score, comment.present? ? 1.5 : 1.0
     end
 
-
-  private
-
     def comment_if_required
-      if question.require_comment
+      if question.require_comment?
         errors.add(:comments, "A comment is required") unless comment.present?
       end
     end
