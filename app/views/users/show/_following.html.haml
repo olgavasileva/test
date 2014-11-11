@@ -8,7 +8,7 @@
       %h3 There are no matching users.
     - @users.each do |user|
       %li
-        = gravatar_for user.email, default: :identicon, size: 20
+        = gravatar_tag user.email, default: :identicon, size: 20
         = link_to user.name, user
         - if @user == current_user
           - if @user.following? user

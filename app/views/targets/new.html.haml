@@ -21,10 +21,10 @@
             = f.input :all_users, label: "Statisfy Universe"
           .col-xs-12.collapse-parent
             = f.input :all_followers, label: "Statisfy Followers", input_html:{class: %w(collapser)}
-            = f.collection_check_boxes :followers, @followers, :id, :username, item_wrapper_class: %w(row checkbox collapsable collapsable-item)
+            = f.collection_check_boxes :follower_ids, @followers, :id, :username, item_wrapper_class: %w(row checkbox collapsable collapsable-item)
           .col-xs-12.collapse-parent
             = f.input :all_groups, label: "Statisfy Groups", input_html:{class: %w(collapser)}
-            = f.collection_check_boxes :groups, @groups, :id, :name, item_wrapper_class: %w(row checkbox collapsable collapsable-item)
+            = f.collection_check_boxes :group_ids, @groups, :id, :name, item_wrapper_class: %w(row checkbox collapsable collapsable-item)
           .col-xs-12#share_text2.non-selectable
             .checkbox
               %label.col-xs-6
