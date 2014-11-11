@@ -166,7 +166,7 @@ class TwoCents::Relationships < Grape::API
       optional :email_address, type: String, desc: "Person's email address (for use with 'email' method)."
       optional :phone_number, type: String, desc: "Person's phone number (for use with 'sms' method)."
     end
-    post 'invite' do
+    put 'summon' do
       validate_user!
 
       if params[:method] == 'email' && params[:email_address].blank?
@@ -178,14 +178,14 @@ class TwoCents::Relationships < Grape::API
       {}
     end
 
-    desc "Invite many people to become users"
+    desc "Invite multiple people to become users"
     params do
       requires :auth_token, type: String, desc: "Obtain this from the instance's API."
 
       optional :email_addresses, type: Array, default: [], desc: "People's email addresses."
       optional :phone_numbers, type: Array, default: [], desc: "People's phone numbers."
     end
-    put 'invite_many' do
+    put 'summon_multiple' do
       validate_user!
 
       {}
