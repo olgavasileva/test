@@ -12,7 +12,7 @@
         = link_to follower.name, follower
         - if @user == current_user
           .groups
-            - follower.membership_groups.each do |group|
+            - Group.find(@user.group_memberships.where(user_id: follower, group_id: @user.groups).pluck(:group_id).uniq).each do |group|
               = link_to "javascript:removeUserFromGroup(#{follower.id}, #{group.id})" do
                 %span.label.label-warning
                   = group.name
