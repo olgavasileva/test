@@ -3,6 +3,7 @@ class Target < ActiveRecord::Base
   has_many :questions
   has_and_belongs_to_many :followers, class_name: "User"
   has_and_belongs_to_many :groups
+  has_and_belongs_to_many :communities
 
   validates :all_users, inclusion:{in:[true, false]}
   validates :all_followers, inclusion:{in:[true, false]}

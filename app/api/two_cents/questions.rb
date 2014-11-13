@@ -21,6 +21,7 @@ class TwoCents::Questions < Grape::API
           optional :all_groups, type: Boolean, default: false, desc: "Whether question is targeted at all creator's groups."
           optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
           optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
+          optional :community_ids, type: Array, default: [], desc: "IDs of user's communities for question."
         end
       end
 

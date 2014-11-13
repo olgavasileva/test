@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141111200554) do
+ActiveRecord::Schema.define(version: 20141113222145) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -117,6 +117,16 @@ ActiveRecord::Schema.define(version: 20141111200554) do
   end
 
   add_index "communities", ["user_id"], name: "index_communities_on_user_id", using: :btree
+
+  create_table "communities_targets", force: true do |t|
+    t.integer  "target_id"
+    t.integer  "community_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "communities_targets", ["community_id"], name: "index_communities_targets_on_community_id", using: :btree
+  add_index "communities_targets", ["target_id"], name: "index_communities_targets_on_target_id", using: :btree
 
   create_table "community_members", force: true do |t|
     t.integer  "community_id"
