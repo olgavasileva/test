@@ -1,12 +1,14 @@
 shared_examples :uses_targets do
   let(:followers) { user.followers = FactoryGirl.create_list(:user, 3) }
   let(:groups) { FactoryGirl.create_list(:group, 3, user: user) }
+  let(:communities) { FactoryGirl.create_list(:community, 3, user: user) }
   let(:targets) {{
     all_users: true,
     all_followers: true,
     all_groups: true,
     follower_ids: followers.map(&:id),
-    group_ids: groups.map(&:id)
+    group_ids: groups.map(&:id),
+    community_ids: communities.map(&:id)
   }}
   let(:question_id) { JSON.parse(response.body)['question']['id'] }
   let(:question) { Question.find(question_id) }
@@ -20,6 +22,7 @@ shared_examples :uses_targets do
     expect(target.all_groups).to be_truthy
     expect(target.followers).to match_array followers
     expect(target.groups).to match_array groups
+    expect(target.communities).to match_array communities
     expect(target.questions).to include question
   end
 

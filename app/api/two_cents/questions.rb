@@ -79,7 +79,8 @@ class TwoCents::Questions < Grape::API
           all_followers: params['all_followers'],
           all_groups: params['all_groups'],
           follower_ids: params['follower_ids'],
-          group_ids: params['group_ids']
+          group_ids: params['group_ids'],
+          community_ids: params['community_ids']
         )
 
 
