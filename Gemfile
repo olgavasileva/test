@@ -121,6 +121,7 @@ group :development, :test do
   gem 'pry-rails'                   # Use pry in the console
   gem 'rb-readline'                 # Readline in binding.pry
   gem 'spring'
+  gem 'factory_girl_rails'
 end
 
 group :test do
@@ -128,7 +129,6 @@ group :test do
   gem 'database_cleaner'
   gem 'selenium-webdriver'
   gem 'capybara'
-  gem 'factory_girl_rails'
   gem 'faker'
   gem 'spring-commands-rspec'
 end
