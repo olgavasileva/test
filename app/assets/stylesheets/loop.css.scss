@@ -249,6 +249,7 @@ body.fullscreen-image-background {
   width: 100%;
   margin-top: -10em;
   z-index: 2;
+  text-align: center;
 }
 @media screen and (max-width: 768px) {
   .hero-unit .hero-content {
@@ -275,9 +276,8 @@ body.fullscreen-image-background {
 .hero-unit .hero-content .hero-text .hero-heading {
   font-size: 5em;
   line-height: 80px;
-}
-.hero-unit .hero-content .hero-text .hero-heading .name {
   border-bottom: 2px solid #fff;
+  display: inline-block;
 }
 @media screen and (max-width: 768px) {
   .hero-unit .hero-content .hero-text .hero-heading {
