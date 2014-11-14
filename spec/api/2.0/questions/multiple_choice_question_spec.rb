@@ -91,6 +91,7 @@ describe :multiple_choice_question do
               expect(q['response_count']).to eq 0
               expect(q['creator_id']).to eq user.id
               expect(q['creator_name']).to eq user.username
+              expect(q['member_community_ids']).to be_an Array
             end
           end
 

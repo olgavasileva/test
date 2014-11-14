@@ -27,3 +27,5 @@ end
 json.category do
   json.(question.category, :id, :name)
 end
+
+json.member_community_ids question.user.membership_communities.pluck(:id)
