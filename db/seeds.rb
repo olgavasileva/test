@@ -52,8 +52,43 @@ end
 
 puts "Creating Users..."
 Role.where(name:"pro").first_or_create!
-user = User.where(username:'crashmob').first_or_create!(name:"Question Master",email:'question-master@statisfy.co',password:"dirty socks",password_confirmation:"dirty socks")
+user = User.where(username:'crashmob').first_or_create!(name:"Question Master",email:'question-master@statisfy.co',password:"dirty socks",password_confirmation:"dirty socks",birthdate:'0001-01-01')
 user.add_role :pro
+
+#
+# Categories
+#
+def seed_image filename
+  File.join "db","seeds",filename
+end
+
+# Revised to match v20140905
+puts "Creating Categories..."
+satisfied = Category.where(name:"Are you statisfied?").first_or_create!(icon:open(seed_image "AreYouStatisfied150.png"))
+celebs = Category.where(name:"Celebrities & Pop").first_or_create!(icon:open(seed_image "CelebritiesAndPop150.png"))
+dating = Category.where(name:"Dating & Relationships").first_or_create!(icon:open(seed_image "DatingAndRelationship150.png"))
+entertainment = Category.where(name:"Entertainment").first_or_create!(icon:open(seed_image "Entertainment150.png"))
+fashion = Category.where(name:"Fashion").first_or_create!(icon:open(seed_image "Fashion150.png"))
+feminism = Category.where(name:"Feminisms for the World").first_or_create!(icon:open(seed_image "FeminismsForTheWorld150.png"))
+food_and_drink = Category.where(name:"Food & Drink").first_or_create!(icon:open(seed_image "FoodAndDrink150.png"))
+geek = Category.where(name:"Geek & Gaming").first_or_create!(icon:open(seed_image "GeekAndGaming150.png"))
+health = Category.where(name:"Health & Fitness").first_or_create!(icon:open(seed_image "HealthAndFitness150.png"))
+hacks = Category.where(name:"Life Hacks").first_or_create!(icon:open(seed_image "LifeHacks150.png"))
+life = Category.where(name:"Life").first_or_create!(icon:open(seed_image "Life150.png"))
+lol = Category.where(name:"LOL").first_or_create!(icon:open(seed_image "LOL150.png"))
+news = Category.where(name:"News").first_or_create!(icon:open(seed_image "News150.png"))
+omg = Category.where(name:"OMG").first_or_create!(icon:open(seed_image "OMG150.png"))
+politics = Category.where(name:"Politics").first_or_create!(icon:open(seed_image "Politics150.png"))
+shit = Category.where(name:"Shit you should know").first_or_create!(icon:open(seed_image "StuffYouShouldKnow.png"))
+sports = Category.where(name:"Sports").first_or_create!(icon:open(seed_image "Sports150.png"))
+tech = Category.where(name:"Tech").first_or_create!(icon:open(seed_image "Technology150.png"))
+awkward = Category.where(name:"That’s awkward").first_or_create!(icon:open(seed_image "ThatsAkward150.png"))
+busy = Category.where(name:"The art of looking busy").first_or_create!(icon:open(seed_image "TheArtOfLookingBusy.png"))
+travel = Category.where(name:"Travel").first_or_create!(icon:open(seed_image "Travel150.png"))
+rather = Category.where(name:"Would You Rather").first_or_create!(icon:open(seed_image "WouldYouRather150.png"))
+wtf = Category.where(name:"WTF").first_or_create!(icon:open(seed_image "WTF150.png"))
+science = Category.where(name:"Science").first_or_create!(icon:open(seed_image "Science150.png"))
+nsfw = Category.where(name:"Not Safe For Work (NSFW)").first_or_create!(icon:open(seed_image "NSFW150.png"))
 
 
 def background_image filename
@@ -97,41 +132,6 @@ end
 def random_order_image_id
   CannedOrderChoiceImage.all.pluck(:id).sample
 end
-
-#
-# Categories
-#
-def seed_image filename
-  File.join "db","seeds",filename
-end
-
-# Revised to match v20140905
-puts "Creating Categories..."
-satisfied = Category.where(name:"Are you statisfied?").first_or_create!(icon:open(seed_image "AreYouStatisfied150.png"))
-celebs = Category.where(name:"Celebrities & Pop").first_or_create!(icon:open(seed_image "CelebritiesAndPop150.png"))
-dating = Category.where(name:"Dating & Relationships").first_or_create!(icon:open(seed_image "DatingAndRelationship150.png"))
-entertainment = Category.where(name:"Entertainment").first_or_create!(icon:open(seed_image "Entertainment150.png"))
-fashion = Category.where(name:"Fashion").first_or_create!(icon:open(seed_image "Fashion150.png"))
-feminism = Category.where(name:"Feminisms for the World").first_or_create!(icon:open(seed_image "FeminismsForTheWorld150.png"))
-food_and_drink = Category.where(name:"Food & Drink").first_or_create!(icon:open(seed_image "FoodAndDrink150.png"))
-geek = Category.where(name:"Geek & Gaming").first_or_create!(icon:open(seed_image "GeekAndGaming150.png"))
-health = Category.where(name:"Health & Fitness").first_or_create!(icon:open(seed_image "HealthAndFitness150.png"))
-hacks = Category.where(name:"Life Hacks").first_or_create!(icon:open(seed_image "LifeHacks150.png"))
-life = Category.where(name:"Life").first_or_create!(icon:open(seed_image "Life150.png"))
-lol = Category.where(name:"LOL").first_or_create!(icon:open(seed_image "LOL150.png"))
-news = Category.where(name:"News").first_or_create!(icon:open(seed_image "News150.png"))
-omg = Category.where(name:"OMG").first_or_create!(icon:open(seed_image "OMG150.png"))
-politics = Category.where(name:"Politics").first_or_create!(icon:open(seed_image "Politics150.png"))
-shit = Category.where(name:"Shit you should know").first_or_create!(icon:open(seed_image "StuffYouShouldKnow.png"))
-sports = Category.where(name:"Sports").first_or_create!(icon:open(seed_image "Sports150.png"))
-tech = Category.where(name:"Tech").first_or_create!(icon:open(seed_image "Technology150.png"))
-awkward = Category.where(name:"That’s awkward").first_or_create!(icon:open(seed_image "ThatsAkward150.png"))
-busy = Category.where(name:"The art of looking busy").first_or_create!(icon:open(seed_image "TheArtOfLookingBusy.png"))
-travel = Category.where(name:"Travel").first_or_create!(icon:open(seed_image "Travel150.png"))
-rather = Category.where(name:"Would You Rather").first_or_create!(icon:open(seed_image "WouldYouRather150.png"))
-wtf = Category.where(name:"WTF").first_or_create!(icon:open(seed_image "WTF150.png"))
-science = Category.where(name:"Science").first_or_create!(icon:open(seed_image "Science150.png"))
-nsfw = Category.where(name:"Not Safe For Work (NSFW)").first_or_create!(icon:open(seed_image "NSFW150.png"))
 
 #
 # Questions
