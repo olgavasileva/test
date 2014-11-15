@@ -77,4 +77,8 @@ class UserPolicy < ApplicationPolicy
   def show_create_community?
     is_owner?
   end
+
+  def avatar?
+    true
+  end
 end

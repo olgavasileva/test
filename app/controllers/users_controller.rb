@@ -224,6 +224,17 @@ class UsersController < ApplicationController
     end
   end
 
+  def avatar
+    @user = User.find params[:id]
+    authorize @user
+
+    if @user.avatar.present?
+      redirect_to @user.avatar.image.web.url
+    else
+      redirect_to gravatar_url(@user.email, default: :identicon)
+    end
+  end
+
   private
 
     def read_all_messages

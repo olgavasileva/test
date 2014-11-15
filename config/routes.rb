@@ -76,6 +76,7 @@ LinkchatApp::Application.routes.draw do
       get 'question_analytics/:question_id', to:'users#question_analytics', as: :question_analytics
       get :question_search
       get :account
+      get :avatar
     end
   end
 
