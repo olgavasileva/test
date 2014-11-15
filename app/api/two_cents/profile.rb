@@ -52,7 +52,7 @@ class TwoCents::Profile < Grape::API
       if URI(image_url).scheme.nil?
         UserAvatar.create! user:current_user, image: open(image_url)
       else
-        UserAvatar.create! user:current_user, image: image_url
+        UserAvatar.create! user:current_user, remote_image_url: image_url
       end
 
       {}
