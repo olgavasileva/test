@@ -14,4 +14,4 @@ json.published_at @question.created_at.to_i
 json.sponsor nil
 json.creator_id @question.user.id
 json.creator_name @question.user.name
-json.anonymous @anonymous
+json.anonymous @question.anonymous
