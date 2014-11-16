@@ -173,7 +173,7 @@ var psUtils = function() {
 
     this.isPackLimitReached=function(pack_id){
       var pack=(pack_id || pack_id===0)?this.getPackByID(pack_id):this.getCurrentPack();
-      return (pack.stickersUseCounter>=PS_MAX_STICKERS_ALLOWED)
+      return (typeof(pack.max_on_canvas) == "number" && pack.stickersUseCounter >= pack.max_on_canvas)
     };
 
     this.increaseStickersUsedCount=function(pack_id){

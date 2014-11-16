@@ -3,6 +3,12 @@ ActiveAdmin.register StickerPack do
   actions :index, :show, :new, :create, :edit, :update
   batch_action :destroy, false
 
+  # Never trust parameters from the scary internet, only allow the white list through.
+  permit_params  :display_name, :starts_at, :expires_at, :disabled, :klass, :inclusive,
+                 :starts_at_date, :starts_at_time_hour, :starts_at_time_minute, :expires_at_date,
+                 :expires_at_time_hour, :expires_at_time_minute, :lock_id, :header_icon,
+                 :footer_image, :footer_link, :max_on_canvas, menu_ids: [], studio_configuration_ids: [], new_sticker_ids: []
+
   #Index scopes
   scope :all, default: true
   scope :active
@@ -51,6 +57,7 @@ ActiveAdmin.register StickerPack do
       f.input :header_icon, as: :file, hint: f.template.image_tag(f.object.header_icon_url.to_s)
       f.input :footer_image, as: :file, hint: f.template.image_tag(f.object.footer_image_url.to_s)
       f.input :footer_link
+      f.input :max_on_canvas, hint: 'Maximum number of sticker from this pack allowed on the canvas at once.  Leave blank for unlimited.'
       f.input :disabled
       f.input :starts_at, :as => :just_datetime_picker
       f.input :expires_at, :as => :just_datetime_picker
@@ -81,6 +88,7 @@ ActiveAdmin.register StickerPack do
         image_tag(sp.footer_image_url.to_s)
       end
       row :footer_link
+      row :max_on_canvas
       row :disabled do
         sp.disabled? ? 'Disabled' : 'Active'
       end
@@ -98,14 +106,6 @@ ActiveAdmin.register StickerPack do
 
   #Controller methods
   controller do
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def permitted_params
-      params.permit(sticker_pack: [:display_name, :starts_at, :expires_at, :disabled, :klass, :inclusive,
-                                   :starts_at_date, :starts_at_time_hour, :starts_at_time_minute, :expires_at_date,
-                                   :expires_at_time_hour, :expires_at_time_minute, :lock_id, :header_icon,
-                                   :footer_image, :footer_link, menu_ids: [], studio_configuration_ids: [], new_sticker_ids: []])
-    end
-
 
     def new
       if params[:id]

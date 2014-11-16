@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141113222145) do
+ActiveRecord::Schema.define(version: 20141116195434) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -733,6 +733,7 @@ ActiveRecord::Schema.define(version: 20141113222145) do
     t.datetime "updated_at"
     t.datetime "starts_at"
     t.datetime "expires_at"
+    t.integer  "max_on_canvas"
   end
 
   create_table "stickers", force: true do |t|

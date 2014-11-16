@@ -49,6 +49,7 @@ class TwoCents::Studios < Grape::API
                         display_name: "Cereal",
                         header_icon_url: "https://crashmob-development.s3.amazonaws.com/crashmob/sticker_pack/header_icon/26/cereal.jpeg",
                         updated_at: "2014-04-17T15:48:40.000Z",
+                        max_on_canvas: 4,
                         sort_order: 0
                       },
                       {
@@ -56,6 +57,7 @@ class TwoCents::Studios < Grape::API
                         display_name: "Fruit",
                         header_icon_url: "https://crashmob-development.s3.amazonaws.com/crashmob/sticker_pack/header_icon/27/fruit.jpg",
                         updated_at: "2014-04-17T15:47:47.000Z",
+                        max_on_canvas: 5,
                         sort_order: 1
                       }
                     ]
