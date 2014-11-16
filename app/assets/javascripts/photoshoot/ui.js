@@ -106,16 +106,16 @@ var psUI = function() {
         })
 
 
-        window.onresize=function(){
-          var new_width=$('#ps-desktop').width(),
-            new_height=Math.round(+new_width*0.687);
+        // window.onresize=function(){
+        //   var new_width=$('#ps-desktop').width(),
+        //     new_height=Math.round(+new_width*0.687);
 
-          $('#ps-canvas').width(new_width);
-          $('.upper-canvas.ui-droppable').width(new_width);
-          $('#ps-canvas').height(new_height);
-          $('.upper-canvas.ui-droppable').height(new_height);
-          $('#ps-desktop').height(new_height);
-        }
+        //   $('#ps-canvas').width(new_width);
+        //   $('.upper-canvas.ui-droppable').width(new_width);
+        //   $('.upper-canvas.ui-droppable').width(new_height);
+        //   $('.upper-canvas.ui-droppable').height(new_height);
+        //   $('#ps-desktop').height(new_height);
+        // }
 
         $(document).on('click', '.sticker-pack-wrapper', function(e) {
             e.preventDefault();

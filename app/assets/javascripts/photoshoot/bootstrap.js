@@ -76,10 +76,25 @@ var photoshoot = function() {
         top: 0 + PS_HEADER_HEIGHT,
         height: ch
     });
+
     $("#ps-desktop").css({
         width: cw,
         height: ch
     });
+
+    // Lock in the widths - make this non-responsive so we don't lose track of the sticker positions
+    $("#studio-wrapper").css({
+        width: $("#studio-wrapper").width()
+    });
+
+    $("#ps-studio").css({
+        width: $("#ps-studio").width()
+    });
+
+    $("#ps-breadcrumbs").css({
+        width: $("#ps-breadcrumbs").width()
+    });
+
     canvas.setDimensions(cw, ch);
     $("#pack-wrapper").css('height', ch - 31);
 
