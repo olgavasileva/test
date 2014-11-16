@@ -49,19 +49,19 @@
 %div
   .col-xs-12
     = render "responses/response_fields/shared/title", form:form, response:response
-    .forn-group
+    .form-group{data:{max_responses:response.question.max_responses}}
       -n=0
-      -@response.question.choices.each do |c|
+      -response.question.choices.each do |c|
         -n+=1
 
-        %label.col-xs-6.choice-wrapper
+        %label.col-xs-6.choice-wrapper{data:{muex:c.muex}}
           .row
             =check_box_tag("multiple_choice_response[choice_id]",c.id,false,{class:'selected-choice'})
             =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
             %i.glyphicon.glyphicon-ok.selected
             .option-title=c.title
 
-            
+
   .col-xs-12
     .row
       .col-xs-12.form-group.clearfix

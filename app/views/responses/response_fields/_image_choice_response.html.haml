@@ -49,9 +49,9 @@
 %div
   .col-xs-12
     = render "responses/response_fields/shared/title", form:form, response:response
-    .forn-group
+    .form-group
       -n=0
-      -@response.question.choices.each do |c|
+      -response.question.choices.each do |c|
         -n+=1
         %label.col-xs-6.choice-wrapper
           .row

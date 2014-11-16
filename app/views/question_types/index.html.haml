@@ -59,7 +59,7 @@
               = link_to path_for_new(question_type), class: %w(btn btn-transparent) do
                 .row
                   .icon.floating-icom=image_tag icon_for(question_type)
-                  %h1.title.col-xs-12=title_for question_type
+                  %h1.title.col-xs-12=title_for question_type, current_user.has_role?(:pro)
 :javascript
   if(!window.tcHAndlers){
     window.tcHAndlers={};

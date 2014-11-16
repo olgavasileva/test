@@ -16,7 +16,7 @@ module QuestionTypeHelper
     end
   end
 
-  def title_for question_type
+  def title_for question_type, pro = false
     case true
     when question_type.type == YesNoQuestion
       "Yes/No"
@@ -25,7 +25,7 @@ module QuestionTypeHelper
     when question_type.type == ImageChoiceQuestion
       "Pick One"
     when question_type.type == MultipleChoiceQuestion
-      "Pick Two"
+      pro ? "Pick Multiple" : "Pick Two"
     when question_type.type == TextQuestion
       "Open Ended"
     when question_type.type == OrderQuestion
