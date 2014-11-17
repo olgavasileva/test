@@ -61,8 +61,7 @@ gem 'twilio-ruby'       # Used by backend for sending SMS messages to invited us
 gem 'activerecord_any_of' # where.any_of
 
 
-gem 'grape',            # API DSL
-  github: 'intridea/grape'
+gem 'grape', '~> 0.9'   # API DSL
 gem 'grape-rabl'        # rabl for Grape rendering
 gem 'grape-jbuilder'    # jbuilder for Grape rendering
 gem 'grape-swagger'     # API docs

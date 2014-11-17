@@ -1,6 +1,6 @@
 class TwoCents::API < Grape::API
-  prefix 'v'
-  version '2.0', using: :path
+  #prefix 'v'
+  #version '2.0', using: :path
   format :json          # input must be json
   default_format :json  # assume json if no Content-Type is supplied
   default_error_formatter :json
@@ -82,16 +82,16 @@ class TwoCents::API < Grape::API
     end
   end
 
-  mount Auth
-  mount Questions
-  mount Categories
-  mount Comments
-  mount Relationships
-  mount Groups
-  mount Messages
-  mount Studios
-  mount Profile
-  mount Communities
+  mount Auth => '/v/2.0'
+  mount Questions => '/v/2.0'
+  mount Categories => '/v/2.0'
+  mount Comments => '/v/2.0'
+  mount Relationships => '/v/2.0'
+  mount Groups => '/v/2.0'
+  mount Messages => '/v/2.0'
+  mount Studios => '/v/2.0'
+  mount Profile => '/v/2.0'
+  mount Communities => '/v/2.0'
 
   add_swagger_documentation api_version:'2.0', mount_path: "/docs", markdown:true, hide_documentation_path:true
 end
