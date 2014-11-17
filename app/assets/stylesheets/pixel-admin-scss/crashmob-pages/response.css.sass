@@ -1,0 +1,65 @@
+.selectable-option
+  border-color: transparent
+  border-width: 1px
+  overflow: visible
+  i.glyphicon.glyphicon-ok.selected 
+    font-size: 1.5rem
+    position: absolute
+    right: 15px
+    top: 15px
+    color: white
+    background-color: rgba(0, 0, 0, 0.3)
+    padding: 5px
+    border: solid 1px white
+    display: none
+
+  input[type]:checked ~ i.glyphicon.glyphicon-ok.selected
+    display: block
+  text-align: center
+  display: block
+  background: none!important
+  clear: both!important
+  float: none!important
+  padding: 0 !important
+  label
+    display: block
+    position: relative
+    cursor: pointer
+    overflow: hidden
+  input
+    position: absolute
+    bottom: 100%
+    margin-bottom: 3px
+  img
+    visibility: hidden
+    width: 90% !important
+  .option-title
+    font-size: 1.4em
+    position: absolute
+    width: 100%
+    text-align: center
+    top: 50%
+    margin-top: -0.7em
+    left: 0
+  &.active
+    label.btn-primary
+      background-color: $primary_background_color
+      *
+        color: white
+  &:last-child
+    label
+      margin-bottom: 0!important
+
+
+#ordered_choices
+  .floating-question-title
+    top: auto
+    bottom: 0
+    height: 4.8rem
+    padding: 0
+    text-align: center
+    line-height: 4.8rem
+
+.submit-skip-edit-continue-button-set
+  border-top: solid 1px $primary_border_color
+  margin-top: 60px
