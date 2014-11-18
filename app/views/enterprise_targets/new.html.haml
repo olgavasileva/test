@@ -9,15 +9,55 @@
 
     .panel-body
       .row
-        %h2.body_title
+        %h2.body_title.text-center
           Choose who you would like to target.
         .col-xs-12
-          = f.input :min_age
-          = f.input :max_age
+          .form-group
+            %label Age
+            #age-range
+        .col-xs-6
+          .form-group
+            = f.input :min_age, class: 'form-control'
+        .col-xs-6
+          .form-group
+            = f.input :max_age, class: 'form-control'
         .col-xs-12
-          = f.input :gender, collection: [['Men and Women', 'both'], %w(Men male), %w(Women female)], include_blank: false
+          .form-group
+            = f.label :gender, class: 'control-label'
+            .radio
+              %label
+                = f.radio_button :gender, 'male'
+                Men
+              %label
+                = f.radio_button :gender, 'female'
+                Women
+              %label
+                = f.radio_button :gender, 'both'
+                Both
         .col-xs-12
-          =f.collection_check_boxes :segment_ids, @enterprise_target.user.segments, :id, :name, item_wrapper_class: %w(checkbox)
+          .form-group
+            =f.collection_check_boxes :segment_ids, @enterprise_target.user.segments, :id, :name, item_wrapper_class: %w(checkbox)
         .col-xs-12
-          =f.button :submit, "Continue", class: %w(btn-primary negative transparent no-border btn-lg)
+          .form-group
+            =f.button :submit, "Publish", class: %w(btn-primary btn-lg)
 
+:javascript
+  $(function() {
+    function renderAge(evt, ui) {
+      var minAge = $('#age-range').slider('values', 0),
+          maxAge = $('#age-range').slider('values', 1);
+
+      $('#enterprise_target_min_age').val(minAge);
+      $('#enterprise_target_max_age').val(maxAge);
+    }
+
+    $('#age-range').slider({
+      range: true,
+      min: 0,
+      max: 200,
+      values: [14, 99],
+      slide: renderAge
+    });
+
+    renderAge();
+  });

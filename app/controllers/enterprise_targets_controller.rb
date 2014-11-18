@@ -3,7 +3,7 @@ class EnterpriseTargetsController < ApplicationController
 
   def new
     @question = Question.find params.fetch(:question_id)
-    @enterprise_target = current_user.enterprise_targets.build
+    @enterprise_target = current_user.enterprise_targets.build(gender: 'both')
     authorize @enterprise_target
   end
 
