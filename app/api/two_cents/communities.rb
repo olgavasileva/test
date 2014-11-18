@@ -187,6 +187,7 @@ class TwoCents::Communities < Grape::API
     params do
       requires :auth_token, type: String, desc: "Obtain this from the instance's API."
 
+      requires :community_id, type: Integer, desc: "ID of community to invite to."
       optional :email_addresses, type: Array, default: [], desc: "People's email addresses."
       optional :phone_numbers, type: Array, default: [], desc: "People's phone numbers."
     end
