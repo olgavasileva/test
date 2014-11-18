@@ -1,4 +1,4 @@
-json.(question, :id, :type, :title, :description, :response_count, :comment_count, :uuid)
+json.(question, :id, :type, :title, :description, :response_count, :comment_count, :uuid, :anonymous)
 if question.kind_of? YesNoQuestion
   json.type "TextChoiceQuestion"
 else
