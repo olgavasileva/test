@@ -311,37 +311,6 @@ describe :feed do
               it {expect(JSON.parse(response.body)[0]['question']['response_count']).to eq 1}
             end
           end
-
-          context "with less than 15 questions in response" do
-            it "resets user's feed_page to 0" do
-              expect(instance.user.reload.feed_page).to eq 0
-            end
-          end
-
-          context "with more than 15 questions in response" do
-            let(:setup_questions) {
-              4.times { all_questions.each { |q| q.dup.save } }
-
-              text_choice1
-              text_choice2
-              text_choice3
-
-              multiple_choice1
-              multiple_choice2
-              multiple_choice3
-
-              image_choice1
-              image_choice2
-
-              order_choice1
-              order_choice2
-              order_choice3
-            }
-
-            it "increments user's feed_page" do
-              expect(instance.user.reload.feed_page).to eq 1
-            end
-          end
         end
       end
     end

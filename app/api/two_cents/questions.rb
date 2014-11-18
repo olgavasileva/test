@@ -647,20 +647,18 @@ class TwoCents::Questions < Grape::API
     ] do
       validate_user!
 
-      User.increment_counter(:feed_page, current_user.id)
-
-      page = current_user.reload.feed_page
+      page = User.increment_counter(:feed_page, current_user.id)
       per_page = 15
 
       @questions = policy_scope(Question).paginate(page: page, per_page:per_page)
 
       # If fewer questions than expected, add more feed items and redo.
-      if @questions.to_a.count < per_page
+      if @questions.count < per_page
         current_user.feed_more_questions(per_page)
         @questions = policy_scope(Question).paginate(page: page, per_page:per_page)
 
         # If still fewer questions than expected, reset feed page for next request.
-        if @questions.to_a.count < per_page
+        if @questions.count < per_page
           current_user.update_attributes(feed_page: 0)
         end
       end
