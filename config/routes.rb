@@ -133,7 +133,7 @@ LinkchatApp::Application.routes.draw do
 
 
   mount TwoCents::API =>'/'
-  get "/docs" => 'docs#index'
+  mount GrapeSwaggerRails::Engine => '/docs'
 
   # namespace :api, :defaults => { :format => :json } do
   #   resources :users do

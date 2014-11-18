@@ -93,5 +93,5 @@ class TwoCents::API < Grape::API
   mount Profile => '/v/2.0'
   mount Communities => '/v/2.0'
 
-  add_swagger_documentation api_version:'2.0', mount_path: "/docs", markdown:true, hide_documentation_path:true
+  add_swagger_documentation markdown:true, hide_documentation_path:true
 end

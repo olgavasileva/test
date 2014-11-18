@@ -65,7 +65,7 @@ gem 'grape', '~> 0.9'   # API DSL
 gem 'grape-rabl'        # rabl for Grape rendering
 gem 'grape-jbuilder'    # jbuilder for Grape rendering
 gem 'grape-swagger'     # API docs
-gem 'swagger-ui_rails'  # API docs hosting
+gem 'grape-swagger-rails'
 
 gem 'uuid'              # UUID generation
 gem 'figaro'            # Supports application.yml and easy defaults override in specs
