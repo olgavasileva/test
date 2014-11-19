@@ -63,7 +63,7 @@ var photoshoot = function() {
     }
 
     function _calculateCanvasWidth() {
-        return $("#canvas-row").width();
+        return Math.min(PS_MAX_CANVAS_WIDTH, $("#canvas-row").width());
         // return Math.ceil(_calculateCanvasHeight() * (720 / 495));
         //      var v = Math.ceil( _calculateCanvasHeight() * (4/3) );
         //          return Math.min( PS_MAX_CANVAS_WIDTH, Math.max( v, PS_MIN_CANVAS_WIDTH ));
