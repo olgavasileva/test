@@ -1042,7 +1042,8 @@ class TwoCents::Questions < Grape::API
       [200, "400 - Invalid params"],
       [200, "401 - Couldn't find Question"],
       [200, "402 - Invalid auth token"],
-      [200, "403 - Login required"]
+      [200, "403 - Login required"],
+      [200, "499 - (specific active record validation errors)"]
     ] do
       validate_user!
 
@@ -1052,7 +1053,7 @@ class TwoCents::Questions < Grape::API
       QuestionReport.create!(
         user: current_user,
         question: question,
-        reason: params[:reason]
+        reason: declared_params[:reason]
       )
 
       {}
