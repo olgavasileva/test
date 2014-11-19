@@ -94,6 +94,15 @@ describe :register do
               user = User.find_by email:email
               instance.user.should eq user
             end
+
+            context "When the user is under 14 years old" do
+              let(:birthdate) {Date.current - 12.years}
+
+              it {expect(response.status).to eq 200}
+              it {JSON.parse(response.body).should_not be_nil}
+              it {JSON.parse(response.body)['error_code'].should eq 1010}
+              it {JSON.parse(response.body)['error_message'].should match /Birthdate must be over 13 years ago/}
+            end
           end
         end
       end

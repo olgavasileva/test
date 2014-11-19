@@ -319,9 +319,7 @@ class User < ActiveRecord::Base
   private
 
     def over_13
-      return if birthdate.nil?
-
-      errors.add(:birthdate, "can't be before 13 years ago") if under_13?
+      errors.add(:birthdate, "must be over 13 years ago") if birthdate.present? && under_13?
     end
 
 end

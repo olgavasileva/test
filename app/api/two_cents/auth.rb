@@ -157,6 +157,8 @@ class TwoCents::Auth < Grape::API
         [200, "1001 - Invalid instance token"],
         [200, "1002 - A user with that email is already registered"],
         [200, "1009 - The Username is already taken"],
+        [200, "1010 - Birthdate must be over 13 years ago"],
+        [200, "1011 - Unable to save the user record (specific reason text will be included)"],
         [200, "400 - Missing required params"]
       ] do
 
@@ -165,13 +167,16 @@ class TwoCents::Auth < Grape::API
       fail! 1002, "A user with that email is already registered" if User.find_by email:declared_params[:email]
       fail! 1009, "The Username is already taken" if User.find_by username:declared_params[:username]
 
-      user = User.create! name:declared_params[:name],
-                          email:declared_params[:email],
-                          username:declared_params[:username],
-                          password:declared_params[:password],
-                          password_confirmation:declared_params[:password],
-                          birthdate:Date.strptime(declared_params[:birthdate], '%Y-%m-%d'),
-                          gender:declared_params[:gender]
+      user = User.new name:declared_params[:name],
+                      email:declared_params[:email],
+                      username:declared_params[:username],
+                      password:declared_params[:password],
+                      password_confirmation:declared_params[:password],
+                      birthdate:Date.strptime(declared_params[:birthdate], '%Y-%m-%d'),
+                      gender:declared_params[:gender]
+
+      fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
+      fail! 1011, user.errors.full_messages.join(", ") unless user.save
 
       instance.update_attributes! user:user, auth_token:"A"+UUID.new.generate
 
