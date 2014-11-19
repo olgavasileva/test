@@ -11,4 +11,5 @@
         =render partial:'/widgets/image_control',locals:{f:f,distro: :upload_middle,type: 'question'}
         .title=f.input :title, label: false, input_html:{class: 'revealable title appearing-question-title remove-default-text'}
         - if current_user.has_role?(:pro)
-          .muex.text-center=f.input :muex, label: "Mutually Exclusive", wrapper: :vertical_boolean
+          .rotate=f.input :rotate, label: false, collection: [["Default Rotation", nil], ["Force Rotation", true], ["Force Position", false]], include_blank: false, wrapper: :vertical_form, input_html: {class: "input-sm"}
+          .muex=f.input :muex, label: "Mutually Exclusive", wrapper: :vertical_boolean

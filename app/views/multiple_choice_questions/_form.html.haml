@@ -39,13 +39,18 @@
           .col-xs-6.col-xs-push-3
             =f.button :submit, "Preview", class: %w(btn-primary negative transparent no-border btn-lg)
       .panel-body
+        - if current_user.has_role?(:pro)
+          .well
+            %h4.text-center Choice Settings
+            .row
+              .col-sm-6
+                #min_responses=f.input :min_responses, as: :hidden
+                #max_responses=f.input :max_responses, as: :hidden
+                %label#responses_display
+                #required_responses_slider
+              .col-sm-6
+                =f.input :rotate, label: "Rotate all choices", wrapper: :vertical_boolean
         .col-xs-12
-          - if current_user.has_role?(:pro)
-            %p
-              #min_responses=f.input :min_responses, as: :hidden
-              #max_responses=f.input :max_responses, as: :hidden
-              %label#responses_display
-              #required_responses_slider
           %div
             =f.input :type, as: :hidden
             =f.input :rotate, as: :hidden

@@ -10,6 +10,6 @@ class MultipleChoiceQuestionsController < QuestionsControllerBase
     end
 
     def safe_params
-      params.require(:multiple_choice_question).permit(:type, :title, :category_id, :rotate, :min_responses, :max_responses, choices_attributes:[:id, :title, :muex, :background_image_id, :_destroy])
+      params.require(:multiple_choice_question).permit(:type, :title, :category_id, :rotate, :min_responses, :max_responses, choices_attributes:[:id, :title, :muex, :background_image_id, :rotate, :_destroy])
     end
 end
