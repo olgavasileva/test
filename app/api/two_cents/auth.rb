@@ -274,13 +274,13 @@ class TwoCents::Auth < Grape::API
 
       if declared_params[:email]
         user = User.find_by email:declared_params[:email]
-        fail! 1004, "Email not found" unless user
       else
         user = User.find_by username:declared_params[:username]
-        fail! 1005, "Username not found, try again" unless user
       end
 
-      fail! 1008, "Wrong password" unless user.valid_password? declared_params[:password]
+      unless user.present? && user.valid_password?(declared_params[:password])
+        fail! 1008, "Login Unsuccessful. The username and password you entered did not match our records. Please double-check and try again."
+      end
 
       instance.update_attributes! auth_token:"A"+UUID.new.generate, user:user
 
