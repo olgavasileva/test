@@ -75,6 +75,10 @@ class TwoCents::API < Grape::API
     Rack::Response.new({error_code: 401, error_message: e.message}.to_json, 200, "Content-Type" => "application/json").finish
   end
 
+  rescue_from ActiveRecord::RecordInvalid do |e|
+    Rack::Response.new({error_code: 499, error_message: e.message}.to_json, 200, "Content-Type" => "application/json").finish
+  end
+
   unless Rails.env.development? || Rails.env.test?
     rescue_from :all do |e|
       Airbrake.notify_or_ignore(e, cgi_data: ENV.to_hash)
