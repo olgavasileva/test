@@ -164,8 +164,8 @@ class TwoCents::Auth < Grape::API
 
       validate_instance!
 
-      fail! 1002, "A user with that email is already registered" if User.find_by email:declared_params[:email]
-      fail! 1009, "The Username is already taken" if User.find_by username:declared_params[:username]
+      fail! 1002, "This email address is already registered, try again." if User.find_by email:declared_params[:email]
+      fail! 1009, "This username is already taken, try again." if User.find_by username:declared_params[:username]
 
       user = User.new name:declared_params[:name],
                       email:declared_params[:email],
