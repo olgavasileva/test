@@ -1,4 +1,6 @@
 ActiveAdmin.register QuestionsSurvey do
+  menu label: "Survey Questions"
+
   belongs_to :survey
 
   permit_params :question_id

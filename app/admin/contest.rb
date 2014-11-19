@@ -3,6 +3,9 @@ ActiveAdmin.register Contest do
 
   permit_params :name, :key_question_id, :survey_id, :heading_markdown, :gallery_heading_markdown, :allow_anonymous_votes
 
+  filter :name
+  filter :survey
+
   index do
     column :id
     column :name

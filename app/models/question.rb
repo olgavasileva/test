@@ -1,4 +1,7 @@
 class Question < ActiveRecord::Base
+  STATES ||= %w(preview targeting active suspended survey_only)
+  KINDS ||= %w(public targeted)
+
 	belongs_to :user
 	belongs_to :category
   belongs_to :target
@@ -34,8 +37,8 @@ class Question < ActiveRecord::Base
 	validates :user, presence: true
 	validates :category, presence: true
 	validates :title, presence: true, length: { maximum: 250 }
-	validates :state, presence: true, inclusion: {in: %w(preview targeting active suspended)}
-	validates :kind, inclusion: {in: %w(public targeted)}
+	validates :state, presence: true, inclusion: {in: STATES}
+	validates :kind, inclusion: {in: KINDS}
   validates :background_image, presence:true
 
   delegate :web_image_url, to: :background_image

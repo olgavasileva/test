@@ -1,10 +1,12 @@
 ActiveAdmin.register Question do
-  permit_params :id, :position, :category_id, :title
+  permit_params :id, :position, :category_id, :title, :state
 
   filter :user
   filter :title
   filter :type
   filter :category
+  filter :state, as: :check_boxes, collection: Question::STATES
+  filter :kind, as: :check_boxes, collection: Question::KINDS
 
   index do
     selectable_column
@@ -12,6 +14,7 @@ ActiveAdmin.register Question do
     column :type
     column :category
     column :title
+    column :state
     column :kind
     column :position
     column :require_comment
@@ -23,9 +26,10 @@ ActiveAdmin.register Question do
 
   form do |f|
     f.inputs f.object.type do
-      f.input :position
+      f.input :state, collection: Question::STATES, include_blank: false
       f.input :category
       f.input :title
+      f.input :position
       f.input :require_comment
     end
     f.actions
