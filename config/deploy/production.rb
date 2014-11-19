@@ -1,7 +1,7 @@
 set :branch, "master"
 set :deploy_to, "/app/#{fetch :application}/production"
 set :rails_env, 'production'  # If the environment differs from the stage name
-set :branch, "production-1.11"
+set :branch, "production-1.2"
 set :keep_releases, 5
 
 # Simple Role Syntax
