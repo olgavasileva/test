@@ -93,3 +93,5 @@ LinkchatApp::Application.configure do
       :enable_starttls_auto => true  }
 
 end
+
+LinkchatApp::Application.default_url_options = LinkchatApp::Application.config.action_mailer.default_url_options

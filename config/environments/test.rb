@@ -38,3 +38,5 @@ LinkchatApp::Application.configure do
   # Speed up tests by lowering bcrypt's cost function.
   ActiveModel::SecurePassword.min_cost = true
 end
+
+LinkchatApp::Application.default_url_options = LinkchatApp::Application.config.action_mailer.default_url_options
