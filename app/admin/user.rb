@@ -12,21 +12,23 @@ ActiveAdmin.register User do
     end
     column :current_sign_in_at
     column :sign_in_count
+    column "Responses" do |u|
+      u.responses.count
+    end
     column "Items in Feed" do |u|
       link_to u.feed_items.count, admin_user_feed_items_path(u)
     end
-    column :created_at
-    column "Responses" do |u|
-      link_to "Clear all #{pluralize u.responses.count, "response"} and reset the feed", reset_admin_user_path(u), method: :delete
+    column "Actions" do |u|
+      link_to "Reset this feed", reset_admin_user_path(u), method: :delete
     end
+    column :created_at
     actions
   end
 
   member_action :reset, method: :delete do
     user = User.find params[:id]
-    user.responses.destroy_all
     user.feed_items.destroy_all
-    redirect_to admin_users_path, notice: "Responses and feed have been reset for #{user.username}."
+    redirect_to admin_users_path, notice: "Feed has been reset for #{user.username}."
   end
 
   filter :email
