@@ -34,8 +34,9 @@ class TwoCents::Comments < Grape::API
       questions = comments.map(&:question).uniq.compact
 
       if declared_params[:page]
-        questions = questions.paginate(page: declared_params[:page],
-                                       per_page: declared_params[:per_page])
+        questions =
+          policy_scope(Question.where(id: questions))
+            .paginate(page: declared_params[:page], per_page: declared_params[:per_page])
       end
 
       questions.map do |q|
