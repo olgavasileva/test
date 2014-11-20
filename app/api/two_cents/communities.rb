@@ -194,6 +194,24 @@ class TwoCents::Communities < Grape::API
     put 'summon_multiple' do
       validate_user!
 
+      community = Community.find(params[:community_id])
+
+      if community.private?
+        message_setting = Setting.find_by_key('share_community_private')
+      else
+        message_setting = Setting.find_by_key('share_community_public')
+      end
+      url = Rails.application.routes.url_helpers.user_url(current_user, tab: 'communities')
+      message_text = "#{message_setting.value} #{url}"
+
+      params[:email_addresses].each do |email_address|
+        send_email(email_address, message_text)
+      end
+
+      params[:phone_numbers].each do |phone_num|
+        send_sms(phone_num, message_text)
+      end
+
       {}
     end
   end

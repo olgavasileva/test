@@ -65,6 +65,22 @@ class TwoCents::API < Grape::API
     def fail! code, message
       error!({error_message:message, error_code:code}, 200)
     end
+
+    def send_email(email_address, message)
+      UserMailer.notification(email_address, message).deliver
+    end
+
+    def send_sms(phone_num, message)
+      twilio.account.sms.messages.create(
+        from: "+1#{ENV['TWILIO_FROM']}",
+        to: phone_num,
+        body: message
+      )
+    end
+
+    def twilio
+      @twilio ||= Twilio::REST::Client.new(ENV['TWILIO_SID'], ENV['TWILIO_AUTH_TOKEN'])
+    end
   end
 
   rescue_from Grape::Exceptions::ValidationErrors do |e|

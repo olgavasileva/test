@@ -26,33 +26,16 @@ class TwoCents::Questions < Grape::API
       end
 
       def send_email_or_sms_to_invited_users(question, phone_numbers, email_addresses)
-
         message_to_send = generate_message_from_question(question)
 
-        send_text_message phone_numbers, message_to_send  if phone_numbers
-        UserMailer.notification(email_addresses, message_to_send).deliver if email_addresses
-
+        send_text_message phone_numbers, message_to_send unless phone_numbers.nil?
+        UserMailer.notification(email_addresses, message_to_send).deliver unless email_addresses.nil?
       end
 
       def send_text_message(phone_numbers, message_to_send)
-        number_to_send_to = params[:number_to_send_to]
-
-
-
-        @twilio_client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_AUTH_TOKEN']
-
-        twilio_phone_number = ENV['TWILIO_FROM']
-
         phone_numbers.each do |number_to_send_to|
-
-          @twilio_client.account.sms.messages.create(
-              :from => "+1#{twilio_phone_number}",
-              :to => number_to_send_to,
-              :body => message_to_send
-          )
-
+          send_sms(number_to_send_to, message_to_send)
         end
-
       end
 
       def generate_message_from_question(question)

@@ -175,6 +175,16 @@ class TwoCents::Relationships < Grape::API
         fail! 400, "`phone_number` required for 'sms' `method`"
       end
 
+      message_setting = Setting.find_by_key!('share_app')
+      url = Rails.application.routes.url_helpers.root_url
+      message_text = "#{message_setting.value} #{url}"
+
+      if params[:method] == 'email'
+        send_email(params[:email_address], message_text)
+      elsif params[:method] == 'sms'
+        send_sms(params[:phone_number], message_text)
+      end
+
       {}
     end
 
@@ -187,6 +197,18 @@ class TwoCents::Relationships < Grape::API
     end
     put 'summon_multiple' do
       validate_user!
+
+      message_setting = Setting.find_by_key!('share_app')
+      url = Rails.application.routes.url_helpers.root_path
+      message_text = "#{message_setting.value} #{url}"
+
+      params[:email_addresses].each do |email_address|
+        send_email(email_address, message_text)
+      end
+
+      params[:phone_numbers].each do |phone_num|
+        send_sms(phone_num, message_text)
+      end
 
       {}
     end
