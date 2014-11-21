@@ -172,24 +172,24 @@ var photoshoot = function() {
             $studioIconWrapper.html(imgTag);
         }
 
-        // show welcome message
-        if ($.cookie('ps_studio_config_' + studio.permalink) == null) {
-            $.cookie('ps_studio_config_' + studio.permalink, 'true', {
-                expires: 36500,
-                path: '/'
-            });
+        // // show welcome message
+        // if ($.cookie('ps_studio_config_' + studio.permalink) == null) {
+        //     $.cookie('ps_studio_config_' + studio.permalink, 'true', {
+        //         expires: 36500,
+        //         path: '/'
+        //     });
 
-            // show welcome dialog
-            var dlg = $('#welcome-dialog');
-            dlg.find('h1').html(studio.title);
-            dlg.find('p > span').html(studio.description);
-            dlg.find('p > button').html(studio.call_to_action).click(function() {
-                dlg.dialog("close");
-            });
-            dlg.dialog('option', 'title', studio.title_bar_title);
-            dlg.dialog("open");
-            $('.ui-dialog :button, .ui-dialog a').blur();
-        }
+        //     // show welcome dialog
+        //     var dlg = $('#welcome-dialog');
+        //     dlg.find('h1').html(studio.title);
+        //     dlg.find('p > span').html(studio.description);
+        //     dlg.find('p > button').html(studio.call_to_action).click(function() {
+        //         dlg.dialog("close");
+        //     });
+        //     dlg.dialog('option', 'title', studio.title_bar_title);
+        //     dlg.dialog("open");
+        //     $('.ui-dialog :button, .ui-dialog a').blur();
+        // }
     }
 
     function studioLoaded() {
