@@ -1,5 +1,5 @@
 %link{href:@response.question.web_image_url, rel: "image_src"}
-%img.blured-background{src: @response.question.web_image_url || image_path("fallback/choice1.png")}
+//%img.blured-background{src: @response.question.web_image_url || image_path("fallback/choice1.png")}
 .row#content_constraint{class: @response.question.type}
   - # Make studio questions wider
   .col-xs-12.img-overlay{class:@response.question.kind_of?(StudioQuestion) ? "" : %w(col-sm-8 col-sm-push-2)}
