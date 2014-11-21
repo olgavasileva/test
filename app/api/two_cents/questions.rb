@@ -344,9 +344,9 @@ class TwoCents::Questions < Grape::API
 
       declared_params[:choices].each do |choice_params|
         background_image = if URI(choice_params[:image_url]).scheme.nil?
-          ChoiceImage.create!(image:open(choice_params[:image_url]))
+          OrderChoiceImage.create!(image:open(choice_params[:image_url]))
         else
-          ChoiceImage.create!(remote_image_url:choice_params[:image_url])
+          OrderChoiceImage.create!(remote_image_url:choice_params[:image_url])
         end
 
         @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate], background_image:background_image
