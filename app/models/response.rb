@@ -1,7 +1,7 @@
 class Response < ActiveRecord::Base
   belongs_to :user
   belongs_to :question
-  has_one :comment, as: :commentable
+  has_one :comment, as: :commentable, dependent: :destroy
   has_many :contest_response_votes, dependent: :destroy
 
   validates :user, presence: true

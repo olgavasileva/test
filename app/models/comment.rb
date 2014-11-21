@@ -14,9 +14,9 @@ class Comment < ActiveRecord::Base
     when "Question"
       commentable
     when "Response"
-      commentable.question
+      commentable.try(:question)
     when "Comment"
-      commentable.question
+      commentable.try(:question)
     end
   end
 end
