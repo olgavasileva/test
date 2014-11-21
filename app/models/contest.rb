@@ -2,8 +2,8 @@ class Contest < ActiveRecord::Base
   belongs_to :survey
   belongs_to :key_question, class_name:"Question"
   has_many :contest_response_votes, dependent: :destroy
-  has_many :questions, through: :survey
-  has_many :questions_surveys, through: :survey
+  has_many :questions, -> { order "questions_surveys.position ASC" }, through: :survey
+  has_many :questions_surveys, -> { order "questions_surveys.position ASC" }, through: :survey
 
   default :uuid do |contest|
     "C"+UUID.new.generate.gsub(/-/, '')
