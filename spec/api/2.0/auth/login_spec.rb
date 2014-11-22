@@ -63,8 +63,8 @@ describe :login do
             it {expect(response.status).to eq 200}
             it {expect(response.headers["Content-Type"]).to eq "application/json"}
             it {expect(JSON.parse(response.body)).to_not be_nil}
-            it {expect(JSON.parse(response.body)['error_code']).to eq 1004}
-            it {expect(JSON.parse(response.body)['error_message']).to match /Email not found/}
+            it {expect(JSON.parse(response.body)['error_code']).to eq 1008}
+            it {expect(JSON.parse(response.body)['error_message']).to match /Login Unsuccessful/}
           end
 
           context "When a user with the email adready exists" do
@@ -78,7 +78,7 @@ describe :login do
               it {expect(response.headers["Content-Type"]).to eq "application/json"}
               it {expect(JSON.parse(response.body)).to_not be_nil}
               it {expect(JSON.parse(response.body)['error_code']).to eq 1008}
-              it {expect(JSON.parse(response.body)['error_message']).to match /Wrong password/}
+              it {expect(JSON.parse(response.body)['error_message']).to match /Login Unsuccessful/}
             end
 
             context "When the instance already has an existing auth_token" do
@@ -154,8 +154,8 @@ describe :login do
             it {expect(response.status).to eq 200}
             it {expect(response.headers["Content-Type"]).to eq "application/json"}
             it {expect(JSON.parse(response.body)).to_not be_nil}
-            it {expect(JSON.parse(response.body)['error_code']).to eq 1005}
-            it {expect(JSON.parse(response.body)['error_message']).to match /Username not found/}
+            it {expect(JSON.parse(response.body)['error_code']).to eq 1008}
+            it {expect(JSON.parse(response.body)['error_message']).to match /Login Unsuccessful/}
           end
 
           context "When a user with the username adready exists" do
@@ -169,7 +169,7 @@ describe :login do
               it {expect(response.headers["Content-Type"]).to eq "application/json"}
               it {expect(JSON.parse(response.body)).to_not be_nil}
               it {expect(JSON.parse(response.body)['error_code']).to eq 1008}
-              it {expect(JSON.parse(response.body)['error_message']).to match /Wrong password/}
+              it {expect(JSON.parse(response.body)['error_message']).to match /Login Unsuccessful/}
             end
 
             context "When the instance already has an existing auth_token" do
