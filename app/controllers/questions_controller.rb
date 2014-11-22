@@ -42,7 +42,7 @@ class QuestionsController < ApplicationController
     if @question.present?
       authorize @question
 
-      redirect_to new_question_response_path(@question) unless browser.iphone? || browser.ipod? || browser.ipad?
+      redirect_to new_question_response_path(@question) unless %w(true 1).include?(ENV['DEVICE_SHARING_REDIRECT'].to_s.downcase) && (browser.iphone? || browser.ipod? || browser.ipad?)
     else
       authorize Question, :index?
       redirect_to :root
