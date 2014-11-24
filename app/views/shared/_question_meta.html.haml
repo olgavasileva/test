@@ -1,0 +1,16 @@
+- # Facebook
+- if ENV['FACEBOOK_APP_NAME'].present?
+  %meta{ property: 'og:site_name', content: ENV['FACEBOOK_APP_NAME'] }
+  %meta{ property: 'og:type', content: 'article' }
+  %meta{ property: 'og:description', content: question.title }
+  %meta{ property: 'og:url', content: question_sharing_url(question.uuid) }
+  %meta{ property: 'og:image', content: question.web_image_url }
+
+- # Twitter
+- if ENV['TWITTER_SITE'].present?
+  %meta{ name: "twitter:card", content: "summary_large_image" }
+  %meta{ name: "twitter:site", content: ENV['TWITTER_SITE'] }
+  %meta{ name: "twitter:creator", content: ENV['TWITTER_CREATOR'] }
+  %meta{ name: "twitter:title", content: question.title }
+  %meta{ name: "twitter:description", content: ENV["TWITTER_DESCRIPTION"] }
+  %meta{ name: "twitter:image:src", content: question.web_image_url }

@@ -23,3 +23,5 @@
             = form.association :user, as: :hidden
             = form.input :type, as: :hidden
             = render "response_fields", form:form, response:@response
+- content_for :meta do
+  = render "shared/question_meta", question: @response.question

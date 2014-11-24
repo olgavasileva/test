@@ -1,3 +1,6 @@
+- content_for :meta do
+  = render "shared/question_meta", question: Question.active.last
+
 = render 'hero_unit'
 = render 'features'
 = render 'works'
