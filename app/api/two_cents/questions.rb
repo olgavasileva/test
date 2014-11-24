@@ -72,14 +72,6 @@ class TwoCents::Questions < Grape::API
         target
       end
 
-      def user_ordered_feed_questions(user)
-        policy_scope(user.feed_questions)
-          .order("CASE WHEN questions.position IS NULL THEN 1 ELSE 0 END ASC")
-          .order("questions.position ASC")
-          .order("questions.kind ASC")
-          .order("questions.created_at DESC")
-      end
-
     end
 
     #
@@ -641,15 +633,11 @@ class TwoCents::Questions < Grape::API
       page = declared_params[:page]
       per_page = page ? declared_params[:per_page] : 15
 
-      @questions = \
-        user_ordered_feed_questions(current_user)
-          .paginate(page: page, per_page:per_page)
+      @questions = policy_scope(current_user.feed_questions).feed_order
 
       if @questions.count < per_page * page.to_i + per_page + 1
         current_user.feed_more_questions per_page + 1
-        @questions = \
-          user_ordered_feed_questions(current_user)
-            .paginate(page: page, per_page:per_page)
+        @questions = policy_scope(current_user.feed_questions).feed_order
       end
 
       @questions.each{|q| q.viewed!}
@@ -679,7 +667,7 @@ class TwoCents::Questions < Grape::API
           user.feed_questions << next_questions
         end
 
-        @questions = user.feed_questions.first(count)
+        @questions = user.feed_questions.feed_order.first(count)
       else
         until user.feed_questions.pluck(:id).include?(after_id) \
           && after_id_to_end(user.feed_questions, after_id).count > count
@@ -694,7 +682,7 @@ class TwoCents::Questions < Grape::API
           return
         end
 
-        @questions = after_id_to_end(user.feed_questions, after_id).first(count)
+        @questions = after_id_to_end(user.feed_questions.feed_order, after_id).first(count)
       end
     end
 
