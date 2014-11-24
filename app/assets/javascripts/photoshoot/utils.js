@@ -208,7 +208,7 @@ var psUtils = function() {
         }
         stickerPropsList[prop].node=stickerPropsList[prop].node || $(stickerPropsList[prop].node_id);
         new_value = (+stickerPropsList[prop].node.text()) +(+stickerProps[prop]);
-        stickerPropsList[prop].node.text(new_value);
+        stickerPropsList[prop].node.text(Math.round(new_value * 10)/10);
       }
     };
 
@@ -224,7 +224,7 @@ var psUtils = function() {
         }
         stickerPropsList[prop].node=stickerPropsList[prop].node || $(stickerPropsList[prop].node_id);
         new_value = (+stickerPropsList[prop].node.text())-(+stickerProps[prop]);
-        stickerPropsList[prop].node.text(new_value);
+        stickerPropsList[prop].node.text(Math.round(new_value * 10)/10);
       }
     };
 };
