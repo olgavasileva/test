@@ -56,7 +56,7 @@
 
         %label.col-xs-6.choice-wrapper{data:{muex:c.muex}}
           .row
-            =check_box_tag("multiple_choice_response[choice_id]",c.id,false,{class:'selected-choice'})
+            =check_box_tag("multiple_choice_response[choice_ids][]",c.id,false,{class:'selected-choice'})
             =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive", style:"width: 259px; height: 259px;")
             %i.glyphicon.glyphicon-ok.selected
             .option-title=c.title
