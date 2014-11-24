@@ -4,7 +4,7 @@ class TwoCents::Messages < Grape::API
     #
     # Returns the number of unread messages
     #
-    desc "Update the status of a message", {
+    desc "Return number of unread messages", {
         notes: <<-END
         This API will update the status of a message which belongs to the current user.
 
