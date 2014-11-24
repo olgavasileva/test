@@ -147,7 +147,7 @@ class TwoCents::Messages < Grape::API
 
 
     #
-    # Set all messages in the queue read
+    # Delete all messages
     #
     desc "Delete all messages in the queue", {
         notes: <<-END
