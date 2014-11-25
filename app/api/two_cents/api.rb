@@ -47,7 +47,7 @@ class TwoCents::API < Grape::API
     end
 
     def app_version_compatible? app_version
-      true
+      app_version == '1.2'
     end
 
     def current_user
