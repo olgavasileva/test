@@ -1,6 +1,15 @@
 require 'rails_helper'
 
 describe User do
+  let(:instance) { FactoryGirl.create(:user) }
+
+  describe :next_feed_questions do
+    let!(:untargeted_question) { FactoryGirl.create(:question) }
+
+    it "does not return untargeted questions" do
+      expect(instance.next_feed_questions).to_not include untargeted_question
+    end
+  end
 
   describe :validations do
     it {expect(FactoryGirl.build(:user)).to be_valid}
