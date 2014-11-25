@@ -47,7 +47,7 @@ class TwoCents::API < Grape::API
     end
 
     def app_version_compatible? app_version
-      true
+      ENV['COMPATIBLE_APP_VERSION'].blank? || app_version == ENV['COMPATIBLE_APP_VERSION']
     end
 
     def current_user
