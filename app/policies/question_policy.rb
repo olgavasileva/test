@@ -1,7 +1,7 @@
 class QuestionPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      scope.where("questions.user_id = #{user.id} OR questions.anonymous != true")
+      scope.where("questions.kind = 'public' OR questions.user_id = #{user.id}")
     end
   end
 
