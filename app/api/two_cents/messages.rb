@@ -265,5 +265,35 @@ class TwoCents::Messages < Grape::API
       @messages = messages.paginate(page:page, per_page:per_page)
       @number = current_user.number_of_unread_messages
     end
+
+    desc "Return messages for this user."
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      optional :previous_last_id, type: Integer,
+        desc: "ID of message to return messages after."
+      optional :count, type: Integer,
+        desc: "Number of messages to return."
+    end
+    get '/', jbuilder: 'messages' do
+      validate_user!
+
+      previous_last_id = params[:previous_last_id]
+      count = params[:count]
+
+      @messages = policy_scope(current_user.messages)
+
+      if previous_last_id.present?
+        previous_last_index = @messages.map(&:id).index(previous_last_id)
+        @messages = @messages[previous_last_index + 1..-1]
+      end
+
+      if count.present?
+        @messages = @messages.first(count)
+      end
+
+      @number = current_user.number_of_unread_messages
+    end
   end
+
 end
