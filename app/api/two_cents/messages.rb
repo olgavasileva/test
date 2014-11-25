@@ -78,6 +78,22 @@ class TwoCents::Messages < Grape::API
       end
     end
 
+    desc "Mark multiple messages as read"
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+      requires :ids, type: Array, desc: "IDs of messages."
+    end
+    put 'read_multiple' do
+      validate_user!
+
+      params[:ids].map do |id|
+        message = Message.find(id)
+        message.touch(:read_at)
+      end
+
+      {}
+    end
+
 
 
     #
