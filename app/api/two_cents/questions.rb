@@ -709,21 +709,29 @@ class TwoCents::Questions < Grape::API
       use :auth
 
       optional :user_id, type: Integer, desc: "User ID. Defaults to logged in user's ID."
-      optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all questions."
-      optional :per_page, type: Integer, default: 15, desc: "Number of questions per page."
       optional :reverse, type: Boolean, default: false, desc: "Whether to reverse order."
+      optional :previous_last_id, type: Integer,
+        desc: "ID of question before start of list."
+      optional :count, type: Integer,
+        desc: "Number of questions to return."
     end
     post 'asked' do
       user_id = params[:user_id]
       user = user_id.present? ? User.find(user_id) : current_user
+      previous_last_id = params[:previous_last_id]
+      count = params[:count]
 
       questions = policy_scope(user.questions).order(:created_at)
 
       questions = questions.reverse if params[:reverse]
 
-      if params[:page]
-        questions = questions.paginate(page: params[:page],
-                                       per_page: params[:per_page])
+      if previous_last_id.present?
+        previous_last_index = questions.map(&:id).index(previous_last_id)
+        questions = questions[previous_last_index + 1..-1]
+      end
+
+      if count.present?
+        questions = questions.first(count)
       end
 
       questions.map do |q|
