@@ -40,3 +40,11 @@ $(document).on "page:change", ->
     minDate: "-20Y"
     maxDate: 0
     dateFormat:'yy-mm-dd'
+
+# Submit any form that has a
+$ ->
+  $(document).on "click", "[data-btn-role=submit]", (event)->
+    form = $(this).closest("form")
+    if form.length == 1
+      event.preventDefault();
+      $(this).closest("form").submit()
