@@ -102,16 +102,16 @@
     #ps-breadcrumbs.col-sm-9
       #current-studio-icon
       %h2#current-studio-name
-      / =link_to "", '#', id: "ps-save", data:{'btn-role' => :save}
-      =link_to "Clear All", '#', id: "ps-clear-all", class: %w(btn btn-gary-dark ps-btn-gray)
+      =link_to "Submit", '#', id: "ps-submit", class: %w(btn ps-btn-yellow), data:{btn_role: :submit}
+      =link_to "Clear All", '#', id: "ps-clear-all", class: %w(btn btn-gray-dark ps-btn-gray)
       .ps-undo-redo
-        %button#ps-undo.btn.btn-gary-dark.ps-btn-gray.ps-btn-disabled{data:{"btn-role" => :undo}}
+        %button#ps-undo.btn.btn-gray-dark.ps-btn-gray.ps-btn-disabled{data:{"btn-role" => :undo}}
           %i.fa.fa-undo
           &nbsp;Undo
-        %button#ps-redo.btn.btn-gary-dark.ps-btn-gray.ps-btn-disabled{data:{"btn-role" => :redo}}
+        %button#ps-redo.btn.btn-gray-dark.ps-btn-gray.ps-btn-disabled{data:{"btn-role" => :redo}}
           %i.fa.fa-repeat
           &nbsp;Redo
-      =link_to '?', '#', id:"ps-help", data:{"btn-role" => "help"}, class: %w(btn btn-gary-dark btn-circle btn-sm ps-btn-gray)
+      =link_to '?', '#', id:"ps-help", data:{"btn-role" => "help"}, class: %w(btn btn-gray-dark btn-circle btn-sm ps-btn-gray)
       .help
     #ps-studio.col-sm-9
       .row#canvas-row
