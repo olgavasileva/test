@@ -49,9 +49,9 @@ class ApplicationController < ActionController::Base
     # Find next question in the feed, or wrap around if at the last question
     def next_question question
       feed_questions = current_user.anonymous? ? Question.all : current_user.feed_questions
-      feed_questions = policy_scope(feed_questions).feed_order
+      feed_questions = policy_scope(feed_questions).where.not(id: question.id).feed_order
 
-      feed_questions[feed_questions.index(question) + 1] || feed_questions[0]
+      feed_questions.where("questions.created_at <= ?",question.created_at).limit(1).first || feed_questions.first
     end
 
     def configure_devise_permitted_parameters
