@@ -3,83 +3,67 @@ require 'rails_helper'
 describe 'comments/user' do
   let(:count) { 3 }
   let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
+  let!(:comments) { FactoryGirl.create_list(:text_response_comment, count, user: instance.user) }
+  let(:ordered_question_ids) { comments.map(&:commentable_id) }
   let(:common_params) { {
     auth_token: instance.auth_token
   } }
-  let(:request) { -> { post 'v/2.0/comments/user', params } }
+  let(:other_params) {{ }}
+  let(:params) { common_params.merge(other_params) }
+  let(:common_params) { {
+    auth_token: instance.auth_token
+  } }
   let(:response_body) { JSON.parse(response.body) }
+  let(:response_question_ids) { response_body.map { |d| d['question_id'] } }
 
-  before { FactoryGirl.create_list :text_response_comment, count, user: instance.user }
+  before { post 'v/2.0/comments/user', params }
 
-  shared_examples :correct_fields do
-    it "responds with correct data fields" do
-      response_body.each do |data|
-        fields = %w[question_id question_title last_commented_at]
-        expect(data.keys).to match_array fields
-      end
-    end
-
-    it "has last commented at for each question" do
-      response_body.each do |data|
-        expect(data['last_commented_at']).to_not be_nil
-      end
+  it "responds with correct data fields" do
+    response_body.each do |data|
+      fields = %w[question_id question_title last_commented_at]
+      expect(data.keys).to match_array fields
     end
   end
 
-  context "without user_id" do
-    let(:params) { common_params }
-
-    before { request.call }
-
-    it "responds with data for all logged in user's comments" do
-      expect(response_body.count).to eq count
+  it "has last commented at for each question" do
+    response_body.each do |data|
+      expect(data['last_commented_at']).to_not be_nil
     end
+  end
 
-    include_examples :correct_fields
+  it "responds with data for all logged in user's comments" do
+    expect(response_question_ids).to match_array ordered_question_ids
   end
 
   context "with user_id" do
     let(:user) { FactoryGirl.create(:user) }
-    let(:params) { common_params.merge(user_id: user.id) }
-
-    before { FactoryGirl.create_list :text_response_comment, count, user: user }
-    before { request.call }
+    let!(:comments) { FactoryGirl.create_list(:text_response_comment, count, user: user) }
+    let(:other_params) {{ user_id: user.id }}
 
     it "responds with data for all given user's comments" do
-      expect(response_body.count).to eq count
+      expect(response_question_ids).to match_array ordered_question_ids
     end
-
-    include_examples :correct_fields
   end
 
-  context "with page" do
-    let(:count) { 20 }
-    let(:params) { common_params.merge(page: 1) }
+  context "with previous_last_id" do
+    let(:other_params) {{ previous_last_id: ordered_question_ids[-2] }}
 
-    before { request.call }
-
-    it "responds with data for up to 15 comments" do
-      expect(response_body.count).to eq 15
+    it "returns records after the one specified by previous_last_id" do
+      expect(response_question_ids).to eq [ordered_question_ids[-1]]
     end
+  end
 
-    include_examples :correct_fields
+  context "with count" do
+    let(:other_params) {{ count: 2 }}
 
-    context "with per_page" do
-      let(:count) { 7 }
-      let(:per_page) { 5 }
-      let(:params) { common_params.merge(page: 1, per_page: per_page) }
-
-      it "responds with data for up to `per_page` comments" do
-        expect(response_body.count).to eq per_page
-      end
+    it "returns first n records specified by count" do
+      expect(response_question_ids).to eq ordered_question_ids.first(2)
     end
   end
 
   context "with reverse" do
-    let(:params) { common_params.merge(reverse: true) }
+    let(:other_params) {{ reverse: true }}
 
-    before { request.call }
-
-    include_examples :correct_fields
+    it "returns questions in reverse order"
   end
 end

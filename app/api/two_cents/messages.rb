@@ -4,7 +4,7 @@ class TwoCents::Messages < Grape::API
     #
     # Returns the number of unread messages
     #
-    desc "Update the status of a message", {
+    desc "Return number of unread messages", {
         notes: <<-END
         This API will update the status of a message which belongs to the current user.
 
@@ -78,6 +78,22 @@ class TwoCents::Messages < Grape::API
       end
     end
 
+    desc "Mark multiple messages as read"
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+      requires :ids, type: Array, desc: "IDs of messages."
+    end
+    put 'read_multiple' do
+      validate_user!
+
+      params[:ids].map do |id|
+        message = Message.find(id)
+        message.touch(:read_at)
+      end
+
+      {}
+    end
+
 
 
     #
@@ -113,41 +129,7 @@ class TwoCents::Messages < Grape::API
 
 
     #
-    # Set all messages in the queue read
-    #
-    desc "Set all messages in the queue read", {
-        notes: <<-END
-        This API will Set all messages in the queue ,which belongs to the current user, read.
-
-                                inputs:
-                                  auth_token: token of current user
-
-                                output:
-                                  success: empty body {} and success response code
-        END
-    }
-    params do
-      requires :auth_token, type:String, desc: 'Obtain this from the instances API'
-    end
-    post 'read_all', http_codes:[
-        [200, "400 - Invalid params"],
-        [200, "402 - Invalid auth token"],
-        [200, "403 - Login required"]
-    ] do
-      validate_user!
-
-      current_user.messages.all().each do |message|
-        message.read_at = Time.zone.now()
-        message.save
-      end
-      status 200
-      {}
-
-    end
-
-
-    #
-    # Set all messages in the queue read
+    # Delete all messages
     #
     desc "Delete all messages in the queue", {
         notes: <<-END
@@ -299,5 +281,35 @@ class TwoCents::Messages < Grape::API
       @messages = messages.paginate(page:page, per_page:per_page)
       @number = current_user.number_of_unread_messages
     end
+
+    desc "Return messages for this user."
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+
+      optional :previous_last_id, type: Integer,
+        desc: "ID of message to return messages after."
+      optional :count, type: Integer,
+        desc: "Number of messages to return."
+    end
+    get '/', jbuilder: 'messages' do
+      validate_user!
+
+      previous_last_id = params[:previous_last_id]
+      count = params[:count]
+
+      @messages = policy_scope(current_user.messages)
+
+      if previous_last_id.present?
+        previous_last_index = @messages.map(&:id).index(previous_last_id)
+        @messages = @messages[previous_last_index + 1..-1]
+      end
+
+      if count.present?
+        @messages = @messages.first(count)
+      end
+
+      @number = current_user.number_of_unread_messages
+    end
   end
+
 end

@@ -72,14 +72,6 @@ class TwoCents::Questions < Grape::API
         target
       end
 
-      def user_ordered_feed_questions(user)
-        policy_scope(user.feed_questions)
-          .order("CASE WHEN questions.position IS NULL THEN 1 ELSE 0 END ASC")
-          .order("questions.position ASC")
-          .order("questions.kind ASC")
-          .order("questions.created_at DESC")
-      end
-
     end
 
     #
@@ -641,15 +633,11 @@ class TwoCents::Questions < Grape::API
       page = declared_params[:page]
       per_page = page ? declared_params[:per_page] : 15
 
-      @questions = \
-        user_ordered_feed_questions(current_user)
-          .paginate(page: page, per_page:per_page)
+      @questions = policy_scope(current_user.feed_questions).feed_order
 
       if @questions.count < per_page * page.to_i + per_page + 1
         current_user.feed_more_questions per_page + 1
-        @questions = \
-          user_ordered_feed_questions(current_user)
-            .paginate(page: page, per_page:per_page)
+        @questions = policy_scope(current_user.feed_questions).feed_order
       end
 
       @questions.each{|q| q.viewed!}
@@ -679,7 +667,7 @@ class TwoCents::Questions < Grape::API
           user.feed_questions << next_questions
         end
 
-        @questions = user.feed_questions.first(count)
+        @questions = user.feed_questions.feed_order.first(count)
       else
         until user.feed_questions.pluck(:id).include?(after_id) \
           && after_id_to_end(user.feed_questions, after_id).count > count
@@ -694,7 +682,7 @@ class TwoCents::Questions < Grape::API
           return
         end
 
-        @questions = after_id_to_end(user.feed_questions, after_id).first(count)
+        @questions = after_id_to_end(user.feed_questions.feed_order, after_id).first(count)
       end
     end
 
@@ -721,21 +709,29 @@ class TwoCents::Questions < Grape::API
       use :auth
 
       optional :user_id, type: Integer, desc: "User ID. Defaults to logged in user's ID."
-      optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all questions."
-      optional :per_page, type: Integer, default: 15, desc: "Number of questions per page."
       optional :reverse, type: Boolean, default: false, desc: "Whether to reverse order."
+      optional :previous_last_id, type: Integer,
+        desc: "ID of question before start of list."
+      optional :count, type: Integer,
+        desc: "Number of questions to return."
     end
     post 'asked' do
       user_id = params[:user_id]
       user = user_id.present? ? User.find(user_id) : current_user
+      previous_last_id = params[:previous_last_id]
+      count = params[:count]
 
       questions = policy_scope(user.questions).order(:created_at)
 
       questions = questions.reverse if params[:reverse]
 
-      if params[:page]
-        questions = questions.paginate(page: params[:page],
-                                       per_page: params[:per_page])
+      if previous_last_id.present?
+        previous_last_index = questions.map(&:id).index(previous_last_id)
+        questions = questions[previous_last_index + 1..-1]
+      end
+
+      if count.present?
+        questions = questions.first(count)
       end
 
       questions.map do |q|
@@ -757,22 +753,29 @@ class TwoCents::Questions < Grape::API
       use :auth
 
       optional :user_id, type: Integer, desc: "User ID. Defaults to logged in user's ID."
-      optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all questions."
-      optional :per_page, type: Integer, default: 15, desc: "Number of questions per page."
       optional :reverse, type: Boolean, default: false, desc: "Whether to reverse order."
+      optional :previous_last_id, type: Integer,
+        desc: "ID of question before start of list."
+      optional :count, type: Integer,
+        desc: "Number of questions to return."
     end
     post 'answered' do
       user_id = params[:user_id]
       user = user_id.present? ? User.find(user_id) : current_user
+      previous_last_id = params[:previous_last_id]
+      count = params[:count]
 
       responses = user.responses.order(:created_at)
       responses = responses.reverse if params[:reverse]
       questions = responses.map(&:question).uniq.compact
 
-      if params[:page]
-        questions = \
-          policy_scope(Question.where(id: questions))
-            .paginate(page: params[:page], per_page: params[:per_page])
+      if previous_last_id.present?
+        previous_last_index = questions.map(&:id).index(previous_last_id)
+        questions = questions[previous_last_index + 1..-1]
+      end
+
+      if count.present?
+        questions = questions.first(count)
       end
 
       questions.map do |question|

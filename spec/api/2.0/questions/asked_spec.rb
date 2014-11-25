@@ -3,75 +3,58 @@ require 'rails_helper'
 describe :asked do
   let(:count) { 20 }
   let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
+  let!(:questions) { FactoryGirl.create_list(:question, count, user: instance.user) }
   let(:common_params) { {
     auth_token: instance.auth_token
   } }
-  let(:request) { -> { post 'v/2.0/questions/asked', params } }
+  let(:other_params) {{ }}
+  let(:params) { common_params.merge(other_params) }
   let(:response_body) { JSON.parse(response.body) }
+  let(:response_question_ids) { response_body.map { |d| d['id'] } }
 
-  before { FactoryGirl.create_list(:question, count, user: instance.user) }
-
-  shared_examples :correct_fields do
-    it "responds with correct data fields" do
-      response_body.each do |data|
-        expect(data.keys).to match_array %w[id title created_at]
-      end
-    end
+  before do
+    post 'v/2.0/questions/asked', params
   end
 
-  context "without user_id" do
-    let(:params) { common_params }
+  it "responds with data for all logged in user's questions" do
+    expect(response_body.count).to eq count
+  end
 
-    before { request.call }
-
-    it "responds with data for all logged in user's questions" do
-      expect(response_body.count).to eq count
+  it "responds with correct data fields" do
+    response_body.each do |data|
+      expect(data.keys).to match_array %w[id title created_at]
     end
-
-    include_examples :correct_fields
   end
 
   context "with user_id" do
     let(:user) { FactoryGirl.create(:user) }
-    let(:params) { common_params.merge(user_id: user.id) }
-
-    before { FactoryGirl.create_list(:question, count, user: user) }
-    before { request.call }
+    let(:other_params) {{ user_id: user.id }}
+    let!(:questions) { FactoryGirl.create_list(:question, count, user: user) }
 
     it "responds with data for all given user's questions" do
       expect(response_body.count).to eq count
     end
-
-    include_examples :correct_fields
   end
 
-  context "with page" do
-    let(:params) { common_params.merge(page: 1) }
+  context "with previous_last_id" do
+    let(:other_params) {{ previous_last_id: questions[-2].id }}
 
-    before { request.call }
-
-    it "responds with data for up to 15 questions" do
-      expect(response_body.count).to eq 15
+    it "returns records after the one specified by previous_last_id" do
+      expect(response_question_ids).to eq [questions[-1].id]
     end
+  end
 
-    include_examples :correct_fields
+  context "with count" do
+    let(:other_params) {{ count: 2 }}
 
-    context "with per_page" do
-      let(:per_page) { 5 }
-      let(:params) { common_params.merge(page: 1, per_page: per_page) }
-
-      it "responds with data for up to `per_page` questions" do
-        expect(response_body.count).to eq per_page
-      end
+    it "returns first n records specified by count" do
+      expect(response_question_ids).to eq questions.first(2).map(&:id)
     end
   end
 
   context "with reverse" do
-    let(:params) { common_params.merge(reverse: true) }
+    let(:other_params) {{ reverse: true }}
 
-    before { request.call }
-
-    include_examples :correct_fields
+    it "returns questions in reverse order"
   end
-
 end

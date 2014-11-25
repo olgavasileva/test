@@ -14,7 +14,7 @@ class ContestsController < ApplicationController
     @contest = Contest.find_by uuid:params[:uuid]
     authorize @contest
     session[:contest_uuid] = @contest.uuid
-    @user = User.new
+    @user = User.new birthdate: Date.parse("1/1/2000")
   end
 
   def new_user
