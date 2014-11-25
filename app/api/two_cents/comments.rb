@@ -21,22 +21,30 @@ class TwoCents::Comments < Grape::API
       requires :auth_token, type: String, desc: "Obtain this from the instance's API."
 
       optional :user_id, type: Integer, desc: "User ID. Defaults to logged in user's ID."
-      optional :page, type: Integer, desc: "Page number, minimum 1. If left blank, responds with all questions."
-      optional :per_page, type: Integer, default: 15, desc: "Number of questions per page."
       optional :reverse, type: Boolean, default: false, desc: "Whether to reverse order."
+      optional :previous_last_id, type: Integer,
+        desc: "ID of question before start of list."
+      optional :count, type: Integer,
+        desc: "Number of questions to return."
     end
     post 'user' do
       user_id = declared_params[:user_id]
+      previous_last_id = params[:previous_last_id]
+      count = params[:count]
+
       user = user_id.present? ? User.find(user_id) : current_user
 
       comments = user.comments.order(:created_at)
       comments = comments.reverse if params[:reverse]
       questions = comments.map(&:question).uniq.compact
 
-      if declared_params[:page]
-        questions =
-          policy_scope(Question.where(id: questions))
-            .paginate(page: declared_params[:page], per_page: declared_params[:per_page])
+      if previous_last_id.present?
+        previous_last_index = questions.map(&:id).index(previous_last_id)
+        questions = questions[previous_last_index + 1..-1]
+      end
+
+      if count.present?
+        questions = questions.first(count)
       end
 
       questions.map do |q|
