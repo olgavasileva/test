@@ -640,6 +640,8 @@ class TwoCents::Questions < Grape::API
         @questions = policy_scope(current_user.feed_questions).feed_order
       end
 
+      @questions = @questions.paginate(page: page, per_page: per_page)
+
       @questions.each{|q| q.viewed!}
     end
 
