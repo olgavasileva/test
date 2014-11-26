@@ -1,5 +1,5 @@
 ActiveAdmin.register Question do
-  permit_params :id, :position, :category_id, :title, :state
+  permit_params :id, :position, :category_id, :title, :state, :special
 
   filter :user
   filter :title

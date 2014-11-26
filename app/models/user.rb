@@ -168,8 +168,8 @@ class User < ActiveRecord::Base
     potential_questions = Question.active
 
     # Potential questions have not been in the user's feed.
-    used_questions = feed_questions + answered_questions + skipped_questions
-    potential_questions = potential_questions.where.not(id: used_questions)
+    used_question_ids = feed_questions.pluck(:id) + answered_questions.pluck(:id) + skipped_questions.pluck(:id)
+    potential_questions = potential_questions.where.not(id: used_question_ids)
 
     # Questions are in a specific order.
     questions = []
@@ -193,19 +193,19 @@ class User < ActiveRecord::Base
 
     # 4) staff
     staff = Group.find_by_name("Staff").try(:users) || []
-    staff_questions = potential_questions.where(user_id: staff)
+    potential_staff_questions = potential_questions.where(user_id: staff)
 
     #   a) targeted
     targets += Target.where(user_id: staff)
                      .where.any_of(all_users: true, all_followers: true, all_groups: true)
     targets += GroupsTarget.where(group_id: groups, user_id: staff).map(&:target)
-    questions += staff_questions.where.not(id: questions).order_by_rand
+    questions += potential_staff_questions.where.not(id: questions).order_by_rand
 
     return questions.first(count) if questions.count >= count
 
     #   b) untargeted
-    questions += staff_questions.where.not(id: questions, target_id: targets)
-                                .order_by_rand
+    questions += potential_staff_questions.where.not(id: questions, target_id: targets)
+                                          .order_by_rand
 
     return questions.first(count) if questions.count >= count
 
