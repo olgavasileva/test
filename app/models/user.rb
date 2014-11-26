@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   has_many :choice_responses, class_name: "ChoiceResponse"
   has_many :multiple_choice_responses, class_name: "MultipleChoiceResponse"
   has_many :feed_items, dependent: :destroy
-  has_many :feed_questions, -> { order("feed_items.created_at DESC") }, through: :feed_items, source: :question
+  has_many :feed_questions, -> { order("feed_items.created_at ASC, feed_items.id ASC") }, through: :feed_items, source: :question
   has_many :answered_questions, through: :responses, source: :question
   has_many :skipped_items, dependent: :destroy
   has_many :skipped_questions, through: :skipped_items, source: :question
