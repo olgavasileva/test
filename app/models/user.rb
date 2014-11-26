@@ -174,9 +174,14 @@ class User < ActiveRecord::Base
 
       # Questions are in a specific order.
       questions = []
+      question_ids = []
 
       # 1) special case
-      questions += potential_questions.where(special: true).order_by_rand
+      additional_questions = potential_questions.where(special: true)
+                                                .where.not(id: question_ids)
+                                                .order_by_rand
+      questions += additional_questions
+      question_ids += additional_questions.pluck(:id)
 
       return questions.first(count) if questions.count >= count
 
@@ -186,9 +191,11 @@ class User < ActiveRecord::Base
 
       # 3) directly targeted
       targets = TargetsUser.where(user_id: id).map(&:target)
-      questions += potential_questions.where(target_id: targets)
-                                      .where.not(id: questions)
-                                      .order_by_rand
+      additional_questions = potential_questions.where(target_id: targets)
+                                                .where.not(id: question_ids)
+                                                .order_by_rand
+      questions += additional_questions
+      question_ids += additional_questions.pluck(:id)
 
       return questions.first(count) if questions.count >= count
 
@@ -200,14 +207,20 @@ class User < ActiveRecord::Base
       staff_targets += GroupsTarget.where(group_id: groups, user_id: staff).map(&:target)
 
       #   a) targeted
-      questions += staff_questions.where(target_id: staff_targets)
-                                  .where.not(id: questions).order_by_rand
+      additional_questions = staff_questions.where(target_id: staff_targets)
+                                            .where.not(id: question_ids)
+                                            .order_by_rand
+      questions += additional_questions
+      question_ids += additional_questions.pluck(:id)
 
       return questions.first(count) if questions.count >= count
 
       #   b) untargeted
-      questions += staff_questions.where.not(id: questions, target_id: staff_targets)
-                                  .order_by_rand
+      additional_questions = staff_questions.where.not(target_id: staff_targets)
+                                            .where.not(id: question_ids)
+                                            .order_by_rand
+      questions += additional_questions
+      question_ids += additional_questions.pluck(:id)
 
       return questions.first(count) if questions.count >= count
 
@@ -216,43 +229,60 @@ class User < ActiveRecord::Base
       public_targets = Target.where(all_users: true) # todo: account for more specific targeting
 
       #   a) created & shared
-      questions += potential_questions.where(user_id: leaders)
-                                      .where(target_id: followed_targets)
-                                      .where.not(share_count: 0, id: questions)
+      additional_questions = potential_questions.where(user_id: leaders)
+                                                .where.not(id: question_ids)
+                                                .where(target_id: followed_targets)
+                                                .where.not(share_count: 0, id: questions)
+      questions += additional_questions
+      question_ids += additional_questions.pluck(:id)
 
       return questions.first(count) if questions.count >= count
 
       #   b) completed & shared
       responses = Response.where(user_id: leaders)
-      questions += potential_questions.where(id: responses.map(&:question), target_id: public_targets)
-                                      .where.not(share_count: 0, id: questions)
+      additional_questions = potential_questions.where(id: responses.map(&:question), target_id: public_targets)
+                                                .where.not(id: question_ids)
+                                                .where.not(share_count: 0, id: questions)
+      questions += additional_questions
+      question_ids += additional_questions.pluck(:id)
 
       return questions.first(count) if questions.count >= count
 
       #   c) created & not shared
-      questions += potential_questions.where(user_id: leaders,
-                                             share_count: [0, nil],
-                                             target_id: followed_targets)
-                                      .where.not(id: questions)
+      additional_questions = potential_questions.where(user_id: leaders,
+                                                       share_count: [0, nil],
+                                                       target_id: followed_targets)
+                                                .where.not(id: question_ids)
+      questions += additional_questions
+      question_ids += additional_questions.pluck(:id)
 
       return questions.first(count) if questions.count >= count
 
       # 6) top scoring
-      questions += potential_questions.where.not(id: questions)
-                                      .where(target_id: public_targets)
-                                      .order('score DESC')
+      additional_questions = potential_questions.where(target_id: public_targets)
+                                                .where.not(id: question_ids)
+                                                .order('score DESC')
+      questions += additional_questions
+      question_ids += additional_questions.pluck(:id)
 
       return questions.first(count) if questions.count >= count
 
       # 7) random public
-      questions += potential_questions.where.not(id: questions)
-                                      .where(target_id: public_targets)
-                                      .order_by_rand.limit(count - questions.count)
+      questions += potential_questions.where(target_id: public_targets)
+                                      .where.not(id: question_ids)
+                                      .limit(count - questions.count)
+                                      .order_by_rand
+      questions += additional_questions
+      question_ids += additional_questions.pluck(:id)
 
       return questions.first(count) if questions.count >= count
 
       # 8) random public if no target relationship at all (legacy data)
-      questions += potential_questions.where(kind: :public).where.not(id: questions).limit(count - questions.count)
+      questions += potential_questions.where(kind: :public)
+                                      .where.not(id: question_ids)
+                                      .limit(count - questions.count)
+      questions += additional_questions
+      question_ids += additional_questions.pluck(:id)
 
       questions.first(count)
     end
