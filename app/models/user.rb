@@ -168,8 +168,8 @@ class User < ActiveRecord::Base
     potential_questions = Question.active
 
     # Potential questions have not been in the user's feed.
-    used_questions = feed_questions + answered_questions + skipped_questions
-    potential_questions = potential_questions.where.not(id: used_questions)
+    used_question_ids = feed_questions.pluck(:id) + answered_questions.pluck(:id) + skipped_questions.pluck(:id)
+    potential_questions = potential_questions.where.not(id: used_question_ids)
 
     # Questions are in a specific order.
     questions = []
@@ -246,7 +246,12 @@ class User < ActiveRecord::Base
     # 7) random public
     questions += potential_questions.where.not(id: questions)
                                     .where(target_id: public_targets)
-                                    .order_by_rand.limit(10)
+                                    .order_by_rand.limit(count - questions.count)
+
+    return questions.first(count) if questions.count >= count
+
+    # 8) random public if no target relationship at all (legacy data)
+    questions += potential_questions.where(kind: :public).where.not(id: questions).limit(count - questions.count)
 
     questions.first(count)
   end
