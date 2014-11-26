@@ -31,7 +31,6 @@ class Question < ActiveRecord::Base
   scope :suspended, -> { where state:"suspended" }
   scope :currently_targetable, -> { where currently_targetable:true }
   scope :inappropriate, -> { includes(:inappropriate_flags).having("count(inappropriate_flags.id) > 0") }
-  scope :feed_order, -> { order("feed_items.created_at DESC") }
 
 	default kind: "public"
 

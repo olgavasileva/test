@@ -20,7 +20,7 @@ describe :instances do
   context "With all required params" do
     let(:params) {{api_signature:api_signature, app_version:app_version, device_vendor_identifier:device_vendor_identifier, platform:platform, manufacturer:manufacturer, model:model, os_version:os_version}}
     let(:api_signature) {"HMM"}
-    let(:app_version) {"1.2.3"}
+    let(:app_version) {"1.2"}
     let(:device_vendor_identifier) {FactoryGirl.generate :device_vendor_identifier}
     let(:platform) {'ios'}
     let(:manufacturer) {'apple'}
