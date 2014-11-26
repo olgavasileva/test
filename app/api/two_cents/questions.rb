@@ -633,12 +633,15 @@ class TwoCents::Questions < Grape::API
       page = declared_params[:page]
       per_page = page ? declared_params[:per_page] : 15
 
-      @questions = policy_scope(current_user.feed_questions).feed_order
+      @questions = policy_scope(current_user.feed_questions)
 
-      if @questions.count < per_page * page.to_i + per_page + 1
-        current_user.feed_more_questions per_page + 1
-        @questions = policy_scope(current_user.feed_questions).feed_order
+      num_needed = per_page * page.to_i + per_page + 1
+      if @questions.count < num_needed
+        current_user.feed_more_questions num_needed - @questions.count
+        @questions = policy_scope(current_user.feed_questions)
       end
+
+      @questions = @questions.paginate(page: page, per_page: per_page)
 
       @questions.each{|q| q.viewed!}
     end
@@ -667,7 +670,7 @@ class TwoCents::Questions < Grape::API
           user.feed_questions << next_questions
         end
 
-        @questions = user.feed_questions.feed_order.first(count)
+        @questions = user.feed_questions.first(count)
       else
         until user.feed_questions.pluck(:id).include?(after_id) \
           && after_id_to_end(user.feed_questions, after_id).count > count
@@ -682,7 +685,7 @@ class TwoCents::Questions < Grape::API
           return
         end
 
-        @questions = after_id_to_end(user.feed_questions.feed_order, after_id).first(count)
+        @questions = after_id_to_end(user.feed_questions, after_id).first(count)
       end
     end
 

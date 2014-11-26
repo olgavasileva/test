@@ -8,7 +8,7 @@ describe :first_launch do
     params = {
       instance_token: instance_token,
       api_signature: api_signature,
-      app_version: "1.2.3",
+      app_version: "1.2",
       device_vendor_identifier: device_vendor_identifier,
       platform: 'ios',
       manufacturer: "apple",

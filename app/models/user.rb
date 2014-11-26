@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   has_many :choice_responses, class_name: "ChoiceResponse"
   has_many :multiple_choice_responses, class_name: "MultipleChoiceResponse"
   has_many :feed_items, dependent: :destroy
-  has_many :feed_questions, through: :feed_items, source: :question
+  has_many :feed_questions, -> { order("feed_items.created_at DESC") }, through: :feed_items, source: :question
   has_many :answered_questions, through: :responses, source: :question
   has_many :skipped_items, dependent: :destroy
   has_many :skipped_questions, through: :skipped_items, source: :question
@@ -157,11 +157,6 @@ class User < ActiveRecord::Base
 
 	def unfollow! leader
     self.leaders.where(id:leader.id).destroy!
-	end
-
-	def unanswered_questions
-    answered_question_ids = Response.where(user_id:id).pluck(:question_id)
-    answered_question_ids.present? ? Question.where("id NOT IN (?)", answered_question_ids) : Question.all
 	end
 
   def wants_question? question
