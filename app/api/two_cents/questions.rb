@@ -635,8 +635,9 @@ class TwoCents::Questions < Grape::API
 
       @questions = policy_scope(current_user.feed_questions).feed_order
 
-      if @questions.count < per_page * page.to_i + per_page + 1
-        current_user.feed_more_questions per_page + 1
+      num_needed = per_page * page.to_i + per_page + 1
+      if @questions.count < num_needed
+        current_user.feed_more_questions num_needed - @questions.count
         @questions = policy_scope(current_user.feed_questions).feed_order
       end
 
