@@ -16,7 +16,7 @@ ActiveAdmin.register Question do
     column :title
     column :state
     column :kind
-    column :position
+    column :special
     column :require_comment
     column "In Feeds" do |q|
       q.feed_items.count
