@@ -1,14 +1,88 @@
 require 'rails_helper'
 
 describe User do
-  let(:instance) { FactoryGirl.create(:user) }
+  let(:user) { FactoryGirl.create(:user) }
 
   describe :next_feed_questions do
+    let(:other_user) do
+      u = FactoryGirl.create(:user)
+      u.followers << user
+      u
+    end
+
+    let(:user_group) do
+      g = FactoryGirl.create(:group, user: other_user)
+      g.member_users << user
+      g
+    end
+
+    let(:all_target) { FactoryGirl.create(:target, all_users: true) }
+    let(:follower_target) { FactoryGirl.create(:target, followers: [user]) }
+    let(:group_target) { FactoryGirl.create(:target, groups: [user_group]) }
+
     let!(:untargeted_question) { FactoryGirl.create(:question) }
+    let!(:special_case_question) { FactoryGirl.create(:question, special: true) }
+    let!(:all_target_question) { FactoryGirl.create(:question, target: all_target) }
+    let!(:follower_target_question) { FactoryGirl.create(:question, target: follower_target) }
+    let!(:group_target_question) { FactoryGirl.create(:question, target: group_target) }
+    let!(:scored_question) { FactoryGirl.create(:question, score: 10, target: all_target) }
+    let!(:following_question) { FactoryGirl.create(:question, user: other_user) }
+
+    let(:questions) { user.next_feed_questions }
 
     it "does not return untargeted questions" do
-      expect(instance.next_feed_questions).to_not include untargeted_question
+      expect(questions).to_not include untargeted_question
     end
+
+    it "returns special case questions first" do
+      expect(questions.first).to eq special_case_question
+    end
+
+    it "returns all-targeted questions" do
+      expect(questions).to include all_target_question
+    end
+
+    it "returns follower-targeted questions" do
+      expect(questions).to include follower_target_question
+    end
+
+    xit "returns group-targeted questions" do
+      expect(questions).to include group_target_question
+    end
+
+    it "returns follower-targeted questions before all-targeting questions" do
+      follower_targeted_idx = questions.index(follower_target_question)
+      all_targeted_idx = questions.index(all_target_question)
+
+      expect(follower_targeted_idx).to be < all_targeted_idx
+    end
+
+    xit "returns group-targeted questions before all-targeting questions" do
+      group_targeted_idx = questions.index(group_target_question)
+      all_targeted_idx = questions.index(all_target_question)
+
+      expect(group_targeted_idx).to be < all_targeted_idx
+    end
+
+    it "returns higher score questions before lower/no score questions" do
+      scored_question_idx = questions.index(scored_question)
+      unscored_question_idx = questions.index(all_target_question)
+
+      expect(scored_question_idx).to be < unscored_question_idx
+    end
+
+    it "returns following user-created questions before scored questions" do
+      following_question_idx = questions.index(following_question)
+      scored_question_idx = questions.index(scored_question)
+
+      expect(following_question_idx).to be < scored_question_idx
+    end
+
+    it "returns following user-completed & shared questions before created & unshared"
+    it "returns following user-created & shared questions before completed & shared"
+    it "returns untargeted staff questions before following user questions"
+    it "returns targeted staff questions before untargeted"
+
   end
 
   describe :validations do
