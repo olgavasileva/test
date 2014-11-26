@@ -204,7 +204,7 @@ class TwoCents::Communities < Grape::API
       url = Rails.application.routes.url_helpers.user_url(current_user, tab: 'communities')
       message_text = message_setting.value
       message_text.gsub!('%name%', community.name)
-      message_text.gsub!('%password%', community.password)
+      message_text.gsub!('%password%', community.password || "")
       message_text = "#{message_text} #{url}"
 
       params[:email_addresses].each do |email_address|
