@@ -164,96 +164,98 @@ class User < ActiveRecord::Base
   end
 
   def next_feed_questions(count = 10)
-    # Potential questions are in active state.
-    potential_questions = Question.active
+    self.with_lock do
+      # Potential questions are in active state.
+      potential_questions = Question.active
 
-    # Potential questions have not been in the user's feed.
-    used_question_ids = feed_questions.pluck(:id) + answered_questions.pluck(:id) + skipped_questions.pluck(:id)
-    potential_questions = potential_questions.where.not(id: used_question_ids)
+      # Potential questions have not been in the user's feed.
+      used_question_ids = feed_questions.pluck(:id) + answered_questions.pluck(:id) + skipped_questions.pluck(:id)
+      potential_questions = potential_questions.where.not(id: used_question_ids)
 
-    # Questions are in a specific order.
-    questions = []
+      # Questions are in a specific order.
+      questions = []
 
-    # 1) special case
-    questions += potential_questions.where(special: true).order_by_rand
+      # 1) special case
+      questions += potential_questions.where(special: true).order_by_rand
 
-    return questions.first(count) if questions.count >= count
+      return questions.first(count) if questions.count >= count
 
-    # 2) sponsored
-    #   a) targeted
-    #   b) untargeted
+      # 2) sponsored
+      #   a) targeted
+      #   b) untargeted
 
-    # 3) directly targeted
-    targets = TargetsUser.where(user_id: id).map(&:target)
-    questions += potential_questions.where(target_id: targets)
-                                    .where.not(id: questions)
-                                    .order_by_rand
+      # 3) directly targeted
+      targets = TargetsUser.where(user_id: id).map(&:target)
+      questions += potential_questions.where(target_id: targets)
+                                      .where.not(id: questions)
+                                      .order_by_rand
 
-    return questions.first(count) if questions.count >= count
+      return questions.first(count) if questions.count >= count
 
-    # 4) staff
-    staff = Group.find_by_name("Staff").try(:users) || []
-    staff_questions = potential_questions.where(user_id: staff)
-    staff_targets = Target.where(user_id: staff)
-                    .where.any_of(all_users: true, all_followers: true, all_groups: true)
-    staff_targets += GroupsTarget.where(group_id: groups, user_id: staff).map(&:target)
+      # 4) staff
+      staff = Group.find_by_name("Staff").try(:users) || []
+      staff_questions = potential_questions.where(user_id: staff)
+      staff_targets = Target.where(user_id: staff)
+                      .where.any_of(all_users: true, all_followers: true, all_groups: true)
+      staff_targets += GroupsTarget.where(group_id: groups, user_id: staff).map(&:target)
 
-    #   a) targeted
-    questions += staff_questions.where(target_id: staff_targets)
-                                .where.not(id: questions).order_by_rand
+      #   a) targeted
+      questions += staff_questions.where(target_id: staff_targets)
+                                  .where.not(id: questions).order_by_rand
 
-    return questions.first(count) if questions.count >= count
+      return questions.first(count) if questions.count >= count
 
-    #   b) untargeted
-    questions += staff_questions.where.not(id: questions, target_id: staff_targets)
-                                .order_by_rand
+      #   b) untargeted
+      questions += staff_questions.where.not(id: questions, target_id: staff_targets)
+                                  .order_by_rand
 
-    return questions.first(count) if questions.count >= count
+      return questions.first(count) if questions.count >= count
 
-    # 5) followed users
-    followed_targets = Target.where.any_of(all_users: true, all_followers: true)
-    public_targets = Target.where(all_users: true) # todo: account for more specific targeting
+      # 5) followed users
+      followed_targets = Target.where.any_of(all_users: true, all_followers: true)
+      public_targets = Target.where(all_users: true) # todo: account for more specific targeting
 
-    #   a) created & shared
-    questions += potential_questions.where(user_id: leaders)
-                                    .where(target_id: followed_targets)
-                                    .where.not(share_count: 0, id: questions)
+      #   a) created & shared
+      questions += potential_questions.where(user_id: leaders)
+                                      .where(target_id: followed_targets)
+                                      .where.not(share_count: 0, id: questions)
 
-    return questions.first(count) if questions.count >= count
+      return questions.first(count) if questions.count >= count
 
-    #   b) completed & shared
-    responses = Response.where(user_id: leaders)
-    questions += potential_questions.where(id: responses.map(&:question), target_id: public_targets)
-                                    .where.not(share_count: 0, id: questions)
+      #   b) completed & shared
+      responses = Response.where(user_id: leaders)
+      questions += potential_questions.where(id: responses.map(&:question), target_id: public_targets)
+                                      .where.not(share_count: 0, id: questions)
 
-    return questions.first(count) if questions.count >= count
+      return questions.first(count) if questions.count >= count
 
-    #   c) created & not shared
-    questions += potential_questions.where(user_id: leaders,
-                                           share_count: [0, nil],
-                                           target_id: followed_targets)
-                                    .where.not(id: questions)
+      #   c) created & not shared
+      questions += potential_questions.where(user_id: leaders,
+                                             share_count: [0, nil],
+                                             target_id: followed_targets)
+                                      .where.not(id: questions)
 
-    return questions.first(count) if questions.count >= count
+      return questions.first(count) if questions.count >= count
 
-    # 6) top scoring
-    questions += potential_questions.where.not(id: questions)
-                                    .where(target_id: public_targets)
-                                    .order('score DESC')
+      # 6) top scoring
+      questions += potential_questions.where.not(id: questions)
+                                      .where(target_id: public_targets)
+                                      .order('score DESC')
 
-    return questions.first(count) if questions.count >= count
+      return questions.first(count) if questions.count >= count
 
-    # 7) random public
-    questions += potential_questions.where.not(id: questions)
-                                    .where(target_id: public_targets)
-                                    .order_by_rand.limit(count - questions.count)
+      # 7) random public
+      questions += potential_questions.where.not(id: questions)
+                                      .where(target_id: public_targets)
+                                      .order_by_rand.limit(count - questions.count)
 
-    return questions.first(count) if questions.count >= count
+      return questions.first(count) if questions.count >= count
 
-    # 8) random public if no target relationship at all (legacy data)
-    questions += potential_questions.where(kind: :public).where.not(id: questions).limit(count - questions.count)
+      # 8) random public if no target relationship at all (legacy data)
+      questions += potential_questions.where(kind: :public).where.not(id: questions).limit(count - questions.count)
 
-    questions.first(count)
+      questions.first(count)
+    end
   end
 
   def feed_more_questions(count)
