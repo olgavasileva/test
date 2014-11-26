@@ -26,7 +26,7 @@ describe User do
     let!(:follower_target_question) { FactoryGirl.create(:question, target: follower_target) }
     let!(:group_target_question) { FactoryGirl.create(:question, target: group_target) }
     let!(:scored_question) { FactoryGirl.create(:question, score: 10, target: all_target) }
-    let!(:following_question) { FactoryGirl.create(:question, user: other_user) }
+    let!(:following_question) { FactoryGirl.create(:question, user: other_user, target: all_target) }
 
     let(:questions) { user.next_feed_questions }
 
