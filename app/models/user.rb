@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   has_many :skipped_items, dependent: :destroy
   has_many :skipped_questions, through: :skipped_items, source: :question
   has_many :inappropriate_flags, dependent: :destroy
+  has_many :scenes, dependent: :destroy
 
   has_many :groups, dependent: :destroy
   has_many :group_members, through: :groups, source: :user

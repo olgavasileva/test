@@ -33,16 +33,16 @@ var psUI = function() {
             return false;
         });
 
-        $("form#new_studio_response").submit(function(e) {
-            // Move the studio info into the studio field
+        $("form#new_studio_response,form#new_scene").submit(function(e) {
+            // Move the studio info into the studio fields
             var ret = new $.Deferred();
             ret.done(function(scene) {
                 if (JSON.parse(scene).objects.length == 0) {
                     alert("Please create a scene.");
                     e.preventDefault();
                 } else {
-                    $("#studio_response_scene_attributes_canvas_json").val(scene);
-                    $("#studio_response_scene_attributes_base64_image").val(psCanvas().getContext().toDataURL("image/png"));
+                    $("form input[name*=canvas_json]").val(scene);
+                    $("form input[name*=base64_image]").val(psCanvas().getContext().toDataURL("image/png"));
                 }
             });
 
