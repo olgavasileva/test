@@ -71,11 +71,11 @@ var psUI = function() {
         });
 
         $('.prev-pack').on('click', function(e) {
-            renderPackDetails(psUtils().nextPack());
+            renderPackDetails(psUtils().prevPack());
         });
 
         $('.next-pack').on('click', function(e) {
-            renderPackDetails(psUtils().prevPack());
+            renderPackDetails(psUtils().nextPack());
         });
 
         $('#browse-packs-drop').click(function() {
@@ -374,7 +374,7 @@ var psUI = function() {
     }
 
     function renderPackDetails(pack) {
-      pack.stickers.forEach(function(sticker) {
+      $.each(pack.stickers.concat(pack.backgrounds), function(index, sticker) {
         if (!sticker.img_2_url) {
           var image = new Image();
           image.crossOrigin = "Anonymous";
@@ -390,60 +390,31 @@ var psUI = function() {
             canvasObj.attr('height',this.height);
             var canvasContext=canvasObj[0].getContext('2d');
             canvasContext.drawImage(this,0,0);
+
+            var $spinner = $('#sticker_' + sticker.id + "_loader");
+            var $sticker = $('#sticker_' + sticker.id);
+
             sticker.img_2_url=canvasObj[0].toDataURL();
-            sticker.imageObject=this;
-            var imgTag = document.getElementById('sticker_' + sticker.id);
-            imgTag.src = sticker.img_2_url;
+            sticker.imageObject=$sticker[0];
+
+            $sticker.attr("src", sticker.img_2_url);
+            $sticker.removeClass("hidden");
+            $spinner.addClass("hidden");
+
             canvasObj.remove();
           }
 
           setTimeout(function () {
             image.src = sticker.image_url+'?trash='+Date.now();
-          }, 100);
-        }
-        else{
+          }, 10);
+        } else{
           setTimeout(function () {
-            var imgTag = document.getElementById('sticker_' + sticker.id);
-            imgTag.src = sticker.img_2_url;
-
-          }, 100);
-        }
-      });
-
-      pack.backgrounds.forEach(function(sticker) {
-        if (!sticker.img_2_url) {
-          var image = new Image();
-          image.crossOrigin = "Anonymous";
-          image.onload = function () {
-            $('<canvas>').attr({
-              id:('canvas_' + sticker.id)
-            }).css({
-              width: image.width + 'px',
-              height: image.height + 'px'
-            }).appendTo('body');
-            var canvasObj=$('#canvas_'+sticker.id);
-            canvasObj.attr('width',this.width);
-            canvasObj.attr('height',this.height);
-            var canvasContext=canvasObj[0].getContext('2d');
-            canvasContext.drawImage(this,0,0);
-            sticker.img_2_url=canvasObj[0].toDataURL();
-
-            var imgTag = document.getElementById('sticker_' + sticker.id);
-            imgTag.src = sticker.img_2_url;
-            sticker.imageObject=imgTag;
-            canvasObj.remove();
-          }
-
-          setTimeout(function () {
-            image.src = sticker.image_url+'?trash='+Date.now();
-          }, 100);
-        }
-        else{
-          setTimeout(function () {
-            var imgTag = document.getElementById('sticker_' + sticker.id);
-            imgTag.src = sticker.img_2_url;
-
-          }, 100);
+            var $spinner = $('#sticker_' + sticker.id + "_loader");
+            var $sticker = $('#sticker_' + sticker.id);
+            $sticker.attr("src", sticker.img_2_url);
+            $sticker.removeClass("hidden");
+            $spinner.addClass("hidden");
+          }, 10);
         }
       });
 
