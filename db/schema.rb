@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141116195434) do
+ActiveRecord::Schema.define(version: 20141129162918) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -762,7 +762,7 @@ ActiveRecord::Schema.define(version: 20141116195434) do
   create_table "studios", force: true do |t|
     t.string   "name"
     t.string   "display_name"
-    t.boolean  "disabled",        default: true
+    t.boolean  "disabled",                 default: true
     t.integer  "affiliate_id"
     t.integer  "contest_id"
     t.integer  "scene_id"
@@ -774,6 +774,8 @@ ActiveRecord::Schema.define(version: 20141116195434) do
     t.datetime "updated_at"
     t.string   "image"
     t.string   "icon"
+    t.text     "getting_started_markdown"
+    t.text     "getting_started_html"
   end
 
   add_index "studios", ["affiliate_id"], name: "index_studios_on_affiliate_id", using: :btree

@@ -195,6 +195,7 @@ var photoshoot = function() {
     function studioLoaded() {
         preloader.remove();
         ui.drawer().open();
+        $("#getting-started").modal("show");
     }
 }
 

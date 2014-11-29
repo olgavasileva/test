@@ -28,7 +28,8 @@ ActiveAdmin.register Studio do
     f.inputs 'Studio' do
       f.input :name
       f.input :display_name
-      f.input :welcome_message
+      # f.input :welcome_message
+      f.input :getting_started_markdown, label: "Getting Started Dialog", hint: "You can use markdown to style this text"
       f.input :starts_at, :as => :just_datetime_picker
       f.input :expires_at, :as => :just_datetime_picker
       f.input :icon, as: :file, hint: f.template.image_tag(f.object.icon_url.to_s)
@@ -62,6 +63,9 @@ ActiveAdmin.register Studio do
       end
       row :image do
         image_tag(sc.image_url.to_s)
+      end
+      row "Getting Started Dialog" do
+        sc.getting_started_html.to_s.html_safe
       end
       row :disabled do
         sc.disabled? ? 'Disabled' : 'Active'

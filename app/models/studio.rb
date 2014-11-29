@@ -13,8 +13,16 @@ class Studio < ActiveRecord::Base
   validates :name, uniqueness: true, presence: true
   validates :display_name, presence: true
 
+  before_save :convert_markdown
+
   mount_uploader :image, ImageUploader
   mount_uploader :icon, StudioIconUploader
 
   scope :featured, -> {where(featured: true)}
+
+
+  private
+    def convert_markdown
+      self.getting_started_html = RDiscount.new(getting_started_markdown, :filter_html).to_html unless getting_started_markdown.nil?
+    end
 end

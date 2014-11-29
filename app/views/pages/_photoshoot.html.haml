@@ -221,3 +221,16 @@
         .modal-footer
           %button.btn.btn-default{type: :button, data:{dismiss: :modal}} Cancel
           %button.btn.btn-primary#clear-all{type: :button, data:{dismiss: :modal, "btn-role" => "clear all"}} Clear
+
+  - if studio.getting_started_html.present?
+    #getting-started.modal.fade
+      .modal-dialog
+        .modal-content
+          .modal-header
+            %button.close{type: :button, data:{dismiss: :modal}}
+              %span{aria:{hidden:true}} &times;
+              %span.sr-only Close
+            %h4.modal-title=studio.name
+          .modal-body=studio.getting_started_html.html_safe
+          .modal-footer
+            %button.btn.btn-primary{type: :button, data:{dismiss: :modal}} Get Started
