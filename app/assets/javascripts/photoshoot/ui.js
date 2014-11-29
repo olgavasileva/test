@@ -38,7 +38,7 @@ var psUI = function() {
             var ret = new $.Deferred();
             ret.done(function(scene) {
                 if (JSON.parse(scene).objects.length == 0) {
-                    alert("Please create a scene.");
+                    $("#empty-scene-modal").modal("show");
                     e.preventDefault();
                 } else {
                     $("form input[name*=canvas_json]").val(scene);

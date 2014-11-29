@@ -205,6 +205,19 @@
 = render 'pages/sticker_pack_details'
 
 = content_for :modals do
+  #empty-scene-modal.modal.fade
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{type: :button, data:{dismiss: :modal}}
+            %span{aria_hidden:true} &times;
+            %span.sr-only Close
+          %h4.modal-title Alert
+        .modal-body
+          Please create a scene.
+        .modal-footer
+          %button.btn.btn-primary#clear-all{type: :button, data:{dismiss: :modal}} Ok
+
   #clear-scene-modal.modal.fade
     .modal-dialog
       .modal-content
