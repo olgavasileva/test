@@ -234,3 +234,17 @@
           .modal-body=studio.getting_started_html.html_safe
           .modal-footer
             %button.btn.btn-primary{type: :button, data:{dismiss: :modal}} Get Started
+
+  -if studio.help_html.present?
+    #studio-help.modal.fade
+      .modal-dialog
+        .modal-content
+          .modal-header
+            %button.close{type: :button, data:{dismiss: :modal}}
+              %span{aria:{hidden:true}} &times;
+              %span.sr-only Close
+            %h4.modal-title Help
+          .modal-body=studio.help_html.html_safe
+          .modal-footer
+            %button.btn.btn-primary{type: :button, data:{dismiss: :modal}} Close
+

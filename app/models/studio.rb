@@ -24,5 +24,6 @@ class Studio < ActiveRecord::Base
   private
     def convert_markdown
       self.getting_started_html = RDiscount.new(getting_started_markdown, :filter_html).to_html unless getting_started_markdown.nil?
+      self.help_html = RDiscount.new(help_markdown, :filter_html).to_html unless help_markdown.nil?
     end
 end

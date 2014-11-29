@@ -92,6 +92,9 @@ var psUI = function() {
         });
 
         $("#ps-help").click(showHelp);
+        if ($("#studio-help").length == 0) {
+            $("#ps-help").hide();
+        }
 
         $("#ps-clear-all").click(clearAll);
 
@@ -242,25 +245,26 @@ var psUI = function() {
     }
 
     function showHelp() {
-        var body = $('body');
-        var ps_frame = $('#studio-wrapper');
-        ps_frame.addClass('help-active');
-        body.append('<div class="overlay"></div>');
+        $("#studio-help").modal("show");
+        // var body = $('body');
+        // var ps_frame = $('#studio-wrapper');
+        // ps_frame.addClass('help-active');
+        // body.append('<div class="overlay"></div>');
 
-        body.find(".overlay").css({
-            'background': 'rgba(0, 0, 0, 0.0)',
-            'width': '100%', //ps_frame.width(),
-            'height': '100%', //ps_frame.height(),
-            'position': 'absolute',
-            'top': 0,
-            'left': 0,
-            'z-index': 100
-        });
+        // body.find(".overlay").css({
+        //     'background': 'rgba(0, 0, 0, 0.0)',
+        //     'width': '100%', //ps_frame.width(),
+        //     'height': '100%', //ps_frame.height(),
+        //     'position': 'absolute',
+        //     'top': 0,
+        //     'left': 0,
+        //     'z-index': 100
+        // });
 
-        $(".overlay, .help").click(function() {
-            ps_frame.removeClass('help-active');
-            $('.overlay').remove();
-        });
+        // $(".overlay, .help").click(function() {
+        //     ps_frame.removeClass('help-active');
+        //     $('.overlay').remove();
+        // });
 
         return false;
     }
