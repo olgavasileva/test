@@ -1,0 +1,18 @@
+.row
+  .col-sm-10
+    .panel.panel-default
+      .panel-heading
+        %h2.panel-title=@studio.stand_alone_studio_header_html.to_s.html_safe
+      .panel-body
+        .row
+          - @scenes.each do |scene|
+            .col-sm-3{style:"height: 343px;"}
+              .thumbnail
+                =image_tag(scene.image.thumb.url, xstyle:"max-width: 100px")
+                .caption
+                  %h4.text-center=scene.name
+  .col-sm-2
+    .panel.panel-default
+      .panel-heading
+      .panel-body
+        %p=link_to "New “#{@studio.name}” scene", new_user_scene_path(@user, studio_id:@studio)

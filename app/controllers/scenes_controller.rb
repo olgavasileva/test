@@ -27,7 +27,7 @@ class ScenesController < ApplicationController
       render "new"
     else
       flash[:notice] = "You scene has been saved.  Thank you!"
-      redirect_to [@user, :scenes]
+      redirect_to [@user, @scene.studio]
     end
   end
 

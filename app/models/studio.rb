@@ -9,6 +9,7 @@ class Studio < ActiveRecord::Base
   has_many :studio_sticker_packs, -> { order(:sort_order) }
   has_many :sticker_packs, through: :studio_sticker_packs
   has_many :stickers, through: :sticker_packs
+  has_many :scenes, dependent: :destroy
 
   validates :name, uniqueness: true, presence: true
   validates :display_name, presence: true
@@ -25,5 +26,6 @@ class Studio < ActiveRecord::Base
     def convert_markdown
       self.getting_started_html = RDiscount.new(getting_started_markdown, :filter_html).to_html unless getting_started_markdown.nil?
       self.help_html = RDiscount.new(help_markdown, :filter_html).to_html unless help_markdown.nil?
+      self.stand_alone_studio_header_html = RDiscount.new(stand_alone_studio_header_markdown, :filter_html).to_html unless stand_alone_studio_header_markdown.nil?
     end
 end
