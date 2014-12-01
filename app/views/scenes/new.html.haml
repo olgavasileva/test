@@ -1,0 +1,8 @@
+= simple_form_for [@user, @scene] do |form|
+  =form.input :studio_id, as: :hidden
+  =form.input :user_id, as: :hidden
+  =form.input :canvas_json, as: :hidden
+  =form.input :base64_image, as: :hidden
+  =render "pages/photoshoot", studio: @scene.studio
+  %br
+  =form.input :name, placeholder: "Name your cereal", label: false

@@ -30,9 +30,10 @@ describe User do
 
     let(:questions) { user.next_feed_questions }
 
-    it "does not return untargeted questions" do
-      expect(questions).to_not include untargeted_question
-    end
+    ## For legacy questions, we are allowing untargeted questions if we run out of other options
+    # it "does not return untargeted questions" do
+    #   expect(questions).to_not include untargeted_question
+    # end
 
     it "returns special case questions first" do
       expect(questions.first).to eq special_case_question

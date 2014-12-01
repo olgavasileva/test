@@ -10,8 +10,11 @@ ActiveAdmin.register Contest do
     column :id
     column :name
     column :key_question
+    column "Contest URL" do |c|
+      link_to "Contest Sign Up", contest_sign_up_url(c.uuid)
+    end
     column "Gallery URL" do |c|
-      link_to "Gallery URL", contest_vote_url(c.uuid)
+      link_to "Contest Gallery", contest_vote_url(c.uuid)
     end
     column :allow_anonymous_votes
     actions

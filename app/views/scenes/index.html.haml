@@ -1,0 +1,20 @@
+.row
+  .col-sm-10
+    .panel.panel-default
+      .panel-heading
+        %h2.panel-title Your Scenes
+      .panel-body
+        .row
+          - @scenes.each do |scene|
+            .col-sm-3{style:"height: 343px;"}
+              .thumbnail
+                =image_tag(scene.image.thumb.url, xstyle:"max-width: 100px")
+                .caption
+                  %h4.text-center=scene.name
+  .col-sm-2
+    .panel.panel-default
+      .panel-heading
+        %h2.panel-title New Scene
+      .panel-body
+        - Studio.all.each do |studio|
+          %p=link_to studio.name, new_user_scene_path(@user, studio_id:studio)

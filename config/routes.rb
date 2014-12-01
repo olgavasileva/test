@@ -56,6 +56,8 @@ LinkchatApp::Application.routes.draw do
 
   resources :inquiries
   resources :users do
+    resources :scenes, only: [:index, :new, :create]
+    resources :studios, only: [:show]
     resources :segments do
       get :question_search, on: :member
 

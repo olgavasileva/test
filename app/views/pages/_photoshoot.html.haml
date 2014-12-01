@@ -71,10 +71,8 @@
         border-radius: 5px
 
 
-
-#photoshootinfo.hidden{data:{studio_id:question.studio.id, studio_name:question.studio.display_name || question.studio.name, logged_in:user_signed_in?, question_id:question.id}}
-- if @scene.present?
-  #sceneinfo.hidden{data:{stickers:@scene.stickers, scene_id:@scene.id, scene_user_id:@scene.user_id, share_link:@scene.share_link('link', current_user)}}
+- question ||= nil
+#photoshootinfo.hidden{data:{studio_id:studio.id, studio_name:studio.display_name || studio.name, logged_in:user_signed_in?, question_id:question.try(:id)}}
 
 %section#studio-wrapper
   .row
@@ -122,7 +120,7 @@
                 .row#asset-title
                   .col-sm-2
                     .pull-left
-                      =link_to 'javascript:void(0);', class: %w(pack-browser-control next-pack pull-left col-sm-2 col-pull-8) do
+                      =link_to 'javascript:void(0);', class: %w(pack-browser-control prev-pack pull-left col-sm-2 col-pull-8) do
                         %i.fa.fa-chevron-left
                   .col-sm-8
                     =link_to 'javascript:void(0);', class: %w(pack-browser-control title col-sm-8 col-push-2 dropdown) do
@@ -132,7 +130,7 @@
                         %span.title-text All Packs
                   .col-sm-2
                     .pull-right
-                      =link_to 'javascript:void(0);', class: %w(pack-browser-control prev-pack pull-right col-sm-2) do
+                      =link_to 'javascript:void(0);', class: %w(pack-browser-control next-pack pull-right col-sm-2) do
                         %i.fa.fa-chevron-right
             #pack-wrapper.row.is-scrollable
           .drawer-handle
@@ -207,6 +205,19 @@
 = render 'pages/sticker_pack_details'
 
 = content_for :modals do
+  #empty-scene-modal.modal.fade
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{type: :button, data:{dismiss: :modal}}
+            %span{aria_hidden:true} &times;
+            %span.sr-only Close
+          %h4.modal-title Alert
+        .modal-body
+          Please create a scene.
+        .modal-footer
+          %button.btn.btn-primary#clear-all{type: :button, data:{dismiss: :modal}} Ok
+
   #clear-scene-modal.modal.fade
     .modal-dialog
       .modal-content
@@ -223,3 +234,30 @@
         .modal-footer
           %button.btn.btn-default{type: :button, data:{dismiss: :modal}} Cancel
           %button.btn.btn-primary#clear-all{type: :button, data:{dismiss: :modal, "btn-role" => "clear all"}} Clear
+
+  - if studio.getting_started_html.present?
+    #getting-started.modal.fade
+      .modal-dialog
+        .modal-content
+          .modal-header
+            %button.close{type: :button, data:{dismiss: :modal}}
+              %span{aria:{hidden:true}} &times;
+              %span.sr-only Close
+            %h4.modal-title=studio.name
+          .modal-body=studio.getting_started_html.html_safe
+          .modal-footer
+            %button.btn.btn-primary{type: :button, data:{dismiss: :modal}} Get Started
+
+  -if studio.help_html.present?
+    #studio-help.modal.fade
+      .modal-dialog
+        .modal-content
+          .modal-header
+            %button.close{type: :button, data:{dismiss: :modal}}
+              %span{aria:{hidden:true}} &times;
+              %span.sr-only Close
+            %h4.modal-title Help
+          .modal-body=studio.help_html.html_safe
+          .modal-footer
+            %button.btn.btn-primary{type: :button, data:{dismiss: :modal}} Close
+

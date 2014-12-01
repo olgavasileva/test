@@ -149,16 +149,19 @@
           margin-bottom: 10px
           overflow: hidden
           text-align: center
-
+          .sticker
+            height: 70%
           &.locked
             opacity: 0.4
             filter: alpha(opacity=40) // For IE8 and earlier
           img
             width:  auto
-            height: 70%
+            height: 100%
             max-height: auto
-
-
+          img.loader
+            width: auto
+            height: auto
+            padding-top: 40%
 
         section
           img
@@ -170,8 +173,6 @@
           &.backgrounds
             .ui-draggable
               cursor: pointer
-            img
-              height: 100px
 
           &.stickers
 

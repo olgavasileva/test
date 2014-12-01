@@ -22,6 +22,9 @@ ActiveAdmin.register User do
       link_to "Reset this feed", reset_admin_user_path(u), method: :delete
     end
     column :created_at
+    column "Scenes" do |user|
+      link_to pluralize(user.scenes.count, 'Scene'), admin_user_scenes_path(user)
+    end
     actions
   end
 
@@ -56,6 +59,9 @@ ActiveAdmin.register User do
       rows :current_sign_in_at, :sign_in_count, :created_at
       row :push_tokens do
         simple_format u.instances.where("push_token is not NULL").order("updated_at DESC").map{|i| "#{time_ago_in_words i.updated_at} ago: #{i.push_token}"}.join("\n")
+      end
+      row :studio_creation_links do
+        Studio.all.map{|studio| link_to(studio.name, new_user_scene_path(u, studio_id:studio), target: :blank)}.join(", ").html_safe
       end
     end
   end

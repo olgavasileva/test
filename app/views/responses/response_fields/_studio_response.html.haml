@@ -4,7 +4,7 @@
     = s.input :user_id, as: :hidden
     = s.input :canvas_json, as: :hidden
     = s.input :base64_image, as: :hidden
-    =render "pages/photoshoot", question:response.question
+    =render "pages/photoshoot", studio: response.question.studio, question: response.question
     %br
     =s.input :name, placeholder: "Name your cereal", label: false
     =render "responses/response_fields/shared/comment", form:form, response:response

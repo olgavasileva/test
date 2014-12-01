@@ -3,11 +3,15 @@
 {{#each #{object}}}
 {{#if ../is_locked}}
 .col-lg-4.col-md-4.col-sm-12.col-xs-12.sticker-container.locked
-  %img{src: image_url('image_loading.gif'),id: "sticker_{{id}}", class: "img-responsive", data:{height: "{{image_height}}", id: "{{id}}", src: "{{image_url}}", type: "{{type}}", width: "{{image_width}}"}, alt: ""}
+  .sticker
+    %img{src: image_url('image_loading.gif'),id: "sticker_{{id}}", class: "img-responsive hidden", data:{height: "{{image_height}}", id: "{{id}}", src: "{{image_url}}", type: "{{type}}", width: "{{image_width}}"}, alt: ""}
+    %img{src: image_url('image_loading.gif'), id: "sticker_{{id}}_loader", class: "loader"}
   {{display_name}}
 {{else}}
 .col-lg-4.col-md-4.col-sm-12.col-xs-12.sticker-container.stickable
-  %img{src: image_url('image_loading.gif'),id: "sticker_{{id}}", class: "img-responsive", data:{height: "{{image_height}}", id: "{{id}}", src: "{{image_url}}", type: "{{type}}", width: "{{image_width}}"}, alt: ""}
+  .sticker
+    %img{src: image_url('image_loading.gif'),id: "sticker_{{id}}", class: "img-responsive hidden", data:{height: "{{image_height}}", id: "{{id}}", src: "{{image_url}}", type: "{{type}}", width: "{{image_width}}"}, alt: ""}
+    %img{src: image_url('image_loading.gif'), id: "sticker_{{id}}_loader", class: "loader"}
   {{display_name}}
 {{/if}}
 

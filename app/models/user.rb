@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   has_many :skipped_items, dependent: :destroy
   has_many :skipped_questions, through: :skipped_items, source: :question
   has_many :inappropriate_flags, dependent: :destroy
+  has_many :scenes, dependent: :destroy
 
   has_many :groups, dependent: :destroy
   has_many :group_members, through: :groups, source: :user
@@ -107,7 +108,7 @@ class User < ActiveRecord::Base
 	validates :terms_and_conditions, acceptance: true
   validates :gender, inclusion: {in: %w(male female), allow_nil: true}
   validates :birthdate, presence: true, on: :create
-  validate :over_13
+  # validate :over_13   # Disable for now (11/29/14) for General Mills pilot project
 
   def self.anonymous_user
     @anonymous_user ||= User.find_by username:"anonymous"
