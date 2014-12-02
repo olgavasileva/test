@@ -405,7 +405,16 @@ var psUI = function() {
           }
 
           setTimeout(function () {
-            image.src = sticker.image_url+'?trash='+Date.now();
+            var url = "";
+
+            if ($.support.cors || !$.ajaxTransport || !window.XDomainRequest) {
+                url = sticker.image_url+'?trash='+Date.now();
+            } else {
+                // Use a proxy to get around IE9's CORS incompatibility
+                url = "http://localhost:3000/ie9proxy?url="+sticker.image_url+"&trash="+Date.now();
+            }
+
+            image.src = url;
           }, 10);
         } else{
           setTimeout(function () {
