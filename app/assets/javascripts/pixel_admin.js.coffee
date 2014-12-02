@@ -10,6 +10,7 @@
 #= require bootstrap-sprockets
 #= require hisrc
 #= require toastr
+#= require jQuery.XDomainRequest
 
 
 # Theme files

@@ -9,6 +9,7 @@
 #= require cocoon
 #= require turbolinks
 #= require bootstrap-sprockets
+#= require jQuery.XDomainRequest
 
 #
 # Theme files
