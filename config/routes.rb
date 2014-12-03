@@ -2,6 +2,8 @@ LinkchatApp::Application.routes.draw do
   match "/404" => "errors#error404", via: [ :get, :post, :patch, :delete ]
   match "/500" => "errors#error500", via: [ :get, :post, :patch, :delete ]
 
+  get "/ie9proxy" => 'proxy#url'
+
   devise_for :users
   devise_scope :user do
     get 'campaign' => 'devise/registrations#new', as: :demo_registration

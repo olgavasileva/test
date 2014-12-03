@@ -405,7 +405,16 @@ var psUI = function() {
           }
 
           setTimeout(function () {
-            image.src = sticker.image_url+'?trash='+Date.now();
+            var url = "";
+
+            if ($.support.cors || !$.ajaxTransport || !window.XDomainRequest) {
+                url = sticker.image_url+'?trash='+Date.now();
+            } else {
+                // Use a proxy to get around IE9's CORS incompatibility
+                url = getRootUrl()+"/ie9proxy?url="+sticker.image_url+"&trash="+Date.now();
+            }
+
+            image.src = url;
           }, 10);
         } else{
           setTimeout(function () {
@@ -419,6 +428,14 @@ var psUI = function() {
       });
 
 
+      function getRootUrl() {
+        var defaultPorts = {"http:":80,"https:":443};
+
+        return window.location.protocol + "//" + window.location.hostname
+         + (((window.location.port)
+          && (window.location.port != defaultPorts[window.location.protocol]))
+          ? (":"+window.location.port) : "");
+      }
 
 
 
