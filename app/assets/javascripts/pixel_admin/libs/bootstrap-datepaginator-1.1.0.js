@@ -1,9 +1,9 @@
 /* =========================================================
  * bootstrap-datepaginator.js v1.1.0
  * =========================================================
- * Copyright 2013 Jonathan Miles 
+ * Copyright 2013 Jonathan Miles
  * Project URL : http://www.jondmiles.com/bootstrap-datepaginator
- *	
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -99,7 +99,7 @@
 				this.options.endDate = moment(this.options.endDate, this.options.endDateFormat).clone().startOf('day');
 			}
 
-			// Parse, set and validate the initially selected date 
+			// Parse, set and validate the initially selected date
 			// 1. overridding the default value of today
 			if (typeof this.options.selectedDate === 'string') {
 				this.options.selectedDate = moment(this.options.selectedDate, this.options.selectedDateFormat).clone().startOf('day');
@@ -233,7 +233,7 @@
 					.addClass(this.options.size === 'sm' ? 'dp-nav-sm' : this.options.size === 'lg' ? 'dp-nav-lg' : '')
 					.addClass(this.options.squareEdges ? 'dp-nav-square-edges' : '')
 					.append($(this._template.icon)
-						.addClass('glyphicon-chevron-left')
+						.addClass('fa-chevron-left')
 						.addClass('dp-nav-left'))
 					.width(this.options.navItemWidth);
 				this.$rightNav = $(this._template.navItem)
@@ -241,7 +241,7 @@
 					.addClass(this.options.size === 'sm' ? 'dp-nav-sm' : this.options.size === 'lg' ? 'dp-nav-lg' : '')
 					.addClass(this.options.squareEdges ? 'dp-nav-square-edges' : '')
 					.append($(this._template.icon)
-						.addClass('glyphicon-chevron-right')
+						.addClass('fa-chevron-right')
 						.addClass('dp-nav-right'))
 					.width(this.options.navItemWidth);
 				this.$calendar = this.options.showCalendar ? $(this._template.calendar) : undefined;
@@ -365,7 +365,7 @@
 
 				var valid = ((m.isSame(this.options.startDate) || m.isAfter(this.options.startDate)) &&
 							(m.isSame(this.options.endDate) || m.isBefore(this.options.endDate))) ? true : false;
-				
+
 				data.items[data.items.length] = {
 					m: m.clone().format(this.options.selectedDateFormat),
 					isValid: valid,
@@ -387,7 +387,7 @@
 			listItem: '<li></li>',
 			navItem: '<a href="#" class="dp-nav"></a>',
 			dateItem: '<a href="#" class="dp-item"></a>',
-			icon: '<i class="glyphicon"></i>',
+			icon: '<i class="fa"></i>',
 			calendar: '<i id="dp-calendar" class="glyphicon glyphicon-calendar"></i>'
 		},
 
