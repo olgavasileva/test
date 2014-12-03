@@ -11,7 +11,8 @@ class ProxyController < ApplicationController
     valid_hosts << URI(ENV['AWS_ASSET_HOST']).host if ENV['AWS_ASSET_HOST'].present?
 
     if valid_hosts.include? uri.host
-      render text: (url.present? && open(url).read)
+      request = open url
+      render text: (url.present? && request.read), content_type: request.content_type
     else
       render text: "404 Not Found", status: :not_found
     end
