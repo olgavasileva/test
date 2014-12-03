@@ -411,7 +411,7 @@ var psUI = function() {
                 url = sticker.image_url+'?trash='+Date.now();
             } else {
                 // Use a proxy to get around IE9's CORS incompatibility
-                url = "http://localhost:3000/ie9proxy?url="+sticker.image_url+"&trash="+Date.now();
+                url = getRootUrl()+"/ie9proxy?url="+sticker.image_url+"&trash="+Date.now();
             }
 
             image.src = url;
@@ -428,6 +428,14 @@ var psUI = function() {
       });
 
 
+      function getRootUrl() {
+        var defaultPorts = {"http:":80,"https:":443};
+
+        return window.location.protocol + "//" + window.location.hostname
+         + (((window.location.port)
+          && (window.location.port != defaultPorts[window.location.protocol]))
+          ? (":"+window.location.port) : "");
+      }
 
 
 
