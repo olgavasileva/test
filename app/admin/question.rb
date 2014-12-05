@@ -3,6 +3,8 @@ ActiveAdmin.register Question do
 
   filter :user
   filter :title
+  filter :id
+  filter :uuid
   filter :type
   filter :category
   filter :state, as: :check_boxes, collection: Question::STATES
@@ -11,13 +13,21 @@ ActiveAdmin.register Question do
   index do
     selectable_column
     column :id
+    column :title
     column :type
     column :category
-    column :title
+    column :user
+    column "Responses" do |q|
+      q.responses.count
+    end
+    column "Comments" do |q|
+      q.comments.count
+    end
     column :state
     column :kind
     column :special
     column :require_comment
+    column :created_at
     column "In Feeds" do |q|
       q.feed_items.count
     end
