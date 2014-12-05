@@ -55,6 +55,8 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :transaction
   end
 
+  config.include Requests::JsonHelpers, type: :request
+
   config.before(:each) do
     mock_montage = instance_double("Magick::ImageList", write:nil)
     allow(Magick::ImageList).to receive_message_chain(:new, :montage => mock_montage)

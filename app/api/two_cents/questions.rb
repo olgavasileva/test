@@ -646,6 +646,228 @@ class TwoCents::Questions < Grape::API
       @questions.each{|q| q.viewed!}
     end
 
+
+    desc "Get the latest questions for a user to answer", {
+      notes: <<-END
+        Returns the list of public and targeted questions that are not deleted, not skipped or answered by currentuser in reverse chronological order based on published_at - published_at is same as created_at unless modified by the admin) from Question latest to Quetion #1.
+
+        When out of questions, will return an empty array of questions, but will not return an error code.
+
+        #### Example response
+            {
+              cursor: 100,
+              questions: [
+                {
+                  question: {
+                      "type": "TextQuestion"
+                      "id": 5,
+                      "uuid": "SOMEUUID",
+                      "creator_id": 123,
+                      "creator_name": "creator_username",
+                      "title": "Text Title",
+                      "description": "Text Description",
+                      "image_url": "http://statisfy.co/Example.jpg",
+                      "text_type": "freeform" | "email" | "phone",
+                      "min_characters": 1,
+                      "max_characters": 100,
+                      "response_count": 0,
+                      "comment_count": 0,
+                      "category": {
+                          "id": 1,
+                          "name": "Category 1"
+                      },
+                  },
+                  question: {
+                    < question fields >
+                  }
+                }]
+              }
+            }
+      END
+    }
+    params do
+      use :auth
+
+      requires :cursor, type: Integer, desc: "0 for first questions, otherwise return last value received"
+      requires :count, type: Integer, desc: "The maximum number of questions to return"
+      optional :category_ids, type: Array, desc: "Limit questions to only these categories"
+    end
+    post 'latest' do
+      validate_user!
+
+      # TODO write the correct logic and specs
+      questions = Question.active.limit(declared_params[:count])
+      { cursor: declared_params[:count], questions: questions }
+    end
+
+
+
+
+    desc "Get trending (popular) questions for a user to answer", {
+      notes: <<-END
+        Returns a list of public and targeted questions that are not deleted, not skipped or answered by current user in reverse sorted by trending index from Question latest to Quetion #1. Trending index is calculated by IIR (to be supplied by Dave) multiplied by trending multiplier which defaults to 1 and can be updated in active admin or purchased to be updated in enterprise tool.
+
+        If no questions meet the criteria, will return an empty array of questions, but will not return an error code.
+
+        #### Example response
+            {
+              questions: [
+                {
+                  question: {
+                      "type": "TextQuestion"
+                      "id": 5,
+                      "uuid": "SOMEUUID",
+                      "creator_id": 123,
+                      "creator_name": "creator_username",
+                      "title": "Text Title",
+                      "description": "Text Description",
+                      "image_url": "http://statisfy.co/Example.jpg",
+                      "text_type": "freeform" | "email" | "phone",
+                      "min_characters": 1,
+                      "max_characters": 100,
+                      "response_count": 0,
+                      "comment_count": 0,
+                      "category": {
+                          "id": 1,
+                          "name": "Category 1"
+                      },
+                  },
+                  question: {
+                    < question fields >
+                  }
+                }]
+              }
+            }
+      END
+    }
+    params do
+      use :auth
+
+      requires :index, type: Integer, desc: "0 to start at most popular, 10 to start at 11th most popular, etc."
+      requires :count, type: Integer, desc: "The maximum number of questions to return"
+    end
+    post 'trending' do
+      validate_user!
+
+      # TODO write the correct logic and specs
+      questions = Question.active.limit(declared_params[:count])
+      { questions: questions }
+    end
+
+
+
+
+    desc "Get most relevant questions for a user to answer", {
+      notes: <<-END
+        List of public and targeted questions that are not deleted, not skipped or answered by currentuser AND
+          Questions Asked by people you are following
+          Questions Answered by people you are following
+          Questions Asked by people you follow
+          Questions Answered by people you follow
+          sorted by relavent_index then by reverse chronological order based on published_at Question latest to Quetion #1.
+          Relevant index is calculated by relevant value and relevant multiplier. relevant value gets incremented by 1 on users actions 1 tru 4.
+
+        If no questions meet the criteria, will return an empty array of questions, but will not return an error code.
+
+        #### Example response
+            {
+              questions: [
+                {
+                  question: {
+                      "type": "TextQuestion"
+                      "id": 5,
+                      "uuid": "SOMEUUID",
+                      "creator_id": 123,
+                      "creator_name": "creator_username",
+                      "title": "Text Title",
+                      "description": "Text Description",
+                      "image_url": "http://statisfy.co/Example.jpg",
+                      "text_type": "freeform" | "email" | "phone",
+                      "min_characters": 1,
+                      "max_characters": 100,
+                      "response_count": 0,
+                      "comment_count": 0,
+                      "category": {
+                          "id": 1,
+                          "name": "Category 1"
+                      },
+                  },
+                  question: {
+                    < question fields >
+                  }
+                }]
+              }
+            }
+      END
+    }
+    params do
+      use :auth
+
+      requires :index, type: Integer, desc: "0 to start at most relevant, 10 to start at 11th most relevant, etc."
+      requires :count, type: Integer, desc: "The maximum number of questions to return"
+    end
+    post 'myfeed' do
+      validate_user!
+
+      # TODO write the correct logic and specs
+      questions = Question.active.limit(declared_params[:count])
+      { questions: questions }
+    end
+
+
+
+
+    desc "Search for questions that match some text withing the universe of questions for this user.", {
+      notes: <<-END
+        This API searches the question text and any choice text and returns them ordered from newest to oldest.
+
+        If no questions meet the criteria, will return an empty array of questions, but will not return an error code.
+
+        #### Example response
+            {
+              questions: [
+                {
+                  question: {
+                      "type": "TextQuestion"
+                      "id": 5,
+                      "uuid": "SOMEUUID",
+                      "creator_id": 123,
+                      "creator_name": "creator_username",
+                      "title": "Text Title",
+                      "description": "Text Description",
+                      "image_url": "http://statisfy.co/Example.jpg",
+                      "text_type": "freeform" | "email" | "phone",
+                      "min_characters": 1,
+                      "max_characters": 100,
+                      "response_count": 0,
+                      "comment_count": 0,
+                      "category": {
+                          "id": 1,
+                          "name": "Category 1"
+                      },
+                  },
+                  question: {
+                    < question fields >
+                  }
+                }]
+              }
+            }
+      END
+    }
+    params do
+      use :auth
+
+      requires :count, type: Integer, desc: "The maximum number of questions to return"
+      requires :search_text, type: String, desc: "The text to search for"
+    end
+    post 'search' do
+      validate_user!
+
+      # TODO write the correct logic and specs
+      questions = Question.active.limit(declared_params[:count])
+      { questions: questions }
+    end
+
     desc "Return feed questions."
     params do
       use :auth
