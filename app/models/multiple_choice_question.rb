@@ -2,7 +2,8 @@ class MultipleChoiceQuestion < ChoiceQuestion
   include BackgroundImageFromChoices
 
   belongs_to :background_image
-  has_many :choices, class_name:"MultipleChoice", foreign_key: :question_id, dependent: :destroy, inverse_of: :question
+  has_many :multiple_choices, foreign_key: :question_id, dependent: :destroy
+  has_many :choices, class_name:"MultipleChoice", foreign_key: :question_id, inverse_of: :question
   has_many :responses, class_name:"MultipleChoiceResponse", foreign_key: :question_id
 
   default min_responses: 2

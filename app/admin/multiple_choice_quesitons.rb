@@ -1,4 +1,4 @@
-ActiveAdmin.register Question do
+ActiveAdmin.register MultipleChoiceQuestion  do
   menu parent: 'Questions'
 
   permit_params :id, :position, :category_id, :title, :state, :special
@@ -16,7 +16,6 @@ ActiveAdmin.register Question do
     selectable_column
     column :id
     column :title
-    column :type
     column :category
     column :user
     column "Responses" do |q|
@@ -27,12 +26,13 @@ ActiveAdmin.register Question do
     end
     column :state
     column :kind
-    column :special
     column :require_comment
-    column :created_at
-    column "In Feeds" do |q|
-      q.feed_items.count
+    column :min_responses
+    column :max_responses
+    column "Choices" do |q|
+      link_to pluralize(q.choices.count, "choice"), admin_multiple_choice_question_multiple_choices_path(q)
     end
+    column :created_at
     actions
   end
 
@@ -41,8 +41,9 @@ ActiveAdmin.register Question do
       f.input :state, collection: Question::STATES, include_blank: false
       f.input :category
       f.input :title
-      f.input :special
       f.input :require_comment
+      f.input :min_responses
+      f.input :max_responses
     end
     f.actions
   end

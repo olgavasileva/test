@@ -5,7 +5,7 @@ class Question < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :category
   belongs_to :target
-  belongs_to :background_image
+  belongs_to :background_image, class_name: "QuestionImage"
 
 	has_many :inclusions, dependent: :destroy
 	has_many :packs, through: :inclusions

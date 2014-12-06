@@ -1,0 +1,16 @@
+:sass
+  .image-preview
+    max-height: 100px
+
+= semantic_form_for [:admin, @text_choice_question] do |f|
+  = f.inputs f.object.type do
+    = f.input :state, collection: Question::STATES, include_blank: false
+    = f.input :category
+    = f.input :title, as: :string
+    = f.input :require_comment
+    - if @text_choice_question.persisted?
+      = f.semantic_fields_for :background_image do |bi|
+        = bi.input :image, image_preview: true
+    - else
+      = f.input :background_image, hint: "For a custom image, save this question then edit it to upload a new image"
+  = f.actions

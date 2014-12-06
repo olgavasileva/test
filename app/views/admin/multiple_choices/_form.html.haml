@@ -1,0 +1,16 @@
+:sass
+  .image-preview
+    max-height: 100px
+
+= semantic_form_for [:admin, @multiple_choice.question, @multiple_choice] do |f|
+  = f.inputs f.object.type do
+    = f.input :title, as: :string
+    - if @multiple_choice.persisted?
+      = f.semantic_fields_for :background_image do |bi|
+        = bi.input :image, image_preview: true
+    - else
+      = f.input :background_image, hint: "For a custom image, save this choice then edit it to upload a new image"
+    = f.input :position
+    = f.input :rotate
+    = f.input :muex
+  = f.actions

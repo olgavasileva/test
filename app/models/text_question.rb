@@ -13,5 +13,7 @@ class TextQuestion < Question
   validates :max_characters, presence:true, numericality: { only_integer: true, greater_than_or_equal_to: :min_characters }
   validates :background_image, presence: true
 
+  accepts_nested_attributes_for :background_image
+
   default background_image_id: lambda{ |q| CannedQuestionImage.pluck(:id).sample }
 end

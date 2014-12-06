@@ -1,6 +1,6 @@
 class MultipleChoice < Choice
   belongs_to :question, class_name:"MultipleChoiceQuestion", inverse_of: :choices
-  belongs_to :background_image
+  belongs_to :background_image, class_name: "ChoiceImage"
   has_many :choices_responses
   has_many :responses, through: :choices_responses
 
@@ -13,4 +13,6 @@ class MultipleChoice < Choice
   delegate :web_image_url, to: :background_image
   delegate :device_image_url, to: :background_image
   delegate :retina_device_image_url, to: :background_image
+
+  accepts_nested_attributes_for :background_image
 end

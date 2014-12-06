@@ -1,4 +1,5 @@
 ActiveAdmin.register Question, as: "InappropriateQuestion"  do
+  menu parent: 'Questions'
 
   controller do
     def scoped_collection
