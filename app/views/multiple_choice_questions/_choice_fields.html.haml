@@ -8,7 +8,7 @@
       =link_to_remove_association f, class: :close do
         %i.glyphicon.glyphicon-remove
       .over_image_title_container
-        =render partial:'/widgets/image_control',locals:{f:f,distro: :upload_middle,type: 'question'}
+        =render partial:'/widgets/image_control',locals:{f:f,distro: :upload_middle,type: 'choice'}
         .title=f.input :title, label: false, input_html:{class: 'revealable title appearing-question-title remove-default-text'}
         - if current_user.has_role?(:pro)
           .rotate=f.input :rotate, label: false, collection: [["Default Rotation", nil], ["Force Rotation", true], ["Force Position", false]], include_blank: false, wrapper: :vertical_form, input_html: {class: "input-sm"}
