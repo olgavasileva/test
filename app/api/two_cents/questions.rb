@@ -692,12 +692,14 @@ class TwoCents::Questions < Grape::API
       requires :count, type: Integer, desc: "The maximum number of questions to return"
       optional :category_ids, type: Array, desc: "Limit questions to only these categories"
     end
-    post 'latest' do
+    post 'latest', jbuilder: "latest" do
       validate_user!
 
       # TODO write the correct logic and specs
       questions = Question.active.limit(declared_params[:count])
-      { cursor: declared_params[:count], questions: questions }
+      @cursor = declared_params[:count]
+      @questions = questions
+      @questions.each{|q| q.viewed!}
     end
 
 
@@ -710,34 +712,30 @@ class TwoCents::Questions < Grape::API
         If no questions meet the criteria, will return an empty array of questions, but will not return an error code.
 
         #### Example response
-            {
-              questions: [
-                {
-                  question: {
-                      "type": "TextQuestion"
-                      "id": 5,
-                      "uuid": "SOMEUUID",
-                      "creator_id": 123,
-                      "creator_name": "creator_username",
-                      "title": "Text Title",
-                      "description": "Text Description",
-                      "image_url": "http://statisfy.co/Example.jpg",
-                      "text_type": "freeform" | "email" | "phone",
-                      "min_characters": 1,
-                      "max_characters": 100,
-                      "response_count": 0,
-                      "comment_count": 0,
-                      "category": {
-                          "id": 1,
-                          "name": "Category 1"
-                      },
-                  },
-                  question: {
-                    < question fields >
-                  }
-                }]
-              }
-            }
+              [
+                question: {
+                    "type": "TextQuestion"
+                    "id": 5,
+                    "uuid": "SOMEUUID",
+                    "creator_id": 123,
+                    "creator_name": "creator_username",
+                    "title": "Text Title",
+                    "description": "Text Description",
+                    "image_url": "http://statisfy.co/Example.jpg",
+                    "text_type": "freeform" | "email" | "phone",
+                    "min_characters": 1,
+                    "max_characters": 100,
+                    "response_count": 0,
+                    "comment_count": 0,
+                    "category": {
+                        "id": 1,
+                        "name": "Category 1"
+                    },
+                },
+                question: {
+                  < question fields >
+                }
+              ]
       END
     }
     params do
@@ -746,12 +744,12 @@ class TwoCents::Questions < Grape::API
       requires :index, type: Integer, desc: "0 to start at most popular, 10 to start at 11th most popular, etc."
       requires :count, type: Integer, desc: "The maximum number of questions to return"
     end
-    post 'trending' do
+    post 'trending', jbuilder: 'questions' do
       validate_user!
 
       # TODO write the correct logic and specs
-      questions = Question.active.limit(declared_params[:count])
-      { questions: questions }
+      @questions = Question.active.limit(declared_params[:count])
+      @questions.each{|q| q.viewed!}
     end
 
 
@@ -770,34 +768,30 @@ class TwoCents::Questions < Grape::API
         If no questions meet the criteria, will return an empty array of questions, but will not return an error code.
 
         #### Example response
-            {
-              questions: [
-                {
-                  question: {
-                      "type": "TextQuestion"
-                      "id": 5,
-                      "uuid": "SOMEUUID",
-                      "creator_id": 123,
-                      "creator_name": "creator_username",
-                      "title": "Text Title",
-                      "description": "Text Description",
-                      "image_url": "http://statisfy.co/Example.jpg",
-                      "text_type": "freeform" | "email" | "phone",
-                      "min_characters": 1,
-                      "max_characters": 100,
-                      "response_count": 0,
-                      "comment_count": 0,
-                      "category": {
-                          "id": 1,
-                          "name": "Category 1"
-                      },
+            [
+              question: {
+                  "type": "TextQuestion"
+                  "id": 5,
+                  "uuid": "SOMEUUID",
+                  "creator_id": 123,
+                  "creator_name": "creator_username",
+                  "title": "Text Title",
+                  "description": "Text Description",
+                  "image_url": "http://statisfy.co/Example.jpg",
+                  "text_type": "freeform" | "email" | "phone",
+                  "min_characters": 1,
+                  "max_characters": 100,
+                  "response_count": 0,
+                  "comment_count": 0,
+                  "category": {
+                      "id": 1,
+                      "name": "Category 1"
                   },
-                  question: {
-                    < question fields >
-                  }
-                }]
+              },
+              question: {
+                < question fields >
               }
-            }
+            ]
       END
     }
     params do
@@ -806,12 +800,12 @@ class TwoCents::Questions < Grape::API
       requires :index, type: Integer, desc: "0 to start at most relevant, 10 to start at 11th most relevant, etc."
       requires :count, type: Integer, desc: "The maximum number of questions to return"
     end
-    post 'myfeed' do
+    post 'myfeed', jbuilder: 'questions' do
       validate_user!
 
       # TODO write the correct logic and specs
-      questions = Question.active.limit(declared_params[:count])
-      { questions: questions }
+      @questions = Question.active.limit(declared_params[:count])
+      @questions.each{|q| q.viewed!}
     end
 
 
@@ -824,48 +818,44 @@ class TwoCents::Questions < Grape::API
         If no questions meet the criteria, will return an empty array of questions, but will not return an error code.
 
         #### Example response
-            {
-              questions: [
-                {
-                  question: {
-                      "type": "TextQuestion"
-                      "id": 5,
-                      "uuid": "SOMEUUID",
-                      "creator_id": 123,
-                      "creator_name": "creator_username",
-                      "title": "Text Title",
-                      "description": "Text Description",
-                      "image_url": "http://statisfy.co/Example.jpg",
-                      "text_type": "freeform" | "email" | "phone",
-                      "min_characters": 1,
-                      "max_characters": 100,
-                      "response_count": 0,
-                      "comment_count": 0,
-                      "category": {
-                          "id": 1,
-                          "name": "Category 1"
-                      },
+            [
+              question: {
+                  "type": "TextQuestion"
+                  "id": 5,
+                  "uuid": "SOMEUUID",
+                  "creator_id": 123,
+                  "creator_name": "creator_username",
+                  "title": "Text Title",
+                  "description": "Text Description",
+                  "image_url": "http://statisfy.co/Example.jpg",
+                  "text_type": "freeform" | "email" | "phone",
+                  "min_characters": 1,
+                  "max_characters": 100,
+                  "response_count": 0,
+                  "comment_count": 0,
+                  "category": {
+                      "id": 1,
+                      "name": "Category 1"
                   },
-                  question: {
-                    < question fields >
-                  }
-                }]
+              },
+              question: {
+                < question fields >
               }
-            }
+            ]
       END
     }
     params do
       use :auth
 
-      requires :count, type: Integer, desc: "The maximum number of questions to return"
       requires :search_text, type: String, desc: "The text to search for"
+      optional :count, default: 200, type: Integer, desc: "The maximum number of questions to return"
     end
-    post 'search' do
+    post 'search', jbuilder: 'questions' do
       validate_user!
 
       # TODO write the correct logic and specs
-      questions = Question.active.limit(declared_params[:count])
-      { questions: questions }
+      @questions = Question.active.limit(declared_params[:count])
+      @questions.each{|q| q.viewed!}
     end
 
     desc "Return feed questions."

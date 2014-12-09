@@ -51,12 +51,12 @@ describe :trending do
             text_choice3
           }
 
-          it {expect(json['questions']).not_to be_nil}
-          it {expect(json['questions'].count).to eq 1}
+          it {expect(json).not_to be_nil}
+          it {expect(json.class).to eq Array}
+          it {expect(json.count).to eq 1}
+          it {expect(json[0]['question']).to be_present}
 
           it {expect(response.status).to eq 201}
-          it {expect(JSON.parse(response.body)['error_code']).to be_nil}
-          it {expect(JSON.parse(response.body)['error_message']).to be_nil}
         end
       end
     end
