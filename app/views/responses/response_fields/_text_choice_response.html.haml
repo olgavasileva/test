@@ -29,8 +29,7 @@
               %div.col-xs-3
                 = responsive_image_tag((response.question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
             .option-title=c.object.title
-            = c.radio_button label:false, boolean_style: 'inline', wrapper:false
-            %i.glyphicon.glyphicon-ok.selected
+            = c.radio_button label:false, boolean_style: 'inline', onchange: "this.form.submit();", wrapper:false
     .row
       .col-xs-12.form-group
         = render "responses/response_fields/shared/comment", form:form, response:response
