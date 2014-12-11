@@ -1,20 +1,8 @@
 class QuestionsController < ApplicationController
   def index
-    feed_questions = current_user.anonymous? ? Question.active.order("questions.created_at DESC") : current_user.feed_questions
-
     per_page = 8
-    @questions = policy_scope(feed_questions).kpage(params[:page]).per(per_page)
-
-    if session[:demo]
-      redirect_to question_path
-    else
-      if user_signed_in? && @questions.count < per_page * params[:page].to_i + per_page + 1
-        current_user.feed_more_questions per_page + 1
-        @questions = policy_scope(feed_questions).kpage(params[:page]).per(per_page)
-      end
-
-      @questions.each{|q| q.viewed!}
-    end
+    @questions = policy_scope(Question).kpage(params[:page]).per(per_page)
+    @questions.each{|q| q.viewed!}
   end
 
   def summary
@@ -58,6 +46,19 @@ class QuestionsController < ApplicationController
     @question.update_attribute :currently_targetable, update_targetable_params[:currently_targetable] != 'false'
 
     render text:"OK"
+  end
+
+  def skip
+    @question = Question.find params[:id]
+    authorize @question
+    FeedItem.question_skipped! @question, current_user
+
+    next_q = next_question @question
+    if next_q
+      redirect_to new_question_response_path(next_q)
+    else
+      redirect_to :root
+    end
   end
 
   def results

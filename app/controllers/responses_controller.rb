@@ -26,11 +26,7 @@ class ResponsesController < ApplicationController
                        commentable_id: @response.question_id)
       end
 
-      current_user.feed_items.where(question:@response.question).destroy_all
-
-      if session[:demo]
-        redirect_to question_path
-      elsif session[:contest_uuid]
+      if session[:contest_uuid]
         contest = Contest.find_by uuid:session[:contest_uuid]
         next_question = contest.next_question(@response.question)
         if next_question

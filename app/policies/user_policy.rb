@@ -6,7 +6,6 @@ class UserPolicy < ApplicationPolicy
 
   # Any logged in user can follow another user
   def follow?;        true;   end
-  def first_question?;true;   end
   alias :unfollow? :follow?
 
   def is_owner?

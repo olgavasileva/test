@@ -47,5 +47,7 @@ module LinkchatApp
         resource '/v/2.0/*', headers: :any, methods: %i[get post put patch delete options]
       end
     end
+
+    config.active_record.observers = [:question_observer, :response_observer, :user_observer]
   end
 end

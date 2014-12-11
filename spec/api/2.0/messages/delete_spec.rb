@@ -36,7 +36,7 @@ describe :delete do
 
     context "With an authorized instance" do
       let(:auth_token) {instance.auth_token}
-      let(:instance) {FactoryGirl.create :instance, :authorized, user:user}
+      let(:instance) {FactoryGirl.create :instance, :authorized}
 
       context "When no user is associated with the instance" do
         let(:user) {}
@@ -47,7 +47,8 @@ describe :delete do
       end
 
       context "When a user is associated with the instance" do
-        let(:user) {FactoryGirl.create :user}
+        let(:instance) {FactoryGirl.create :instance, :authorized, :logged_in}
+        let(:user) { instance.user }
 
         context "and the target message doesn't exist" do
           let(:message_id) {0}
@@ -70,7 +71,8 @@ describe :delete do
         end
 
         context "and the target message is all right" do
-          let(:message) {FactoryGirl.create :question_updated, user:user}
+          let(:message) {FactoryGirl.create :question_updated, user:user, question:question}
+          let(:question) {FactoryGirl.create :text_question, user:user}
           let(:message_id) {message.id}
 
           it {expect(response.status).to eq 200}

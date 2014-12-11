@@ -81,22 +81,6 @@ class UsersController < ApplicationController
     redirect_to :back
   end
 
-  def first_question
-    @user = current_user
-    authorize @user
-
-    @user.feed_more_questions 10 if @user.feed_questions.count < 1
-
-    question = @user.feed_questions.order('feed_items.created_at DESC').first
-
-    if question
-      redirect_to new_question_response_path(question)
-    else
-      flash[:alert] = "That was the last question, for now."
-      redirect_to welcome_path
-    end
-  end
-
   def dashboard
     @user = User.find params[:id]
     authorize @user

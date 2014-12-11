@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe :asked do
-  let(:count) { 20 }
+  let(:count) { 5 }
   let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
   let!(:questions) { FactoryGirl.create_list(:question, count, user: instance.user) }
   let(:common_params) { {
@@ -55,6 +55,8 @@ describe :asked do
   context "with reverse" do
     let(:other_params) {{ reverse: true }}
 
-    it "returns questions in reverse order"
+    it "returns questions in reverse order" do
+      expect(response_question_ids).to eq questions.map(&:id).reverse
+    end
   end
 end

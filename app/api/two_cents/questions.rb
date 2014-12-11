@@ -413,245 +413,14 @@ class TwoCents::Questions < Grape::API
 
 
     #
-    # Return the Question Feed
+    # Feed related APIs
     #
-
-    desc "Return an array of questions and related data for this user.", {
-      notes: <<-END
-        This API will return an ordered list of unanswered questions for this user.
-
-        #### Example response
-            [
-                {
-                    "question": {
-                        "type": "TextChoiceQuestion",
-                        "id": 1,
-                        "uuid": "SOMEUUID",
-                        "creator_id": 123,
-                        "creator_name": "creator_username",
-                        "title": "Text Choice Title",
-                        "description": "Text Choice Description",
-                        "image_url": "http://statisfy.co/Example.jpg",
-                        "rotate": true,
-                        "response_count": 8,
-                        "comment_count": 5,
-                        "category": {
-                            "id": 1,
-                            "name": "Category 1"
-                        },
-                        "choices": [
-                            {
-                                "choice": {
-                                    "id": 1,
-                                    "rotate": true,
-                                    "title": "Text Choice 1"
-                                }
-                            },
-                            {
-                                "choice": {
-                                    "id": 2,
-                                    "rotate": true,
-                                    "title": "Text Choice 2"
-                                }
-                            },
-                            {
-                                "choice": {
-                                    "id": 3,
-                                    "rotate": false,
-                                    "title": "Text Choice 3"
-                                }
-                            }
-                        ]
-                    }
-                },
-7                {
-                    "question": {
-                        "type": "MultipleChoiceQuestion",
-                        "id": 2,
-                        "uuid": "SOMEUUID",
-                        "creator_id": 123,
-                        "creator_name": "creator_username",
-                        "title": "Multiple Choice Title",
-                        "description": "Multiple Choice Description",
-                        "min_responses": 1,
-                        "max_responses": 2,
-                        "rotate": true,
-                        "response_count": 8,
-                        "comment_count": 5,
-                        "category": {
-                            "id": 2,
-                            "name": "Category 2"
-                        },
-                        "choices": [
-                            {
-                                "choice": {
-                                    "id": 4,
-                                    "muex": true,
-                                    "rotate": true,
-                                    "image_url": "http://statisfy.co/Example.jpg",
-                                    "title": "Multiple Choice 1"
-                                }
-                            },
-                            {
-                                "choice": {
-                                    "id": 5,
-                                    "muex": false,
-                                    "rotate": true,
-                                    "image_url": "http://statisfy.co/Example.jpg",
-                                    "title": "Multiple Choice 2"
-                                }
-                            },
-                            {
-                                "choice": {
-                                    "id": 6,
-                                    "muex": true,
-                                    "rotate": false,
-                                    "image_url": "http://statisfy.co/Example.jpg",
-                                    "title": "Multiple Choice 3"
-                                }
-                            }
-                        ]
-                    }
-                },
-                {
-                    "question": {
-                        "type": "ImageChoiceQuestion",
-                        "id": 3,
-                        "uuid": "SOMEUUID",
-                        "creator_id": 123,
-                        "creator_name": "creator_username",
-                        "title": "Image Choice Title",
-                        "description": "Image Choice Description",
-                        "rotate": false,
-                        "response_count": 8,
-                        "comment_count": 5,
-                        "category": {
-                            "id": 2,
-                            "name": "Category 2"
-                        },
-                        "choices": [
-                            {
-                                "choice": {
-                                    "id": 7,
-                                    "image_url": "http://statisfy.co/Example.jpg",
-                                    "rotate": false,
-                                    "title": "Image Choice 1"
-                                }
-                            },
-                            {
-                                "choice": {
-                                    "id": 8,
-                                    "image_url": "http://statisfy.co/Example.jpg",
-                                    "rotate": false,
-                                    "title": "Image Choice 2"
-                                }
-                            }
-                        ]
-                    }
-                },
-                {
-                    "question": {
-                        "type": "OrderQuestion",
-                        "id": 4,
-                        "uuid": "SOMEUUID",
-                        "creator_id": 123,
-                        "creator_name": "creator_username",
-                        "title": "Order Title",
-                        "description": "Order Description",
-                        "rotate": true,
-                        "response_count": 0,
-                        "comment_count": 0,
-                        "category": {
-                            "id": 1,
-                            "name": "Category 1"
-                        },
-                        "choices": [
-                            {
-                                "choice": {
-                                    "id": 9,
-                                    "image_url": "http://statisfy.co/Example.jpg",
-                                    "rotate": true,
-                                    "title": "Order Choice 1"
-                                }
-                            },
-                            {
-                                "choice": {
-                                    "id": 10,
-                                    "image_url": "http://statisfy.co/Example.jpg",
-                                    "rotate": true,
-                                    "title": "Order Choice 2"
-                                }
-                            },
-                            {
-                                "choice": {
-                                    "id": 11,
-                                    "image_url": "http://statisfy.co/Example.jpg",
-                                    "rotate": false,
-                                    "title": "Order Choice 3"
-                                }
-                            }
-                        ]
-                    }
-                },
-                {
-                    "question": {
-                        "type": "TextQuestion"
-                        "id": 5,
-                        "uuid": "SOMEUUID",
-                        "creator_id": 123,
-                        "creator_name": "creator_username",
-                        "title": "Text Title",
-                        "description": "Text Description",
-                        "image_url": "http://statisfy.co/Example.jpg",
-                        "text_type": "freeform" | "email" | "phone",
-                        "min_characters": 1,
-                        "max_characters": 100,
-                        "response_count": 0,
-                        "comment_count": 0,
-                        "category": {
-                            "id": 1,
-                            "name": "Category 1"
-                        },
-                    }
-                }
-            ]
-      END
-    }
-    params do
-      use :auth
-
-      optional :page, type: Integer, desc: "Page number, starting at 1 - all questions returned if not supplied"
-      optional :per_page, type: Integer, default: 15, desc: "Number of questions per page"
-    end
-    post 'feed', jbuilder: "questions", http_codes:[
-      [200, "400 - Invalid params"],
-      [200, "402 - Invalid auth token"],
-      [200, "403 - Login required"]
-    ] do
-      validate_user!
-
-      page = declared_params[:page]
-      per_page = page ? declared_params[:per_page] : 15
-
-      @questions = policy_scope(current_user.feed_questions)
-
-      num_needed = per_page * page.to_i + per_page + 1
-      if @questions.count < num_needed
-        current_user.feed_more_questions num_needed - @questions.count
-        @questions = policy_scope(current_user.feed_questions)
-      end
-
-      @questions = @questions.paginate(page: page, per_page: per_page)
-
-      @questions.each{|q| q.viewed!}
-    end
-
 
     desc "Get the latest questions for a user to answer", {
       notes: <<-END
         Returns the list of public and targeted questions that are not deleted, not skipped or answered by currentuser in reverse chronological order based on published_at - published_at is same as created_at unless modified by the admin) from Question latest to Quetion #1.
 
-        When out of questions, will return an empty array of questions, but will not return an error code.
+        When out of questions, will return an empty array of questions and 0 for the cursor, but will not return an error code.
 
         #### Example response
             {
@@ -689,16 +458,24 @@ class TwoCents::Questions < Grape::API
       use :auth
 
       requires :cursor, type: Integer, desc: "0 for first questions, otherwise return last value received"
-      requires :count, type: Integer, desc: "The maximum number of questions to return"
+      optional :count, default: 20, type: Integer, desc: "The maximum number of questions to return"
       optional :category_ids, type: Array, desc: "Limit questions to only these categories"
     end
     post 'latest', jbuilder: "latest" do
       validate_user!
 
-      # TODO write the correct logic and specs
-      questions = Question.active.limit(declared_params[:count])
-      @cursor = declared_params[:count]
-      @questions = questions
+      @questions = current_user.feed_questions
+
+      offset = if declared_params[:cursor] == 0
+        0
+      else
+        index = @questions.pluck(:id).index(declared_params[:cursor])
+        index.nil? ? 0 : (index + 1)
+      end
+
+      @questions = @questions.offset(offset).limit(declared_params[:count])
+      @cursor = @questions.count > 0 ? @questions.last.id : 0
+
       @questions.each{|q| q.viewed!}
     end
 
@@ -858,48 +635,11 @@ class TwoCents::Questions < Grape::API
       @questions.each{|q| q.viewed!}
     end
 
-    desc "Return feed questions."
-    params do
-      use :auth
 
-      optional :after_id, type: Integer,
-        desc: "ID of question before start of list."
-      optional :count, type: Integer, default: 15,
-        desc: "Number of questions to return."
-    end
-    # todo: cleanup
-    get '/', jbuilder: 'questions' do
-      validate_user!
 
-      user = current_user
-      after_id = params[:after_id]
-      count = params[:count]
 
-      if after_id.nil?
-        until user.feed_questions.count > count
-          next_questions = user.reload.next_feed_questions
-          break if next_questions.empty?
-          user.feed_questions << next_questions
-        end
 
-        @questions = user.feed_questions.first(count)
-      else
-        until user.feed_questions.pluck(:id).include?(after_id) \
-          && after_id_to_end(user.feed_questions, after_id).count > count
 
-          next_questions = user.reload.next_feed_questions
-          break if next_questions.empty?
-          user.feed_questions << next_questions
-        end
-
-        unless user.feed_questions.pluck(:id).include?(after_id)
-          @questions = []
-          return
-        end
-
-        @questions = after_id_to_end(user.feed_questions, after_id).first(count)
-      end
-    end
 
 
     desc "Delete a question"
@@ -925,10 +665,8 @@ class TwoCents::Questions < Grape::API
 
       optional :user_id, type: Integer, desc: "User ID. Defaults to logged in user's ID."
       optional :reverse, type: Boolean, default: false, desc: "Whether to reverse order."
-      optional :previous_last_id, type: Integer,
-        desc: "ID of question before start of list."
-      optional :count, type: Integer,
-        desc: "Number of questions to return."
+      optional :previous_last_id, type: Integer, desc: "ID of question before start of list."
+      optional :count, type: Integer, desc: "Number of questions to return."
     end
     post 'asked' do
       user_id = params[:user_id]
@@ -936,7 +674,7 @@ class TwoCents::Questions < Grape::API
       previous_last_id = params[:previous_last_id]
       count = params[:count]
 
-      questions = policy_scope(user.questions).order(:created_at)
+      questions = user.questions.order(:created_at)
 
       questions = questions.reverse if params[:reverse]
 
@@ -1125,8 +863,6 @@ class TwoCents::Questions < Grape::API
                                            #response: response
                                            )
       end
-
-      current_user.feed_items.where(question_id:@question.id).destroy_all
 
       @anonymous = declared_params[:anonymous]
     end
@@ -1374,9 +1110,7 @@ class TwoCents::Questions < Grape::API
 
       question = Question.find(params[:question_id])
 
-      SkippedItem
-        .where(user_id: current_user.id, question_id: question.id)
-        .first_or_create!
+      FeedItem.question_skipped! question, current_user
 
       {}
     end

@@ -283,7 +283,6 @@ class TwoCents::Auth < Grape::API
       end
 
       instance.update_attributes! auth_token:"A"+UUID.new.generate, user:user
-      user.feed_items.destroy_all
 
       {auth_token:instance.auth_token, email:user.email, username:user.username, user_id:user.id}
     end

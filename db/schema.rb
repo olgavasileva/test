@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141201021515) do
+ActiveRecord::Schema.define(version: 20141209183843) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -218,6 +218,25 @@ ActiveRecord::Schema.define(version: 20141201021515) do
 
   add_index "feed_items", ["question_id"], name: "index_feed_items_on_question_id", using: :btree
   add_index "feed_items", ["user_id"], name: "index_feed_items_on_user_id", using: :btree
+
+  create_table "feed_items_v2", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "question_id"
+    t.datetime "published_at"
+    t.datetime "hidden_at"
+    t.boolean  "hidden"
+    t.string   "hidden_reason"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "feed_items_v2", ["hidden", "hidden_reason", "question_id"], name: "idx2", using: :btree
+  add_index "feed_items_v2", ["hidden", "hidden_reason"], name: "idx1", using: :btree
+  add_index "feed_items_v2", ["question_id"], name: "index_feed_items_v2_on_question_id", using: :btree
+  add_index "feed_items_v2", ["user_id", "hidden", "hidden_reason", "question_id"], name: "idx5", using: :btree
+  add_index "feed_items_v2", ["user_id", "hidden", "hidden_reason"], name: "idx4", using: :btree
+  add_index "feed_items_v2", ["user_id", "hidden", "published_at"], name: "idx3", using: :btree
+  add_index "feed_items_v2", ["user_id"], name: "index_feed_items_v2_on_user_id", using: :btree
 
   create_table "follower_targets", force: true do |t|
     t.integer  "question_id"

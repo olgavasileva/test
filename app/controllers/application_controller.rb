@@ -29,16 +29,6 @@ class ApplicationController < ActionController::Base
 
   layout :layout_by_resource
 
-
-  def after_sign_in_path_for resource
-    resource.kind_of?(User) && session[:demo] ? "/question" : super(resource)
-  end
-
-  def after_sign_out_path_for resource
-    session[:demo] = nil
-    super resource
-  end
-
   def redirect_to(options = {}, response_status = {})
     ::Rails.logger.error("Redirected by #{caller(1).first rescue "unknown"}")
     super(options, response_status)

@@ -15,8 +15,8 @@ class Target < ActiveRecord::Base
     !!all_users
   end
 
-  # Add the question to all of the appropriate users' feed
-  # Will not add a question to a user who already has this question in their feed or skip list
+  # Add the question to all of the appropriate users' feeds
+  # Will not add a question to a user who already has this question in their feed
   def apply_to_question question
     target_count = 0
 
@@ -89,45 +89,16 @@ class Target < ActiveRecord::Base
 
       message.save
 
-      targeted_user.instances.each do |instance|
-        next unless instance.push_token.present?
+      targeted_user.instances.where.not(push_token: nil).each do |instance|
 
-        instance.push alert:message.body, badge:targeted_user.messages.count, sound:true, other: {type: message.type,
-                                                                                                  created_at: message.created_at,
-                                                                                                  read_at: message.read_at,
-                                                                                                  question_id: message.question_id,
-                                                                                                  body: message.body }
+        instance.push alert: message.body,
+                      badge: targeted_user.messages.count,
+                      sound: true,
+                      other: {  type: message.type,
+                                created_at: message.created_at,
+                                read_at: message.read_at,
+                                question_id: message.question_id,
+                                body: message.body }
       end
-
-      # if !QuestionTargeted.exists?(:user_id => self.user_id)
-      #   message = QuestionTargeted.new
-      # else
-      #   message = QuestionTargeted.find_by_user_id(self.user_id)
-      # end
-      #
-      #
-      # message.user_id = self.question.user_id
-      # message.question_id = self.question_id
-      #
-      # question = self.question
-      # user_name = question.anonymous? ? "Someone" : question.user.username
-      # message.body = "#{user_name} has a question for you"
-      #
-      # message.save
-      #
-      #
-      #
-      # self.user.instances.each do |instance|
-      #   next unless instance.push_token.present?
-      #
-      #   APNS.send_notification(instance.push_token, :alert => 'Hello iPhone!', :badge => 0, :sound => 'default',
-      #                          :other => {:type => message.type,
-      #                                     :created_at => message.created_at,
-      #                                     :read_at => message.read_at,
-      #                                     :question_id => message.question_id,
-      #                                     :body => message.body
-      #                          })
-      # end
-
     end
 end

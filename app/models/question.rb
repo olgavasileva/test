@@ -14,8 +14,7 @@ class Question < ActiveRecord::Base
   has_many :response_users, through: :responses, source: :user
   has_many :users,  through: :responses
 	has_many :feed_items, dependent: :destroy
-	has_many :skips, class_name:"SkippedItem", dependent: :destroy
-  has_many :skip_users, through: :skips, source: :user
+  has_many :skip_users, -> {where hidden: true, hidden_reason: 'skipped'}, through: :feed_items, source: :user
   has_many :choices
   has_many :question_reports
   has_many :group_targets
@@ -29,6 +28,7 @@ class Question < ActiveRecord::Base
 
 	scope :active, -> { where state:"active" }
   scope :suspended, -> { where state:"suspended" }
+  scope :publik, -> { where kind:"public" }
   scope :currently_targetable, -> { where currently_targetable:true }
   scope :inappropriate, -> { includes(:inappropriate_flags).having("count(inappropriate_flags.id) > 0") }
 
@@ -54,14 +54,22 @@ class Question < ActiveRecord::Base
 
   before_create :add_creation_score
 
+  def answered! user
+    FeedItem.question_answered! self, user
+  end
+
   def apply_target! target
-    self.update_attribute :target, target
-    target.apply_to_question self
+    transaction do
+      self.update_attribute :target, target
+      target.apply_to_question self
+    end
   end
 
   def suspend!
-    update_attribute :state, "suspended"
-    self.feed_items.destroy_all
+    transaction do
+      update_attribute :state, "suspended"
+      FeedItem.question_suspended! self
+    end
   end
 
 	def viewed!
@@ -113,7 +121,7 @@ class Question < ActiveRecord::Base
 
 
 	def skip_count
-		skips.count
+    FeedItem.skipped.where(question_id: self).count
 	end
 
   private

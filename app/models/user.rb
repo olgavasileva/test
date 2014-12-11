@@ -14,10 +14,8 @@ class User < ActiveRecord::Base
   has_many :choice_responses, class_name: "ChoiceResponse"
   has_many :multiple_choice_responses, class_name: "MultipleChoiceResponse"
   has_many :feed_items, dependent: :destroy
-  has_many :feed_questions, -> { order("feed_items.created_at ASC, feed_items.id ASC") }, through: :feed_items, source: :question
+  has_many :feed_questions, -> { where(feed_items_v2:{hidden: false}).where("feed_items_v2.published_at <= ?", Time.current).order("feed_items_v2.published_at DESC, feed_items_v2.id DESC") }, through: :feed_items, source: :question
   has_many :answered_questions, through: :responses, source: :question
-  has_many :skipped_items, dependent: :destroy
-  has_many :skipped_questions, through: :skipped_items, source: :question
   has_many :inappropriate_flags, dependent: :destroy
   has_many :scenes, dependent: :destroy
 
@@ -80,7 +78,6 @@ class User < ActiveRecord::Base
   # Responses to this user's questions
   has_many :responses_to_questions, through: :questions, source: :responses
 
-  has_many :questions_skips, through: :questions, source: :skips
 	has_many :packs, dependent: :destroy
 	has_many :sharings, foreign_key: "sender_id", dependent: :destroy
 	has_many :reverse_sharings, foreign_key: "receiver_id", class_name: "Sharing", dependent: :destroy
@@ -161,136 +158,7 @@ class User < ActiveRecord::Base
 	end
 
   def wants_question? question
-    feed_items.where(question_id:question).blank? && responses.where(question_id:question).blank? && skipped_items.where(question_id:question).blank? && questions.where(id:question).blank?
-  end
-
-  def next_feed_questions(count = 10)
-    self.with_lock do
-      # Potential questions are in active state.
-      potential_questions = Question.active
-
-      # Potential questions have not been in the user's feed.
-      used_question_ids = feed_questions.pluck(:id) + answered_questions.pluck(:id) + skipped_questions.pluck(:id)
-      potential_questions = potential_questions.where.not(id: used_question_ids)
-
-      # Questions are in a specific order.
-      questions = []
-      question_ids = []
-
-      # 1) special case
-      additional_questions = potential_questions.where(special: true)
-                                                .where.not(id: question_ids)
-                                                .order_by_rand
-      questions += additional_questions
-      question_ids += additional_questions.pluck(:id)
-
-      return questions.first(count) if questions.count >= count
-
-      # 2) sponsored
-      #   a) targeted
-      #   b) untargeted
-
-      # 3) directly targeted
-      targets = TargetsUser.where(user_id: id).map(&:target)
-      additional_questions = potential_questions.where(target_id: targets)
-                                                .where.not(id: question_ids)
-                                                .order_by_rand
-      questions += additional_questions
-      question_ids += additional_questions.pluck(:id)
-
-      return questions.first(count) if questions.count >= count
-
-      # 4) staff
-      staff = Group.find_by_name("Staff").try(:users) || []
-      staff_questions = potential_questions.where(user_id: staff)
-      staff_targets = Target.where(user_id: staff)
-                      .where.any_of(all_users: true, all_followers: true, all_groups: true)
-      staff_targets += GroupsTarget.where(group_id: groups, user_id: staff).map(&:target)
-
-      #   a) targeted
-      additional_questions = staff_questions.where(target_id: staff_targets)
-                                            .where.not(id: question_ids)
-                                            .order_by_rand
-      questions += additional_questions
-      question_ids += additional_questions.pluck(:id)
-
-      return questions.first(count) if questions.count >= count
-
-      #   b) untargeted
-      additional_questions = staff_questions.where.not(target_id: staff_targets)
-                                            .where.not(id: question_ids)
-                                            .order_by_rand
-      questions += additional_questions
-      question_ids += additional_questions.pluck(:id)
-
-      return questions.first(count) if questions.count >= count
-
-      # 5) followed users
-      followed_targets = Target.where.any_of(all_users: true, all_followers: true)
-      public_targets = Target.where(all_users: true) # todo: account for more specific targeting
-
-      #   a) created & shared
-      additional_questions = potential_questions.where(user_id: leaders)
-                                                .where.not(id: question_ids)
-                                                .where(target_id: followed_targets)
-                                                .where.not(share_count: 0, id: questions)
-      questions += additional_questions
-      question_ids += additional_questions.pluck(:id)
-
-      return questions.first(count) if questions.count >= count
-
-      #   b) completed & shared
-      responses = Response.where(user_id: leaders)
-      additional_questions = potential_questions.where(id: responses.map(&:question), target_id: public_targets)
-                                                .where.not(id: question_ids)
-                                                .where.not(share_count: 0, id: questions)
-      questions += additional_questions
-      question_ids += additional_questions.pluck(:id)
-
-      return questions.first(count) if questions.count >= count
-
-      #   c) created & not shared
-      additional_questions = potential_questions.where(user_id: leaders,
-                                                       share_count: [0, nil],
-                                                       target_id: followed_targets)
-                                                .where.not(id: question_ids)
-      questions += additional_questions
-      question_ids += additional_questions.pluck(:id)
-
-      return questions.first(count) if questions.count >= count
-
-      # 6) top scoring
-      additional_questions = potential_questions.where(target_id: public_targets)
-                                                .where.not(id: question_ids)
-                                                .order('score DESC')
-      questions += additional_questions
-      question_ids += additional_questions.pluck(:id)
-
-      return questions.first(count) if questions.count >= count
-
-      # 7) random public
-      questions += potential_questions.where(target_id: public_targets)
-                                      .where.not(id: question_ids)
-                                      .limit(count - questions.count)
-                                      .order_by_rand
-      questions += additional_questions
-      question_ids += additional_questions.pluck(:id)
-
-      return questions.first(count) if questions.count >= count
-
-      # 8) random public if no target relationship at all (legacy data)
-      questions += potential_questions.where(kind: :public)
-                                      .where.not(id: question_ids)
-                                      .limit(count - questions.count)
-      questions += additional_questions
-      question_ids += additional_questions.pluck(:id)
-
-      questions.first(count)
-    end
-  end
-
-  def feed_more_questions(count)
-    self.feed_questions += next_feed_questions(count)
+    feed_items.where(question_id:question).empty?
   end
 
   def read_all_messages
@@ -332,12 +200,6 @@ class User < ActiveRecord::Base
     end
 
     def add_and_push_message(followed_user)
-
-      # if UserFollowed.where("follower_id = ? AND user_id = ?", self.id, followed_user.id).exists?
-      #   message = UserFollowed.where("follower_id = ? AND user_id = ?", self.id, followed_user.id)
-      # else
-      #
-      # end
 
       message = UserFollowed.new
 
