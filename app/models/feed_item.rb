@@ -1,6 +1,8 @@
 class FeedItem < ActiveRecord::Base
   self.table_name = :feed_items_v2
 
+  HIDDEN_REASONS ||= %w(answered skipped suspended deleted)
+
   belongs_to :user
   belongs_to :question
 
@@ -16,8 +18,8 @@ class FeedItem < ActiveRecord::Base
 
   validates :user, presence: true
   validates :question, presence: true
-  validates :hidden, inclusion: {in:[true,false]}
-  validates :hidden_reason, inclusion: {in:%w(answered skipped suspended deleted), allow_nil: true}
+  validates :hidden, inclusion: { in: [true,false] }
+  validates :hidden_reason, inclusion: { in: HIDDEN_REASONS, allow_blank: true }
   validates :question_id, uniqueness:{scope: :user_id}
 
   def self.question_answered! question, user

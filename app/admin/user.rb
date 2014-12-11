@@ -30,7 +30,8 @@ ActiveAdmin.register User do
 
   member_action :reset, method: :delete do
     user = User.find params[:id]
-    user.feed_items.destroy_all
+    user.reset_feed!
+
     redirect_to admin_users_path, notice: "Feed has been reset for #{user.username}."
   end
 

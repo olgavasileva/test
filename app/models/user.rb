@@ -37,6 +37,16 @@ class User < ActiveRecord::Base
 
   has_many :messages, dependent: :destroy
 
+  # Clear and then add  all the public questions for the feed
+  def reset_feed!
+    transaction do
+      feed_items.destroy_all
+      Question.active.publik.order("created_at ASC").each do |q|
+        FeedItem.create! user:self, question:q, published_at:q.created_at
+      end
+    end
+  end
+
   # Allow user to log in using username OR email in the 'login' text area
 	# https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
   def self.find_for_database_authentication(warden_conditions)
