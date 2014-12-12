@@ -22,6 +22,8 @@ class PagesController < ApplicationController
   end
 
   def welcome
+    @community = Community.find_by id:params[:community_id] if params[:community_id]
+
     if user_signed_in?
       redirect_to questions_path
     else
