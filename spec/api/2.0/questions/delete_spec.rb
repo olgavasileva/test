@@ -10,8 +10,8 @@ describe 'DELETE /questions' do
 
   before { delete 'v/2.0/questions', params }
 
-  it "destroys the question" do
-    expect(Question.find_by_id(question.id)).to be_nil
+  it "suspends the question" do
+    expect(Question.find_by_id(question.id).state).to eq "suspended"
   end
 
   it "responds with blank data" do

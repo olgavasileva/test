@@ -1,0 +1,17 @@
+- avatar_url = community.user.avatar ? community.user.avatar.image_url : gravatar_url(community.user.email, default: :identicon)
+- # Facebook
+- if ENV['FACEBOOK_APP_NAME'].present?
+  %meta{ property: 'og:site_name', content: ENV['FACEBOOK_APP_NAME'] }
+  %meta{ property: 'og:type', content: 'article' }
+  %meta{ property: 'og:description', content: community.name }
+  %meta{ property: 'og:url', content: root_url }
+  %meta{ property: 'og:image', content: avatar_url }
+
+- # Twitter
+- if ENV['TWITTER_SITE'].present?
+  %meta{ name: "twitter:card", content: "summary_large_image" }
+  %meta{ name: "twitter:site", content: ENV['TWITTER_SITE'] }
+  %meta{ name: "twitter:creator", content: ENV['TWITTER_CREATOR'] }
+  %meta{ name: "twitter:title", content: community.name }
+  %meta{ name: "twitter:description", content: community.description }
+  %meta{ name: "twitter:image:src", content: avatar_url }

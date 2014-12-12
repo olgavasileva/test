@@ -20,7 +20,7 @@ LinkchatApp::Application.routes.draw do
   ActiveAdmin.routes(self)
 
   root 'pages#welcome'
-  get '/community' => 'pages#welcome' # Temporary fix for broken community link
+  get '/community(/:community_id)' => 'pages#welcome' # Temporary fix for broken community link
   get '/q/:uuid' => 'questions#new_response_from_uuid', as: :question_sharing
   get '/question' => 'users#first_question'
   get '/test' => 'pages#test' if Rails.env.development?

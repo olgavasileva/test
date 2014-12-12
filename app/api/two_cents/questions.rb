@@ -919,7 +919,7 @@ class TwoCents::Questions < Grape::API
       requires :id, type: Integer, desc: "ID of quesion."
     end
     delete do
-      Question.find(params[:id]).destroy!
+      Question.find(params[:id]).suspend!
 
       {}
     end

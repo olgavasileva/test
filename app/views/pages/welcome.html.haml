@@ -1,5 +1,8 @@
 - content_for :meta do
-  = render "shared/question_meta", question: Question.active.last
+  - if @community.present? && @community.user
+    = render "shared/community_meta", community:@community
+  - else
+    = render "shared/question_meta", question: Question.active.last
 
 = render 'hero_unit'
 = render 'features'
