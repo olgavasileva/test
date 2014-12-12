@@ -7,7 +7,7 @@ class QuestionObserver < ActiveRecord::Observer
     if question.public?
       User.all.each do |user|
         if user.wants_question? question
-          user.feed_questions << question
+          user.feed_items << FeedItem.new(question:question, relevance:question.relevance_to(user))
           add_and_push_message user, question
         end
       end

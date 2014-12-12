@@ -32,6 +32,9 @@ class Question < ActiveRecord::Base
   scope :currently_targetable, -> { where currently_targetable:true }
   scope :inappropriate, -> { includes(:inappropriate_flags).having("count(inappropriate_flags.id) > 0") }
 
+  scope :latest, -> { order("feed_items_v2.published_at DESC, feed_items_v2.id DESC") }
+  scope :by_relevance, -> { order("feed_items_v2.relevance DESC, feed_items_v2.published_at DESC, feed_items_v2.id DESC") }
+
 	default kind: "public"
 
 	validates :user, presence: true
@@ -53,6 +56,17 @@ class Question < ActiveRecord::Base
   end
 
   before_create :add_creation_score
+
+  # +1 if asked by one of the recipient's followers
+  # +1 if asked by one of the recipient's leaders
+  # +1 for each of the recipient's followers who answered this question
+  # +1 for each of the recipient's leaders who answered this question
+  def relevance_to recipient
+    recipient.followers.where(id:user).count +
+    recipient.leaders.where(id:user).count +
+    responses.joins(:user).where('users.id' => recipient.followers.pluck(:id)).count +
+    responses.joins(:user).where('users.id' => recipient.leaders.pluck(:id)).count
+  end
 
   def answered! user
     FeedItem.question_answered! self, user

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141209183843) do
+ActiveRecord::Schema.define(version: 20141212040418) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -228,6 +228,7 @@ ActiveRecord::Schema.define(version: 20141209183843) do
     t.string   "hidden_reason"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "relevance",     default: 0
   end
 
   add_index "feed_items_v2", ["hidden", "hidden_reason", "question_id"], name: "idx2", using: :btree

@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   has_many :choice_responses, class_name: "ChoiceResponse"
   has_many :multiple_choice_responses, class_name: "MultipleChoiceResponse"
   has_many :feed_items, dependent: :destroy
-  has_many :feed_questions, -> { where(feed_items_v2:{hidden: false}).where("feed_items_v2.published_at <= ?", Time.current).order("feed_items_v2.published_at DESC, feed_items_v2.id DESC") }, through: :feed_items, source: :question
+  has_many :feed_questions, -> { where(feed_items_v2:{hidden: false}).where("feed_items_v2.published_at <= ?", Time.current) }, through: :feed_items, source: :question
   has_many :answered_questions, through: :responses, source: :question
   has_many :inappropriate_flags, dependent: :destroy
   has_many :scenes, dependent: :destroy

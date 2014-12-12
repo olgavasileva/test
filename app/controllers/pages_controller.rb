@@ -25,7 +25,7 @@ class PagesController < ApplicationController
     if user_signed_in?
       redirect_to questions_path
     else
-      @questions = policy_scope(Question).paginate(page: 1, per_page: 8)
+      @questions = policy_scope(Question).latest.paginate(page: 1, per_page: 8)
 
       render :welcome, layout: 'welcome'
     end

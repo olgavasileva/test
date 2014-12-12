@@ -1,9 +1,12 @@
 require 'rails_helper'
+require_relative 'shared_questions'
 
 describe :myfeed do
   let(:params) {{}}
   let(:setup_questions) {}
+  let(:before_api_call) {}
   before { setup_questions }
+  before { before_api_call }
   before { post "v/2.0/questions/myfeed", Hash[params].to_json,{"CONTENT_TYPE" => "application/json"}}
 
   context "With all required params" do
@@ -35,28 +38,51 @@ describe :myfeed do
       context "When a user is associated with the instnace" do
         let(:user) {FactoryGirl.create :user}
 
-        context "With some questions" do
-          let(:text_choice_question) {FactoryGirl.create :text_choice_question}
-          let(:text_choice1) {FactoryGirl.create :text_choice, question:text_choice_question, title:"Text Choice 1", rotate:true}
-          let(:text_choice2) {FactoryGirl.create :text_choice, question:text_choice_question, title:"Text Choice 2", rotate:true}
-          let(:text_choice3) {FactoryGirl.create :text_choice, question:text_choice_question, title:"Text Choice 3", rotate:false}
-
-          let(:all_questions) { [text_choice_question] }
-
-          let(:setup_questions) {
-            all_questions
-
-            text_choice1
-            text_choice2
-            text_choice3
-          }
+        context "With one of each type of question" do
+          include_context :shared_questions
 
           it {expect(json).not_to be_nil}
           it {expect(json.class).to eq Array}
-          it {expect(json.count).to eq 1}
+          it {expect(json.count).to eq 5}
           it {expect(json[0]['question']).to be_present}
 
           it {expect(response.status).to eq 201}
+
+          describe "TextChoiceQuestion" do
+            it "should have all required fields" do
+              q = json[4]['question']
+
+              expect(q['id']).to eq text_choice_question.id
+              expect(q['uuid']).to eq text_choice_question.uuid
+              expect(q['type']).to eq "TextChoiceQuestion"
+              expect(q['title']).to eq "Text Choice Title"
+              expect(q['description']).to eq "Text Choice Description"
+              expect(q['rotate']).to eq true
+              expect(q['category']['name']).to eq "Category 1"
+              expect(q['created_at']).to_not be_nil
+              expect(q['image_url']).not_to be_nil
+              expect(q['comment_count']).to eq 0
+              expect(q['response_count']).to eq 0
+
+
+              choices = q['choices']
+
+              expect(choices.count).to eq 3
+
+              expect(choices[0]['choice']['id']).to eq text_choice1.id
+              expect(choices[0]['choice']['title']).to eq "Text Choice 1"
+              expect(choices[0]['choice']['rotate']).to eq true
+
+              expect(choices[1]['choice']['id']).to eq text_choice2.id
+              expect(choices[1]['choice']['title']).to eq "Text Choice 2"
+              expect(choices[1]['choice']['rotate']).to eq true
+
+              expect(choices[2]['choice']['id']).to eq text_choice3.id
+              expect(choices[2]['choice']['title']).to eq "Text Choice 3"
+              expect(choices[2]['choice']['rotate']).to eq false
+            end
+          end
+
         end
       end
     end

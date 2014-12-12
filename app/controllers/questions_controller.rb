@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
   def index
     per_page = 8
-    @questions = policy_scope(Question).kpage(params[:page]).per(per_page)
+    @questions = policy_scope(Question).latest.kpage(params[:page]).per(per_page)
     @questions.each{|q| q.viewed!}
   end
 
