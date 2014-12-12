@@ -647,8 +647,18 @@ class TwoCents::Questions < Grape::API
 
       requires :id, type: Integer, desc: "ID of quesion."
     end
-    delete do
-      Question.find(params[:id]).suspend!
+    delete '/', http_codes:[
+      [200, "400 - Invalid params"],
+      [200, "402 - Invalid auth token"],
+      [200, "403 - Login required"],
+      [200, "2005 - Question does not belong to you."]
+    ] do
+      validate_user!
+
+      question = current_user.questions.find_by id:params[:id]
+      fail! 2005, "Question does not belong to you." unless question.present?
+
+      question.suspend!
 
       {}
     end
@@ -668,6 +678,8 @@ class TwoCents::Questions < Grape::API
       optional :count, type: Integer, desc: "Number of questions to return."
     end
     post 'asked' do
+      validate_user!
+
       user_id = params[:user_id]
       user = user_id.present? ? User.find(user_id) : current_user
       previous_last_id = params[:previous_last_id]
@@ -712,6 +724,8 @@ class TwoCents::Questions < Grape::API
         desc: "Number of questions to return."
     end
     post 'answered' do
+      validate_user!
+
       user_id = params[:user_id]
       user = user_id.present? ? User.find(user_id) : current_user
       previous_last_id = params[:previous_last_id]
