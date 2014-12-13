@@ -7,6 +7,7 @@ class QuestionsController < ApplicationController
 
   def summary
     @question = Question.find params[:id]
+    @commentable = @question
     authorize @question
 
     @next_question = next_question @question
