@@ -8,6 +8,33 @@
     margin-top: -65px
     background-color: transparent
 
+  .text-choices
+    .choices
+      label
+        width: 100%
+
+      label > input // HIDE RADIO
+        visibility: hidden // Makes input not-clickable
+        position: absolute // Remove input from document flow
+
+      label > input + .text-title
+        font-size: 1.7em
+        color: #357ebd
+        border: solid 1px #3d7fb7
+        background-color: white
+        padding: 15px 3px
+        line-height: 27px
+        margin: 0
+        text-align: center
+        width: 100%
+        cursor: pointer
+
+      label > input:checked + .text-title // (RADIO CHECKED) STYLES
+        background-color: #357ebd
+        color: white
+:coffee
+  $(document).on "change", ".question-response input[type=radio]", ->
+    this.form.submit()
 
 .text-choices.form-group
   .col-xs-12
@@ -19,18 +46,11 @@
         %div
           .col-xs-12
             = render "responses/response_fields/shared/sharing", form:form, response:response
-      .col-xs-12.btn-group{:data=>{:toggle=>"buttons"}}
-        -cols=(12/response.question.choices.length)+1
-        -pc_margin=((10/(response.question.choices.length-1))-1).to_s+'%'
-        -border_compensation='-'+(response.question.choices.length*2).to_s+'px'
-        = form.collection_radio_buttons :choice_id, response.question.choices, :id, :title, label:false, wrapper:false, boolean_style: 'inline', item_wrapper_class:"col-xs-12 selectable-option btn form-group clearfix"  do |c|
-          %label.btn-primary.negative.col-xs-12{style:"width: 519px; height: 91px;"}
-            .row
-              %div.col-xs-3
-                = responsive_image_tag((response.question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
-            .option-title=c.object.title
+      .col-xs-12.btn-group
+        = form.collection_radio_buttons :choice_id, response.question.choices, :id, :title, label:false, wrapper:false, boolean_style: 'inline', item_wrapper_class:"choices" do |c|
+          %label
             = c.radio_button label:false, boolean_style: 'inline', wrapper:false
-            %i.glyphicon.glyphicon-ok.selected
+            .text-title= c.object.title
     .row
       .col-xs-12.form-group
         = render "responses/response_fields/shared/comment", form:form, response:response
