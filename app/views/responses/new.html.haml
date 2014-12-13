@@ -5,7 +5,7 @@
       background-color: transparent
 
 %link{href:@response.question.web_image_url, rel: "image_src"}
-.row#content_constraint{class: @response.question.type}
+.row.question-response#content_constraint{class: @response.question.type}
   - # Make studio questions wider
   .col-xs-12.img-overlay{class:@response.question.kind_of?(StudioQuestion) ? "" : %w(col-sm-8 col-sm-push-2)}
     = simple_form_for [:question, setup_response(@response)], :html=>{class:"panel panel-default"} do |form|
