@@ -10,9 +10,9 @@ describe :messages do
 
   context "Without the required params" do
     it {expect(response.status).to eq 200}
-    it {expect(JSON.parse(response.body)).to_not be_nil}
-    it {expect(JSON.parse(response.body)['error_code']).to eq 400}
-    it {expect(JSON.parse(response.body)['error_message']).to match /.+ is missing/}
+    it {expect(json).to_not be_nil}
+    it {expect(json['error_code']).to eq 400}
+    it {expect(json['error_message']).to match /.+ is missing/}
   end
 
   context "With all required params" do
@@ -22,8 +22,8 @@ describe :messages do
       let(:auth_token) {"INVALID"}
 
       it {expect(response.status).to eq 200}
-      it {expect(JSON.parse(response.body)['error_code']).to eq 402}
-      it {expect(JSON.parse(response.body)['error_message']).to match /Invalid auth token/}
+      it {expect(json['error_code']).to eq 402}
+      it {expect(json['error_message']).to match /Invalid auth token/}
     end
 
     context "With an unauthorized instance" do
@@ -31,8 +31,8 @@ describe :messages do
       let(:instance) {FactoryGirl.create :instance, :unauthorized}
 
       it {expect(response.status).to eq 200}
-      it {expect(JSON.parse(response.body)['error_code']).to eq 403}
-      it {expect(JSON.parse(response.body)['error_message']).to match /Login required/}
+      it {expect(json['error_code']).to eq 403}
+      it {expect(json['error_message']).to match /Login required/}
     end
 
     context "With an authorized instance" do
@@ -43,55 +43,54 @@ describe :messages do
         let(:user) {}
 
         it {expect(response.status).to eq 200}
-        it {expect(JSON.parse(response.body)['error_code']).to eq 403}
-        it {expect(JSON.parse(response.body)['error_message']).to match /Login required/}
+        it {expect(json['error_code']).to eq 403}
+        it {expect(json['error_message']).to match /Login required/}
       end
 
       context "When a user is associated with the instnace" do
         let(:user) {FactoryGirl.create :user}
 
-        context "With no questions" do
-          it {expect(JSON.parse(response.body)['number_of_unread_messages']).to eq 0}
+        context "With no messages" do
+          it {expect(json['number_of_unread_messages']).to eq 0}
         end
 
         context "With one of each type of message" do
 
           let(:other_user) {FactoryGirl.create :user}
 
-          let(:text_question_1) {FactoryGirl.create(:text_question, kind: 'targeted', user: user)}
-          let(:auto_generate_message_for_question_updated) {
-            FactoryGirl.create(:text_response, question: text_question_1, user: other_user)
-          }
-          let(:auto_generate_message_for_user_followed) {other_user.follow! user}
-          let(:generate_message_for_custom) {FactoryGirl.create :custom, user:user}
-          let(:setup_messages) {
-            auto_generate_message_for_question_updated
-            auto_generate_message_for_user_followed
-            generate_message_for_custom
-          }
+          let(:targeted_question) { FactoryGirl.create :question, kind: 'targeted'}
+          let(:m1) { FactoryGirl.create :question_updated, question: targeted_question, user: user }
+          let(:m2) { FactoryGirl.create :user_followed, user: user }
+          let(:m3) { FactoryGirl.create :custom, user: user }
+          let(:messages) { [ m1, m2, m3 ] }
+
+          let(:setup_messages) { messages }
 
           describe "Message Output" do
-            it {expect(Response.count).to eq 1}
-            it {expect(JSON.parse(response.body)['number_of_unread_messages']).to eq 3}
+            it {expect(json['number_of_unread_messages']).to eq 3}
+
+            it "should return messages in order from newest to oldest" do
+              expect(json['messages'].map{|m| m['message']['id']}).to eq messages.map{|m| m.id}.reverse
+            end
 
             describe "QuestionUpdated" do
-              it {expect(JSON.parse(response.body)['messages'][0]['message']['type']).to eq "QuestionUpdated"}
-              it {expect(JSON.parse(response.body)['messages'][0]['message'].keys).to match_array %w(id type body question_id response_count comment_count share_count completed_at created_at read_at)}
+              it {expect(json['messages'][2]['message']['type']).to eq "QuestionUpdated"}
+              it {expect(json['messages'][2]['message'].keys).to match_array %w(id type body question_id response_count comment_count share_count completed_at created_at read_at)}
 
-              it {expect(JSON.parse(response.body)['messages'][0]['message']['comment_count']).to eq 0}
-              it {expect(JSON.parse(response.body)['messages'][0]['message']['share_count']).to eq 0}
+              it {expect(json['messages'][2]['message']['comment_count']).to eq 0}
+              it {expect(json['messages'][2]['message']['share_count']).to eq 0}
 
             end
 
 
             describe "UserFollowed" do
-              it {expect(JSON.parse(response.body)['messages'][1]['message']['type']).to eq "UserFollowed"}
-              it {expect(JSON.parse(response.body)['messages'][1]['message'].keys).to match_array %w(id type body follower_id created_at read_at)}
+              it {expect(json['messages'][1]['message']['type']).to eq "UserFollowed"}
+              it {expect(json['messages'][1]['message'].keys).to match_array %w(id type body follower_id created_at read_at)}
             end
 
             describe "Custom" do
-              it {expect(JSON.parse(response.body)['messages'][2]['message']['type']).to eq "Custom"}
-              it {expect(JSON.parse(response.body)['messages'][2]['message'].keys).to match_array %w(id type body created_at read_at)}
+              it {expect(json['messages'][0]['message']['type']).to eq "Custom"}
+              it {expect(json['messages'][0]['message'].keys).to match_array %w(id type body created_at read_at)}
             end
 
           end

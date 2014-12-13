@@ -4,6 +4,8 @@ class Message < ActiveRecord::Base
   default read_at: nil
   default share_count: 0
 
+  scope :newest_first, -> { order "created_at DESC, id DESC" }
+
   def isQuestionUpdated?
     self.type == "QuestionUpdated"
   end

@@ -276,20 +276,65 @@ class TwoCents::Messages < Grape::API
 
       page = declared_params[:page]
       per_page = page ? declared_params[:per_page] : nil
-      messages = policy_scope(Message)
+      messages = policy_scope(Message).newest_first
 
       @messages = messages.paginate(page:page, per_page:per_page)
       @number = current_user.number_of_unread_messages
     end
 
-    desc "Return messages for this user."
+    desc "Return messages for this user.", {
+      notes: <<-END
+        This API will return an ordered list of messages for this user.
+
+        #### Example response
+            {
+                "messages":
+                    [
+                        {
+                            "message":
+                              {
+                                  "id": 1,
+                                  "type": "QuestionUpdated",
+                                  "body": "QuestionUpdated",
+                                  "question_id": 123
+                                  "response_count": 3,
+                                  "comment_count": 2,
+                                  "share_count": 2,
+                                  "completed_at": 1231231234,        # timestamp
+                                  "created_at": 1231231234           # timestamp
+                                  "read_at": nil              # timestamp
+                              }
+                        },
+                        {
+                            "message":
+                              {
+                                  "id": 2,
+                                  "type": "UserFollowed",
+                                  "body": "UserFollowed",
+                                  "follower_id": 123,
+                                  "created_at": 1231231234           # timestamp
+                                  "read_at": nil              # timestamp
+                              }
+                        },
+                        {
+                            "message":
+                              {
+                                  "id": 3,
+                                  "type": “Custom”,
+                                  "body": "Custom",
+                                  "created_at": 1231231234           # timestamp
+                                  "read_at": 1231231234              # timestamp
+                              }
+                        }
+                    ],
+                "number_of_unread_messages": 2
+            }
+      END
+    }
     params do
       requires :auth_token, type: String, desc: "Obtain this from the instance's API."
-
-      optional :previous_last_id, type: Integer,
-        desc: "ID of message to return messages after."
-      optional :count, type: Integer,
-        desc: "Number of messages to return."
+      optional :previous_last_id, type: Integer, desc: "ID of message to return messages after."
+      optional :count, type: Integer, desc: "Number of messages to return."
     end
     get '/', jbuilder: 'messages' do
       validate_user!
@@ -297,7 +342,7 @@ class TwoCents::Messages < Grape::API
       previous_last_id = params[:previous_last_id]
       count = params[:count]
 
-      @messages = policy_scope(current_user.messages)
+      @messages = policy_scope(Message).newest_first
 
       if previous_last_id.present?
         previous_last_index = @messages.map(&:id).index(previous_last_id)
