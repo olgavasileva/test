@@ -37,7 +37,7 @@
         .col-xs-12
           = render "responses/response_fields/shared/sharing", form:form, response:response
       .row
-        .col-xs-12
+        .tab-pane.col-xs-12
           .popover.bottom.text-answer.form-group
             = form.input :text, as: :text, label: false, error:false, placeholder: "Type your response here", input_html: { rows:3 }
             -#.arrow
