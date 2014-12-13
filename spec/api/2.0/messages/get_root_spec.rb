@@ -14,7 +14,7 @@ describe 'GET /messages' do
   before { get 'v/2.0/messages', params }
 
   it "returns all user's messages" do
-    expect(response_message_ids).to eq messages.map(&:id)
+    expect(response_message_ids).to eq messages.map(&:id).reverse
   end
 
   # todo: make into shared example, extend for logic (see messages_spec)
@@ -28,11 +28,11 @@ describe 'GET /messages' do
 
   context "with previous_last_id param" do
     let(:other_params) {{
-      previous_last_id: messages[2].id
+      previous_last_id: messages[1].id
     }}
 
     it "returns records after the one specified by previous_last_id" do
-      expect(response_message_ids).to eq [messages[3].id]
+      expect(response_message_ids).to eq [messages[0].id]
     end
   end
 
@@ -42,7 +42,7 @@ describe 'GET /messages' do
     }}
 
     it "returns first n records specified by count" do
-      expect(response_message_ids).to eq messages.first(2).map(&:id)
+      expect(response_message_ids).to eq messages.last(2).map(&:id).reverse
     end
   end
 end
