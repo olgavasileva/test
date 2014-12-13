@@ -22,7 +22,7 @@ class EnterpriseTarget < ActiveRecord::Base
       target_count = 0
       User.find(matching_ids).each do |user|
         if user.wants_question? question
-          user.feed_items << FeedItem.new(question:question, relevance:1)
+          user.feed_items << FeedItem.new(question:question, relevance:1, targeted:true)
           target_count += 1
         end
       end

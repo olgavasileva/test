@@ -191,8 +191,6 @@ class TwoCents::Messages < Grape::API
     ] do
       validate_user!
 
-
-
       fail!(2000, "The message doesn't exist") if !Message.exists?(declared_params[:id])
 
       message = Message.find(declared_params[:id])

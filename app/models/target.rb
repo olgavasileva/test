@@ -27,7 +27,7 @@ class Target < ActiveRecord::Base
       if all_followers
         user.followers.each do |follower|
           if follower.wants_question? question
-            follower.feed_items << FeedItem.new(question:question, relevance:1)
+            follower.feed_items << FeedItem.new(question:question, relevance:1, targeted:true)
             add_and_push_message follower, question
             target_count += 1
           end
@@ -35,7 +35,7 @@ class Target < ActiveRecord::Base
       else
         followers.each do |follower|
           if follower.leaders.include?(user) && follower.wants_question?(question)
-            follower.feed_items << FeedItem.new(question:question, relevance:1)
+            follower.feed_items << FeedItem.new(question:question, relevance:1, targeted:true)
             add_and_push_message follower, question
             target_count += 1
           end
@@ -45,7 +45,7 @@ class Target < ActiveRecord::Base
       if all_groups
         user.group_members.each do |member|
           if member.wants_question? question
-            member.feed_items << FeedItem.new(question:question, relevance:1)
+            member.feed_items << FeedItem.new(question:question, relevance:1, targeted:true)
             add_and_push_message member, question
             target_count += 1
           end
@@ -55,7 +55,7 @@ class Target < ActiveRecord::Base
           if group.user == user
             group.member_users.each do |member_user|
               if member_user.wants_question? question
-                member_user.feed_items << FeedItem.new(question:question, relevance:1)
+                member_user.feed_items << FeedItem.new(question:question, relevance:1, targeted:true)
                 add_and_push_message member_user, question
                 target_count += 1
               end

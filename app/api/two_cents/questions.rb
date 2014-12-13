@@ -580,7 +580,7 @@ class TwoCents::Questions < Grape::API
     post 'myfeed', jbuilder: 'questions' do
       validate_user!
 
-      @questions = current_user.feed_questions.by_relevance.offset(declared_params[:index]).limit(declared_params[:count])
+      @questions = current_user.feed_questions.targeted.by_relevance.offset(declared_params[:index]).limit(declared_params[:count])
       @questions.each{|q| q.viewed!}
     end
 

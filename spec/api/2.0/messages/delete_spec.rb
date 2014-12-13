@@ -77,7 +77,8 @@ describe :delete do
 
           it {expect(response.status).to eq 200}
           it {expect(response.body).to eq "[]"}
-          it {expect(Message.count).to eq 0}
+          it {expect(user.reload.messages.where(type:"QuestionUpdated")).to be_empty}
+          it {expect(Message.find_by_id message).to be_nil}
         end
 
 

@@ -3,8 +3,8 @@ class QuestionObserver < ActiveRecord::Observer
     FeedItem.question_deleted! question
   end
 
-  def after_create question
-    if question.public?
+  def after_save question
+    if question.public? && question.state_was != 'active' && question.state == 'active'
       User.all.each do |user|
         if user.wants_question? question
           user.feed_items << FeedItem.new(question:question, relevance:question.relevance_to(user))
