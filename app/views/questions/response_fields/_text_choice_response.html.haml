@@ -8,6 +8,20 @@
     margin-top: -65px
     background-color: transparent
 
+  .response-info
+    position: relative
+
+  .response-text
+    font-size: 1.7em
+    color: white
+    background-color: #2691d9
+    padding: 15px 3px
+    line-height: 27px
+    margin: 2px 0
+    text-align: center
+    width: 100%
+    cursor: pointer
+
 .text-choices.form-group
   .col-xs-12
     .row
@@ -18,16 +32,13 @@
         %div
           .col-xs-12
           = render "questions/response_fields/shared/sharing", question: question
-      .col-xs-12.btn-group
+      .col-xs-12
+        %br
         - total_response_count = question.responses.count
         - question.choices.each do |c|
-          .col-xs-12.selectable-option.btn.form-group.clearfix
-            %label.btn-primary.col-xs-12.label-button
-              .row
-                %div.col-xs-3
-                  = responsive_image_tag((question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
-              .option-title=c.title
-              %i.response_counter
-                - if total_response_count > 0
-                  = number_to_percentage 100 * c.responses.count.to_f / total_response_count.to_f, precision: 0
+          .response-info
+            .response-text=c.title
+            %i.response_counter
+              - if total_response_count > 0
+                = number_to_percentage 100 * c.responses.count.to_f / total_response_count.to_f, precision: 0
 
