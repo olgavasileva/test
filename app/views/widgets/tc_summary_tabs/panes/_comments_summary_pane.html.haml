@@ -24,7 +24,7 @@
     .posted_date
       font-size: 0.8em
       color:  gray
-- (question.response_comments + question.comments).each do |c|
+- (question.response_comments + question.comments).sort_by{|c| c.created_at}.reverse.each do |c|
   .comment
     .avatar=gravatar_tag c.user.email, default: :identicon
     %span.user_name
