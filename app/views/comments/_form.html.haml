@@ -1,4 +1,4 @@
 = simple_form_for [@commentable, Comment.new] do |form|
   = form.input :body, as: :text,:placeholder =>"Comment on your response", label: false, input_html:{rows:4}
   = form.input :user_id, as: :hidden, input_html: {value: current_user.id}
-  = render "responses/response_fields/shared/submit"
+  = render "questions/response_fields/shared/submit", question:question

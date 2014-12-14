@@ -35,4 +35,4 @@
             =render '/widgets/tc_summary_tabs/tc_summary_tabs', locals:{User: User, question: @question}
         .row
           .tab-pane.col-xs-12
-            = render "comments/form"
+            = render "comments/form", question:@question
