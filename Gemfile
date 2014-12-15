@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.1.1'
 
-gem 'rails', '4.1.1'
+gem 'rails', '4.1.8'
 gem 'mysql2'
 gem 'sass-rails', '~> 4.0.3'
 gem 'uglifier', '>= 1.3.0'
@@ -98,6 +98,7 @@ gem 'jquery-datatables-rails', '~> 2.2.3'
 gem "select2-rails"                 # js: jQuery based replacement for select boxes
 
 gem 'rails-observers'               # So we can decouple models - make updates to one based changes to another
+gem "squeel"                        # Write Active Record queries with fewer strings, and more Ruby, by making the Arel awesomeness that lies beneath Active Record more accessible
 
 gem 'rack-cors', require: 'rack/cors'
 
