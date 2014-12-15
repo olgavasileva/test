@@ -16,3 +16,8 @@
           .panel-body
             .note.note-danger Use this feature with caution because it can be slow and buggy on large pages.
             %button.btn.btn-success{"data-target" => "#modal-blurred-bg", "data-toggle" => "modal"} Modal with blurred background
+.row
+  .col-sm-12
+    .drawer-handle
+      =image_tag image_url("glyphicons-224-chevron-right-white.png"), id: 'right-arrow'
+      =image_tag image_url("glyphicons-224-chevron-left-white.png"), id: 'left-arrow', class: 'hidden'

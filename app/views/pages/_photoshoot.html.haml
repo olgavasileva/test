@@ -134,7 +134,8 @@
                         =image_tag image_url("glyphicons-224-chevron-right.png")
             #pack-wrapper.row.is-scrollable
           .drawer-handle
-            =image_tag image_url("glyphicons-224-chevron-right-white.png")
+            =image_tag image_url("glyphicons-224-chevron-right-white.png"), id: 'right-arrow'
+            =image_tag image_url("glyphicons-224-chevron-left-white.png"), id: 'left-arrow', class: 'hidden'
           .help
         #ps-desktop
           %canvas#ps-canvas
