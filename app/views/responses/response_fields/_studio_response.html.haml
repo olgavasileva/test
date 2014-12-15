@@ -6,6 +6,5 @@
     = s.input :base64_image, as: :hidden
     =render "pages/photoshoot", studio: response.question.studio, question: response.question
     %br
-    =s.input :name, label: "Name your cereal"
     =render "responses/response_fields/shared/comment", form:form, response:response
     =render "responses/response_fields/shared/submit", form:form, response:response
