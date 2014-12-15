@@ -524,8 +524,7 @@ class TwoCents::Questions < Grape::API
     post 'trending', jbuilder: 'questions' do
       validate_user!
 
-      # TODO write the correct logic and specs
-      @questions = Question.active.limit(declared_params[:count])
+      @questions = current_user.feed_questions.trending.offset(declared_params[:index]).limit(declared_params[:count])
       @questions.each{|q| q.viewed!}
     end
 
@@ -629,8 +628,7 @@ class TwoCents::Questions < Grape::API
     post 'search', jbuilder: 'questions' do
       validate_user!
 
-      # TODO write the correct logic and specs
-      @questions = Question.active.limit(declared_params[:count])
+      @questions = current_user.feed_questions.latest.search_for(declared_params[:search_text]).limit(declared_params[:count])
       @questions.each{|q| q.viewed!}
     end
 

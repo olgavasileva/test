@@ -1,7 +1,7 @@
 ActiveAdmin.register Question do
   menu parent: 'Questions'
 
-  permit_params :id, :position, :category_id, :title, :state, :special
+  permit_params :id, :position, :category_id, :title, :state, :special, :trending_index, :trending_multiplier
 
   filter :user
   filter :title
@@ -19,16 +19,22 @@ ActiveAdmin.register Question do
     column :type
     column :category
     column :user
-    column "Responses" do |q|
+    column "Resp" do |q|
       q.responses.count
     end
-    column "Comments" do |q|
+    column "Cmts" do |q|
       q.comments.count
     end
     column :state
     column :kind
     column :special
     column :require_comment
+    column "TI" do |q|
+      q.trending_index
+    end
+    column "T*" do |q|
+      q.trending_multiplier
+    end
     column :created_at
     column "In Feeds" do |q|
       q.feed_items.count
@@ -43,6 +49,8 @@ ActiveAdmin.register Question do
       f.input :title
       f.input :special
       f.input :require_comment
+      f.input :trending_index
+      f.input :trending_multiplier
     end
     f.actions
   end

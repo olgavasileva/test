@@ -54,4 +54,25 @@ describe Question do
     it {expect(q.responses.build.class).to eq OrderResponse}
   end
 
+  describe :trending! do
+    let (:q) {FactoryGirl.create :question, trending_multiplier: trending_multiplier}
+
+    context "When the trending_multiplier is 1" do
+      let(:trending_multiplier) {1}
+
+      it "Should increment the trending_index by 1" do
+        expect { q.trending! }.to change { q.trending_index }.by 1
+      end
+    end
+
+    context "When the trending_multiplier is 42" do
+      let(:trending_multiplier) {42}
+
+      it "Should increment the trending_index by 42" do
+        expect { q.trending! }.to change { q.trending_index }.by 42
+      end
+    end
+
+  end
+
 end

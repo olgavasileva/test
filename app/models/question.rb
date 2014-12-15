@@ -34,9 +34,12 @@ class Question < ActiveRecord::Base
 
   scope :latest, -> { order("feed_items_v2.published_at DESC, feed_items_v2.id DESC") }
   scope :by_relevance, -> { order("feed_items_v2.relevance DESC, feed_items_v2.published_at DESC, feed_items_v2.id DESC") }
+  scope :trending, -> { order("questions.` DESC, feed_items_v2.published_at DESC") }
   scope :targeted, -> { where("feed_items_v2.targeted = ?", true) }
 
 	default kind: "public"
+  default trending_index: 0
+  default trending_multiplier: 1
 
 	validates :user, presence: true
 	validates :category, presence: true
@@ -44,6 +47,8 @@ class Question < ActiveRecord::Base
 	validates :state, presence: true, inclusion: {in: STATES}
 	validates :kind, inclusion: {in: KINDS}
   validates :background_image, presence:true
+  validates :trending_index, numericality: { only_integer: true, allow_nil: true }
+  validates :trending_multiplier, numericality: { only_integer: true, allow_nil: true }
 
   delegate :web_image_url, to: :background_image
   delegate :device_image_url, to: :background_image
@@ -58,6 +63,13 @@ class Question < ActiveRecord::Base
 
   before_create :add_creation_score
 
+  # Uses squeel gem to make the query easier to write and read
+  def self.search_for search_text
+    # Outer join to include questions without any choices
+    # Group by question id to just get unique questions
+    joins{choices.outer}.where{(title =~ "%#{search_text}%") | (choices.title =~ "%#{search_text}%")}.group{questions.id}
+  end
+
   # +1 if asked by one of the recipient's followers
   # +1 if asked by one of the recipient's leaders
   # +1 for each of the recipient's followers who answered this question
@@ -69,13 +81,19 @@ class Question < ActiveRecord::Base
     responses.joins(:user).where('users.id' => recipient.leaders.pluck(:id)).count
   end
 
+  def trending!
+    # TODO use IIR algorithm here and call this whenever needed
+    update_attribute :trending_index, (trending_index + trending_multiplier)
+  end
+
   def answered! user
+    trending!
     FeedItem.question_answered! self, user
   end
 
   def apply_target! target
     transaction do
-      self.update_attribute :target, target
+      update_attribute :target, target
       target.apply_to_question self
     end
   end

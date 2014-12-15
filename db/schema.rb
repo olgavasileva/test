@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141213052906) do
+ActiveRecord::Schema.define(version: 20141215215145) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -424,16 +424,19 @@ ActiveRecord::Schema.define(version: 20141213052906) do
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
 
   create_table "messages", force: true do |t|
+    t.text     "content"
     t.string   "type"
     t.datetime "read_at"
-    t.datetime "completed_at"
-    t.integer  "response_count"
-    t.integer  "comment_count"
-    t.integer  "share_count"
+    t.integer  "other_user_id"
     t.integer  "question_id"
+    t.integer  "response_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "response_count", default: 0
+    t.integer  "comment_count",  default: 0
+    t.integer  "share_count",    default: 0
+    t.datetime "completed_at"
     t.integer  "follower_id"
     t.text     "body"
   end
@@ -532,6 +535,8 @@ ActiveRecord::Schema.define(version: 20141213052906) do
     t.decimal  "score",                 precision: 5, scale: 2, default: 0.0
     t.boolean  "special",                                       default: false
     t.boolean  "require_comment",                               default: false
+    t.integer  "trending_index",                                default: 0
+    t.integer  "trending_multiplier",                           default: 1
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
@@ -876,8 +881,8 @@ ActiveRecord::Schema.define(version: 20141213052906) do
     t.date     "birthdate"
     t.string   "gender"
     t.string   "company_name"
-    t.integer  "user_avatar_id"
     t.integer  "feed_page",              default: 0
+    t.integer  "user_avatar_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
