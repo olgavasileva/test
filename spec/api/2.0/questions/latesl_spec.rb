@@ -220,6 +220,28 @@ describe :latest do
             end
           end
 
+          context "When the params include category_ids" do
+            let(:params) {{auth_token: auth_token, cursor: cursor, count: count, category_ids: category_ids}}
+
+            context "When filtering on category1, which has 3 questions" do
+              let(:category_ids) {[category1.id]}
+
+              it {expect(json['questions'].count).to eq 3}
+            end
+
+            context "When filtering on category2, which has 2 questions" do
+              let(:category_ids) {[category2.id]}
+
+              it {expect(json['questions'].count).to eq 2}
+            end
+
+            context "When filtering on category1 and category2" do
+              let(:category_ids) {[category1.id, category2.id]}
+
+              it {expect(json['questions'].count).to eq 5}
+            end
+          end
+
           context "When the user has answered the text choice question" do
             let(:text_choice_response) {FactoryGirl.create :text_choice_response, question:text_choice_question, choice:text_choice1}
             let(:user) {text_choice_response.user}

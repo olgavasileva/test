@@ -465,6 +465,7 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       @questions = current_user.feed_questions.latest
+      @questions = @questions.where(category_id: declared_params[:category_ids]) if declared_params[:category_ids]
 
       offset = if declared_params[:cursor] == 0
         0
