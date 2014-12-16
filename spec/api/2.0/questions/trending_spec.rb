@@ -56,7 +56,7 @@ describe :trending do
           it {expect(response.status).to eq 201}
           it {expect(json).not_to be_nil}
           it {expect(json.class).to eq Array}
-          it {expect(json.count).to eq 1}
+          it {expect(json.count).to eq 3}
           it {expect(json[0]['question']).to be_present}
           it {expect(json.map{|q|q["question"]["id"]}).to eq [q3.id, q2.id, q1.id]}
         end

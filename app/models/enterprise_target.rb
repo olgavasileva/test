@@ -18,11 +18,15 @@ class EnterpriseTarget < ActiveRecord::Base
 
       # Intersection of age, gender and segments
       matching_ids = matching_age_and_gender_ids(question) & matching_segment_ids(question)
-
       target_count = 0
+
       User.find(matching_ids).each do |user|
-        if user.wants_question? question
-          user.feed_items << FeedItem.new(question:question, relevance:1, targeted:true)
+        item = user.feed_items.find_by question_id:question
+
+        if item
+          item.update_attributes why: "targeted"
+        else
+          user.feed_items << FeedItem.new(question:question, relevance:1, why: "targeted")
           target_count += 1
         end
       end

@@ -2,6 +2,7 @@ class FeedItem < ActiveRecord::Base
   self.table_name = :feed_items_v2
 
   HIDDEN_REASONS ||= %w(answered skipped suspended deleted)
+  WHY ||= %w(public targeted leader follower)
 
   belongs_to :user
   belongs_to :question
@@ -21,6 +22,7 @@ class FeedItem < ActiveRecord::Base
   validates :hidden, inclusion: { in: [true,false] }
   validates :hidden_reason, inclusion: { in: HIDDEN_REASONS, allow_blank: true }
   validates :question_id, uniqueness:{scope: :user_id}
+  validates :why, inclusion: { in: WHY }
 
   def self.question_answered! question, user
     question.feed_items.where(user_id: user.id).first.try :question_answered!
@@ -58,6 +60,8 @@ class FeedItem < ActiveRecord::Base
 
   def question_answered!
     update_attributes hidden: true, hidden_reason: 'answered', hidden_at: Time.current
+    FeedItem.where(question_id:question.id, user_id:user.followers).update_all(why: "leader")
+    FeedItem.where(question_id:question.id, user_id:user.leaders).update_all(why: "follower")
   end
 
   def question_skipped!

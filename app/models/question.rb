@@ -34,8 +34,9 @@ class Question < ActiveRecord::Base
 
   scope :latest, -> { order("feed_items_v2.published_at DESC, feed_items_v2.id DESC") }
   scope :by_relevance, -> { order("feed_items_v2.relevance DESC, feed_items_v2.published_at DESC, feed_items_v2.id DESC") }
-  scope :trending, -> { order("questions.` DESC, feed_items_v2.published_at DESC") }
+  scope :trending, -> { order("questions.trending_index DESC, feed_items_v2.published_at DESC") }
   scope :targeted, -> { where("feed_items_v2.targeted = ?", true) }
+  scope :myfeed, -> { where("feed_items_v2.why" => %w(targeted leader follower)) }
 
 	default kind: "public"
   default trending_index: 0

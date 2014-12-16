@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
     transaction do
       feed_items.destroy_all
       Question.active.publik.order("created_at ASC").each do |q|
-        FeedItem.create! user:self, question:q, published_at:q.created_at
+        FeedItem.create! user:self, question:q, published_at:q.created_at, why: "public"
       end
     end
   end
@@ -166,10 +166,6 @@ class User < ActiveRecord::Base
 	def unfollow! leader
     self.leaders.where(id:leader.id).destroy!
 	end
-
-  def wants_question? question
-    feed_items.where(question_id:question).empty?
-  end
 
   def read_all_messages
     messages.find_each { |m| m.update_attributes(read_at: Time.zone.now) }

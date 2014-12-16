@@ -28,7 +28,7 @@ shared_examples :uses_targets do
 
   it "adds feed item to targeted users" do
     user.followers.each do |follower|
-      expect(follower.feed_items.map(&:question_id)).to include question_id
+      expect(follower.feed_questions.map(&:id)).to include question_id
     end
   end
 

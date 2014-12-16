@@ -533,7 +533,7 @@ class TwoCents::Questions < Grape::API
 
     desc "Get most relevant questions for a user to answer", {
       notes: <<-END
-        List of public and targeted questions that are not deleted, not skipped or answered by currentuser AND
+        List of targeted questions that are not deleted, not skipped or answered by currentuser PLUS
           Questions Asked by people you are following
           Questions Answered by people you are following
           Questions Asked by people you follow
@@ -579,7 +579,7 @@ class TwoCents::Questions < Grape::API
     post 'myfeed', jbuilder: 'questions' do
       validate_user!
 
-      @questions = current_user.feed_questions.targeted.by_relevance.offset(declared_params[:index]).limit(declared_params[:count])
+      @questions = current_user.feed_questions.myfeed.by_relevance.offset(declared_params[:index]).limit(declared_params[:count])
       @questions.each{|q| q.viewed!}
     end
 

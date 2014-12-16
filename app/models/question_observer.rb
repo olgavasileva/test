@@ -6,8 +6,19 @@ class QuestionObserver < ActiveRecord::Observer
   def after_save question
     if question.public? && question.state_was != 'active' && question.state == 'active'
       User.all.each do |user|
-        if user.wants_question? question
-          user.feed_items << FeedItem.new(question:question, relevance:question.relevance_to(user))
+        item = user.feed_items.find_by question_id:question
+        if item.nil?
+
+          # Determine why we're adding this to the user's feed
+          why = if user.leaders.pluck(:id).include?(question.user.id)
+            "leader"
+          elsif user.followers.pluck(:id).include?(question.user.id)
+            "follower"
+          else
+            "public"
+          end
+
+          user.feed_items << FeedItem.new(question:question, relevance:question.relevance_to(user), why: why)
           add_and_push_message user, question
         end
       end

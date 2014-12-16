@@ -3,9 +3,11 @@ require_relative 'shared_questions'
 
 describe :myfeed do
   let(:params) {{}}
+  let(:setup_relationships) {}
   let(:setup_questions) {}
   let(:setup_targeting) {}
   let(:before_api_call) {}
+  before { setup_relationships }
   before { setup_questions }
   before { setup_targeting }
   before { before_api_call }
@@ -21,8 +23,8 @@ describe :myfeed do
       let(:instance) {FactoryGirl.create :instance, :unauthorized}
 
       it {expect(response.status).to eq 200}
-      it {expect(JSON.parse(response.body)['error_code']).to eq 403}
-      it {expect(JSON.parse(response.body)['error_message']).to match /Login required/}
+      it {expect(json['error_code']).to eq 403}
+      it {expect(json['error_message']).to match /Login required/}
     end
 
     context "With an authorized instance" do
@@ -33,12 +35,63 @@ describe :myfeed do
         let(:user) {}
 
         it {expect(response.status).to eq 200}
-        it {expect(JSON.parse(response.body)['error_code']).to eq 403}
-        it {expect(JSON.parse(response.body)['error_message']).to match /Login required/}
+        it {expect(json['error_code']).to eq 403}
+        it {expect(json['error_message']).to match /Login required/}
       end
 
       context "When a user is associated with the instnace" do
         let(:user) {FactoryGirl.create :user}
+
+        context "With a question not in my feed" do
+          let(:q) { FactoryGirl.create :text_question, user:asker }
+          let(:asker) { FactoryGirl.create :user }
+          let(:setup_questions) { q }
+
+          it "Should not be in myfeed" do
+            expect(json.count).to eq 0
+          end
+
+          context "When a follower answers the question" do
+            let(:follower) { FactoryGirl.create :user }
+            let(:answer) { FactoryGirl.create :text_response, question:q, user:follower }
+            let(:before_api_call) { follower.follow!(user); answer }
+
+            it "Should be in myfeed" do
+              expect(json.count).to eq 1
+            end
+          end
+
+          context "When a leader answers the question" do
+            let(:leader) { FactoryGirl.create :user }
+            let(:answer) { FactoryGirl.create :text_response, question:q, user:leader }
+            let(:before_api_call) { user.follow!(leader); answer }
+
+            it "Should be in myfeed" do
+              expect(json.count).to eq 1
+            end
+          end
+
+          context "When a follower asked the question" do
+            let(:setup_relationships) { follower.follow! user }
+            let(:follower) { FactoryGirl.create :user }
+            let(:asker) { follower }
+
+            it "Should be in myfeed" do
+              expect(json.count).to eq 1
+            end
+          end
+
+          context "When a leader asked the question" do
+            let(:setup_relationships) { user.follow! leader }
+            let(:leader) { FactoryGirl.create :user }
+            let(:asker) { leader }
+
+            it "Should be in myfeed" do
+              expect(json.count).to eq 1
+            end
+          end
+        end
+
 
         context "With one of each type of question not targeted to this user" do
           include_context :shared_questions
@@ -49,8 +102,8 @@ describe :myfeed do
 
           context "With two of the questions targeted to this user" do
             let(:setup_targeting) {
-              user.feed_items.find_by_question_id(q1).update_attribute :targeted, true
-              user.feed_items.find_by_question_id(q2).update_attribute :targeted, true
+              user.feed_items.find_by_question_id(q1).update_attributes why:"targeted"
+              user.feed_items.find_by_question_id(q2).update_attributes why:"targeted"
             }
 
             it {expect(json).not_to be_nil}
