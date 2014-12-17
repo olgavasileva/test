@@ -6,7 +6,7 @@
 .panel.panel-default
   .panel-heading
     - if can_vote
-      %h2.panel-title Vote for your favorite scenes
+      %h2.panel-title Vote for your favorite cereals
     - else
       %h2.panel-title=link_to "Vote for your favorite cereals", contest_sign_up_path(@contest.uuid)
   .panel-body

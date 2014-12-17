@@ -26,7 +26,7 @@
               = responsive_image_tag question.web_image_url
               .mask
               .floating-question-title
-                %span=question.title
+                %span=simple_format question.title
               .icon
                 = responsive_image_tag question.category.icon.web.url
                 %small.category= question.category.name
