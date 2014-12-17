@@ -635,6 +635,23 @@ class TwoCents::Questions < Grape::API
 
 
 
+    desc "Legacy feed request - deprecated - returns a fake question with a title indicating that the app must be upgraded."
+    params do
+      use :auth
+
+      optional :page, type: Integer, desc: "Page number, starting at 1 - all questions returned if not supplied"
+      optional :per_page, type: Integer, default: 15, desc: "Number of questions per page"
+    end
+    post 'feed', jbuilder: "questions", http_codes:[
+      [200, "400 - Invalid params"],
+      [200, "402 - Invalid auth token"],
+      [200, "403 - Login required"]
+    ] do
+      validate_user!
+
+      error_message = ENV['OUT_OF_DATE_QUESTION_TITLE'] || "Update required.  Please check the app store for an update available within an hour."
+      @questions = [Question.new(id:0, user:User.first, category:Category.first, title:error_message, state:"active", kind:"public", background_image:BackgroundImage.first, trending_index:1)]
+    end
 
 
 
@@ -923,7 +940,8 @@ class TwoCents::Questions < Grape::API
     ] do
       validate_user!
 
-      @question = Question.find declared_params[:question_id]
+      @question = Question.find_by declared_params[:question_id]
+      fail! 401, "That question does not exist." unless @question
       @anonymous = @question.responses.where(user:current_user).last.try(:anonymous)
     end
 
