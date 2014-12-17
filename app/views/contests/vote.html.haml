@@ -8,7 +8,7 @@
     - if can_vote
       %h2.panel-title Vote for your favorite scenes
     - else
-      %h2.panel-title=link_to "Enter to vote your favorite scenes", contest_sign_up_path(@contest.uuid)
+      %h2.panel-title=link_to "Vote for your favorite cereals", contest_sign_up_path(@contest.uuid)
   .panel-body
     .row#studio_responses
       -9.times do
