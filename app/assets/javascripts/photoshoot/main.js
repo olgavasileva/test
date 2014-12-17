@@ -44,4 +44,8 @@ $(function() {
             }, 300);
         }
     });
+    $('.drawer-handle').click(function(){
+        $('#right-arrow').toggleClass('hidden');
+        $('#left-arrow').toggleClass('hidden');
+    });
 });
