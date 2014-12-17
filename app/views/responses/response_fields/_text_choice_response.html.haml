@@ -42,7 +42,7 @@
       .col-xs-12
         = responsive_image_tag((response.question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive", style:"width: 519px; height: 519px;")
         .floating-question-title
-          %span= response.question.title
+          %span= simple_format response.question.title
         %div
           .col-xs-12
             = render "responses/response_fields/shared/sharing", form:form, response:response
