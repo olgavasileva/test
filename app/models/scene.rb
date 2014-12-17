@@ -176,9 +176,9 @@ class Scene < ActiveRecord::Base
 
   def stickers(type=nil)
     scene_stickers = []
-    canvas_info = JSON.parse(self.canvas_json)
+    canvas_info = JSON.parse(canvas_json)
     get_stickers(canvas_info['objects'], scene_stickers, type)
-    scene_stickers.map{|ss| ss.to_builder.attributes!}
+    scene_stickers
   end
 
   def share_link(type, share_user = nil)

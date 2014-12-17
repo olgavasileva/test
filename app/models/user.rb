@@ -325,6 +325,13 @@ class User < ActiveRecord::Base
     birthdate > 13.years.ago
   end
 
+  def age
+    if birthdate
+      now = Date.current
+      now.year - birthdate.year - ((now.month > birthdate.month || (now.month == birthdate.month && now.day >= birthdate.day)) ? 0 : 1)
+    end
+  end
+
 	protected
 
 		def create_remember_token
