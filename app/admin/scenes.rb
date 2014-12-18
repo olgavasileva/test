@@ -52,11 +52,13 @@ ActiveAdmin.register Scene do
         property_totals = {}
         stickers.each do |sticker|
           line << sticker_ids.count(sticker.id)
+        end
 
+        scene.stickers.each do |sticker|
           # Accumulate property totals
           sticker.item_properties.each do |property|
-            property_totals[property.key] ||= 0
-            property_totals[property.key] += property.value.to_i
+            property_totals[property.key] ||= 0.0
+            property_totals[property.key] += property.value.to_f
           end
         end
 
