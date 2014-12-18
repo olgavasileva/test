@@ -15,6 +15,65 @@ ActiveAdmin.register Scene do
     actions
   end
 
+  # /admin/scenes/csv_report
+  action_item only: :index do
+    link_to "CSV Report", csv_report_admin_scenes_path(controller.params.merge(format: :csv))
+  end
+
+  collection_action :csv_report do
+    scenes = collection
+    stickers = Sticker.order(:id)
+    property_keys = ItemProperty.order(:key).map(&:key).uniq
+
+    headers["Content-Type"] = "text/csv"
+
+    csv_body = CSV.generate do |csv|
+      columns = [:id, :studio_id, :user_id, :username, :age, :gender, "cereal name", :image]
+      stickers.each do |sticker|
+        columns << sticker.display_name
+      end
+      property_keys.each do |key|
+        columns << key
+      end
+      csv << columns
+
+      scenes.each do |scene|
+        line = []
+        line << scene.id
+        line << scene.studio_id
+        line << scene.user_id
+        line << scene.user.try(:username)
+        line << scene.user.try(:age)
+        line << scene.user.try(:gender)
+        line << scene.name
+        line << scene.image.url
+
+        sticker_ids = scene.stickers.map(&:id)
+        property_totals = {}
+        stickers.each do |sticker|
+          line << sticker_ids.count(sticker.id)
+        end
+
+        scene.stickers.each do |sticker|
+          # Accumulate property totals
+          sticker.item_properties.each do |property|
+            property_totals[property.key] ||= 0.0
+            property_totals[property.key] += property.value.to_f
+          end
+        end
+
+        property_keys.each do |key|
+          line << property_totals[key]
+        end
+
+        csv << line
+      end
+    end
+
+    render text: csv_body
+  end
+
+
   csv do
     column :id
     column :studio_id
