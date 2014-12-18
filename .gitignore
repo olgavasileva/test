@@ -30,3 +30,4 @@ doc/
 
 # Ignore uploaded files
 public/uploads
+.capistrano/metrics
