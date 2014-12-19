@@ -1,21 +1,22 @@
 - @question ||= @response.question
 -style_type||='transparent-white'
-.share-follow-menu{class:"#{style_type}"}
-  .well-wrap.row
-    = link_to user_path(@question.user), class:%w(col-xs-5 col-sm-5 ) do
-      %h5 Posted by
-      %h6.elipsable
-        = @question.user.username
-    - if user_signed_in?
-      - if current_user != @question.user
-        - if current_user.following? @question.user
-          = link_to "Following",[:unfollow, @question.user],class:"col-xs-3 col-sm-4 btn vertical-middle btn-default #{style_type}"
+- unless @question.disable_question_controls
+  .share-follow-menu{class:"#{style_type}"}
+    .well-wrap.row
+      = link_to user_path(@question.user), class:%w(col-xs-5 col-sm-5 ) do
+        %h5 Posted by
+        %h6.elipsable
+          = @question.user.username
+      - if user_signed_in?
+        - if current_user != @question.user
+          - if current_user.following? @question.user
+            = link_to "Following",[:unfollow, @question.user],class:"col-xs-3 col-sm-4 btn vertical-middle btn-default #{style_type}"
+          - else
+            = link_to "Follow",[:follow, @question.user],class:"col-xs-3 col-sm-4 btn vertical-middle btn-default #{style_type}"
         - else
-          = link_to "Follow",[:follow, @question.user],class:"col-xs-3 col-sm-4 btn vertical-middle btn-default #{style_type}"
-      - else
-    .col-xs-2.col-sm-3.pull-right.text-center
-      %a.vertical-middle.overlay-toggler
-        %h4 ...
+      .col-xs-2.col-sm-3.pull-right.text-center
+        %a.vertical-middle.overlay-toggler
+          %h4 ...
 
 .overlay
   .col-xs-10.col-xs-push-1.col-sm-8.col-sm-push-2.col-sm-push-1.col-md-6.col-md-push-3.clearfix.share-popup.overlay-action

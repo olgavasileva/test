@@ -1,7 +1,7 @@
 ActiveAdmin.register MultipleChoiceQuestion  do
   menu parent: 'Questions'
 
-  permit_params :id, :position, :category_id, :title, :state, :special
+  permit_params :id, :position, :category_id, :title, :state, :special, :disable_question_controls
 
   filter :user
   filter :title
@@ -44,6 +44,7 @@ ActiveAdmin.register MultipleChoiceQuestion  do
       f.input :require_comment
       f.input :min_responses
       f.input :max_responses
+      f.input :disable_question_controls
     end
     f.actions
   end
