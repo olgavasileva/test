@@ -24,6 +24,9 @@ ActiveAdmin.register Scene do
     property_keys = ItemProperty.order(:key).map(&:key).uniq
 
     headers["Content-Type"] = "text/csv"
+    headers["Content-Disposition"] = "attachment"
+    headers["Pragma"] = "no-cache"
+    headers["Expires"] = "0"
 
     csv_body = CSV.generate do |csv|
       Studio.all.each do |studio|
