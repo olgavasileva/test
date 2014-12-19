@@ -1,7 +1,7 @@
 ActiveAdmin.register TextChoiceQuestion  do
   menu parent: 'Questions'
 
-  permit_params :id, :position, :category_id, :title, :state, :special, :require_comment, :background_image_id, background_image_attributes: [:image]
+  permit_params :id, :position, :category_id, :title, :state, :special, :require_comment, :background_image_id, :disable_question_controls, background_image_attributes: [:image]
 
   filter :user
   filter :title

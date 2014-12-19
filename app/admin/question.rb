@@ -1,7 +1,7 @@
 ActiveAdmin.register Question do
   menu parent: 'Questions'
 
-  permit_params :id, :position, :category_id, :title, :state, :special
+  permit_params :id, :position, :category_id, :title, :state, :special, :disable_question_controls
 
   filter :user
   filter :title
@@ -43,6 +43,7 @@ ActiveAdmin.register Question do
       f.input :title
       f.input :special
       f.input :require_comment
+      f.input :disable_question_controls
     end
     f.actions
   end
