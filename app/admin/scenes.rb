@@ -21,52 +21,63 @@ ActiveAdmin.register Scene do
   end
 
   collection_action :csv_report do
-    scenes = collection
-    stickers = Sticker.order(:id)
     property_keys = ItemProperty.order(:key).map(&:key).uniq
 
     headers["Content-Type"] = "text/csv"
 
     csv_body = CSV.generate do |csv|
-      columns = [:id, :studio_id, :user_id, :username, :age, :gender, "cereal name", :image]
-      stickers.each do |sticker|
-        columns << sticker.display_name
-      end
-      property_keys.each do |key|
-        columns << key
-      end
-      csv << columns
+      Studio.all.each do |studio|
+        scenes = collection.where(studio_id:studio)
+          if scenes.present?
+          stickers = studio.stickers.order('stickers.priority ASC') # NOTE there are other sorts on the studio.sticker relation in the models
 
-      scenes.each do |scene|
-        line = []
-        line << scene.id
-        line << scene.studio_id
-        line << scene.user_id
-        line << scene.user.try(:username)
-        line << scene.user.try(:age)
-        line << scene.user.try(:gender)
-        line << scene.name
-        line << scene.image.url
+          csv << ["Studio ID", "Studio Name"]
+          csv << [studio.id, studio.name]
+          csv << []
 
-        sticker_ids = scene.stickers.map(&:id)
-        property_totals = {}
-        stickers.each do |sticker|
-          line << sticker_ids.count(sticker.id)
-        end
-
-        scene.stickers.each do |sticker|
-          # Accumulate property totals
-          sticker.item_properties.each do |property|
-            property_totals[property.key] ||= 0.0
-            property_totals[property.key] += property.value.to_f
+          columns = [:id, :studio_id, :user_id, :username, :age, :gender, "cereal name", :image]
+          stickers.each do |sticker|
+            columns << sticker.display_name
           end
-        end
+          property_keys.each do |key|
+            columns << key
+          end
+          csv << columns
 
-        property_keys.each do |key|
-          line << property_totals[key]
-        end
+          scenes.each do |scene|
+            line = []
+            line << scene.id
+            line << scene.studio_id
+            line << scene.user_id
+            line << scene.user.try(:username)
+            line << scene.user.try(:age)
+            line << scene.user.try(:gender)
+            line << scene.name
+            line << scene.image.url
 
-        csv << line
+            sticker_ids = scene.stickers.map(&:id)
+            property_totals = {}
+            stickers.each do |sticker|
+              line << sticker_ids.count(sticker.id)
+            end
+
+            scene.stickers.each do |sticker|
+              # Accumulate property totals
+              sticker.item_properties.each do |property|
+                property_totals[property.key] ||= 0.0
+                property_totals[property.key] += property.value.to_f
+              end
+            end
+
+            property_keys.each do |key|
+              line << property_totals[key]
+            end
+
+            csv << line
+          end
+
+          csv << []
+        end
       end
     end
 
