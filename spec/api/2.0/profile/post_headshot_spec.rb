@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe 'POST /profile/headshot' do
-  let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
+  let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let(:params) { {
-    auth_token: instance.auth_token,
+    auth_token: instance.user.auth_token,
     image_url: FactoryGirl.generate(:sample_image_url)
   } }
   let(:request) { -> { post 'v/2.0/profile/headshot', params }}

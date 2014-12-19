@@ -2,11 +2,11 @@ require 'rails_helper'
 
 describe 'GET /messages' do
   let(:common_params) {{
-    auth_token: instance.auth_token
+    auth_token: instance.user.auth_token
   }}
   let(:other_params) {{ }}
   let(:params) { common_params.merge(other_params) }
-  let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
+  let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let!(:messages) { FactoryGirl.create_list(:message, 4, user: instance.user) }
   let(:response_body) { JSON.parse(response.body) }
   let(:response_message_ids) { response_body['messages'].map { |m| m['message']['id'] } }

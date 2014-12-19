@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe 'PUT /communities/summon_multiple' do
-  let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
+  let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let(:params) { {
-    auth_token: instance.auth_token,
+    auth_token: instance.user.auth_token,
     email_addresses: [FactoryGirl.generate(:email_address)],
     phone_numbers: ['555-123-4567']
   } }

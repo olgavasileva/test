@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe 'POST groups/group' do
-  let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
+  let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let(:params) { {
-    auth_token: instance.auth_token,
+    auth_token: instance.user.auth_token,
     name: "Testers"
   } }
   let(:response_body) { JSON.parse(response.body) }

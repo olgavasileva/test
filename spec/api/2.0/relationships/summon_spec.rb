@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe 'PUT /relationships/summon' do
-  let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
+  let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let(:common_params) { {
-    auth_token: instance.auth_token,
+    auth_token: instance.user.auth_token,
   } }
   let(:other_params) { Hash.new }
   let(:params) { common_params.merge(other_params) }

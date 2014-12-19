@@ -9,16 +9,8 @@ FactoryGirl.define do
       push_token {generate :apn_token}
     end
 
-    trait :authorized do
-      auth_token {generate :auth_token}
-    end
-
-    trait :unauthorized do
-      auth_token nil
-    end
-
     trait :logged_in do
-      user
+      user factory: :authorized_user
     end
   end
 end

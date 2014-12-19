@@ -81,20 +81,20 @@ describe :login do
               it {expect(JSON.parse(response.body)['error_message']).to match /Login Unsuccessful/}
             end
 
-            context "When the instance already has an existing auth_token" do
-              let(:instance) {FactoryGirl.create :instance, :authorized}
+            context "When the user already has an existing auth_token" do
+              let(:user) {FactoryGirl.create :user, :authorized, password:password}
 
               it {expect(response.status).to eq 201}
               it {expect(response.headers["Content-Type"]).to eq "application/json"}
               it {expect(JSON.parse(response.body)).to_not be_nil}
               it {expect(JSON.parse(response.body)['error_code']).to be_nil}
               it {expect(JSON.parse(response.body)['error_message']).to be_nil}
-              it {expect(JSON.parse(response.body)['auth_token']).to eq Instance.find_by(uuid:instance_token).auth_token}
+              it {expect(JSON.parse(response.body)['auth_token']).to eq Instance.find_by(uuid:instance_token).user.auth_token}
               it {expect(JSON.parse(response.body)['email']).to eq user.email}
               it {expect(JSON.parse(response.body)['username']).to eq user.username}
               it {expect(JSON.parse(response.body)['user_id']).to eq user.id}
               it "should change the auth_token" do
-                expect(instance.auth_token).to_not eq Instance.find_by(uuid:instance_token).auth_token
+                expect(user.auth_token).to_not eq Instance.find_by(uuid:instance_token).user.auth_token
               end
               it "The user should be tied to the instance" do
                 instance = Instance.find_by uuid:instance_token
@@ -102,15 +102,16 @@ describe :login do
               end
             end
 
-            context "When the instance doesn't have an auth_token" do
-              let(:instance) {FactoryGirl.create :instance, :unauthorized}
+            context "When the user doesn't have an auth_token" do
+              let(:user) {FactoryGirl.create :user, :unauthorized, password:password}
+
 
               it {expect(response.status).to eq 201}
               it {expect(response.headers["Content-Type"]).to eq "application/json"}
               it {expect(JSON.parse(response.body)).to_not be_nil}
               it {expect(JSON.parse(response.body)['error_code']).to be_nil}
               it {expect(JSON.parse(response.body)['error_message']).to be_nil}
-              it {expect(JSON.parse(response.body)['auth_token']).to eq Instance.find_by(uuid:instance_token).auth_token}
+              it {expect(JSON.parse(response.body)['auth_token']).to eq Instance.find_by(uuid:instance_token).user.auth_token}
               it {expect(JSON.parse(response.body)['email']).to eq user.email}
               it {expect(JSON.parse(response.body)['username']).to eq user.username}
               it {expect(JSON.parse(response.body)['user_id']).to eq user.id}
@@ -172,19 +173,19 @@ describe :login do
               it {expect(JSON.parse(response.body)['error_message']).to match /Login Unsuccessful/}
             end
 
-            context "When the instance already has an existing auth_token" do
-              let(:instance) {FactoryGirl.create :instance, :authorized}
+            context "When the user already has an existing auth_token" do
+              let(:user) {FactoryGirl.create :user, :authorized, password:password}
 
               it {expect(response.status).to eq 201}
               it {expect(response.headers["Content-Type"]).to eq "application/json"}
               it {expect(JSON.parse(response.body)).to_not be_nil}
               it {expect(JSON.parse(response.body)['error_code']).to be_nil}
               it {expect(JSON.parse(response.body)['error_message']).to be_nil}
-              it {expect(JSON.parse(response.body)['auth_token']).to eq Instance.find_by(uuid:instance_token).auth_token}
+              it {expect(JSON.parse(response.body)['auth_token']).to eq Instance.find_by(uuid:instance_token).user.auth_token}
               it {expect(JSON.parse(response.body)['email']).to eq user.email}
               it {expect(JSON.parse(response.body)['username']).to eq user.username}
               it "should change the auth_token" do
-                expect(instance.auth_token).to_not eq Instance.find_by(uuid:instance_token).auth_token
+                expect(user.auth_token).to_not eq Instance.find_by(uuid:instance_token).user.auth_token
               end
               it "The user should be tied to the instance" do
                 instance = Instance.find_by uuid:instance_token
@@ -192,15 +193,15 @@ describe :login do
               end
             end
 
-            context "When the instance doesn't have an auth_token" do
-              let(:instance) {FactoryGirl.create :instance, :unauthorized}
+            context "When the user doesn't have an auth_token" do
+              let(:user) {FactoryGirl.create :user, :unauthorized, password:password}
 
               it {expect(response.status).to eq 201}
               it {expect(response.headers["Content-Type"]).to eq "application/json"}
               it {expect(JSON.parse(response.body)).to_not be_nil}
               it {expect(JSON.parse(response.body)['error_code']).to be_nil}
               it {expect(JSON.parse(response.body)['error_message']).to be_nil}
-              it {expect(JSON.parse(response.body)['auth_token']).to eq Instance.find_by(uuid:instance_token).auth_token}
+              it {expect(JSON.parse(response.body)['auth_token']).to eq Instance.find_by(uuid:instance_token).user.auth_token}
               it {expect(JSON.parse(response.body)['email']).to eq user.email}
               it {expect(JSON.parse(response.body)['username']).to eq user.username}
               it "The user should be tied to the instance" do

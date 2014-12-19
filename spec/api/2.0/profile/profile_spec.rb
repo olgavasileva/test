@@ -17,29 +17,11 @@ describe :profile do
       it {expect(JSON.parse(response.body)['error_message']).to match /Invalid auth token/}
     end
 
-    context "With an unauthorized instance" do
-      let(:auth_token) {instance.auth_token}
-      let(:instance) {FactoryGirl.create :instance, :unauthorized}
+    context "With an authorized user" do
+      let(:auth_token) {user.auth_token}
+      let(:user) {FactoryGirl.create :user, :authorized}
 
-      it {expect(response.status).to eq 200}
-      it {expect(JSON.parse(response.body)['error_code']).to eq 403}
-      it {expect(JSON.parse(response.body)['error_message']).to match /Login required/}
-    end
-
-    context "With an authorized instance" do
-      let(:auth_token) {instance.auth_token}
-      let(:instance) {FactoryGirl.create :instance, :authorized, user:user}
-
-      context "When no user is associated with the instnace" do
-        let(:user) {}
-
-        it {expect(response.status).to eq 200}
-        it {expect(JSON.parse(response.body)['error_code']).to eq 403}
-        it {expect(JSON.parse(response.body)['error_message']).to match /Login required/}
-      end
-
-      context "When a user is associated with the instnace" do
-        let(:user) {FactoryGirl.create :user}
+      context "With anothe user" do
         let(:other_user) {FactoryGirl.create :user}
 
         let(:before_api_call) {

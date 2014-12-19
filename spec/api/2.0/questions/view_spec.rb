@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 describe 'questions/view' do
-  let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
+  let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let(:question) { FactoryGirl.create(:question) }
   let(:params) { {
-    auth_token: instance.auth_token,
+    auth_token: instance.user.auth_token,
     question_id: question.id
   } }
   let(:request) { -> { post 'v/2.0/questions/view', params } }

@@ -83,8 +83,8 @@ describe :first_launch do
         push_token = add_push_token instance_token
 
         instance_from_uuid = Instance.find_by uuid:instance_token
-        instance_from_auth_token = Instance.find_by auth_token:auth_token
-        expect(instance_from_auth_token).to eq instance_from_uuid
+        user_from_auth_token = User.find_by auth_token:auth_token
+        expect(user_from_auth_token).to eq instance_from_uuid.user
         expect(instance_from_uuid.push_token).to eq push_token
       end
 
@@ -93,8 +93,8 @@ describe :first_launch do
         auth_token = register_new_user instance_token
 
         instance_from_uuid = Instance.find_by uuid:instance_token
-        instance_from_auth_token = Instance.find_by auth_token:auth_token
-        expect(instance_from_auth_token).to eq instance_from_uuid
+        user_from_auth_token = User.find_by auth_token:auth_token
+        expect(user_from_auth_token).to eq instance_from_uuid.user
         expect(instance_from_uuid.push_token).to eq push_token
       end
 
@@ -103,8 +103,8 @@ describe :first_launch do
         push_token = add_push_token instance_token
 
         instance_from_uuid = Instance.find_by uuid:instance_token
-        instance_from_auth_token = Instance.find_by auth_token:auth_token
-        expect(instance_from_auth_token).to eq instance_from_uuid
+        user_from_auth_token = User.find_by auth_token:auth_token
+        expect(user_from_auth_token).to eq instance_from_uuid.user
         expect(instance_from_uuid.push_token).to eq push_token
       end
 
@@ -113,8 +113,8 @@ describe :first_launch do
         auth_token = login_existing_user instance_token
 
         instance_from_uuid = Instance.find_by uuid:instance_token
-        instance_from_auth_token = Instance.find_by auth_token:auth_token
-        expect(instance_from_auth_token).to eq instance_from_uuid
+        user_from_auth_token = User.find_by auth_token:auth_token
+        expect(user_from_auth_token).to eq instance_from_uuid.user
         expect(instance_from_uuid.push_token).to eq push_token
       end
     end
@@ -128,8 +128,8 @@ describe :first_launch do
         push_token = add_push_token instance_token
 
         instance_from_uuid = Instance.find_by uuid:instance_token
-        instance_from_auth_token = Instance.find_by auth_token:auth_token
-        expect(instance_from_auth_token).to eq instance_from_uuid
+        user_from_auth_token = User.find_by auth_token:auth_token
+        expect(user_from_auth_token).to eq instance_from_uuid.user
         expect(instance_from_uuid.push_token).to eq push_token
       end
 
@@ -138,8 +138,8 @@ describe :first_launch do
         auth_token = register_new_user instance_token
 
         instance_from_uuid = Instance.find_by uuid:instance_token
-        instance_from_auth_token = Instance.find_by auth_token:auth_token
-        expect(instance_from_auth_token).to eq instance_from_uuid
+        user_from_auth_token = User.find_by auth_token:auth_token
+        expect(user_from_auth_token).to eq instance_from_uuid.user
         expect(instance_from_uuid.push_token).to eq push_token
       end
 
@@ -148,8 +148,8 @@ describe :first_launch do
         push_token = add_push_token instance_token
 
         instance_from_uuid = Instance.find_by uuid:instance_token
-        instance_from_auth_token = Instance.find_by auth_token:auth_token
-        expect(instance_from_auth_token).to eq instance_from_uuid
+        user_from_auth_token = User.find_by auth_token:auth_token
+        expect(user_from_auth_token).to eq instance_from_uuid.user
         expect(instance_from_uuid.push_token).to eq push_token
       end
 
@@ -158,8 +158,8 @@ describe :first_launch do
         auth_token = login_existing_user instance_token
 
         instance_from_uuid = Instance.find_by uuid:instance_token
-        instance_from_auth_token = Instance.find_by auth_token:auth_token
-        expect(instance_from_auth_token).to eq instance_from_uuid
+        user_from_auth_token = User.find_by auth_token:auth_token
+        expect(user_from_auth_token).to eq instance_from_uuid.user
         expect(instance_from_uuid.push_token).to eq push_token
       end
     end

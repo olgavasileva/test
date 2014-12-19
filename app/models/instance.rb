@@ -1,6 +1,6 @@
 class Instance < ActiveRecord::Base
   belongs_to :device
-  belongs_to :user
+  belongs_to :user, class_name:"Respondent"
 
   default push_app_name: 'Statisfy'
 

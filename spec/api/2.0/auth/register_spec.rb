@@ -85,7 +85,7 @@ describe :register do
             it {User.find_by(username:username.downcase).should_not be_nil}
             it {expect(User.find_by(username:username.downcase)).to eq User.find_by(email:email)}
             it {Instance.find_by(uuid:instance_token).user.id.should eq User.find_by(email:email).id}
-            it {JSON.parse(response.body)['auth_token'].should eq Instance.find_by(uuid:instance_token).auth_token}
+            it {JSON.parse(response.body)['auth_token'].should eq Instance.find_by(uuid:instance_token).user.auth_token}
             it {JSON.parse(response.body)['user_id'].should eq User.find_by(email: email).id}
 
             it {User.find_by(email:email).name.should eq name}

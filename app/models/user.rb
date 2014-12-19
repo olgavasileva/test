@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < Respondent
   rolify
 
   # Include default devise modules. Others available are:
@@ -106,11 +106,7 @@ class User < ActiveRecord::Base
 
 	before_create :create_remember_token
 
-	VALID_USERNAME_REGEX ||= /\A[a-z0-9\-_]{4,50}\z/i
-	validates :username, presence: true,
-						format: { with: VALID_USERNAME_REGEX },
-						length: { maximum: 50 },
-						uniqueness: { case_sensitive: false }
+	validates :username, presence: true
 	validates :name, length: { maximum: 50 }
 	validates :terms_and_conditions, acceptance: true
   validates :gender, inclusion: {in: %w(male female), allow_nil: true}

@@ -30,93 +30,72 @@ describe :response do
       it {expect(JSON.parse(response.body)['error_message']).to match /Invalid auth token/}
     end
 
-    context "With an unauthorized instance" do
-      let(:auth_token) {instance.auth_token}
-      let(:instance) {FactoryGirl.create :instance, :unauthorized}
+    context "With an authorized user" do
+      let(:auth_token) {user.auth_token}
+      let(:user) {FactoryGirl.create :user, :authorized}
 
-      it {expect(response.status).to eq 200}
-      it {expect(JSON.parse(response.body)['error_code']).to eq 403}
-      it {expect(JSON.parse(response.body)['error_message']).to match /Login required/}
-    end
+      shared_examples :success do
+        it {expect(response.status).to eq 201}
 
-    context "With an authorized instance" do
-      let(:auth_token) {instance.auth_token}
-      let(:instance) {FactoryGirl.create :instance, :authorized, user:user}
+        it "creates a response record" do
+          expect {request.call}.to change {Response.count}.by(1)
+        end
 
-      context "When no user is associated with the instnace" do
-        let(:user) {}
+        it "should return summary fields" do
+          summary = JSON.parse(response.body)['summary']
 
-        it {expect(response.status).to eq 200}
-        it {expect(JSON.parse(response.body)['error_code']).to eq 403}
-        it {expect(JSON.parse(response.body)['error_message']).to match /Login required/}
+          expect(summary.keys).to include('choices')
+          expect(summary.keys).to include('response_count')
+          expect(summary.keys).to include('view_count')
+          expect(summary.keys).to include('comment_count')
+          expect(summary.keys).to include('share_count')
+          expect(summary.keys).to include('skip_count')
+          expect(summary.keys).to include('published_at')
+          expect(summary.keys).to include('sponsor')
+          expect(summary.keys).to include('creator_id')
+          expect(summary.keys).to include('creator_name')
+          expect(summary.keys).to include('anonymous')
+        end
       end
 
-      context "When a user is associated with the instnace" do
-        let(:user) {FactoryGirl.create :user}
+      describe "TextQuestion response" do
+        let(:question) {FactoryGirl.create :text_question}
+        let(:question_id) {question.id}
+        let(:other_params) { { text: 'yes' } }
 
-        shared_examples :success do
-          it {expect(response.status).to eq 201}
+        include_examples :success
+      end
 
-          it "creates a response record" do
-            expect {request.call}.to change {Response.count}.by(1)
-          end
+      describe "TextChoiceQuestion response" do
+        let(:question) {FactoryGirl.create :text_choice_question}
+        let(:question_id) {question.id}
+        let(:other_params) { { choice_id: FactoryGirl.create(:text_choice, question: question).id } }
 
-          it "should return summary fields" do
-            summary = JSON.parse(response.body)['summary']
+        include_examples :success
+      end
 
-            expect(summary.keys).to include('choices')
-            expect(summary.keys).to include('response_count')
-            expect(summary.keys).to include('view_count')
-            expect(summary.keys).to include('comment_count')
-            expect(summary.keys).to include('share_count')
-            expect(summary.keys).to include('skip_count')
-            expect(summary.keys).to include('published_at')
-            expect(summary.keys).to include('sponsor')
-            expect(summary.keys).to include('creator_id')
-            expect(summary.keys).to include('creator_name')
-            expect(summary.keys).to include('anonymous')
-          end
-        end
+      describe "ImageChoiceQuestion response" do
+        let(:question) {FactoryGirl.create :image_choice_question}
+        let(:question_id) {question.id}
+        let(:other_params) { { choice_id: FactoryGirl.create(:image_choice, question: question).id } }
 
-        describe "TextQuestion response" do
-          let(:question) {FactoryGirl.create :text_question}
-          let(:question_id) {question.id}
-          let(:other_params) { { text: 'yes' } }
+        include_examples :success
+      end
 
-          include_examples :success
-        end
+      describe "MultipleChoiceQuestion response" do
+        let(:question) {FactoryGirl.create :multiple_choice_question}
+        let(:question_id) {question.id}
+        let(:other_params) { { choice_id: FactoryGirl.create(:multiple_choice, question: question).id } }
 
-        describe "TextChoiceQuestion response" do
-          let(:question) {FactoryGirl.create :text_choice_question}
-          let(:question_id) {question.id}
-          let(:other_params) { { choice_id: FactoryGirl.create(:text_choice, question: question).id } }
+        include_examples :success
+      end
 
-          include_examples :success
-        end
+      describe "OrderQuestion response" do
+        let(:question) {FactoryGirl.create :order_question}
+        let(:question_id) {question.id}
+        let(:other_params) { { choice_ids: [FactoryGirl.create(:order_choice, question: question).id] } }
 
-        describe "ImageChoiceQuestion response" do
-          let(:question) {FactoryGirl.create :image_choice_question}
-          let(:question_id) {question.id}
-          let(:other_params) { { choice_id: FactoryGirl.create(:image_choice, question: question).id } }
-
-          include_examples :success
-        end
-
-        describe "MultipleChoiceQuestion response" do
-          let(:question) {FactoryGirl.create :multiple_choice_question}
-          let(:question_id) {question.id}
-          let(:other_params) { { choice_id: FactoryGirl.create(:multiple_choice, question: question).id } }
-
-          include_examples :success
-        end
-
-        describe "OrderQuestion response" do
-          let(:question) {FactoryGirl.create :order_question}
-          let(:question_id) {question.id}
-          let(:other_params) { { choice_ids: [FactoryGirl.create(:order_choice, question: question).id] } }
-
-          include_examples :success
-        end
+        include_examples :success
       end
     end
   end

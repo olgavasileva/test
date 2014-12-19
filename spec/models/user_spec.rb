@@ -5,7 +5,7 @@ describe User do
 
   describe :validations do
     it {expect(FactoryGirl.build(:user)).to be_valid}
-    it {expect(FactoryGirl.build(:user, username:nil)).not_to be_valid}
+    it {expect(FactoryGirl.build(:user, username:"")).not_to be_valid}
   end
 
   describe :comments_on_its_questions do

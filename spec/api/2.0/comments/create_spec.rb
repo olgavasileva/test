@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 describe 'POST /comments' do
-  let(:instance) { FactoryGirl.create :instance, :authorized, :logged_in }
+  let(:instance) { FactoryGirl.create :instance, :logged_in }
   let(:question) { parent.commentable }
   let!(:parent) { FactoryGirl.create :text_question_comment }
   let(:params) { {
-    auth_token: instance.auth_token,
+    auth_token: instance.user.auth_token,
     question_id: question.id,
     parent_id: parent.id,
     content: "tl;dr"

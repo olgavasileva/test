@@ -173,14 +173,15 @@ class TwoCents::Auth < Grape::API
                       password:declared_params[:password],
                       password_confirmation:declared_params[:password],
                       birthdate:Date.strptime(declared_params[:birthdate], '%Y-%m-%d'),
-                      gender:declared_params[:gender]
+                      gender:declared_params[:gender],
+                      auth_token:"A"+UUID.new.generate
 
       fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
       fail! 1011, user.errors.full_messages.join(", ") unless user.save
 
-      instance.update_attributes! user:user, auth_token:"A"+UUID.new.generate
+      instance.update_attributes! user:user
 
-      {auth_token:instance.auth_token, user_id: user.id}
+      {auth_token:user.auth_token, user_id: user.id}
     end
 
 
@@ -231,12 +232,14 @@ class TwoCents::Auth < Grape::API
         user = User.new name:fb_profile['name'], email:fb_profile['email'], username:declared_params[:username], birthdate:declared_params[:birthdate] unless user
 
         user.authentications.new provider:"facebook", uid:fb_profile['id'], token:declared_params[:facebook_token]
-        user.save!
         user
       end
 
-      instance.update_attributes! user_id:user.id, auth_token:"A"+UUID.new.generate
-      {auth_token:instance.auth_token, user_id: user.id}
+      user.auth_token = "A"+UUID.new.generate
+      user.save!
+
+      instance.update_attributes! user_id:user.id
+      {auth_token:user.auth_token, user_id: user.id}
     end
 
 
@@ -272,19 +275,20 @@ class TwoCents::Auth < Grape::API
 
       fail! 1006, "Neither email nor username supplied" unless declared_params[:email] || declared_params[:username]
 
-      if declared_params[:email]
-        user = User.find_by email:declared_params[:email]
+      user = if declared_params[:email]
+        User.find_by email:declared_params[:email]
       else
-        user = User.find_by username:declared_params[:username]
+        User.find_by username:declared_params[:username]
       end
 
       unless user.present? && user.valid_password?(declared_params[:password])
         fail! 1008, "Login Unsuccessful. The username and password you entered did not match our records. Please double-check and try again."
       end
 
-      instance.update_attributes! auth_token:"A"+UUID.new.generate, user:user
+      instance.update_attributes! user:user
+      user.update_attributes! auth_token:"A"+UUID.new.generate
 
-      {auth_token:instance.auth_token, email:user.email, username:user.username, user_id:user.id}
+      {auth_token:user.auth_token, email:user.email, username:user.username, user_id:user.id}
     end
 
 
@@ -304,7 +308,8 @@ class TwoCents::Auth < Grape::API
       ] do
 
       validate_instance!
-      instance.update_attributes! auth_token:nil, user:nil
+      instance.user.update_attributes! auth_token:nil
+      instance.update_attributes! user:nil
 
       {}
     end

@@ -14,14 +14,15 @@ describe ResponseMatcher do
   describe :matched_users do
     context "With a question and some skippers and responders" do
       let(:question) {FactoryGirl.create :text_question}
-      let!(:skippers) {FactoryGirl.create_list :skipped_item, 3, question:question}
+      let!(:skippers) {FactoryGirl.create_list :user, 3}
       let!(:responders) {FactoryGirl.create_list :text_response, 2, question:question}
+      before {skippers.each{|user| FeedItem.question_skipped! question, user}}
 
       describe :skippers do
         let(:matcher) {FactoryGirl.create :text_response_matcher, :skip, question:question}
 
         it "returns the skipped users" do
-          expect(matcher.matched_users).to match_array skippers.map{|skip| skip.user}
+          expect(matcher.matched_users).to match_array skippers
         end
       end
 

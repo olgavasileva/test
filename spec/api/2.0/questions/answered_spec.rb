@@ -2,12 +2,12 @@ require 'rails_helper'
 
 describe :answered do
   let(:count) { 20 }
-  let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
+  let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let!(:questions) { FactoryGirl.create_list(:question, count) }
   let!(:responses) { questions.map { |q| FactoryGirl.create(:text_response, question: q, user: instance.user) } }
   let(:ordered_question_ids) { responses.map(&:question_id) }
   let(:common_params) { {
-    auth_token: instance.auth_token
+    auth_token: instance.user.auth_token
   } }
   let(:other_params) {{ }}
   let(:params) { common_params.merge(other_params) }

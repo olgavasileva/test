@@ -2,16 +2,16 @@ require 'rails_helper'
 
 describe 'comments/user' do
   let(:count) { 3 }
-  let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
+  let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let!(:comments) { FactoryGirl.create_list(:text_response_comment, count, user: instance.user) }
   let(:ordered_question_ids) { comments.map(&:commentable_id) }
   let(:common_params) { {
-    auth_token: instance.auth_token
+    auth_token: instance.user.auth_token
   } }
   let(:other_params) {{ }}
   let(:params) { common_params.merge(other_params) }
   let(:common_params) { {
-    auth_token: instance.auth_token
+    auth_token: instance.user.auth_token
   } }
   let(:response_body) { JSON.parse(response.body) }
   let(:response_question_ids) { response_body.map { |d| d['question_id'] } }

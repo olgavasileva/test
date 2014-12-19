@@ -2,9 +2,9 @@ require 'rails_helper'
 
 describe 'relationships/followers' do
   let(:count) { 20 }
-  let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
+  let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let(:common_params) { {
-    auth_token: instance.auth_token
+    auth_token: instance.user.auth_token
   } }
   let(:request) { -> { get 'v/2.0/relationships/followers', params } }
   let(:response_body) { JSON.parse(response.body) }

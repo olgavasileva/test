@@ -1,0 +1,2 @@
+class Anonymous < Respondent
+end

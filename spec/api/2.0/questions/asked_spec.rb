@@ -2,10 +2,10 @@ require 'rails_helper'
 
 describe :asked do
   let(:count) { 5 }
-  let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
+  let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let!(:questions) { FactoryGirl.create_list(:question, count, user: instance.user) }
   let(:common_params) { {
-    auth_token: instance.auth_token
+    auth_token: instance.user.auth_token
   } }
   let(:other_params) {{ }}
   let(:params) { common_params.merge(other_params) }

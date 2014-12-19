@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'GET /comments' do
-  let(:instance) { FactoryGirl.create :instance, :authorized, :logged_in }
+  let(:instance) { FactoryGirl.create :instance, :logged_in }
   let(:answer) {
     response_comment = FactoryGirl.create :text_response_comment
     response_comment.commentable
@@ -9,7 +9,7 @@ describe 'GET /comments' do
   let(:question) { answer.question }
 
   let(:params) { {
-    auth_token: instance.auth_token,
+    auth_token: instance.user.auth_token,
     question_id: question.id
   } }
   let(:response_body) { JSON.parse(response.body) }

@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 describe 'relationships/unfollow' do
-  let(:instance) { FactoryGirl.create(:instance, :authorized, :logged_in) }
+  let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let(:user) { FactoryGirl.create(:user) }
   let(:params) { {
-    auth_token: instance.auth_token,
+    auth_token: instance.user.auth_token,
     user_id: user.id
   } }
   let(:request) { -> { post 'v/2.0/relationships/unfollow', params } }

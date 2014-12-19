@@ -8,9 +8,9 @@ describe :register_facebook do
 
   context "Without the required params" do
     it {expect(response.status).to eq 200}
-    it {expect(JSON.parse(response.body)).to_not be_nil}
-    it {expect(JSON.parse(response.body)['error_code']).to eq 400}
-    it {expect(JSON.parse(response.body)['error_message']).to match /.+ is missing/}
+    it {expect(json).to_not be_nil}
+    it {expect(json['error_code']).to eq 400}
+    it {expect(json['error_message']).to match /.+ is missing/}
   end
 
   context "With all required params" do
@@ -25,8 +25,8 @@ describe :register_facebook do
         let(:instance_token) {"INVALID"}
 
         it {response.status.should eq 200}
-        it {JSON.parse(response.body)['error_code'].should eq 1001}
-        it {expect(JSON.parse(response.body)['error_message']).to match /Invalid instance token/}
+        it {json['error_code'].should eq 1001}
+        it {expect(json['error_message']).to match /Invalid instance token/}
       end
 
       context "With a valid instance" do
@@ -37,8 +37,8 @@ describe :register_facebook do
           let(:before_api_call) {Koala::Facebook::API.should_receive(:new).and_raise Exception.new}
 
           it {response.status.should eq 200}
-          it {JSON.parse(response.body)['error_code'].should eq 1002}
-          it {JSON.parse(response.body)['error_message'].should match /Could not access facebook profile/}
+          it {json['error_code'].should eq 1002}
+          it {json['error_message'].should match /Could not access facebook profile/}
         end
 
         context "With a valid facebook token" do
@@ -53,8 +53,8 @@ describe :register_facebook do
             let(:profile){{"id" => fid}}
 
             it {response.status.should eq 200}
-            it {JSON.parse(response.body)['error_code'].should eq 1003}
-            it {JSON.parse(response.body)['error_message'].should match /Facebook profile has no email/}
+            it {json['error_code'].should eq 1003}
+            it {json['error_message'].should match /Facebook profile has no email/}
           end
 
           context "With a profile with an email" do
@@ -63,8 +63,8 @@ describe :register_facebook do
 
             context "With a profile with no name" do
               it {response.status.should eq 200}
-              it {JSON.parse(response.body)['error_code'].should eq 1004}
-              it {JSON.parse(response.body)['error_message'].should match /Facebook profile has no name/}
+              it {json['error_code'].should eq 1004}
+              it {json['error_message'].should match /Facebook profile has no name/}
             end
 
             context "With a profile with a name" do
@@ -72,16 +72,16 @@ describe :register_facebook do
               let(:name) {FactoryGirl.generate :name}
 
               it {response.status.should eq 201}
-              it {expect(JSON.parse(response.body)['error_code']).to be_nil}
-              it {JSON.parse(response.body)['error_message'].should be_nil}
+              it {expect(json['error_code']).to be_nil}
+              it {json['error_message'].should be_nil}
 
               context "When another user has a matching username" do
                 let(:other_user) {FactoryGirl.create :user}
                 let(:username) {other_user.username}
 
                 it {response.status.should eq 200}
-                it {JSON.parse(response.body)['error_code'].should eq 1009}
-                it {JSON.parse(response.body)['error_message'].should match /Username is already taken/}
+                it {json['error_code'].should eq 1009}
+                it {json['error_message'].should match /Username is already taken/}
               end
 
               context "When there is an existing authentication with this fid" do
@@ -89,10 +89,10 @@ describe :register_facebook do
                 let(:authentication) {FactoryGirl.create :authentication, :facebook}
 
                 it {response.status.should eq 201}
-                it {JSON.parse(response.body)['error_code'].should be_nil}
-                it {JSON.parse(response.body)['error_message'].should be_nil}
-                it {JSON.parse(response.body)['auth_token'].should eq instance.reload.auth_token}
-                it {JSON.parse(response.body)['user_id'].should eq instance.reload.user.id}
+                it {json['error_code'].should be_nil}
+                it {json['error_message'].should be_nil}
+                it {json['auth_token'].should eq instance.reload.user.auth_token}
+                it {json['user_id'].should eq instance.reload.user.id}
                 it {instance.reload.user.should eq authentication.user}
                 it {instance.reload.user.authentications.find_by(uid:fid).id.should eq authentication.id}
               end
@@ -103,19 +103,19 @@ describe :register_facebook do
                   let(:email) {user.email}
 
                   it {response.status.should eq 201}
-                  it {expect(JSON.parse(response.body)['error_code']).to be_nil}
-                  it {expect(JSON.parse(response.body)['error_message']).to be_nil}
+                  it {expect(json['error_code']).to be_nil}
+                  it {expect(json['error_message']).to be_nil}
                   it {user.reload.instances.should include instance}
                   it {instance.reload.user.authentications.find_by(uid:fid).should be_present}
                 end
 
                 context "When a user with the email doesn't already exist" do
                   it {response.status.should eq 201}
-                  it {JSON.parse(response.body)['error_code'].should be_nil}
-                  it {JSON.parse(response.body)['error_message'].should be_nil}
+                  it {json['error_code'].should be_nil}
+                  it {json['error_message'].should be_nil}
                   it {User.find_by(email:email).should_not be_nil}
                   it {Instance.find_by(uuid:instance_token).user.id.should eq User.find_by(email:email).id}
-                  it {expect(JSON.parse(response.body)['auth_token']).to eq Instance.find_by(uuid:instance_token).auth_token}
+                  it {expect(json['auth_token']).to eq Instance.find_by(uuid:instance_token).user.auth_token}
                 end
               end
             end
