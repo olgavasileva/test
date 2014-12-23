@@ -388,4 +388,28 @@ class TwoCents::Auth < Grape::API
     end
 
   end
+
+  resource 's3_urls' do
+    desc "Return array of presigned s3 upload objects."
+    params do
+      requires :auth_token, type: String, desc: "Users auth token."
+      requires :upload_count, type: Integer, values: [1, 2, 3, 4], desc: "Number of signed urls to return as integer, max is 4."
+    end
+
+    post 'generate' do
+      validate_user!
+
+      presigned_obj = []
+      obj_fields = []
+
+      params[:upload_count].times do
+        presigned_obj << S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: 201, acl: :public_read)
+      end
+
+      presigned_obj.each do |obj|
+        obj_fields << {url: obj.url}.merge(obj.fields)
+      end
+      obj_fields
+    end
+  end
 end

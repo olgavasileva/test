@@ -82,6 +82,11 @@ GEM
       activerecord (>= 3.1.0)
     autoprefixer-rails (2.2.0.20140727)
       execjs
+    aws-sdk (1.60.2)
+      aws-sdk-v1 (= 1.60.2)
+    aws-sdk-v1 (1.60.2)
+      json (~> 1.4)
+      nokogiri (>= 1.4.4)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -511,6 +516,7 @@ DEPENDENCIES
   animate-rails
   attribute_defaults
   autoprefixer-rails
+  aws-sdk
   bcrypt-ruby
   better_errors
   binding_of_caller

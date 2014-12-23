@@ -39,6 +39,8 @@ gem 'haml'
 
 gem 'simple-navigation'
 
+gem 'aws-sdk'
+
 gem 'carrierwave'       # Image uploading and access
 gem 'fog'               # Cloud services intergration into carrierwave (e.g. s3)
 gem 'rmagick',          # Image manipulation
