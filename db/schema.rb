@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141219043539) do
+ActiveRecord::Schema.define(version: 20141230193024) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -186,6 +186,15 @@ ActiveRecord::Schema.define(version: 20141219043539) do
     t.string   "manufacturer"
     t.string   "model"
   end
+
+  create_table "embeddable_units", force: true do |t|
+    t.string   "uuid"
+    t.integer  "survey_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "embeddable_units", ["survey_id"], name: "index_embeddable_units_on_survey_id", using: :btree
 
   create_table "enterprise_targets", force: true do |t|
     t.integer  "user_id"
@@ -423,16 +432,19 @@ ActiveRecord::Schema.define(version: 20141219043539) do
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
 
   create_table "messages", force: true do |t|
+    t.text     "content"
     t.string   "type"
     t.datetime "read_at"
-    t.datetime "completed_at"
-    t.integer  "response_count"
-    t.integer  "comment_count"
-    t.integer  "share_count"
+    t.integer  "other_user_id"
     t.integer  "question_id"
+    t.integer  "response_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "response_count", default: 0
+    t.integer  "comment_count",  default: 0
+    t.integer  "share_count",    default: 0
+    t.datetime "completed_at"
     t.integer  "follower_id"
     t.text     "body"
   end
@@ -878,8 +890,8 @@ ActiveRecord::Schema.define(version: 20141219043539) do
     t.date     "birthdate"
     t.string   "gender"
     t.string   "company_name"
-    t.integer  "user_avatar_id"
     t.integer  "feed_page",              default: 0
+    t.integer  "user_avatar_id"
     t.string   "type",                   default: "User"
     t.string   "auth_token"
   end
