@@ -141,7 +141,7 @@ class TwoCents::Auth < Grape::API
         In the future, this user can log in again by using the same email and password.
 
         #### Example response
-            { auth_token: "SOME_STRING" }
+            { auth_token: "SOME_STRING", user_id: 123 }
       END
     }
     params do
@@ -173,8 +173,7 @@ class TwoCents::Auth < Grape::API
                       password:declared_params[:password],
                       password_confirmation:declared_params[:password],
                       birthdate:Date.strptime(declared_params[:birthdate], '%Y-%m-%d'),
-                      gender:declared_params[:gender],
-                      auth_token:"A"+UUID.new.generate
+                      gender:declared_params[:gender]
 
       fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
       fail! 1011, user.errors.full_messages.join(", ") unless user.save
@@ -235,11 +234,89 @@ class TwoCents::Auth < Grape::API
         user
       end
 
-      user.auth_token = "A"+UUID.new.generate
       user.save!
 
       instance.update_attributes! user_id:user.id
       {auth_token:user.auth_token, user_id: user.id}
+    end
+
+    desc "Register as an anonymous user", {
+      notes: <<-END
+        Add a new anonymous user.  Use the resulting auth_token in API calls that require a logged in user.
+        In the future, this user can be promoted to an autnenticatable user using the promote API.
+
+        #### Example response
+            { auth_token: "SOME_STRING", username:"BlackCat123", email:"BlackCat123@anonymous.statisfy.co", user_id: 123 }
+      END
+    }
+    params do
+      requires :instance_token, type:String, desc:'Obtain this from the instances API'
+    end
+    post 'anonymous', http_codes: [
+        [200, "1001 - Invalid instance token"],
+        [200, "1011 - Unable to save the user record (specific reason text will be included)"],
+        [200, "400 - Missing required params"]
+    ] do
+      validate_instance!
+
+      user = Anonymous.new
+      fail! 1011, user.errors.full_messages.join(", ") unless user.save
+
+      instance.update_attributes! user:user
+
+      {auth_token:user.auth_token, username:user.username, email:user.email, user_id:user.id}
+    end
+
+    desc "Promote an anonymous user to an authenticatable user", {
+      notes: <<-END
+        NOTE - the auth_token returned from this API should be used in future API requests.
+
+        #### Example response
+            { auth_token: "SOME_STRING", user_id: 123 }
+      END
+    }
+    params do
+      requires :auth_token, type: String, desc: "Obtain this by registering as an anonymous user"
+      requires :email, type: String, regexp: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$.?/i, desc:'e.g. oscar@madisononline.com'
+      requires :username, type: String, regexp: /^[A-Z0-9\-_ ]{4,20}$/i, desc:'Unique username'
+      requires :password, type: String, regexp: /.{6,20}/, desc:'6-20 character password'
+      requires :name, type: String, desc:"The user's name"
+      requires :birthdate, type: String, desc: '1990-02-06'
+      requires :gender, type:String, values: %w{male female}, desc: 'male or female'
+    end
+    post 'promote', http_codes: [
+        [200, "1002 - A user with that email is already registered"],
+        [200, "1009 - The Username is already taken"],
+        [200, "1010 - Birthdate must be over 13 years ago"],
+        [200, "1011 - Unable to save the user record (specific reason text will be included)"],
+        [200, "1012 - User must be anonymous"],
+        [200, "400 - Missing required params"],
+        [200, "402 - Invalid auth token"],
+        [200, "403 - Login required"]
+    ] do
+      validate_user!
+
+      user = current_user
+
+      fail! 1012, "User must be anonymous" unless user.kind_of? Anonymous
+      fail! 1002, "This email address is already registered, try again." if User.find_by email:declared_params[:email]
+      fail! 1009, "This username is already taken, try again." if User.find_by username:declared_params[:username]
+
+      user.update_attribute :type, "User"
+      user = User.find user.id
+      user.name = declared_params[:name]
+      user.email = declared_params[:email]
+      user.username = declared_params[:username]
+      user.password = declared_params[:password]
+      user.password_confirmation = declared_params[:password]
+      user.birthdate = Date.strptime(declared_params[:birthdate], '%Y-%m-%d')
+      user.gender = declared_params[:gender]
+      user.regenerate_auth_token
+
+      fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
+      fail! 1011, user.errors.full_messages.join(", ") unless user.save
+
+      { auth_token: user.auth_token, user_id: user.id }
     end
 
 
@@ -348,7 +425,7 @@ class TwoCents::Auth < Grape::API
     desc "Update logged in user's location"
     params do
       requires :instance_token, type: String, desc: "Obtain this from the instance's API"
-      requires :auth_token, type: String, desc: "Obtain this from the instance's API"
+      requires :auth_token, type: String, desc: "Obtain this by registering"
 
       requires :source, type: String, values: %w[IP gps], desc: "Location source"
       requires :accuracy, type: Integer, desc: "Location accuracy"
@@ -376,7 +453,7 @@ class TwoCents::Auth < Grape::API
 
     desc "Return initial info on current user."
     params do
-      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+      requires :auth_token, type: String, desc: "Obtain this by registering"
     end
     get 'init' do
       validate_user!
@@ -392,7 +469,7 @@ class TwoCents::Auth < Grape::API
   resource 's3_urls' do
     desc "Return array of presigned s3 upload objects."
     params do
-      requires :auth_token, type: String, desc: "Users auth token."
+      requires :auth_token, type: String, desc: "Obtain this by registering"
       requires :upload_count, type: Integer, values: [1, 2, 3, 4], desc: "Number of signed urls to return as integer, max is 4."
     end
 

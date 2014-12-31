@@ -18,4 +18,7 @@ FactoryGirl.define do
 
     factory :authorized_user, traits: [:authorized]
   end
+
+  factory :anonymous do
+  end
 end

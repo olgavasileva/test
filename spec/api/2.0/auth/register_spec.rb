@@ -8,9 +8,9 @@ describe :register do
 
   context "Without the required params" do
     it {expect(response.status).to eq 200}
-    it {expect(JSON.parse(response.body)).to_not be_nil}
-    it {expect(JSON.parse(response.body)['error_code']).to eq 400}
-    it {JSON.parse(response.body)['error_message'].should match /.+ is missing/}
+    it {expect(json).to_not be_nil}
+    it {expect(json['error_code']).to eq 400}
+    it {expect(json['error_message']).to match /.+ is missing/}
   end
 
   context "With all required params" do
@@ -27,32 +27,32 @@ describe :register do
       context "With an invalid instance" do
         let(:instance_token) {"INVALID"}
 
-        it {response.status.should eq 200}
-        it {JSON.parse(response.body)['error_code'].should eq 1001}
-        it {JSON.parse(response.body)['error_message'].should match /Invalid instance token/}
+        it {expect(response.status).to eq 200}
+        it {expect(json['error_code']).to eq 1001}
+        it {expect(json['error_message']).to match /Invalid instance token/}
       end
 
       context "With a valid instance" do
         let(:instance) {FactoryGirl.create :instance}
         let(:instance_token) {instance.uuid}
 
-        it {response.status.should eq 201}
-        it {JSON.parse(response.body).should_not be_nil}
-        it {JSON.parse(response.body)['error_code'].should be_nil}
-        it {JSON.parse(response.body)['error_message'].should be_nil}
+        it {expect(response.status).to eq 201}
+        it {expect(json).to_not be_nil}
+        it {expect(json['error_code']).to be_nil}
+        it {expect(json['error_message']).to be_nil}
         it "The user should be tied to the instance" do
           instance = Instance.find_by uuid:instance_token
           user = User.find_by email:email
-          instance.user.should eq user
+          expect(instance.user).to eq user
         end
 
         context "When the instance doesn't exist" do
           let(:instance_token) {"INVALID"}
 
-          it {response.status.should eq 200}
-          it {JSON.parse(response.body).should_not be_nil}
-          it {expect(JSON.parse(response.body)['error_code']).to eq 1001}
-          it {JSON.parse(response.body)['error_message'].should match /Invalid instance token/}
+          it {expect(response.status).to eq 200}
+          it {expect(json).to_not be_nil}
+          it {expect(json['error_code']).to eq 1001}
+          it {expect(json['error_message']).to match /Invalid instance token/}
         end
 
         context "When the instance exists" do
@@ -60,10 +60,10 @@ describe :register do
             let(:user) {FactoryGirl.create :user}
             let(:email) {user.email}
 
-            it {response.status.should eq 200}
-            it {JSON.parse(response.body).should_not be_nil}
-            it {JSON.parse(response.body)['error_code'].should eq 1002}
-            it {JSON.parse(response.body)['error_message'].should match /already registered/}
+            it {expect(response.status).to eq 200}
+            it {expect(json).to_not be_nil}
+            it {expect(json['error_code']).to eq 1002}
+            it {expect(json['error_message']).to match /already registered/}
           end
 
           context "When a user with the username already exists" do
@@ -71,37 +71,37 @@ describe :register do
             let(:username) {user.username}
 
             it {expect(response.status).to eq 200}
-            it {JSON.parse(response.body).should_not be_nil}
-            it {JSON.parse(response.body)['error_code'].should eq 1009}
-            it {JSON.parse(response.body)['error_message'].should match /is already taken/}
+            it {expect(json).to_not be_nil}
+            it {expect(json['error_code']).to eq 1009}
+            it {expect(json['error_message']).to match /is already taken/}
           end
 
           context "When a user with the email doesn't already exist" do
-            it {response.status.should eq 201}
-            it {JSON.parse(response.body).should_not be_nil}
-            it {JSON.parse(response.body)['error_code'].should be_nil}
-            it {JSON.parse(response.body)['error_message'].should be_nil}
-            it {User.find_by(email:email).should_not be_nil}
-            it {User.find_by(username:username.downcase).should_not be_nil}
+            it {expect(response.status).to eq 201}
+            it {expect(json).to_not be_nil}
+            it {expect(json['error_code']).to be_nil}
+            it {expect(json['error_message']).to be_nil}
+            it {expect(User.find_by(email:email)).to_not be_nil}
+            it {expect(User.find_by(username:username.downcase)).to_not be_nil}
             it {expect(User.find_by(username:username.downcase)).to eq User.find_by(email:email)}
-            it {Instance.find_by(uuid:instance_token).user.id.should eq User.find_by(email:email).id}
-            it {JSON.parse(response.body)['auth_token'].should eq Instance.find_by(uuid:instance_token).user.auth_token}
-            it {JSON.parse(response.body)['user_id'].should eq User.find_by(email: email).id}
+            it {expect(Instance.find_by(uuid:instance_token).user.id).to eq User.find_by(email:email).id}
+            it {expect(json['auth_token']).to eq Instance.find_by(uuid:instance_token).user.auth_token}
+            it {expect(json['user_id']).to eq User.find_by(email: email).id}
 
-            it {User.find_by(email:email).name.should eq name}
+            it {expect(User.find_by(email:email).name).to eq name}
             it "The user should be tied to the instance" do
               instance = Instance.find_by uuid:instance_token
               user = User.find_by email:email
-              instance.user.should eq user
+              expect(instance.user).to eq user
             end
 
             context "When the user is under 14 years old" do
               let(:birthdate) {Date.current - 12.years}
 
               it {expect(response.status).to eq 200}
-              it {JSON.parse(response.body).should_not be_nil}
-              it {JSON.parse(response.body)['error_code'].should eq 1010}
-              it {JSON.parse(response.body)['error_message'].should match /Birthdate must be over 13 years ago/}
+              it {expect(json).not_to be_nil}
+              it {expect(json['error_code']).to eq 1010}
+              it {expect(json['error_message']).to match /Birthdate must be over 13 years ago/}
             end
           end
         end

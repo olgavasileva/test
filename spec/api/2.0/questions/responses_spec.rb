@@ -6,19 +6,18 @@ describe 'questions/responses' do
     auth_token: instance.user.auth_token
   } }
   let(:request) { -> { get 'v/2.0/questions/responses', params } }
-  let(:response_body) { JSON.parse(response.body) }
 
   before { request.call }
 
   shared_examples :fail do
     it "responds with error data" do
-      expect(response_body.keys).to match_array %w[error_code error_message]
+      expect(json.keys).to match_array %w[error_code error_message]
     end
   end
 
   shared_examples :success do
     it "responds with response data" do
-      expect(response_body.first.keys).to match_array %w[id user_id text]
+      expect(json.first.keys).to match_array %w[id user_id text]
     end
   end
 
@@ -30,7 +29,7 @@ describe 'questions/responses' do
 
   context "with question_id" do
     let(:question) { FactoryGirl.create(:text_question) }
-    let(:responses) { FactoryGirl.create_list(:text_response, 16) }
+    let(:responses) { FactoryGirl.create_list(:text_response, 2) }
     let(:params) { common_params.merge(question_id: question.id) }
 
     before do
@@ -41,7 +40,7 @@ describe 'questions/responses' do
     include_examples :success
 
     it "responds with data for all question's responses" do
-      expect(response_body.count).to eq responses.count
+      expect(json.count).to eq responses.count
     end
 
     context "with question not public" do
@@ -59,12 +58,13 @@ describe 'questions/responses' do
     end
 
     context "with page param" do
+      let(:responses) { FactoryGirl.create_list(:text_response, 16) }
       let(:params) { common_params.merge(question_id: question.id, page: 1) }
 
       include_examples :success
 
       it "responds with up to 15 of question's responses" do
-        expect(response_body.count).to eq 15
+        expect(json.count).to eq 15
       end
 
       context "with per_page param" do
@@ -73,7 +73,7 @@ describe 'questions/responses' do
                                            page: 1, per_page: per_page) }
 
         it "responds with up to per_page of question's responses" do
-          expect(response_body.count).to eq per_page
+          expect(json.count).to eq per_page
         end
       end
     end

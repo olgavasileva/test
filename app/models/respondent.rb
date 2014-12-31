@@ -10,7 +10,19 @@ class Respondent < ActiveRecord::Base
 
   before_validation :ensure_username
 
+  default :auth_token do |user|
+    Respondent.generate_auth_token
+  end
+
+  def regenerate_auth_token
+    self.auth_token = Respondent.generate_auth_token
+  end
+
   private
+    def self.generate_auth_token
+      "A"+UUID.new.generate
+    end
+
     def ensure_username
       if username.nil?
         self.username = random_username
@@ -20,11 +32,11 @@ class Respondent < ActiveRecord::Base
       end
     end
 
-    COLORS = %w(red green blue teal orange tangerine yellow black white purple brown)
-    ANIMALS = %w(beaver otter dog cat mouse bird gopher marlin magpie)
+    COLORS = %w(Red Green Blue Teal Orange Tangerine Yellow Black White Purple Brown)
+    ANIMALS = %w(Beaver Otter Dog Cat Mouse Bird Gopher Marlin Magpie)
 
     def random_username
-      COLORS.sample + ANIMALS.sample + random_number(3)
+      COLORS.sample + ANIMALS.sample + random_number(rand(2..5))
     end
 
     def random_number digits
