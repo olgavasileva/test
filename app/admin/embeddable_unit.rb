@@ -11,7 +11,7 @@ ActiveAdmin.register EmbeddableUnit do
         script = <<-END
 <script type="text/javascript"><!--
   statisfy_unit = "#{eu.uuid}";
-  statisfy_unit_width = 200; statisfy_unit_height = 200;
+  statisfy_unit_width = #{eu.width}; statisfy_unit_height = #{eu.height};
 //-->
 </script>
 <script type="text/javascript" src="#{request.base_url}/#{Rails.env}/show_unit.js">

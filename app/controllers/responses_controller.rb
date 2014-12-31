@@ -1,4 +1,6 @@
 class ResponsesController < ApplicationController
+  layout :resolve_layout
+
   def new
     @question = Question.find params[:question_id]
     @question.started!
@@ -61,6 +63,14 @@ class ResponsesController < ApplicationController
   end
 
   protected
+
+    def resolve_layout
+      if cookies[:euuid]
+        "embeddable_unit"
+      else
+        "clean_canvas"
+      end
+    end
 
     def response_params
       raise NotImplementedError.new("You must implement response_params.")

@@ -31,7 +31,7 @@ LinkchatApp::Application.routes.draw do
   post '/contests/:uuid/vote/:response_id' => 'contests#save_vote', as: :save_vote
   post '/contests/:uuid/scores' => 'contests#scores', as: :scores
 
-  get '/unit/:embeddable_unit_uuid' => 'embeddable_units#question_for_uuid'
+  get '/unit/:embeddable_unit_uuid' => 'embeddable_units#start_survey'
   get '/unit/done/:embeddable_unit_uuid' => 'embeddable_units#done'
 
   resources :questions, shallow:true do
