@@ -11,11 +11,6 @@ class Contest < ActiveRecord::Base
 
   before_save :convert_headings
 
-  def next_question question
-    q = questions_surveys.where(question_id:question).first
-    q.lower_items.first.try(:question) unless q.nil?
-  end
-
   def vote_id_for_response response
     reponse_votes = contest_response_votes.where(response_id:response.id).first_or_create
     reponse_votes.id if reponse_votes
