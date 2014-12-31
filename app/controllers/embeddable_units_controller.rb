@@ -1,6 +1,8 @@
 class EmbeddableUnitsController < ApplicationController
   skip_before_action :authenticate_user!
 
+  layout "embeddable_unit"
+
   def start_survey
     @embeddable_unit = EmbeddableUnit.find_by uuid:params[:embeddable_unit_uuid]
 

@@ -12,7 +12,7 @@
   - if ["MultipleChoiceQuestion", "TextQuestion", "OrderQuestion", "StudioQuestion"].include?(question.type)
     .col-xs-3.clearfix
       - if @show_skip_button
-        = link_to "Skip", new_question_skipped_item_path(question), class: %w{ btn btn-primary negative btn-lg col-xs-12}
+        = link_to "Skip", skip_question_path(question), class: %w{ btn btn-primary negative btn-lg col-xs-12}
     .col-xs-3.col-xs-push-6.clearfix
       %button.btn.btn-primary.negative.col-xs-12.btn-lg{type: :submit} Submit
   - else
