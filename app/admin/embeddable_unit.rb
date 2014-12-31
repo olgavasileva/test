@@ -3,6 +3,25 @@ ActiveAdmin.register EmbeddableUnit do
 
   permit_params :survey_id
 
+  show do |eu|
+    attributes_table do
+      row :uuid
+      row :survey
+      row "Embed Script" do
+        script = <<-END
+<script type="text/javascript"><!--
+  statisfy_unit = "#{eu.uuid}";
+  statisfy_unit_width = 200; statisfy_unit_height = 200;
+//-->
+</script>
+<script type="text/javascript" src="#{request.base_url}/#{Rails.env}/show_unit.js">
+</script>
+        END
+        "<pre><code>#{ERB::Util.html_escape script}</code></pre>".html_safe
+      end
+    end
+  end
+
   form do |f|
     f.inputs do
       f.input :survey

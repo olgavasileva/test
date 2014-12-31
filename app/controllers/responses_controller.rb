@@ -26,13 +26,25 @@ class ResponsesController < ApplicationController
                        commentable_id: @response.question_id)
       end
 
-      if session[:contest_uuid]
+      survey = if cookies[:euuid]
+        eu = EmbeddableUnit.find_by uuid:cookies[:euuid]
+        eu.survey
+      elsif session[:contest_uuid]
         contest = Contest.find_by uuid:session[:contest_uuid]
-        next_question = contest.next_question(@response.question)
+        contest.survey
+      end
+
+      if survey
+        next_question = survey.next_question(@response.question)
+
         if next_question
           redirect_to new_question_response_path(next_question)
         else
-          redirect_to contest_vote_path(contest.uuid)
+          if cookies[:euuid]
+            redirect_to embeddable_unit_done_path(cookies[:euuid])
+          elsif session[:contest_uuid]
+            redirect_to contest_vote_path(session[:contest_uuid])
+          end
         end
       else
         redirect_to summary_question_path(@response.question)
