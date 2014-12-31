@@ -471,6 +471,7 @@ class TwoCents::Auth < Grape::API
     params do
       requires :auth_token, type: String, desc: "Obtain this by registering"
       requires :upload_count, type: Integer, values: [1, 2, 3, 4], desc: "Number of signed urls to return as integer, max is 4."
+      optional :content_type, type: String, default: "image/jpg", desc: "Content type for the uploaded image(s)"
     end
 
     post 'generate' do
@@ -479,8 +480,8 @@ class TwoCents::Auth < Grape::API
       presigned_obj = []
       obj_fields = []
 
-      params[:upload_count].times do
-        presigned_obj << S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: 201, acl: :public_read)
+      declared_params[:upload_count].times do
+        presigned_obj << S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: 201, acl: :public_read, content_type: declared_params[:content_type])
       end
 
       presigned_obj.each do |obj|

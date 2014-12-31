@@ -11,7 +11,7 @@ describe 'POST s3_urls/generate' do
   before { post "v/2.0/s3_urls/generate", params }
 
   it "responds with array of hashes which contain necessary keys" do
-    keys = %w[url AWSAccessKeyId key policy signature success_action_status acl]
+    keys = %w[url AWSAccessKeyId key policy signature success_action_status acl Content-Type]
 
     expect(response_body.sample.keys).to match_array keys
   end
