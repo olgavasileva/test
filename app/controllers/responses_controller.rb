@@ -1,6 +1,8 @@
 class ResponsesController < ApplicationController
   layout :resolve_layout
 
+  after_action :allow_iframe, only: [:new, :create]
+
   def new
     @question = Question.find params[:question_id]
     @question.started!

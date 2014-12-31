@@ -1,5 +1,6 @@
 class EmbeddableUnitsController < ApplicationController
   skip_before_action :authenticate_user!
+  after_action :allow_iframe
 
   layout "embeddable_unit"
 
