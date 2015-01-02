@@ -126,10 +126,6 @@ class Respondent < ActiveRecord::Base
     return self.messages.where("read_at is ?", nil).count
   end
 
-  def name
-    read_attribute(:name) || username
-  end
-
   # Clear and then add all the active public questions to the feed
   def reset_feed!
     transaction do
@@ -141,11 +137,15 @@ class Respondent < ActiveRecord::Base
   end
 
   def under_13?
-    false
+    raise NotImplementedError.new("You must implement this method in a subclass")
   end
 
   def age
-    nil
+    raise NotImplementedError.new("You must implement this method in a subclass")
+  end
+
+  def name
+    raise NotImplementedError.new("You must implement this method in a subclass")
   end
 
   private

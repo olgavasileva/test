@@ -84,6 +84,10 @@ class User < Respondent
     end
   end
 
+  def name
+    read_attribute(:name) || username
+  end
+
 	protected
 
 		def create_remember_token
