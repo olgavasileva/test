@@ -1,7 +1,7 @@
 class Scene < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
-  belongs_to :user
+  belongs_to :user, class_name: "Respondent"
   belongs_to :studio
   has_many :gallery_elements, :dependent => :destroy
   mount_uploader :image, SceneImageUploader

@@ -1,6 +1,6 @@
 class GroupMember < ActiveRecord::Base
   belongs_to :group
-  belongs_to :user
+  belongs_to :user, class_name: "Respondent"
 
   validates :group_id, presence: true
   validates :user_id,

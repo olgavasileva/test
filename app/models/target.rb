@@ -1,7 +1,7 @@
 class Target < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :user, class_name: "Respondent"
   has_many :questions
-  has_and_belongs_to_many :followers, class_name: "User"
+  has_and_belongs_to_many :followers, class_name: "Respondent", association_foreign_key: :user_id
   has_and_belongs_to_many :groups
   has_and_belongs_to_many :communities
 

@@ -1,6 +1,6 @@
 class Relationship < ActiveRecord::Base
-	belongs_to :follower, class_name: "User"
-	belongs_to :leader, class_name: "User"
+	belongs_to :follower, class_name: "Respondent"
+	belongs_to :leader, class_name: "Respondent"
 
 	validates :follower, presence: true
 	validates :leader, presence: true, uniqueness: { scope: :follower_id }

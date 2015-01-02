@@ -2,7 +2,7 @@ class Question < ActiveRecord::Base
   STATES ||= %w(preview targeting active suspended survey_only)
   KINDS ||= %w(public targeted)
 
-	belongs_to :user
+	belongs_to :user, class_name: "Respondent"
 	belongs_to :category
   belongs_to :target
   belongs_to :background_image, class_name: "QuestionImage"

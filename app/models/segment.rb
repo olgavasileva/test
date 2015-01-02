@@ -1,5 +1,5 @@
 class Segment < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :user, class_name: "Respondent"
   has_many :response_matchers, dependent: :destroy
 
   validates :name, presence: true

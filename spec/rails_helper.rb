@@ -60,6 +60,10 @@ RSpec.configure do |config|
   config.before(:each) do
     mock_montage = instance_double("Magick::ImageList", write:nil)
     allow(Magick::ImageList).to receive_message_chain(:new, :montage => mock_montage)
+
+    @twilio_request = double(:twilio_request)
+    @twilio_account = double(:twilio, request:@twilio_request).as_null_object
+    allow(Twilio::REST::Client).to receive_messages(new:@twilio_account)
   end
 
   config.around(:each) do |example|

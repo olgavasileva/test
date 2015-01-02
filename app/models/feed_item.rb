@@ -4,7 +4,7 @@ class FeedItem < ActiveRecord::Base
   HIDDEN_REASONS ||= %w(answered skipped suspended deleted)
   WHY ||= %w(public targeted leader follower)
 
-  belongs_to :user
+  belongs_to :user, class_name: "Respondent"
   belongs_to :question
 
   default hidden: false

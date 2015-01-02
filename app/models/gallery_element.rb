@@ -3,7 +3,7 @@ class GalleryElement < ActiveRecord::Base
 
   belongs_to :gallery
   belongs_to :scene
-  belongs_to :user
+  belongs_to :user, class_name: "Respondent"
   has_many :gallery_element_votes, dependent: :destroy
 
   after_initialize do

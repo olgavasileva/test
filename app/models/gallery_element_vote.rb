@@ -1,5 +1,6 @@
 class GalleryElementVote < ActiveRecord::Base
   belongs_to :gallery_element
+  belongs_to :user, class_name: "Respondent"
 
   validates :user_id, presence: true
 

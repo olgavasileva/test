@@ -10,6 +10,7 @@ describe 'PUT /relationships/summon' do
   let(:request) { -> { put 'v/2.0/relationships/summon', params } }
   let(:response_body) { JSON.parse(response.body) }
 
+  before {allow(Setting).to receive(:find_by_key!).and_return(Setting.new(value:"Some String"))}
   before { request.call }
 
   shared_examples :fail do
