@@ -4,7 +4,7 @@ describe 'comments/user' do
   let(:count) { 3 }
   let(:user) { FactoryGirl.create(:user) }
   let(:comments) { FactoryGirl.create_list(:text_response_comment, count, user: user) }
-  let(:ordered_question_ids) { comments.map(&:commentable_id) }
+  let(:ordered_question_ids) { comments.map(&:commentable).map(&:question_id) }
   let(:common_params) { { auth_token: user.auth_token } }
   let(:other_params) {{ }}
   let(:params) { common_params.merge(other_params) }
