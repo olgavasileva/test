@@ -13,6 +13,6 @@ class Segment < ActiveRecord::Base
       user_ids += matcher.matched_users.pluck :id
     end
 
-    User.find user_ids.uniq
+    Respondent.find user_ids.uniq
   end
 end

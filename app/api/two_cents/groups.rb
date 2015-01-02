@@ -94,7 +94,7 @@ class TwoCents::Groups < Grape::API
       fail! 400, "Couldn't find group" unless group.present?
       fail! 400, "Group does not belong to user" if group.user != current_user
 
-      user = User.find_by_id(params[:user_id])
+      user = Respondent.find_by_id(params[:user_id])
       fail! 400, "Couldn't find user" unless user.present?
 
       member = GroupMember.new(user_id: user.id, group_id: group.id)
@@ -118,7 +118,7 @@ class TwoCents::Groups < Grape::API
       fail! 400, "Couldn't find group" unless group.present?
       fail! 400, "Group does not belong to user" if group.user != current_user
 
-      user = User.find_by_id(params[:user_id])
+      user = Respondent.find_by_id(params[:user_id])
       fail! 400, "Couldn't find user" unless user.present?
 
       member = GroupMember.where(user_id: user.id, group_id: group.id).first

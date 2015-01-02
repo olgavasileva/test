@@ -4,6 +4,6 @@ class TextResponseMatcher < ResponseMatcher
   protected
     # Must return an AREL object
     def matched_users_for_specific_response
-      User.joins(:responses).where("responses.question_id = ? AND responses.`text` like ?", question.id,"%#{regex}%")
+      Respondent.joins(:responses).where("responses.question_id = ? AND responses.`text` like ?", question.id,"%#{regex}%")
     end
 end

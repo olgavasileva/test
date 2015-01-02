@@ -14,7 +14,7 @@ class TwoCents::Relationships < Grape::API
     end
     get 'followers' do
       user_id = params[:user_id]
-      user = user_id.present? ? User.find(user_id) : current_user
+      user = user_id.present? ? Respondent.find(user_id) : current_user
 
       followers = user.followers
 
@@ -47,7 +47,7 @@ class TwoCents::Relationships < Grape::API
     end
     get 'following' do
       user_id = params[:user_id]
-      user = user_id.present? ? User.find(user_id) : current_user
+      user = user_id.present? ? Respondent.find(user_id) : current_user
 
       leaders = user.leaders
 
@@ -80,10 +80,10 @@ class TwoCents::Relationships < Grape::API
     get 'followable' do
       # TODO: optimize
       # users = current_user.leaders.search(q: params[:search_text]).result
-      # users += User.search(q: params[:search_text]).result
+      # users += Respondent.search(q: params[:search_text]).result
       # users.uniq!
 
-      users = User.where("username like ?", "%#{params[:search_text]}%")
+      users = Respondent.where("username like ?", "%#{params[:search_text]}%")
                   .where.not(id: current_user.id)
                   .order(:username)
 
@@ -116,7 +116,7 @@ class TwoCents::Relationships < Grape::API
       requires :user_id, type: Integer, desc: "ID of user to follow."
     end
     post 'follow' do
-      user = User.find(params[:user_id])
+      user = Respondent.find(params[:user_id])
 
       if current_user.leaders.include? user
         fail! 400, "Already following user."
@@ -135,7 +135,7 @@ class TwoCents::Relationships < Grape::API
       requires :user_id, type: Integer, desc: "ID of user to unfollow."
     end
     post 'unfollow' do
-      user = User.find(params[:user_id])
+      user = Respondent.find(params[:user_id])
 
       unless current_user.leaders.include? user
         fail! 400, "Not following user."
@@ -153,7 +153,7 @@ class TwoCents::Relationships < Grape::API
       requires :user_id, type: Integer, desc: "ID of user to check whether following."
     end
     get 'is_following' do
-      user = User.find(params[:user_id])
+      user = Respondent.find(params[:user_id])
 
       current_user.leaders.include? user
     end

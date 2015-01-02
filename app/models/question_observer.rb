@@ -5,7 +5,7 @@ class QuestionObserver < ActiveRecord::Observer
 
   def after_save question
     if question.public? && question.state_was != 'active' && question.state == 'active'
-      User.all.each do |user|
+      Respondent.all.each do |user|
         item = user.feed_items.find_by question_id:question
         if item.nil?
 

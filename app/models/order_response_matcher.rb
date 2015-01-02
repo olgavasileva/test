@@ -6,6 +6,6 @@ class OrderResponseMatcher < ResponseMatcher
   protected
     # Must return an AREL object
     def matched_users_for_specific_response
-      User.joins(order_responses: :choice_responses).where(order_choices_responses: {order_choice_id: first_place_choice.id, position: 1})
+      Respondent.joins(order_responses: :choice_responses).where(order_choices_responses: {order_choice_id: first_place_choice.id, position: 1})
     end
 end

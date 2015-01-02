@@ -37,7 +37,7 @@ class TwoCents::Communities < Grape::API
       end
 
       def specified_or_current_user
-        User.find(params.fetch(:user_id, current_user.id))
+        Respondent.find(params.fetch(:user_id, current_user.id))
       end
 
       def serialize_community(c)
@@ -161,7 +161,7 @@ class TwoCents::Communities < Grape::API
         fail! 400, "Incorrect password for private community."
       end
 
-      u = User.find(params[:user_id])
+      u = Respondent.find(params[:user_id])
       c.member_users << u
 
       {}
@@ -176,7 +176,7 @@ class TwoCents::Communities < Grape::API
       validate_user!
 
       c = Community.find(params[:community_id])
-      u = User.find(params[:user_id])
+      u = Respondent.find(params[:user_id])
       fail! 400, "User is not a member." unless c.member_users.include? u
       c.member_users.delete(u)
 

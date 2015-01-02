@@ -650,7 +650,7 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       error_message = ENV['OUT_OF_DATE_QUESTION_TITLE'] || "Update required.  Please check the app store for an update available within an hour."
-      @questions = [Question.new(id:0, user:User.first, category:Category.first, title:error_message, state:"active", kind:"public", background_image:BackgroundImage.first, trending_index:1)]
+      @questions = [Question.new(id:0, user:Respondent.first, category:Category.first, title:error_message, state:"active", kind:"public", background_image:BackgroundImage.first, trending_index:1)]
     end
 
 
@@ -697,7 +697,7 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       user_id = params[:user_id]
-      user = user_id.present? ? User.find(user_id) : current_user
+      user = user_id.present? ? Respondent.find(user_id) : current_user
       previous_last_id = params[:previous_last_id]
       count = params[:count]
 
@@ -743,7 +743,7 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       user_id = params[:user_id]
-      user = user_id.present? ? User.find(user_id) : current_user
+      user = user_id.present? ? Respondent.find(user_id) : current_user
       previous_last_id = params[:previous_last_id]
       count = params[:count]
 
@@ -1002,7 +1002,7 @@ class TwoCents::Questions < Grape::API
         Question.find_by_uuid declared_params[:question_uuid]
       end
 
-      user = User.find declared_params.fetch(:user_id, current_user.id)
+      user = Respondent.find declared_params.fetch(:user_id, current_user.id)
       @user_answered = user.answered_questions.include? @question
     end
 

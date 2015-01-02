@@ -34,7 +34,7 @@ class TwoCents::Profile < Grape::API
     ] do
       validate_user!
 
-      @user = User.find(declared_params.fetch(:user_id, current_user.id))
+      @user = Respondent.find(declared_params.fetch(:user_id, current_user.id))
     end
 
 
@@ -76,7 +76,7 @@ class TwoCents::Profile < Grape::API
     get 'headshot', jbuilder:'headshot' do
       validate_user!
 
-      @user = declared_params[:user_id] ? User.find(declared_params[:user_id]) : current_user
+      @user = declared_params[:user_id] ? Respondent.find(declared_params[:user_id]) : current_user
     end
 
   end

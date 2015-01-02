@@ -20,7 +20,7 @@ class EnterpriseTarget < ActiveRecord::Base
       matching_ids = matching_age_and_gender_ids(question) & matching_segment_ids(question)
       target_count = 0
 
-      User.find(matching_ids).each do |user|
+      Respondent.find(matching_ids).each do |user|
         item = user.feed_items.find_by question_id:question
 
         if item

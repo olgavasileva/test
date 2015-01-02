@@ -7,7 +7,7 @@
         - if (notification.isQuestionUpdated? || notification.isQuestionTargeted?) && notification.question.present?
           = link_to notification.body, @user.answered_questions.where(id:notification.question).blank? ? new_question_response_path(notification.question) : summary_question_path(notification.question)
         - elsif notification.isUserFollowed? && notification.follower_id.present?
-          - follower = User.find notification.follower_id
+          - follower = Respondent.find notification.follower_id
           = link_to notification.body, follower
         - else
           = notification.body

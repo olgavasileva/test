@@ -32,7 +32,7 @@ class TwoCents::Comments < Grape::API
       previous_last_id = params[:previous_last_id]
       count = params[:count]
 
-      user = user_id.present? ? User.find(user_id) : current_user
+      user = user_id.present? ? Respondent.find(user_id) : current_user
 
       comments = user.comments.order(:created_at)
       comments = comments.reverse if params[:reverse]
