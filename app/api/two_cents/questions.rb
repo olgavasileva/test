@@ -986,7 +986,7 @@ class TwoCents::Questions < Grape::API
     }
 
     params do
-      use :auth
+      optional :auth_token, type: String, desc: "Obtain this from the instance's API."
 
       optional :question_id, type: Integer, desc: "ID of question."
       optional :question_uuid, type: String, desc: "uuid of question"
@@ -994,7 +994,7 @@ class TwoCents::Questions < Grape::API
       optional :user_id, type: Integer, desc: "ID of user for question answer data, defaults to current user's ID."
     end
     get 'question', jbuilder: "question_info" do
-      validate_user!
+      validate_user! if declared_params[:auth_token]
 
       @question = if declared_params[:question_id]
         Question.find declared_params[:question_id]
@@ -1002,8 +1002,9 @@ class TwoCents::Questions < Grape::API
         Question.find_by_uuid declared_params[:question_uuid]
       end
 
-      user = Respondent.find declared_params.fetch(:user_id, current_user.id)
-      @user_answered = user.answered_questions.include? @question
+      asking_user_id = declared_params[:user_id] || current_user.try(:id)
+
+      @user_answered = asking_user_id ? Respondent.find(asking_user_id).answered_questions.include?(@question) : false
     end
 
 
