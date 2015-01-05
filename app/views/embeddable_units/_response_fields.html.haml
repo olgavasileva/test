@@ -3,4 +3,4 @@
   = render "embeddable_units/response_fields/image_choice_response", form:form, response:response
 - else
   #error "Unsupported question type for embeddable units"
-  = link_to "Skip", skip_question_path(response.question)
+  = link_to "Skip", skip_question_path(response.question), target: "_self"

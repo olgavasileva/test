@@ -1,5 +1,5 @@
 .question-response{class: @response.question.type}
-  = simple_form_for [:question, setup_response(@response)] do |form|
+  = simple_form_for [:question, setup_response(@response)], html: {target: "_self"} do |form|
     = form.association :question, as: :hidden
     = form.association :user, as: :hidden
     = form.input :type, as: :hidden

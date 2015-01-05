@@ -4,12 +4,12 @@
 
 .thank-you
   .content
-    .close=link_to image_tag("embed/close-cross.png"), embeddable_unit_start_survey_path(@embeddable_unit.uuid)
+    .close=link_to image_tag("embed/close-cross.png"), embeddable_unit_start_survey_path(@embeddable_unit.uuid), target: "_self"
     .overlay
       .top= @embeddable_unit.thank_you_html.html_safe
       .bottom
         %p More fun questions at Statisfy
-        =link_to image_tag("embed/download-app.png"), ENV['APP_STORE_LINK']
+        =link_to image_tag("embed/download-app.png"), ENV['APP_STORE_LINK'], target: "_self"
   .footer
     .share
     .logo

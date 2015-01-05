@@ -3,7 +3,7 @@
 - # We only support ImageChoiceQuestions with exactly 2 choices
 - unless @response.question.kind_of?(ImageChoiceQuestion) && @response.question.choices.count == 2
   #error "Unsupported question type for embeddable units"
-  = link_to "Next", embeddable_unit_next_question_path(@embeddable_unit.uuid, @response.question)
+  = link_to "Next", embeddable_unit_next_question_path(@embeddable_unit.uuid, @response.question), target: "_self"
 - else
   .summary
     .title=@response.question.title
@@ -19,7 +19,7 @@
             .percentage=number_to_percentage 100 * percentage, precision: 0
           .subtitle=c.title
     .next.prominent
-      =link_to embeddable_unit_next_question_path(@embeddable_unit.uuid, @response.question) do
+      =link_to embeddable_unit_next_question_path(@embeddable_unit.uuid, @response.question), target: "_self" do
         =image_tag image_path("embed/next.png")
     .footer
       .share
