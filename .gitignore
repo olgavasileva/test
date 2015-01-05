@@ -31,3 +31,4 @@ doc/
 # Ignore uploaded files
 public/uploads
 .capistrano/metrics
+public/devtest.html
