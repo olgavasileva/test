@@ -33,29 +33,14 @@ class ResponsesController < ApplicationController
                        commentable_id: @response.question_id)
       end
 
-      survey = if cookies[:euuid]
-        eu = EmbeddableUnit.find_by uuid:cookies[:euuid]
-        eu.survey
+      if cookies[:euuid]
+        redirect_for_embedded_response cookies[:euuid], @response
       elsif session[:contest_uuid]
-        contest = Contest.find_by uuid:session[:contest_uuid]
-        contest.survey
-      end
-
-      if survey
-        next_question = survey.next_question(@response.question)
-
-        if next_question
-          redirect_to new_question_response_path(next_question)
-        else
-          if cookies[:euuid]
-            redirect_to embeddable_unit_thank_you_path(cookies[:euuid])
-          elsif session[:contest_uuid]
-            redirect_to contest_vote_path(session[:contest_uuid])
-          end
-        end
+        redirect_for_contest_response session[:contest_uuid], @response
       else
-        redirect_to summary_question_path(@response.question)
+        redirect_for_standard_response @response
       end
+
     else
       flash[:alert] = @response.errors.full_messages.join ", "
       @response.build_comment user:current_user unless @response.comment.present?
@@ -81,4 +66,27 @@ class ResponsesController < ApplicationController
     def response_params
       raise NotImplementedError.new("You must implement response_params.")
     end
+
+  private
+
+    def redirect_for_standard_response response
+      redirect_to summary_question_path(response.question)
+    end
+
+    def redirect_for_contest_response contest_uuid, response
+      contest = Contest.find_by uuid: contest_uuid
+      next_question = contest.survey.next_question(response.question)
+
+      if next_question
+        redirect_to new_question_response_path(next_question)
+      else
+        redirect_to contest_vote_path(contest_uuid)
+      end
+    end
+
+    def redirect_for_embedded_response euuid, response
+      eu = EmbeddableUnit.find_by uuid: euuid
+      redirect_to embeddable_unit_summary_path(euuid, response)
+    end
+
 end

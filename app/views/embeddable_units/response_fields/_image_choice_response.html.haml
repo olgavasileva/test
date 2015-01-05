@@ -5,7 +5,6 @@
   .choice
     %label
       =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive", style:"width: 125px; height: 125px;")
-      %i.glyphicon.glyphicon-ok.selected
       =radio_button_tag("image_choice_response[choice_id]",c.id,false,{class:'selected-choice', onclick: "this.form.submit();"}) \
       .subtitle=c.title
 .next

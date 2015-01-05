@@ -33,8 +33,16 @@ body.statisfy_embed
 
   .back, .next
     width: 24px
+    height: 125px
     min-height: 1px
     float: left
+
+  .next.prominent
+    position: relative
+    img
+      position: absolute
+      right: 0
+      top: 51px
 
 
   .choice
@@ -43,8 +51,22 @@ body.statisfy_embed
     overflow: hidden
     padding: 0
     margin: 2px 0
+    position: relative
     &+.choice
       margin-left: 2px
+
+    .checkmark
+      background: rgba(255,255,255,0.6) image_url("embed/chosen.png") center center no-repeat
+      width: 42px
+      height: 36px
+      position: absolute
+      top: 2px
+      right: 2px
+      display: none
+
+    &.selected .checkmark
+      display: block
+
     input
       margin: 0
       padding: 0
@@ -55,6 +77,40 @@ body.statisfy_embed
     input[type="radio"]
       display: none
 
+    .percentage
+      position: absolute
+      top: 125px - 36px
+      right: 4px
+      font-size: 18px
+      font-family: "Roboto", sans-serif
+      font-weight: 400
+      color: rgb(35, 31, 32)
+      line-height: 36px
+      text-shadow : 0px 0px 2px rgba(255, 255, 255, 1)
+
+    &.selected .percentage
+      color: rgb(255, 255, 255)
+      text-shadow : 0px 0px 2px rgba(0, 0, 0, 1)
+
+    &+.choice .percentage
+      left: 4px
+      right: auto
+
+    .bar-line
+      position: absolute
+      top: 125px - 36px
+      right: 0
+      height: 36px
+      background-color: rgba(255, 255, 255, 0.5)
+
+    &.selected .bar-line
+      background-color: #4395D9
+
+    &+.choice .bar-line
+      left: 0
+      right: auto
+
+
     .subtitle
       text-align: center
       background-color: #EDEFEF
@@ -64,6 +120,10 @@ body.statisfy_embed
       font-weight: 400
       color: rgb(35, 31, 32)
       margin-top: -2px
+
+    &.selected .subtitle
+      color: #D8EBF8
+      background-color: #217CCF
 
   .footer
     background-color: #818386
@@ -87,7 +147,49 @@ body.statisfy_embed
       height: 100%
       margin-right: 3px
 
+  .thank-you
+    .content
+      margin-top: 6px
+      padding: 0px 24px 0 24px
+      height: 225px
+      position: relative
+      background-size: 252px 252px
+      background-color: transparent
+      background-repeat: no-repeat
+      background-position: center
+      overflow: hidden
+      .overlay
+        padding: 0px 24px 0 24px
+        background-color: rgba(255, 255, 255, 0.5)
+        height: 225px
+      .close
+        position: absolute
+        top: 12px
+        right: 30px
+    .top
+      padding-top: 20px
+      text-align: center
+      height: 124px
+      overflow: hidden
+      font-size: 21px
+      font-family: "Roboto", sans-serif
+      font-weight: 500
+      color: rgb(35, 31, 32)
+      p
+        margin: 0
+      a
+        color: #3487D0
 
+    .bottom
+      height: 99px
+      text-align: center
+      p
+        font-size: 17px
+        font-family: "Roboto", sans-serif
+        font-weight: 400
+        color: rgb(88, 89, 91)
+        padding: 0
+        margin: 6px 0
 
 
 

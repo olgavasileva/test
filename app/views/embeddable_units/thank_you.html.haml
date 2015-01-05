@@ -1,1 +1,16 @@
-Thank you!
+:sass
+  .content
+    background-image: url("https://crashmob-development.s3.amazonaws.com/uploads/development/troy/canned_choice_image/image/24/web_greenwall.png")
+    xbackground-image: url("#{@embeddable_unit.survey.questions.last.web_image_url}")
+
+.thank-you
+  .content
+    .close=link_to image_tag("embed/close-cross.png"), embeddable_unit_start_survey_path(@embeddable_unit.uuid)
+    .overlay
+      .top= @embeddable_unit.thank_you_html.html_safe
+      .bottom
+        %p More fun questions at Statisfy
+        =link_to image_tag("embed/download-app.png"), ENV['APP_STORE_LINK']
+  .footer
+    .share
+    .logo

@@ -15,6 +15,27 @@ class EmbeddableUnitsController < ApplicationController
     end
   end
 
+  def summary
+    @embeddable_unit = EmbeddableUnit.find_by uuid:params[:embeddable_unit_uuid]
+    authorize @embeddable_unit
+
+    @response = Response.find params[:response_id]
+  end
+
+  def next_question
+    @embeddable_unit = EmbeddableUnit.find_by uuid:params[:embeddable_unit_uuid]
+    authorize @embeddable_unit
+
+    @question = Question.find params[:question_id]
+    next_question = @embeddable_unit.survey.next_question(@question)
+
+    if next_question
+      redirect_to new_question_response_path(next_question)
+    else
+      redirect_to embeddable_unit_thank_you_path(cookies[:euuid])
+    end
+  end
+
   def thank_you
     @embeddable_unit = EmbeddableUnit.find_by uuid:params[:embeddable_unit_uuid]
     authorize @embeddable_unit
