@@ -15,6 +15,9 @@ class ResponsesController < ApplicationController
     @just_answered = params[:just_answered]
     @show_skip_button = !session[:contest_uuid]
     @show_root_button = !session[:contest_uuid]
+    @embeddable_unit = EmbeddableUnit.find_by uuid: cookies[:euuid]
+
+    render 'embeddable_units/new_response' if @embeddable_unit
   end
 
   def create
@@ -45,7 +48,7 @@ class ResponsesController < ApplicationController
           redirect_to new_question_response_path(next_question)
         else
           if cookies[:euuid]
-            redirect_to embeddable_unit_done_path(cookies[:euuid])
+            redirect_to embeddable_unit_thank_you_path(cookies[:euuid])
           elsif session[:contest_uuid]
             redirect_to contest_vote_path(session[:contest_uuid])
           end
@@ -60,7 +63,8 @@ class ResponsesController < ApplicationController
       @next_question = next_question @response.question
       @show_skip_button = !session[:contest_uuid]
       @show_root_button = !session[:contest_uuid]
-      render "new"
+      @embeddable_unit = EmbeddableUnit.find_by uuid: cookies[:euuid]
+      render @embeddable_unit ? 'embeddable_units/new_response' : "new"
     end
   end
 

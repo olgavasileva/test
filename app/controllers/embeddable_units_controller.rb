@@ -15,9 +15,8 @@ class EmbeddableUnitsController < ApplicationController
     end
   end
 
-  def done
+  def thank_you
     @embeddable_unit = EmbeddableUnit.find_by uuid:params[:embeddable_unit_uuid]
-
     authorize @embeddable_unit
 
     cookies.delete :euuid

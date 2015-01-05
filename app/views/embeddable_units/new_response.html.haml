@@ -1,0 +1,12 @@
+:sass
+  .statisfy_embed
+    width: #{@embeddable_unit.width}px
+    height: #{@embeddable_unit.height}px
+    overflow: hidden
+
+.question-response{class: @response.question.type}
+  = simple_form_for [:question, setup_response(@response)] do |form|
+    = form.association :question, as: :hidden
+    = form.association :user, as: :hidden
+    = form.input :type, as: :hidden
+    = render "embeddable_units/response_fields", form:form, response:@response

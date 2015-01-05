@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141231181859) do
+ActiveRecord::Schema.define(version: 20150105014745) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -194,6 +194,8 @@ ActiveRecord::Schema.define(version: 20141231181859) do
     t.datetime "updated_at"
     t.integer  "width"
     t.integer  "height"
+    t.text     "thank_you_markdown"
+    t.text     "thank_you_html"
   end
 
   add_index "embeddable_units", ["survey_id"], name: "index_embeddable_units_on_survey_id", using: :btree
