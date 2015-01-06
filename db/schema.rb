@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150105200937) do
+ActiveRecord::Schema.define(version: 20150106215553) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -499,19 +499,19 @@ ActiveRecord::Schema.define(version: 20150105200937) do
     t.integer  "studio_id"
     t.integer  "view_count"
     t.integer  "start_count"
-    t.boolean  "target_all",                                        default: false
-    t.boolean  "target_all_followers",                              default: false
-    t.boolean  "target_all_groups",                                 default: false
+    t.boolean  "target_all",                                         default: false
+    t.boolean  "target_all_followers",                               default: false
+    t.boolean  "target_all_groups",                                  default: false
     t.integer  "targeted_reach"
     t.string   "uuid"
-    t.boolean  "anonymous",                                         default: false
-    t.boolean  "currently_targetable",                              default: true
+    t.boolean  "anonymous",                                          default: false
+    t.boolean  "currently_targetable",                               default: true
     t.integer  "target_id"
     t.integer  "share_count"
-    t.decimal  "score",                     precision: 6, scale: 2, default: 0.0
-    t.boolean  "special",                                           default: false
-    t.boolean  "require_comment",                                   default: false
-    t.boolean  "disable_question_controls",                         default: false
+    t.decimal  "score",                     precision: 10, scale: 2, default: 0.0
+    t.boolean  "special",                                            default: false
+    t.boolean  "require_comment",                                    default: false
+    t.boolean  "disable_question_controls",                          default: false
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
