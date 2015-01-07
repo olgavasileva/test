@@ -635,7 +635,7 @@ class TwoCents::Questions < Grape::API
 
 
 
-    desc "Legacy feed request - deprecated - returns a fake question with a title indicating that the app must be upgraded."
+    desc "Legacy feed request - deprecated - depending on an environment variable, returns a fake question with a title indicating that the app must be upgraded or returns some questions."
     params do
       use :auth
 
@@ -649,11 +649,17 @@ class TwoCents::Questions < Grape::API
     ] do
       validate_user!
 
-      error_message = ENV['OUT_OF_DATE_QUESTION_TITLE'] || "Update required.  Please check the app store for an update available within an hour."
-      @questions = [Question.new(id:0, user:Respondent.first, category:Category.first, title:error_message, state:"active", kind:"public", background_image:BackgroundImage.first, trending_index:1)]
+      if ENV['LEGACY_FEED_API'].true?
+        page = declared_params[:page]
+        per_page = page ? declared_params[:per_page] : 15
+
+        @questions = current_user.feed_questions.latest.paginate(page: page, per_page: per_page)
+        @questions.each{|q| q.viewed!}
+      else
+        error_message = ENV['OUT_OF_DATE_QUESTION_TITLE'] || "Update required.  Please check the app store for an update available within an hour."
+        @questions = [Question.new(id:0, user:Respondent.first, category:Category.first, title:error_message, state:"active", kind:"public", background_image:BackgroundImage.first, trending_index:1)]
+      end
     end
-
-
 
 
 
@@ -940,7 +946,7 @@ class TwoCents::Questions < Grape::API
     ] do
       validate_user!
 
-      @question = Question.find_by declared_params[:question_id]
+      @question = Question.find_by id:declared_params[:question_id]
       fail! 401, "That question does not exist." unless @question
       @anonymous = @question.responses.where(user:current_user).last.try(:anonymous)
     end

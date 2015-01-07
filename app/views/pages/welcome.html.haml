@@ -6,6 +6,6 @@
 
 = render 'hero_unit'
 = render 'features'
-/ = render 'works'
+= render 'works' if ENV['SHOW_HOME_PAGE_FEED'].true?
 = render 'contact'
 = render 'twitter_stream'

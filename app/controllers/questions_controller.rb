@@ -30,11 +30,16 @@ class QuestionsController < ApplicationController
     @question = Question.find_by uuid:params[:uuid]
     @question ||= Question.find_by id:params[:uuid]   # 11/4/14 temporary fix for device using ID in stead of UUID in links
 
+
     if @question.present?
       authorize @question
 
-      # Forward to new app unless it's a bot
-      redirect_to File.join(ENV['WEB_APP_URL'], "#/app/question/710") unless browser.bot?
+      if ENV['LEGACY_SOCIAL_LINKS'].true?
+        redirect_to new_question_response_path(@question) unless %w(true 1).include?(ENV['DEVICE_SHARING_REDIRECT'].to_s.downcase) && (browser.iphone? || browser.ipod? || browser.ipad?)
+      else
+        # Forward to new app unless it's a bot
+        redirect_to File.join(ENV['WEB_APP_URL'], "#/app/question/710") unless browser.bot?
+      end
     else
       authorize Question, :index?
       redirect_to :root
