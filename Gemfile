@@ -104,6 +104,8 @@ gem "squeel"                        # Write Active Record queries with fewer str
 
 gem 'rack-cors', require: 'rack/cors'
 
+gem 'activerecord-import'           # Fast bulk database inserts (e.g. creating feed_items for new users)
+
 group :development do
 
   gem 'sqlite3'

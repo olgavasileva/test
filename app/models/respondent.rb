@@ -130,9 +130,11 @@ class Respondent < ActiveRecord::Base
   def reset_feed!
     transaction do
       feed_items.destroy_all
+      items = []
       Question.active.publik.order("created_at ASC").each do |q|
-        FeedItem.create! user:self, question:q, published_at:q.created_at, why: "public"
+        items << FeedItem.new(user:self, question:q, published_at:q.created_at, why: "public")
       end
+      FeedItem.import items
     end
   end
 
