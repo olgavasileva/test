@@ -24,15 +24,15 @@ class StickerPack < ActiveRecord::Base
 
 
   def enabled_stickers
-    Rails.cache.fetch("#{Rails.env}:#{self.id}:stickers".hash.to_s, expires_in: sticker_ttl) do
+    # Rails.cache.fetch("#{Rails.env}:#{self.id}:stickers".hash.to_s, expires_in: sticker_ttl) do
       enabled_stickers = stickers.enabled.where.not(type: 'Background')
-    end
+    # end
   end
 
   def enabled_backgrounds
-    Rails.cache.fetch("#{Rails.env}:#{self.id}:backgrounds".hash.to_s, expires_in: sticker_ttl) do
+    # Rails.cache.fetch("#{Rails.env}:#{self.id}:backgrounds".hash.to_s, expires_in: sticker_ttl) do
       backgrounds = stickers.enabled.where(type: 'Background')
-    end
+    # end
   end
 
   def header_icon_thumb_url
