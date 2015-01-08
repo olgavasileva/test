@@ -650,6 +650,8 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       if ENV['LEGACY_FEED_API'].true?
+        current_user.reset_feed! if current_user.feed_items.count < 50 # 1/8/2015 mitigation
+
         page = declared_params[:page]
         per_page = page ? declared_params[:per_page] : 15
 

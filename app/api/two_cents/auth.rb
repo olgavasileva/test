@@ -57,8 +57,8 @@ class TwoCents::Auth < Grape::API
     params do
       requires :api_signature, type: String, desc:'SAH2(device_vendor_identifier + shared_secret)'
       requires :device_vendor_identifier, type: String, desc:'Unique identifier for the device - should be the same whenever called from the same device'
-      requires :platform, type: String, values: %w{ios}, desc:'Possible values: ios'
-      requires :manufacturer, type: String, desc:'e.g. Apple, Samsung, Atari'
+      requires :platform, type: String, values: %w{ios web}, desc:'Possible values: ios, web'
+      requires :manufacturer, type: String, desc:'e.g. Apple, Samsung, Atari, Dell, Acer'
       requires :model, type: String, desc:'e.g. iPhone 5s'
       requires :os_version, type: String, desc:'e.g. iOS 7.1'
       requires :app_version, type: String, desc:'e.g. 1.0.5'
