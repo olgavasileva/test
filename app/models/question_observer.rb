@@ -19,7 +19,7 @@ class QuestionObserver < ActiveRecord::Observer
           end
 
           user.feed_items << FeedItem.new(question:question, relevance:question.relevance_to(user), why: why)
-          add_and_push_message user, question
+          add_and_push_message user, question unless why == "public"
         end
       end
     end
