@@ -1,3 +1,9 @@
+:coffee
+  # auto advance to the next page after some time
+  next = ->
+    document.getElementById('next').click();
+  setTimeout next, 20*1000
+
 - total_response_count = @response.question.responses.count
 
 - # We only support ImageChoiceQuestions with exactly 2 choices
@@ -6,7 +12,9 @@
   = link_to "Next", embeddable_unit_next_question_path(@embeddable_unit.uuid, @response.question), target: "_self"
 - else
   .summary
-    .title=@response.question.title
+    .title.resize
+      .table
+        .cell=@response.question.title
     .back
     -@response.question.choices.each do |c|
       .choice{class: @response.choice.id == c.id ? :selected : nil}
@@ -15,11 +23,12 @@
           =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive", style:"width: 125px; height: 125px;")
           - if total_response_count > 0
             - percentage = c.responses.count.to_f / total_response_count.to_f
-            .bar-line{style: "width: #{100 * percentage}%"}
-            .percentage=number_to_percentage 100 * percentage, precision: 0
+            .graph{data:{percentage: 100 * percentage}}
+              .bar-line
+              .percentage
           .subtitle=c.title
     .next.prominent
-      =link_to embeddable_unit_next_question_path(@embeddable_unit.uuid, @response.question), target: "_self" do
+      =link_to embeddable_unit_next_question_path(@embeddable_unit.uuid, @response.question), target: "_self", id:"next" do
         =image_tag image_path("embed/next.png")
     .footer
       .share

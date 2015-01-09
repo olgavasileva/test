@@ -17,19 +17,35 @@ body.statisfy_embed
     width: 72px
     height: 32px
 
+
   .title
+    width: 100%
+    height: 56px
+    position: relative
     font-size: 18px
+    line-height: 18px
     font-family: "Roboto", sans-serif
     font-weight: 500
-    color: rgb(35, 31, 32)
-    line-height: 56px
-    text-align: center
-    height: 56px
-    overflow: hidden
+    color: rgba(35, 31, 32, 0.0)
     background-color: #EDEFEF
     background-clip: content-box
     padding: 6px 24px 0 24px
-    width: 100%
+    text-align: center
+
+    .table
+      position: absolute
+      left: 74px
+      top: 5px
+      width: 155px
+      height: 56px
+      display: table
+
+      .cell
+        display: table-cell
+        vertical-align: middle
+        text-align: center
+        opacity: 0.0
+        color: rgb(35, 31, 32)
 
   .back, .next
     width: 24px
