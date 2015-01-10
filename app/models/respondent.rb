@@ -133,10 +133,44 @@ class Respondent < ActiveRecord::Base
     transaction do
       feed_items.destroy_all
       items = []
-      Question.active.publik.order("created_at ASC").each do |q|
-        items << FeedItem.new(user:self, question:q, published_at:q.created_at, why: "public")
+      Question.active.publik.select([:id, :created_at]).order("created_at ASC").each do |q|
+        items << FeedItem.new(user:self, question_id:q.id, published_at:q.created_at, why: "public")
       end
       FeedItem.import items
+    end
+  end
+
+  def feed_needs_updating?
+    feed_items.empty? || feed_items.order("published_at ASC").first.published_at > Date.parse("2014/12/31") # 1/8/2015 mitigation
+  end
+
+  def update_feed_if_needed!
+    if feed_needs_updating?
+      question_ids_to_add = Question.active.publik.pluck(:id) - feed_items.pluck(:question_id)
+
+      transaction do
+        items = []
+        question_ids_to_add.each do |question_id|
+          q = Question.select(:created_at).find_by(id:question_id)
+          items << FeedItem.new(user_id:id, question_id:question_id, published_at:q.created_at, why:"public")
+        end
+        FeedItem.import items
+
+        SkippedItem.where(user_id:id).pluck(:question_id).each do |question_id|
+          feed_item = feed_items.find_by question_id:question_id
+          feed_item.question_skipped! if feed_item
+        end
+
+        Response.where(user_id:id).pluck(:question_id).each do |question_id|
+          feed_item = feed_items.find_by question_id:question_id
+          feed_item.question_answered! if feed_item
+        end
+
+        Question.suspended.pluck(:id).each do |question_id|
+          feed_item = feed_items.find_by question_id:question_id
+          feed_item.suspended! if feed_item
+        end
+      end
     end
   end
 

@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   def index
-    current_user.reset_feed! if current_user.feed_items.count < 50 # 1/8/2015 mitigation
+    current_user.update_feed_if_needed!
 
     per_page = 8
     @questions = policy_scope(Question).latest.kpage(params[:page]).per(per_page)

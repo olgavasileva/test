@@ -57,9 +57,14 @@ class FeedItem < ActiveRecord::Base
     hidden && hidden_reason == 'deleted'
   end
 
+  def suspended!
+    update_attributes hidden:true, hidden_reason:'suspended', hidden_at:Time.current
+  end
 
   def question_answered!
     update_attributes hidden: true, hidden_reason: 'answered', hidden_at: Time.current
+
+    # All of my followers and leaders need to know that on of thier followers or leaders answered their question
     FeedItem.where(question_id:question.id, user_id:user.followers).update_all(why: "leader")
     FeedItem.where(question_id:question.id, user_id:user.leaders).update_all(why: "follower")
   end
