@@ -1,11 +1,10 @@
 class ContestsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:sign_up, :new_user, :vote, :save_vote]
+  skip_after_action :verify_authorized, only: [:exit_contest]
   before_action :maintain_vote_info, only: :save_vote
 
   def exit_contest
-    @contest = Contest.find_by uuid:session[:contest_uuid]
-    authorize @contest
-
+    # No need to actually validate the contest - if they have a contest_uuid in their session and want to remove it, that's OK with us
     session.delete :contest_uuid
     redirect_to :root
   end
