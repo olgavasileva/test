@@ -146,9 +146,9 @@ class Respondent < ActiveRecord::Base
 
   def update_feed_if_needed!
     if feed_needs_updating?
-      question_ids_to_add = Question.active.publik.pluck(:id) - feed_items.pluck(:question_id)
-
       transaction do
+        question_ids_to_add = Question.active.publik.pluck(:id) - feed_items.pluck(:question_id)
+
         items = []
         question_ids_to_add.each do |question_id|
           q = Question.select(:created_at).find_by(id:question_id)
@@ -156,21 +156,25 @@ class Respondent < ActiveRecord::Base
         end
         FeedItem.import items
 
-        SkippedItem.where(user_id:id).pluck(:question_id).each do |question_id|
-          feed_item = feed_items.find_by question_id:question_id
-          feed_item.question_skipped! if feed_item
-        end
-
-        Response.where(user_id:id).pluck(:question_id).each do |question_id|
-          feed_item = feed_items.find_by question_id:question_id
-          feed_item.question_answered! if feed_item
-        end
-
-        Question.suspended.pluck(:id).each do |question_id|
-          feed_item = feed_items.find_by question_id:question_id
-          feed_item.suspended! if feed_item
-        end
+        udpate_feed_statuses!
       end
+    end
+  end
+
+  def udpate_feed_statuses!
+    SkippedItem.where(user_id:id).pluck(:question_id).each do |question_id|
+      feed_item = feed_items.find_by question_id:question_id
+      feed_item.question_skipped! if feed_item
+    end
+
+    Response.where(user_id:id).pluck(:question_id).each do |question_id|
+      feed_item = feed_items.find_by question_id:question_id
+      feed_item.question_answered! if feed_item
+    end
+
+    Question.suspended.pluck(:id).each do |question_id|
+      feed_item = feed_items.find_by question_id:question_id
+      feed_item.suspended! if feed_item
     end
   end
 
