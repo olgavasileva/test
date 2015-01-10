@@ -7,8 +7,6 @@ class User < Respondent
          :recoverable, :timeoutable, :trackable, :validatable,
          authentication_keys:[:login], reset_password_keys:[:login]
 
-  belongs_to :avatar, class_name: "UserAvatar", foreign_key: :user_avatar_id
-
 
 
   # Allow user to log in using username OR email in the 'login' text area

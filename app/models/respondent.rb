@@ -61,6 +61,8 @@ class Respondent < ActiveRecord::Base
 
   has_many :segments, dependent: :destroy, foreign_key: :user_id
 
+  belongs_to :avatar, class_name: "UserAvatar", foreign_key: :user_avatar_id
+
   VALID_USERNAME_REGEX ||= /\A[a-z0-9\-_]{4,50}\z/i
   validates :username,
               presence: true,

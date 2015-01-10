@@ -12,5 +12,9 @@ FactoryGirl.define do
     trait :logged_in do
       user factory: :authorized_user
     end
+
+    trait :anon do
+      user factory: :anonymous
+    end
   end
 end

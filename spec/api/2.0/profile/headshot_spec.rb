@@ -2,7 +2,7 @@ require 'rails_helper'
 include Gravatarify::Base
 
 describe 'GET /profile/headshot' do
-  let(:instance) { FactoryGirl.create(:instance, :logged_in) }
+  let(:instance) { FactoryGirl.create(:instance, :anon) }
   let(:params) { {
     auth_token: instance.user.auth_token,
     user_id: user_id
@@ -25,7 +25,7 @@ describe 'GET /profile/headshot' do
     end
 
     context "When the user has a custom avatar" do
-      let(:instance) { FactoryGirl.create(:instance, :logged_in) }
+      let(:instance) { FactoryGirl.create(:instance, :anon) }
       let(:avatar) { FactoryGirl.create :user_avatar, user:instance.user }
       let(:user_id) {avatar.user.id}
 
