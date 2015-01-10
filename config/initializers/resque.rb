@@ -1,3 +1,2 @@
-redis_url = ENV["REDISCLOUD_URL"] || ENV["OPENREDIS_URL"] || ENV["REDISGREEN_URL"] || ENV["REDISTOGO_URL"] || "localhost:6379:resque/#{Rails.env}"
-uri = URI.parse(redis_url)
-Resque.redis = Redis.new(host: uri.host, port: uri.port, password: uri.password)
+redis_url = ENV["REDISCLOUD_URL"] || "localhost:6379:resque/resque:#{Rails.env}"
+Resque.redis = redis_url
