@@ -29,7 +29,11 @@ class PagesController < ApplicationController
     else
       current_user.update_feed_if_needed!
 
-      @questions = current_user.feed_questions.latest.paginate(page: 1, per_page: 8)
+      @questions = if current_user.anonymous?
+        Question.active.publik.order("created_at DESC").paginate(page: 1, per_page: 8)
+      else
+        current_user.feed_questions.latest.paginate(page: 1, per_page: 8)
+      end
 
       render :welcome, layout: 'welcome'
     end
