@@ -158,10 +158,35 @@ class Question < ActiveRecord::Base
     FeedItem.skipped.where(question_id: self).count
 	end
 
+  def add_and_push_message user
+
+    message = QuestionTargeted.new
+
+    message.user = user
+    message.question = self
+
+    user_name = anonymous? ? "Someone" : user.username
+    message.body = "#{user_name} has a question for you"
+
+    message.save!
+
+    user.instances.where.not(push_token: nil).each do |instance|
+
+      instance.push alert: message.body,
+                    badge: user.messages.count,
+                    sound: true,
+                    other: {  type: message.type,
+                              created_at: message.created_at,
+                              read_at: message.read_at,
+                              question_id: message.question_id,
+                              body: message.body }
+    end
+  end
+
   private
 
-  def add_creation_score
-    self.score ||= 0
-    self.score += comments.present? ? 1.5 : 1.0
-  end
+    def add_creation_score
+      self.score ||= 0
+      self.score += comments.present? ? 1.5 : 1.0
+    end
 end

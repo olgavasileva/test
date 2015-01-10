@@ -30,6 +30,8 @@ module LinkchatApp
       g.assets false   # Don't generate per-controller coffeescript files
     end
 
+    config.autoload_paths += Dir[Rails.root.join('app', 'jobs')]
+
     # For grape (API)
     config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
     config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]

@@ -1,3 +1,5 @@
+require 'resque/server'
+
 LinkchatApp::Application.routes.draw do
   match "/404" => "errors#error404", via: [ :get, :post, :patch, :delete ]
   match "/500" => "errors#error500", via: [ :get, :post, :patch, :delete ]
@@ -148,5 +150,9 @@ LinkchatApp::Application.routes.draw do
 
   mount TwoCents::API =>'/'
   mount GrapeSwaggerRails::Engine => '/docs'
+
+  authenticate :admin_user do
+    mount Resque::Server.new, at: "/jobs"
+  end
 
 end
