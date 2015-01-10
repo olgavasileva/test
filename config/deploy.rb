@@ -41,6 +41,14 @@ set :linked_dirs, %w{log tmp/pids public/uploads}
 # Default value for keep_releases is 5
 set :keep_releases, 2
 
+namespace :monit do
+  task :summary do
+    on roles(:app), in: :sequence, wait: 5 do
+      sudo "monit summary"
+    end
+  end
+end
+
 namespace :deploy do
 
   desc 'Restart application'
@@ -50,7 +58,14 @@ namespace :deploy do
     end
   end
 
+  task :restart_resque_workers do
+    on roles(:app), in: :sequence, wait: 5 do
+      sudo "monit restart all -g resque_workers"
+    end
+  end
+
   after :publishing, :restart
+  after :publishing, :restart_resque_workers
 
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
