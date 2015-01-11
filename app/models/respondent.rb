@@ -86,22 +86,18 @@ class Respondent < ActiveRecord::Base
   end
 
   def following? leader
-    self.followership_relationships.where(leader_id: leader.id).present?
+    leaders.include? leader
   end
 
   def follow! leader
-
-    count = self.leaders.count
-    self.leaders << leader
-
-    if self.leaders.count != count
+    unless leaders.include? leader
+      self.leaders << leader
       add_and_push_message leader
     end
-
   end
 
   def unfollow! leader
-    self.leaders.where(id:leader.id).destroy!
+    followership_relationships.where(leader_id:leader.id).destroy_all
   end
 
   def read_all_messages
@@ -213,5 +209,26 @@ class Respondent < ActiveRecord::Base
 
     def random_number digits
       Random.new.rand(10**(digits-1)..10**digits-1).to_s
+    end
+
+    def add_and_push_message(followed_user)
+
+      message = UserFollowed.new
+
+      message.follower = self
+      message.user = followed_user
+      message.read_at = nil
+
+      if message.save
+        followed_user.instances.where.not(push_token:nil).each do |instance|
+          instance.push alert:"#{username} followed you",
+                        badge:messages.count,
+                        sound:true,
+                        other: {  type: message.type,
+                                  created_at: message.created_at,
+                                  read_at: message.read_at,
+                                  follower_id: message.follower_id }
+        end
+      end
     end
 end

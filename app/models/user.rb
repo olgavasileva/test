@@ -92,26 +92,6 @@ class User < Respondent
 		  self.remember_token = User.encrypt(User.new_remember_token)
     end
 
-    def add_and_push_message(followed_user)
-
-      message = UserFollowed.new
-
-      message.follower_id = self.id
-      message.user_id = followed_user.id
-      message.read_at = nil
-
-      message.save
-
-      followed_user.instances.each do |instance|
-        next unless instance.push_token.present?
-
-        instance.push alert:"#{username} followed you", badge:messages.count, sound:true, other: {type: message.type,
-                                                                          created_at: message.created_at,
-                                                                          read_at: message.read_at,
-                                                                          follower_id: message.follower_id }
-      end
-    end
-
   private
 
     def over_13
