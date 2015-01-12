@@ -124,12 +124,26 @@ class Respondent < ActiveRecord::Base
     return self.messages.where("read_at is ?", nil).count
   end
 
+  # if max_to_add is nil or 0, add them all
+  def append_questions_to_feed! max_to_add = nil
+    transaction do
+      question_ids = Question.active.publik.order("created_at DESC").pluck(:id) - feed_items.pluck(:question_id)
+      question_ids = question_ids[0..max_to_add-1] unless max_to_add.nil?
+
+      items = []
+      Question.where(id:question_ids).select([:id, :created_at]).each do |q|
+        items << FeedItem.new(user:self, question_id:q.id, published_at:q.created_at, why: "public")
+      end
+      FeedItem.import items
+    end
+  end
+
   # Clear and then add all the active public questions to the feed
   def reset_feed!
     transaction do
       feed_items.destroy_all
       items = []
-      Question.active.publik.select([:id, :created_at]).order("created_at ASC").each do |q|
+      Question.active.publik.select([:id, :created_at]).order("created_at DESC").each do |q|
         items << FeedItem.new(user:self, question_id:q.id, published_at:q.created_at, why: "public")
       end
       FeedItem.import items
