@@ -22,6 +22,7 @@ LinkchatApp::Application.routes.draw do
   ActiveAdmin.routes(self)
 
   root 'pages#welcome'
+  get '/home' => 'pages#welcome', defaults: { new_web_app: true }
   get '/community(/:community_id)' => 'communities#join'
   get '/q/:uuid' => 'questions#new_response_from_uuid', as: :question_sharing
   get '/test' => 'pages#test' if Rails.env.development?
