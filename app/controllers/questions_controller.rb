@@ -40,7 +40,7 @@ class QuestionsController < ApplicationController
         redirect_to new_question_response_path(@question) unless %w(true 1).include?(ENV['DEVICE_SHARING_REDIRECT'].to_s.downcase) && (browser.iphone? || browser.ipod? || browser.ipad?)
       else
         # Forward to new app unless it's a bot
-        redirect_to File.join(ENV['WEB_APP_URL'], "#/app/question/710") unless browser.bot?
+        redirect_to File.join(ENV['WEB_APP_URL'], "#/app/question", @question.id.to_s) unless browser.bot?
       end
     else
       authorize Question, :index?

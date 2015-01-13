@@ -165,7 +165,7 @@ class Question < ActiveRecord::Base
     message.user = user
     message.question = self
 
-    user_name = anonymous? ? "Someone" : user.username
+    user_name = anonymous? ? "Someone" : username
     message.body = "#{user_name} has a question for you"
 
     message.save!
