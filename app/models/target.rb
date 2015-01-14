@@ -69,13 +69,13 @@ class Target < ActiveRecord::Base
 
       message = QuestionTargeted.new
 
-      message.user_id = targeted_user.id
-      message.question_id = question.id
+      message.user = targeted_user
+      message.question = question
 
       user_name = question.anonymous? ? "Someone" : question.user.username
       message.body = "#{user_name} has a question for you"
 
-      message.save
+      message.save!
 
       targeted_user.instances.where.not(push_token: nil).each do |instance|
 

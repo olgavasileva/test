@@ -1,5 +1,5 @@
 class Message < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :user, class_name: "Respondent"
 
   default read_at: nil
   default share_count: 0

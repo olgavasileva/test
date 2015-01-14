@@ -1,7 +1,7 @@
 ActiveAdmin.register Scene do
   menu label: "Scenes", parent: 'Studios'
 
-  belongs_to :user, optional:true
+  belongs_to :user, class_name: "Respondent", optional:true
 
   index do
     column :id

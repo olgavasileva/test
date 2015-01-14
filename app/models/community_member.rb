@@ -1,6 +1,6 @@
 class CommunityMember < ActiveRecord::Base
   belongs_to :community
-  belongs_to :user
+  belongs_to :user, class_name: "Respondent"
 
   validates :community_id, presence: true
   validates :user_id,

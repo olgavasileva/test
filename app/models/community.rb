@@ -1,5 +1,5 @@
 class Community < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :user, class_name: "Respondent"
   has_many :members, class_name: 'CommunityMember', dependent: :destroy
   has_many :member_users, through: :members, source: :user
   has_many :communities_targets

@@ -1,5 +1,5 @@
 ActiveAdmin.register FeedItem do
-  belongs_to :user
+  belongs_to :user, class_name: "Respondent"
   config.sort_order = "published_at_desc"
 
   permit_params :published_at, :hidden, :hidden_reason, :hidden_at
