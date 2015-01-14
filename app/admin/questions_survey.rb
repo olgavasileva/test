@@ -16,7 +16,7 @@ ActiveAdmin.register QuestionsSurvey do
 
   form do |f|
     f.inputs do
-      f.input :question
+      f.input :question, collection: Question.order(:title)
       f.input :survey, as: :hidden
     end
     f.actions
