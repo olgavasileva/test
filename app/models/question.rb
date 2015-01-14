@@ -158,11 +158,11 @@ class Question < ActiveRecord::Base
     FeedItem.skipped.where(question_id: self).count
 	end
 
-  def add_and_push_message user
+  def add_and_push_message recipient
 
     message = QuestionTargeted.new
 
-    message.user = user
+    message.user = recipient
     message.question = self
 
     user_name = anonymous? ? "Someone" : user.username
@@ -170,10 +170,10 @@ class Question < ActiveRecord::Base
 
     message.save!
 
-    user.instances.where.not(push_token: nil).each do |instance|
+    recipient.instances.where.not(push_token: nil).each do |instance|
 
       instance.push alert: message.body,
-                    badge: user.messages.count,
+                    badge: recipient.messages.count,
                     sound: true,
                     other: {  type: message.type,
                               created_at: message.created_at,

@@ -62,31 +62,7 @@ class Target < ActiveRecord::Base
         @target_count += 1
       end
 
-      add_and_push_message user, question
+      question.add_and_push_message user
     end
 
-    def add_and_push_message(targeted_user, question)
-
-      message = QuestionTargeted.new
-
-      message.user = targeted_user
-      message.question = question
-
-      user_name = question.anonymous? ? "Someone" : question.user.username
-      message.body = "#{user_name} has a question for you"
-
-      message.save!
-
-      targeted_user.instances.where.not(push_token: nil).each do |instance|
-
-        instance.push alert: message.body,
-                      badge: targeted_user.messages.count,
-                      sound: true,
-                      other: {  type: message.type,
-                                created_at: message.created_at,
-                                read_at: message.read_at,
-                                question_id: message.question_id,
-                                body: message.body }
-      end
-    end
 end
