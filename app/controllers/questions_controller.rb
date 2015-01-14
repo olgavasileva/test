@@ -1,10 +1,15 @@
 class QuestionsController < ApplicationController
   def index
-    current_user.update_feed_if_needed!
+    if ENV['REDIRECT_QUESTIONS_NEW_TO_WEBAPP'].true? && @embeddable_unit.nil?
+      policy_scope(Question)  # satisfy authorization check
+      redirect_to ENV['WEB_APP_URL']
+    else
+      current_user.update_feed_if_needed!
 
-    per_page = 8
-    @questions = policy_scope(Question).latest.kpage(params[:page]).per(per_page)
-    @questions.each{|q| q.viewed!}
+      per_page = 8
+      @questions = policy_scope(Question).latest.kpage(params[:page]).per(per_page)
+      @questions.each{|q| q.viewed!}
+    end
   end
 
   def summary

@@ -4,20 +4,26 @@ class ResponsesController < ApplicationController
   after_action :allow_iframe, only: [:new, :create]
 
   def new
-    @question = Question.find params[:question_id]
-    @question.started!
-
-    @response = @question.responses.new user: current_user
-    @response.build_comment user:current_user
-    authorize @response
-
-    @next_question = next_question @question
-    @just_answered = params[:just_answered]
-    @show_skip_button = !session[:contest_uuid]
-    @show_root_button = !session[:contest_uuid]
     @embeddable_unit = EmbeddableUnit.find_by uuid: cookies[:euuid]
 
-    render 'embeddable_units/new_response' if @embeddable_unit
+    if ENV['REDIRECT_QUESTIONS_NEW_TO_WEBAPP'].true? && @embeddable_unit.nil?
+      authorize Response.new  # satisfy authorization check
+      redirect_to File.join(ENV['WEB_APP_URL'], "#/app/question", params[:question_id])
+    else
+      @question = Question.find params[:question_id]
+      @question.started!
+
+      @response = @question.responses.new user: current_user
+      @response.build_comment user:current_user
+      authorize @response
+
+      @next_question = next_question @question
+      @just_answered = params[:just_answered]
+      @show_skip_button = !session[:contest_uuid]
+      @show_root_button = !session[:contest_uuid]
+
+      render 'embeddable_units/new_response' if @embeddable_unit
+    end
   end
 
   def create
