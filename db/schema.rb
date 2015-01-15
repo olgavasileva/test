@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150106215553) do
+ActiveRecord::Schema.define(version: 20150115002255) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -425,6 +425,12 @@ ActiveRecord::Schema.define(version: 20150106215553) do
     t.datetime "updated_at"
   end
 
+  create_table "languages", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "liked_comments", force: true do |t|
     t.integer  "user_id"
     t.datetime "created_at"
@@ -434,6 +440,16 @@ ActiveRecord::Schema.define(version: 20150106215553) do
 
   add_index "liked_comments", ["comment_id"], name: "index_liked_comments_on_comment_id", using: :btree
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
+
+  create_table "localizations", force: true do |t|
+    t.integer  "language_id"
+    t.integer  "localizable_id"
+    t.string   "localizable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "localizations", ["language_id"], name: "index_localizations_on_language_id", using: :btree
 
   create_table "messages", force: true do |t|
     t.text     "content"
@@ -866,6 +882,16 @@ ActiveRecord::Schema.define(version: 20150106215553) do
 
   add_index "targets_users", ["target_id"], name: "index_targets_users_on_target_id", using: :btree
   add_index "targets_users", ["user_id"], name: "index_targets_users_on_user_id", using: :btree
+
+  create_table "translations", force: true do |t|
+    t.integer  "language_id"
+    t.string   "key"
+    t.string   "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "translations", ["language_id"], name: "index_translations_on_language_id", using: :btree
 
   create_table "user_avatars", force: true do |t|
     t.string   "image"

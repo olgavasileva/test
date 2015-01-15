@@ -11,6 +11,9 @@ class Studio < ActiveRecord::Base
   has_many :stickers, through: :sticker_packs
   has_many :scenes, dependent: :destroy
 
+  has_one :localization, as: :localizable
+  has_one :language, through: :localization
+
   validates :name, uniqueness: true, presence: true
   validates :display_name, presence: true
 
@@ -21,6 +24,9 @@ class Studio < ActiveRecord::Base
 
   scope :featured, -> {where(featured: true)}
 
+  def localize key
+    language.try(:localize, key) || key
+  end
 
   private
     def convert_markdown
