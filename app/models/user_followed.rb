@@ -1,6 +1,6 @@
 class UserFollowed < Message
 
-  belongs_to :follower, class_name: "User"
+  belongs_to :follower, class_name: "Respondent"
 
   def body
     follower = Respondent.find self.follower_id

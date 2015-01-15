@@ -1,7 +1,7 @@
 # Obsolete
 class FollowerTarget < ActiveRecord::Base
   belongs_to :question
-  belongs_to :follower, class_name: 'User'
+  belongs_to :follower, class_name: 'Respondent'
 
   validates :question, presence: true
   validates :follower, presence: true
