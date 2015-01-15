@@ -385,7 +385,7 @@ class TwoCents::Auth < Grape::API
       ] do
 
       validate_instance!
-      instance.user.update_attributes! auth_token:nil
+      instance.user.update_attributes! auth_token:nil if instance.user.present?
       instance.update_attributes! user:nil
 
       {}

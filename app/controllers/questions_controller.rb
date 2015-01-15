@@ -41,11 +41,10 @@ class QuestionsController < ApplicationController
     if @question.present?
       authorize @question
 
-      if ENV['LEGACY_SOCIAL_LINKS'].true?
-        redirect_to new_question_response_path(@question) unless %w(true 1).include?(ENV['DEVICE_SHARING_REDIRECT'].to_s.downcase) && (browser.iphone? || browser.ipod? || browser.ipad?)
+      if browser.bot?
+        redirect_to new_question_response_path(@question)
       else
-        # Forward to new app unless it's a bot
-        redirect_to File.join(ENV['WEB_APP_URL'], "#/app/question", @question.id.to_s) unless browser.bot?
+        redirect_to File.join(ENV['WEB_APP_URL'], "#/app/question", @question.id.to_s)
       end
     else
       authorize Question, :index?
