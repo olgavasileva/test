@@ -6,7 +6,7 @@ class ResponsesController < ApplicationController
   def new
     @embeddable_unit = EmbeddableUnit.find_by uuid: cookies[:euuid]
 
-    if !browser.bot? && ENV['REDIRECT_QUESTIONS_NEW_TO_WEBAPP'].true? && @embeddable_unit.nil?
+    if should_redirect_to_new_webapp?
       authorize Response.new  # satisfy authorization check
       redirect_to File.join(ENV['WEB_APP_URL'], "#/app/question", params[:question_id])
     else
@@ -93,6 +93,10 @@ class ResponsesController < ApplicationController
     def redirect_for_embedded_response euuid, response
       eu = EmbeddableUnit.find_by uuid: euuid
       redirect_to embeddable_unit_summary_path(euuid, response)
+    end
+
+    def should_redirect_to_new_webapp?
+      ENV['REDIRECT_QUESTIONS_NEW_TO_WEBAPP'].true? && !(session[:contest_uuid] || browser.bot? || @embeddable_unit.present?)
     end
 
 end
