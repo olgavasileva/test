@@ -587,7 +587,7 @@ class TwoCents::Questions < Grape::API
 
 
 
-    desc "Search for questions that match some text withing the universe of questions for this user.", {
+    desc 'Search for questions that match some text withing the universe of questions for this user.', {
       notes: <<-END
         This API searches the question text and any choice text and returns them ordered from newest to oldest.
 
@@ -623,13 +623,29 @@ class TwoCents::Questions < Grape::API
     params do
       use :auth
 
-      requires :search_text, type: String, desc: "The text to search for"
-      optional :count, default: 200, type: Integer, desc: "The maximum number of questions to return"
+      requires :search_text, type: String, desc: 'The text to search for'
+      optional :count, default: 200, type: Integer, desc: 'The maximum number of questions to return'
+      optional :include_answered, type: Boolean, desc: 'Include answered questions'
+      optional :include_skipped, type: Boolean, desc: 'Include skipped questions'
     end
     post 'search', jbuilder: 'questions' do
       validate_user!
 
-      @questions = current_user.feed_questions.latest.search_for(declared_params[:search_text]).limit(declared_params[:count])
+      if declared_params[:include_answered]
+        if declared_params[:include_skipped]
+          filtered_questions = current_user.feed_questions_with_skipped_and_answered
+        else
+          filtered_questions = current_user.feed_questions_with_answered
+        end
+      else
+        if declared_params[:include_skipped]
+          filtered_questions = current_user.feed_questions_with_skipped
+        else
+          filtered_questions = current_user.feed_questions
+        end
+      end
+
+      @questions = filtered_questions.latest.search_for(declared_params[:search_text]).limit(declared_params[:count])
       @questions.each{|q| q.viewed!}
     end
 

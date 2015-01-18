@@ -72,6 +72,40 @@ class Respondent < ActiveRecord::Base
 
   before_validation :ensure_username
 
+
+  def feed_questions_with_answered
+    feed_items = FeedItem.arel_table
+    questions  = Question.arel_table
+    Question.joins(:feed_items).where(feed_items[:user_id].eq(self.id)
+      .and(
+          (feed_items[:hidden].eq(false).and(questions[:state].eq('active')))
+              .or(feed_items[:hidden_reason].eq('answered').and(feed_items[:hidden].eq(true)))
+      )
+    )
+  end
+
+  def feed_questions_with_skipped
+    feed_items = FeedItem.arel_table
+    questions  = Question.arel_table
+    Question.joins(:feed_items).where(feed_items[:user_id].eq(self.id)
+      .and(
+        (feed_items[:hidden].eq(false).and(questions[:state].eq('active')))
+         .or(feed_items[:hidden_reason].eq('skipped').and(feed_items[:hidden].eq(true)))
+      )
+    )
+  end
+
+  def feed_questions_with_skipped_and_answered
+    feed_items = FeedItem.arel_table
+    questions  = Question.arel_table
+    Question.joins(:feed_items).where(feed_items[:user_id].eq(self.id)
+      .and((
+          feed_items[:hidden].eq(false).and(questions[:state].eq('active')))
+          .or(feed_items[:hidden_reason].eq('skipped').and(feed_items[:hidden].eq(true))
+          .or(feed_items[:hidden_reason].eq('answered').and(feed_items[:hidden].eq(true))
+          ))))
+  end
+
   default :auth_token do |user|
     Respondent.generate_auth_token
   end
