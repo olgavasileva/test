@@ -37,7 +37,7 @@ class FeedItem < ActiveRecord::Base
   end
 
   def self.question_deleted! question
-    question.feed_items.visible.update_all hidden:true, hidden_reason:'deleted', hidden_at:Time.current, question_id:nil
+    question.feed_items.visible.update_all hidden: true, hidden_reason: 'deleted', hidden_at: Time.current
   end
 
 

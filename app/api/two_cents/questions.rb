@@ -461,10 +461,10 @@ class TwoCents::Questions < Grape::API
       optional :count, default: 20, type: Integer, desc: "The maximum number of questions to return"
       optional :category_ids, type: Array, desc: "Limit questions to only these categories"
     end
-    post 'latest', jbuilder: "latest" do
+    post 'latest', jbuilder: 'latest' do
       validate_user!
 
-      @questions = current_user.feed_questions.latest
+      @questions = current_user.feed_questions.not_suspended.latest
       @questions = @questions.where(category_id: declared_params[:category_ids]) if declared_params[:category_ids]
 
       offset = if declared_params[:cursor] == 0
@@ -681,22 +681,22 @@ class TwoCents::Questions < Grape::API
 
 
 
-    desc "Delete a question"
+    desc 'Delete a question'
     params do
       use :auth
 
-      requires :id, type: Integer, desc: "ID of quesion."
+      requires :id, type: Integer, desc: 'ID of question.'
     end
     delete '/', http_codes:[
-      [200, "400 - Invalid params"],
-      [200, "402 - Invalid auth token"],
-      [200, "403 - Login required"],
-      [200, "2005 - Question does not belong to you."]
+      [200, '400 - Invalid params'],
+      [200, '402 - Invalid auth token'],
+      [200, '403 - Login required'],
+      [200, '2005 - Question does not belong to you.']
     ] do
       validate_user!
 
-      question = current_user.questions.find_by id:params[:id]
-      fail! 2005, "Question does not belong to you." unless question.present?
+      question = current_user.questions.find_by id: params[:id]
+      fail! 2005, 'Question does not belong to you.' unless question.present?
 
       question.suspend!
 
@@ -725,7 +725,7 @@ class TwoCents::Questions < Grape::API
       previous_last_id = params[:previous_last_id]
       count = params[:count]
 
-      questions = user.questions.order(:created_at)
+      questions = user.questions.not_suspended.order(:created_at)
 
       questions = questions.reverse if params[:reverse]
 
