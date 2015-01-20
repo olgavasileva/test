@@ -26,7 +26,9 @@
             .graph{data:{percentage: 100 * percentage}}
               .bar-line
               .percentage
-          .subtitle=c.title
+          .subtitle
+            .table
+              .cell=c.title
     .next.prominent
       =link_to embeddable_unit_next_question_path(@embeddable_unit.uuid, @response.question), target: "_self", id:"next" do
         =image_tag image_path("embed/next.png")
