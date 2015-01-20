@@ -10,12 +10,12 @@ class FeedItem < ActiveRecord::Base
   default hidden: false
   default published_at: lambda { |uq| Time.current }
 
-  scope :hidden, -> {where hidden:true}
-  scope :visible, -> {where hidden:false}
-  scope :skipped, -> {where hidden:true, hidden_reason:'skipped'}
-  scope :answered, -> {where hidden:true, hidden_reason:'answered'}
-  scope :suspended, -> {where hidden:true, hidden_reason:'suspended'}
-  scope :deleted, -> {where hidden:true, hidden_reason:'deleted'}
+  scope :hidden, -> { where hidden: true }
+  scope :visible, -> { where hidden: false }
+  scope :skipped, -> { where hidden: true, hidden_reason: 'skipped' }
+  scope :answered, -> { where hidden: true, hidden_reason: 'answered' }
+  scope :suspended, -> { where hidden: true, hidden_reason: 'suspended' }
+  scope :deleted, -> { where hidden: true, hidden_reason:'deleted'}
 
   validates :user, presence: true
   validates :question, presence: true
