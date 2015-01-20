@@ -988,7 +988,7 @@ class TwoCents::Questions < Grape::API
             "response_count": 0,
             "summary": {
                 "anonymous": null,
-                "choices": [],
+                "choices": [{ ..., "user_answered": true|false }],
                 "comment_count": 0,
                 "creator_id": 2,
                 "creator_name": "Name2",
@@ -1004,8 +1004,7 @@ class TwoCents::Questions < Grape::API
             "title": "Name4",
             "type": null,
             "user_answered": false,
-            "uuid": "Qfbad26b02a6901324a6e3c075421a6ee",
-            "answers": [1, 2, 3]
+            "uuid": "Qfbad26b02a6901324a6e3c075421a6ee"
         }
       END
     }
