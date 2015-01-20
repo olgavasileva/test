@@ -16,17 +16,37 @@ describe 'GET questions/question' do
   end
 
   context 'when have responses to this question by user' do
-    before { @answer = FactoryGirl.create :response, question: question, user: instance.user, choice_id: 1 }
+    before { @choice = FactoryGirl.create :choice, question: question }
+    before { @answer = FactoryGirl.create :response, question: question, user: instance.user, choice_id: @choice.id }
     before { get 'v/2.0/questions/question', params }
-    it { expect(json['answers']).to eq [@answer.choice_id] }
-
-    context 'many answers' do
-      before { @answers = [@answer, FactoryGirl.create(:response, question: question, user: instance.user, choice_id: 2)] }
-      before { get 'v/2.0/questions/question', params }
-      it { expect(json['answers']).to eq @answers.map(&:choice_id) }
+    it 'shows chosen choice' do
+      json['summary']['choices'].each do |choice|
+        expect(choice['user_answered']).to eq true
+      end
     end
 
+    context 'many answers' do
+      before { @choice2 = FactoryGirl.create :choice, question: question }
+      before { @answers = [@answer, FactoryGirl.create(:response, question: question, user: instance.user, choice_id: @choice2.id)] }
+      before { get 'v/2.0/questions/question', params }
+      it 'shows chosen choice' do
+        json['summary']['choices'].each do |choice|
+          expect(choice['user_answered']).to eq true
+        end
+      end
+    end
+
+    context 'many answers, but not all are chosen' do
+      before { @choice2 = FactoryGirl.create :choice, question: question }
+      before { get 'v/2.0/questions/question', params }
+      it 'shows chosen choice' do
+        choices = json['summary']['choices']
+        expect(choices.first['user_answered']).to eq true
+        expect(choices.second['user_answered']).to eq false
+      end
+    end
   end
+
 
   context "When supplying the quetion uuid in stead of the id" do
     let(:params) { {
