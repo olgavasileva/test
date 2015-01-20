@@ -719,13 +719,15 @@ class TwoCents::Questions < Grape::API
     end
     post 'asked' do
       validate_user!
-
       user_id = params[:user_id]
-      user = user_id.present? ? Respondent.find(user_id) : current_user
       previous_last_id = params[:previous_last_id]
       count = params[:count]
 
-      questions = user.questions.order(:created_at)
+      questions = if user_id.present?
+                    Respondent.find(user_id).questions.where anonymous: false
+                  else
+                    current_user.questions
+                  end
 
       questions = questions.reverse if params[:reverse]
 
@@ -771,7 +773,14 @@ class TwoCents::Questions < Grape::API
       previous_last_id = params[:previous_last_id]
       count = params[:count]
 
-      responses = user.responses.order(:created_at)
+      responses = if user_id.present?
+                    user.responses.where anonymous: false
+                  else
+                    user.responses
+                  end
+
+      responses = responses.order(:created_at)
+
       responses = responses.reverse if params[:reverse]
       questions = responses.map(&:question).uniq.compact
 
