@@ -957,7 +957,7 @@ class TwoCents::Questions < Grape::API
     desc "Return a question's information.", {
       notes: <<-END
         Return a question's information.
-
+        If "user_answered" is true then we'll have "answered" field consists of selected choises
         #### Example response
         {
             "category": {
@@ -988,7 +988,8 @@ class TwoCents::Questions < Grape::API
             "title": "Name4",
             "type": null,
             "user_answered": false,
-            "uuid": "Qfbad26b02a6901324a6e3c075421a6ee"
+            "uuid": "Qfbad26b02a6901324a6e3c075421a6ee",
+            "answers": [1, 2, 3]
         }
       END
     }
@@ -996,12 +997,12 @@ class TwoCents::Questions < Grape::API
     params do
       optional :auth_token, type: String, desc: "Obtain this from the instance's API."
 
-      optional :question_id, type: Integer, desc: "ID of question."
-      optional :question_uuid, type: String, desc: "uuid of question"
+      optional :question_id, type: Integer, desc: 'ID of question.'
+      optional :question_uuid, type: String, desc: 'uuid of question'
       mutually_exclusive :question_id, :question_uuid
       optional :user_id, type: Integer, desc: "ID of user for question answer data, defaults to current user's ID."
     end
-    get 'question', jbuilder: "question_info" do
+    get 'question', jbuilder: 'question_info' do
       validate_user! if declared_params[:auth_token]
 
       @question = if declared_params[:question_id]
@@ -1011,6 +1012,8 @@ class TwoCents::Questions < Grape::API
       end
 
       asking_user_id = declared_params[:user_id] || current_user.try(:id)
+
+      @answers = Response.where(user_id: current_user, question: @question).pluck(:choice_id)
 
       @user_answered = asking_user_id ? Respondent.find(asking_user_id).answered_questions.include?(@question) : false
     end
