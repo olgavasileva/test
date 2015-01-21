@@ -29,3 +29,4 @@ json.category do
 end
 
 json.member_community_ids question.user.membership_communities.pluck(:id)
+json.user_answered @answered_questions[question.id] if @answered_questions
