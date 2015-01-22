@@ -441,6 +441,7 @@ class TwoCents::Questions < Grape::API
                       "max_characters": 100,
                       "response_count": 0,
                       "comment_count": 0,
+                      "user_answered": true,
                       "category": {
                           "id": 1,
                           "name": "Category 1"
@@ -457,11 +458,11 @@ class TwoCents::Questions < Grape::API
     params do
       use :auth
 
-      requires :cursor, type: Integer, desc: "0 for first questions, otherwise return last value received"
-      optional :count, default: 20, type: Integer, desc: "The maximum number of questions to return"
-      optional :category_ids, type: Array, desc: "Limit questions to only these categories"
+      requires :cursor, type: Integer, desc: '0 for first questions, otherwise return last value received'
+      optional :count, default: 20, type: Integer, desc: 'The maximum number of questions to return'
+      optional :category_ids, type: Array, desc: 'Limit questions to only these categories'
     end
-    post 'latest', jbuilder: "latest" do
+    post 'latest', jbuilder: 'latest' do
       validate_user!
 
       @questions = current_user.feed_questions.latest
@@ -473,11 +474,13 @@ class TwoCents::Questions < Grape::API
         index = @questions.pluck(:id).index(declared_params[:cursor])
         index.nil? ? 0 : (index + 1)
       end
-
       @questions = @questions.offset(offset).limit(declared_params[:count])
       @cursor = @questions.count > 0 ? @questions.last.id : 0
-
-      @questions.each{|q| q.viewed!}
+      @answered_questions = {}
+      @questions.each do |q|
+        @answered_questions[q.id] = false
+        q.viewed!
+      end
     end
 
 
@@ -646,7 +649,11 @@ class TwoCents::Questions < Grape::API
       end
 
       @questions = filtered_questions.latest.search_for(declared_params[:search_text]).limit(declared_params[:count])
-      @questions.each{|q| q.viewed!}
+      @answered_questions = {}
+      @questions.each do |q|
+        @answered_questions[q.id] = q.user_answered?(current_user)
+        q.viewed!
+      end
     end
 
 
