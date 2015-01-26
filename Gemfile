@@ -142,3 +142,4 @@ end
 
 gem 'rails_12factor',         group: :production
 gem 'sdoc', require: false,   group: :doc
+gem 'social-share-button'
