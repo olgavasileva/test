@@ -29,4 +29,40 @@ namespace :db do
       end
     end
   end
+  def duplicating_responses(question_ids)
+    r1 = Arel::Table.new(:responses, as: 'r1')
+    r2 = Arel::Table.new(:responses, as: 'r2')
+    r3 = r1.join(r2).on(
+        r1[:user_id].eq(r2[:user_id]).and(
+            r1[:question_id].eq(r2[:question_id]).and(
+                r1[:choice_id].eq(r2[:choice_id])
+            )
+        )
+    ).where(r1[:question_id].in(question_ids)).project(r1[:id])
+    Response.where(Response.arel_table[:id].in(r3))
+  end
+  task :clear_duplicate_answers, [:ids] => [:environment] do |_, args|
+    question_ids = args[:ids].split ' '
+    responses = duplicating_responses question_ids
+    if responses.length > 0
+      current_id = nil
+      responses.each do |response|
+        if response.question_id != current_id
+          current_id = response.question_id
+        else
+          response.destroy
+        end
+      end
+    end
+  end
+  namespace :clear_duplicate_answers do
+    task :dry, [:ids] => [:environment] do |_, args|
+      question_ids = args[:ids].split ' '
+      responses = duplicating_responses question_ids
+      question_ids.each do |question_id|
+        duplicate_response_count = responses.where(question_id: question_id).count
+        puts "Question##{question_id} has #{duplicate_response_count} duplicating answers"
+      end
+    end
+  end
 end
