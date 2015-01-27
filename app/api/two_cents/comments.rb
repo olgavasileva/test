@@ -111,8 +111,14 @@ class TwoCents::Comments < Grape::API
           Question.find(params[:question_id])
         end
 
-        comment = commentable.comments.create user:current_user, body:declared_params[:content]
+        comment = commentable.comments.new user:current_user, body:declared_params[:content]
+        comment.user_ip = request.env['REMOTE_ADDR']
 
+        if comment.spam?
+          fail! 200, '400 - Invalid params'
+        else
+          comment.save
+        end
         serialize_comment(comment)
       else
         # act as `GET /comments` for backward-compatibility

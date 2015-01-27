@@ -3,6 +3,7 @@ require 'rails_helper'
 describe :response do
   let(:before_api_call) {}
   let(:request) { -> { post "v/2.0/questions/response", Hash[params].to_json,{"CONTENT_TYPE" => "application/json"}}}
+  before { allow_any_instance_of(TextResponse).to receive(:spam?).and_return false }
   before do
     before_api_call
     request.call
@@ -97,6 +98,21 @@ describe :response do
 
         include_examples :success
       end
+    end
+  end
+  context 'check response for spam' do
+    let(:user) { FactoryGirl.create :user, :authorized }
+    let(:auth_token) { user.auth_token }
+    let(:question) { FactoryGirl.create :text_question }
+    let(:params) { {auth_token: auth_token,
+                    question_id: question.id, text: 'some text with a spam message'} }
+    it { expect(TextResponse.count).not_to eq 0 }
+
+    context 'text has spam message' do
+      before { allow_any_instance_of(TextResponse).to receive(:spam?).and_return true }
+      before { @count = TextResponse.count }
+      before { request.call }
+      it { expect(TextResponse.count).to eq @count }
     end
   end
 end
