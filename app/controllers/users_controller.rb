@@ -165,6 +165,7 @@ class UsersController < ApplicationController
     authorize @user
 
     @question = @user.questions.find params[:question_id] if params[:question_id]
+    @demographics = Quantcast.new params[:question_id] if params[:question_id]
 
     render layout: "pixel_admin"
   end

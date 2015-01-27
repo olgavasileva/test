@@ -1,0 +1,18 @@
+.panel.panel-default
+  .panel-heading
+    %h2.panel-title
+      %i.menu-icon.fa.fa-bar-chart-o
+      %span.mm-text Demographics
+  .panel-body
+    - colors = %w(#1794C0 #183A7B #8A2357 #D1B32D #A84F12 #577638 #5D268F #125FAA)
+    - %w(GENDER AGE CHILDREN INCOME ETHNICITY EDUCATION POLITICALAFFILIATION POLITICALENGAGEMENT).each_with_index do |id, idx|
+      -# MALEAGE FEMALEAGE
+      - info = demographics.info id
+      - if info
+        .col-sm-12.text-right Largest Group and Index
+
+        .col-sm-6=info[:name]
+        .col-sm-6.text-right=info[:largest_bucket][:name]
+
+        .col-sm-6=render "users/index_chart", info: info, color: colors[idx]
+        .col-sm-6=render "users/percentage_chart", info: info

@@ -11,8 +11,7 @@
     .panel-padding.no-padding-vr
       - @recent_responses.each do |r|
         .comment
-          .comment-avatar
-            =gravatar_tag r.user.email, default: :identicon, class: %w(comment-avatar)
+          .comment-avatar=gravatar_tag r.user.email, default: :identicon, size: 32
           .comment-body
             .comment-by
               =r.user.username

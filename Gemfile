@@ -90,6 +90,8 @@ gem 'creek', '~> 1.0.3'             # Configurable streaming aggregator
 gem 'rpush'
 gem 'browser'                       # Browser detection
 
+gem 'lazy_high_charts'              # a simple and extremely flexible way to use HighCharts from ruby code
+
 # pixel admin
 gem 'gritter'
 gem 'morrisjs-rails'                # js: good-looking charts shouldn't be difficult
