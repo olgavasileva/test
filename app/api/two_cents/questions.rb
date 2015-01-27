@@ -688,22 +688,22 @@ class TwoCents::Questions < Grape::API
 
 
 
-    desc 'Delete a question'
+    desc "Delete a question"
     params do
       use :auth
 
-      requires :id, type: Integer, desc: 'ID of question.'
+      requires :id, type: Integer, desc: "ID of quesion."
     end
     delete '/', http_codes:[
-      [200, '400 - Invalid params'],
-      [200, '402 - Invalid auth token'],
-      [200, '403 - Login required'],
-      [200, '2005 - Question does not belong to you.']
+      [200, "400 - Invalid params"],
+      [200, "402 - Invalid auth token"],
+      [200, "403 - Login required"],
+      [200, "2005 - Question does not belong to you."]
     ] do
       validate_user!
 
-      question = current_user.questions.find_by id: params[:id]
-      fail! 2005, 'Question does not belong to you.' unless question.present?
+      question = current_user.questions.find_by id:params[:id]
+      fail! 2005, "Question does not belong to you." unless question.present?
 
       question.suspend!
 

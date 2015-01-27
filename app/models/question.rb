@@ -102,7 +102,7 @@ class Question < ActiveRecord::Base
 
   def suspend!
     transaction do
-      update_attribute :state, 'suspended'
+      update_attribute :state, "suspended"
       FeedItem.question_suspended! self
     end
   end
