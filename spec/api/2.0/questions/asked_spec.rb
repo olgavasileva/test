@@ -26,13 +26,19 @@ describe :asked do
     end
   end
 
-  context "with user_id" do
+  context 'with user_id' do
     let(:user) { FactoryGirl.create(:user) }
     let(:other_params) {{ user_id: user.id }}
     let!(:questions) { FactoryGirl.create_list(:question, count, user: user) }
 
     it "responds with data for all given user's questions" do
       expect(response_body.count).to eq count
+    end
+
+    context 'user has anonymous questions' do
+      let!(:anonymous_question) { FactoryGirl.create :question, user: user, anonymous: true }
+
+      it {expect(response_body.count).to eq count}
     end
   end
 

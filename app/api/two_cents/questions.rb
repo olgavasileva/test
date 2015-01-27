@@ -441,6 +441,7 @@ class TwoCents::Questions < Grape::API
                       "max_characters": 100,
                       "response_count": 0,
                       "comment_count": 0,
+                      "user_answered": true,
                       "category": {
                           "id": 1,
                           "name": "Category 1"
@@ -457,9 +458,9 @@ class TwoCents::Questions < Grape::API
     params do
       use :auth
 
-      requires :cursor, type: Integer, desc: "0 for first questions, otherwise return last value received"
-      optional :count, default: 20, type: Integer, desc: "The maximum number of questions to return"
-      optional :category_ids, type: Array, desc: "Limit questions to only these categories"
+      requires :cursor, type: Integer, desc: '0 for first questions, otherwise return last value received'
+      optional :count, default: 20, type: Integer, desc: 'The maximum number of questions to return'
+      optional :category_ids, type: Array, desc: 'Limit questions to only these categories'
     end
     post 'latest', jbuilder: 'latest' do
       validate_user!
@@ -473,11 +474,13 @@ class TwoCents::Questions < Grape::API
         index = @questions.pluck(:id).index(declared_params[:cursor])
         index.nil? ? 0 : (index + 1)
       end
-
       @questions = @questions.offset(offset).limit(declared_params[:count])
       @cursor = @questions.count > 0 ? @questions.last.id : 0
-
-      @questions.each{|q| q.viewed!}
+      @answered_questions = {}
+      @questions.each do |q|
+        @answered_questions[q.id] = false
+        q.viewed!
+      end
     end
 
 
@@ -646,7 +649,11 @@ class TwoCents::Questions < Grape::API
       end
 
       @questions = filtered_questions.latest.search_for(declared_params[:search_text]).limit(declared_params[:count])
-      @questions.each{|q| q.viewed!}
+      @answered_questions = {}
+      @questions.each do |q|
+        @answered_questions[q.id] = q.user_answered?(current_user)
+        q.viewed!
+      end
     end
 
 
@@ -771,7 +778,14 @@ class TwoCents::Questions < Grape::API
       previous_last_id = params[:previous_last_id]
       count = params[:count]
 
-      responses = user.responses.order(:created_at)
+      responses = if user_id.present?
+                    user.responses.where anonymous: false
+                  else
+                    user.responses
+                  end
+
+      responses = responses.order(:created_at)
+
       responses = responses.reverse if params[:reverse]
       questions = responses.map(&:question).uniq.compact
 
@@ -1020,10 +1034,11 @@ class TwoCents::Questions < Grape::API
     get 'question', jbuilder: 'question_info' do
       validate_user! if declared_params[:auth_token]
 
+      query = Question.eager_load(:responses, choices: [:responses])
       @question = if declared_params[:question_id]
-        Question.find declared_params[:question_id]
+        query.find_by_id!(declared_params[:question_id])
       else
-        Question.find_by_uuid declared_params[:question_uuid]
+        query.find_by_uuid!(declared_params[:question_uuid])
       end
 
       asking_user_id = declared_params[:user_id] || current_user.try(:id)

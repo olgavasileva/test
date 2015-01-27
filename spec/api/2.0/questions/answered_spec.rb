@@ -29,13 +29,19 @@ describe :answered do
     end
   end
 
-  context "with user_id" do
+  context 'with user_id' do
     let(:user) { FactoryGirl.create(:user) }
     let(:other_params) {{ user_id: user.id }}
-    let!(:responses) { questions.map { |q| FactoryGirl.create(:text_response, question: q, user: user) } }
+    let!(:responses) { questions.map { |q| FactoryGirl.create(:text_response, question: q, user: user, anonymous: false) } }
 
     it "responds with data for all given user's answered questions" do
       expect(response_body.count).to eq count
+    end
+
+    context 'user have anonymous responses' do
+      let(:anonymous_response) { FactoryGirl.create :text_response, user: user, anonymous: true }
+
+      it { expect(response_body.count).to eq count }
     end
   end
 

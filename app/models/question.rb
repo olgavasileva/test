@@ -184,6 +184,10 @@ class Question < ActiveRecord::Base
     end
   end
 
+  def user_answered?(user)
+    users.include?(user)
+  end
+
   private
 
     def add_creation_score
