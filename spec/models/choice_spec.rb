@@ -29,10 +29,10 @@ describe "All Choice Types" do
       subject.reload
     end
 
-    it { expect(subject.choices.first.top_count).to eq 2 }
-    it { expect(subject.choices.last.top_count).to eq 3 }
-    it { expect(subject.choices.first.response_ratio).to eq 2/5.0 }
-    it { expect(subject.choices.last.response_ratio).to eq 3/5.0 }
+    it { expect(subject.choices.first.top_count).to eq 11 }
+    it { expect(subject.choices.last.top_count).to eq 14 }
+    it { expect(subject.choices.first.response_ratio).to eq 11/50.0 }
+    it { expect(subject.choices.last.response_ratio).to eq 14/50.0 }
   end
 
   describe TextChoice do
