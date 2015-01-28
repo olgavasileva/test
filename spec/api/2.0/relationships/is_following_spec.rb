@@ -4,7 +4,7 @@ describe 'relationships/is_following' do
   let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let(:user) { FactoryGirl.create(:user) }
   let(:params) { {
-    auth_token: instance.user.auth_token,
+    auth_token: instance.auth_token,
     user_id: user.id
   } }
   let(:request) { -> { get 'v/2.0/relationships/is_following', params } }

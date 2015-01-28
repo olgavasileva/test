@@ -2,9 +2,9 @@ require 'rails_helper'
 include Gravatarify::Base
 
 describe 'GET /profile/headshot' do
-  let(:instance) { FactoryGirl.create(:instance, :anon) }
+  let(:instance) { FactoryGirl.create(:instance, :anon, :logged_in) }
   let(:params) { {
-    auth_token: instance.user.auth_token,
+    auth_token: instance.auth_token,
     user_id: user_id
   } }
   let(:request) { -> { get 'v/2.0/profile/headshot', params }}
@@ -25,7 +25,7 @@ describe 'GET /profile/headshot' do
     end
 
     context "When the user has a custom avatar" do
-      let(:instance) { FactoryGirl.create(:instance, :anon) }
+      let(:instance) { FactoryGirl.create(:instance, :anon, :logged_in) }
       let(:avatar) { FactoryGirl.create :user_avatar, user:instance.user }
       let(:user_id) {avatar.user.id}
 
@@ -42,7 +42,8 @@ describe 'GET /profile/headshot' do
 
   context "With the id of another user" do
     let(:user_id) {user.id}
-    let(:user) {FactoryGirl.create :user}
+    let(:instance) {FactoryGirl.create :instance, :logged_in}
+    let(:user) {instance.user}
 
     context "When the user does not have a custom avatar" do
       it {expect(response.status).to eq 200}

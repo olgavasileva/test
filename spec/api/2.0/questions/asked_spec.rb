@@ -5,7 +5,7 @@ describe :asked do
   let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let!(:questions) { FactoryGirl.create_list(:question, count, user: instance.user) }
   let(:common_params) { {
-    auth_token: instance.user.auth_token
+    auth_token: instance.auth_token
   } }
   let(:other_params) {{ }}
   let(:params) { common_params.merge(other_params) }

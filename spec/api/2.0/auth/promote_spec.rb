@@ -33,8 +33,8 @@ describe :promote do
       end
 
       context "With an auth token from a User (not an anonymous user)" do
-        let(:user) {FactoryGirl.create :user}
-        let(:auth_token) {user.auth_token}
+        let(:instance) {FactoryGirl.create :instance, :logged_in}
+        let(:auth_token) {instance.auth_token}
 
         it {expect(response.status).to eq 200}
         it {expect(json['error_code']).to eq 1012}
@@ -43,7 +43,8 @@ describe :promote do
 
       context "With an auth token from an anonymous user" do
         let(:anonymous) {FactoryGirl.create :anonymous}
-        let(:auth_token) {anonymous.auth_token}
+        let(:instance) {FactoryGirl.create :instance, :logged_in, user: anonymous}
+        let(:auth_token) {instance.auth_token}
 
         it {expect(response.status).to eq 201}
         it {expect(json).to_not be_nil}
@@ -51,12 +52,12 @@ describe :promote do
         it {expect(json['error_message']).to be_nil}
 
         it "The old auth_token should not work" do
-          expect(Respondent.find_by auth_token:auth_token).to be_nil
+          expect(Instance.find_by auth_token:auth_token).to be_nil
           expect(auth_token).not_to eq json["auth_token"]
         end
 
         it "The resulting user should have the same id as the Anonymous user" do
-          user = User.find_by auth_token:json["auth_token"]
+          user = Instance.find_by(auth_token:json["auth_token"]).user
           expect(user.id).to eq anonymous.id
         end
 

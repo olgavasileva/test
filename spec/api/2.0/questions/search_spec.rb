@@ -11,9 +11,10 @@ describe :search do
     let(:search_text) { "Some Text" }
     let(:count) { 10 }
 
-    context "With an authorized instance" do
-      let(:auth_token) { user.auth_token }
-      let(:user) { FactoryGirl.create :user, :authorized }
+    context "With a logged in user" do
+      let(:auth_token) {instance.auth_token}
+      let(:instance) {FactoryGirl.create :instance, :logged_in}
+      let(:user) {instance.user}
 
       context "With some questions" do
         let(:q1) { FactoryGirl.create :text_choice_question, title: "Would you like to dance?" }

@@ -17,9 +17,10 @@ describe :profile do
       it {expect(JSON.parse(response.body)['error_message']).to match /Invalid auth token/}
     end
 
-    context "With an authorized user" do
-      let(:auth_token) {user.auth_token}
-      let(:user) {FactoryGirl.create :user, :authorized}
+    context "With a logged in user" do
+      let(:auth_token) {instance.auth_token}
+      let(:instance) {FactoryGirl.create :instance, :logged_in}
+      let(:user) {instance.user}
 
       context "With anothe user" do
         let(:other_user) {FactoryGirl.create :user}

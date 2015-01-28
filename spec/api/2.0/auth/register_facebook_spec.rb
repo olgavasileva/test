@@ -91,7 +91,7 @@ describe :register_facebook do
                 it {response.status.should eq 201}
                 it {json['error_code'].should be_nil}
                 it {json['error_message'].should be_nil}
-                it {json['auth_token'].should eq instance.reload.user.auth_token}
+                it {json['auth_token'].should eq instance.reload.auth_token}
                 it {json['user_id'].should eq instance.reload.user.id}
                 it {instance.reload.user.should eq authentication.user}
                 it {instance.reload.user.authentications.find_by(uid:fid).id.should eq authentication.id}
@@ -115,7 +115,7 @@ describe :register_facebook do
                   it {json['error_message'].should be_nil}
                   it {User.find_by(email:email).should_not be_nil}
                   it {Instance.find_by(uuid:instance_token).user.id.should eq User.find_by(email:email).id}
-                  it {expect(json['auth_token']).to eq Instance.find_by(uuid:instance_token).user.auth_token}
+                  it {expect(json['auth_token']).to eq Instance.find_by(uuid:instance_token).auth_token}
                 end
               end
             end

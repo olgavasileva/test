@@ -14,9 +14,10 @@ describe :latest do
     let(:cursor) {0}
     let(:count) {10}
 
-    context "With an authorized user" do
-      let(:auth_token) {user.auth_token}
-      let(:user) {FactoryGirl.create :user, :authorized}
+    context "With a logged in user" do
+      let(:auth_token) {instance.auth_token}
+      let(:instance) {FactoryGirl.create :instance, :logged_in}
+      let(:user) {instance.user}
 
       context "With one of each type of question" do
         include_context :shared_questions
@@ -226,7 +227,7 @@ describe :latest do
           let(:text_choice_response) {FactoryGirl.create :text_choice_response, question:text_choice_question, choice:text_choice1}
           let(:user) {text_choice_response.user}
 
-          it {expect(json['questions'].count).to eq all_questions.count - 1}
+          it {expect(json['questions'].count).to eq all_questions.count}
           it {expect(json['questions'][3]['id']).to eq multiple_choice_question.id}
           it {expect(json['questions'][2]['id']).to eq image_choice_question.id}
         end

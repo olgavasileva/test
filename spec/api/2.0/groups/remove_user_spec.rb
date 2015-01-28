@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'groups/remove_user' do
   let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let(:common_params) { {
-    auth_token: instance.user.auth_token
+    auth_token: instance.auth_token
   } }
   let(:response_body) { JSON.parse(response.body) }
   let(:group) { FactoryGirl.create(:group, user: instance.user) }

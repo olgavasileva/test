@@ -5,7 +5,7 @@ describe 'relationships/followable' do
   let(:users) { FactoryGirl.create_list(:user, 16) }
   let!(:following) { instance.user.leaders = users.sample(8) }
   let(:common_params) { {
-    auth_token: instance.user.auth_token
+    auth_token: instance.auth_token
   } }
   let(:request) { -> { get 'v/2.0/relationships/followable', params } }
   let(:response_body) { JSON.parse(response.body) }

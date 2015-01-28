@@ -106,14 +106,6 @@ class Respondent < ActiveRecord::Base
           ))))
   end
 
-  default :auth_token do |user|
-    Respondent.generate_auth_token
-  end
-
-  def regenerate_auth_token
-    self.auth_token = Respondent.generate_auth_token
-  end
-
   # Comments made by other users about this user's questions and responses
   def comments_on_questions_and_responses
     Comment.where id:(comments_on_its_questions.pluck("comments.id") + comments_on_its_responses.pluck("comments.id"))
@@ -235,10 +227,6 @@ class Respondent < ActiveRecord::Base
   end
 
   private
-    def self.generate_auth_token
-       "A"+UUID.new.generate
-    end
-
     def ensure_username
       if username.nil?
         self.username = random_username

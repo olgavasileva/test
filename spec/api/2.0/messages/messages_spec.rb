@@ -27,8 +27,9 @@ describe :messages do
     end
 
     context "With a logged in user" do
-      let(:auth_token) {user.auth_token}
-      let(:user) {FactoryGirl.create :user, :authorized}
+      let(:auth_token) {instance.auth_token}
+      let(:instance) {FactoryGirl.create :instance, :logged_in}
+      let(:user) {instance.user}
 
       context "With no messages" do
         it {expect(json['number_of_unread_messages']).to eq 0}
