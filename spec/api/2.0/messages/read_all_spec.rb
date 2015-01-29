@@ -24,9 +24,10 @@ describe :read do
       it {expect(JSON.parse(response.body)['error_message']).to match /Invalid auth token/}
     end
 
-    context "With an authorized user" do
-      let(:user) {FactoryGirl.create :user, :authorized}
-      let(:auth_token) {user.auth_token}
+    context "With a logged in user" do
+      let(:auth_token) {instance.auth_token}
+      let(:instance) {FactoryGirl.create :instance, :logged_in}
+      let(:user) {instance.user}
 
       context "When a user has all types of messages" do
 

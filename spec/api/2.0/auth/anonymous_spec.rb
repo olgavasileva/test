@@ -36,7 +36,7 @@ describe :anonymous do
 
       it "The user should be tied to the instance" do
         instance = Instance.find_by uuid:instance_token
-        respondent = Respondent.find_by auth_token:json['auth_token']
+        respondent = Instance.find_by(auth_token:json['auth_token']).user
         expect(instance.user).to eq respondent
       end
     end

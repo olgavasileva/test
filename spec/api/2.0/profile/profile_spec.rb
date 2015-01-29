@@ -13,36 +13,46 @@ describe :profile do
       let(:auth_token) {"INVALID"}
 
       it {expect(response.status).to eq 200}
-      it {expect(JSON.parse(response.body)['error_code']).to eq 402}
-      it {expect(JSON.parse(response.body)['error_message']).to match /Invalid auth token/}
+      it {expect(json['error_code']).to eq 402}
+      it {expect(json['error_message']).to match /Invalid auth token/}
     end
 
-    context "With an authorized user" do
-      let(:auth_token) {user.auth_token}
-      let(:user) {FactoryGirl.create :user, :authorized}
+    context "With a logged in user" do
+      let(:auth_token) {instance.auth_token}
+      let(:instance) {FactoryGirl.create :instance, :logged_in}
 
-      context "With anothe user" do
+      context "With another user" do
         let(:other_user) {FactoryGirl.create :user}
+        let(:user) {instance.user}
 
         let(:before_api_call) {
           other_user.follow! user
         }
 
-        it {expect(JSON.parse(response.body)['profile'].count).to eq 8}
+        it {expect(json["profile"].keys).to match_array %w[username email pro user_id member_since number_of_asked_questions number_of_answered_questions number_of_comments_left number_of_followers]}
+        it {expect(json["profile"]["pro"]).to eq false}
+
+        context "When the user is a pro" do
+          let(:instance) {FactoryGirl.create :instance, :logged_in, user: user}
+          let(:user) {FactoryGirl.create :user, :pro}
+
+          it {expect(json["profile"]["pro"]).to eq true}
+        end
+
         context "With no questions answered" do
-          it {expect(JSON.parse(response.body)['profile']['number_of_answered_questions']).to eq 0}
+          it {expect(json['profile']['number_of_answered_questions']).to eq 0}
         end
         context "With no questions asked" do
-          it {expect(JSON.parse(response.body)['profile']['number_of_asked_questions']).to eq 0}
+          it {expect(json['profile']['number_of_asked_questions']).to eq 0}
         end
         context "With no comments left" do
-          it {expect(JSON.parse(response.body)['profile']['number_of_comments_left']).to eq 0}
+          it {expect(json['profile']['number_of_comments_left']).to eq 0}
         end
         context "With no comments left" do
-          it {expect(JSON.parse(response.body)['profile']['number_of_comments_left']).to eq 0}
+          it {expect(json['profile']['number_of_comments_left']).to eq 0}
         end
         context "With one follower" do
-          it {expect(JSON.parse(response.body)['profile']['number_of_followers']).to eq 1}
+          it {expect(json['profile']['number_of_followers']).to eq 1}
         end
 
         context "with user_id param" do
@@ -53,7 +63,7 @@ describe :profile do
           } }
 
           it "returns data for that user" do
-            response_body = JSON.parse(response.body)
+            response_body = json
             expect(response_body['profile']['user_id']).to eq other_user.id
           end
         end

@@ -4,7 +4,7 @@ describe 'POST questions/start' do
   let(:instance) { FactoryGirl.create(:instance, :logged_in, :can_push) }
   let(:question) { FactoryGirl.create(:question) }
   let(:params) { {
-    auth_token: instance.user.auth_token,
+    auth_token: instance.auth_token,
     question_id: question.id
   } }
   let(:request) { -> { post 'v/2.0/questions/start', params } }

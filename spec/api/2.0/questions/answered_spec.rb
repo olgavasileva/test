@@ -7,7 +7,7 @@ describe :answered do
   let!(:responses) { questions.map { |q| FactoryGirl.create(:text_response, question: q, user: instance.user) } }
   let(:ordered_question_ids) { responses.map(&:question_id) }
   let(:common_params) { {
-    auth_token: instance.user.auth_token
+    auth_token: instance.auth_token
   } }
   let(:other_params) {{ }}
   let(:params) { common_params.merge(other_params) }

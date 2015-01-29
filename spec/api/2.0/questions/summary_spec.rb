@@ -25,9 +25,10 @@ describe :summary do
       it {expect(JSON.parse(response.body)['error_message']).to match /Invalid auth token/}
     end
 
-    context "With an authorized user" do
-      let(:auth_token) {user.auth_token}
-      let(:user) {FactoryGirl.create :user, :authorized}
+    context "With a logged in user" do
+      let(:auth_token) {instance.auth_token}
+      let(:instance) {FactoryGirl.create :instance, :logged_in}
+      let(:user) {instance.user}
 
       question_types = %i[question image_question text_question
         choice_question text_choice_question image_choice_question

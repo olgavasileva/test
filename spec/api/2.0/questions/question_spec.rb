@@ -4,7 +4,7 @@ describe 'GET questions/question' do
   let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let(:question) { FactoryGirl.create(:question) }
   let(:params) { {
-      auth_token: instance.user.auth_token,
+      auth_token: instance.auth_token,
       question_id: question.id
   } }
   before { get 'v/2.0/questions/question', params }
@@ -50,7 +50,7 @@ describe 'GET questions/question' do
 
   context "When supplying the quetion uuid in stead of the id" do
     let(:params) { {
-        auth_token: instance.user.auth_token,
+        auth_token: instance.auth_token,
         question_uuid: question.uuid
     } }
 

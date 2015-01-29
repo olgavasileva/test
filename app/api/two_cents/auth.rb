@@ -236,8 +236,9 @@ class TwoCents::Auth < Grape::API
 
       user.save!
 
-      instance.update_attributes! user_id:user.id
-      {auth_token:user.auth_token, user_id: user.id}
+      instance.update_attributes! auth_token: "A"+UUID.new.generate, user: user
+
+      {auth_token: instance.auth_token, user_id: user.id}
     end
 
     desc "Register as an anonymous user", {
@@ -262,9 +263,9 @@ class TwoCents::Auth < Grape::API
       user = Anonymous.new
       fail! 1011, user.errors.full_messages.join(", ") unless user.save
 
-      instance.update_attributes! user:user
+      instance.update_attributes! auth_token: "A"+UUID.new.generate, user: user
 
-      {auth_token:user.auth_token, username:user.username, email:user.email, user_id:user.id}
+      {auth_token: instance.auth_token, username: user.username, email: user.email, user_id: user.id}
     end
 
     desc "Promote an anonymous user to an authenticatable user", {
@@ -302,21 +303,24 @@ class TwoCents::Auth < Grape::API
       fail! 1002, "This email address is already registered, try again." if User.find_by email:declared_params[:email]
       fail! 1009, "This username is already taken, try again." if User.find_by username:declared_params[:username]
 
-      user.update_attribute :type, "User"
-      user = User.find user.id
-      user.name = declared_params[:name]
-      user.email = declared_params[:email]
-      user.username = declared_params[:username]
-      user.password = declared_params[:password]
-      user.password_confirmation = declared_params[:password]
-      user.birthdate = Date.strptime(declared_params[:birthdate], '%Y-%m-%d')
-      user.gender = declared_params[:gender]
-      user.regenerate_auth_token
+      ActiveRecord::Base.transaction do
+        user.update_attribute :type, "User"
+        user = User.find user.id
+        user.name = declared_params[:name]
+        user.email = declared_params[:email]
+        user.username = declared_params[:username]
+        user.password = declared_params[:password]
+        user.password_confirmation = declared_params[:password]
+        user.birthdate = Date.strptime(declared_params[:birthdate], '%Y-%m-%d')
+        user.gender = declared_params[:gender]
 
-      fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
-      fail! 1011, user.errors.full_messages.join(", ") unless user.save
+        fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
+        fail! 1011, user.errors.full_messages.join(", ") unless user.save
 
-      { auth_token: user.auth_token, user_id: user.id }
+        @instance.update_attributes! auth_token: "A"+UUID.new.generate
+      end
+
+      { auth_token: @instance.auth_token, user_id: user.id }
     end
 
 
@@ -362,10 +366,9 @@ class TwoCents::Auth < Grape::API
         fail! 1008, "Login Unsuccessful. The username and password you entered did not match our records. Please double-check and try again."
       end
 
-      instance.update_attributes! user:user
-      user.update_attributes! auth_token:"A"+UUID.new.generate
+      instance.update_attributes! auth_token: "A"+UUID.new.generate, user: user
 
-      {auth_token:user.auth_token, email:user.email, username:user.username, user_id:user.id}
+      {auth_token: instance.auth_token, email: user.email, username: user.username, user_id: user.id}
     end
 
 
@@ -385,8 +388,7 @@ class TwoCents::Auth < Grape::API
       ] do
 
       validate_instance!
-      instance.user.update_attributes! auth_token:nil if instance.user.present?
-      instance.update_attributes! user:nil
+      instance.update_attributes! auth_token: nil, user: nil
 
       {}
     end

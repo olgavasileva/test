@@ -4,7 +4,7 @@ describe 'PUT /read_multiple' do
   let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let!(:messages) { FactoryGirl.create_list(:message, 4, user: instance.user) }
   let(:params) {{
-    auth_token: instance.user.auth_token,
+    auth_token: instance.auth_token,
     ids: messages.map(&:id)
   }}
   let(:response_body) { JSON.parse(response.body) }

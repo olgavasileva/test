@@ -18,9 +18,10 @@ describe :myfeed do
     let(:index) {0}
     let(:count) {10}
 
-    context "With an authorized instance" do
-      let(:auth_token) {user.auth_token}
-      let(:user) {FactoryGirl.create :user, :authorized}
+    context "With a logged in user" do
+      let(:auth_token) {instance.auth_token}
+      let(:instance) {FactoryGirl.create :instance, :logged_in}
+      let(:user) {instance.user}
 
       context "With a question not in my feed" do
         let(:q) { FactoryGirl.create :text_question, user:asker }

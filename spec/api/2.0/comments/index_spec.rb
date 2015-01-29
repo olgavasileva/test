@@ -9,7 +9,7 @@ describe 'GET /comments' do
   let(:question) { answer.question }
 
   let(:params) { {
-    auth_token: instance.user.auth_token,
+    auth_token: instance.auth_token,
     question_id: question.id
   } }
   let(:response_body) { JSON.parse(response.body) }

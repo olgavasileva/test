@@ -5,7 +5,7 @@ describe 'POST /comments' do
   let(:question) { parent.commentable }
   let!(:parent) { FactoryGirl.create :text_question_comment }
   let(:params) { {
-    auth_token: instance.user.auth_token,
+    auth_token: instance.auth_token,
     question_id: question.id,
     parent_id: parent.id,
     content: "tl;dr"

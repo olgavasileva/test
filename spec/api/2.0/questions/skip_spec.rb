@@ -4,7 +4,7 @@ describe 'PUT questions/skip' do
   let(:instance) { FactoryGirl.create(:instance, :logged_in, :can_push) }
   let(:question) { FactoryGirl.create(:question, kind: 'public') }
   let(:params) { {
-    auth_token: instance.user.auth_token,
+    auth_token: instance.auth_token,
     question_id: question.id
   } }
   let(:response_body) { JSON.parse(response.body) }
@@ -20,7 +20,7 @@ describe 'PUT questions/skip' do
 
   context "with invalid question ID" do
     let(:params) { {
-      auth_token: instance.user.auth_token,
+      auth_token: instance.auth_token,
       question_id: -1
     } }
 
