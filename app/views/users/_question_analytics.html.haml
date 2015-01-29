@@ -10,7 +10,7 @@
           .row.response
             %div= render "questions/response_fields", question:question
       - if @demographics
-        = render 'users/demographics', demographics: @demographics
+        #demographics= render 'users/demographics', demographics: @demographics
     .col-sm-4
       .panel.panel-default
         .panel-heading

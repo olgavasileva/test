@@ -165,7 +165,9 @@ class UsersController < ApplicationController
     authorize @user
 
     @question = @user.questions.find params[:question_id] if params[:question_id]
-    @demographics = Quantcast.new params[:question_id] if params[:question_id]
+    @demographics = Quantcast.new @question if @question
+    session[:use_sample_demographics_data] = params[:sample].to_s.true?
+    @demographics.use_sample_data = session[:use_sample_demographics_data] if @demographics
 
     render layout: "pixel_admin"
   end
@@ -175,6 +177,21 @@ class UsersController < ApplicationController
     authorize @user
 
     @question = @user.questions.find params[:question_id] if params[:question_id]
+    @demographics = Quantcast.new @question if @question
+    @demographics.use_sample_data = session[:use_sample_demographics_data] if @demographics
+
+    render layout: false
+  end
+
+  def demographics
+    @user = User.find params[:id]
+    authorize @user
+
+    @question = @user.questions.find params[:question_id] if params[:question_id]
+    @choice = @question.choices.find params[:choice_id] if params[:choice_id] if @question
+    @demographics = Quantcast.new @question, @choice if @question
+    @demographics.use_sample_data = session[:use_sample_demographics_data] if @demographics
+
     render layout: false
   end
 

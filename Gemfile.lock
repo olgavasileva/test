@@ -564,6 +564,7 @@ DEPENDENCIES
   easy_as_pie
   factory_girl_rails
   faker
+  faraday
   figaro
   fog
   font-awesome-rails
