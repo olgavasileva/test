@@ -180,7 +180,7 @@ class TwoCents::Auth < Grape::API
 
       instance.update_attributes! user:user
 
-      {auth_token:user.auth_token, user_id: user.id}
+      {auth_token: instance.auth_token, user_id: user.id}
     end
 
 
