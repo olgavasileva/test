@@ -2,11 +2,7 @@ class MoveAuthTokenBackToInstance < ActiveRecord::Migration
   def up
     add_column :instances, :auth_token, :string
 
-    begin
-      Instance.reset_column_information
-      Instance.all.each {|instance| instance.update_attributes auth_token: instance.user.auth_token if instance.user}
-    rescue Exception => e
-    end
+    execute "UPDATE instances i, users u SET i.auth_token=u.auth_token WHERE u.id=i.user_id"
 
     remove_column :users, :auth_token
   end
@@ -14,11 +10,7 @@ class MoveAuthTokenBackToInstance < ActiveRecord::Migration
   def down
     add_column :users, :auth_token, :string
 
-    begin
-      User.reset_column_information
-      Instance.all.each {|instance| instance.user.update_attributes auth_token: instance.auth_token if instance.user}
-    rescue Exception => e
-    end
+    execute "UPDATE users u, instances i SET u.auth_token=i.auth_token WHERE i.user_id=u.id"
 
     remove_column :instances, :auth_token
   end
