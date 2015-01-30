@@ -31,4 +31,8 @@ class OrderResponse < Response
   def top_choice
     choice_responses.sort_by(&:position).first.choice
   end
+
+  def csv_data
+    [top_choice ? "Choice id #{top_choice.id}: #{top_choice.title}" : nil]
+  end
 end

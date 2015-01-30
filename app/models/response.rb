@@ -18,6 +18,11 @@ class Response < ActiveRecord::Base
     "Override me!"
   end
 
+  def csv_data
+    ["Override me!"]
+  end
+
+
   protected
 
     def record_analytics

@@ -11,7 +11,7 @@ class Question < ActiveRecord::Base
 	has_many :packs, through: :inclusions
 	has_many :sharings, dependent: :destroy
 	has_many :responses, dependent: :destroy
-  has_many :response_users, through: :responses, source: :user
+  has_many :respondents, through: :responses, source: :user
   has_many :users,  through: :responses
 	has_many :feed_items, dependent: :destroy
   has_many :skip_users, -> {where "feed_items_v2.hidden" => true, "feed_items_v2.hidden_reason" => 'skipped'}, through: :feed_items, source: :user
@@ -185,6 +185,10 @@ class Question < ActiveRecord::Base
 
   def user_answered?(user)
     users.include?(user)
+  end
+
+  def csv_columns
+    ["Question #{id}: #{title}"]
   end
 
   private
