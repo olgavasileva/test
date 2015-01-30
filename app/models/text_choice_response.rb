@@ -12,6 +12,6 @@ class TextChoiceResponse < Response
   end
 
   def csv_data
-    [choice ? "Choice id #{id}: #{choice.title}" : nil]
+    [choice.try(:title)]
   end
 end

@@ -88,9 +88,10 @@ ActiveAdmin.register Contest do
         csv << []
 
         # Build the columns row
-        columns = ["User ID", "Age", "Gender"]
+        columns = ["User ID", "username", "Age", "Gender"]
         survey.questions.each do |q|
-          columns << nil # blank column before each question
+          columns << nil  # blank column before each question
+          columns << "Response ID"
           columns += q.csv_columns
         end
 
@@ -98,21 +99,24 @@ ActiveAdmin.register Contest do
 
         # Build a line for each respondent
         contest.key_question.respondents.each do |respondent|
-          line = [respondent.id, respondent.try(:age), respondent.try(:gender)]
           contest.key_question.responses.where(user:respondent).order(:created_at).each_with_index do |key_response, index|
+            line = [respondent.id, respondent.username, respondent.age, respondent.gender]
             survey.questions.each do |question|
               responses = question.responses.where(user:respondent)
 
-              line << nil # blank column before each question
+              line << nil  # blank column before each question
+
               if responses.count > index
+                line << responses[index].id
                 line += responses[index].csv_data
               else
+                line << nil # blank column
                 line += Array.new(question.csv_columns.count)
               end
             end
-          end
 
-          csv << line
+            csv << line
+          end
         end
       end
 
