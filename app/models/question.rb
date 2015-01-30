@@ -26,6 +26,7 @@ class Question < ActiveRecord::Base
   has_many :inappropriate_flags, dependent: :destroy
   has_many :response_matchers, dependent: :destroy
 
+  scope :not_suspended, -> { where.not state: 'suspended' }
 	scope :active, -> { where state:"active" }
   scope :suspended, -> { where state:"suspended" }
   scope :publik, -> { where kind:"public" }

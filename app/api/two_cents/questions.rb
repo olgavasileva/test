@@ -465,7 +465,7 @@ class TwoCents::Questions < Grape::API
     post 'latest', jbuilder: 'latest' do
       validate_user!
 
-      @questions = current_user.feed_questions.latest
+      @questions = current_user.feed_questions.not_suspended.latest
       @questions = @questions.where(category_id: declared_params[:category_ids]) if declared_params[:category_ids]
 
       offset = if declared_params[:cursor] == 0
@@ -726,15 +726,13 @@ class TwoCents::Questions < Grape::API
     end
     post 'asked' do
       validate_user!
+
       user_id = params[:user_id]
+      user = user_id.present? ? Respondent.find(user_id) : current_user
       previous_last_id = params[:previous_last_id]
       count = params[:count]
 
-      questions = if user_id.present?
-                    Respondent.find(user_id).questions.where anonymous: false
-                  else
-                    current_user.questions
-                  end
+      questions = user.questions.not_suspended.order(:created_at)
 
       questions = questions.reverse if params[:reverse]
 
