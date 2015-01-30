@@ -24,7 +24,7 @@ class ResponseMatcher < ActiveRecord::Base
     when "skip"
       question.skip_users
     when "respond"
-      question.response_users
+      question.respondents
     when "specific"
       matched_users_for_specific_response
     end
