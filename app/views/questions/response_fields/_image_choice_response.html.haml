@@ -44,7 +44,7 @@
       position: absolute
       top: -110%
 
-%div.q_demographics{data:{url: demographics_user_path(@user.id, question.id)}}
+%div.q_demographics{data:{url: @user ? demographics_user_path(@user.id, question.id) : nil}}
   .col-xs-12
     = render "questions/response_fields/shared/title", question: question
     .form-group
@@ -52,7 +52,7 @@
       - total_response_count = question.responses.count
       - question.choices.each do |c|
         - n+=1
-        %label.col-xs-6.choice-wrapper.c_demographics{data:{url: demographics_user_path(@user.id, question.id, c.id)}}
+        %label.col-xs-6.choice-wrapper.c_demographics{data:{url: @user ? demographics_user_path(@userid, question.id, c.id) : nil}}
           .row
             = responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive")
             %i.response_counter
