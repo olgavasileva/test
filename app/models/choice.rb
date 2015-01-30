@@ -7,6 +7,6 @@ class Choice < ActiveRecord::Base
   validates :rotate, inclusion:{in:[true,false], allow_nil:true}
 
   def response_ratio
-    question.choice_result_cache.response_ratio_for(self)
+    question.responses.count == 0 ? 0 : responses.count / question.responses.count.to_f
   end
 end

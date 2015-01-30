@@ -72,10 +72,7 @@ describe Question do
         expect { q.trending! }.to change { q.trending_index }.by 42
       end
     end
+
   end
 
-  describe :choice_result_cache do
-    subject { Question.new.choice_result_cache }
-    it { is_expected.to be_a(ChoiceResultCache) }
-  end
 end

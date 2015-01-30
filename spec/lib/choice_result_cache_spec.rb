@@ -14,7 +14,7 @@ RSpec.describe ChoiceResultCache do
     ]
   end
 
-  describe '#response_ratio_for' do
+  describe '#response_ration_for' do
     it 'delegates to the choice_ratios hash' do
       expect(cache).to receive(:choice_ratios).and_return(1 => :ratio)
       choice = double('Choice', id: 1)
