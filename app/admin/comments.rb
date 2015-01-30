@@ -1,4 +1,7 @@
 ActiveAdmin.register Comment do
+
+  config.per_page = 100
+
   controller do
     def scoped_collection
       Comment.includes(:likes)
