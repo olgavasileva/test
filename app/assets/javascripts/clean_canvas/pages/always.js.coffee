@@ -1,3 +1,4 @@
+#= require social-share-button
 $ ->
   verticalAutoCenter()
 $(document).on "page:load", ->

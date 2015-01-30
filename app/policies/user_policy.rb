@@ -53,6 +53,10 @@ class UserPolicy < ApplicationPolicy
     is_owner? && is_pro?
   end
 
+  def demographics?
+    is_owner? && is_pro?
+  end
+
   def question_search?
     is_owner? && is_pro?
   end

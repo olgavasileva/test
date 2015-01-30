@@ -6,17 +6,12 @@ FactoryGirl.define do
     password "testing123"
     after(:build) {|user| user.password_confirmation ||= user.password}
     birthdate Date.current-20.years
-    auth_token {generate :auth_token}
 
-    trait :authorized do
-      auth_token {generate :auth_token}
+    trait :pro do
+      after :create do |u|
+        u.add_role :pro
+      end
     end
-
-    trait :unauthorized do
-      auth_token nil
-    end
-
-    factory :authorized_user, traits: [:authorized]
   end
 
   factory :anonymous do

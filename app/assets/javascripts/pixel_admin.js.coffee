@@ -11,6 +11,8 @@
 #= require hisrc
 #= require toastr
 
+#= require highcharts/highcharts
+#= require highcharts/highcharts-more
 
 # Theme files
 #

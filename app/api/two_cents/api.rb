@@ -52,9 +52,9 @@ class TwoCents::API < Grape::API
 
     def current_user
       @current_user ||= if params[:auth_token]
-        user = Respondent.find_by auth_token:params[:auth_token]
-        fail! 402, "Invalid auth token" unless user
-        user
+        @instance = Instance.find_by auth_token:params[:auth_token]
+        fail! 402, "Invalid auth token" unless @instance
+        @instance.user
       end
     end
 

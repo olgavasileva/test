@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'POST s3_urls/generate' do
   let(:instance) { FactoryGirl.create :instance, :logged_in }
   let(:params) { {
-      auth_token: instance.user.auth_token,
+      auth_token: instance.auth_token,
       upload_count: [1, 2, 3, 4].sample
   } }
   let(:response_body) { JSON.parse(response.body) }

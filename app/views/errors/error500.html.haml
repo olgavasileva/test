@@ -2,5 +2,13 @@
   .section_header
   .row
     .col-xs-6.col-xs-offset-3
-      .infobox
-        %h1 Sorry! Something went wrong.
+      .infobox.error-message
+        = image_tag '500-error-low.gif', width: 493, height: 300
+        %h1
+          Something went wrong, but
+          = link_to 'Liable Intern', 'https://vine.co/u/1147609975988879360', target: '_blank'
+          is on it. We're only a few hammer strokes away from solving your problem.
+          Check back later once it's fixed! Or leave us your email once we've fixed it.
+        %div
+          Find this hilarious? Share the pain!
+          = social_share_button_tag

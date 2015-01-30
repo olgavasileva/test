@@ -90,6 +90,8 @@ gem 'creek', '~> 1.0.3'             # Configurable streaming aggregator
 gem 'rpush'
 gem 'browser'                       # Browser detection
 
+gem 'lazy_high_charts'              # a simple and extremely flexible way to use HighCharts from ruby code
+
 # pixel admin
 gem 'gritter'
 gem 'morrisjs-rails'                # js: good-looking charts shouldn't be difficult
@@ -106,6 +108,8 @@ gem 'rack-cors', require: 'rack/cors'
 
 gem 'activerecord-import'           # Fast bulk database inserts (e.g. creating feed_items for new users)
 gem 'resque'                        # A Redis-backed library for creating background jobs
+
+gem 'faraday'                       # An HTTP client lib that provides a common interface over many adapters
 
 group :development do
 
@@ -142,3 +146,4 @@ end
 
 gem 'rails_12factor',         group: :production
 gem 'sdoc', require: false,   group: :doc
+gem 'social-share-button'

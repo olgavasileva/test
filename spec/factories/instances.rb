@@ -9,8 +9,13 @@ FactoryGirl.define do
       push_token {generate :apn_token}
     end
 
+    trait :logged_out do
+      user
+    end
+
     trait :logged_in do
-      user factory: :authorized_user
+      user
+      auth_token
     end
 
     trait :anon do

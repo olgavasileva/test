@@ -1,7 +1,7 @@
 - question ||= nil
 
 - if question
-  .row
+  .row#question_analytics
     .col-sm-8
       .panel.panel-default
         .panel-heading
@@ -9,6 +9,8 @@
         .panel-body
           .row.response
             %div= render "questions/response_fields", question:question
+      - if @demographics
+        #demographics= render 'users/demographics', demographics: @demographics
     .col-sm-4
       .panel.panel-default
         .panel-heading

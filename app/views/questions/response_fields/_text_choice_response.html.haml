@@ -24,7 +24,7 @@
 
 .text-choices.form-group
   .col-xs-12
-    .row
+    .row.q_demographics{data:{url: demographics_user_path(@user.id, question.id)}}
       .col-xs-12
         = responsive_image_tag((question.web_image_url || image_path("fallback/choice1.png")), class: "img-responsive")
         .floating-question-title
@@ -36,7 +36,7 @@
         %br
         - total_response_count = question.responses.count
         - question.choices.each do |c|
-          .response-info
+          .response-info.c_demographics{data:{url: demographics_user_path(@user.id, question.id, c.id)}}
             .response-text=c.title
             %i.response_counter
               - if total_response_count > 0

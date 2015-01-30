@@ -26,6 +26,7 @@ class Question < ActiveRecord::Base
   has_many :inappropriate_flags, dependent: :destroy
   has_many :response_matchers, dependent: :destroy
 
+  scope :not_suspended, -> { where.not state: 'suspended' }
 	scope :active, -> { where state:"active" }
   scope :suspended, -> { where state:"suspended" }
   scope :publik, -> { where kind:"public" }
@@ -181,6 +182,10 @@ class Question < ActiveRecord::Base
                               question_id: message.question_id,
                               body: message.body }
     end
+  end
+
+  def user_answered?(user)
+    users.include?(user)
   end
 
   def csv_columns

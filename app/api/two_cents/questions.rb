@@ -441,6 +441,7 @@ class TwoCents::Questions < Grape::API
                       "max_characters": 100,
                       "response_count": 0,
                       "comment_count": 0,
+                      "user_answered": true,
                       "category": {
                           "id": 1,
                           "name": "Category 1"
@@ -457,14 +458,14 @@ class TwoCents::Questions < Grape::API
     params do
       use :auth
 
-      requires :cursor, type: Integer, desc: "0 for first questions, otherwise return last value received"
-      optional :count, default: 20, type: Integer, desc: "The maximum number of questions to return"
-      optional :category_ids, type: Array, desc: "Limit questions to only these categories"
+      requires :cursor, type: Integer, desc: '0 for first questions, otherwise return last value received'
+      optional :count, default: 20, type: Integer, desc: 'The maximum number of questions to return'
+      optional :category_ids, type: Array, desc: 'Limit questions to only these categories'
     end
-    post 'latest', jbuilder: "latest" do
+    post 'latest', jbuilder: 'latest' do
       validate_user!
 
-      @questions = current_user.feed_questions.latest
+      @questions = current_user.feed_questions.not_suspended.latest
       @questions = @questions.where(category_id: declared_params[:category_ids]) if declared_params[:category_ids]
 
       offset = if declared_params[:cursor] == 0
@@ -473,11 +474,13 @@ class TwoCents::Questions < Grape::API
         index = @questions.pluck(:id).index(declared_params[:cursor])
         index.nil? ? 0 : (index + 1)
       end
-
       @questions = @questions.offset(offset).limit(declared_params[:count])
       @cursor = @questions.count > 0 ? @questions.last.id : 0
-
-      @questions.each{|q| q.viewed!}
+      @answered_questions = {}
+      @questions.each do |q|
+        @answered_questions[q.id] = false
+        q.viewed!
+      end
     end
 
 
@@ -587,7 +590,7 @@ class TwoCents::Questions < Grape::API
 
 
 
-    desc "Search for questions that match some text withing the universe of questions for this user.", {
+    desc 'Search for questions that match some text withing the universe of questions for this user.', {
       notes: <<-END
         This API searches the question text and any choice text and returns them ordered from newest to oldest.
 
@@ -623,14 +626,34 @@ class TwoCents::Questions < Grape::API
     params do
       use :auth
 
-      requires :search_text, type: String, desc: "The text to search for"
-      optional :count, default: 200, type: Integer, desc: "The maximum number of questions to return"
+      requires :search_text, type: String, desc: 'The text to search for'
+      optional :count, default: 200, type: Integer, desc: 'The maximum number of questions to return'
+      optional :include_answered, type: Boolean, desc: 'Include answered questions'
+      optional :include_skipped, type: Boolean, desc: 'Include skipped questions'
     end
     post 'search', jbuilder: 'questions' do
       validate_user!
 
-      @questions = current_user.feed_questions.latest.search_for(declared_params[:search_text]).limit(declared_params[:count])
-      @questions.each{|q| q.viewed!}
+      if declared_params[:include_answered]
+        if declared_params[:include_skipped]
+          filtered_questions = current_user.feed_questions_with_skipped_and_answered
+        else
+          filtered_questions = current_user.feed_questions_with_answered
+        end
+      else
+        if declared_params[:include_skipped]
+          filtered_questions = current_user.feed_questions_with_skipped
+        else
+          filtered_questions = current_user.feed_questions
+        end
+      end
+
+      @questions = filtered_questions.latest.search_for(declared_params[:search_text]).limit(declared_params[:count])
+      @answered_questions = {}
+      @questions.each do |q|
+        @answered_questions[q.id] = q.user_answered?(current_user)
+        q.viewed!
+      end
     end
 
 
@@ -709,7 +732,7 @@ class TwoCents::Questions < Grape::API
       previous_last_id = params[:previous_last_id]
       count = params[:count]
 
-      questions = user.questions.order(:created_at)
+      questions = user.questions.not_suspended.order(:created_at)
 
       questions = questions.reverse if params[:reverse]
 
@@ -755,7 +778,14 @@ class TwoCents::Questions < Grape::API
       previous_last_id = params[:previous_last_id]
       count = params[:count]
 
-      responses = user.responses.order(:created_at)
+      responses = if user_id.present?
+                    user.responses.where anonymous: false
+                  else
+                    user.responses
+                  end
+
+      responses = responses.order(:created_at)
+
       responses = responses.reverse if params[:reverse]
       questions = responses.map(&:question).uniq.compact
 
@@ -950,6 +980,7 @@ class TwoCents::Questions < Grape::API
 
       @question = Question.find_by id:declared_params[:question_id]
       fail! 401, "That question does not exist." unless @question
+      @answers = Response.where(user_id: current_user, question: @question).pluck(:choice_id)
       @anonymous = @question.responses.where(user:current_user).last.try(:anonymous)
     end
 
@@ -957,7 +988,7 @@ class TwoCents::Questions < Grape::API
     desc "Return a question's information.", {
       notes: <<-END
         Return a question's information.
-
+        If "user_answered" is true then we'll have "answered" field consists of selected choises
         #### Example response
         {
             "category": {
@@ -972,7 +1003,7 @@ class TwoCents::Questions < Grape::API
             "response_count": 0,
             "summary": {
                 "anonymous": null,
-                "choices": [],
+                "choices": [{ ..., "user_answered": true|false }],
                 "comment_count": 0,
                 "creator_id": 2,
                 "creator_name": "Name2",
@@ -996,21 +1027,24 @@ class TwoCents::Questions < Grape::API
     params do
       optional :auth_token, type: String, desc: "Obtain this from the instance's API."
 
-      optional :question_id, type: Integer, desc: "ID of question."
-      optional :question_uuid, type: String, desc: "uuid of question"
+      optional :question_id, type: Integer, desc: 'ID of question.'
+      optional :question_uuid, type: String, desc: 'uuid of question'
       mutually_exclusive :question_id, :question_uuid
       optional :user_id, type: Integer, desc: "ID of user for question answer data, defaults to current user's ID."
     end
-    get 'question', jbuilder: "question_info" do
+    get 'question', jbuilder: 'question_info' do
       validate_user! if declared_params[:auth_token]
 
+      query = Question.eager_load(:responses, choices: [:responses])
       @question = if declared_params[:question_id]
-        Question.find declared_params[:question_id]
+        query.find_by_id!(declared_params[:question_id])
       else
-        Question.find_by_uuid declared_params[:question_uuid]
+        query.find_by_uuid!(declared_params[:question_uuid])
       end
 
       asking_user_id = declared_params[:user_id] || current_user.try(:id)
+
+      @answers = Response.where(user_id: current_user, question: @question).pluck(:choice_id)
 
       @user_answered = asking_user_id ? Respondent.find(asking_user_id).answered_questions.include?(@question) : false
     end

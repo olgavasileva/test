@@ -12,11 +12,23 @@ class OrderChoice < Choice
   delegate :device_image_url, to: :background_image
   delegate :retina_device_image_url, to: :background_image
 
+  # This amounts to the score (or weight) for all responses to this choice.
   def top_count
-    order_choices_responses.where(position:1).count
+    @top_count ||= begin
+      total = question.choices.size
+      order_choices_responses.to_a.inject(0) do |weight, choice|
+        weight + (total - choice.position + 1)
+      end
+    end
   end
 
+  # This is the percent of the total available score for all responses to this
+  # choice.
   def response_ratio
-    question.responses.count == 0 ? 0 : top_count / question.responses.count.to_f
+    @response_ratio ||= begin
+      response_total = [*1..(question.choices.size)].sum
+      total = (response_total * question.responses.size)
+      ((top_count.to_f / total)).round(4)
+    end
   end
 end

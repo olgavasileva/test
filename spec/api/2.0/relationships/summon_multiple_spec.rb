@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 describe 'PUT /relationships/summon_multiple' do
-  let(:user) { FactoryGirl.create(:user) }
+  let(:instance) {FactoryGirl.create :instance, :logged_in}
+  let(:user) { instance.user }
   let(:params) { {
-    auth_token: user.auth_token,
+    auth_token: instance.auth_token,
     email_addresses: [FactoryGirl.generate(:email_address)],
     phone_numbers: ['555-123-4567']
   } }
