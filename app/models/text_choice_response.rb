@@ -10,4 +10,8 @@ class TextChoiceResponse < Response
   def description
     text
   end
+
+  def csv_data
+    [choice ? "Choice id #{id}: #{choice.title}" : nil]
+  end
 end

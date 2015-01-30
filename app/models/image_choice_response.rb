@@ -6,4 +6,8 @@ class ImageChoiceResponse < Response
   def description
     choice.id
   end
+
+  def csv_data
+    ["Choice id #{choice.id}"]
+  end
 end

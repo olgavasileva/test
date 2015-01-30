@@ -4,4 +4,8 @@ class TextResponse < Response
   def description
     text
   end
+
+  def csv_data
+    [text]
+  end
 end

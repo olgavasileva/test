@@ -6,4 +6,8 @@ class ImageResponse < Response
   def description
     "An image"
   end
+
+  def csv_data
+    [image.try(:url)]
+  end
 end
