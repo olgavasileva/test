@@ -81,6 +81,8 @@ class TwoCents::Comments < Grape::API
     params do
       requires :auth_token, type:String, desc: 'Obtain this from the instances API'
       requires :question_id, type:Integer, desc: 'The id of the question'
+      optional :per_page, type: Integer, desc: 'How much comments per page should be returned', default: 25
+      optional :page, type: Integer, desc: 'Page', default: 1
     end
     get nil, http_codes: [
       [200, "400 - Invalid params"],
@@ -88,7 +90,9 @@ class TwoCents::Comments < Grape::API
       [200, "403 - Login required"]
     ] do
       question = Question.find declared_params[:question_id]
-      comments = question.comments + question.response_comments
+
+      comments = Comment.find_by_sql(question.comments.to_sql + ' UNION ' + question.response_comments.to_sql)
+                     .paginate(page: declared_params[:page], per_page: declared_params[:per_page])
 
       comments.map { |c| serialize_comment(c) }
     end
