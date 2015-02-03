@@ -162,4 +162,9 @@ LinkchatApp::Application.routes.draw do
     mount Resque::Server.new, at: "/jobs"
   end
 
+  # OmniAuth Callbacks
+  constraints(provider: /#{Authentication::PROVIDERS.join('|')}/) do
+    match '/auth/:provider/callback', to: 'omniauth#callback', via: [:get, :post]
+    get '/auth/failure', to: 'omniauth#failure'
+  end
 end

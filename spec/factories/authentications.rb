@@ -3,9 +3,9 @@
 FactoryGirl.define do
   factory :authentication do
     user
-    uid "uid"
-    token "token"
-    token_secret "secret"
+    uid { SecureRandom.uuid }
+    token { SecureRandom.uuid }
+    token_secret { SecureRandom.uuid }
 
     provider { Authentication::PROVIDERS.shuffle.first }
 

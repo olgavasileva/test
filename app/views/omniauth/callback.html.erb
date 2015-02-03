@@ -1,0 +1,10 @@
+<html>
+  <head></head>
+  <body>
+    <script type="text/javascript">
+      var webApp = window.opener;
+      webApp.oauthCallback(<%= @data.to_json.html_safe %>);
+      window.close();
+    </script>
+  </body>
+</html>
