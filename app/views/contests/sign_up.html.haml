@@ -12,7 +12,7 @@
                 = # @user.errors.full_messages
                 .form-group= f.input :username, label: false, placeholder: "Enter a Username"
                 .form-group= f.input :email, label: false, placeholder: "Enter your E-mail"
-                .form-group= f.input :birthdate, placeholder: "Birthdate", start_year: Date.today.year - 90, end_year: Date.today.year - 5, order: [:month, :day, :year]
+                .form-group= f.input :birthdate, label: "Year you were born", start_year: Date.today.year - 17, end_year: Date.today.year - 6, order: [:year]
                 %br
                 .form-group= f.input :password, autocomplete: "off", label: false, placeholder: "Enter a Password"
                 .form-group= f.input :password_confirmation, autocomplete: "off", label: false, placeholder: "Confirm your Password"

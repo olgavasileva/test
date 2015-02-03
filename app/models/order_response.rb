@@ -33,6 +33,6 @@ class OrderResponse < Response
   end
 
   def csv_data
-    [top_choice ? "Choice id #{top_choice.id}: #{top_choice.title}" : nil]
+    [top_choice.try(:title)]
   end
 end

@@ -15,7 +15,7 @@ class StudioQuestion < Question
   end
 
   def csv_columns
-    columns = ["Question #{id}: #{title}", :studio_id, "cereal name", :image]
+    columns = [title, :studio_id, "cereal name", :image]
     stickers.each do |sticker|
       columns << sticker.display_name
     end

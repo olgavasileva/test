@@ -15,6 +15,6 @@ class MultipleChoiceResponse < Response
   end
 
   def csv_data
-    ["Choices #{choice_ids}: #{text}"]
+    [choices.map(&:title).join('|')]
   end
 end

@@ -146,12 +146,12 @@ class TwoCents::Auth < Grape::API
     }
     params do
       requires :instance_token, type:String, desc:'Obtain this from the instances API'
-      requires :email, type: String, regexp: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$.?/i, desc:'e.g. oscar@madisononline.com'
+      optional :email, type: String, regexp: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$.?/i, desc:'e.g. oscar@madisononline.com'
       requires :username, type: String, regexp: /^[A-Z0-9\-_ ]{4,20}$/i, desc:'Unique username'
       requires :password, type: String, regexp: /.{6,20}/, desc:'6-20 character password'
       requires :name, type: String, desc:"The user's name"
-      requires :birthdate, type: String, desc: '1990-02-06'
-      requires :gender, type:String, values: %w{male female}, desc: 'male or female'
+      optional :birthdate, type: String, desc: '1990-02-06'
+      optional :gender, type:String, values: %w{male female}, desc: 'male or female'
     end
     post 'register', http_codes:[
         [200, "1001 - Invalid instance token"],
@@ -164,7 +164,7 @@ class TwoCents::Auth < Grape::API
 
       validate_instance!
 
-      fail! 1002, "This email address is already registered, try again." if User.find_by email:declared_params[:email]
+      fail! 1002, "This email address is already registered, try again." if declared_params[:email].present? && User.find_by(email:declared_params[:email])
       fail! 1009, "This username is already taken, try again." if User.find_by username:declared_params[:username]
 
       user = User.new name:declared_params[:name],
@@ -172,7 +172,7 @@ class TwoCents::Auth < Grape::API
                       username:declared_params[:username],
                       password:declared_params[:password],
                       password_confirmation:declared_params[:password],
-                      birthdate:Date.strptime(declared_params[:birthdate], '%Y-%m-%d'),
+                      birthdate:declared_params[:birthdate] ? Date.strptime(declared_params[:birthdate], '%Y-%m-%d') : nil,
                       gender:declared_params[:gender]
 
       fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
@@ -197,7 +197,7 @@ class TwoCents::Auth < Grape::API
       requires :instance_token, type:String, desc:'Obtain this from the instances API'
       requires :username, type: String, regexp: /^[A-Z0-9\-_ ]{4,20}$/i, desc:'Unique username'
       requires :facebook_token, type: String, desc:"Token obtained from facebook's auth API"
-      requires :birthdate, type: String, desc:"The user's birthdate - must be over 13"
+      optional :birthdate, type: String, desc:"The user's birthdate - must be over 13"
     end
     post 'register/facebook', http_codes:[
         [200, "1001 - Invalid instance token"],
@@ -278,12 +278,12 @@ class TwoCents::Auth < Grape::API
     }
     params do
       requires :auth_token, type: String, desc: "Obtain this by registering as an anonymous user"
-      requires :email, type: String, regexp: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$.?/i, desc:'e.g. oscar@madisononline.com'
+      optional :email, type: String, regexp: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$.?/i, desc:'e.g. oscar@madisononline.com'
       requires :username, type: String, regexp: /^[A-Z0-9\-_ ]{4,20}$/i, desc:'Unique username'
       requires :password, type: String, regexp: /.{6,20}/, desc:'6-20 character password'
       requires :name, type: String, desc:"The user's name"
-      requires :birthdate, type: String, desc: '1990-02-06'
-      requires :gender, type:String, values: %w{male female}, desc: 'male or female'
+      optional :birthdate, type: String, desc: '1990-02-06'
+      optional :gender, type:String, values: %w{male female}, desc: 'male or female'
     end
     post 'promote', http_codes: [
         [200, "1002 - A user with that email is already registered"],
@@ -300,7 +300,7 @@ class TwoCents::Auth < Grape::API
       user = current_user
 
       fail! 1012, "User must be anonymous" unless user.kind_of? Anonymous
-      fail! 1002, "This email address is already registered, try again." if User.find_by email:declared_params[:email]
+      fail! 1002, "This email address is already registered, try again." if declared_params[:email].present? && User.find_by(email: declared_params[:email])
       fail! 1009, "This username is already taken, try again." if User.find_by username:declared_params[:username]
 
       ActiveRecord::Base.transaction do
@@ -311,7 +311,7 @@ class TwoCents::Auth < Grape::API
         user.username = declared_params[:username]
         user.password = declared_params[:password]
         user.password_confirmation = declared_params[:password]
-        user.birthdate = Date.strptime(declared_params[:birthdate], '%Y-%m-%d')
+        user.birthdate = Date.strptime(declared_params[:birthdate], '%Y-%m-%d') if declared_params[:birthdate]
         user.gender = declared_params[:gender]
 
         fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
@@ -409,7 +409,8 @@ class TwoCents::Auth < Grape::API
     end
     post 'reset_password', http_codes: [
         [200, "1001 - Invalid instance token"],
-        [200, "1011 - User not found"]
+        [200, "1011 - User not found"],
+        [200, "1013 - User does not have an email address"]
       ] do
 
       validate_instance!
@@ -418,6 +419,7 @@ class TwoCents::Auth < Grape::API
       user = User.find_by username:declared_params[:username] if declared_params[:username].present?
 
       fail! 1011, "User not found" unless user
+      fail! 1013, "User does not have an email address" unless user.email.present?
 
       user.send_reset_password_instructions
 

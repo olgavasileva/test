@@ -189,7 +189,7 @@ class Question < ActiveRecord::Base
   end
 
   def csv_columns
-    ["Question #{id}: #{title}"]
+    [title]
   end
 
   private

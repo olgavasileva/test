@@ -68,6 +68,7 @@ SimpleNavigation::Configuration.run do |navigation|
       end
     else
       primary.item :get_statisfy, 'Get Statisfy', get_the_app_path
+      primary.item :blog, 'Blog', 'http://blog.statisfy.co/blog'
       primary.item :help, 'Help', 'http://about.statisfy.co/webfaq/ '
       primary.item :sign_up, 'Sign Up', ENV['SIGN_UP_URL'] || new_user_registration_path
       primary.item :sign_in, 'Sign In', ENV['SIGN_IN_URL'] || new_user_session_path
