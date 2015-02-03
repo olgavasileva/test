@@ -4,6 +4,7 @@ describe :response do
   let(:before_api_call) {}
   let(:request) { -> { post "v/2.0/questions/response", Hash[params].to_json,{"CONTENT_TYPE" => "application/json"}}}
   before { allow_any_instance_of(TextResponse).to receive(:spam?).and_return false }
+  before { allow_any_instance_of(Comment).to receive(:spam?).and_return false }
   before do
     before_api_call
     request.call
