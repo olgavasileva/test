@@ -111,6 +111,10 @@ gem 'resque'                        # A Redis-backed library for creating backgr
 
 gem 'faraday'                       # An HTTP client lib that provides a common interface over many adapters
 
+# OAuth/Social Integrations
+gem 'omniauth'
+gem 'omniauth-facebook'
+
 group :development do
 
   gem 'sqlite3'
