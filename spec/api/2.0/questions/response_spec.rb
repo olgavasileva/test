@@ -101,9 +101,10 @@ describe :response do
       end
     end
   end
-  context 'check response for spam' do
-    let(:user) { FactoryGirl.create :user, :authorized }
-    let(:auth_token) { user.auth_token }
+
+  describe 'check response for spam' do
+    let(:instance) {FactoryGirl.create :instance, :logged_in}
+    let(:auth_token) { instance.auth_token }
     let(:question) { FactoryGirl.create :text_question }
     let(:params) { {auth_token: auth_token,
                     question_id: question.id, text: 'some text with a spam message'} }
