@@ -2,10 +2,10 @@ class CommunitiesController < ApplicationController
   skip_after_action :verify_authorized, only: [:join]
 
   def join
-    redirect_to root_path
-
     # Redirect to the web app's community page
-    # redirect_to File.join(ENV['WEB_APP_URL'], "#/app/profile//communities/join")
+    path = "#/app/profile//communities/join"
+    path += "?community_id=#{params[:community_id]}" if params[:community_id]
+    redirect_to File.join(ENV['WEB_APP_URL'], path)
   end
 
   def create
