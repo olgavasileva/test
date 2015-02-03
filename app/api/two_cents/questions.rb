@@ -733,7 +733,7 @@ class TwoCents::Questions < Grape::API
       count = params[:count]
 
       questions = user.questions.not_suspended.order(:created_at)
-
+      questions = questions.where.not(anonymous: true) if params[:user_id]
       questions = questions.reverse if params[:reverse]
 
       if previous_last_id.present?

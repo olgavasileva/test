@@ -65,4 +65,22 @@ describe :asked do
       expect(response_question_ids).to eq questions.map(&:id).reverse
     end
   end
+
+  context 'with anonymous question' do
+    let!(:anonymous_question) { FactoryGirl.create :question, anonymous: true, user: instance.user }
+    before { post 'v/2.0/questions/asked', params }
+    context 'as owner' do
+      it {expect(response_question_ids).to include(anonymous_question.id)}
+    end
+
+    context 'as other user' do
+      let(:another_instance) { FactoryGirl.create :instance, :logged_in }
+      let(:params) {
+        {auth_token: another_instance.auth_token, user_id: instance.user.id}
+      }
+      before { post 'v/2.0/questions/asked', params }
+      it { expect(response_question_ids).not_to include(anonymous_question.id) }
+    end
+
+  end
 end
