@@ -4,7 +4,7 @@ class User < Respondent
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :rememberable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :timeoutable, :trackable, :validatable,
+         :recoverable, :timeoutable, :trackable,
          authentication_keys:[:login], reset_password_keys:[:login]
 
 
@@ -43,6 +43,7 @@ class User < Respondent
 	validates :terms_and_conditions, acceptance: true
   validates :gender, inclusion: {in: %w(male female), allow_nil: true}
   validates :birthdate, presence: true, on: :create
+  validates :email, format: {with: /\A[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}\z.?/i, allow_nil: true}
   # validate :over_13   # Disable for now (11/29/14) for General Mills pilot project
 
   def self.anonymous_user
@@ -72,7 +73,7 @@ class User < Respondent
 	end
 
   def under_13?
-    birthdate > 13.years.ago
+    birthdate > 13.years.ago if birthdate
   end
 
   def age

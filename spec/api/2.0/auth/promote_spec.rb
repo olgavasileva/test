@@ -14,15 +14,15 @@ describe :promote do
   end
 
   context "With all required params" do
-    let(:params) {{auth_token:auth_token, email:email, username:username, password:password, name:name, birthdate:birthdate, gender:gender}}
+    let(:params) {{auth_token:auth_token, username:username, password:password, email:email, name:name, birthdate:birthdate, gender:gender}}
 
-    context "With valid email, username, password, and name params" do
-      let(:email) {FactoryGirl.generate :email_address}
+    context "With valid username and password params" do
       let(:username) {FactoryGirl.generate :username}
       let(:password) {FactoryGirl.generate :password}
-      let(:name) {FactoryGirl.generate :name}
-      let(:birthdate) {FactoryGirl.generate :birthdate}
-      let(:gender) {FactoryGirl.generate :gender}
+      let(:email) {}
+      let(:name) {}
+      let(:birthdate) {}
+      let(:gender) {}
 
       context "With an invalid auth token" do
         let(:auth_token) {"INVALID"}
@@ -61,6 +61,34 @@ describe :promote do
           expect(user.id).to eq anonymous.id
         end
 
+        context "With a birthdate" do
+          let(:birthdate) {FactoryGirl.generate :birthdate}
+          it {expect(response.status).to eq 201}
+          it {expect(json['error_message']).to be_nil}
+          it {expect(User.find_by(anonymous.id).birthdate).to eq Date.parse(birthdate)}
+        end
+
+        context "With a gender" do
+          let(:gender) {FactoryGirl.generate :gender}
+          it {expect(response.status).to eq 201}
+          it {expect(json['error_message']).to be_nil}
+          it {expect(User.find_by(anonymous.id).gender).to eq gender}
+        end
+
+        context "With an email" do
+          let(:email) {FactoryGirl.generate :email_address}
+          it {expect(response.status).to eq 201}
+          it {expect(json['error_message']).to be_nil}
+          it {expect(User.find_by(anonymous.id).email).to eq email.downcase}
+        end
+
+        context "With a name" do
+          let(:name) {FactoryGirl.generate :name}
+          it {expect(response.status).to eq 201}
+          it {expect(json['error_message']).to be_nil}
+          it {expect(User.find_by(anonymous.id).name).to eq name}
+        end
+
         context "When a user with the email adready exists" do
           let(:user) {FactoryGirl.create :user}
           let(:email) {user.email}
@@ -81,7 +109,9 @@ describe :promote do
           it {expect(json['error_message']).to match /is already taken/}
         end
 
-        context "When a user with the email doesn't already exist" do
+        context "When email is suppplied and a user with the email doesn't already exist" do
+          let(:email) {FactoryGirl.generate :email_address}
+
           it {expect(response.status).to eq 201}
           it {expect(json).to_not be_nil}
           it {expect(json['error_code']).to be_nil}
@@ -90,7 +120,7 @@ describe :promote do
           it {expect(User.find_by(username:username.downcase)).to_not be_nil}
           it {expect(User.find_by(username:username.downcase)).to eq User.find_by(email:email)}
           it {expect(json['user_id']).to eq User.find_by(email: email).id}
-          it {expect(User.find_by(email:email).name).to eq name}
+          it {expect(User.find_by(email:email).username).to eq username.downcase}
 
           context "When the user is under 14 years old" do
             let(:birthdate) {Date.current - 12.years}
