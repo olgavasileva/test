@@ -7,6 +7,8 @@ FactoryGirl.define do
     token "token"
     token_secret "secret"
 
+    provider { Authentication::PROVIDERS.shuffle.first }
+
     trait :facebook do
       provider "facebook"
     end

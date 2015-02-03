@@ -463,6 +463,8 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
       websocket (~> 1.0.4)
+    shoulda-matchers (2.8.0)
+      activesupport (>= 3.0.0)
     simple-navigation (3.13.0)
       activesupport (>= 2.3.2)
     sinatra (1.4.5)
@@ -635,6 +637,7 @@ DEPENDENCIES
   searchbing (= 0.2.3)
   select2-rails
   selenium-webdriver
+  shoulda-matchers
   simple-navigation
   simple_form (~> 3.1.0.rc1)!
   social-share-button
