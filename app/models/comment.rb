@@ -1,4 +1,13 @@
 class Comment < ActiveRecord::Base
+  include Rakismet::Model
+
+  rakismet_attrs  :author => proc { user.username },
+                  :author_email => proc { user.email },
+                  :user_ip => :user_ip,
+                  :content => :body
+
+  attr_accessor :user_ip
+
   belongs_to :user, class_name: "Respondent"
   belongs_to :commentable, :polymorphic => true
 

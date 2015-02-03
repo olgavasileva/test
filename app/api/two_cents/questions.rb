@@ -918,17 +918,27 @@ class TwoCents::Questions < Grape::API
       resp_params = params.to_h.slice(*resp_param_keys)
       resp_params['user_id'] = current_user.id
 
-      response = @question.responses.create!(resp_params)
+      response = @question.responses.new(resp_params)
+      response.user_ip = request.env['REMOTE_ADDR']
 
+      if response.is_a?(TextResponse) && response.spam?
+        fail! 200, "400 - Invalid params"
+      else
+        response.save!
+      end
       # Backwards-compatibility hackery
       comment = params[:comment] || params[:text]
 
       if comment.present?
-        response.comment = Comment.create!(body: comment,
-                                           user: response.user,
+        response_comment = Comment.new(body: comment,
+                                           user: response.user
                                            #question: response.question,
                                            #response: response
                                            )
+        unless response_comment.spam?
+          response_comment.save!
+          response.comment = response_comment
+        end
       end
 
       @anonymous = declared_params[:anonymous]
