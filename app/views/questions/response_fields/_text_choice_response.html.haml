@@ -36,7 +36,7 @@
         %br
         - total_response_count = question.responses.count
         - question.choices.each do |c|
-          .response-info.c_demographics{data:{url: @user ? demographics_user_path(@userid, question.id, c.id) : nil}}
+          .response-info.c_demographics{data:{url: @user ? demographics_user_path(@user.id, question.id, c.id) : nil}}
             .response-text=c.title
             %i.response_counter
               - if total_response_count > 0
