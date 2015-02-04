@@ -149,7 +149,7 @@ class TwoCents::Auth < Grape::API
       optional :email, type: String, desc:'e.g. oscar@madisononline.com'
       requires :username, type: String, regexp: /^[A-Z0-9\-_ ]{4,20}$/i, desc:'Unique username'
       requires :password, type: String, regexp: /.{6,20}/, desc:'6-20 character password'
-      requires :name, type: String, desc:"The user's name"
+      optional :name, type: String, desc:"The user's name"
       optional :birthdate, type: String, desc: '1990-02-06'
       optional :gender, type:String, values: %w{male female}, desc: 'male or female'
     end
@@ -178,7 +178,7 @@ class TwoCents::Auth < Grape::API
       fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
       fail! 1011, user.errors.full_messages.join(", ") unless user.save
 
-      instance.update_attributes! user:user
+      instance.update_attributes! user:user, auth_token: "A"+UUID.new.generate
 
       {auth_token: instance.auth_token, user_id: user.id}
     end

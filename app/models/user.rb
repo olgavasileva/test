@@ -42,7 +42,6 @@ class User < Respondent
 	validates :name, length: { maximum: 50 }
 	validates :terms_and_conditions, acceptance: true
   validates :gender, inclusion: {in: %w(male female), allow_nil: true}
-  validates :birthdate, presence: true, on: :create
   validates :email, format: {with: /\A[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}\z.?/i, allow_nil: true}
   # validate :over_13   # Disable for now (11/29/14) for General Mills pilot project
 
