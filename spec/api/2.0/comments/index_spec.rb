@@ -24,4 +24,16 @@ describe 'GET /comments' do
     expect(response_body.count).to eq 1
     expect(response_body.first.keys).to match_array keys
   end
+
+  context 'paging' do
+
+    before do
+      FactoryGirl.create_list :text_response_comment, 15, commentable: question
+      FactoryGirl.create_list :comment, 15, commentable: question
+      get 'v/2.0/comments', params
+    end
+
+    it { expect(response_body.length).to eq 25 }
+
+  end
 end
