@@ -24,7 +24,7 @@
       %ul#ordered_choices.list-unstyled.col-xs-12
         -question.choices.all.each do |c|
           %li
-            .panel.panel-default.handle.c_demographics{data:{url: @user ? demographics_user_path(@userid, question.id, c.id) : nil}}
+            .panel.panel-default.handle.c_demographics{data:{url: @user ? demographics_user_path(@user.id, question.id, c.id) : nil}}
               .floating-question-title.col-sm-12=c.title
               = responsive_image_tag(c.web_image_url, class: "img-responsive")
               %i.response_counter
