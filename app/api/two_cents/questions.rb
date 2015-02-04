@@ -903,6 +903,15 @@ class TwoCents::Questions < Grape::API
       optional :filter_gender, type: Symbol, values:[:all, :male, :female], desc: ":all, :male, :female"
       optional :filter_geography, type: Symbol, values:[:all, :near_me], desc: ":all, :near_me"
       optional :filter_age_group, type: Symbol, values:[:all, :under_18, :from_19_to_34, :from_35_to_50, :over_50], desc: ":all, :under_18, :from_19_to_34, :from_35_to_50, :over_50"
+
+      optional :demographic_gender, type: String, values: Demographic::GENDERS
+      optional :demographic_age_range, type: String, values: Demographic::AGE_RANGES
+      optional :demographic_household_income, type: String, values: Demographic::HOUSEHOLD_INCOMES
+      optional :demographic_children, type: String, values: Demographic::CHILDRENS
+      optional :demographic_ethnicity, type: String, values: Demographic::ETHNICITYS
+      optional :demographic_education_level, type: String, values: Demographic::EDUCATION_LEVELS
+      optional :demographic_political_affiliation, type: String, values: Demographic::POLITICAL_AFFILIATIONS
+      optional :demographic_political_engagement, type: String, values: Demographic::POLITICAL_ENGAGEMENTS
     end
     post 'response', jbuilder: "summary", http_codes:[
       [200, "400 - Invalid params"],
@@ -920,6 +929,15 @@ class TwoCents::Questions < Grape::API
 
       response = @question.responses.new(resp_params)
       response.user_ip = request.env['REMOTE_ADDR'] if response.kind_of? TextResponse
+
+      response.build_demographic gender: declared_params[:demographic_gender],
+                                 age_range: declared_params[:demographic_age_range],
+                                 household_income: declared_params[:demographic_household_income],
+                                 children: declared_params[:demographic_children],
+                                 ethnicity: declared_params[:demographic_ethnicity],
+                                 education_level: declared_params[:demographic_education_level],
+                                 political_affiliation: declared_params[:demographic_political_affiliation],
+                                 political_engagement: declared_params[:demographic_political_engagement]
 
       if response.is_a?(TextResponse) && response.spam?
         fail! 200, "400 - Invalid params"

@@ -118,4 +118,35 @@ describe :response do
       it { expect(TextResponse.count).to eq @count }
     end
   end
+
+  describe 'Demographics' do
+    let(:instance) {FactoryGirl.create :instance, :logged_in}
+    let(:auth_token) { instance.auth_token }
+    let(:question) { FactoryGirl.create :text_question }
+    let(:params) { { auth_token: auth_token,
+                     question_id: question.id,
+                     text: 'some text',
+                     demographic_gender: 'male',
+                     demographic_age_range: "35-44",
+                     demographic_household_income: "0-50k",
+                     demographic_children: "true",
+                     demographic_ethnicity: "caucasian",
+                     demographic_education_level: "college",
+                     demographic_political_affiliation: "independent",
+                     demographic_political_engagement: "active"
+                  } }
+
+    it {expect(response.status).to eq 201}
+    it {expect(JSON.parse(response.body)['error_message']).to be_nil}
+    it {expect(question.reload.responses.last.demographic).to be_present}
+
+    it {expect(question.reload.responses.last.demographic.gender).to eq 'male'}
+    it {expect(question.reload.responses.last.demographic.age_range).to eq "35-44"}
+    it {expect(question.reload.responses.last.demographic.household_income).to eq "0-50k"}
+    it {expect(question.reload.responses.last.demographic.children).to eq "true"}
+    it {expect(question.reload.responses.last.demographic.ethnicity).to eq "caucasian"}
+    it {expect(question.reload.responses.last.demographic.education_level).to eq "college"}
+    it {expect(question.reload.responses.last.demographic.political_affiliation).to eq "independent"}
+    it {expect(question.reload.responses.last.demographic.political_engagement).to eq "active"}
+  end
 end

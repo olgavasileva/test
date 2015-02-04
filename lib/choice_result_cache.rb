@@ -23,7 +23,7 @@ class ChoiceResultCache < Struct.new(:question)
         percent = (choice.responses.size * 100) / response_count.to_f
         whole = percent.to_i
         total += whole
-        remainer -= whole
+        remainder -= whole
         {id: choice.id, decimals: percent % 1, whole: whole}
       end
 

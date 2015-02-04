@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150203203910) do
+ActiveRecord::Schema.define(version: 20150204045249) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -176,6 +176,22 @@ ActiveRecord::Schema.define(version: 20150203203910) do
   end
 
   add_index "daily_analytics", ["user_id", "metric", "date"], name: "index_daily_analytics_on_user_id_and_metric_and_date", using: :btree
+
+  create_table "demographics", force: true do |t|
+    t.integer  "response_id"
+    t.string   "gender"
+    t.string   "age_range"
+    t.string   "household_income"
+    t.string   "children"
+    t.string   "ethnicity"
+    t.string   "education_level"
+    t.string   "political_affiliation"
+    t.string   "political_engagement"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "demographics", ["response_id"], name: "index_demographics_on_response_id", using: :btree
 
   create_table "devices", force: true do |t|
     t.string   "device_vendor_identifier"
