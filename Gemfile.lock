@@ -439,6 +439,7 @@ GEM
     sdoc (0.4.0)
       json (~> 1.8)
       rdoc (~> 4.0, < 5.0)
+    searchbing (0.2.3)
     select2-rails (3.5.9.1)
       thor (~> 0.14)
     selenium-webdriver (2.42.0)
@@ -613,6 +614,7 @@ DEPENDENCIES
   rubyzip
   sass-rails (~> 4.0.3)
   sdoc
+  searchbing (= 0.2.3)
   select2-rails
   selenium-webdriver
   simple-navigation

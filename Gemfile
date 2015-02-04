@@ -148,3 +148,4 @@ gem 'rails_12factor',         group: :production
 gem 'sdoc', require: false,   group: :doc
 gem 'social-share-button'
 gem 'rakismet'
+gem 'searchbing', '0.2.3'
