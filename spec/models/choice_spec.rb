@@ -1,6 +1,21 @@
 require 'rails_helper'
 
 describe "All Choice Types" do
+  describe Choice do
+    describe '#response_ratio' do
+      it 'delegates to question#choice_response_cache' do
+        question = Question.new
+        choice = Choice.new(id: 1, question: question)
+
+        expect(question).to receive_message_chain(
+          :choice_result_cache, :response_ratio_for
+        ).with(choice).and_return(1)
+
+        expect(choice.response_ratio).to eq(1)
+      end
+    end
+  end
+
   describe OrderChoice do
     subject {
      q = FactoryGirl.create(:order_question)
@@ -14,10 +29,10 @@ describe "All Choice Types" do
       subject.reload
     end
 
-    it { expect(subject.choices.first.top_count).to eq 2 }
-    it { expect(subject.choices.last.top_count).to eq 3 }
-    it { expect(subject.choices.first.response_ratio).to eq 2/5.0 }
-    it { expect(subject.choices.last.response_ratio).to eq 3/5.0 }
+    it { expect(subject.choices.first.top_count).to eq 11 }
+    it { expect(subject.choices.last.top_count).to eq 14 }
+    it { expect(subject.choices.first.response_ratio).to eq 11/50.0 }
+    it { expect(subject.choices.last.response_ratio).to eq 14/50.0 }
   end
 
   describe TextChoice do
