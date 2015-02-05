@@ -50,8 +50,8 @@ RSpec.describe ChoiceResultCache do
       end
 
       it 'calculates the correct ratios' do
-        expect(cache.choice_ratios[1]).to eq(0.59)
-        expect(cache.choice_ratios[2]).to eq(0.41)
+        expect(cache.choice_ratios[1]).to eq(0.58)
+        expect(cache.choice_ratios[2]).to eq(0.42)
         expect(cache.choice_ratios[3]).to eq(0.00)
       end
     end
