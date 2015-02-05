@@ -1,5 +1,5 @@
 class Demographic < ActiveRecord::Base
-  belongs_to :response
+  belongs_to :respondent
 
   GENDERS ||= %w(male female)
   AGE_RANGES ||= %w(<18 18-24 25-34 35-44 45-54 55-64 65+)
