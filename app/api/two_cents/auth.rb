@@ -557,6 +557,25 @@ class TwoCents::Auth < Grape::API
       }
     end
 
+    desc 'Returns user settings'
+    params do
+      requires :auth_token, type: String, desc: 'Obtain this by registering'
+    end
+    get 'settings', jbuilder: 'user_settings' do
+      validate_user!
+    end
+
+    desc 'Updates user settings and returns the updated information'
+    params do
+      requires :auth_token, type: String, desc: 'Obtain this by registering'
+      optional :push_on_question_answered, type: Integer, desc: 'Notification frequency for quesitons answered'
+      optional :push_on_question_asked, type: Integer, desc: 'Notification frequency for quesitons asked'
+    end
+    put 'settings', jbuilder: 'user_settings' do
+      validate_user!
+      settings = declared_params.except(:auth_token)
+      current_user.update!(settings)
+    end
   end
 
   resource 's3_urls' do
