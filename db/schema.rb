@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150205044853) do
+ActiveRecord::Schema.define(version: 20150206215106) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -420,6 +420,7 @@ ActiveRecord::Schema.define(version: 20150205044853) do
     t.string   "auth_token"
   end
 
+  add_index "instances", ["auth_token"], name: "index_instances_on_auth_token", using: :btree
   add_index "instances", ["device_id"], name: "index_instances_on_device_id", using: :btree
   add_index "instances", ["user_id"], name: "index_instances_on_user_id", using: :btree
 

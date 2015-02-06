@@ -18,4 +18,21 @@ class Demographic < ActiveRecord::Base
   validates :education_level, inclusion: {in: EDUCATION_LEVELS, allow_nil: true}
   validates :political_affiliation, inclusion: {in: POLITICAL_AFFILIATIONS, allow_nil: true}
   validates :political_engagement, inclusion: {in: POLITICAL_ENGAGEMENTS, allow_nil: true}
+
+  def update_from_provider_data! provider, version, raw_data
+
+    Rails.logger.error "Need to translate raw_data to individual demographic components"
+    Rails.logger.error "raw_data: ``#{raw_data}''"
+
+    # demographic.gender =
+    # demographic.age_range =
+    # demographic.household_income =
+    # demographic.children =
+    # demographic.ethnicity =
+    # demographic.education_level =
+    # demographic.political_affiliation =
+    # demographic.political_engagement =
+
+    demographic.save!
+  end
 end
