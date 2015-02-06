@@ -42,7 +42,7 @@ class TwoCents::Questions < Grape::API
 
         message_to_send = Setting.find_by_key("share_question").nil? ? "Check out this question at Statisfy: %title% " : Setting.find_by_key("share_question").value.to_s
         message_to_send.sub! '%title%', question.title
-        message_to_send <<  "http://#{Rails.env}.statisfy.co#{Rails.application.routes.url_helpers.question_sharing_path(question.uuid)}"
+        message_to_send << Rails.application.routes.url_helpers.question_sharing_url(question.uuid)
 
         message_to_send
 
