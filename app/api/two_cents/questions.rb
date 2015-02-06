@@ -461,12 +461,14 @@ class TwoCents::Questions < Grape::API
       requires :cursor, type: Integer, desc: '0 for first questions, otherwise return last value received'
       optional :count, default: 20, type: Integer, desc: 'The maximum number of questions to return'
       optional :category_ids, type: Array, desc: 'Limit questions to only these categories'
+      optional :community_ids, type: Array, desc: 'Limit questions to only these communities'
     end
     post 'latest', jbuilder: 'latest' do
       validate_user!
 
       @questions = current_user.feed_questions.not_suspended.latest
       @questions = @questions.where(category_id: declared_params[:category_ids]) if declared_params[:category_ids]
+      @questions = @questions.joins(:communities).merge(Community.where id: declared_params[:community_ids]) if declared_params[:community_ids]
 
       offset = if declared_params[:cursor] == 0
         0
