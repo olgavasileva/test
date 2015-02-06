@@ -916,12 +916,12 @@ ActiveRecord::Schema.define(version: 20150206215106) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "email",                  default: ""
-    t.string   "encrypted_password",     default: "",     null: false
+    t.string   "email",                     default: ""
+    t.string   "encrypted_password",        default: "",     null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,      null: false
+    t.integer  "sign_in_count",             default: 0,      null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -936,9 +936,11 @@ ActiveRecord::Schema.define(version: 20150206215106) do
     t.date     "birthdate"
     t.string   "gender"
     t.string   "company_name"
-    t.integer  "feed_page",              default: 0
+    t.integer  "feed_page",                 default: 0
     t.integer  "user_avatar_id"
-    t.string   "type",                   default: "User"
+    t.string   "type",                      default: "User"
+    t.integer  "push_on_question_asked",    default: -1
+    t.integer  "push_on_question_answered", default: -1
   end
 
   add_index "users", ["email"], name: "index_users_on_email", using: :btree
