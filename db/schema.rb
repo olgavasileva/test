@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150206215106) do
+ActiveRecord::Schema.define(version: 20150206230000) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -582,6 +582,7 @@ ActiveRecord::Schema.define(version: 20150206215106) do
     t.integer  "trending_index",                                     default: 0
     t.integer  "trending_multiplier",                                default: 1
     t.boolean  "disable_question_controls",                          default: false
+    t.boolean  "notifying",                                          default: false
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
