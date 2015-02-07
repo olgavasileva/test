@@ -15,7 +15,7 @@ class Quantcast
   end
 
   def info id
-    info = data[:demographics].find{|d| d[:id] == id}
+    info = data[:demographics].find{|d| d[:id] == id} if data[:demographics]
     largest = info[:buckets].sort_by{|b| b[:index]}.last if info
     info.merge(largest_bucket: largest) if info
   end
