@@ -33,6 +33,6 @@ class Demographic < ActiveRecord::Base
     # demographic.political_affiliation =
     # demographic.political_engagement =
 
-    demographic.save!
+    save!
   end
 end
