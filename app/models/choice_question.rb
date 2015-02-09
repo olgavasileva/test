@@ -5,4 +5,8 @@ class ChoiceQuestion < Question
   default rotate: true
 
   validates :rotate, inclusion: {in:[true,false]}
+
+  def csv_columns
+    choices.order(:id).map { |c| c.title ? c.title : c.id }
+  end
 end

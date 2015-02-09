@@ -33,6 +33,8 @@ class OrderResponse < Response
   end
 
   def csv_data
-    [top_choice.try(:title)]
+    question.choices.order(:id).map do |c|
+      choice_responses.find_by(order_choice_id: c.id).try :position
+    end
   end
 end

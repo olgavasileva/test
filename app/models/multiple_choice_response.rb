@@ -15,6 +15,7 @@ class MultipleChoiceResponse < Response
   end
 
   def csv_data
-    [choices.map(&:title).join('|')]
+    ids = choices.map(&:id)
+    question.choices.order(:id).map{ |c| ids.include? c.id ? 1 : 0 }
   end
 end
