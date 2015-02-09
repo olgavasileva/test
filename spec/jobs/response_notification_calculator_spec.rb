@@ -3,7 +3,7 @@ require 'rails_helper'
 describe ResponseNotificationCalculator do
 
   let(:worker) { described_class.new }
-  let(:user) { User.new(id: 1) }
+  let(:user) { User.new(id: 1, push_on_question_answered: -1) }
 
   let(:user_responses) { [] }
 
@@ -97,6 +97,14 @@ describe ResponseNotificationCalculator do
   describe '#calculate_multiple' do
     let(:default) { described_class::DEFAULT_MULTIPLE }
     subject { worker.calculate_multiple(question) }
+
+    context 'when the user overrides the default' do
+      before { user.push_on_question_answered = 99 }
+
+      it 'always returns the user defined multiple' do
+        expect(subject).to eq(99)
+      end
+    end
 
     context 'when median is the highest' do
       before do

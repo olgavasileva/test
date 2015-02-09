@@ -50,6 +50,11 @@ class ResponseNotificationCalculator
   # These methods are extracted to make testing easier
 
   def calculate_multiple(question)
+    # A user defined multiple always overrides any one we might calculate
+    if question.user.push_on_question_answered > -1
+      return question.user.push_on_question_answered
+    end
+
     responses = fetch_response_values(question.user)
     total_questions = responses.length
     total_responses = responses.inject(:+)
