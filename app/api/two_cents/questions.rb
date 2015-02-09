@@ -1051,11 +1051,10 @@ class TwoCents::Questions < Grape::API
     get 'question', jbuilder: 'question_info' do
       validate_user! if declared_params[:auth_token]
 
-      query = Question.eager_load(:responses, choices: [:responses])
       @question = if declared_params[:question_id]
-        query.find_by_id!(declared_params[:question_id])
+        Question.find_by_id!(declared_params[:question_id])
       else
-        query.find_by_uuid!(declared_params[:question_uuid])
+        Question.find_by_uuid!(declared_params[:question_uuid])
       end
 
       asking_user_id = declared_params[:user_id] || current_user.try(:id)
