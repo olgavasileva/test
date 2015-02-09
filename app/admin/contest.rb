@@ -83,12 +83,28 @@ ActiveAdmin.register Contest do
       csv_body = CSV.generate do |csv|
 
         # Add some overview rows
-        csv << ["Contest ID", "Contest Name", "Survey ID", "Survey Name"]
-        csv << [contest.id, contest.name, survey.id, survey.name]
+        csv << ["Contest ID", "Contest Name"]
+        csv << [contest.id, contest.name]
         csv << []
 
+        csv << ["Survey ID", "Survey Name"]
+        csv << [survey.id, survey.name]
+        csv << []
+
+        leading_columns = ["User ID", "username", "Age", "Gender"]
+
         # Build the columns row
-        columns = ["User ID", "username", "Age", "Gender"]
+        columns = Array.new(leading_columns.count)
+        survey.questions.each do |q|
+          columns << nil  # blank column before each question
+          columns << q.title
+          columns += Array.new(q.csv_columns.count)
+        end
+
+        csv << columns
+
+
+        columns = leading_columns
         survey.questions.each do |q|
           columns << nil  # blank column before each question
           columns << "Response ID"
@@ -110,8 +126,8 @@ ActiveAdmin.register Contest do
                 line << responses[index].id
                 line += responses[index].csv_data
               else
-                line << nil # blank column
-                line += Array.new(question.csv_columns.count)
+                line << nil # blank column for response id
+                line += Array.new(question.csv_columns.count) # blank column for each csv_data column
               end
             end
 

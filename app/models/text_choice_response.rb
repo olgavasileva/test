@@ -12,6 +12,6 @@ class TextChoiceResponse < Response
   end
 
   def csv_data
-    [choice.try(:title)]
+    question.choices.order(:id).map{ |c| c == choice ? 1 : 0 }
   end
 end

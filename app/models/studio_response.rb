@@ -13,7 +13,7 @@ class StudioResponse < Response
     property_keys = question.property_keys
     stickers = question.stickers
 
-    line = [nil]  # first column is empty
+    line = []
     line << scene.try(:studio).try(:id)
     line << scene.try(:name)
     line << scene.try(:image).try(:url)
