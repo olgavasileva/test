@@ -469,6 +469,7 @@ class TwoCents::Questions < Grape::API
       @questions = current_user.feed_questions.not_suspended.latest
       @questions = @questions.where(category_id: declared_params[:category_ids]) if declared_params[:category_ids]
       @questions = @questions.joins(:communities).merge(Community.where id: declared_params[:community_ids]) if declared_params[:community_ids]
+      @questions = @questions.uniq
 
       offset = if declared_params[:cursor] == 0
         0
