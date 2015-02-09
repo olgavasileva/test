@@ -347,7 +347,7 @@ class TwoCents::Auth < Grape::API
       [200, "1002 - Could not access profile"],
       [200, "1003 - Profile information missing"],
       [200, "1004 - Error saving the provider information"],
-      [200, "1008 - The email associated with the profile is already taken"],
+      [200, "1008 - The desired email address is already taken"],
       [200, "1009 - The username associated with the profile is already taken"],
       [200, "1010 - Birthdate must be over 13 years ago"],
       [200, "1011 - Unable to save the user record (specific reason text will be included)"],
@@ -374,11 +374,10 @@ class TwoCents::Auth < Grape::API
 
       either = Hash.new { |h,k| h[k] = declared_params[k] || profile.send(k) }
 
-      fail! 1003, "Profile has no email" unless either[:email].present?
       fail! 1003, "Profile has no name" unless either[:name].present?
       fail! 1003, "Profile has no username" unless either[:username].present?
 
-      if User.where(email: either[:email]).exists?
+      if either[:email] && User.where(email: either[:email]).exists?
         fail! 1008, "User's email is already registered: #{either[:email]}"
       end
 

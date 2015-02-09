@@ -58,7 +58,7 @@ describe :promote_social do
       include_examples :returns_error, 1002, "Could not access profile"
     end
 
-    %i{email name username}.each do |attribute|
+    %i{name username}.each do |attribute|
       context "with no decernable :#{attribute}" do
         before { allow(profile).to receive(attribute).and_return(nil) }
         include_examples :returns_error, 1003, "Profile has no #{attribute}"
