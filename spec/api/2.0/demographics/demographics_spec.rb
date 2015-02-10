@@ -33,26 +33,23 @@ describe :demographics do
       it {expect(user.reload.demographic).to be_present}
 
       context "Whith all values set" do
-        let(:params) {{ auth_token: auth_token, gender: gender, age_range: age_range, household_income: household_income, children: children, ethnicity: ethnicity, education_level: education_level, political_affiliation: political_affiliation, political_engagement: political_engagement }}
-        let(:gender) {"male"}
-        let(:age_range) {"18-24"}
-        let(:household_income) {"0-50k"}
-        let(:children) {"true"}
-        let(:ethnicity) {"other"}
-        let(:education_level) {"college"}
-        let(:political_affiliation) {"independent"}
-        let(:political_engagement) {"inactive"}
+        let(:params) {{ auth_token: auth_token, provider: provider, version: version, raw_data: raw_data }}
+        let(:provider) {"quantcast"}
+        let(:version) {"1.0"}
+        let(:raw_data) {"qcseg=D;qcseg=T;qcseg=50082;qcseg=50079;qcseg=50076;qcseg=50075;qcseg=50074;qcseg=50073;qcseg=50062;qcseg=50060;qcseg=50059;qcseg=50057;qcseg=50054;"}
 
         it {expect(response.status).to eq 201}
         it {expect(user.reload.demographic).to be_present}
-        it {expect(user.reload.demographic.gender).to eq gender}
-        it {expect(user.reload.demographic.age_range).to eq age_range}
-        it {expect(user.reload.demographic.household_income).to eq household_income}
-        it {expect(user.reload.demographic.children).to eq children}
-        it {expect(user.reload.demographic.ethnicity).to eq ethnicity}
-        it {expect(user.reload.demographic.education_level).to eq education_level}
-        it {expect(user.reload.demographic.political_affiliation).to eq political_affiliation}
-        it {expect(user.reload.demographic.political_engagement).to eq political_engagement}
+        it {expect(user.reload.demographic.provider).to eq provider}
+        it {expect(user.reload.demographic.version).to eq version}
+        it {expect(user.reload.demographic.raw_data).to eq raw_data}
+        it {expect(user.reload.demographic.gender).to eq 'male'}
+        it {expect(user.reload.demographic.household_income).to eq '100k+'}
+        it {expect(user.reload.demographic.children).to eq ""}
+        it {expect(user.reload.demographic.ethnicity).to eq ""}
+        it {expect(user.reload.demographic.education_level).to eq ""}
+        it {expect(user.reload.demographic.political_affiliation).to be_nil}
+        it {expect(user.reload.demographic.political_engagement).to be_nil}
       end
     end
   end
