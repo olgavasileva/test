@@ -183,6 +183,19 @@ class TwoCents::Communities < Grape::API
       {}
     end
 
+    desc 'Trending communities'
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+      optional :per_page, type: Integer, default: 10
+      optional :page, type: Integer, default: 1
+    end
+    get 'trending' do
+      validate_user!
+
+      Community.trending_for_user(current_user, params[:page], params[:per_page])
+          .map { |community| serialize_community(community) }
+    end
+
     desc "Invite multiple people to join"
     params do
       requires :auth_token, type: String, desc: "Obtain this from the instance's API."
