@@ -109,3 +109,16 @@
         - name
         - display_name
         - disabled
+  Demographic:
+    :options:
+      :fields:
+        - id
+        - gender
+        - age_range
+        - household_income
+        - children
+        - ethnicity
+        - education_level
+        - political_affiliation
+        - political_engagement
+        - username

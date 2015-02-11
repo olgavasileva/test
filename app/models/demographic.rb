@@ -19,7 +19,10 @@ class Demographic < ActiveRecord::Base
   validates :political_affiliation, inclusion: {in: POLITICAL_AFFILIATIONS, allow_nil: true}
   validates :political_engagement, inclusion: {in: POLITICAL_ENGAGEMENTS, allow_nil: true}
 
+  delegate :username, to: :respondent, allow_nil: true
+
   def update_from_provider_data! provider, version, raw_data
+    @data_values = nil
     self.data_provider = provider
     self.data_version = version
     self.raw_data = raw_data
@@ -28,14 +31,14 @@ class Demographic < ActiveRecord::Base
   end
 
   def injest_raw_data!
-    calculate_gender
-    calculate_age_range
-    calculate_household_income
-    calculate_children
-    calculate_ethnicity
-    calculate_education_level
-    calculate_political_affiliation
-    calculate_political_engagement
+    self.gender = calculated_gender
+    self.age_range = calculated_age_range
+    self.household_income = calculated_household_income
+    self.children = calculated_children
+    self.ethnicity = calculated_ethnicity
+    self.education_level = calculated_education_level
+    self.political_affiliation = calculated_political_affiliation
+    self.political_engagement = calculated_political_engagement
 
     save!
   end
@@ -53,105 +56,95 @@ class Demographic < ActiveRecord::Base
     end
 
     def raw_data_contains_some_info?
-      calculate_gender
-      calculate_household_income
-
-      gender.present? || household_income.present?
+      calculated_gender.present? || calculated_household_income.present?
     end
 
-    def calculate_gender
-      self.gender ||= begin
-        male_matches = data_values & m('MALE', "MALE_21-34", "MALE_25-54", "MALE_35-54", "MALE_21+", "MALE_55+", "MALE_18-24", "MALE_18-34", "MALE_18-49")
-        female_matches = data_values & m("FEMALE", "FEMALE_21-34", "FEMALE_18-24", "FEMALE_18-34", "FEMALE_18-49", "FEMALE_21+", "FEMALE_25-54", "FEMALE_35-54", "FEMALE_55+")
+    def calculated_gender
+      male_matches = data_values & m('Male', "Male_21-34", "Male_25-54", "Male_35-54", "Male_21+", "Male_55+", "Male_18-24", "Male_18-34", "Male_18-49")
+      female_matches = data_values & m("Female", "Female_21-34", "Female_18-24", "Female_18-34", "Female_18-49", "Female_21+", "Female_25-54", "Female_35-54", "Female_55+")
 
-        if male_matches.count > 0 || female_matches.count > 0
-          male_matches.count > female_matches.count ? 'male' : 'female'
-        end
+      if male_matches.count > 0 || female_matches.count > 0
+        male_matches.count > female_matches.count ? 'male' : 'female'
       end
     end
 
-    def calculate_household_income
-      self.household_income ||= begin
-        if data_values & m('100K-')
-          '0-100k'
-        elsif data_values & m('100K+')
-          '100k+'
-        end
+    def calculated_household_income
+      if (data_values & m('100K-')).present?
+        '0-100k'
+      elsif (data_values & m('100K+')).present?
+        '100k+'
       end
     end
 
-    def calculate_children
-      self.children ||= begin
-        if data_values & m('MOMS', 'PARENTS')
-          "true"
-        elsif raw_data_contains_some_info?   # if other data is present, assume lack of this info is that they don't have children
-          "false"
-        end
+    def calculated_children
+      if (data_values & m('Moms', 'Parents')).present?
+        "true"
+      elsif raw_data_contains_some_info?   # if other data is present, assume lack of this info is that they don't have children
+        "false"
       end
     end
 
-    def calculate_ethnicity
-      self.ethnicity ||= begin
-        if data_values & m('ASIAN')
-          'asian'
-        elsif data_values & m('AFRICAN_AMERICAN')
-          'african_american'
-        elsif data_values & m('HISPANIC')
-          'hispanic'
-        elsif raw_data_contains_some_info?   # if other data is present, assume lack of this info is that they're caucasian
-          'caucasian'
-        end
+    def calculated_ethnicity
+      if (data_values & m('Asian')).present?
+        'asian'
+      elsif (data_values & m('African_American')).present?
+        'african_american'
+      elsif (data_values & m('Hispanic')).present?
+        'hispanic'
+      elsif raw_data_contains_some_info?   # if other data is present, assume lack of this info is that they're caucasian
+        'caucasian'
       end
     end
 
-    def calculate_education_level
-      self.education_level ||= begin
-        if data_values & m('COLLEGE+')
-          'college'
-        elsif raw_data_contains_some_info?
-          'no_college'
-        end
+    def calculated_education_level
+      if (data_values & m('College+')).present?
+        'college'
+      elsif raw_data_contains_some_info?
+        'no_college'
       end
     end
 
-    def calculate_political_affiliation
+    def calculated_political_affiliation
       # No mappings for this at this time (2/10/2015)
-      self.political_affiliation = nil
+      nil
     end
 
-    def calculate_political_engagement
+    def calculated_political_engagement
       # No mappings for this at this time (2/10/2015)
-      self.political_engagement = nil
+      nil
     end
 
+    def calculated_age_range
+      age_interval = normalized_age_interval age_intervals
 
-    def calculate_age_range
-      self.age_range ||= begin
-        ai = age_intervals
-        eai = encompassing_age_interval ai
-        while ai.count > 0 && eai.nil?
-          ai.shift!
-          eai = encompassing_age_interval ai
-        end
-
-        if eai.present?
-          tree = IntervalTree::Tree.new [(0...18), (18...25), (25...35), (35...45), (45...55), (55...105)]
-          case tree.search eai
-          when m(0...18) then "<18"
-          when m(18...25) then "18-24"
-          when (25...35) then "25-34"
-          when (35...45) then "35-44"
-          when (45...55) then "45-54"
-          when (55...105) then "55+"
-          end
+      if age_interval.present?
+        tree = IntervalTree::Tree.new [(0...18), (18...25), (25...35), (35...45), (45...55), (55...105)]
+        case tree.search age_interval
+        when [0...18] then "<18"
+        when [18...25] then "18-24"
+        when [25...35] then "25-34"
+        when [35...45] then "35-44"
+        when [45...55] then "45-54"
+        when [55...105] then "55+"
         end
       end
     end
 
-    def encompassing_age_interval intervals
+    # Given a set of intervals, find smallest one that includes all of them, but
+    # throwing out one at a time if they don't all overlap
+    def normalized_age_interval intervals
+      i = best_fit_age_interval intervals
+      while intervals.count > 0 && i.nil?
+        intervals.shift!
+        i = best_fit_age_interval intervals
+      end
+      i
+    end
+
+    def best_fit_age_interval intervals
       if intervals.present?
-        min = intervals.map{|i| i.min}.min
-        max = intervals.map{|i| i.max}.max
+        min = intervals.map{|i| i.min}.max
+        max = intervals.map{|i| i.max}.min
         if min <= max
           (min...max)
         end
@@ -159,7 +152,7 @@ class Demographic < ActiveRecord::Base
     end
 
     def age_intervals
-      keys = data_values & m("18-24", "18-34", "18-49", "21+", "25-54", "35-54", "55+", "21-34", "MALE_21-34", "MALE_25-54", "MALE_35-54", "MALE_21+", "MALE_55+", "MALE_18-24", "MALE_18-34", "MALE_18-49", "FEMALE_21-34", "FEMALE_18-24", "FEMALE_18-34", "FEMALE_18-49", "FEMALE_21+", "FEMALE_25-54", "FEMALE_35-54", "FEMALE_55+")
+      keys = data_values & m("18-24", "18-34", "18-49", "21+", "25-54", "35-54", "55+", "21-34", "Male_21-34", "Male_25-54", "Male_35-54", "Male_21+", "Male_55+", "Male_18-24", "Male_18-34", "Male_18-49", "Female_21-34", "Female_18-24", "Female_18-34", "Female_18-49", "Female_21+", "Female_25-54", "Female_35-54", "Female_55+")
       keys.map do |k|
         case [k]
         when m("18-24") then (18...25)
@@ -170,22 +163,22 @@ class Demographic < ActiveRecord::Base
         when m("35-54") then (35...55)
         when m("55+") then (55...105)
         when m("21-34") then (21...35)
-        when m("MALE_21-34") then (21...35)
-        when m("MALE_25-54") then (25...55)
-        when m("MALE_35-54") then (35...55)
-        when m("MALE_21+") then (21...105)
-        when m("MALE_55+") then (55...105)
-        when m("MALE_18-24") then (18...25)
-        when m("MALE_18-34") then (18...35)
-        when m("MALE_18-49") then (18...50)
-        when m("FEMALE_21-34") then (21...35)
-        when m("FEMALE_18-24") then (18...25)
-        when m("FEMALE_18-34") then (18...35)
-        when m("FEMALE_18-49") then (18...50)
-        when m("FEMALE_21+") then (21...105)
-        when m("FEMALE_25-54") then (25...55)
-        when m("FEMALE_35-54") then (35...55)
-        when m("FEMALE_55+") then (55...105)
+        when m("Male_21-34") then (21...35)
+        when m("Male_25-54") then (25...55)
+        when m("Male_35-54") then (35...55)
+        when m("Male_21+") then (21...105)
+        when m("Male_55+") then (55...105)
+        when m("Male_18-24") then (18...25)
+        when m("Male_18-34") then (18...35)
+        when m("Male_18-49") then (18...50)
+        when m("Female_21-34") then (21...35)
+        when m("Female_18-24") then (18...25)
+        when m("Female_18-34") then (18...35)
+        when m("Female_18-49") then (18...50)
+        when m("Female_21+") then (21...105)
+        when m("Female_25-54") then (25...55)
+        when m("Female_35-54") then (35...55)
+        when m("Female_55+") then (55...105)
         end
       end
     end
@@ -194,6 +187,7 @@ class Demographic < ActiveRecord::Base
       keys.map{|key| mapping[key]}
     end
 
+    # Map our values to the ids from the provider
     def mapping
       @mapping ||= {
         "18-24" => "50055",
@@ -204,22 +198,32 @@ class Demographic < ActiveRecord::Base
         "35-54" => "50060",
         "55+" => "50061",
         "21-34" => "50086",
-        "MALE_21-34" => "50084",
-        "MALE_25-54" => "50075",
-        "MALE_35-54" => "50076",
-        "MALE_21+" => "50074",
-        "MALE_55+" => "50077",
-        "MALE_18-24" => "50071",
-        "MALE_18-34" => "50072",
-        "MALE_18-49" => "50073",
-        "FEMALE_21-34" => "50085",
-        "FEMALE_18-24" => "50063",
-        "FEMALE_18-34" => "50064",
-        "FEMALE_18-49" => "50065",
-        "FEMALE_21+" => "50066",
-        "FEMALE_25-54" => "50067",
-        "FEMALE_35-54" => "50068",
-        "FEMALE_55+" => "50069",
+        "College+" => "50062",
+        "Moms" => "50078",
+        "Parents" => "50079",
+        "Male" => "50082",
+        "Female" => "50083",
+        "Male_21-34" => "50084",
+        "Female_21-34" => "50085",
+        "Male_25-54" => "50075",
+        "Male_35-54" => "50076",
+        "Male_21+" => "50074",
+        "Male_55+" => "50077",
+        "Male_18-24" => "50071",
+        "Male_18-34" => "50072",
+        "Male_18-49" => "50073",
+        "Female_18-24" => "50063",
+        "Female_18-34" => "50064",
+        "Female_18-49" => "50065",
+        "Female_21+" => "50066",
+        "Female_25-54" => "50067",
+        "Female_35-54" => "50068",
+        "Female_55+" => "50069",
+        "100K+" => "50054",
+        "100K-" => "50081",
+        "Asian" => "50087",
+        "African_American" => "50080",
+        "Hispanic" => "50070"
       }
     end
 end
