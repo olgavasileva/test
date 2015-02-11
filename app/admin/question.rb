@@ -11,6 +11,7 @@ ActiveAdmin.register Question do
   filter :category
   filter :state, as: :check_boxes, collection: Question::STATES
   filter :kind, as: :check_boxes, collection: Question::KINDS
+  filter :allow_multiple_answers_from_user
 
   index do
     selectable_column
@@ -52,6 +53,7 @@ ActiveAdmin.register Question do
       f.input :trending_index
       f.input :trending_multiplier
       f.input :disable_question_controls
+      f.input :allow_multiple_answers_from_user
     end
     f.actions
   end
