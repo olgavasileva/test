@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150203203910) do
+ActiveRecord::Schema.define(version: 20150211000550) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -176,6 +176,23 @@ ActiveRecord::Schema.define(version: 20150203203910) do
   end
 
   add_index "daily_analytics", ["user_id", "metric", "date"], name: "index_daily_analytics_on_user_id_and_metric_and_date", using: :btree
+
+  create_table "demographics", force: true do |t|
+    t.string   "gender"
+    t.string   "age_range"
+    t.string   "household_income"
+    t.string   "children"
+    t.string   "ethnicity"
+    t.string   "education_level"
+    t.string   "political_affiliation"
+    t.string   "political_engagement"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "respondent_id"
+    t.text     "raw_data"
+    t.string   "data_provider"
+    t.string   "data_version"
+  end
 
   create_table "devices", force: true do |t|
     t.string   "device_vendor_identifier"
@@ -406,6 +423,7 @@ ActiveRecord::Schema.define(version: 20150203203910) do
     t.string   "auth_token"
   end
 
+  add_index "instances", ["auth_token"], name: "index_instances_on_auth_token", using: :btree
   add_index "instances", ["device_id"], name: "index_instances_on_device_id", using: :btree
   add_index "instances", ["user_id"], name: "index_instances_on_user_id", using: :btree
 
@@ -552,21 +570,23 @@ ActiveRecord::Schema.define(version: 20150203203910) do
     t.integer  "studio_id"
     t.integer  "view_count"
     t.integer  "start_count"
-    t.boolean  "target_all",                                         default: false
-    t.boolean  "target_all_followers",                               default: false
-    t.boolean  "target_all_groups",                                  default: false
+    t.boolean  "target_all",                                                default: false
+    t.boolean  "target_all_followers",                                      default: false
+    t.boolean  "target_all_groups",                                         default: false
     t.integer  "targeted_reach"
     t.string   "uuid"
-    t.boolean  "anonymous",                                          default: false
-    t.boolean  "currently_targetable",                               default: true
+    t.boolean  "anonymous",                                                 default: false
+    t.boolean  "currently_targetable",                                      default: true
     t.integer  "target_id"
     t.integer  "share_count"
-    t.decimal  "score",                     precision: 10, scale: 2, default: 0.0
-    t.boolean  "special",                                            default: false
-    t.boolean  "require_comment",                                    default: false
-    t.integer  "trending_index",                                     default: 0
-    t.integer  "trending_multiplier",                                default: 1
-    t.boolean  "disable_question_controls",                          default: false
+    t.decimal  "score",                            precision: 10, scale: 2, default: 0.0
+    t.boolean  "special",                                                   default: false
+    t.boolean  "require_comment",                                           default: false
+    t.integer  "trending_index",                                            default: 0
+    t.integer  "trending_multiplier",                                       default: 1
+    t.boolean  "disable_question_controls",                                 default: false
+    t.boolean  "notifying",                                                 default: false
+    t.boolean  "allow_multiple_answers_from_user",                          default: false
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
@@ -901,12 +921,12 @@ ActiveRecord::Schema.define(version: 20150203203910) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "email",                  default: ""
-    t.string   "encrypted_password",     default: "",     null: false
+    t.string   "email",                     default: ""
+    t.string   "encrypted_password",        default: "",     null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,      null: false
+    t.integer  "sign_in_count",             default: 0,      null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -921,9 +941,11 @@ ActiveRecord::Schema.define(version: 20150203203910) do
     t.date     "birthdate"
     t.string   "gender"
     t.string   "company_name"
-    t.integer  "feed_page",              default: 0
+    t.integer  "feed_page",                 default: 0
     t.integer  "user_avatar_id"
-    t.string   "type",                   default: "User"
+    t.string   "type",                      default: "User"
+    t.integer  "push_on_question_asked",    default: -1
+    t.integer  "push_on_question_answered", default: -1
   end
 
   add_index "users", ["email"], name: "index_users_on_email", using: :btree

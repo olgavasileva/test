@@ -16,4 +16,7 @@ FactoryGirl.define do
 
   factory :anonymous do
   end
+
+  factory :respondent do
+  end
 end

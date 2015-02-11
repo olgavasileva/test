@@ -29,14 +29,14 @@ describe :profile do
           other_user.follow! user
         }
 
-        it {expect(json["profile"].keys).to match_array %w[username email pro user_id member_since number_of_asked_questions number_of_answered_questions number_of_comments_left number_of_followers]}
-        it {expect(json["profile"]["pro"]).to eq false}
+        it {expect(json["profile"].keys).to match_array %w[username email user_id member_since number_of_asked_questions number_of_answered_questions number_of_comments_left number_of_followers]}
+        it {expect(json["profile"]["pro_dashboard_url"]).to be_nil}
 
         context "When the user is a pro" do
           let(:instance) {FactoryGirl.create :instance, :logged_in, user: user}
           let(:user) {FactoryGirl.create :user, :pro}
 
-          it {expect(json["profile"]["pro"]).to eq true}
+          it {expect(json["profile"]["pro_dashboard_url"]).to eq "http://example.com/users/#{user.id}/dashboard"}
         end
 
         context "With no questions answered" do

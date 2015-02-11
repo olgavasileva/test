@@ -111,6 +111,10 @@ gem 'resque'                        # A Redis-backed library for creating backgr
 
 gem 'faraday'                       # An HTTP client lib that provides a common interface over many adapters
 
+# OAuth/Social Integrations
+gem 'omniauth'
+gem 'omniauth-facebook'
+
 group :development do
 
   gem 'sqlite3'
@@ -137,6 +141,7 @@ end
 
 group :test do
   gem 'rspec-rails'
+  gem 'shoulda-matchers', require: false
   gem 'database_cleaner'
   gem 'selenium-webdriver'
   gem 'capybara'
@@ -148,3 +153,4 @@ gem 'rails_12factor',         group: :production
 gem 'sdoc', require: false,   group: :doc
 gem 'social-share-button'
 gem 'rakismet'
+gem 'searchbing', '0.2.3'

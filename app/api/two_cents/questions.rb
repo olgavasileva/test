@@ -461,12 +461,15 @@ class TwoCents::Questions < Grape::API
       requires :cursor, type: Integer, desc: '0 for first questions, otherwise return last value received'
       optional :count, default: 20, type: Integer, desc: 'The maximum number of questions to return'
       optional :category_ids, type: Array, desc: 'Limit questions to only these categories'
+      optional :community_ids, type: Array, desc: 'Limit questions to only these communities'
     end
     post 'latest', jbuilder: 'latest' do
       validate_user!
 
       @questions = current_user.feed_questions.not_suspended.latest
       @questions = @questions.where(category_id: declared_params[:category_ids]) if declared_params[:category_ids]
+      @questions = @questions.joins(:communities).merge(Community.where id: declared_params[:community_ids]) if declared_params[:community_ids]
+      @questions = @questions.uniq
 
       offset = if declared_params[:cursor] == 0
         0
@@ -855,6 +858,8 @@ class TwoCents::Questions < Grape::API
       notes: <<-END
         When the user answers a question, use this API to submit the response.
         The server will return summary information about the question.
+        In addition, the server will return if demographic data is require for this user.
+        If so, obtain demographic information and submit using the demographic API.
 
         #### Example JSON to supply in the **response** parameter
               // text question response
@@ -872,6 +877,7 @@ class TwoCents::Questions < Grape::API
         #### Example response
             { "summary":
               {
+                demographic_required: true,
                 response_count:700,
                 view_count:1000,
                 comment_count:500,
@@ -942,6 +948,7 @@ class TwoCents::Questions < Grape::API
       end
 
       @anonymous = declared_params[:anonymous]
+      @demographic_required = current_user.demographic_required?
     end
 
 

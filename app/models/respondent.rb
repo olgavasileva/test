@@ -61,6 +61,8 @@ class Respondent < ActiveRecord::Base
 
   has_many :segments, dependent: :destroy, foreign_key: :user_id
 
+  has_one :demographic, dependent: :destroy
+
   belongs_to :avatar, class_name: "UserAvatar", foreign_key: :user_avatar_id
 
   VALID_USERNAME_REGEX ||= /\A[a-z0-9\-_]{4,50}\z/i
@@ -72,6 +74,10 @@ class Respondent < ActiveRecord::Base
 
   before_validation :ensure_username
 
+
+  def demographic_required?
+    demographic.nil? || demographic.updated_at < (Date.current - 1.month)
+  end
 
   def feed_questions_with_answered
     feed_items = FeedItem.arel_table

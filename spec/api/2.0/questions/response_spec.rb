@@ -14,9 +14,9 @@ describe :response do
     let(:params) {{}}
 
     it {expect(response.status).to eq 200}
-    it {expect(JSON.parse(response.body)).to_not be_nil}
-    it {expect(JSON.parse(response.body)['error_code']).to eq 400}
-    it {expect(JSON.parse(response.body)['error_message']).to match /.+ is missing/}
+    it {expect(json).to_not be_nil}
+    it {expect(json['error_code']).to eq 400}
+    it {expect(json['error_message']).to match /.+ is missing/}
   end
 
   context "With all required params" do
@@ -28,8 +28,8 @@ describe :response do
       let(:auth_token) {"INVALID"}
 
       it {expect(response.status).to eq 200}
-      it {expect(JSON.parse(response.body)['error_code']).to eq 402}
-      it {expect(JSON.parse(response.body)['error_message']).to match /Invalid auth token/}
+      it {expect(json['error_code']).to eq 402}
+      it {expect(json['error_message']).to match /Invalid auth token/}
     end
 
     context "With a logged in user" do
@@ -45,7 +45,7 @@ describe :response do
         end
 
         it "should return summary fields" do
-          summary = JSON.parse(response.body)['summary']
+          summary = json['summary']
 
           expect(summary.keys).to include('choices')
           expect(summary.keys).to include('response_count')
@@ -58,6 +58,22 @@ describe :response do
           expect(summary.keys).to include('creator_id')
           expect(summary.keys).to include('creator_name')
           expect(summary.keys).to include('anonymous')
+          expect(summary.keys).to include('demographic_required')
+        end
+
+        context "When user.demographic is nil" do
+          it {expect(json['summary'].keys).to include('demographic_required')}
+          it {expect(json['summary']['demographic_required']).to eq true}
+        end
+
+        context "When user.demographic was updated 1 month ago" do
+          let (:before_api_call) {user.demographic = FactoryGirl.create :demographic, updated_at: Date.current - 1.month}
+          it {expect(json['summary']['demographic_required']).to eq false}
+        end
+
+        context "When user.demographic was updated 1 month and 1 day ago" do
+          let (:before_api_call) {user.create_demographic updated_at: Date.current - 1.month - 1.day}
+          it {expect(json['summary']['demographic_required']).to eq true}
         end
       end
 

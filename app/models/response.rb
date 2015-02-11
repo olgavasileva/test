@@ -8,6 +8,9 @@ class Response < ActiveRecord::Base
 	validates :question, presence: true
   validate :comment_if_required
 
+  validate :answer_is_unique, on: :create,
+    unless: 'question.allow_multiple_answers_from_user'
+
   after_create :record_analytics
   after_create :add_and_push_message
   after_create :modify_question_score
@@ -78,4 +81,9 @@ class Response < ActiveRecord::Base
       end
     end
 
+    def answer_is_unique
+      if Response.where(user_id: user_id, question_id: question_id).exists?
+        errors.add(:base, 'User has already answered this question')
+      end
+    end
 end

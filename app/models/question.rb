@@ -1,3 +1,5 @@
+require 'choice_result_cache'
+
 class Question < ActiveRecord::Base
   STATES ||= %w(preview targeting active suspended survey_only)
   KINDS ||= %w(public targeted)
@@ -25,6 +27,7 @@ class Question < ActiveRecord::Base
   has_many :response_comments, through: :responses, source: :comment
   has_many :inappropriate_flags, dependent: :destroy
   has_many :response_matchers, dependent: :destroy
+  has_many :communities, through: :user, source: :membership_communities
 
   scope :not_suspended, -> { where.not state: 'suspended' }
 	scope :active, -> { where state:"active" }
@@ -190,6 +193,10 @@ class Question < ActiveRecord::Base
 
   def csv_columns
     [title]
+  end
+
+  def choice_result_cache
+    @choice_result_cache ||= ChoiceResultCache.new(self)
   end
 
   private

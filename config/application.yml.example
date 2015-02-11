@@ -17,6 +17,9 @@ DEVICE_AWS_BUCKET: crashmob-production
 
 IOS_DOWNLOAD_TRACKING_URL: https://handler.fiksu.com/click?adid=e9739340-8863-0132-879a-22000b358176
 
+FACEBOOK_APP_ID: ~
+FACEBOOK_APP_SECRET: ~
+
 development:
   AWS_BUCKET: crashmob-development
   DEVICE_AWS_BUCKET: crashmob-development

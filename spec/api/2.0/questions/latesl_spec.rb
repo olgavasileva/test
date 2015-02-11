@@ -223,6 +223,60 @@ describe :latest do
           end
         end
 
+        context "When the params include community_ids" do
+          let(:params) {{auth_token: auth_token, cursor: cursor, count: count, community_ids: community_ids}}
+          let(:c1) {FactoryGirl.create :community}
+          let(:c2) {FactoryGirl.create :community}
+
+          context "When q1 and q2 were asked by members of community 1 and q3 was asked by a member of c2" do
+            let(:before_api_call) do
+              c1.member_users << q1.user
+              c1.member_users << q2.user
+              c2.member_users << q3.user
+            end
+
+            context "When filtering on community 1" do
+              let(:community_ids) {[c1.id]}
+
+              it {expect(json['questions'].map{|q| q['id']}).to match_array [q1.id, q2.id]}
+            end
+
+            context "When filtering on community 2" do
+              let(:community_ids) {[c2.id]}
+
+              it {expect(json['questions'].map{|q| q['id']}).to match_array [q3.id]}
+            end
+
+            context "When filtering on community 1 or 2" do
+              let(:community_ids) {[c1.id, c2.id]}
+
+              it {expect(json['questions'].map{|q| q['id']}).to match_array [q1.id, q2.id, q3.id]}
+            end
+          end
+        end
+
+        context "When the params include community_ids and category_ids" do
+          let(:params) {{auth_token: auth_token, cursor: cursor, count: count, category_ids: category_ids, community_ids: community_ids}}
+
+          context "When filtering on category1, which has q1, q4, and q5" do
+            let(:category_ids) {[category1.id]}
+            let(:c1) {FactoryGirl.create :community}
+
+            context "When q1 and q2 were asked by members of community 1" do
+              let(:before_api_call) do
+                c1.member_users << q1.user
+                c1.member_users << q2.user
+              end
+
+              context "When filtering on community 1" do
+                let(:community_ids) {[c1.id]}
+
+                it {expect(json['questions'].map{|q| q['id']}).to match_array [q1.id]}
+              end
+            end
+          end
+        end
+
         context "When the user has answered the text choice question" do
           let(:text_choice_response) {FactoryGirl.create :text_choice_response, question:text_choice_question, choice:text_choice1}
           let(:user) {text_choice_response.user}

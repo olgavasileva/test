@@ -1,0 +1,55 @@
+require 'rails_helper'
+
+RSpec.describe Authentication do
+
+  it { should belong_to(:user) }
+
+  describe 'validations' do
+    it { should validate_presence_of(:provider) }
+    it { should validate_inclusion_of(:provider).in_array(Authentication::PROVIDERS) }
+    it { should validate_presence_of(:uid) }
+    it { should validate_presence_of(:token) }
+
+    describe 'for unique attributes' do
+      before { FactoryGirl.create(:authentication) }
+      it { should validate_uniqueness_of(:uid).scoped_to(:provider) }
+    end
+  end
+
+  describe '.from_provider_id' do
+    it 'queries for the record correctly' do
+      expect(Authentication).to receive(:where)
+        .with({provider: 'test', uid: 1}).ordered { Authentication }
+
+      expect(Authentication).to receive(:first_or_initialize).ordered
+
+      Authentication.from_provider_id('test', 1)
+    end
+  end
+
+  describe '.from_social_profile' do
+    let(:profile) { double('SocialProfile::BaseAdapter', {
+      provider: 'test',
+      uid: 1,
+      token: 'token'
+    }) }
+
+    it 'delegates to .from_provider_id' do
+      expect(Authentication).to receive(:from_provider_id)
+        .with('test', 1).and_call_original
+
+      Authentication.from_social_profile(profile)
+    end
+
+    it 'sets the :token' do
+      auth = Authentication.from_social_profile(profile)
+      expect(auth.token).to eq(profile.token)
+    end
+
+    it 'sets the :user if one is given' do
+      user = User.new
+      auth = Authentication.from_social_profile(profile, user)
+      expect(auth.user).to eq(user)
+    end
+  end
+end
