@@ -1,5 +1,6 @@
 class EmbeddableUnit < ActiveRecord::Base
   belongs_to :survey
+  has_many :questions, through: :survey
 
   default :uuid do |eu|
     "EU"+UUID.new.generate.gsub(/-/, '')

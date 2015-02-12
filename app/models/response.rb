@@ -3,13 +3,13 @@ class Response < ActiveRecord::Base
   belongs_to :question
   has_one :comment, as: :commentable, dependent: :destroy
   has_many :contest_response_votes, dependent: :destroy
+  has_one :demographic, through: :user
 
   validates :user, presence: true
 	validates :question, presence: true
   validate :comment_if_required
 
-  validate :answer_is_unique, on: :create,
-    unless: 'question.allow_multiple_answers_from_user'
+  # validate :answer_is_unique, on: :create, unless: 'question.allow_multiple_answers_from_user'
 
   after_create :record_analytics
   after_create :add_and_push_message

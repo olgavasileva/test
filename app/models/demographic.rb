@@ -52,7 +52,7 @@ class Demographic < ActiveRecord::Base
   # private
     # "qcseg=D;qcseg=T;qcseg=50082;qcseg=50079;qcseg=50076;qcseg=50075;qcseg=50074;qcseg=50073;qcseg=50062;qcseg=50060;qcseg=50059;qcseg=50057;qcseg=50054;"
     def data_values
-      @data_values ||= raw_data.split(";").map{|pair| pair.split("=").last}
+      @data_values ||= JSON.parse(raw_data).map{|h| h['id']}
     end
 
     def raw_data_contains_some_info?

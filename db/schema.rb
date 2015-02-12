@@ -585,7 +585,6 @@ ActiveRecord::Schema.define(version: 20150211000550) do
     t.integer  "trending_index",                                            default: 0
     t.integer  "trending_multiplier",                                       default: 1
     t.boolean  "disable_question_controls",                                 default: false
-    t.boolean  "notifying",                                                 default: false
     t.boolean  "allow_multiple_answers_from_user",                          default: false
   end
 
