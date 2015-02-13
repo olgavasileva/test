@@ -43,13 +43,169 @@ class Demographic < ActiveRecord::Base
     save!
   end
 
-  def self.aggregate_for_question question
+  def self.use_sample_data= bool
+    @use_sample_data = bool
   end
 
-  def self.aggregate_for_choice choice
+  def self.use_sample_data?
+    !!@use_sample_data
   end
 
-  # private
+  ##
+  ## Aggregate methods for summarizing the demographics.
+  ## The format of the aggregate data matches that of quantcast's aggregate data since we already had view code that consumes that format.
+  ##
+
+  def self.aggregate_data_for_question question
+    { question: question }.merge(aggregate_data_for(question))
+  end
+
+  def self.aggregate_data_for_choice choice
+    { choice: choice }.merge(aggregate_data_for(question))
+  end
+
+
+  private
+
+    def self.aggregate_data_for question_or_choice
+      if use_sample_data?
+        sample_data
+      else
+        {
+          "GENDER" => self.merge_largest_bucket(self.gender_info(question_or_choice)),
+          "AGE" => self.merge_largest_bucket(self.age_info(question_or_choice)),
+          "CHILDREN" => self.merge_largest_bucket(self.children_info(question_or_choice)),
+          "INCOME" => self.merge_largest_bucket(self.income_info(question_or_choice)),
+          "EDUCATION" => self.merge_largest_bucket(self.education_info(question_or_choice)),
+          "ETHNICITY" => self.merge_largest_bucket(self.ethnicity_info(question_or_choice)),
+          "AFFILIATION" => self.merge_largest_bucket(self.political_affiliation_info(question_or_choice)),
+          "ENGAGEMENT" => self.merge_largest_bucket(self.political_engagement_info(question_or_choice))
+        }
+      end
+    end
+
+    def self.merge_largest_bucket info
+      largest = info[:buckets].sort_by{|b| b[:index]}.last
+      info.merge(largest_bucket: largest)
+    end
+
+    def self.age_info question_or_choice
+      age_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.age_range").count
+
+      age_under_18 = age_info['<18'].to_i
+      age_18_24 = age_info['18-24'].to_i
+      age_25_34 = age_info['25-34'].to_i
+      age_35_44 = age_info['35-44'].to_i
+      age_45_54 = age_info['45-54'].to_i
+      age_55_104 = age_info['55+'].to_i
+      age_count = age_info.values.sum.to_f
+
+      { id: "AGE", name: "Age", buckets:
+        [
+          { name: "< 18", index: 100, percent: age_count > 0 ? age_under_18 / age_count : 0 },
+          { name: "18-24", index: 100, percent: age_count > 0 ? age_18_24 / age_count : 0 },
+          { name: "25-34", index: 100, percent: age_count > 0 ? age_25_34 / age_count : 0 },
+          { name: "35-44", index: 100, percent: age_count > 0 ? age_35_44 / age_count : 0 },
+          { name: "45-54", index: 100, percent: age_count > 0 ? age_45_54 / age_count : 0 },
+          { name: "55-104", index: 100, percent: age_count > 0 ? age_55_104 / age_count : 0 }
+        ]
+      }
+    end
+
+    def self.gender_info question_or_choice
+      gender_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.gender").count
+
+      males = gender_info['male'].to_i
+      females = gender_info['female'].to_i
+      gender_count = gender_info.values.sum.to_f
+
+      { id: "GENDER", name: "Gender", buckets:
+        [
+          { name: "Male", index: 100, percent: gender_count > 0 ? males / gender_count : 0 },
+          { name: "Female", index: 100, percent: gender_count > 0 ? females / gender_count : 0 }
+        ]
+      }
+    end
+
+    def self.children_info question_or_choice
+      children_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.children").count
+
+      children = children_info["true"].to_i
+      no_children = children_info["false"].to_i
+      children_count = children_info.values.sum.to_f
+
+      { id: "CHILDREN", name: "Children in Household", buckets:
+        [
+          { name: "No Kids", index: 100, percent: children_count > 0 ? children / children_count : 0 },
+          { name: "Has Kids", index: 100, percent: children_count > 0 ? no_children / children_count : 0 }
+        ]
+      }
+    end
+
+    def self.income_info question_or_choice
+      income_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.household_income").count
+
+      under_100k = income_info["0-100k"].to_i
+      over_100k = income_info["100k+"].to_i
+      income_count = income_info.values.sum.to_f
+
+      { id: "INCOME", name: "Household Income", buckets:
+        [
+          { name: "$0-$100k", index: 100, percent: income_count > 0 ? under_100k / income_count : 0 },
+          { name: "$100k+", index: 100, percent: income_count > 0 ? over_100k / income_count : 0 }
+        ]
+      }
+    end
+
+    def self.education_info question_or_choice
+      education_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.education_level").count
+
+      college = education_info["college"].to_i
+      no_college = education_info["no_college"].to_i
+      education_count = education_info.values.sum.to_f
+
+      { id: "EDUCATION", name: "Education Level", buckets:
+        [
+          { name: "No College", index: 100, percent: education_count > 0 ? no_college / education_count : 0 },
+          { name: "College", index: 100, percent: education_count > 0 ? college / education_count : 0 }
+        ]
+      }
+    end
+
+    def self.ethnicity_info question_or_choice
+      ethnicity_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.ethnicity").count
+      hispanic = ethnicity_info["hispanic"].to_i
+      asian = ethnicity_info["asian"].to_i
+      african_american = ethnicity_info["african_american"].to_i
+      caucasian = ethnicity_info["caucasian"].to_i
+      ethnicity_count = ethnicity_info.values.sum.to_f
+
+      { id: "ETHNICITY", name: "Ethnicity", buckets:
+        [
+          { name: "Caucasian", index: 100, percent: ethnicity_count > 0 ? caucasian / ethnicity_count : 0 },
+          { name: "African American", index: 100, percent: ethnicity_count > 0 ? african_american / ethnicity_count : 0 },
+          { name: "Asian", index: 100, percent: ethnicity_count > 0 ? asian / ethnicity_count : 0 },
+          { name: "Hispanic", index: 100, percent: ethnicity_count > 0 ? hispanic / ethnicity_count : 0 }
+        ]
+      }
+    end
+
+    def self.political_affiliation_info question_or_choice
+      political_affiliation_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.political_affiliation").count
+
+      { id: "AFFILIATION", name: "Political Affiliation", buckets: []}
+    end
+
+    def self.political_engagement_info question_or_choice
+      political_engagement_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.political_engagement").count
+
+      { id: "ENGAGEMENT", name: "Political Engagement", buckets: []}
+    end
+
+    ##
+    ## Data parsing methods
+    ##
+
     # "qcseg=D;qcseg=T;qcseg=50082;qcseg=50079;qcseg=50076;qcseg=50075;qcseg=50074;qcseg=50073;qcseg=50062;qcseg=50060;qcseg=50059;qcseg=50057;qcseg=50054;"
     def data_values
       @data_values ||= JSON.parse(raw_data).map{|h| h['id']}
@@ -135,7 +291,7 @@ class Demographic < ActiveRecord::Base
     def normalized_age_interval intervals
       i = best_fit_age_interval intervals
       while intervals.count > 0 && i.nil?
-        intervals.shift!
+        intervals.shift
         i = best_fit_age_interval intervals
       end
       i
@@ -224,6 +380,111 @@ class Demographic < ActiveRecord::Base
         "Asian" => "50087",
         "African_American" => "50080",
         "Hispanic" => "50070"
+      }
+    end
+
+    def self.sample_data
+      {
+        "GENDER" => {
+          id: "GENDER",
+          name: "Gender",
+          buckets: [
+            { index: 55, name: "Male", percent: 0.26822730898857117 },
+            { index: 143, name: "Female", percent: 0.7317727208137512 }
+          ],
+          largest_bucket: { index: 143, name: "Female", percent: 0.7317727208137512 }
+        },
+
+        "AGE" => {
+          id: "AGE",
+          name: "Age",
+          buckets: [
+            { index: 27, name: "< 18", percent: 0.04899810999631882 },
+            { index: 107, name: "18-24", percent: 0.13299041986465454 },
+            { index: 149, name: "25-34", percent: 0.25696510076522827 },
+            { index: 112, name: "35-44", percent: 0.2150430679321289 },
+            { index: 120, name: "45-54", percent: 0.20722565054893494 },
+            { index: 91, name: "55-64", percent: 0.09127848595380783 },
+            { index: 86, name: "65+", percent: 0.047499194741249084 }
+          ],
+          largest_bucket: { index: 149, name: "25-34", percent: 0.25696510076522827 }
+        },
+
+        "MALEAGE" => {
+          id: "MALEAGE",
+          name: "Age for Males",
+          buckets: [
+            { index: 14, name: "Male < 18", percent: 0.01279696449637413 },
+            { index: 50, name: "Male 18-24", percent: 0.03250908479094505 },
+            { index: 68, name: "Male 25-34", percent: 0.06046846881508827 },
+            { index: 60, name: "Male 35-44", percent: 0.05879722535610199 },
+            { index: 67, name: "Male 45-54", percent: 0.0578799769282341 },
+            { index: 59, name: "Male 55-64", percent: 0.029282033443450928 },
+            { index: 69, name: "Male 65+", percent: 0.016485659405589104 }
+          ],
+          largest_bucket: { index: 69, name: "Male 65+", percent: 0.016485659405589104 }
+        },
+
+        "FEMALEAGE" => {
+          id: "FEMALEAGE",
+          name: "Age for Females",
+          buckets: [
+            { index: 41, name: "Female < 18", percent: 0.03620114177465439 },
+            { index: 168, name: "Female 18-24", percent: 0.10048133134841919 },
+            { index: 236, name: "Female 25-34", percent: 0.1964966207742691 },
+            { index: 165, name: "Female 35-44", percent: 0.15624584257602692 },
+            { index: 173, name: "Female 45-54", percent: 0.14934568107128143 },
+            { index: 121, name: "Female 55-64", percent: 0.0619964525103569 },
+            { index: 98, name: "Female 65+", percent: 0.03101353533565998 }
+          ],
+          largest_bucket: { index: 173, name: "Female 45-54", percent: 0.14934568107128143 }
+        },
+
+        "CHILDREN" => {
+          id: "CHILDREN",
+          name: "Children in Household",
+          buckets: [
+            { index: 129, name: "No Kids ", percent: 0.6508865356445312 },
+            { index: 71, name: "Has Kids ", percent: 0.34911346435546875 }
+          ],
+          largest_bucket: { index: 129, name: "No Kids ", percent: 0.6508865356445312 }
+        },
+
+        "INCOME" => {
+          id: "INCOME",
+          name: "Household Income",
+          buckets: [
+            { index: 96, name: "$0-50k", percent: 0.4860217571258545 },
+            { index: 102, name: "$50-100k", percent: 0.2973894476890564 },
+            { index: 117, name: "$100-150k", percent: 0.14187024533748627 },
+            { index: 89, name: "$150k+", percent: 0.07471854984760284 }
+          ],
+          largest_bucket: { index: 117, name: "$100-150k", percent: 0.14187024533748627 }
+        },
+
+        "EDUCATION" => {
+          id: "EDUCATION",
+          name: "Education Level",
+          buckets: [
+            { index: 73, name: "No College", percent: 0.3260171711444855 },
+            { index: 121, name: "College", percent: 0.4927719235420227 },
+            { index: 126, name: "Grad School", percent: 0.18121090531349182 }
+          ],
+          largest_bucket: { index: 126, name: "Grad School", percent: 0.18121090531349182 }
+        },
+
+        "ETHNICITY" => {
+          id: "ETHNICITY",
+          name: "Ethnicity",
+          buckets: [
+            { index: 103, name: "Caucasian", percent: 0.7807833552360535 },
+            { index: 96, name: "African American", percent: 0.08745797723531723 },
+            { index: 81, name: "Asian", percent: 0.03431972861289978 },
+            { index: 88, name: "Hispanic", percent: 0.0832706093788147 },
+            { index: 101, name: "Other", percent: 0.014168291352689266 }
+          ],
+          largest_bucket: { index: 103, name: "Caucasian", percent: 0.7807833552360535 }
+        }
       }
     end
 end
