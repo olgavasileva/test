@@ -9,6 +9,10 @@ class Instance < ActiveRecord::Base
   validates :device, presence: true
   validates :push_environment, inclusion: { in: %w(production development), allow_nil: true }
 
+  def refresh_auth_token
+    self.auth_token = 'A' + UUID.new.generate
+  end
+
   # options[:expiry] is the time in seconds Apple will spend trying to deliver the notification to the device. The notification is discarded if it has not been delivered in this time. Default is 1 day.
   # options[:deliver_after] may be set if you'd like to delay delivery of the notification to a specific time in the future - e.g. 1.hour.from_now
   def push options = {}
