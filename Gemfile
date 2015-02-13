@@ -128,6 +128,9 @@ group :development do
   gem 'binding_of_caller'           # Enables advanced features of better_errors
 
   gem 'xray-rails'                  # Reveal your UI's bones cmd-shift-x in browser
+
+  # Ignore asset logs
+  gem 'quiet_assets'
 end
 
 group :development, :test do
