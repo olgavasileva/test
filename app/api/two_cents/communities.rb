@@ -183,7 +183,23 @@ class TwoCents::Communities < Grape::API
       {}
     end
 
-    desc 'Trending communities'
+    desc 'Trending communities', {
+      notes: <<-NOTES
+        Call this for getting trending communities. 
+        "Trending" means public, not empty(have some questions in it), 
+        and on what current user is not subscribed
+        #### Example response
+        [{
+          id: 1244576,
+          name: 'community name',
+          member_count: 5,
+          description: 'description',
+          private: false
+        },
+        {...}
+        ]
+      NOTES
+    }
     params do
       requires :auth_token, type: String, desc: "Obtain this from the instance's API."
       optional :per_page, type: Integer, default: 10

@@ -11,7 +11,9 @@ class Community < ActiveRecord::Base
     community_member = CommunityMember.arel_table
     users = Respondent.arel_table
     membered_communities = CommunityMember.where(user_id: user.id).pluck(:community_id)
-
+    
+    # there we have public not empty communities(that have some questions in it), and on what user
+    # is not subcribed. we set the limit and offset for records that will be returned 
     trending = communities.
         join(community_member).on(communities[:id].eq(community_member[:community_id])).
         join(users).on(users[:id].eq(community_member[:user_id])).
