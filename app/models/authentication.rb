@@ -19,4 +19,11 @@ class Authentication < ActiveRecord::Base
       auth.user = user if user
     end
   end
+
+  def self.from_omniauth(omniauth)
+    self.from_provider_id(omniauth.provider, omniauth.uid).tap do |auth|
+      auth.token = omniauth.credentials.token
+      auth.token_secret = omniauth.credentials.secret
+    end
+  end
 end
