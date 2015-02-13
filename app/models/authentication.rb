@@ -1,6 +1,6 @@
 class Authentication < ActiveRecord::Base
 
-  PROVIDERS = %w{facebook}.freeze
+  PROVIDERS = %w{facebook twitter}.freeze
 
   belongs_to :user
 
