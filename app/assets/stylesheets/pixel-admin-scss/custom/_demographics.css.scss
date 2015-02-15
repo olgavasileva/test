@@ -1,0 +1,46 @@
+// We can use maps if we update to Sass >= 3.3.
+//
+// $demographics-colors: (
+//   gender: #1794c0
+//   age: #183a7b
+//   children: #8a2357
+//   income: #d1b32d
+//   ethnicity: #a84f12
+//   education: #577638
+//   politicalaffiliation: #5d268f
+//   politicalengagement: #125faa
+// );
+
+.demographics-body {
+
+  @mixin demo-colors($color) {
+    .largest-bucket {
+      color: $color;
+    }
+  }
+
+  .demo-header {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eeeeee;
+
+    .demo-name {
+      font-size: 14px;
+      padding-top: 10px;
+      padding-left: 10px;
+    }
+
+    .demo-index {
+      padding-top: 5px;
+    }
+  }
+
+  &.gender { @include demo-colors(#1794c0); }
+  &.age { @include demo-colors(#183a7b); }
+  &.children { @include demo-colors(#8a2357); }
+  &.income { @include demo-colors(#d1b32d); }
+  &.ethnicity { @include demo-colors(#a84f12); }
+  &.education { @include demo-colors(#577638); }
+  &.politicalaffiliation { @include demo-colors(#5d268f); }
+  &.politicalengagement { @include demo-colors(#125faa); }
+}

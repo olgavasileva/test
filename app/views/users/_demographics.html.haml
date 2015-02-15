@@ -16,13 +16,18 @@
       -# MALEAGE FEMALEAGE
       - info = demographics.info id
       - if info
-        .col-md-12.hidden-sm.hidden-xs.text-right Largest Group and Index
+        %div{class:"demographics-body #{id.downcase}"}
 
-        .col-md-6=info[:name]
-        .col-md-6.hidden-sm.hidden-xs.text-right=info[:largest_bucket][:name]
-        .col-md-6.hidden-md.hidden-lg
-          %i Largest Group and Index:
-          #{info[:largest_bucket][:name]}
+          .row.demo-header
+            .col-md-6.text-left
+              -# %img.demo-icon.pull-left{src:"//placehold.it/40x40.png"}
+              %strong.demo-name.pull-left= info[:name]
 
-        .col-md-6=render "users/index_chart", info: info, color: colors[idx]
-        .col-md-6=render "users/percentage_chart", info: info
+            .col-md-6.hidden-sm.hidden-xs.text-right.demo-index
+              %span.text-muted Largest Group and Index
+              %br
+              %strong.largest-bucket= info[:largest_bucket][:name]
+
+          .row.demographics-data
+            .col-md-6=render "users/index_chart", info: info, color: colors[idx]
+            .col-md-6=render "users/percentage_chart", info: info
