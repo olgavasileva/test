@@ -28,6 +28,8 @@
               %br
               %strong.largest-bucket= info[:largest_bucket][:name]
 
-          .row.demographics-data
-            .col-md-6=render "users/index_chart", info: info, color: colors[idx]
-            .col-md-6=render "users/percentage_chart", info: info
+          .row.demo-data
+            .col-md-6
+              = render "users/index_chart", info: info, color: colors[idx]
+            .col-md-6
+              = render "users/percentage_chart", info: info

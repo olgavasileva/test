@@ -1,14 +1,24 @@
+.demo-chart-labels
+  %p.pull-left.text-muted.text-left
+    %em Segment
+  %p.pull-right.text-muted.text-right
+    %em Index
+
+  %p.text-muted.text-center
+    %em This Segment vs U.S. Average
+
 - color ||= '#1794C0'
 - names = info[:buckets].map{|b| b[:name]}
 - indexes = info[:buckets].map{|b| b[:index]}
 
 - chart = LazyHighCharts::HighChart.new('graph') do |f|
-  - f.chart height: info[:buckets].count * 50, type: :bar
+  - f.chart height: info[:buckets].count * 50, type: :bar, spacingTop: 0, spacingBottom: 20
   - f.tooltip false
   - f.legend false
-  - f.xAxis [{categories: names}, {categories: indexes, opposite: true, linkedTo: 0}]
-  - f.yAxis min: 0, max: 200, plotLines: [{zIndex: 10, value: 100, dashStyle: "ShortDot", width: 2, color: 'gray', label: {text: "US Average", rotation: 0, verticalAlign: :bottom, align: :center}}], labels: {enabled: false}, title: {enabled: false}, gridLineWidth: 0
+  - f.xAxis [{categories: names, tickWidth: 0, lineWidth: 0}, {categories: indexes, opposite: true, linkedTo: 0, tickWidth: 0, lineWidth: 0}]
+  - f.yAxis min: 0, max: 200, plotLines: [{zIndex: 10, value: 100, dashStyle: "ShortDash", width: 2, color: '#dddddd', label: {text: "US Average", rotation: 0, verticalAlign: :bottom, align: :center}}], labels: {enabled: false}, title: {enabled: false}, gridLineWidth: 0
   - f.plotOptions series: { stacking: 'normal', color: color}
+  - f.dataLabels padding: 1
   - f.series data:indexes
 
 - chart_id = "index_chart_#{info[:id]}"
