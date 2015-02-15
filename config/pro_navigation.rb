@@ -63,5 +63,7 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :pro_analytics, '<i class="menu-icon fa fa-bar-chart-o"></i><span class="mm-text">Analytics</span>'.html_safe, [:analytics, current_user]
     primary.item :pro_account, '<i class="menu-icon fa fa-cog"></i><span class="mm-text">Account Management</span>'.html_safe, [:account, current_user]
     primary.item :pro_create_campaign, '<i class="menu-icon fa fa-plus-square"></i><span class="mm-text">Create Campaign</span>'.html_safe, [:new_campaign, current_user]
+    primary.item :pro_logout, '<i class="menu-icon fa fa-power-off"></i><span class="mm-text">Logout</span>'.html_safe, destroy_user_session_path, method: :delete
+    primary.item :pro_logout, '<i class="menu-icon fa fa-home"></i><span class="mm-text">Statisfy Home</span>'.html_safe, root_url
   end
 end
