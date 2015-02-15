@@ -2,16 +2,14 @@
 
 - if question
   .row#question_analytics
-    .col-sm-8
+    .col-sm-4
       .panel.panel-default
         .panel-heading
           %h2.panel-title Question Analytics
         .panel-body
           .row.response
             %div= render "questions/response_fields", question:question
-      - if @demographics
-        #demographics= render 'users/demographics', demographics: @demographics
-    .col-sm-4
+
       .panel.panel-default
         .panel-heading
           %h2.panel-title
@@ -42,5 +40,9 @@
           %tr
             %td Shares
             %td.text-right= question.share_count.to_i
+
+    .col-sm-8
+      - if @demographics
+        #demographics= render 'users/demographics', demographics: @demographics
 - else
   Select a question
