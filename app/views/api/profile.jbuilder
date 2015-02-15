@@ -1,10 +1,14 @@
 json.profile do
   json.(@user, :username, :email)
-  json.pro_dashboard_url Rails.application.routes.url_helpers.dashboard_user_url(@user) if @user.kind_of?(User) && @user.is_pro?
   json.user_id @user.id
   json.member_since @user.created_at
   json.number_of_asked_questions @user.number_of_asked_questions
   json.number_of_answered_questions @user.number_of_answered_questions
   json.number_of_comments_left @user.number_of_comments_left
   json.number_of_followers @user.number_of_followers
+
+  if @user.kind_of?(User) && @user.is_pro?
+    urls = Rails.application.routes.url_helpers
+    json.pro_dashboard_url urls.dashboard_user_url(@user, auth_token: @instance.auth_token)
+  end
 end
