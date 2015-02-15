@@ -19,6 +19,7 @@
     }
   }
 
+  // Demographics Header
   .demo-header {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -27,11 +28,25 @@
     .demo-name {
       font-size: 14px;
       padding-top: 10px;
-      padding-left: 10px;
+    }
+
+    .demo-icon {
+      padding-right: 10px;
     }
 
     .demo-index {
       padding-top: 5px;
+    }
+  }
+
+  // Demographics Charts
+  .demo-data {
+    .demo-chart-labels {
+      padding: 5px 0px;
+      p {
+        font-size: 10px;
+        margin: 0px;
+      }
     }
   }
 

@@ -1,9 +1,6 @@
-- chart = LazyHighCharts::HighChart.new('graph') do |f|
-  - f.chart height: 250
-  - f.tooltip false
-  - f.series type: 'pie', data: info[:buckets].map{|b| {name: b[:name], y:b[:percent]*100, label: number_to_percentage(b[:percent]*100, precision: 0) } }
-  - f.plotOptions pie: { dataLabels: {enabled: false}, showInLegend: true}
-  - f.legend align: :right, verticalAlign: :middle, layout: :vertical, labelFormat: '{label} {name}', borderWidth: 0, itemMarginBottom: 10
+.demo-chart-labels
+  %p.text-muted.text-left
+    %em Composition
 
 - chart_id = "pct_chart_#{info[:id]}"
-%div{id: chart_id}=high_chart chart_id, chart
+%div{id: chart_id}=high_chart chart_id, demo_pie_chart(info, color)
