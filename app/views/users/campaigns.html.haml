@@ -27,7 +27,7 @@
     %tbody
       - @questions.each do |q|
         %tr
-          %td=q.title
+          %td= link_to q.title, "/#/app/questions/#{q.id}", target: '_blank'
           %td=q.created_at
           %td.text-center=check_box_tag "question[currently_targetable]", q.id, q.currently_targetable?, class:%w(switcher switcher-success), data:{active_switcher:true, url:update_targetable_question_path(q)}
           %td.text-right=q.view_count
