@@ -114,6 +114,7 @@ gem 'faraday'                       # An HTTP client lib that provides a common 
 # OAuth/Social Integrations
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'omniauth-twitter'
 
 group :development do
 
