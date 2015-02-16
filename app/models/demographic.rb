@@ -61,7 +61,7 @@ class Demographic < ActiveRecord::Base
   end
 
   def self.aggregate_data_for_choice choice
-    { choice: choice }.merge(aggregate_data_for(question))
+    { choice: choice }.merge(aggregate_data_for(choice))
   end
 
 

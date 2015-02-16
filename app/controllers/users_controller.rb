@@ -188,10 +188,15 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     authorize @user
 
-    @question = @user.questions.find params[:question_id] if params[:question_id]
-    @choice = @question.choices.find params[:choice_id] if params[:choice_id] if @question
-    Demographic.use_sample_data = session[:use_sample_demographics_data] if @choice
-    @demographics = Demographic.aggregate_data_for_choice @choice if @choice
+    Demographic.use_sample_data = session[:use_sample_demographics_data]
+    @question = @user.questions.find(params[:question_id])
+
+    @demographics = if params[:choice_id]
+      @choice = @question.choices.find(params[:choice_id])
+      Demographic.aggregate_data_for_choice(@choice)
+    else
+      Demographic.aggregate_data_for_question(@question)
+    end
 
     render layout: false
   end
