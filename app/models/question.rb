@@ -195,6 +195,10 @@ class Question < ActiveRecord::Base
     [title]
   end
 
+  def notifiable?
+    !notifying?
+  end
+
   def choice_result_cache
     @choice_result_cache ||= ChoiceResultCache.new(self)
   end

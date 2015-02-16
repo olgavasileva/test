@@ -74,6 +74,20 @@ describe Question do
     end
   end
 
+  describe :notifiable? do
+    let(:notifying) { false }
+    subject { Question.new(notifying: notifying).notifiable? }
+
+    context 'when notifying is true' do
+      let(:notifying) { true }
+      it { is_expected.to eq(false) }
+    end
+
+    context 'when notifying is false' do
+      it { is_expected.to eq(true) }
+    end
+  end
+
   describe :choice_result_cache do
     subject { Question.new.choice_result_cache }
     it { is_expected.to be_a(ChoiceResultCache) }
