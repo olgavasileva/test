@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pundit
-  include DemographicsChartHelper
+  include DemographicsHelper
 
   # Always use user_signed_in? in stead of testing current_user since current_user may be the "anonymous" user
   def user_signed_in?
