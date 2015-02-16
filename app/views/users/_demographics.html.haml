@@ -20,7 +20,7 @@
 
           .row.demo-header
             .col-md-6.text-left
-              %img.demo-icon.pull-left{src:"//placehold.it/40x40.png"}
+              -# %img.demo-icon.pull-left{src:"//placehold.it/40x40.png"}
               %strong.demo-name.pull-left= info[:name]
 
             .col-md-6.hidden-sm.hidden-xs.text-right.demo-index
@@ -32,4 +32,4 @@
             .col-md-6
               = render "users/index_chart", info: info, color: colors[idx]
             .col-md-6
-              = render "users/percentage_chart", info: info
+              = render "users/percentage_chart", info: info, color: colors[idx]
