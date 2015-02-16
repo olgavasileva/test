@@ -2,7 +2,7 @@ module DemographicsChartHelper
 
   GREY_SCALE = %w{#2e2e2e #454545 #5c5c5c #707070 #828282 #999999 #b0b0b0 #d3d3d3}.freeze
 
-  def demo_pie_chart(info, color='#1794C0')
+  def demo_pie_chart(info, color=nil)
     bucket_data = []
     max_index = nil
     max_value = 0
@@ -21,8 +21,8 @@ module DemographicsChartHelper
       })
     end
 
-    colors = GREY_SCALE[0..info[:buckets].length]
-    colors[max_index] = color
+    colors = GREY_SCALE[0..(info[:buckets].length-1)]
+    colors[max_index] = color if color && max_index
 
     LazyHighCharts::HighChart.new('graph') do |f|
       f.tooltip false
