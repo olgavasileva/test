@@ -52,4 +52,31 @@ RSpec.describe Authentication do
       expect(auth.user).to eq(user)
     end
   end
+
+  describe '.from_omniauth' do
+    let(:hash) do
+      OmniAuth::AuthHash.new({
+        uid: '12345678',
+        provider: 'facebook',
+        credentials: {token: 'new-token', secret: 'new-secret'}
+      })
+    end
+
+    it 'delegates to .from_provider_id' do
+      expect(Authentication).to receive(:from_provider_id)
+        .with(hash.provider, hash.uid).and_call_original
+
+      Authentication.from_omniauth(hash)
+    end
+
+    it 'sets the :token' do
+      auth = Authentication.from_omniauth(hash)
+      expect(auth.token).to eq(hash.credentials.token)
+    end
+
+    it 'sets the :token_secret' do
+      auth = Authentication.from_omniauth(hash)
+      expect(auth.token_secret).to eq(hash.credentials.secret)
+    end
+  end
 end

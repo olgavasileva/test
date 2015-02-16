@@ -36,7 +36,7 @@ describe :profile do
           let(:instance) {FactoryGirl.create :instance, :logged_in, user: user}
           let(:user) {FactoryGirl.create :user, :pro}
 
-          it {expect(json["profile"]["pro_dashboard_url"]).to eq "http://example.com/users/#{user.id}/dashboard"}
+          it {expect(json["profile"]["pro_dashboard_url"]).to eq "http://example.com/users/#{user.id}/dashboard?auth_token=#{auth_token}"}
         end
 
         context "With no questions answered" do

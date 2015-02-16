@@ -1,4 +1,12 @@
 class Anonymous < Respondent
+
+  def promote!(data={})
+    User.transaction do
+      self.update!(type: 'User')
+      User.find(self.id).tap { |u| u.update(data) }
+    end
+  end
+
   def email
     "#{username}@anonymous.statisfy.co"
   end
