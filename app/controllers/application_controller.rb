@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
     @devise_current_user ||= warden.authenticate(:scope => :user) || User.anonymous_user
   end
 
+  before_action :sign_in_through_auth_token
   before_action :find_recent_questions
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
 
@@ -61,6 +62,13 @@ class ApplicationController < ActionController::Base
     end
 
   private
+
+    def sign_in_through_auth_token
+      if request.get? && params[:auth_token].present?
+        instance = Instance.find_by(auth_token: params[:auth_token])
+        sign_in instance.user if instance.try(:user).is_a?(User)
+      end
+    end
 
     def user_not_authorized
       flash[:error] = "You are not authorized to perform this action."

@@ -114,6 +114,7 @@ gem 'faraday'                       # An HTTP client lib that provides a common 
 # OAuth/Social Integrations
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'omniauth-twitter'
 
 group :development do
 
@@ -128,6 +129,9 @@ group :development do
   gem 'binding_of_caller'           # Enables advanced features of better_errors
 
   gem 'xray-rails'                  # Reveal your UI's bones cmd-shift-x in browser
+
+  # Ignore asset logs
+  gem 'quiet_assets'
 end
 
 group :development, :test do

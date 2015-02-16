@@ -3,18 +3,18 @@
     %h2.panel-title
       %i.menu-icon.fa.fa-bar-chart-o
       %span.mm-text
-        - if demographics.choice
-          - if demographics.choice.title.present?
-            Demographics for #{demographics.choice.title} (Choice ID #{demographics.choice.id})
+        - if demographics[:choice]
+          - if demographics[:choice].title.present?
+            Demographics for #{demographics[:choice].title} (Choice ID #{demographics[:choice].id})
           - else
-            Demographics for Choice ID #{demographics.choice.id}
+            Demographics for Choice ID #{demographics[:choice].id}
         - else
           Demographics for all choices
   .panel-body
     - colors = %w(#1794C0 #183A7B #8A2357 #D1B32D #A84F12 #577638 #5D268F #125FAA)
     - %w(GENDER AGE CHILDREN INCOME ETHNICITY EDUCATION POLITICALAFFILIATION POLITICALENGAGEMENT).each_with_index do |id, idx|
       -# MALEAGE FEMALEAGE
-      - info = demographics.info id
+      - info = demographics[id]
       - if info
         %div{class:"demographics-body #{id.downcase}"}
 

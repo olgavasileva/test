@@ -1,6 +1,6 @@
 class Authentication < ActiveRecord::Base
 
-  PROVIDERS = %w{facebook}.freeze
+  PROVIDERS = %w{facebook twitter}.freeze
 
   belongs_to :user
 
@@ -17,6 +17,13 @@ class Authentication < ActiveRecord::Base
     self.from_provider_id(profile.provider, profile.uid).tap do |auth|
       auth.token = profile.token
       auth.user = user if user
+    end
+  end
+
+  def self.from_omniauth(omniauth)
+    self.from_provider_id(omniauth.provider, omniauth.uid).tap do |auth|
+      auth.token = omniauth.credentials.token
+      auth.token_secret = omniauth.credentials.secret
     end
   end
 end

@@ -586,6 +586,7 @@ ActiveRecord::Schema.define(version: 20150211000550) do
     t.integer  "trending_multiplier",                                       default: 1
     t.boolean  "disable_question_controls",                                 default: false
     t.boolean  "allow_multiple_answers_from_user",                          default: false
+    t.boolean  "notifying",                                                 default: false
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree

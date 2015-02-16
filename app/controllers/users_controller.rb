@@ -164,10 +164,11 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     authorize @user
 
-    @question = @user.questions.find params[:question_id] if params[:question_id]
-    @demographics = Quantcast.new @question if @question
     session[:use_sample_demographics_data] = params[:sample].to_s.true?
-    @demographics.use_sample_data = session[:use_sample_demographics_data] if @demographics
+
+    @question = @user.questions.find params[:question_id] if params[:question_id]
+    Demographic.use_sample_data = session[:use_sample_demographics_data] if @question
+    @demographics = Demographic.aggregate_data_for_question @question if @question
 
     render layout: "pixel_admin"
   end
@@ -177,8 +178,8 @@ class UsersController < ApplicationController
     authorize @user
 
     @question = @user.questions.find params[:question_id] if params[:question_id]
-    @demographics = Quantcast.new @question if @question
-    @demographics.use_sample_data = session[:use_sample_demographics_data] if @demographics
+    Demographic.use_sample_data = session[:use_sample_demographics_data] if @question
+    @demographics = Demographic.aggregate_data_for_question @question if @question
 
     render layout: false
   end
@@ -189,8 +190,8 @@ class UsersController < ApplicationController
 
     @question = @user.questions.find params[:question_id] if params[:question_id]
     @choice = @question.choices.find params[:choice_id] if params[:choice_id] if @question
-    @demographics = Quantcast.new @question, @choice if @question
-    @demographics.use_sample_data = session[:use_sample_demographics_data] if @demographics
+    Demographic.use_sample_data = session[:use_sample_demographics_data] if @choice
+    @demographics = Demographic.aggregate_data_for_choice @choice if @choice
 
     render layout: false
   end
