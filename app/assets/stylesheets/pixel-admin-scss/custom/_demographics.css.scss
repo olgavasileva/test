@@ -14,6 +14,7 @@
 .demographics-body {
 
   @mixin demo-colors($color) {
+    .demo-icon,
     .largest-bucket {
       color: $color;
     }
@@ -22,15 +23,23 @@
   // Demographics Header
   .demo-header {
     padding-top: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
+    padding-left: -10px;
+    padding-right: -10px;
     border-bottom: 1px solid #eeeeee;
+
+    .col-md-6 {
+      &:first-of-type { padding-left: 0px; }
+      &:last-of-type { padding-right: 0px; }
+    }
 
     .demo-name {
       font-size: 14px;
-      padding-top: 10px;
+      padding-top: 16px;
     }
 
     .demo-icon {
+      padding-top: 8px;
       padding-right: 10px;
     }
 

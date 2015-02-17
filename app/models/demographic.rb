@@ -61,7 +61,7 @@ class Demographic < ActiveRecord::Base
   end
 
   def self.aggregate_data_for_choice choice
-    { choice: choice }.merge(aggregate_data_for(question))
+    { choice: choice }.merge(aggregate_data_for(choice))
   end
 
 
@@ -107,7 +107,7 @@ class Demographic < ActiveRecord::Base
           { name: "25-34", index: 100, percent: age_count > 0 ? age_25_34 / age_count : 0 },
           { name: "35-44", index: 100, percent: age_count > 0 ? age_35_44 / age_count : 0 },
           { name: "45-54", index: 100, percent: age_count > 0 ? age_45_54 / age_count : 0 },
-          { name: "55-104", index: 100, percent: age_count > 0 ? age_55_104 / age_count : 0 }
+          { name: "55+", index: 100, percent: age_count > 0 ? age_55_104 / age_count : 0 }
         ]
       }
     end

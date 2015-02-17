@@ -3,5 +3,4 @@ $(document).on 'click', '.q_demographics', ->
 
 $(document).on 'click', '.c_demographics', (e)->
   $('#demographics').load $(this).data().url
-  d.preventDefault()  # Don't let it bubble up to the q_demographics element in the DOM
-
+  e.preventDefault()  # Don't let it bubble up to the q_demographics element in the DOM

@@ -1,8 +1,8 @@
-module DemographicsChartHelper
+module DemographicsHelper
 
   GREY_SCALE = %w{#2e2e2e #454545 #5c5c5c #707070 #828282 #999999 #b0b0b0 #d3d3d3}.freeze
 
-  def demo_pie_chart(info, color=nil)
+  def demographic_pie_chart(info, color=nil)
     bucket_data = []
     max_index = nil
     max_value = 0
@@ -56,7 +56,7 @@ module DemographicsChartHelper
     end
   end
 
-  def demo_index_chart(info, color='#1794C0')
+  def demographic_index_chart(info, color='#1794C0')
     names = info[:buckets].map{ |b| b[:name] }
     indexes = info[:buckets].map{ |b| b[:index] }
 

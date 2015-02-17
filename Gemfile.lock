@@ -214,7 +214,7 @@ GEM
     fog-softlayer (0.3.13)
       fog-core
       fog-json
-    font-awesome-rails (4.1.0.0)
+    font-awesome-rails (4.3.0.0)
       railties (>= 3.2, < 5.0)
     formatador (0.2.5)
     formtastic (2.3.1)
