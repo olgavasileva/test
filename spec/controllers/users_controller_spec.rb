@@ -47,4 +47,16 @@ RSpec.describe UsersController do
       end
     end
   end
+
+  describe 'GET #analyitcs' do
+    let(:question) { FactoryGirl.create(:text_choice_question, user: user) }
+    subject { get :analytics, id: user.id, question_id: question.id, format: :csv }
+
+    context 'for a CSV request' do
+      it 'renders correctly' do
+        subject
+        expect(response.body).to eq(DemographicCSV.export(question))
+      end
+    end
+  end
 end

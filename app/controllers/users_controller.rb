@@ -143,10 +143,18 @@ class UsersController < ApplicationController
   def analytics
     if params[:question_id]
       @question = @user.questions.find(params[:question_id])
-      @demographics = Demographic.aggregate_data_for_question(@question)
     end
 
-    render layout: "pixel_admin"
+    respond_to do |format|
+      format.html do
+        @demographics = Demographic.aggregate_data_for_question(@question)
+        render layout: "pixel_admin"
+      end
+
+      format.csv do
+        send_data DemographicCSV.export(@question)
+      end
+    end
   end
 
   def question_analytics
