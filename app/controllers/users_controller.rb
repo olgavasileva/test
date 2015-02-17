@@ -1,7 +1,11 @@
 require 'will_paginate/array'
 
 class UsersController < ApplicationController
+
   after_action :read_all_messages, only: :show, if: Proc.new { @tab == 'notifications' }
+  before_action :load_and_authorize_user, except: [:profile]
+  before_action :set_sample_data,
+    only: [:analytics, :question_analytics, :demographics]
 
   def profile
     @user = current_user
@@ -9,9 +13,6 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find params[:id]
-    authorize @user
-
     default_tab = @user == current_user ? 'notifications' : 'questions'
     @tab = params.fetch(:tab, default_tab)
 
@@ -62,29 +63,18 @@ class UsersController < ApplicationController
   end
 
   def follow
-    @user = User.find params[:id]
-    authorize @user
-
     current_user.follow! @user
-
     flash[:notice] = "Followed #{@user.name}."
     redirect_to :back
   end
 
   def unfollow
-    @user = User.find params[:id]
-    authorize @user
-
     current_user.leaders.delete(@user)
-
     flash[:notice] = "Stopped following #{@user.name}."
     redirect_to :back
   end
 
   def dashboard
-    @user = User.find params[:id]
-    authorize @user
-
     # TODO - lazy load this data
     reach = @user.questions.sum(:view_count)
     targeted_reach = @user.questions.map{|q| q.targeted_reach.to_i }.sum
@@ -128,67 +118,47 @@ class UsersController < ApplicationController
   end
 
   def recent_responses
-    @user = User.find params[:id]
-    authorize @user
-
     @recent_responses = @user.responses_to_questions.order("responses.created_at DESC").kpage(params[:page]).per(5)
   end
 
   def recent_comments
-    @user = User.find params[:id]
-    authorize @user
-
-    @recent_comments = @user.comments_on_questions_and_responses.order("comments.created_at DESC").kpage(params[:page]).per(5)
+    @recent_comments = @user.comments_on_questions_and_responses
+      .order("comments.created_at DESC")
+      .kpage(params[:page])
+      .per(5)
   end
 
   def campaigns
-    @user = User.find params[:id]
-    authorize @user
-
     @questions = @user.questions.active
-
     render layout: "pixel_admin"
   end
 
   def new_campaign
-    @user = User.find params[:id]
-    authorize @user
-
-    # When we're creating a question from the enterprise dashboard, keep track so we can target properly
+    # When we're creating a question from the enterprise dashboard, keep
+    # track so we can target properly
     session[:use_enterprise_targeting] = true
-
     redirect_to [:question_types]
   end
 
   def analytics
-    @user = User.find params[:id]
-    authorize @user
-
-    session[:use_sample_demographics_data] = params[:sample].to_s.true?
-
-    @question = @user.questions.find params[:question_id] if params[:question_id]
-    Demographic.use_sample_data = session[:use_sample_demographics_data] if @question
-    @demographics = Demographic.aggregate_data_for_question @question if @question
+    if params[:question_id]
+      @question = @user.questions.find(params[:question_id])
+      @demographics = Demographic.aggregate_data_for_question(@question)
+    end
 
     render layout: "pixel_admin"
   end
 
   def question_analytics
-    @user = User.find params[:id]
-    authorize @user
-
-    @question = @user.questions.find params[:question_id] if params[:question_id]
-    Demographic.use_sample_data = session[:use_sample_demographics_data] if @question
-    @demographics = Demographic.aggregate_data_for_question @question if @question
+    if params[:question_id]
+      @question = @user.questions.find(params[:question_id])
+      @demographics = Demographic.aggregate_data_for_question(@question)
+    end
 
     render layout: false
   end
 
   def demographics
-    @user = User.find params[:id]
-    authorize @user
-
-    Demographic.use_sample_data = session[:use_sample_demographics_data]
     @question = @user.questions.find(params[:question_id])
 
     @demographics = if params[:choice_id]
@@ -202,9 +172,6 @@ class UsersController < ApplicationController
   end
 
   def question_search
-    @user = User.find params[:id]
-    authorize @user
-
     search_term = params[:term]
     questions = @user.questions.where("title like ?", "%#{search_term}%").select([:id, :title])
     response = questions.map{|q| {id:q.id, title:q.title, load_url:view_context.question_analytics_user_url(@user, question_id:q)}}
@@ -212,16 +179,10 @@ class UsersController < ApplicationController
   end
 
   def account
-    @user = User.find params[:id]
-    authorize @user
-
     render layout: "pixel_admin"
   end
 
   def update
-    @user = User.find params[:id]
-    authorize @user
-
     if @user.update_with_password user_params
       # Sign in the user by passing validation in case their password changed
       sign_in @user, bypass: true
@@ -233,9 +194,6 @@ class UsersController < ApplicationController
   end
 
   def avatar
-    @user = User.find params[:id]
-    authorize @user
-
     if @user.avatar.present?
       redirect_to @user.avatar.image.web.url
     else
@@ -245,11 +203,20 @@ class UsersController < ApplicationController
 
   private
 
-    def read_all_messages
-      @user.read_all_messages
+    def load_and_authorize_user
+      @user = User.find(params[:id])
+      authorize @user
+    end
+
+    def set_sample_data
+      session[:use_sample_demographics_data] = params[:sample].to_s.true? if params[:sample]
+      Demographic.use_sample_data = session[:use_sample_demographics_data]
     end
 
     def user_params
-      params.required(:user).permit(:company_name, :email, :password, :password_confirmation, :current_password, :gender, :birthdate)
+      params.required(:user).permit(
+        :company_name, :email, :gender, :birthdate,
+        :current_password, :password, :password_confirmation
+      )
     end
 end
