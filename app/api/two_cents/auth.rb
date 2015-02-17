@@ -88,7 +88,7 @@ class TwoCents::Auth < Grape::API
 
       instance.update_attributes! launch_count:instance.launch_count.to_i + 1, app_version:declared_params[:app_version]
 
-      Hash[Setting.enabled.map{|s| [s.key, s.value] }].merge({
+      hash = Hash[Setting.enabled.map{|s| [s.key, s.value] }].merge({
         instance_token:instance.uuid,
         api_domain:api_domain,
         background_images:CannedQuestionImage.all.map{ |i| i.device_image_url },
@@ -98,6 +98,15 @@ class TwoCents::Auth < Grape::API
         background_order_choice_images:CannedOrderChoiceImage.all.map{ |i| i.device_image_url },
         background_order_choice_images_retina:CannedOrderChoiceImage.all.map{ |i| i.retina_device_image_url }
       })
+
+      # Remove sensitive AWS info except for the iOS app
+      unless declared_params[:manufacturer] == "Apple Inc." && declared_params[:platform] == "ios"
+        %w(aws_access_key aws_secret_access_key aws_region aws_bucket).each do |key|
+          hash.delete key
+        end
+      end
+
+      hash
     end
 
 
