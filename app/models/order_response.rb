@@ -33,8 +33,6 @@ class OrderResponse < Response
   end
 
   def csv_data
-    question.choices.order(:id).map do |c|
-      choice_responses.find_by(order_choice_id: c.id).try :position
-    end
+    choice_responses.order(:order_choice_id).pluck(:position)
   end
 end
