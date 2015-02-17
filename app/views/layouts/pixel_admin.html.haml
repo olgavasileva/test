@@ -24,15 +24,14 @@
       <script src="assets/javascripts/ie.min.js"></script>
 
   %body.theme-default.pixeladmin
-
     #main-wrapper
       = render 'layouts/pixel_admin/side_menu'
       #content-wrapper
         - flash.each do |key, value|
           = js add_gritter(value.to_s, image: false, title: key.titleize, sticky: false, time: 2000, class_name: "gritter")
         = yield
+
       #main-menu-bg
-        .logo= image_tag 'statisfy-logo.png'
 
       = debug(params) if Rails.env.development?
       = render 'layouts/shared/analytics'
