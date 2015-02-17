@@ -31,5 +31,13 @@ describe OrderChoice do
     it 'calculates the correct percent of the total' do
       expect(choice.response_ratio).to eq(0.2639)
     end
+
+    context 'when #top_count is 0' do
+      before { allow(choice).to receive(:top_count).and_return(0.0) }
+
+      it 'returns 0' do
+        expect(choice.response_ratio).to eq(0.0)
+      end
+    end
   end
 end

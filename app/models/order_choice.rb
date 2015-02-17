@@ -26,6 +26,7 @@ class OrderChoice < Choice
   # choice.
   def response_ratio
     @response_ratio ||= begin
+      return 0.0 unless top_count > 0
       response_total = [*1..(question.choices.size)].sum
       total = (response_total * question.responses.size)
       ((top_count.to_f / total)).round(4)
