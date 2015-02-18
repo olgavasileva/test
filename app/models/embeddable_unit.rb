@@ -15,6 +15,10 @@ class EmbeddableUnit < ActiveRecord::Base
 
   before_save :convert_markdown
 
+  def has_survey_questions?
+    survey.try(:questions).present?
+  end
+
   private
     def convert_markdown
       self.thank_you_html = RDiscount.new(thank_you_markdown, :filter_html).to_html unless thank_you_markdown.nil?
