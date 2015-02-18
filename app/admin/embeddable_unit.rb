@@ -7,16 +7,8 @@ ActiveAdmin.register EmbeddableUnit do
     column :id
     column :survey
     column "Script" do |eu|
-        script = <<-END
-<script type="text/javascript"><!--
-  statisfy_unit = "#{eu.uuid}";
-  statisfy_unit_width = #{eu.width}; statisfy_unit_height = #{eu.height};
-//-->
-</script>
-<script type="text/javascript" src="#{request.base_url}/#{Rails.env}/show_unit.js">
-</script>
-        END
-        "<pre><code>#{ERB::Util.html_escape script}</code></pre>".html_safe
+      "<label>Script</label><div><textarea rows='7' style='width: 100%' onmouseenter='$(this).select()'>#{eu.script request}</textarea></div>".html_safe +
+      "<label>iFrame</label><div><input style='width: 100%' onmouseenter='$(this).select()' value='#{eu.iframe request}'></div>".html_safe
     end
     actions
   end
@@ -29,17 +21,9 @@ ActiveAdmin.register EmbeddableUnit do
       row :thank_you_html do
         eu.thank_you_html.html_safe
       end
-      row "Embed Script" do
-        script = <<-END
-<script type="text/javascript"><!--
-  statisfy_unit = "#{eu.uuid}";
-  statisfy_unit_width = #{eu.width}; statisfy_unit_height = #{eu.height};
-//-->
-</script>
-<script type="text/javascript" src="#{request.base_url}/#{Rails.env}/show_unit.js">
-</script>
-        END
-        "<pre><code>#{ERB::Util.html_escape script}</code></pre>".html_safe
+      row "Script" do
+        "<label>Script</label><div><textarea rows='7' style='width: 100%' onmouseenter='$(this).select()'>#{eu.script request}</textarea></div>".html_safe +
+        "<label>iFrame</label><div><input style='width: 100%' onmouseenter='$(this).select()' value='#{eu.iframe request}'></div>".html_safe
       end
     end
   end

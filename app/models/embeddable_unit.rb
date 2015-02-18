@@ -15,6 +15,22 @@ class EmbeddableUnit < ActiveRecord::Base
 
   before_save :convert_markdown
 
+  def script request
+    <<-END
+<script type="text/javascript"><!--
+  statisfy_unit = "#{uuid}";
+  statisfy_unit_width = #{width}; statisfy_unit_height = #{height};
+//-->
+</script>
+<script type="text/javascript" src="#{request.base_url}/#{Rails.env}/show_unit.js">
+</script>
+    END
+  end
+
+  def iframe request
+    "<iframe width=\"#{width}\" height=\"#{height}\" src=\"#{request.base_url}/unit/#{uuid}\" frameborder=\"0\"></iframe>"
+  end
+
   private
     def convert_markdown
       self.thank_you_html = RDiscount.new(thank_you_markdown, :filter_html).to_html unless thank_you_markdown.nil?
