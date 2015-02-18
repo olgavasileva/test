@@ -49,7 +49,7 @@
     = render "questions/response_fields/shared/title", question: question
     .form-group
       - n=0
-      - total_response_count = question.responses.count
+      - total_response_count = question.choice_count
       - question.choices.each do |c|
         - n+=1
         %label.col-xs-6.choice-wrapper.c_demographics{data:{url: @user ? demographics_user_path(@user.id, question.id, c.id) : nil}}

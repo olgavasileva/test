@@ -7,4 +7,8 @@ class OrderQuestion < ChoiceQuestion
   has_many :response_matchers, class_name:"OrderResponseMatcher", foreign_key: :question_id, dependent: :destroy
 
   accepts_nested_attributes_for :choices
+
+  def weighted_total_responses
+    responses.joins(:choice_responses).sum(:position)
+  end
 end

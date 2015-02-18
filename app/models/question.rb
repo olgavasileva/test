@@ -75,6 +75,11 @@ class Question < ActiveRecord::Base
     joins{choices.outer}.where{(title =~ "%#{search_text}%") | (choices.title =~ "%#{search_text}%")}.group{questions.id}
   end
 
+  # Returns the number of individual responses - override if multiple choices are allowed
+  def choice_count
+    responses.count
+  end
+
   # +1 if asked by one of the recipient's followers
   # +1 if asked by one of the recipient's leaders
   # +1 for each of the recipient's followers who answered this question

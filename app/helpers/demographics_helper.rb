@@ -81,7 +81,7 @@ module DemographicsHelper
           lineWidth: 0
         },
         {
-          categories: indexes,
+          categories: indexes.map{|i| i.round(0)},
           opposite: true,
           linkedTo: 0,
           tickWidth: 0,

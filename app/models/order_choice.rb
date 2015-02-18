@@ -32,4 +32,12 @@ class OrderChoice < Choice
       ((top_count.to_f / total)).round(4)
     end
   end
+
+  # Have to subtract from max since we order from 1 up in stead of max down
+  def weighted_response_count
+    count = question.choices.count
+    (1..count).to_a.map do |n|
+      order_choices_responses.where(position:n).count * (count + 1 - n)
+    end.sum
+  end
 end

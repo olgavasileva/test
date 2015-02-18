@@ -13,4 +13,9 @@ class MultipleChoiceQuestion < ChoiceQuestion
   validates :max_responses, numericality: { only_integer: true, greater_than_or_equal_to: :min_responses, allow_nil: true }
 
   accepts_nested_attributes_for :choices, allow_destroy:true
+
+  # Returns the number of individual responses - override if multiple choices are allowed
+  def choice_count
+    responses.joins(:choices).count
+  end
 end
