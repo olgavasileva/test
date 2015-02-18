@@ -127,7 +127,7 @@ class Demographic < ActiveRecord::Base
           info('35-44', age_info['35-44'].to_i, age_count),
           info('45-54', age_info['45-54'].to_i, age_count),
           info('55+', age_info['55+'].to_i, age_count)
-        ]
+        ].sort_by{|i| [-i[:index],i[:name]]}
       }
     end
 
@@ -139,7 +139,7 @@ class Demographic < ActiveRecord::Base
         [
           info('male', gender_info['male'].to_i, gender_count),
           info('female', gender_info['female'].to_i, gender_count)
-        ]
+        ].sort_by{|i| [-i[:index],i[:name]]}
       }
     end
 
@@ -151,7 +151,7 @@ class Demographic < ActiveRecord::Base
         [
           info('children', children_info['true'].to_i, children_count),
           info('no_children', children_info['false'].to_i, children_count)
-        ]
+        ].sort_by{|i| [-i[:index],i[:name]]}
       }
     end
 
@@ -163,7 +163,7 @@ class Demographic < ActiveRecord::Base
         [
           info('0-100k', income_info["0-100k"].to_i, income_count),
           info('100k+', income_info["100k+"].to_i, income_count)
-        ]
+        ].sort_by{|i| [-i[:index],i[:name]]}
       }
     end
 
@@ -175,7 +175,7 @@ class Demographic < ActiveRecord::Base
         [
           info('college', education_info["college"].to_i, education_count),
           info('no_college', education_info["no_college"].to_i, education_count)
-        ]
+        ].sort_by{|i| [-i[:index],i[:name]]}
       }
     end
 
@@ -189,7 +189,7 @@ class Demographic < ActiveRecord::Base
           info('asian', ethnicity_info["asian"].to_i, ethnicity_count),
           info('african_american', ethnicity_info["african_american"].to_i, ethnicity_count),
           info('caucasian', ethnicity_info["caucasian"].to_i, ethnicity_count)
-        ]
+        ].sort_by{|i| [-i[:index],i[:name]]}
       }
     end
 
@@ -423,7 +423,7 @@ class Demographic < ActiveRecord::Base
         "male" => "Male",
         "female" => "Female",
 
-        "<18" => "< 18",
+        "<18" => "0-18",
         "18-24" => "18-24",
         "25-34" => "25-34",
         "35-44" => "35-44",
