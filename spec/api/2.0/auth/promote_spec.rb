@@ -68,6 +68,13 @@ describe :promote do
           it {expect(User.find_by(anonymous.id).birthdate).to eq Date.parse(birthdate)}
         end
 
+        context "With an invalid birthdate" do
+          let(:birthdate) { 'a' }
+          it { expect(response.status).to eq 201}
+          it { expect(json['error_message']).to be_nil}
+          it { expect(User.find_by(anonymous.id).birthdate).to eq(nil) }
+        end
+
         context "With a gender" do
           let(:gender) {FactoryGirl.generate :gender}
           it {expect(response.status).to eq 201}

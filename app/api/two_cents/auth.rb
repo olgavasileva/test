@@ -320,8 +320,10 @@ class TwoCents::Auth < Grape::API
         user.username = declared_params[:username]
         user.password = declared_params[:password]
         user.password_confirmation = declared_params[:password]
-        user.birthdate = Date.strptime(declared_params[:birthdate], '%Y-%m-%d') if declared_params[:birthdate]
         user.gender = declared_params[:gender]
+        user.birthdate = if declared_params[:birthdate]
+          Date.parse(declared_params[:birthdate]) rescue nil
+        end
 
         fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
         fail! 1011, user.errors.full_messages.join(", ") unless user.save
@@ -401,10 +403,8 @@ class TwoCents::Auth < Grape::API
         user.email = either[:email]
         user.username = either[:username]
         user.gender = either[:gender]
-
-        begin
-          user.birthdate = Date.parse(either[:birthdate])
-        rescue ArgumentError
+        user.birthdate = if either[:birthdate]
+          Date.parse(either[:birthdate]) rescue nil
         end
 
         password = declared_params[:password] || SecureRandom.hex(16)
