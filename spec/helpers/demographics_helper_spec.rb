@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe DemographicsHelper do
 
-  describe '#demographics_pie_chart' do
+  describe '#demographic_pie_chart' do
 
     let(:builder) { double() }
     let(:buckets) do
@@ -32,7 +32,7 @@ RSpec.describe DemographicsHelper do
           dataLabels: {enabled: false},
           showInLegend: true,
           center: [20, 25],
-          colors: [DemographicsChartHelper::GREY_SCALE.first, '#000000']
+          colors: [DemographicsHelper::GREY_SCALE.first, '#000000']
         }
       })
 
@@ -53,14 +53,14 @@ RSpec.describe DemographicsHelper do
         ]
       })
 
-      helper.demographics_pie_chart(info, '#000000')
+      helper.demographic_pie_chart(info, '#000000')
     end
 
     context 'with no buckets' do
       let(:buckets) { [] }
 
       it 'still builds a chart' do
-        chart = helper.demographics_pie_chart(info, '#0000000')
+        chart = helper.demographic_pie_chart(info, '#0000000')
         expect(chart).to be_a(LazyHighCharts::HighChart)
       end
     end
@@ -140,14 +140,14 @@ RSpec.describe DemographicsHelper do
         gridLineWidth: 0
       })
 
-      helper.demographics_index_chart(info, '#000000')
+      helper.demographic_index_chart(info, '#000000')
     end
 
     context 'with no buckets' do
       let(:buckets) { [] }
 
       it 'still builds a chart' do
-        chart = helper.demographics_index_chart(info, '#0000000')
+        chart = helper.demographic_index_chart(info, '#0000000')
         expect(chart).to be_a(LazyHighCharts::HighChart)
       end
     end

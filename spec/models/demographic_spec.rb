@@ -120,94 +120,53 @@ RSpec.describe Demographic do
             let(:e3) {}
             let(:el3) {}
 
-            it 'builds the correct hash' do
-              hash = Demographic.aggregate_data_for_question(question)
+            let!(:hash) {Demographic.aggregate_data_for_question(question)}
 
-              expect(hash).to eq(
-              {
-                question: question,
+            it {expect(hash['GENDER'][:buckets][0][:name]).to eq "Male"}
+            it {expect(hash['GENDER'][:buckets][0][:percent]).to eq 1/2.0}
+            it {expect(hash['GENDER'][:buckets][1][:name]).to eq "Female"}
+            it {expect(hash['GENDER'][:buckets][1][:percent]).to eq 1/2.0}
 
-                "GENDER" =>  {
-                  id: "GENDER",
-                  name: "Gender",
-                  buckets:  [
-                    {name: "Male", index: 101.9607843137255, percent: 0.5},
-                    {name: "Female", index: 98.0392156862745, percent: 0.5}
-                  ],
-                  largest_bucket: {name: "Male", index: 101.9607843137255, percent: 0.5}
-                },
+            it {expect(hash['AGE'][:buckets][0][:name]).to eq "18-24"}
+            it {expect(hash['AGE'][:buckets][0][:percent]).to eq 1/2.0}
+            it {expect(hash['AGE'][:buckets][1][:name]).to eq "45-54"}
+            it {expect(hash['AGE'][:buckets][1][:percent]).to eq 1/2.0}
+            it {expect(hash['AGE'][:buckets][2][:name]).to eq "0-18"}
+            it {expect(hash['AGE'][:buckets][2][:percent]).to eq 0.0}
+            it {expect(hash['AGE'][:buckets][3][:name]).to eq "25-34"}
+            it {expect(hash['AGE'][:buckets][3][:percent]).to eq 0.0}
+            it {expect(hash['AGE'][:buckets][4][:name]).to eq "35-44"}
+            it {expect(hash['AGE'][:buckets][4][:percent]).to eq 0.0}
+            it {expect(hash['AGE'][:buckets][5][:name]).to eq "55+"}
+            it {expect(hash['AGE'][:buckets][5][:percent]).to eq 0.0}
 
-                "AGE" => {
-                  id: "AGE",
-                  name: "Age",
-                  buckets: [
-                    {name: "< 18", index: 0.0, percent: 0.0},
-                    {name: "18-24", index: 143.1818181818182, percent: 0.5},
-                    {name: "25-34", index: 0.0, percent: 0.0},
-                    {name: "35-44", index: 0.0, percent: 0.0},
-                    {name: "45-54", index: 139.75903614457832, percent: 0.5},
-                    {name: "55+", index: 0.0, percent: 0.0}
-                  ],
-                  largest_bucket: {name: "18-24", index: 143.1818181818182, percent: 0.5}
-                },
+            it {expect(hash['CHILDREN'][:buckets][0][:name]).to eq "Has Kids"}
+            it {expect(hash['CHILDREN'][:buckets][0][:percent]).to eq 1/2.0}
+            it {expect(hash['CHILDREN'][:buckets][1][:name]).to eq "No Kids"}
+            it {expect(hash['CHILDREN'][:buckets][1][:percent]).to eq 1/2.0}
 
-                "CHILDREN" => {
-                  id: "CHILDREN",
-                  name: "Children in Household",
-                  buckets: [
-                    {name: "Has Kids", index: 100.0, percent: 0.5},
-                    {name: "No Kids", index: 100.0, percent: 0.5}
-                  ],
-                  largest_bucket: {name: "No Kids", index: 100.0, percent: 0.5}
-                },
+            it {expect(hash['INCOME'][:buckets][0][:name]).to eq "$100k+"}
+            it {expect(hash['INCOME'][:buckets][0][:percent]).to eq 1/2.0}
+            it {expect(hash['INCOME'][:buckets][1][:name]).to eq "$0-$100k"}
+            it {expect(hash['INCOME'][:buckets][1][:percent]).to eq 1/2.0}
 
-                "INCOME" => {
-                  id: "INCOME",
-                  name: "Household Income",
-                  buckets: [
-                    {name: "$0-$100k", index: 62.5, percent: 0.5},
-                    {name: "$100k+", index: 137.5, percent: 0.5}
-                  ],
-                  largest_bucket: {name: "$100k+", index: 137.5, percent: 0.5}
-                },
+            it {expect(hash['EDUCATION'][:buckets][0][:name]).to eq "No College"}
+            it {expect(hash['EDUCATION'][:buckets][0][:percent]).to eq 1/2.0}
+            it {expect(hash['EDUCATION'][:buckets][1][:name]).to eq "College"}
+            it {expect(hash['EDUCATION'][:buckets][1][:percent]).to eq 1/2.0}
 
-                "EDUCATION" => {
-                  id: "EDUCATION",
-                  name: "Education Level",
-                  buckets: [
-                    {name: "College", index: 90.9090909090909, percent: 0.5},
-                    {name: "No College", index: 109.0909090909091, percent: 0.5}
-                  ],
-                  largest_bucket: {name: "No College", index: 109.0909090909091, percent: 0.5}
-                },
+            it {expect(hash['ETHNICITY'][:buckets][0][:name]).to eq "Asian"}
+            it {expect(hash['ETHNICITY'][:buckets][0][:percent]).to eq 1/2.0}
+            it {expect(hash['ETHNICITY'][:buckets][1][:name]).to eq "Hispanic"}
+            it {expect(hash['ETHNICITY'][:buckets][1][:percent]).to eq 1/2.0}
+            it {expect(hash['ETHNICITY'][:buckets][2][:name]).to eq "African American"}
+            it {expect(hash['ETHNICITY'][:buckets][2][:percent]).to eq 0.0}
+            it {expect(hash['ETHNICITY'][:buckets][3][:name]).to eq "Caucasian"}
+            it {expect(hash['ETHNICITY'][:buckets][3][:percent]).to eq 0.0}
 
-                "ETHNICITY" => {
-                  id: "ETHNICITY",
-                  name: "Ethnicity",
-                  buckets: [
-                    {name: "Hispanic", index: 145.05494505494505, percent: 0.5},
-                    {name: "Asian", index: 147.91666666666669, percent: 0.5},
-                    {name: "African American", index: 0.0, percent: 0.0},
-                    {name: "Caucasian", index: 0.0, percent: 0.0}
-                  ],
-                  largest_bucket: {name: "Asian", index: 147.91666666666669, percent: 0.5}
-                },
+            it {expect(hash['AFFILIATION'][:buckets]).to be_empty}
 
-                "AFFILIATION" => {
-                  id: "AFFILIATION",
-                  name: "Political Affiliation",
-                  buckets: [],
-                  largest_bucket: nil
-                },
-
-                "ENGAGEMENT" => {
-                  id: "ENGAGEMENT",
-                  name: "Political Engagement",
-                  buckets: [],
-                  largest_bucket: nil
-                }
-              })
-            end
+            it {expect(hash['ENGAGEMENT'][:buckets]).to be_empty}
           end
         end
       end
