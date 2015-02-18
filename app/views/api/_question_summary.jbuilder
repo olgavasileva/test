@@ -4,11 +4,7 @@ json.choices @question.choices do |c|
   json.top_count top_count unless top_count.nil?
   # json.response_ratio c.response_ratio
   json.user_answered @answers.include?(c.id) if @answers
-  json.response_ratio if @question.kind_of? OrderQuestion
-    c.weighted_response_count / question.weighted_total_responses.to_f
-  else
-    c.responses.count.to_f / question.choice_count
-  end
+  json.response_ratio @question.kind_of?(OrderQuestion) ? c.weighted_response_count / question.weighted_total_responses.to_f : c.responses.count.to_f / question.choice_count
 end
 json.response_count @question.responses.count
 json.view_count [@question.view_count.to_i, @question.responses.count, @question.skip_count.to_i].max

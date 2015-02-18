@@ -80,14 +80,8 @@ describe :summary do
         let(:question_id) {question.id}
         let(:choices_data) { JSON.parse(response.body)['summary']['choices'] }
 
-        xit "returns correct choices data" do
-          pending "response_ratio is intentionally different until next release"
-          expect(choices_data).to match_array [
-            { id: question.choices[0].id, response_ratio: 0 },
-            { id: question.choices[1].id, response_ratio: 0.6 },
-            { id: question.choices[2].id, response_ratio: 0.2 },
-            { id: question.choices[3].id, response_ratio: 0.2 }
-          ].map(&:stringify_keys)
+        it "returns correct choices data" do
+          expect(choices_data.map{|d| d['response_ratio']}).to match_array [0.0, 0.6, 0.2, 0.2]
         end
       end
 
@@ -108,14 +102,8 @@ describe :summary do
         let(:question_id) {question.id}
         let(:choices_data) { JSON.parse(response.body)['summary']['choices'] }
 
-        xit "returns correct choices data" do
-          pending "response_ratio is intentionally different until next release"
-          expect(choices_data).to match_array [
-            { id: question.choices[0].id, response_ratio: 0.75, top_count: 3 },
-            { id: question.choices[1].id, response_ratio: 0.0, top_count: 0 },
-            { id: question.choices[2].id, response_ratio: 0.0, top_count: 0 },
-            { id: question.choices[3].id, response_ratio: 0.25, top_count: 1 }
-          ].map(&:stringify_keys)
+        it "returns correct choices data" do
+          expect(choices_data.map{|d| d['response_ratio']}).to match_array [0.175, 0.225, 0.275, 0.325]
         end
       end
     end
