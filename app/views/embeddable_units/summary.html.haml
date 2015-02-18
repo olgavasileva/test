@@ -4,34 +4,36 @@
     document.getElementById('next').click();
   setTimeout next, 20*1000
 
-- total_response_count = @response.question.responses.count
+- next_url = next_question_url(@question)
 
 - # We only support ImageChoiceQuestions with exactly 2 choices
-- unless @response.question.kind_of?(ImageChoiceQuestion) && @response.question.choices.count == 2
+- unless @question.kind_of?(ImageChoiceQuestion) && @question.choices.count == 2
   #error "Unsupported question type for embeddable units"
-  = link_to "Next", embeddable_unit_next_question_path(@embeddable_unit.uuid, @response.question), target: "_self"
+  = link_to "Next", next_url, target: "_self"
 - else
   .summary
     .title.resize
       .table
-        .cell=@response.question.title
+        .cell=@question.title
     .back
-    -@response.question.choices.each do |c|
+
+    - @question.choices.each do |c|
       .choice{class: @response.choice.id == c.id ? :selected : nil}
         .checkmark
         %label
-          =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive", style:"width: 125px; height: 125px;")
-          - if total_response_count > 0
-            - percentage = c.responses.count.to_f / total_response_count.to_f
-            .graph{data:{percentage: 100 * percentage}}
-              .bar-line
-              .percentage
+          - choice_image = c.web_image_url || image_path("fallback/choice#{n}.png")
+          = responsive_image_tag(choice_image, class: "img-responsive", style:"width: 125px; height: 125px;")
+          .graph{data:{percentage: 100 * c.response_ratio}}
+            .bar-line
+            .percentage
           .subtitle
             .table
               .cell=c.title
+
     .next.prominent
-      =link_to embeddable_unit_next_question_path(@embeddable_unit.uuid, @response.question), target: "_self", id:"next" do
-        =image_tag image_path("embed/next.png")
+      = link_to next_url, target: "_self", id: "next" do
+        = image_tag image_path("embed/next.png")
+
     .footer
       .share
       .logo

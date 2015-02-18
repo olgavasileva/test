@@ -6,41 +6,60 @@ class EmbeddableUnitsController < ApplicationController
   before_action :authorize_embeddable_unit
   after_action :allow_iframe
 
-  rescue_from Pundit::NotAuthorizedError do
+  rescue_from(Pundit::NotAuthorizedError) do
     render :invalid_unit
   end
 
+  rescue_from(ActiveRecord::ActiveRecordError) do |ex|
+    Airbrake.notify_or_ignore(ex)
+    render :invalid_unit
+  end
+
+  helper_method :next_question_url
+
   def start_survey
-    cookies[:euuid] = {value: embeddable_unit.uuid, expires: 1.day.from_now}
-    redirect_to new_question_response_path(@embeddable_unit.survey.questions.first.id)
+    @question = embeddable_unit.questions.first
+    render :question
   end
 
-  def summary
-    @response = Response.find params[:response_id]
+  def survey_question
+    @question = embeddable_unit.questions.find(params[:question_id])
+    render :question
   end
 
-  def next_question
-    @question = Question.find params[:question_id]
-    next_question = embeddable_unit.survey.next_question(@question)
-
-    if next_question
-      redirect_to new_question_response_path(next_question)
-    else
-      redirect_to embeddable_unit_thank_you_path(cookies[:euuid])
+  def survey_response
+    @question = embeddable_unit.questions.find(params[:question_id])
+    @response = @question.responses.create(response_params) do |r|
+      r.user = current_user
     end
+
+    render :summary
   end
 
   def thank_you
-    cookies.delete :euuid
+    render :thank_you
   end
 
   private
 
   def embeddable_unit
-    @embeddable_unit ||= EmbeddableUnit.find_by(uuid: params[:embeddable_unit_uuid])
+    @embeddable_unit ||= EmbeddableUnit.find_by!(uuid: params[:embeddable_unit_uuid])
   end
 
   def authorize_embeddable_unit
     authorize embeddable_unit
+  end
+
+  def response_params
+    params.require(:image_choice_response).permit(:choice_id)
+  end
+
+  def next_question_url(question)
+    next_question = embeddable_unit.survey.next_question(question)
+    if next_question
+      embeddable_unit_question_path(embeddable_unit.uuid, next_question.id)
+    else
+      embeddable_unit_thank_you_path
+    end
   end
 end

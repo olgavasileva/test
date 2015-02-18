@@ -1,0 +1,83 @@
+require 'rails_helper'
+
+RSpec.describe EmbeddableUnitsController do
+  include Devise::TestHelpers
+
+  before(:all) { @unit = FactoryGirl.create(:embeddable_unit) }
+  after(:all) { @unit.destroy! }
+
+  let(:unit) { @unit }
+  let(:question) { unit.questions.to_a.shuffle.first }
+
+  describe 'loading the EmbeddableUnit' do
+    subject { get :start_survey, embeddable_unit_uuid: unit.try(:uuid) }
+
+    context 'given an invalid :embeddable_unit_uuid' do
+      let(:unit) { EmbeddableUnit.new(uuid: 'invalid') }
+      it { is_expected.to render_template(:invalid_unit) }
+    end
+
+    context 'given a valid :embeddable_unit_uuid' do
+      context 'that is not authorized' do
+        let(:unit) { EmbeddableUnit.create }
+        it { is_expected.to render_template(:invalid_unit) }
+      end
+
+      context 'that is authorized' do
+        it { is_expected.to_not render_template(:invalid_unit) }
+      end
+    end
+  end
+
+  describe 'GET #start_survey' do
+    subject { get :start_survey, embeddable_unit_uuid: unit.uuid }
+
+    it { is_expected.to render_template(:question) }
+
+    it 'assigns the question correctly' do
+      subject
+      expect(assigns(:question)).to eq(unit.questions.first)
+    end
+  end
+
+  describe 'GET #survey_question' do
+    subject { get :survey_question, embeddable_unit_uuid: unit.uuid, question_id: question.id }
+
+    it { is_expected.to render_template(:question) }
+
+    it 'assigns the question correctly' do
+      subject
+      expect(assigns(:question)).to eq(question)
+    end
+  end
+
+  describe 'POST #survey_response' do
+    let(:choice) { question.choices.to_a.shuffle.first }
+
+    subject do
+      post :survey_response,
+        embeddable_unit_uuid: unit.uuid,
+        question_id: question.id,
+        image_choice_response: {choice_id: choice.id}
+    end
+
+    it { is_expected.to render_template(:summary) }
+
+    it 'assigns the question correctly' do
+      subject
+      expect(assigns(:question)).to eq(question)
+    end
+
+    it 'creates a response correctly' do
+      expect{subject}.to change(Response, :count).by(1)
+      response = assigns(:response)
+      expect(response.question).to eq(question)
+      expect(response.choice).to eq(choice)
+    end
+  end
+
+  describe 'GET #thank_you' do
+    subject { get :thank_you, embeddable_unit_uuid: unit.uuid }
+    it { is_expected.to render_template(:thank_you) }
+  end
+end
