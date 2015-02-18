@@ -147,7 +147,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @demographics = Demographic.aggregate_data_for_question(@question)
+        @demographics = Demographic.aggregate_data_for_question(@question) if @question
         render layout: "pixel_admin"
       end
 

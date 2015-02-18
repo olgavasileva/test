@@ -1,13 +1,14 @@
 class DemographicCSV < Struct.new(:question)
 
   DEMOGRAPHICS = {
-    age_range: 'Age',
     gender: 'Gender',
-    children: 'Children in Household',
+    age_range: 'Age',
     household_income: 'Household Income',
+    children: 'Children in Household',
     ethnicity: 'Ethnicity',
-    education: 'Education Level',
-    political_affiliation: 'Politicial Affiliation'
+    education_level: 'Education Level',
+    political_affiliation: 'Politicial Affiliation',
+    political_engagement: 'Politicial Engagement'
   }.freeze
 
   def self.export(question)
@@ -17,28 +18,37 @@ class DemographicCSV < Struct.new(:question)
 
   def to_csv
     CSV.generate do |csv|
-      # Header
-      csv << question_title_row
+      # Build aggregated responses
+      csv << ['Question:', question.title]
       choice_rows { |row| csv << row }
+      csv << []   # Spacer
 
-      # Spacer
-      csv << []
+      # Restate the Question
+      csv << ['Responses to:', question.title]
 
-      # Responses
-      csv << question_title_row
-      csv << response_title_row
-      response_rows { |row| csv << row }
+      # Build responses header row
+      columns = ["User ID", "username"] + DEMOGRAPHICS.values
+      columns << "Response ID"
+      columns += question.csv_columns
+
+      csv << columns
+
+      # Build a line for each response
+      question.responses.each do |response|
+        respondent = response.user
+        demographic = respondent.demographic
+        line = [respondent.id, respondent.username]
+        if demographic
+          line += DEMOGRAPHICS.map{|key,label| demographic[key]}
+        else
+          line += Array.new(DEMOGRAPHICS.keys.count)
+        end
+        line << response.id
+        line += response.csv_data
+
+        csv << line
+      end
     end
-  end
-
-  def question_title_row
-    ['Question', question.title]
-  end
-
-  def response_title_row
-    choices.each_with_index.map do |choice, idx|
-      "Option ##{idx +1}"
-    end.push(*DEMOGRAPHICS.values)
   end
 
   def choices
@@ -57,19 +67,6 @@ class DemographicCSV < Struct.new(:question)
         "%d%" % (choice.response_ratio * 100),
         choice.try(:web_image_url)
       ])
-    end
-  end
-
-  def response_rows(&block)
-    question.responses.includes(:demographic).find_each do |response|
-      data = response.csv_data
-
-      if response.demographic.present?
-        demo = response.demographic.attributes.slice(*DEMOGRAPHICS.keys).values
-        data.push(*demo)
-      end
-
-      yield(data)
     end
   end
 end
