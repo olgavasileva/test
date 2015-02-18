@@ -65,6 +65,7 @@ class Demographic < ActiveRecord::Base
   end
 
 
+
   private
 
     def self.aggregate_data_for question_or_choice
@@ -84,120 +85,122 @@ class Demographic < ActiveRecord::Base
       end
     end
 
+    def self.info key, value, count
+      name = label key
+      index = index key, value, count
+      percent = percent value, count
+
+      { name: name, index: index, percent: percent }
+    end
+
+    def self.index key, value, count
+      average = us_average key
+      sample = percent value, count
+
+      if sample <= average
+        # 0 .. 100
+        100 * sample / average
+      else
+        # 100 .. 200
+        100 + 100 * (sample - average) / (1 - average)
+      end
+    end
+
+    def self.percent value, count
+      count > 0 ? value.to_f / count : 0
+    end
+
     def self.merge_largest_bucket info
       largest = info[:buckets].sort_by{|b| b[:index]}.last
       info.merge(largest_bucket: largest)
     end
 
     def self.age_info question_or_choice
-      age_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.age_range").count
-
-      age_under_18 = age_info['<18'].to_i
-      age_18_24 = age_info['18-24'].to_i
-      age_25_34 = age_info['25-34'].to_i
-      age_35_44 = age_info['35-44'].to_i
-      age_45_54 = age_info['45-54'].to_i
-      age_55_104 = age_info['55+'].to_i
+      age_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.age_range").count.except nil
       age_count = age_info.values.sum.to_f
 
       { id: "AGE", name: "Age", buckets:
         [
-          { name: "< 18", index: 100, percent: age_count > 0 ? age_under_18 / age_count : 0 },
-          { name: "18-24", index: 100, percent: age_count > 0 ? age_18_24 / age_count : 0 },
-          { name: "25-34", index: 100, percent: age_count > 0 ? age_25_34 / age_count : 0 },
-          { name: "35-44", index: 100, percent: age_count > 0 ? age_35_44 / age_count : 0 },
-          { name: "45-54", index: 100, percent: age_count > 0 ? age_45_54 / age_count : 0 },
-          { name: "55+", index: 100, percent: age_count > 0 ? age_55_104 / age_count : 0 }
+          info("<18", age_info['<18'].to_i, age_count),
+          info('18-24', age_info['18-24'].to_i, age_count),
+          info('25-34', age_info['25-34'].to_i, age_count),
+          info('35-44', age_info['35-44'].to_i, age_count),
+          info('45-54', age_info['45-54'].to_i, age_count),
+          info('55+', age_info['55+'].to_i, age_count)
         ]
       }
     end
 
     def self.gender_info question_or_choice
-      gender_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.gender").count
-
-      males = gender_info['male'].to_i
-      females = gender_info['female'].to_i
+      gender_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.gender").count.except nil
       gender_count = gender_info.values.sum.to_f
 
       { id: "GENDER", name: "Gender", buckets:
         [
-          { name: "Male", index: 100, percent: gender_count > 0 ? males / gender_count : 0 },
-          { name: "Female", index: 100, percent: gender_count > 0 ? females / gender_count : 0 }
+          info('male', gender_info['male'].to_i, gender_count),
+          info('female', gender_info['female'].to_i, gender_count)
         ]
       }
     end
 
     def self.children_info question_or_choice
-      children_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.children").count
-
-      children = children_info["true"].to_i
-      no_children = children_info["false"].to_i
+      children_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.children").count.except nil
       children_count = children_info.values.sum.to_f
 
       { id: "CHILDREN", name: "Children in Household", buckets:
         [
-          { name: "No Kids", index: 100, percent: children_count > 0 ? children / children_count : 0 },
-          { name: "Has Kids", index: 100, percent: children_count > 0 ? no_children / children_count : 0 }
+          info('children', children_info['true'].to_i, children_count),
+          info('no_children', children_info['false'].to_i, children_count)
         ]
       }
     end
 
     def self.income_info question_or_choice
-      income_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.household_income").count
-
-      under_100k = income_info["0-100k"].to_i
-      over_100k = income_info["100k+"].to_i
+      income_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.household_income").count.except nil
       income_count = income_info.values.sum.to_f
 
       { id: "INCOME", name: "Household Income", buckets:
         [
-          { name: "$0-$100k", index: 100, percent: income_count > 0 ? under_100k / income_count : 0 },
-          { name: "$100k+", index: 100, percent: income_count > 0 ? over_100k / income_count : 0 }
+          info('0-100k', income_info["0-100k"].to_i, income_count),
+          info('100k+', income_info["100k+"].to_i, income_count)
         ]
       }
     end
 
     def self.education_info question_or_choice
-      education_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.education_level").count
-
-      college = education_info["college"].to_i
-      no_college = education_info["no_college"].to_i
+      education_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.education_level").count.except nil
       education_count = education_info.values.sum.to_f
 
       { id: "EDUCATION", name: "Education Level", buckets:
         [
-          { name: "No College", index: 100, percent: education_count > 0 ? no_college / education_count : 0 },
-          { name: "College", index: 100, percent: education_count > 0 ? college / education_count : 0 }
+          info('college', education_info["college"].to_i, education_count),
+          info('no_college', education_info["no_college"].to_i, education_count)
         ]
       }
     end
 
     def self.ethnicity_info question_or_choice
-      ethnicity_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.ethnicity").count
-      hispanic = ethnicity_info["hispanic"].to_i
-      asian = ethnicity_info["asian"].to_i
-      african_american = ethnicity_info["african_american"].to_i
-      caucasian = ethnicity_info["caucasian"].to_i
+      ethnicity_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.ethnicity").count.except nil
       ethnicity_count = ethnicity_info.values.sum.to_f
 
       { id: "ETHNICITY", name: "Ethnicity", buckets:
         [
-          { name: "Caucasian", index: 100, percent: ethnicity_count > 0 ? caucasian / ethnicity_count : 0 },
-          { name: "African American", index: 100, percent: ethnicity_count > 0 ? african_american / ethnicity_count : 0 },
-          { name: "Asian", index: 100, percent: ethnicity_count > 0 ? asian / ethnicity_count : 0 },
-          { name: "Hispanic", index: 100, percent: ethnicity_count > 0 ? hispanic / ethnicity_count : 0 }
+          info('hispanic', ethnicity_info["hispanic"].to_i, ethnicity_count),
+          info('asian', ethnicity_info["asian"].to_i, ethnicity_count),
+          info('african_american', ethnicity_info["african_american"].to_i, ethnicity_count),
+          info('caucasian', ethnicity_info["caucasian"].to_i, ethnicity_count)
         ]
       }
     end
 
     def self.political_affiliation_info question_or_choice
-      political_affiliation_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.political_affiliation").count
+      political_affiliation_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.political_affiliation").count.except nil
 
       { id: "AFFILIATION", name: "Political Affiliation", buckets: []}
     end
 
     def self.political_engagement_info question_or_choice
-      political_engagement_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.political_engagement").count
+      political_engagement_info = question_or_choice.responses.joins(:user).joins(:demographic).group("demographics.political_engagement").count.except nil
 
       { id: "ENGAGEMENT", name: "Political Engagement", buckets: []}
     end
@@ -382,6 +385,78 @@ class Demographic < ActiveRecord::Base
         "Hispanic" => "50070"
       }
     end
+
+    def self.us_average key
+      @us_average ||= {
+        "male" => 0.49,
+        "female" => 0.51,
+        "<18" => 0.18,
+        "18-24" => 0.12,
+        "25-34" => 0.17,
+        "35-44" => 0.19,
+        "45-54" => 0.17,
+        "55+" => 0.16,
+        "0-100k" => 0.80,
+        "100k+" => 0.20,
+        "children" => 0.50,
+        "no_children" => 0.50,
+        "caucasian" => 0.76,
+        "african_american" => 0.09,
+        "asian" => 0.04,
+        "hispanic" => 0.09,
+        "other_ethnicity" => 0.01,
+        "no_college" => 0.45,
+        "college" => 0.55,
+        "republican" => 0.48,
+        "democrat" => 0.48,
+        "independent" => 0.04,
+        "active" => 0.20,
+        "somewhat_active" => 0.20,
+        "inactive" => 0.60
+      }
+
+      @us_average[key]
+    end
+
+    def self.label key
+      @label ||= {
+        "male" => "Male",
+        "female" => "Female",
+
+        "<18" => "< 18",
+        "18-24" => "18-24",
+        "25-34" => "25-34",
+        "35-44" => "35-44",
+        "45-54" => "45-54",
+        "55+" => "55+",
+
+        "0-100k" => "$0-$100k",
+        "100k+" => "$100k+",
+
+        "no_children" => "No Kids",
+        "children" => "Has Kids",
+
+        "caucasian" => "Caucasian",
+        "african_american" => "African American",
+        "asian" => "Asian",
+        "hispanic" => "Hispanic",
+        "other_ethnicity" => "Other",
+
+        "no_college" => "No College",
+        "college" => "College",
+
+        "republican" => "Republican",
+        "democrat" => "Democrat",
+        "independent" => "Independent",
+
+        "active" => "Active",
+        "somewhat_active" => "Somewhat Active",
+        "inactive" => "Inactive"
+      }
+
+      @label[key]
+    end
+
 
     def self.sample_data
       {
