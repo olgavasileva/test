@@ -1,6 +1,10 @@
 class EmbeddableUnitPolicy < ApplicationPolicy
-  def start_survey? ; true; end
-  def summary?      ; true; end
-  def next_question?; true; end
-  def thank_you?    ; true; end
+  def start_survey? ; has_survey_questions?; end
+  def summary?      ; has_survey_questions?; end
+  def next_question?; has_survey_questions?; end
+  def thank_you?    ; has_survey_questions?; end
+
+  def has_survey_questions?
+    @record.try(:has_survey_questions?) || false
+  end
 end
