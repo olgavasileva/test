@@ -1,11 +1,9 @@
 class ResponsesController < ApplicationController
-  layout :resolve_layout
+  layout 'clean_canvas'
 
   after_action :allow_iframe, only: [:new, :create]
 
   def new
-    @embeddable_unit = EmbeddableUnit.find_by uuid: cookies[:euuid]
-
     if should_redirect_to_new_webapp?
       authorize Response.new  # satisfy authorization check
       redirect_to File.join(ENV['WEB_APP_URL'], "#/app/question", params[:question_id])
@@ -21,8 +19,6 @@ class ResponsesController < ApplicationController
       @just_answered = params[:just_answered]
       @show_skip_button = !session[:contest_uuid]
       @show_root_button = !session[:contest_uuid]
-
-      render 'embeddable_units/new_response' if @embeddable_unit
     end
   end
 
@@ -39,9 +35,7 @@ class ResponsesController < ApplicationController
                        commentable_id: @response.question_id)
       end
 
-      if cookies[:euuid]
-        redirect_for_embedded_response cookies[:euuid], @response
-      elsif session[:contest_uuid]
+      if session[:contest_uuid]
         redirect_for_contest_response session[:contest_uuid], @response
       else
         redirect_for_standard_response @response
@@ -54,20 +48,11 @@ class ResponsesController < ApplicationController
       @next_question = next_question @response.question
       @show_skip_button = !session[:contest_uuid]
       @show_root_button = !session[:contest_uuid]
-      @embeddable_unit = EmbeddableUnit.find_by uuid: cookies[:euuid]
-      render @embeddable_unit ? 'embeddable_units/new_response' : "new"
+      render :new
     end
   end
 
   protected
-
-    def resolve_layout
-      if cookies[:euuid]
-        "embeddable_unit"
-      else
-        "clean_canvas"
-      end
-    end
 
     def response_params
       raise NotImplementedError.new("You must implement response_params.")
@@ -90,13 +75,7 @@ class ResponsesController < ApplicationController
       end
     end
 
-    def redirect_for_embedded_response euuid, response
-      eu = EmbeddableUnit.find_by uuid: euuid
-      redirect_to embeddable_unit_summary_path(euuid, response)
-    end
-
     def should_redirect_to_new_webapp?
-      ENV['REDIRECT_QUESTIONS_NEW_TO_WEBAPP'].true? && !(session[:contest_uuid] || browser.bot? || @embeddable_unit.present?)
+      ENV['REDIRECT_QUESTIONS_NEW_TO_WEBAPP'].true? && !(session[:contest_uuid] || browser.bot?)
     end
-
 end
