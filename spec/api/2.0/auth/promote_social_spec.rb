@@ -87,6 +87,12 @@ describe :promote_social do
       include_examples :returns_error, 1011
     end
 
+    context 'when the :birthdate is invalid' do
+      before { params.merge!(birthdate: 'a') }
+      before { subject }
+      it { is_expected.to eq(201) }
+    end
+
     context 'when the params are valid' do
       it 'updates the :auth_token' do
         expect{subject}.to change{instance.reload.auth_token}
