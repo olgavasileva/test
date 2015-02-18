@@ -29,8 +29,8 @@ class EmbeddableUnitsController < ApplicationController
 
   def survey_response
     @question = embeddable_unit.questions.find(params[:question_id])
-    @response = @question.responses.create(response_params) do |r|
-      r.user = current_user
+    @response = @question.responses.create!(response_params) do |r|
+      r.user = current_embed_user
     end
 
     render :summary
@@ -44,6 +44,18 @@ class EmbeddableUnitsController < ApplicationController
 
   def embeddable_unit
     @embeddable_unit ||= EmbeddableUnit.find_by!(uuid: params[:embeddable_unit_uuid])
+  end
+
+  def current_embed_user
+    @embed_user ||= begin
+      embed_user = if cookies.signed[:eu_user]
+        Respondent.find_by(id: cookies.signed[:eu_user])
+      end
+
+      embed_user = Anonymous.create! unless embed_user
+      cookies.permanent.signed[:eu_user] = embed_user.id
+      embed_user
+    end
   end
 
   def authorize_embeddable_unit

@@ -69,15 +69,58 @@ RSpec.describe EmbeddableUnitsController do
     end
 
     it 'creates a response correctly' do
+      user = FactoryGirl.create(:user)
+      allow(controller).to receive(:current_embed_user) { user }
+
       expect{subject}.to change(Response, :count).by(1)
       response = assigns(:response)
       expect(response.question).to eq(question)
       expect(response.choice).to eq(choice)
+      expect(response.user).to eq(user)
     end
   end
 
   describe 'GET #thank_you' do
     subject { get :thank_you, embeddable_unit_uuid: unit.uuid }
     it { is_expected.to render_template(:thank_you) }
+  end
+
+  describe '#current_embed_user' do
+    before do
+      allow(controller).to receive(:cookies) { request.cookies }
+      allow(request.cookies).to receive_messages(
+        permanent: request.cookies,
+        signed: request.cookies
+      )
+    end
+
+    it 'remembers the current embed user' do
+      embed_user = controller.send(:current_embed_user)
+      expect(request.cookies[:eu_user]).to eq(embed_user.id)
+    end
+
+    context 'when no :eu_user cookie is present' do
+      it 'creates an Anonymous user record' do
+        expect {
+          controller.send(:current_embed_user)
+        }.to change(Anonymous, :count).by(1)
+      end
+    end
+
+    context 'when an :eu_user cookies is present' do
+      let(:user) { FactoryGirl.create(:user) }
+      before { request.cookies[:eu_user] = user.id }
+
+      it 'does not create an Anonymous user record' do
+        expect {
+          controller.send(:current_embed_user)
+        }.to_not change(Anonymous, :count)
+      end
+
+      it 'loads the user from the :eu_user cookie' do
+        embed_user = controller.send(:current_embed_user)
+        expect(embed_user).to eq(user)
+      end
+    end
   end
 end
