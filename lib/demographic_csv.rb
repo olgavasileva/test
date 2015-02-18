@@ -27,8 +27,7 @@ class DemographicCSV < Struct.new(:question)
       csv << ['Responses to:', question.title]
 
       # Build responses header row
-      columns = ["User ID", "username"] + DEMOGRAPHICS.values
-      columns << "Response ID"
+      columns = DEMOGRAPHICS.values
       columns += question.csv_columns
 
       csv << columns
@@ -37,13 +36,11 @@ class DemographicCSV < Struct.new(:question)
       question.responses.each do |response|
         respondent = response.user
         demographic = respondent.demographic
-        line = [respondent.id, respondent.username]
-        if demographic
-          line += DEMOGRAPHICS.map{|key,label| demographic[key]}
+        line = if demographic
+          DEMOGRAPHICS.map{|key,label| demographic[key]}
         else
-          line += Array.new(DEMOGRAPHICS.keys.count)
+          Array.new(DEMOGRAPHICS.keys.count)
         end
-        line << response.id
         line += response.csv_data
 
         csv << line
