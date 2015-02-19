@@ -15,6 +15,10 @@ class EmbeddableUnit < ActiveRecord::Base
 
   before_save :convert_markdown
 
+  def has_survey_questions?
+    survey.try(:questions).present?
+  end
+
   def script request
     <<-END
 <script type="text/javascript"><!--

@@ -1,6 +1,6 @@
 - # We only support ImageChoiceQuestions with exactly 2 choices
-- if response.question.kind_of?(ImageChoiceQuestion) && response.question.choices.count == 2
-  = render "embeddable_units/response_fields/image_choice_response", form:form, response:response
+- if question.kind_of?(ImageChoiceQuestion) && question.choices.count == 2
+  = render "embeddable_units/response_fields/image_choice_response", question: question
 - else
   #error "Unsupported question type for embeddable units"
-  = link_to "Skip", skip_question_path(response.question), target: "_self"
+  = link_to "Skip", next_question_url(question), target: "_self"

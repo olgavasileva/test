@@ -39,10 +39,13 @@ LinkchatApp::Application.routes.draw do
   post '/contests/:uuid/vote/:response_id' => 'contests#save_vote', as: :save_vote
   post '/contests/:uuid/scores' => 'contests#scores', as: :scores
 
-  get '/unit/:embeddable_unit_uuid' => 'embeddable_units#start_survey', as: :embeddable_unit_start_survey
-  get '/unit/:embeddable_unit_uuid/summary/:response_id' => 'embeddable_units#summary', as: :embeddable_unit_summary
-  get '/unit/:embeddable_unit_uuid/next_question/:question_id' => 'embeddable_units#next_question', as: :embeddable_unit_next_question
-  get '/unit/thank_you/:embeddable_unit_uuid' => 'embeddable_units#thank_you', as: :embeddable_unit_thank_you
+  scope '/unit/:embeddable_unit_uuid', controller: 'embeddable_units' do
+    get '/', action: 'start_survey', as: :embeddable_unit_start_survey
+    get '/question/:question_id', action: :survey_question, as: :embeddable_unit_question
+    post '/question/:question_id', action: :survey_response, as: :embeddable_unit_response
+    get '/thank_you', action: :thank_you, as: :embeddable_unit_thank_you
+    post '/quantcast', action: :quantcast, as: :embeddable_unit_quantcast
+  end
 
   resources :questions, shallow:true do
     get :preview, on: :member

@@ -1,9 +1,9 @@
 .title.resize
   .table
-    .cell=response.question.title
+    .cell=question.title
 .vote
 .back
--response.question.choices.each do |c|
+-question.choices.each do |c|
   .choice
     %label
       =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive", style:"width: 125px; height: 125px;")
@@ -15,4 +15,3 @@
 .footer
   .share
   .logo
-
