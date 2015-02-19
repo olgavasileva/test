@@ -1,7 +1,9 @@
 class EmbeddableUnitsController < ApplicationController
   layout "embeddable_unit"
 
-  skip_before_action :authenticate_user!
+  helper_method :next_question_url, :current_embed_user
+
+  skip_before_action :authenticate_user!, :find_recent_questions
 
   before_action :authorize_embeddable_unit
   after_action :allow_iframe
@@ -14,8 +16,6 @@ class EmbeddableUnitsController < ApplicationController
     Airbrake.notify_or_ignore(ex)
     render :invalid_unit
   end
-
-  helper_method :next_question_url
 
   def start_survey
     @question = embeddable_unit.questions.first
@@ -38,6 +38,12 @@ class EmbeddableUnitsController < ApplicationController
 
   def thank_you
     render :thank_you
+  end
+
+  def quantcast
+    demo = current_embed_user.demographic || current_embed_user.build_demographic
+    demo.update_from_provider_data!('quantcast', '1.0', quantcast_data)
+    head :ok
   end
 
   private
@@ -64,6 +70,10 @@ class EmbeddableUnitsController < ApplicationController
 
   def response_params
     params.require(:image_choice_response).permit(:choice_id)
+  end
+
+  def quantcast_data
+    params[:quantcast]
   end
 
   def next_question_url(question)

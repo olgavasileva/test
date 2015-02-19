@@ -85,6 +85,28 @@ RSpec.describe EmbeddableUnitsController do
     it { is_expected.to render_template(:thank_you) }
   end
 
+  describe '#POST quantcast' do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:data) { JSON.dump(%w{D T 50086 50084 50082 50076 50075 50074 50072 50062 50060 50059 50058 50057 50056 50054}.map{|h|{id: h}}) }
+    subject { post :quantcast, embeddable_unit_uuid: unit.uuid, quantcast: data }
+
+    before { allow(controller).to receive(:current_embed_user).and_return(user) }
+
+    context 'when the user already has a demographic' do
+      before { user.create_demographic! }
+
+      it 'does not create a Demographic' do
+        expect{subject}.to_not change(Demographic, :count)
+      end
+    end
+
+    context 'when the user does not have a demographic' do
+      it 'creates a Demographic' do
+        expect{subject}.to change(Demographic, :count).by(1)
+      end
+    end
+  end
+
   describe '#current_embed_user' do
     before do
       allow(controller).to receive(:cookies) { request.cookies }

@@ -3,6 +3,7 @@ class EmbeddableUnitPolicy < ApplicationPolicy
   def survey_question?; has_survey_questions?; end
   def survey_response?; has_survey_questions?; end
   def thank_you?; has_survey_questions?; end
+  def quantcast?; has_survey_questions?; end
 
   def has_survey_questions?
     @record.try(:has_survey_questions?) || false

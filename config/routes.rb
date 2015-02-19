@@ -44,6 +44,7 @@ LinkchatApp::Application.routes.draw do
     get '/question/:question_id', action: :survey_question, as: :embeddable_unit_question
     post '/question/:question_id', action: :survey_response, as: :embeddable_unit_response
     get '/thank_you', action: :thank_you, as: :embeddable_unit_thank_you
+    post '/quantcast', action: :quantcast, as: :embeddable_unit_quantcast
   end
 
   resources :questions, shallow:true do

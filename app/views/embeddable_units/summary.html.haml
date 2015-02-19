@@ -1,8 +1,9 @@
-:coffee
-  # auto advance to the next page after some time
-  next = ->
-    document.getElementById('next').click();
-  setTimeout next, 20*1000
+- if current_embed_user.demographic_required?
+  = render partial: 'quantcast_js'
+
+:javascript
+  var next = function(){document.getElementById('next').click();};
+  setTimeout(next, 20*1000);
 
 - next_url = next_question_url(@question)
 
@@ -30,7 +31,7 @@
             .table
               .cell=c.title
 
-    .next.prominent
+    #next-button.next.prominent
       = link_to next_url, target: "_self", id: "next" do
         = image_tag image_path("embed/next.png")
 
