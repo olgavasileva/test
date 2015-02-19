@@ -2,17 +2,29 @@ require 'rails_helper'
 
 RSpec.describe OmniauthController do
 
+  let(:cookie_name) { controller.send(:provider_cookie_name) }
+  let(:cookie_domain) { controller.send(:provider_cookie_domain) }
+  let(:cookie) { JSON.parse(response.cookies[cookie_name]) }
+
   shared_examples_for :is_not_successful do |message|
     it { should render_template(:callback) }
 
     it 'indicates auth was not succesful' do
       subject
-      expect(assigns(:data)[:success]).to eq(false)
+      expect(cookie['success']).to eq(false)
     end
 
     it 'indicates the correct error' do
       subject
-      expect(assigns(:data)[:error]).to eq(message)
+      expect(cookie['error']).to eq(message)
+    end
+  end
+
+  describe '#setup' do
+    it 'deletes the cookie' do
+      response.cookies[cookie_name] = 'anything'
+      get :setup, provider: 'facebook'
+      expect(response.cookies[cookie_name]).to eq(nil)
     end
   end
 
@@ -76,12 +88,12 @@ RSpec.describe OmniauthController do
 
       it 'sets the correct data' do
         subject
-        expect(assigns(:data)).to eq({
-          success: true,
-          auth_token: instance.reload.auth_token,
-          email: instance.user.email,
-          username: instance.user.username,
-          user_id: instance.user.id
+        expect(cookie).to eq({
+          'success' => true,
+          'auth_token' => instance.reload.auth_token,
+          'email' => instance.user.email,
+          'username' => instance.user.username,
+          'user_id' => instance.user.id
         })
       end
 

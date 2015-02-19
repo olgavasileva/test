@@ -9,7 +9,12 @@ class OmniauthController < ActionController::Base
   before_action :require_user!, only: [:callback]
 
   rescue_from ActiveRecord::ActiveRecordError do
-    render_error t('omniauth.error.process_error')
+    render_callback false, {error: t('omniauth.error.process_error')}
+  end
+
+  def setup
+    cookies.delete(provider_cookie_name, domain: provider_cookie_domain)
+    render nothing: true
   end
 
   # Authentication Flow
@@ -58,43 +63,45 @@ class OmniauthController < ActionController::Base
       instance.save!
     end
 
-    @data = {
+    render_callback true, {
       success: true,
       auth_token: instance.auth_token,
       email: instance.user.email,
       username: instance.user.username,
       user_id: instance.user.id
     }
-
-    render :callback
   end
 
   def failure
-    render_error params[:message]
+    render_callback false, {error: params[:message]}
   end
 
   private
 
   def require_instance!
     unless instance.present?
-      render_error t('omniauth.error.instance_required')
+      render_callback false, {error: t('omniauth.error.instance_required')}
     end
   end
 
   def require_user!
     unless auth.user.present? || instance.user.present?
-      render_error t('omniauth.error.missing_user')
+      render_callback false, {error: t('omniauth.error.missing_user')}
     end
   end
 
-  def render_error(message)
-    @data = {success: false, error: message}
+  def render_callback(result, data)
+    cookies[provider_cookie_name] = {
+      value: data.merge(success: result).to_json,
+      expires: 15.minutes.from_now,
+      domain: provider_cookie_domain
+    }
     render :callback
   end
 
   def instance
     return @instance if defined?(@instance)
-    token = (params[:instance_token] || auth_params['instance_token'])
+    token = (params[:instance_token] || auth_params && auth_params['instance_token'])
     @instance = token.present? && Instance.find_by(uuid: token)
   end
 
@@ -108,5 +115,13 @@ class OmniauthController < ActionController::Base
 
   def auth_params
     request.env['omniauth.params']
+  end
+
+  def provider_cookie_name
+    "auth_provider_#{params[:provider]}"
+  end
+
+  def provider_cookie_domain
+    request.host.gsub('app.', '')
   end
 end
