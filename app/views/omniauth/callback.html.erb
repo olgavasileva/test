@@ -2,9 +2,8 @@
   <head></head>
   <body>
     <script type="text/javascript">
-      var webApp = window.opener;
-      webApp.oauthCallback(<%= @data.to_json.html_safe %>);
-      window.close();
+      setTimeout(function() { window.close(); }, 500);
     </script>
+    <p>This window should close automatically...</p>
   </body>
 </html>

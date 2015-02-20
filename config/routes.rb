@@ -167,6 +167,7 @@ LinkchatApp::Application.routes.draw do
 
   # OmniAuth Callbacks
   constraints(provider: /#{Authentication::PROVIDERS.join('|')}/) do
+    match '/auth/:provider/setup', to: 'omniauth#setup', via: [:get, :post]
     match '/auth/:provider/callback', to: 'omniauth#callback', via: [:get, :post]
     get '/auth/failure', to: 'omniauth#failure'
   end
