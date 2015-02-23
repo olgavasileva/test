@@ -41,7 +41,8 @@ class EmbeddableUnitsController < ApplicationController
   end
 
   def quantcast
-    demo = current_embed_user.demographic || current_embed_user.build_demographic
+    DataProvider.where(name:'quantcast').first_or_create
+    demo = current_embed_user.demographics.quantcast.first_or_create
     demo.update_from_provider_data!('quantcast', '1.0', quantcast_data)
     head :ok
   end

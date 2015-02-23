@@ -35,7 +35,7 @@ class DemographicCSV < Struct.new(:question)
       # Build a line for each response
       question.responses.each do |response|
         respondent = response.user
-        demographic = respondent.demographic
+        demographic = respondent.demographic_summary
         line = if demographic
           DEMOGRAPHICS.map{|key,label| demographic[key]}
         else

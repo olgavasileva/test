@@ -16,8 +16,11 @@ class TwoCents::Demographics < Grape::API
     ] do
       validate_user!
 
-      demographic = current_user.demographic || current_user.build_demographic
-      demographic.update_from_provider_data! declared_params[:provider], declared_params[:version], declared_params[:raw_data]
+      if declared_params[:provider] == 'quantcast'
+        DataProvider.where(name:'quantcast').first_or_create
+        demographic = current_user.demographics.quantcast.first_or_create
+        demographic.update_from_provider_data! declared_params[:provider], declared_params[:version], declared_params[:raw_data]
+      end
     end
   end
 end

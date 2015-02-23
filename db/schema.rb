@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150211000550) do
+ActiveRecord::Schema.define(version: 20150223034555) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -177,6 +177,29 @@ ActiveRecord::Schema.define(version: 20150211000550) do
 
   add_index "daily_analytics", ["user_id", "metric", "date"], name: "index_daily_analytics_on_user_id_and_metric_and_date", using: :btree
 
+  create_table "data_providers", force: true do |t|
+    t.string   "name"
+    t.integer  "priority"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "demographic_summaries", force: true do |t|
+    t.string   "gender"
+    t.string   "age_range"
+    t.string   "household_income"
+    t.string   "children"
+    t.string   "ethnicity"
+    t.string   "education_level"
+    t.string   "political_affiliation"
+    t.string   "political_engagement"
+    t.integer  "respondent_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "demographic_summaries", ["respondent_id"], name: "index_demographic_summaries_on_respondent_id", using: :btree
+
   create_table "demographics", force: true do |t|
     t.string   "gender"
     t.string   "age_range"
@@ -190,9 +213,12 @@ ActiveRecord::Schema.define(version: 20150211000550) do
     t.datetime "updated_at"
     t.integer  "respondent_id"
     t.text     "raw_data"
-    t.string   "data_provider"
     t.string   "data_version"
+    t.integer  "data_provider_id"
+    t.string   "ip_address"
   end
+
+  add_index "demographics", ["data_provider_id"], name: "index_demographics_on_data_provider_id", using: :btree
 
   create_table "devices", force: true do |t|
     t.string   "device_vendor_identifier"
