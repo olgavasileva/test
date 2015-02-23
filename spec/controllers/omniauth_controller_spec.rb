@@ -86,6 +86,13 @@ RSpec.describe OmniauthController do
         expect{subject}.to change{instance.reload.auth_token}
       end
 
+      it 'class #update_tracked_fields! on the user' do
+        expect_any_instance_of(Respondent).to receive(:update_tracked_fields!)
+          .with(request).once
+
+        subject
+      end
+
       it 'sets the correct data' do
         subject
         expect(cookie).to eq({

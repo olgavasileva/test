@@ -184,6 +184,7 @@ class TwoCents::Auth < Grape::API
                       birthdate:declared_params[:birthdate] ? Date.strptime(declared_params[:birthdate], '%Y-%m-%d') : nil,
                       gender:declared_params[:gender]
 
+      user.update_tracked_fields(request)
       fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
       fail! 1011, user.errors.full_messages.join(", ") unless user.save
 
@@ -243,6 +244,7 @@ class TwoCents::Auth < Grape::API
         user
       end
 
+      user.update_tracked_fields(request)
       user.save!
 
       instance.update_attributes! auth_token: "A"+UUID.new.generate, user: user
@@ -270,6 +272,7 @@ class TwoCents::Auth < Grape::API
       validate_instance!
 
       user = Anonymous.new
+      user.update_tracked_fields(request)
       fail! 1011, user.errors.full_messages.join(", ") unless user.save
 
       instance.update_attributes! auth_token: "A"+UUID.new.generate, user: user
@@ -325,6 +328,7 @@ class TwoCents::Auth < Grape::API
           Date.parse(declared_params[:birthdate]) rescue nil
         end
 
+        user.update_tracked_fields(request)
         fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
         fail! 1011, user.errors.full_messages.join(", ") unless user.save
 
@@ -411,6 +415,8 @@ class TwoCents::Auth < Grape::API
         user.password = password
         user.password_confirmation = password
 
+        user.update_tracked_fields(request)
+
         fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
         fail! 1011, user.errors.full_messages.join(", ") unless user.save
 
@@ -463,6 +469,7 @@ class TwoCents::Auth < Grape::API
         fail! 1008, "Login Unsuccessful. The username and password you entered did not match our records. Please double-check and try again."
       end
 
+      user.update_tracked_fields!(request)
       instance.update_attributes! auth_token: "A"+UUID.new.generate, user: user
 
       {auth_token: instance.auth_token, email: user.email, username: user.username, user_id: user.id}
