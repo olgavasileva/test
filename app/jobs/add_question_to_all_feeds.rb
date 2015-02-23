@@ -2,7 +2,7 @@ class AddQuestionToAllFeeds
   @queue = :feed
 
   def self.perform question_id
-    Respondent.all.each do |user|
+    Respondent.find_each do |user|
       question = Question.find_by id:question_id
 
       if question
