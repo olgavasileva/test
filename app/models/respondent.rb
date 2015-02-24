@@ -63,7 +63,8 @@ class Respondent < ActiveRecord::Base
 
   has_many :segments, dependent: :destroy, foreign_key: :user_id
 
-  has_one :demographic, dependent: :destroy
+  has_many :demographics, dependent: :destroy
+  has_one :demographic_summary, dependent: :destroy
 
   belongs_to :avatar, class_name: "UserAvatar", foreign_key: :user_avatar_id
 
@@ -77,8 +78,8 @@ class Respondent < ActiveRecord::Base
   before_validation :ensure_username
 
 
-  def demographic_required?
-    demographic.nil? || demographic.updated_at < (Date.current - 1.month)
+  def quantcast_demographic_required?
+    demographics.quantcast.blank? || demographics.quantcast.first.updated_at < (Date.current - 1.month)
   end
 
   def feed_questions_with_answered

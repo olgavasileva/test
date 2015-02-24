@@ -27,6 +27,17 @@ Setting.where(key: :share_community_public).first_or_create!(value: "Check this 
 Setting.where(key: :share_community_private).first_or_create!(value: "Check this out!")
 
 #
+# Data providers
+#
+
+DataProvider.where(name:"quantcast").first_or_create
+DataProvider.where(name:"facebook").first_or_create
+DataProvider.where(name:"statisfy").first_or_create
+DataProvider.where(name:"maxmind").first_or_create
+DataProvider.where(name:"twitter").first_or_create
+
+
+#
 # Push notification setup
 #
 

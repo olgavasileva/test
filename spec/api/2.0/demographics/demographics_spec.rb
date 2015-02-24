@@ -36,34 +36,34 @@ describe :demographics do
         let(:raw_data) {'[{"id":"D"},{"id":"T"},{"id":"50082"},{"id":"50079"},{"id":"50076"},{"id":"50075"},{"id":"50074"},{"id":"50073"},{"id":"50062"},{"id":"50060"},{"id":"50059"},{"id":"50057"},{"id":"50054"}]'}
 
         it {expect(response.status).to eq 201}
-        it {expect(user.reload.demographic).to be_present}
-        it {expect(user.reload.demographic.data_provider).to eq provider}
-        it {expect(user.reload.demographic.data_version).to eq version}
-        it {expect(user.reload.demographic.raw_data).to eq raw_data}
-        it {expect(user.reload.demographic.gender).to eq 'male'}
-        it {expect(user.reload.demographic.household_income).to eq '100k+'}
-        it {expect(user.reload.demographic.children).to eq "true"}
-        it {expect(user.reload.demographic.ethnicity).to eq "caucasian"}
-        it {expect(user.reload.demographic.education_level).to eq "college"}
-        it {expect(user.reload.demographic.political_affiliation).to be_nil}
-        it {expect(user.reload.demographic.political_engagement).to be_nil}
+        it {expect(user.reload.demographics.quantcast.first).to be_present}
+        it {expect(user.reload.demographics.quantcast.first.data_provider_name).to eq provider}
+        it {expect(user.reload.demographics.quantcast.first.data_version).to eq version}
+        it {expect(user.reload.demographics.quantcast.first.raw_data).to eq raw_data}
+        it {expect(user.reload.demographics.quantcast.first.gender).to eq 'male'}
+        it {expect(user.reload.demographics.quantcast.first.household_income).to eq '100k+'}
+        it {expect(user.reload.demographics.quantcast.first.children).to eq "true"}
+        it {expect(user.reload.demographics.quantcast.first.ethnicity).to eq "caucasian"}
+        it {expect(user.reload.demographics.quantcast.first.education_level).to eq "college"}
+        it {expect(user.reload.demographics.quantcast.first.political_affiliation).to be_nil}
+        it {expect(user.reload.demographics.quantcast.first.political_engagement).to be_nil}
       end
 
       context "With a different set of valid raw data" do
         let(:raw_data) {'[{"id":"D"},{"id":"T"},{"id":"50083"},{"id":"50068"},{"id":"50067"},{"id":"50066"},{"id":"50065"},{"id":"50060"},{"id":"50059"},{"id":"50057"},{"id":"50081"},{"id":"50070"}]'}
 
         it {expect(response.status).to eq 201}
-        it {expect(user.reload.demographic).to be_present}
-        it {expect(user.reload.demographic.data_provider).to eq provider}
-        it {expect(user.reload.demographic.data_version).to eq version}
-        it {expect(user.reload.demographic.raw_data).to eq raw_data}
-        it {expect(user.reload.demographic.gender).to eq 'female'}
-        it {expect(user.reload.demographic.household_income).to eq '0-100k'}
-        it {expect(user.reload.demographic.children).to eq "false"}
-        it {expect(user.reload.demographic.ethnicity).to eq "hispanic"}
-        it {expect(user.reload.demographic.education_level).to eq "no_college"}
-        it {expect(user.reload.demographic.political_affiliation).to be_nil}
-        it {expect(user.reload.demographic.political_engagement).to be_nil}
+        it {expect(user.reload.demographics.quantcast.first).to be_present}
+        it {expect(user.reload.demographics.quantcast.first.data_provider_name).to eq provider}
+        it {expect(user.reload.demographics.quantcast.first.data_version).to eq version}
+        it {expect(user.reload.demographics.quantcast.first.raw_data).to eq raw_data}
+        it {expect(user.reload.demographics.quantcast.first.gender).to eq 'female'}
+        it {expect(user.reload.demographics.quantcast.first.household_income).to eq '0-100k'}
+        it {expect(user.reload.demographics.quantcast.first.children).to eq "false"}
+        it {expect(user.reload.demographics.quantcast.first.ethnicity).to eq "hispanic"}
+        it {expect(user.reload.demographics.quantcast.first.education_level).to eq "no_college"}
+        it {expect(user.reload.demographics.quantcast.first.political_affiliation).to be_nil}
+        it {expect(user.reload.demographics.quantcast.first.political_engagement).to be_nil}
       end
     end
   end

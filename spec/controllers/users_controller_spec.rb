@@ -24,7 +24,7 @@ RSpec.describe UsersController do
     end
 
     it 'assigns the @demographics' do
-      expect(Demographic).to receive(:aggregate_data_for_question) do |q|
+      expect(DemographicSummary).to receive(:aggregate_data_for_question) do |q|
         expect(q.id).to eq(question.id)
       end.and_return({})
 
@@ -38,7 +38,7 @@ RSpec.describe UsersController do
       subject { get :demographics, id: user.id, question_id: question.id, choice_id: choice.id }
 
       it 'loads choice demographics' do
-        expect(Demographic).to receive(:aggregate_data_for_choice) do |c|
+        expect(DemographicSummary).to receive(:aggregate_data_for_choice) do |c|
           expect(c.id).to eq(choice.id)
         end.and_return({})
 

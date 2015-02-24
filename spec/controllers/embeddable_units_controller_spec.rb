@@ -93,7 +93,7 @@ RSpec.describe EmbeddableUnitsController do
     before { allow(controller).to receive(:current_embed_user).and_return(user) }
 
     context 'when the user already has a demographic' do
-      before { user.create_demographic! }
+      before { FactoryGirl.create :demographic, :quantcast, respondent: user }
 
       it 'does not create a Demographic' do
         expect{subject}.to_not change(Demographic, :count)

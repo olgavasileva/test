@@ -948,7 +948,7 @@ class TwoCents::Questions < Grape::API
       end
 
       @anonymous = declared_params[:anonymous]
-      @demographic_required = current_user.demographic_required?
+      @demographic_required = current_user.quantcast_demographic_required?
     end
 
 

@@ -61,18 +61,18 @@ describe :response do
           expect(summary.keys).to include('demographic_required')
         end
 
-        context "When user.demographic is nil" do
+        context "When user.demographics.quantcast is empty" do
           it {expect(json['summary'].keys).to include('demographic_required')}
           it {expect(json['summary']['demographic_required']).to eq true}
         end
 
-        context "When user.demographic was updated 1 month ago" do
-          let (:before_api_call) {user.demographic = FactoryGirl.create :demographic, updated_at: Date.current - 1.month}
+        context "When user.demographics.quantcast.first was updated 1 month ago" do
+          let (:before_api_call) {FactoryGirl.create(:demographic, :quantcast, respondent: user, updated_at: Date.current - 1.month)}
           it {expect(json['summary']['demographic_required']).to eq false}
         end
 
         context "When user.demographic was updated 1 month and 1 day ago" do
-          let (:before_api_call) {user.create_demographic updated_at: Date.current - 1.month - 1.day}
+          let (:before_api_call) {FactoryGirl.create(:demographic, :quantcast, respondent: user, updated_at: Date.current - 1.month - 1.day)}
           it {expect(json['summary']['demographic_required']).to eq true}
         end
       end

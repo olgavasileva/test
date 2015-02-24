@@ -1,4 +1,23 @@
 namespace :db do
+  desc 'Create demographic data from user gender and age'
+  task demographics: :environment do
+    ActiveRecord::Base.transaction do
+      Respondent.where("birthdate is not NULL OR gender is not NULL").each do |r|
+        provider = DataProvider.where(name:'statisfy').first_or_create
+        d = r.demographics.where(data_provider:provider).first_or_create
+        d.age = r.age
+        d.gender = r.gender
+        d.save!
+      end
+    end
+  end
+
+  task summarize_demographics: :environment do
+    Respondent.all.each do |respondent|
+      DemographicSummary.where(respondent: respondent).first_or_create.calculate!
+    end
+  end
+
   desc 'Remove data in preparation for a seed data'
   task unseed: :environment do
     CannedQuestionImage.destroy_all
