@@ -18,8 +18,6 @@ class Target < ActiveRecord::Base
   # Add the question to all of the appropriate users' feeds
   # Will not add a question to a user who already has this question in their feed
   def apply_to_question question
-    @target_count = 0
-
     ActiveRecord::Base.transaction do
       question.kind = all_users ? "public" : "targeted"
       question.activate!
@@ -40,8 +38,6 @@ class Target < ActiveRecord::Base
         end
       end
     end
-
-    @target_count
   end
 
   private
@@ -59,10 +55,8 @@ class Target < ActiveRecord::Base
         item.update_attributes why: "targeted"
       else
         user.feed_items << FeedItem.new(question:question, relevance:1, why: "targeted")
-        @target_count += 1
       end
 
       question.add_and_push_message user
     end
-
 end
