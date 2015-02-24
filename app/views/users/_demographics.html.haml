@@ -24,6 +24,7 @@
     - icons = %w{venus-mars birthday-cake child money globe book}
     - %w(GENDER AGE CHILDREN INCOME ETHNICITY EDUCATION POLITICALAFFILIATION POLITICALENGAGEMENT).each_with_index do |id, idx|
       - info = demographics[id]
+
       - if info
         %div{class:"demographics-body #{id.downcase}"}
 
@@ -36,11 +37,23 @@
 
             .col-md-6.hidden-sm.hidden-xs.text-right.demo-index
               %span.text-muted Largest Group and Index
-              %br
-              %strong.largest-bucket= info[:largest_bucket][:name]
+              - if info[:length] > 3
+                %br
+                %strong.largest-bucket= info[:largest_bucket][:name]
 
-          .row.demo-data
-            .col-md-6
-              = render "users/index_chart", info: info, color: colors[idx]
-            .col-md-6
-              = render "users/percentage_chart", info: info, color: colors[idx]
+          - if info[:length] > 3
+            .row.demo-data
+              .col-md-6
+                = render "users/index_chart", info: info, color: colors[idx]
+              .col-md-6
+                = render "users/percentage_chart", info: info, color: colors[idx]
+
+          - else
+            .row.demo-data-privacy
+              .col-sm-12
+                .privacy-message
+                  %i.fa.fa-lock
+                  %p
+                    To protect the privacy of individuals, some data in this
+                    report has been supressed. This message will
+                    automatically go away once more data is processed.

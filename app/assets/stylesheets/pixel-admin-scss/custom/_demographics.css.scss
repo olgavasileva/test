@@ -20,18 +20,27 @@
     }
   }
 
-  // Demographics Header
-  .demo-header {
-    padding-top: 10px;
-    padding-bottom: 5px;
+  // Layouts
+  .demo-header, .demo-data-privacy {
     padding-left: -10px;
     padding-right: -10px;
-    border-bottom: 1px solid #eeeeee;
 
     .col-md-6 {
       &:first-of-type { padding-left: 0px; }
       &:last-of-type { padding-right: 0px; }
     }
+
+    .col-sm-12 {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+  }
+
+  // Demographics Header
+  .demo-header {
+    padding-top: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eeeeee;
 
     .demo-name {
       font-size: 14px;
@@ -45,6 +54,34 @@
 
     .demo-index {
       padding-top: 5px;
+    }
+  }
+
+  // Demo Data Privacy
+  .demo-data-privacy {
+    margin-top: 5px;
+    padding-left: -10px;
+    padding-right: -10px;
+
+    .privacy-message {
+      background: #eee;
+      color: #777;
+      padding: 20px 30px;
+      border-radius: 5px;
+      margin-bottom: 50px;
+
+      i {
+        color: #999;
+        float: left;
+        font-size: 62px;
+        margin-right: 10px;
+        line-height: 62px;
+      }
+
+      p {
+        margin: 0px 100px 0px 65px;
+        font-size: 12px;
+      }
     }
   }
 

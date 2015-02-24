@@ -30,7 +30,7 @@ module ApplicationHelper
   def responsive_image_tag(src, options = {})
     options[:data] ||= {}
     options[:data][:'1x'] ||= path_to_image(options.delete(:'1x').presence || options.delete('1x').presence || src)
-    options[:data][:'2x'] ||= path_to_image(options.delete(:'2x').presence || options.delete('2x').presence || src.gsub(/([\w\/]+)\.(\w+)$/, '\1@2x.\2'))
+    options[:data][:'2x'] ||= path_to_image(options.delete(:'2x').presence || options.delete('2x').presence || src.try(:gsub ,/([\w\/]+)\.(\w+)$/, '\1@2x.\2'))
 
     image_tag(src, options)
   end

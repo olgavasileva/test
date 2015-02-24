@@ -85,7 +85,7 @@ class DemographicSummary < DemographicBase
       age_info = question_or_choice.responses.joins(:user).joins(:demographic_summary).group("demographic_summaries.age_range").count.except nil
       age_count = age_info.values.sum.to_f
 
-      { id: "AGE", name: "Age", buckets:
+      { id: "AGE", name: "Age", length: age_info.length, buckets:
         [
           info("<18", age_info['<18'].to_i, age_count),
           info('18-24', age_info['18-24'].to_i, age_count),
@@ -101,7 +101,7 @@ class DemographicSummary < DemographicBase
       gender_info = question_or_choice.responses.joins(:user).joins(:demographic_summary).group("demographic_summaries.gender").count.except nil
       gender_count = gender_info.values.sum.to_f
 
-      { id: "GENDER", name: "Gender", buckets:
+      { id: "GENDER", name: "Gender", length: gender_info.length, buckets:
         [
           info('male', gender_info['male'].to_i, gender_count),
           info('female', gender_info['female'].to_i, gender_count)
@@ -113,7 +113,7 @@ class DemographicSummary < DemographicBase
       children_info = question_or_choice.responses.joins(:user).joins(:demographic_summary).group("demographic_summaries.children").count.except nil
       children_count = children_info.values.sum.to_f
 
-      { id: "CHILDREN", name: "Children in Household", buckets:
+      { id: "CHILDREN", name: "Children in Household", length: children_info.length, buckets:
         [
           info('children', children_info['true'].to_i, children_count),
           info('no_children', children_info['false'].to_i, children_count)
@@ -125,7 +125,7 @@ class DemographicSummary < DemographicBase
       income_info = question_or_choice.responses.joins(:user).joins(:demographic_summary).group("demographic_summaries.household_income").count.except nil
       income_count = income_info.values.sum.to_f
 
-      { id: "INCOME", name: "Household Income", buckets:
+      { id: "INCOME", name: "Household Income", length: income_info.length, buckets:
         [
           info('0-100k', income_info["0-100k"].to_i, income_count),
           info('100k+', income_info["100k+"].to_i, income_count)
@@ -137,7 +137,7 @@ class DemographicSummary < DemographicBase
       education_info = question_or_choice.responses.joins(:user).joins(:demographic_summary).group("demographic_summaries.education_level").count.except nil
       education_count = education_info.values.sum.to_f
 
-      { id: "EDUCATION", name: "Education Level", buckets:
+      { id: "EDUCATION", name: "Education Level", length: education_info.length, buckets:
         [
           info('college', education_info["college"].to_i, education_count),
           info('no_college', education_info["no_college"].to_i, education_count)
@@ -149,7 +149,7 @@ class DemographicSummary < DemographicBase
       ethnicity_info = question_or_choice.responses.joins(:user).joins(:demographic_summary).group("demographic_summaries.ethnicity").count.except nil
       ethnicity_count = ethnicity_info.values.sum.to_f
 
-      { id: "ETHNICITY", name: "Ethnicity", buckets:
+      { id: "ETHNICITY", name: "Ethnicity", length: ethnicity_info.length, buckets:
         [
           info('hispanic', ethnicity_info["hispanic"].to_i, ethnicity_count),
           info('asian', ethnicity_info["asian"].to_i, ethnicity_count),
@@ -247,6 +247,7 @@ class DemographicSummary < DemographicBase
         "GENDER" => {
           id: "GENDER",
           name: "Gender",
+          length: 4,
           buckets: [
             { index: 55, name: "Male", percent: 0.26822730898857117 },
             { index: 143, name: "Female", percent: 0.7317727208137512 }
@@ -257,6 +258,7 @@ class DemographicSummary < DemographicBase
         "AGE" => {
           id: "AGE",
           name: "Age",
+          length: 0,
           buckets: [
             { index: 27, name: "< 18", percent: 0.04899810999631882 },
             { index: 107, name: "18-24", percent: 0.13299041986465454 },
@@ -272,6 +274,7 @@ class DemographicSummary < DemographicBase
         "MALEAGE" => {
           id: "MALEAGE",
           name: "Age for Males",
+          length: 4,
           buckets: [
             { index: 14, name: "Male < 18", percent: 0.01279696449637413 },
             { index: 50, name: "Male 18-24", percent: 0.03250908479094505 },
@@ -287,6 +290,7 @@ class DemographicSummary < DemographicBase
         "FEMALEAGE" => {
           id: "FEMALEAGE",
           name: "Age for Females",
+          length: 4,
           buckets: [
             { index: 41, name: "Female < 18", percent: 0.03620114177465439 },
             { index: 168, name: "Female 18-24", percent: 0.10048133134841919 },
@@ -302,6 +306,7 @@ class DemographicSummary < DemographicBase
         "CHILDREN" => {
           id: "CHILDREN",
           name: "Children in Household",
+          length: 4,
           buckets: [
             { index: 129, name: "No Kids ", percent: 0.6508865356445312 },
             { index: 71, name: "Has Kids ", percent: 0.34911346435546875 }
@@ -312,6 +317,7 @@ class DemographicSummary < DemographicBase
         "INCOME" => {
           id: "INCOME",
           name: "Household Income",
+          length: 4,
           buckets: [
             { index: 96, name: "$0-50k", percent: 0.4860217571258545 },
             { index: 102, name: "$50-100k", percent: 0.2973894476890564 },
@@ -324,6 +330,7 @@ class DemographicSummary < DemographicBase
         "EDUCATION" => {
           id: "EDUCATION",
           name: "Education Level",
+          length: 4,
           buckets: [
             { index: 73, name: "No College", percent: 0.3260171711444855 },
             { index: 121, name: "College", percent: 0.4927719235420227 },
@@ -335,6 +342,7 @@ class DemographicSummary < DemographicBase
         "ETHNICITY" => {
           id: "ETHNICITY",
           name: "Ethnicity",
+          length: 4,
           buckets: [
             { index: 103, name: "Caucasian", percent: 0.7807833552360535 },
             { index: 96, name: "African American", percent: 0.08745797723531723 },
