@@ -42,4 +42,43 @@ class DemographicBase < ActiveRecord::Base
     end
   end
 
+  #
+  # Data based on ip_address
+  #
+
+  def latitude
+    geo && geo.location.latitude
+  end
+
+  def longitude
+    geo && geo.location.longitude
+  end
+
+  def metro_code
+    geo && geo.location.metro_code
+  end
+
+  def city
+    geo && geo.city.name
+  end
+
+  def state
+    geo && geo.subdivisions.first.iso_code if geo.subdivisions.present?
+  end
+
+  def postal_code
+    geo && geo.postal.code
+  end
+
+  def country
+    geo && geo.country.iso_code
+  end
+
+
+  private
+
+    def geo
+      @geo ||= MaxMind.city_db.lookup ip_address if ip_address
+    end
+
 end

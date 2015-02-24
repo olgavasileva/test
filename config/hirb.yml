@@ -121,5 +121,20 @@
         - education_level
         - political_affiliation
         - political_engagement
+        - ip_address
         - username
         - data_provider_name
+  DemographicSummary:
+    :options:
+      :fields:
+        - id
+        - gender
+        - age_range
+        - household_income
+        - children
+        - ethnicity
+        - education_level
+        - political_affiliation
+        - political_engagement
+        - ip_address
+        - username

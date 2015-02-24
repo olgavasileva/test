@@ -154,6 +154,10 @@ class UsersController < ApplicationController
       format.csv do
         send_data DemographicCSV.export(@question)
       end
+
+      format.text do
+        render text: DemographicCSV.export(@question)
+      end
     end
   end
 

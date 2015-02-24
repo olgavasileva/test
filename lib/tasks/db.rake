@@ -4,9 +4,10 @@ namespace :db do
     ActiveRecord::Base.transaction do
       Respondent.where("birthdate is not NULL OR gender is not NULL").each do |r|
         provider = DataProvider.where(name:'statisfy').first_or_create
-        d = r.demographics.where(data_provider:provider).first_or_create
+        d = r.demographics.statisfy.first_or_create
         d.age = r.age
         d.gender = r.gender
+        d.ip_address = r.current_sign_in_ip
         d.save!
       end
     end

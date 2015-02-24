@@ -8,7 +8,14 @@ class DemographicCSV < Struct.new(:question)
     ethnicity: 'Ethnicity',
     education_level: 'Education Level',
     political_affiliation: 'Politicial Affiliation',
-    political_engagement: 'Politicial Engagement'
+    political_engagement: 'Politicial Engagement',
+    latitude: 'Latitude',
+    longitude: 'Longitude',
+    metro_code: 'Metro Code',
+    city: 'City',
+    state: 'State',
+    postal_code: 'Postal Code',
+    country: 'Country'
   }.freeze
 
   def self.export(question)
@@ -18,34 +25,83 @@ class DemographicCSV < Struct.new(:question)
 
   def to_csv
     CSV.generate do |csv|
-      # Build aggregated responses
-      csv << ['Question:', question.title]
-      choice_rows { |row| csv << row }
+      question_section csv
       csv << []   # Spacer
+      responses_section csv
+      csv << []   # Spacer
+      comments_section csv
+    end
+  end
 
-      # Restate the Question
-      csv << ['Responses to:', question.title]
+  def question_section csv
+    # Build aggregated responses
+    csv << ['Question:', question.title]
+    choice_rows { |row| csv << row }
+  end
 
-      # Build responses header row
-      columns = DEMOGRAPHICS.values
-      columns += question.csv_columns
+  def responses_section csv
+    # Restate the Question
+    csv << ['Responses to:', question.title]
 
-      csv << columns
+    # Build responses header row
+    columns = [nil]
+    columns += DEMOGRAPHICS.values
+    columns += question.csv_columns
 
-      # Build a line for each response
-      question.responses.each do |response|
-        respondent = response.user
-        demographic = respondent.demographic_summary
-        line = if demographic
-          DEMOGRAPHICS.map{|key,label| demographic[key]}
-        else
-          Array.new(DEMOGRAPHICS.keys.count)
-        end
-        line += response.csv_data
+    csv << columns
 
+    # Build a line for each response
+    question.responses.each do |response|
+      respondent = response.user
+      demographic = respondent.demographic_summary
+      line = [nil]
+      line += if demographic
+        DEMOGRAPHICS.map{|key,label| demographic.send key}
+      else
+        Array.new(DEMOGRAPHICS.keys.count)
+      end
+      line += response.csv_data
+
+      csv << line
+    end
+  end
+
+  def comments_section csv
+    csv << ["Comments:"]
+    csv << ["Comment"] + DEMOGRAPHICS.values
+
+    # Build lines for each question comment and subcomments
+    question.comments.find_each do |comment|
+      comment_lines(comment).each do |line|
         csv << line
       end
     end
+
+    # Build lines for each response comment and subcomments
+    question.response_comments.find_each do |comment|
+      comment_lines(comment).each do |line|
+        csv << line
+      end
+    end
+  end
+
+  # Recursively generate all comment lines including comments on comments
+  def comment_lines comment
+    respondent = comment.user
+    demographic = respondent.demographic_summary
+
+    line = [comment.body]
+    line += if demographic
+      DEMOGRAPHICS.map{|key,label| demographic.send key}
+    else
+      Array.new(DEMOGRAPHICS.keys.count)
+    end
+
+    lines = [line]
+    comment.comments.find_each do |c|
+      lines += comment_lines c
+    end
+    lines
   end
 
   def choices

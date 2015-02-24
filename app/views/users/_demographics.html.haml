@@ -11,6 +11,9 @@
         Demographics for all choices
 
     .panel-heading-controls
+      %a.btn.btn-xs.btn-labeled.btn-primary{href:analytics_user_path(@user, @question, format: 'text'), target: '_blank'}
+        %span.btn-label.fa.fa-eye
+        View CSV
       %a.btn.btn-xs.btn-labeled.btn-success{href:analytics_user_path(@user, @question, format: 'csv'), target: '_blank'}
         %span.btn-label.fa.fa-download
         Export CSV
