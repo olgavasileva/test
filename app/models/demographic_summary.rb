@@ -10,6 +10,10 @@ class DemographicSummary < DemographicBase
     save!
   end
 
+  def self.average_for_label(label)
+    self.label(label) unless defined?(@label)
+    self.us_average @label.key(label.to_s.strip)
+  end
 
   ##
   ## Aggregate methods for summarizing the demographics.
@@ -215,7 +219,7 @@ class DemographicSummary < DemographicBase
         "45-54" => "45-54",
         "55+" => "55+",
 
-        "0-100k" => "$0-$100k",
+        "0-100k" => "$0-100k",
         "100k+" => "$100k+",
 
         "no_children" => "No Kids",
@@ -319,10 +323,8 @@ class DemographicSummary < DemographicBase
           name: "Household Income",
           length: 4,
           buckets: [
-            { index: 96, name: "$0-50k", percent: 0.4860217571258545 },
-            { index: 102, name: "$50-100k", percent: 0.2973894476890564 },
-            { index: 117, name: "$100-150k", percent: 0.14187024533748627 },
-            { index: 89, name: "$150k+", percent: 0.07471854984760284 }
+            { index: 160, name: "$0-100k", percent: 0.80 },
+            { index: 40, name: "$100k+", percent: 0.20 }
           ],
           largest_bucket: { index: 117, name: "$100-150k", percent: 0.14187024533748627 }
         },
@@ -332,9 +334,8 @@ class DemographicSummary < DemographicBase
           name: "Education Level",
           length: 4,
           buckets: [
-            { index: 73, name: "No College", percent: 0.3260171711444855 },
-            { index: 121, name: "College", percent: 0.4927719235420227 },
-            { index: 126, name: "Grad School", percent: 0.18121090531349182 }
+            { index: 140, name: "No College", percent: 0.70 },
+            { index: 60, name: "College", percent: 0.30 },
           ],
           largest_bucket: { index: 126, name: "Grad School", percent: 0.18121090531349182 }
         },
