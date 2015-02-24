@@ -1,4 +1,6 @@
 class Respondent < ActiveRecord::Base
+  include CustomTrackable
+
   self.table_name = 'users'
 
   has_many :responses, dependent: :destroy, foreign_key: :user_id

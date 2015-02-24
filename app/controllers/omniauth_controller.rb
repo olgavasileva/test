@@ -58,6 +58,7 @@ class OmniauthController < ActionController::Base
         instance.user = auth.user
       end
 
+      auth.user.update_tracked_fields!(request)
       auth.save!
       instance.refresh_auth_token
       instance.save!

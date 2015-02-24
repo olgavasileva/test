@@ -3,8 +3,7 @@ class User < Respondent
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :rememberable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :timeoutable, :trackable,
+  devise :database_authenticatable, :registerable, :recoverable, :timeoutable,
          authentication_keys:[:login], reset_password_keys:[:login]
 
 
