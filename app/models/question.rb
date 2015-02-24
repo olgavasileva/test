@@ -85,8 +85,8 @@ class Question < ActiveRecord::Base
   # +1 for each of the recipient's followers who answered this question
   # +1 for each of the recipient's leaders who answered this question
   def relevance_to recipient
-    recipient.followers.where(id:user).count +
-    recipient.leaders.where(id:user).count +
+    recipient.followers.where(id: user).size +
+    recipient.leaders.where(id: user).size +
     responses.joins(:user).where('users.id' => recipient.followers.pluck(:id)).count +
     responses.joins(:user).where('users.id' => recipient.leaders.pluck(:id)).count
   end

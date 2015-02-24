@@ -3,7 +3,10 @@ class Target < ActiveRecord::Base
   has_many :questions
   has_and_belongs_to_many :followers, class_name: "Respondent", association_foreign_key: :user_id
   has_and_belongs_to_many :groups
+  has_many :group_members, through: :groups, source: :members
+
   has_and_belongs_to_many :communities
+  has_many :community_members, through: :communities, source: :members
 
   validates :all_users, inclusion:{in:[true, false]}
   validates :all_followers, inclusion:{in:[true, false]}
