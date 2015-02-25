@@ -7,14 +7,30 @@ describe :image_search do
     {auth_token: instance.auth_token, search: 'some search query'}
   }
   let(:search_result) {
-    [{:Image => [{:MediaUrl => 'some url'}, {:MediaUrl => 'another url'}]}]
+    [{
+      Image: [
+        {MediaUrl: 'first', Thumbnail: {MediaUrl: 'first/thumbnail'}},
+        {MediaUrl: 'second', Thumbnail: {MediaUrl: 'second/thumbnail'}},
+      ]
+    }]
   }
   before do
     allow_any_instance_of(Bing).to receive(:search).and_return(search_result)
   end
 
-  it 'respond with image URLs' do
+  it 'responds with image URLs' do
     get '/v/2.0/image_search', params
-    expect(JSON.parse(response.body).length).to eq 2
+    json = JSON.parse(response.body)
+    expect(json.length).to eq 2
+
+    expect(json[0]).to eq({
+      'media_url' => 'first',
+      'thumbnail' => 'first/thumbnail'
+    })
+
+    expect(json[1]).to eq({
+      'media_url' => 'second',
+      'thumbnail' => 'second/thumbnail',
+    })
   end
 end
