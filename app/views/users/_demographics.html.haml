@@ -37,11 +37,11 @@
 
             .col-md-6.hidden-sm.hidden-xs.text-right.demo-index
               %span.text-muted Largest Group and Index
-              - if info[:length] > 3
+              - if info[:count] > 3
                 %br
                 %strong.largest-bucket= info[:largest_bucket][:name]
 
-          - if info[:length] > 3
+          - if info[:count] > 3
             .row.demo-data
               .col-md-6
                 = render "users/index_chart", info: info, color: colors[idx]
