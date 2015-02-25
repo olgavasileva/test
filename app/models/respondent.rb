@@ -19,9 +19,10 @@ class Respondent < ActiveRecord::Base
   has_many :membership_groups, through: :group_memberships, source: :group
 
   has_many :communities, dependent: :destroy, foreign_key: :user_id
-  has_many :community_members, through: :communities, source: :user
+  has_many :community_members, through: :communities, source: :member
   has_many :community_memberships, class_name: 'CommunityMember', foreign_key: :user_id
   has_many :membership_communities, through: :community_memberships, source: :community
+  has_many :fellow_community_members, through: :membership_communities, source: :member_users
 
   has_many :targets, dependent: :destroy, foreign_key: :user_id
   has_many :enterprise_targets, dependent: :destroy, foreign_key: :user_id

@@ -39,7 +39,7 @@ class AddQuestionToAllFeeds
       end
     when 'community'
       if question.target.all_communities?
-        question.user.community_member_ids
+        question.user.fellow_community_member_ids
       else
         question.target.community_member_ids
       end
