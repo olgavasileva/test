@@ -82,6 +82,12 @@
         margin: 0px 100px 0px 65px;
         font-size: 12px;
       }
+
+      .clearfix {
+        width: 100%;
+        clear: both;
+        display: block;
+      }
     }
   }
 

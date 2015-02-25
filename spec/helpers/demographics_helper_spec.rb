@@ -68,11 +68,11 @@ RSpec.describe DemographicsHelper do
 
   describe '#demo_index_chart' do
 
-    let(:builder) { double() }
+    let(:builder) { double(series: nil) }
     let(:buckets) do
       [
-        {name: 'Test', index: 70},
-        {name: 'Other', index: 130}
+        {name: 'Male', index: 70},
+        {name: 'Female', index: 130}
       ]
     end
 
@@ -86,13 +86,9 @@ RSpec.describe DemographicsHelper do
       expect(builder).to receive(:tooltip).with(false)
       expect(builder).to receive(:legend).with(false)
 
-      expect(builder).to receive(:series).with(data: [70, 130])
       expect(builder).to receive(:dataLabels).with(padding: 1)
       expect(builder).to receive(:plotOptions).with({
-        series: {
-          stacking: 'normal',
-          color: '#000000'
-        }
+        series: {stacking: 'normal'}
       })
 
       expect(builder).to receive(:chart).with({
@@ -104,12 +100,12 @@ RSpec.describe DemographicsHelper do
 
       expect(builder).to receive(:xAxis).with([
         {
-          categories: ['Test', 'Other'],
+          categories: ['Male', 'Female'],
           tickWidth: 0,
           lineWidth: 0
         },
         {
-          categories: [70, 130],
+          categories: ["0.71x", "1.27x"],
           opposite: true,
           linkedTo: 0,
           tickWidth: 0,
@@ -119,11 +115,11 @@ RSpec.describe DemographicsHelper do
 
       expect(builder).to receive(:yAxis).with({
         min: 0,
-        max: 200,
+        max: 100,
         plotLines: [
           {
             zIndex: 10,
-            value: 100,
+            value: 50,
             dashStyle: "ShortDash",
             width: 2,
             color: '#dddddd',

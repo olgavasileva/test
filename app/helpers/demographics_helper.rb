@@ -57,15 +57,41 @@ module DemographicsHelper
   end
 
   def demographic_index_chart(info, color='#1794C0')
-    names = info[:buckets].map{ |b| b[:name] }
-    indexes = info[:buckets].map{ |b| b[:index] }
+    names = info[:buckets].map { |b| b[:name] }
+    indexes = info[:buckets].map { |b| b[:index] }
+    index_total = indexes.sum
+
+    average_data = []
+    index_data = []
+    multipliers = []
+
+    (0..(indexes.length - 1)).to_a.each do |i|
+      name = names[i]
+      index = indexes[i]
+      average = DemographicSummary.average_for_label(name)
+
+      multiple = (index / index_total.to_f) / average
+      multipliers.push("%.2fx" % multiple)
+
+      index_value = [50 * multiple, 100].min
+
+      if index_value >= 50
+        average_data.push(50)
+        index_data.push(index_value - 50)
+      else
+        average_data.push(index_value)
+        index_data.push(0)
+      end
+    end
 
     LazyHighCharts::HighChart.new('graph') do |f|
       f.tooltip false
       f.legend false
-      f.series(data: indexes)
       f.dataLabels(padding: 1)
-      f.plotOptions(series: {stacking: 'normal', color: color})
+      f.plotOptions(series: {stacking: 'normal'})
+
+      f.series(name: 'Segment', data: index_data, color: color)
+      f.series(name: 'US Average', data: average_data, color: '#aaa')
 
       f.chart({
         type: :bar,
@@ -81,7 +107,7 @@ module DemographicsHelper
           lineWidth: 0
         },
         {
-          categories: indexes.map{|i| i.round(0)},
+          categories: multipliers,
           opposite: true,
           linkedTo: 0,
           tickWidth: 0,
@@ -91,11 +117,11 @@ module DemographicsHelper
 
       f.yAxis({
         min: 0,
-        max: 200,
+        max: 100,
         plotLines: [
           {
             zIndex: 10,
-            value: 100,
+            value: 50,
             dashStyle: "ShortDash",
             width: 2,
             color: '#dddddd',
