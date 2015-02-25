@@ -2,7 +2,7 @@ namespace :db do
   desc 'Create demographic data from user gender and age'
   task demographics: :environment do
     ActiveRecord::Base.transaction do
-      Respondent.where("birthdate is not NULL OR gender is not NULL").each do |r|
+      Respondent.where("birthdate is not NULL OR gender is not NULL OR current_sign_in_ip is not NULL").find_each do |r|
         provider = DataProvider.where(name:'statisfy').first_or_create
         d = r.demographics.statisfy.first_or_create
         d.age = r.age
@@ -14,7 +14,7 @@ namespace :db do
   end
 
   task summarize_demographics: :environment do
-    Respondent.all.each do |respondent|
+    Respondent.find_each do |respondent|
       DemographicSummary.where(respondent: respondent).first_or_create.calculate!
     end
   end

@@ -63,7 +63,7 @@ class DemographicBase < ActiveRecord::Base
   end
 
   def state
-    geo && geo.subdivisions.first.iso_code if geo.subdivisions.present?
+    geo && geo.subdivisions.first.iso_code if geo && geo.subdivisions.present?
   end
 
   def postal_code
