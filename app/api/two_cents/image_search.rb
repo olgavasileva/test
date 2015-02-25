@@ -22,7 +22,7 @@ class TwoCents::ImageSearch < Grape::API
       offset = (params[:page] - 1) * params[:per_page]
       images = bing_searcher.search(params[:search], offset).first[:Image]
 
-      images.map { |image| image[:MediaUrl] }
+      images.map { |image| {media_url: image[:MediaUrl], thumbnail: image[:Thumbnail][:MediaUrl]} }
     end
 
     desc 'return image data in base64', {
