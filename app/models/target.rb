@@ -6,11 +6,12 @@ class Target < ActiveRecord::Base
   has_many :group_members, through: :groups, source: :members
 
   has_and_belongs_to_many :communities
-  has_many :community_members, through: :communities, source: :members
+  has_many :community_members, through: :communities, source: :member_users
 
   validates :all_users, inclusion:{in:[true, false]}
   validates :all_followers, inclusion:{in:[true, false]}
   validates :all_groups, inclusion:{in:[true, false]}
+  validates :all_communities, inclusion:{in:[true,false]}
 
   after_initialize :set_defaults
 
@@ -32,5 +33,6 @@ class Target < ActiveRecord::Base
     self.all_users = false if all_users.nil?
     self.all_followers = false if all_followers.nil?
     self.all_groups = false if all_groups.nil?
+    self.all_communities = false if all_communities.nil?
   end
 end

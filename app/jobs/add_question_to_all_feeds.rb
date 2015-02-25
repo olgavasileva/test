@@ -6,28 +6,46 @@ class AddQuestionToAllFeeds
     self.new.perform(question) if question
   end
 
-  def perform(question)
-    follower_ids = question.user.follower_ids.to_a
-    leader_ids = question.user.leader_ids.to_a
+  def perform question
+    FeedItem::WHY.each do |why|
+      users_for_question(question, why).find_each do |user|
+        next if user.feed_items.exists?(question_id: question.id)
 
-    users_for_question(question).find_each do |user|
-      next if user.feed_items.exists?(question_id: question.id)
-
-      # Determine why we're adding this to the user's feed
-      why = if follower_ids.include?(user.id)
-        "leader"
-      elsif leader_ids.include?(user.id)
-        "follower"
-      else
-        "public"
+        user.feed_items << FeedItem.new(question:question, relevance:question.relevance_to(user), why: why)
+        question.add_and_push_message user unless question.target.public?
       end
-
-      user.feed_items << FeedItem.new(question:question, relevance:question.relevance_to(user), why: why)
-      question.add_and_push_message user unless question.target.public?
     end
   end
 
-  def users_for_question(question)
+  def users_for_question question, why
+    ids = case why
+    when 'public'
+      []
+    when 'targeted'
+      []
+    when 'leader'
+      []
+    when 'follower'
+      if question.target.all_followers?
+        question.user.follower_ids
+      else
+        question.target.follower_ids
+      end
+    when 'group'
+      if question.target.all_groups?
+        question.user.group_member_ids
+      else
+        question.target.group_member_ids
+      end
+    when 'community'
+      if question.target.all_communities?
+        question.user.community_member_ids
+      else
+        question.target.community_member_ids
+      end
+    end
+
+
     table = FeedItem.table_name
     query = Respondent.joins <<-SQL.squish
       LEFT JOIN #{table}
@@ -35,22 +53,7 @@ class AddQuestionToAllFeeds
         AND #{table}.`question_id` = #{question.id}
     SQL
 
-    unless question.target.public?
-      ids = question.target.community_member_ids
-      ids += if question.target.all_followers?
-        question.user.follower_ids
-      else
-        question.target.follower_ids
-      end
-
-      ids += if question.target.all_groups?
-        question.user.group_member_ids
-      else
-        question.target.group_member_ids
-      end
-
-      query = query.where(id: ids)
-    end
+    query = query.where(id: ids) unless question.target.public? && why == 'public'
 
     join_atts = {FeedItem.table_name => {question_id: nil}}
     query.where(join_atts).uniq

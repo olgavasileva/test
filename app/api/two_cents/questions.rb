@@ -19,6 +19,7 @@ class TwoCents::Questions < Grape::API
           optional :all, type: Boolean, default: false, desc: "Alias for `all_users`."
           optional :all_followers, type: Boolean, default: false, desc: "Whether question is targeted at all creator's followers."
           optional :all_groups, type: Boolean, default: false, desc: "Whether question is targeted at all creator's groups."
+          optional :all_communities, type: Boolean, default: false, desc: "Whether question is targeted at all creator's community members."
           optional :follower_ids, type: Array, default: [], desc: "IDs of users following creator targeted for question."
           optional :group_ids, type: Array, default: [], desc: "IDs of creator's groups targeted for question."
           optional :community_ids, type: Array, default: [], desc: "IDs of user's communities for question."
@@ -61,6 +62,7 @@ class TwoCents::Questions < Grape::API
           all_users: params['all_users'] || params['all'],
           all_followers: params['all_followers'],
           all_groups: params['all_groups'],
+          all_communities: params['all_communities'],
           follower_ids: params['follower_ids'],
           group_ids: params['group_ids'],
           community_ids: params['community_ids']

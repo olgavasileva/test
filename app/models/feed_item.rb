@@ -2,7 +2,7 @@ class FeedItem < ActiveRecord::Base
   self.table_name = :feed_items_v2
 
   HIDDEN_REASONS ||= %w(answered skipped suspended deleted)
-  WHY ||= %w(public targeted leader follower)
+  WHY ||= %w(public targeted leader follower group community)
 
   belongs_to :user, class_name: "Respondent"
   belongs_to :question
@@ -64,7 +64,7 @@ class FeedItem < ActiveRecord::Base
   def question_answered!
     update_attributes hidden: true, hidden_reason: 'answered', hidden_at: Time.current
 
-    # All of my followers and leaders need to know that on of thier followers or leaders answered their question
+    # All of my followers and leaders need to know that one of thier followers or leaders answered their question
     FeedItem.where(question_id:question.id, user_id:user.followers).update_all(why: "leader")
     FeedItem.where(question_id:question.id, user_id:user.leaders).update_all(why: "follower")
   end
