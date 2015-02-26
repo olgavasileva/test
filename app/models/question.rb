@@ -29,6 +29,8 @@ class Question < ActiveRecord::Base
   has_many :response_matchers, dependent: :destroy
   has_many :communities, through: :user, source: :membership_communities
 
+  acts_as_taggable_on :tags
+
   scope :not_suspended, -> { where.not state: 'suspended' }
 	scope :active, -> { where state:"active" }
   scope :suspended, -> { where state:"suspended" }

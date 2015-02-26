@@ -16,7 +16,7 @@ class Sticker < ActiveRecord::Base
                                   ip[:key].blank? || ip[:value].blank? && ItemProperty.where(key: ip[:key], item_id: ip[:item_id], item_type: ip[:item_type]).empty?
                                 }
 
-  acts_as_taggable
+  acts_as_taggable_on :tags
   acts_as_taggable_on :categories
 
   scope :enabled, -> { where.not disabled: true }

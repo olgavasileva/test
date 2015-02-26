@@ -19,6 +19,13 @@ namespace :db do
     end
   end
 
+  task categories_to_tags: :environment do
+    Question.find_each do |q|
+      q.tag_list.add q.category.name
+      q.save
+    end
+  end
+
   desc 'Remove data in preparation for a seed data'
   task unseed: :environment do
     CannedQuestionImage.destroy_all
