@@ -48,7 +48,7 @@ describe :search do
 
           it { expect(response.status).to eq 201 }
           it { expect(json.map { |q| q["question"]["id"] }).to eq [q2.id] }
-          it { expect(json[0]["question"].keys).to match_array ["id", "anonymous", "category", "choices", "comment_count", "created_at", "creator_id", "creator_name", "description", "image_url", "member_community_ids", "response_count", "rotate", "title", "type", "uuid", "user_answered"] }
+          it { expect(json[0]["question"].keys).to match_array ["id", "anonymous", "category", "choices", "comment_count", "created_at", "creator_id", "creator_name", 'tags', "description", "image_url", "member_community_ids", "response_count", "rotate", "title", "type", "uuid", "user_answered"] }
         end
 
         context "When the search string matches two questions" do

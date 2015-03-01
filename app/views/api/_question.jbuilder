@@ -7,6 +7,7 @@ end
 json.creator_id question.user.id
 json.creator_name question.user.username
 json.created_at question.created_at.to_i
+json.tags question.tag_list
 
 json.rotate question.rotate if question.kind_of? ChoiceQuestion
 
