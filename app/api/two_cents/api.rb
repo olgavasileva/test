@@ -114,6 +114,7 @@ class TwoCents::API < Grape::API
   mount Communities => '/v/2.0'
   mount ImageSearch => '/v/2.0'
   mount Demographics => '/v/2.0'
+  mount Tags => '/v/2.0'
 
   add_swagger_documentation markdown:true, hide_documentation_path:true
 end
