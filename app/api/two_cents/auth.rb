@@ -338,93 +338,82 @@ class TwoCents::Auth < Grape::API
       { auth_token: @instance.auth_token, user_id: user.id }
     end
 
-    desc "Promote an anonymous user to an authenticatable user using a social auth token", {
+    desc "Associates the OAuth provider with the current user", {
       notes: <<-END
+        NOTE - Anonymous users are automatically promoted to regular users
         NOTE - the auth_token returned from this API should be used in future API requests.
 
         #### Example response
-            { auth_token: "SOME_STRING", user_id: 123 }
+
+          {
+            auth_token: "some_auth_token",
+            email: "example#me.com", // might be empty
+            username: "some_username",
+            user_id: 1
+          }
       END
     }
     params do
-      requires :auth_token, type: String, desc: "Obtain this by registering as an anonymous user"
+      requires :instance_token, type: String, desc: 'Obtain this from the instances API'
       requires :provider, type: String, desc: "A valid provider. Can be one of: #{Authentication::PROVIDERS.join(',')}"
-      requires :provider_token, type: String, desc: 'The auth token obtained through the authentication handshake'
-      optional :email, type: String, desc: "The user's email. If omitted, will be pulled from the social profile"
-      optional :password, type: String, desc: "The user's desired password. Will be randomly generated if none is given"
-      optional :name, type: String, desc: "The user's name. If omitted, will be pulled from the social profile"
-      optional :username, type: String, desc: "The user's email. If omitted, will be pulled from the social profile"
-      optional :gender, type: String, desc: "The user's gender. If omitted, will be pulled from the social profile if possible"
-      optional :birthdate, type: String, desc: "The user's birthdate (1985-09-18). If omitted, will be pulled from the social profile if possible"
+      requires :provider_token, type: String, desc: 'The token obtained through the authentication handshake'
+      optional :provider_secret, type: String, desc: 'The secret token obtained through the authentication handshake'
     end
     post 'promote_social', http_codes: [
-      [200, "1001 - Provider invalid"],
-      [200, "1002 - Could not access profile"],
-      [200, "1003 - Profile information missing"],
-      [200, "1004 - Error saving the provider information"],
-      [200, "1008 - The desired email address is already taken"],
-      [200, "1009 - The username associated with the profile is already taken"],
-      [200, "1010 - Birthdate must be over 13 years ago"],
+      [200, "1001 - Instance token invalid"],
+      [200, "1002 - Provider invalid"],
+      [200, "1003 - Could not access profile"],
       [200, "1011 - Unable to save the user record (specific reason text will be included)"],
-      [200, "1012 - User must be anonymous"],
       [200, "400 - Missing required params"],
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"]
     ] do
-      validate_user!
-      user = current_user
-
-      fail! 1012, "User must be anonymous" unless user.kind_of?(Anonymous)
+      validate_instance!
 
       unless Authentication::PROVIDERS.include?(declared_params[:provider])
-        fail! 1001, "Provider invalid: #{declared_params[:provider]}"
+        fail! 1002, "Provider invalid: #{declared_params[:provider]}"
       end
 
       profile = SocialProfile.build(
         declared_params[:provider],
-        declared_params[:provider_token]
+        declared_params[:provider_token],
+        declared_params[:provider_secret]
       )
 
-      fail! 1002, "Could not access profile" unless profile.valid?
+      fail! 1003, "Could not access profile" unless profile.valid?
 
-      either = Hash.new { |h,k| h[k] = declared_params[k] || profile.send(k) }
+      Authentication.transaction do
+        auth = Authentication.from_social_profile(profile)
 
-      fail! 1003, "Profile has no name" unless either[:name].present?
-      fail! 1003, "Profile has no username" unless either[:username].present?
-
-      if either[:email] && User.where(email: either[:email]).exists?
-        fail! 1008, "User's email is already registered: #{either[:email]}"
-      end
-
-      if User.where(username: either[:username]).exists?
-        fail! 1009, "User's username is already registered: #{either[:username]}"
-      end
-
-      ActiveRecord::Base.transaction do
-        user.update_attribute :type, "User"
-        user = User.find(user.id)
-        user.name = either[:name]
-        user.email = either[:email]
-        user.username = either[:username]
-        user.gender = either[:gender]
-        user.birthdate = if either[:birthdate]
-          Date.parse(either[:birthdate]) rescue nil
+        if instance.user.is_a?(Anonymous)
+          if auth.user.present?
+            instance.user = auth.user
+          else
+            password = SecureRandom.hex(16)
+            auth.user = instance.user.promote!({
+              name: profile.name,
+              password: password,
+              password_confirmation: password
+            })
+          end
+        elsif instance.user.present?
+          auth.user = instance.user
+        else
+          instance.user = auth.user
         end
 
-        password = declared_params[:password] || SecureRandom.hex(16)
-        user.password = password
-        user.password_confirmation = password
-
-        user.update_tracked_fields(request)
-
-        fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
-        fail! 1011, user.errors.full_messages.join(", ") unless user.save
-
-        Authentication.from_social_profile(profile, user).save!
-        @instance.update_attributes!(auth_token: "A"+UUID.new.generate)
+        auth.user.update_tracked_fields!(request)
+        auth.save!
+        instance.refresh_auth_token
+        instance.save!
       end
 
-      {auth_token: @instance.auth_token, user_id: user.id}
+      {
+        auth_token: instance.auth_token,
+        email: instance.user.email,
+        username: instance.user.username,
+        user_id: instance.user.id
+      }
     end
 
     desc "Return an auth_token for the newly logged in user", {

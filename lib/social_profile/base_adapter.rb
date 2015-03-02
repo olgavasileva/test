@@ -1,10 +1,11 @@
 module SocialProfile
   class BaseAdapter
 
-    attr_reader :token
+    attr_reader :token, :secret
 
-    def initialize(token=nil)
+    def initialize(token=nil, secret=nil)
       @token = token
+      @secret = secret
     end
 
     def provider

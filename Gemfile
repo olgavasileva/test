@@ -72,8 +72,6 @@ gem 'grape-swagger-rails'
 gem 'uuid'              # UUID generation
 gem 'figaro'            # Supports application.yml and easy defaults override in specs
 
-gem 'koala'             # Facebook graph and realtime access (for email, fid, friends, etc.)
-
 gem 'hirb'
 gem 'wirble'
 
@@ -115,6 +113,9 @@ gem 'faraday'                       # An HTTP client lib that provides a common 
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
+
+gem 'koala'
+gem 'twitter'
 
 group :development do
 

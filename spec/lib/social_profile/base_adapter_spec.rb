@@ -2,11 +2,16 @@ require 'rails_helper'
 
 RSpec.describe SocialProfile::BaseAdapter do
 
-  let(:adapter) { described_class.new('token') }
+  let(:adapter) { described_class.new('token', 'secret') }
 
   describe '#token' do
     subject { adapter.token }
     it { should eq('token') }
+  end
+
+  describe '#secret' do
+    subject { adapter.secret }
+    it { should eq('secret') }
   end
 
   describe '#provider' do

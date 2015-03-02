@@ -13,10 +13,10 @@ class Authentication < ActiveRecord::Base
     self.where(params).first_or_initialize
   end
 
-  def self.from_social_profile(profile, user=nil)
+  def self.from_social_profile(profile)
     self.from_provider_id(profile.provider, profile.uid).tap do |auth|
       auth.token = profile.token
-      auth.user = user if user
+      auth.token_secret = profile.secret if profile.secret
     end
   end
 
