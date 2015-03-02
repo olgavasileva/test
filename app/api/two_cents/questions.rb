@@ -667,6 +667,31 @@ class TwoCents::Questions < Grape::API
       end
     end
 
+    desc 'Search for questions with the given tag.', {
+      notes: <<-END
+        Returns questions tagged with the given tag.
+
+        ### Example Response
+        ```
+        [
+          { question: {...} }, // Same as all other question responses
+          { question: {...} }
+        ]
+        ```
+      END
+    }
+    params do
+      use :auth
+      requires :tag, type: String, desc: 'The tag.'
+      optional :per_page, type: Integer, default: 50, desc: 'The max number of questions per page'
+      optional :page, type: Integer, default: 1, desc: 'The page of questions to return'
+    end
+    get :tagged, jbuilder: 'questions' do
+      validate_user!
+      @questions = Question.tagged_with(declared_params[:tag])
+        .order(created_at: :desc)
+        .paginate(declared_params.slice(:page, :per_page))
+    end
 
 
     desc "Legacy feed request - deprecated - depending on an environment variable, returns a fake question with a title indicating that the app must be upgraded or returns some questions."
