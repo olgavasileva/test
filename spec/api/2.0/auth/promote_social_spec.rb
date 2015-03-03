@@ -58,6 +58,11 @@ RSpec.describe 'TwoCents::AuthApi#promote_social' do
     include_examples :returns_error, 1003, "Could not access profile"
   end
 
+  context 'when there is no user' do
+    let(:user) { nil }
+    include_examples :returns_error, 1004, "No user record can be determined"
+  end
+
   context 'as an Anonymous user' do
     let(:user) { FactoryGirl.create(:anonymous) }
 

@@ -363,6 +363,7 @@ class TwoCents::Auth < Grape::API
       [200, "1001 - Instance token invalid"],
       [200, "1002 - Provider invalid"],
       [200, "1003 - Could not access profile"],
+      [200, "1004 - No user record can be determined"],
       [200, "1011 - Unable to save the user record (specific reason text will be included)"],
       [200, "400 - Missing required params"],
       [200, "402 - Invalid auth token"],
@@ -398,8 +399,10 @@ class TwoCents::Auth < Grape::API
           end
         elsif instance.user.present?
           auth.user = instance.user
-        else
+        elsif auth.user.present?
           instance.user = auth.user
+        else
+          fail! 1004, 'No user record can be determined'
         end
 
         auth.user.update_tracked_fields!(request)
