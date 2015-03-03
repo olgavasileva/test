@@ -93,6 +93,13 @@ class Question < ActiveRecord::Base
     responses.joins(:user).where('users.id' => recipient.leaders.pluck(:id)).count
   end
 
+  def self.calculate_trending
+    # Only calculate trending for quesitons whose trending index is over a certain threshhold (i.e. not degraded super low)
+    # OR have any responses since last time we calculated this.
+
+    Rails.logger.error "TODO: calculate_trending"
+  end
+
   def trending!
     # TODO use IIR algorithm here and call this whenever needed
     update_attribute :trending_index, (trending_index + trending_multiplier)
