@@ -4,4 +4,4 @@ trending:
   class: CronTask
   args: "trending"
   description: Calculates trending quesitons
-  rails_envs: development, production, staging
+  rails_envs: development, production, staging, labs
