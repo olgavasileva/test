@@ -687,7 +687,7 @@ class TwoCents::Questions < Grape::API
         @questions.each{|q| q.viewed!}
       else
         error_message = ENV['OUT_OF_DATE_QUESTION_TITLE'] || "Update required.  Please check the app store for an update available within an hour."
-        @questions = [Question.new(id:0, user:Respondent.first, category:Category.first, title:error_message, state:"active", kind:"public", background_image:BackgroundImage.first, trending_index:1)]
+        @questions = [Question.new(id:0, user:Respondent.first, category:Category.first, title:error_message, state:"active", kind:"public", background_image:BackgroundImage.first)]
       end
     end
 

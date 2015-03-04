@@ -26,7 +26,7 @@ class CronTask
   end
 
   def trending
-    Question.calculate_trending
+    Trend.calculate!
   end
 
 end
