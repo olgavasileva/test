@@ -1,7 +1,7 @@
 ActiveAdmin.register Question do
   menu parent: 'Questions'
 
-  permit_params :id, :position, :category_id, :title, :state, :special, :trending_index, :trending_multiplier, :disable_question_controls
+  permit_params :id, :position, :category_id, :title, :state, :special, :trending_multiplier, :disable_question_controls
 
   filter :user
   filter :title
@@ -31,7 +31,7 @@ ActiveAdmin.register Question do
     column :special
     column :require_comment
     column "TI" do |q|
-      q.trending_index
+      q.trend_index
     end
     column "T*" do |q|
       q.trending_multiplier
@@ -50,7 +50,6 @@ ActiveAdmin.register Question do
       f.input :title
       f.input :special
       f.input :require_comment
-      f.input :trending_index
       f.input :trending_multiplier
       f.input :disable_question_controls
       f.input :allow_multiple_answers_from_user

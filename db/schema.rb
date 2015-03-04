@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150303183550) do
+ActiveRecord::Schema.define(version: 20150304064822) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -609,17 +609,18 @@ ActiveRecord::Schema.define(version: 20150303183550) do
     t.decimal  "score",                            precision: 10, scale: 2, default: 0.0
     t.boolean  "special",                                                   default: false
     t.boolean  "require_comment",                                           default: false
-    t.integer  "trending_index",                                            default: 0
     t.integer  "trending_multiplier",                                       default: 1
     t.boolean  "disable_question_controls",                                 default: false
     t.boolean  "allow_multiple_answers_from_user",                          default: false
     t.boolean  "notifying",                                                 default: false
+    t.integer  "trend_id"
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
   add_index "questions", ["category_id"], name: "index_questions_on_category_id", using: :btree
   add_index "questions", ["created_at"], name: "index_questions_on_created_at", using: :btree
   add_index "questions", ["kind"], name: "index_questions_on_kind", using: :btree
+  add_index "questions", ["trend_id"], name: "index_questions_on_trend_id", using: :btree
   add_index "questions", ["user_id"], name: "index_questions_on_user_id", using: :btree
 
   create_table "questions_surveys", force: true do |t|
@@ -944,6 +945,16 @@ ActiveRecord::Schema.define(version: 20150303183550) do
   end
 
   add_index "translations", ["language_id"], name: "index_translations_on_language_id", using: :btree
+
+  create_table "trends", force: true do |t|
+    t.integer  "new_event_count"
+    t.datetime "calculated_at"
+    t.decimal  "filter_event_count", precision: 10, scale: 2
+    t.decimal  "filter_minutes",     precision: 10, scale: 2
+    t.decimal  "rate",               precision: 10, scale: 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "user_avatars", force: true do |t|
     t.string   "image"

@@ -106,6 +106,7 @@ gem 'rack-cors', require: 'rack/cors'
 
 gem 'activerecord-import'           # Fast bulk database inserts (e.g. creating feed_items for new users)
 gem 'resque'                        # A Redis-backed library for creating background jobs
+gem 'resque-scheduler'              # An extension to Resque that adds support for queueing items in the future
 
 gem 'faraday'                       # An HTTP client lib that provides a common interface over many adapters
 
