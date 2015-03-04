@@ -463,7 +463,7 @@ class TwoCents::Questions < Grape::API
       requires :cursor, type: Integer, desc: '0 for first questions, otherwise return last value received'
       optional :count, default: 20, type: Integer, desc: 'The maximum number of questions to return'
       optional :category_ids, type: Array, desc: 'Limit questions to only these categories'
-      optional :community_ids, type: Array, desc: 'Limit questions to only these communities'
+      optional :community_ids, type: Array, desc: 'Limit questions to only those targeted to these communities'
     end
     post 'latest', jbuilder: 'latest' do
       validate_user!

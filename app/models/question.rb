@@ -28,7 +28,7 @@ class Question < ActiveRecord::Base
   has_many :response_comments, through: :responses, source: :comment
   has_many :inappropriate_flags, dependent: :destroy
   has_many :response_matchers, dependent: :destroy
-  has_many :communities, through: :user, source: :membership_communities
+  has_many :communities, through: :target, source: :communities
 
   acts_as_taggable_on :tags
 
