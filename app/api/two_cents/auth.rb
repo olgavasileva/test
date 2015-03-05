@@ -304,10 +304,25 @@ class TwoCents::Auth < Grape::API
 
     desc "Promote an anonymous user to an authenticatable user", {
       notes: <<-END
-        NOTE - the auth_token returned from this API should be used in future API requests.
+        This API validates that the email/password match. If so, the instance
+        gets a new auth_token and any previously obtained auth_token for this
+        instance will become invalid.
 
-        #### Example response
-            { auth_token: "SOME_STRING", user_id: 123 }
+        ### Example response
+        ```
+        {
+          auth_token: "SOME_STRING",
+          user_id: 123
+        }
+        ```
+
+        ### Associating a social provider account when registering
+
+        If you have previously attempted to login a user using the
+        `users/promote_social.json` endpoint, but the response indicated
+        that the login was not successful and gave you a `provider_id`, you
+        should supply that `provider_id` when registering the user so we may
+        associate that user with their social provider account.
       END
     }
     params do
@@ -318,6 +333,7 @@ class TwoCents::Auth < Grape::API
       optional :name, type: String, desc:"The user's name"
       optional :birthdate, type: String, desc: '1990-02-06'
       optional :gender, type:String, values: %w{male female}, desc: 'male or female'
+      optional :provider_id, type: Integer, desc: 'The social provider id to associate with this user'
     end
     post 'promote', http_codes: [
         [200, "1002 - A user with that email is already registered"],
@@ -325,6 +341,7 @@ class TwoCents::Auth < Grape::API
         [200, "1010 - Birthdate must be over 13 years ago"],
         [200, "1011 - Unable to save the user record (specific reason text will be included)"],
         [200, "1012 - User must be anonymous"],
+        [200, "1013 - Provider could not be found"],
         [200, "400 - Missing required params"],
         [200, "402 - Invalid auth token"],
         [200, "403 - Login required"]
@@ -353,6 +370,12 @@ class TwoCents::Auth < Grape::API
         user.update_tracked_fields(request)
         fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
         fail! 1011, user.errors.full_messages.join(", ") unless user.save
+
+        if declared_params[:provider_id]
+          auth = Authentication.find_by(id: declared_params[:provider_id])
+          fail! 1013, "Provider could not be found" unless auth
+          auth.update!(user: user)
+        end
 
         @instance.update_attributes! auth_token: "A"+UUID.new.generate
       end
