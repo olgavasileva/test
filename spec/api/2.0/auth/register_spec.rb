@@ -46,6 +46,31 @@ describe :register do
           expect(instance.user).to eq user
         end
 
+        context 'when associating a provider' do
+          let(:auth) { FactoryGirl.create(:authentication, user: nil) }
+          let(:auth_id) { auth.id }
+
+          let(:before_api_call) do
+            params.merge!(provider_id: auth_id)
+          end
+
+          context 'when the :provider_id is valid' do
+            it 'updates the Authentication record' do
+              expect(auth.reload.user).to be_a(User)
+            end
+
+            it 'is successful' do
+              expect(response.status).to eq(201)
+            end
+          end
+
+          context 'when the :provider_id is invalid' do
+            let(:auth_id) { 9999999 }
+            it { expect(json['error_code']).to eq(1012) }
+            it { expect(json['error_message']).to eq('Provider could not be found') }
+          end
+        end
+
         context "When the instance doesn't exist" do
           let(:instance_token) {"INVALID"}
 

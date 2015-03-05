@@ -14,6 +14,11 @@ RSpec.describe OmniauthController do
       expect(cookie['success']).to eq(false)
     end
 
+    it 'indicates provider is invalid' do
+      subject
+      expect(cookie['provider_valid']).to eq(false)
+    end
+
     it 'indicates the correct error' do
       subject
       expect(cookie['error']).to eq(message)
@@ -65,7 +70,20 @@ RSpec.describe OmniauthController do
 
     context 'without a user for the Authentication or Instance' do
       let!(:instance) { FactoryGirl.create(:instance) }
-      include_examples :is_not_successful, I18n.t('omniauth.error.missing_user')
+
+      it 'sets the correct data' do
+        subject
+        auth = Authentication.find_by({
+          provider: auth_hash.provider,
+          uid: auth_hash.uid
+        })
+
+        expect(cookie).to eq({
+          'success' => false,
+          'provider_valid' => true,
+          'provider_id' => auth.id
+        })
+      end
     end
 
     context 'with a valid instance token' do
@@ -97,6 +115,7 @@ RSpec.describe OmniauthController do
         subject
         expect(cookie).to eq({
           'success' => true,
+          'provider_valid' => true,
           'auth_token' => instance.reload.auth_token,
           'email' => instance.user.email,
           'username' => instance.user.username,
