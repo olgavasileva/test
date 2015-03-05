@@ -18,6 +18,11 @@ RSpec.describe TwoCents::Tags do
       expect(json).to eq(%w{tag01 tag02 tag03 tag04 tag05})
     end
 
+    it 'allows for mixed case queries' do
+      get 'v/2.0/tags/search', auth_token: token, search_string: 'TaG', max_tags: 5
+      expect(json).to eq(%w{tag01 tag02 tag03 tag04 tag05})
+    end
+
     it 'returns a default :max_tags of 20' do
       get 'v/2.0/tags/search', auth_token: token, search_string: 'tag'
       expect(json.length).to eq(20)

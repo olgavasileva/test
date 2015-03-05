@@ -9,9 +9,22 @@ class TwoCents::Tags < Grape::API
       end
     end
 
-    # ----------------
-    # GET /tags/search
-    desc 'Search for existing tags'
+
+    desc 'Search for existing tags', {
+      notes: <<-END
+        Returns a list of existing tags.
+
+        ### Example Response
+        ```
+        [
+          "apples",
+          "beats",
+          "beets",
+          "cats"
+        ]
+        ```
+      END
+    }
     params do
       use :auth
       requires :search_string, type: String, desc: 'The tag to search for'
@@ -26,12 +39,10 @@ class TwoCents::Tags < Grape::API
     ] do
       validate_user!
       max = declared_params[:max_tags]
-      tag = declared_params[:search_string]
+      tag = declared_params[:search_string].to_s.downcase
 
       ActsAsTaggableOn::Tag.order(name: :asc)
-        .where('name LIKE ?', "#{tag}%")
-        .limit(max)
-        .pluck(:name)
+        .named_like(tag).limit(max).pluck(:name)
     end
   end
 end
