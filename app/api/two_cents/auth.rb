@@ -457,12 +457,27 @@ class TwoCents::Auth < Grape::API
 
     desc "Return an auth_token for the newly logged in user", {
       notes: <<-END
-        This API validates that the email/password match.  If so, the instance gets a new auth_token and any previously obtained auth_token for this instance will become invalid.
+        This API validates that the email/password match. If so, the instance
+        gets a new auth_token and any previously obtained auth_token for this
+        instance will become invalid.
 
-        One of email or username is requried.
+        **One of email or username is requried.**
 
-        #### Example response
-            { auth_token: "SOME_STRING", email: "your@address.com", username: "Your Username" }
+        ### Example response
+        ```
+        {
+          auth_token: "SOME_STRING",
+          user_id: 123
+        }
+        ```
+
+        ### Associating a social provider account at login
+
+        If you have previously attempted to login a user using the
+        `users/promote_social.json` endpoint, but the response indicated
+        that the login was not successful and gave you a `provider_id`, you
+        should supply that `provider_id` when logging in the user so we may
+        associate that user with their social provider account.
       END
     }
     params do
@@ -470,6 +485,7 @@ class TwoCents::Auth < Grape::API
       requires :password, type: String, regexp: /.{6,20}/, desc:'6-20 character password'
       optional :email, type: String, desc:'e.g. oscar@madisononline.com'
       optional :username, type: String, regexp: /^[A-Z0-9\-_ ]{4,20}$/i, desc:'Unique username'
+      optional :provider_id, type: Integer, desc: 'The social provider id to associate with this user'
       mutually_exclusive :email, :username
     end
     post 'login', http_codes: [
@@ -479,6 +495,7 @@ class TwoCents::Auth < Grape::API
         [200, "1006 - Neither email nor username supplied"],
         [200, "1007 - Only one of email ane username are allowed"],
         [200, "1008 - Wrong password"],
+        [200, "1012 - Provider could not be found"],
         [200, "400 - Missing required params"],
         [200, "400 - [:email, :username] are mutually exclusive"]
       ] do
@@ -495,6 +512,12 @@ class TwoCents::Auth < Grape::API
 
       unless user.present? && user.valid_password?(declared_params[:password])
         fail! 1008, "Login Unsuccessful. The username and password you entered did not match our records. Please double-check and try again."
+      end
+
+      if declared_params[:provider_id]
+        auth = Authentication.find_by(id: declared_params[:provider_id])
+        fail! 1012, "Provider could not be found" unless auth
+        auth.update!(user: user)
       end
 
       user.update_tracked_fields!(request)

@@ -20,6 +20,37 @@ describe :login do
     include_examples :returns_error, 400, /is missing/
   end
 
+  context 'when associating the :provider_id' do
+    let(:auth) { FactoryGirl.create(:authentication, :facebook, user: nil) }
+    let(:auth_id) { auth.id }
+    let(:instance) { FactoryGirl.create(:instance, :logged_in) }
+    let(:user) { instance.user }
+
+    let(:params) do
+      {
+        instance_token: instance.uuid,
+        email: user.email,
+        password: user.password,
+        provider_id: auth_id
+      }
+    end
+
+    context 'when the :provider_id is valid' do
+      it 'updates the Authentication record' do
+        expect(auth.reload.user).to eq(user)
+      end
+
+      it 'is successful' do
+        expect(response.status).to eq(201)
+      end
+    end
+
+    context 'when the :provider_id is invalid' do
+      let(:auth_id) { 9999999 }
+      include_examples :returns_error, 1012, /Provider could not be found/
+    end
+  end
+
   describe "Logging in with an email address" do
     context "With all required params" do
       let(:params) {{instance_token:instance_token, email:email, password:password}}
