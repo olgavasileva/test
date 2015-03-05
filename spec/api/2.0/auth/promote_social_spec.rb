@@ -60,7 +60,16 @@ RSpec.describe 'TwoCents::AuthApi#promote_social' do
 
   context 'when there is no user' do
     let(:user) { nil }
-    include_examples :returns_error, 1004, "No user record can be determined"
+
+    it 'returns provider information' do
+      subject
+      auth = Authentication.find_by(provider: profile.provider, uid: profile.uid)
+      expect(json).to eq({
+        'success' => false,
+        'provider_valid' => true,
+        'provider_id' => auth.id
+      })
+    end
   end
 
   context 'as an Anonymous user' do
@@ -120,6 +129,8 @@ RSpec.describe 'TwoCents::AuthApi#promote_social' do
     subject
     instance.reload
     expect(json).to eq({
+      'success' => true,
+      'provider_valid' => true,
       'auth_token' => instance.auth_token,
       'email' => instance.user.email,
       'username' => instance.user.username,

@@ -343,14 +343,38 @@ class TwoCents::Auth < Grape::API
         NOTE - Anonymous users are automatically promoted to regular users
         NOTE - the auth_token returned from this API should be used in future API requests.
 
-        #### Example response
+        ### Example Responses
 
+        #### When User was logged in
+        ```
           {
+            success: true,
+            provider_valid: true,
             auth_token: "some_auth_token",
             email: "example#me.com", // might be empty
             username: "some_username",
             user_id: 1
           }
+        ```
+
+        When you receive this response, you should proceed as though you have an
+        authenticated user.
+
+        #### When User could not be logged in but the provider was valid
+        ```
+          {
+            success: false,
+            provider_valid: true,
+            provider_id: 1
+          }
+        ```
+
+        When you receive this response, you should assume that we were able to
+        access the provider and store the authentication recored associated with
+        it, but there was no user to login. Therefore, the user should be
+        redirected to a signup or login page, where you will send the
+        `provider_id` you received from this payload as part of the `promote` or
+        `login` enpoint payload.
       END
     }
     params do
@@ -383,9 +407,9 @@ class TwoCents::Auth < Grape::API
 
       fail! 1003, "Could not access profile" unless profile.valid?
 
-      Authentication.transaction do
-        auth = Authentication.from_social_profile(profile)
+      auth = Authentication.from_social_profile(profile)
 
+      Authentication.transaction do
         if instance.user.is_a?(Anonymous)
           if auth.user.present?
             instance.user = auth.user
@@ -402,21 +426,33 @@ class TwoCents::Auth < Grape::API
         elsif auth.user.present?
           instance.user = auth.user
         else
-          fail! 1004, 'No user record can be determined'
+          auth.save!
         end
 
-        auth.user.update_tracked_fields!(request)
-        auth.save!
-        instance.refresh_auth_token
-        instance.save!
+        if auth.user.present?
+          auth.user.update_tracked_fields!(request)
+          auth.save!
+          instance.refresh_auth_token
+          instance.save!
+        end
       end
 
-      {
-        auth_token: instance.auth_token,
-        email: instance.user.email,
-        username: instance.user.username,
-        user_id: instance.user.id
-      }
+      if auth.user.present?
+        {
+          success: true,
+          provider_valid: true,
+          auth_token: instance.auth_token,
+          email: instance.user.email,
+          username: instance.user.username,
+          user_id: instance.user.id
+        }
+      else
+        {
+          success: false,
+          provider_valid: true,
+          provider_id: auth.id
+        }
+      end
     end
 
     desc "Return an auth_token for the newly logged in user", {
