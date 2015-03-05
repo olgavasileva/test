@@ -18,6 +18,11 @@ RSpec.describe TwoCents::Questions do
       expect(json.length).to eq(2)
     end
 
+    it 'allows for mixed case queries' do
+      get 'v/2.0/questions/tagged', auth_token: token, tag: 'TesT'
+      expect(json.length).to eq(2)
+    end
+
     it 'returns :per_page number of questions matching the tag' do
       get 'v/2.0/questions/tagged', auth_token: token, tag: 'test', per_page: 1
       expect(json.length).to eq(1)
