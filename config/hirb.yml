@@ -78,23 +78,21 @@
         - id
         - question_id
         - text
-        - comment
-        - stars
-        - percent
+        - source
   ChoiceResponse:
     :options:
       :fields:
         - id
         - question_id
         - text
-        - comment
+        - source
   MultipleChoiceResponse:
     :options:
       :fields:
         - id
         - question_id
         - text
-        - comment
+        - source
   User:
     :options:
       :fields:

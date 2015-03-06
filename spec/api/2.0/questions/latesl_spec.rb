@@ -228,11 +228,11 @@ describe :latest do
           let(:c1) {FactoryGirl.create :community}
           let(:c2) {FactoryGirl.create :community}
 
-          context "When q1 and q2 were asked by members of community 1 and q3 was asked by a member of c2" do
+          context "When q1 and q2 were targeted to community 1 and q3 targeted to c2" do
             let(:before_api_call) do
-              c1.member_users << q1.user
-              c1.member_users << q2.user
-              c2.member_users << q3.user
+              q1.update_attributes target: FactoryGirl.create(:target, community_ids: [c1.id])
+              q2.update_attributes target: FactoryGirl.create(:target, community_ids: [c1.id])
+              q3.update_attributes target: FactoryGirl.create(:target, community_ids: [c2.id])
             end
 
             context "When filtering on community 1" do
@@ -262,10 +262,10 @@ describe :latest do
             let(:category_ids) {[category1.id]}
             let(:c1) {FactoryGirl.create :community}
 
-            context "When q1 and q2 were asked by members of community 1" do
+            context "When q1 and q2 were targeted at community 1" do
               let(:before_api_call) do
-                c1.member_users << q1.user
-                c1.member_users << q2.user
+                q1.update_attributes target: FactoryGirl.create(:target, community_ids: [c1.id])
+                q2.update_attributes target: FactoryGirl.create(:target, community_ids: [c1.id])
               end
 
               context "When filtering on community 1" do

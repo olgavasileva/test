@@ -3,10 +3,12 @@ class Response < ActiveRecord::Base
   belongs_to :question
   has_one :comment, as: :commentable, dependent: :destroy
   has_many :contest_response_votes, dependent: :destroy
+  has_many :demographics, through: :user
   has_one :demographic_summary, through: :user
 
   validates :user, presence: true
 	validates :question, presence: true
+  validates :source, inclusion: {in: %w(web embeddable ios android), allow_nil: true}
   validate :comment_if_required
 
   # validate :answer_is_unique, on: :create, unless: 'question.allow_multiple_answers_from_user'

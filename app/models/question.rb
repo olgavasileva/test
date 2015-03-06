@@ -143,6 +143,10 @@ class Question < ActiveRecord::Base
 		state == "targeting"
 	end
 
+  def survey_only?
+    state == 'survey_only'
+  end
+
   def public?
     kind == 'public'
   end

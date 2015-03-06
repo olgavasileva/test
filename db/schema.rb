@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150304064822) do
+ActiveRecord::Schema.define(version: 20150306035930) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -672,11 +672,13 @@ ActiveRecord::Schema.define(version: 20150304064822) do
     t.boolean  "anonymous"
     t.integer  "scene_id"
     t.integer  "comment_id"
+    t.string   "source"
   end
 
   add_index "responses", ["choice_id"], name: "index_responses_on_choice_id", using: :btree
   add_index "responses", ["comment_id"], name: "index_responses_on_comment_id", using: :btree
   add_index "responses", ["question_id"], name: "index_responses_on_question_id", using: :btree
+  add_index "responses", ["source"], name: "index_responses_on_source", using: :btree
   add_index "responses", ["user_id"], name: "index_responses_on_user_id", using: :btree
 
   create_table "roles", force: true do |t|

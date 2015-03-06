@@ -1,4 +1,22 @@
 namespace :db do
+
+  desc 'Backfill source field for responses'
+  task backfill_response_source: :environment do
+    # Users with only one instance whose device is from Apple have answered all of their questions on their iPhone
+    User.joins(instances: :device).where(devices: {manufacturer: 'Apple Inc.'}).find_each do |user|
+      user.responses.where(source:nil).update_all source:'ios' if u.devices.where.not(manufacturer: 'Apple Inc.').empty?
+    end
+
+    # Questions that are survey_only were answered as part of an embeddable unit
+    Response.joins(:question).where(questions: {state: 'survey_only'}).update_all source:'embeddable'
+
+    # Of the rest, those with any quantcast data are from the web
+    Response.joins(demographics: :data_provider).where(source: nil).where(data_providers: {name: 'quantcast'}).update_all source: 'web'
+
+    # Assume the rest are iOS?
+    # Response.where(source: nil).update_all source: 'ios'
+  end
+
   desc 'Create demographic data from user gender and age'
   task demographics: :environment do
     ActiveRecord::Base.transaction do
