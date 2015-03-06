@@ -8,7 +8,7 @@ class Respondent < ActiveRecord::Base
   has_many :choice_responses, class_name: "ChoiceResponse", foreign_key: :user_id
   has_many :multiple_choice_responses, class_name: "MultipleChoiceResponse", foreign_key: :user_id
   has_many :feed_items, dependent: :destroy, foreign_key: :user_id
-  has_many :feed_questions, -> { where(feed_items_v2:{hidden: false}).where("feed_items_v2.published_at <= ?", Time.current).active }, through: :feed_items, source: :question, foreign_key: :user_id
+  has_many :feed_questions, -> { where(feed_items_v2:{hidden: false}).active }, through: :feed_items, source: :question, foreign_key: :user_id
   has_many :answered_questions, through: :responses, source: :question, foreign_key: :user_id
   has_many :inappropriate_flags, dependent: :destroy, foreign_key: :user_id
   has_many :scenes, dependent: :destroy, foreign_key: :user_id
