@@ -1,7 +1,13 @@
 ActiveAdmin.register Question do
   menu parent: 'Questions'
 
-  permit_params :id, :position, :category_id, :title, :state, :special, :trending_multiplier, :disable_question_controls
+  permit_params :id, :position, :category_id, :title, :state, :special, :trending_multiplier, :disable_question_controls, :created_at
+
+  controller do
+    def scoped_collection
+      end_of_association_chain.includes(:trend)
+    end
+  end
 
   filter :user
   filter :title
@@ -12,6 +18,13 @@ ActiveAdmin.register Question do
   filter :state, as: :check_boxes, collection: Question::STATES
   filter :kind, as: :check_boxes, collection: Question::KINDS
   filter :allow_multiple_answers_from_user
+
+  member_action :apply_created_at_to_feed_items do
+    q = Question.find params[:id]
+    q.feed_items.update_all published_at: q.created_at
+    flash[:notice] = "Updated feed #{q.feed_items.count} items"
+    redirect_to action: :index
+  end
 
   index do
     selectable_column
@@ -30,13 +43,16 @@ ActiveAdmin.register Question do
     column :kind
     column :special
     column :require_comment
-    column "TI" do |q|
-      q.trend_index
+    column "TI", sortable: 'trends.rate' do |q|
+      q.trend_rate
     end
-    column "T*" do |q|
+    column "T*", sortable: :trending_multiplier do |q|
       q.trending_multiplier
     end
     column :created_at
+    column do |q|
+      link_to "Update All Published At Dates", apply_created_at_to_feed_items_admin_question_path(q)
+    end
     column "In Feeds" do |q|
       q.feed_items.count
     end
@@ -53,6 +69,7 @@ ActiveAdmin.register Question do
       f.input :trending_multiplier
       f.input :disable_question_controls
       f.input :allow_multiple_answers_from_user
+      f.input :created_at
     end
     f.actions
   end
