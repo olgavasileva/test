@@ -1,4 +1,5 @@
 require 'choice_result_cache'
+require 'question_choice_orderer'
 
 class Question < ActiveRecord::Base
   STATES ||= %w(preview targeting active suspended survey_only)
@@ -206,6 +207,10 @@ class Question < ActiveRecord::Base
 
   def choice_result_cache
     @choice_result_cache ||= ChoiceResultCache.new(self)
+  end
+
+  def ordered_choices_for(reader=nil)
+    QuestionChoiceOrderer.new(self, reader)
   end
 
   private
