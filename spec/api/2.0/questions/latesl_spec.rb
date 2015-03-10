@@ -54,17 +54,9 @@ describe :latest do
 
               expect(choices.count).to eq 3
 
-              expect(choices[0]['choice']['id']).to eq text_choice1.id
-              expect(choices[0]['choice']['title']).to eq "Text Choice 1"
-              expect(choices[0]['choice']['rotate']).to eq true
-
-              expect(choices[1]['choice']['id']).to eq text_choice2.id
-              expect(choices[1]['choice']['title']).to eq "Text Choice 2"
-              expect(choices[1]['choice']['rotate']).to eq true
-
-              expect(choices[2]['choice']['id']).to eq text_choice3.id
-              expect(choices[2]['choice']['title']).to eq "Text Choice 3"
-              expect(choices[2]['choice']['rotate']).to eq false
+              expect(choices.map{|c| c['choice']['id']}).to match_array [text_choice1.id, text_choice2.id, text_choice3.id]
+              expect(choices.map{|c| c['choice']['title']}).to match_array ["Text Choice 1", "Text Choice 2", "Text Choice 3"]
+              expect(choices.map{|c| c['choice']['rotate']}).to match_array [true, true, false]
             end
           end
 
@@ -91,22 +83,13 @@ describe :latest do
 
               expect(choices.count).to eq 3
 
-              expect(choices[0]['choice']['id']).to eq multiple_choice1.id
-              expect(choices[0]['choice']['title']).to eq "Multiple Choice 1"
-              expect(choices[0]['choice']['rotate']).to eq true
-              expect(choices[0]['choice']['muex']).to eq true
+              expect(choices.map{|c| c['choice']['id']}).to match_array [multiple_choice1.id, multiple_choice2.id, multiple_choice3.id]
+              expect(choices.map{|c| c['choice']['title']}).to match_array ["Multiple Choice 1", "Multiple Choice 2", "Multiple Choice 3"]
+              expect(choices.map{|c| c['choice']['rotate']}).to match_array [true, true, false]
+              expect(choices.map{|c| c['choice']['muex']}).to match_array [true, true, false]
+
               expect(choices[0]['choice']['image_url']).not_to be_nil
-
-              expect(choices[1]['choice']['id']).to eq multiple_choice2.id
-              expect(choices[1]['choice']['title']).to eq "Multiple Choice 2"
-              expect(choices[1]['choice']['rotate']).to eq true
-              expect(choices[1]['choice']['muex']).to eq false
               expect(choices[1]['choice']['image_url']).not_to be_nil
-
-              expect(choices[2]['choice']['id']).to eq multiple_choice3.id
-              expect(choices[2]['choice']['title']).to eq "Multiple Choice 3"
-              expect(choices[2]['choice']['rotate']).to eq false
-              expect(choices[2]['choice']['muex']).to eq true
               expect(choices[2]['choice']['image_url']).not_to be_nil
             end
           end
@@ -131,16 +114,12 @@ describe :latest do
 
               expect(choices.count).to eq 2
 
-              expect(choices[0]['choice']['id']).to eq image_choice1.id
-              expect(choices[0]['choice']['title']).to eq "Image Choice 1"
-              expect(choices[0]['choice']['rotate']).to eq false
+              expect(choices.map{|c| c['choice']['id']}).to match_array [image_choice1.id, image_choice2.id]
+              expect(choices.map{|c| c['choice']['title']}).to match_array ["Image Choice 1", "Image Choice 2"]
+              expect(choices.map{|c| c['choice']['rotate']}).to match_array [false, false]
+
               expect(choices[0]['choice']['image_url']).not_to be_nil
-
-              expect(choices[1]['choice']['id']).to eq image_choice2.id
-              expect(choices[1]['choice']['title']).to eq "Image Choice 2"
-              expect(choices[1]['choice']['rotate']).to eq false
               expect(choices[1]['choice']['image_url']).not_to be_nil
-
             end
           end
 
@@ -164,19 +143,12 @@ describe :latest do
 
               expect(choices.count).to eq 3
 
-              expect(choices[0]['choice']['id']).to eq order_choice1.id
-              expect(choices[0]['choice']['title']).to eq "Order Choice 1"
-              expect(choices[0]['choice']['rotate']).to eq true
+              expect(choices.map{|c| c['choice']['id']}).to match_array [order_choice1.id, order_choice2.id, order_choice3.id]
+              expect(choices.map{|c| c['choice']['title']}).to match_array ["Order Choice 1", "Order Choice 2", "Order Choice 3"]
+              expect(choices.map{|c| c['choice']['rotate']}).to match_array [true, true, false]
+
               expect(choices[0]['choice']['image_url']).not_to be_nil
-
-              expect(choices[1]['choice']['id']).to eq order_choice2.id
-              expect(choices[1]['choice']['title']).to eq "Order Choice 2"
-              expect(choices[1]['choice']['rotate']).to eq true
               expect(choices[1]['choice']['image_url']).not_to be_nil
-
-              expect(choices[2]['choice']['id']).to eq order_choice3.id
-              expect(choices[2]['choice']['title']).to eq "Order Choice 3"
-              expect(choices[2]['choice']['rotate']).to eq false
               expect(choices[2]['choice']['image_url']).not_to be_nil
             end
           end

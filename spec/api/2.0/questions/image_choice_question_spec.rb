@@ -80,17 +80,12 @@ describe :image_choice_question do
 
             expect(choices.count).to eq 3
 
-            expect(choices[0]['choice']['rotate']).to eq true
-            expect(choices[0]['choice']['title']).to eq "Choice Title 1"
-            expect(choices[0]['choice']['image_url']).not_to be_nil
+            expect(choices.map{|c| c['choice']['rotate']}).to match_array [true, true, false]
+            expect(choices.map{|c| c['choice']['title']}).to match_array ["Choice Title 1", "Choice Title 2", "Choice Title 3"]
 
-            expect(choices[1]['choice']['rotate']).to eq true
-            expect(choices[1]['choice']['title']).to eq "Choice Title 2"
             expect(choices[0]['choice']['image_url']).not_to be_nil
-
-            expect(choices[2]['choice']['rotate']).to eq false
-            expect(choices[2]['choice']['title']).to eq "Choice Title 3"
-            expect(choices[0]['choice']['image_url']).not_to be_nil
+            expect(choices[1]['choice']['image_url']).not_to be_nil
+            expect(choices[2]['choice']['image_url']).not_to be_nil
           end
         end
 

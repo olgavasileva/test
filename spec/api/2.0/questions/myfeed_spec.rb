@@ -116,17 +116,9 @@ describe :myfeed do
 
               expect(choices.count).to eq 3
 
-              expect(choices[0]['choice']['id']).to eq text_choice1.id
-              expect(choices[0]['choice']['title']).to eq "Text Choice 1"
-              expect(choices[0]['choice']['rotate']).to eq true
-
-              expect(choices[1]['choice']['id']).to eq text_choice2.id
-              expect(choices[1]['choice']['title']).to eq "Text Choice 2"
-              expect(choices[1]['choice']['rotate']).to eq true
-
-              expect(choices[2]['choice']['id']).to eq text_choice3.id
-              expect(choices[2]['choice']['title']).to eq "Text Choice 3"
-              expect(choices[2]['choice']['rotate']).to eq false
+              expect(choices.map{|c| c['choice']['id']}).to match_array [text_choice1.id, text_choice2.id, text_choice3.id]
+              expect(choices.map{|c| c['choice']['title']}).to match_array ["Text Choice 1", "Text Choice 2", "Text Choice 3"]
+              expect(choices.map{|c| c['choice']['rotate']}).to match_array [true, true, false]
             end
           end
         end
