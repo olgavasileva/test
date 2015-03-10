@@ -92,4 +92,16 @@ describe Question do
     subject { Question.new.choice_result_cache }
     it { is_expected.to be_a(ChoiceResultCache) }
   end
+
+  describe '#ordered_choices_for' do
+    it 'delegates to QuestionChoiceOrderer correctly' do
+      question = Question.new
+      user = User.new
+
+      orderer = question.ordered_choices_for(user)
+      expect(orderer).to be_a(QuestionChoiceOrderer)
+      expect(orderer.question).to eq(question)
+      expect(orderer.reader).to eq(user)
+    end
+  end
 end

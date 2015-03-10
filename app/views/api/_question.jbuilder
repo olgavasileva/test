@@ -16,7 +16,7 @@ json.image_url question.device_image_url
 
 json.(question, :text_type, :min_characters, :max_characters) if question.kind_of? TextQuestion
 
-json.choices question.choices do |choice|
+json.choices question.ordered_choices_for(current_user) do |choice|
   json.choice do
     json.(choice, :id, :title, :rotate)
     json.image_url choice.device_image_url if question.kind_of?(OrderQuestion) || question.kind_of?(ImageChoiceQuestion) || question.kind_of?(MultipleChoiceQuestion)
