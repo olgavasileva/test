@@ -29,14 +29,15 @@ RSpec.describe Authentication do
 
   describe '.from_social_profile' do
     let(:profile) { double('SocialProfile::BaseAdapter', {
-      provider: 'test',
+      provider: 'facebook',
       uid: 1,
-      token: 'token'
+      token: 'token',
+      secret: 'secret'
     }) }
 
     it 'delegates to .from_provider_id' do
       expect(Authentication).to receive(:from_provider_id)
-        .with('test', 1).and_call_original
+        .with('facebook', 1).and_call_original
 
       Authentication.from_social_profile(profile)
     end
@@ -46,10 +47,16 @@ RSpec.describe Authentication do
       expect(auth.token).to eq(profile.token)
     end
 
-    it 'sets the :user if one is given' do
-      user = User.new
-      auth = Authentication.from_social_profile(profile, user)
-      expect(auth.user).to eq(user)
+    it 'sets the :secret when present' do
+      auth = Authentication.from_social_profile(profile)
+      expect(auth.token_secret).to eq(profile.secret)
+    end
+
+    it 'does not set the :secret when none is present' do
+      FactoryGirl.create(:authentication, :facebook, uid: 1, token_secret: 'test_secret')
+      allow(profile).to receive(:secret) { nil }
+      auth = Authentication.from_social_profile(profile)
+      expect(auth.token_secret).to eq('test_secret')
     end
   end
 

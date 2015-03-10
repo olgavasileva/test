@@ -129,7 +129,7 @@ class UsersController < ApplicationController
   end
 
   def campaigns
-    @questions = @user.questions.active
+    @questions = @user.questions
     render layout: "pixel_admin"
   end
 

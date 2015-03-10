@@ -26,6 +26,16 @@ class TwoCents::Questions < Grape::API
         end
       end
 
+      def guess_source_from_response_and_question question
+        if question.survey_only?
+          'embeddable'
+        elsif @instance.device.manufacturer == 'Apple Inc.'
+          'ios'
+        elsif @instance.device.model == 'web'
+          'web'
+        end
+      end
+
       def send_email_or_sms_to_invited_users(question, phone_numbers, email_addresses)
         message_to_send = generate_message_from_question(question)
 
@@ -463,7 +473,7 @@ class TwoCents::Questions < Grape::API
       requires :cursor, type: Integer, desc: '0 for first questions, otherwise return last value received'
       optional :count, default: 20, type: Integer, desc: 'The maximum number of questions to return'
       optional :category_ids, type: Array, desc: 'Limit questions to only these categories'
-      optional :community_ids, type: Array, desc: 'Limit questions to only these communities'
+      optional :community_ids, type: Array, desc: 'Limit questions to only those targeted to these communities'
     end
     post 'latest', jbuilder: 'latest' do
       validate_user!
@@ -687,7 +697,7 @@ class TwoCents::Questions < Grape::API
         @questions.each{|q| q.viewed!}
       else
         error_message = ENV['OUT_OF_DATE_QUESTION_TITLE'] || "Update required.  Please check the app store for an update available within an hour."
-        @questions = [Question.new(id:0, user:Respondent.first, category:Category.first, title:error_message, state:"active", kind:"public", background_image:BackgroundImage.first, trending_index:1)]
+        @questions = [Question.new(id:0, user:Respondent.first, category:Category.first, title:error_message, state:"active", kind:"public", background_image:BackgroundImage.first)]
       end
     end
 
@@ -856,14 +866,14 @@ class TwoCents::Questions < Grape::API
     # Submit a user's response
     #
 
-    desc "Submit responses to the survey questions", {
+    desc "Submit a response to question", {
       notes: <<-END
         When the user answers a question, use this API to submit the response.
         The server will return summary information about the question.
-        In addition, the server will return if demographic data is require for this user.
+        In addition, the server will return if demographic data is required for this user.
         If so, obtain demographic information and submit using the demographic API.
 
-        #### Example JSON to supply in the **response** parameter
+        #### Example JSON to supply in the various **response** parameters
               // text question response
               { "text":"What they typed" }
 
@@ -902,6 +912,8 @@ class TwoCents::Questions < Grape::API
       optional :comment, type: String, desc: 'Some comment about the question'
       optional :anonymous, type: Boolean, default:false, desc: "True if the user want's to remain anonymous"
 
+      optional :source, type: String, values:%w(web embeddable ios android), desc: 'Source of this response: web, embeddable, ios, android'
+
       optional :text, type: String, desc: 'What the user typed when responding to a TextQuestion'
       optional :choice_id, type: Integer, desc: 'The single choice selected in a TextChoiceQuestion or ImageChoiceQuestion'
       optional :choice_ids, type: Array, desc: 'The choices selected in a MultipleChoiceQuestion or ordered by an OrderQuestion'
@@ -922,9 +934,12 @@ class TwoCents::Questions < Grape::API
 
       @question = Question.find declared_params[:question_id]
 
-      resp_param_keys = %w[anonymous text choice_id choice_ids]
+      resp_param_keys = %w[anonymous text choice_id choice_ids source]
       resp_params = params.to_h.slice(*resp_param_keys)
       resp_params['user_id'] = current_user.id
+
+      # TODO 3/5/2015 - make the 'source' param required and remove this guess (will require a new iOS release)
+      resp_params['source'] = guess_source_from_response_and_question(@question) unless resp_params['source']
 
       response = @question.responses.new(resp_params)
       response.user_ip = request.env['REMOTE_ADDR'] if response.kind_of? TextResponse

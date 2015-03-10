@@ -7,6 +7,7 @@ FactoryGirl.define do
     title {generate :name}
     state "active"
     association :background_image, factory: :question_image
+    association :trend
   end
 
   factory :image_question, parent: :question, class: "ImageQuestion" do

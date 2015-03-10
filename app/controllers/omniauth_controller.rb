@@ -6,10 +6,9 @@ class OmniauthController < ActionController::Base
   # Authentication or the valid Instance has a user associated with it.
   #
   before_action :require_instance!, only: [:callback]
-  before_action :require_user!, only: [:callback]
 
   rescue_from ActiveRecord::ActiveRecordError do
-    render_callback false, {error: t('omniauth.error.process_error')}
+    render_callback false, false, {error: t('omniauth.error.process_error')}
   end
 
   def setup
@@ -54,46 +53,49 @@ class OmniauthController < ActionController::Base
         end
       elsif instance.user.present?
         auth.user = instance.user
-      else
+      elsif auth.user.present?
         instance.user = auth.user
+      else
+        auth.save!
       end
 
-      auth.user.update_tracked_fields!(request)
-      auth.save!
-      instance.refresh_auth_token
-      instance.save!
+      if auth.user.present?
+        auth.user.update_tracked_fields!(request)
+        auth.save!
+        instance.refresh_auth_token
+        instance.save!
+      end
     end
 
-    render_callback true, {
-      success: true,
-      auth_token: instance.auth_token,
-      email: instance.user.email,
-      username: instance.user.username,
-      user_id: instance.user.id
-    }
+    if auth.user.present?
+      render_callback true, true, {
+        auth_token: instance.auth_token,
+        email: instance.user.email,
+        username: instance.user.username,
+        user_id: instance.user.id
+      }
+    else
+      render_callback false, true, {
+        provider_id: auth.id
+      }
+    end
   end
 
   def failure
-    render_callback false, {error: params[:message]}
+    render_callback false, false, {error: params[:message]}
   end
 
   private
 
   def require_instance!
     unless instance.present?
-      render_callback false, {error: t('omniauth.error.instance_required')}
+      render_callback false, false, {error: t('omniauth.error.instance_required')}
     end
   end
 
-  def require_user!
-    unless auth.user.present? || instance.user.present?
-      render_callback false, {error: t('omniauth.error.missing_user')}
-    end
-  end
-
-  def render_callback(result, data)
+  def render_callback(result, valid, data)
     cookies[provider_cookie_name] = {
-      value: data.merge(success: result).to_json,
+      value: data.merge(success: result, provider_valid: valid).to_json,
       expires: 15.minutes.from_now,
       domain: provider_cookie_domain
     }

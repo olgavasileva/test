@@ -72,8 +72,6 @@ gem 'grape-swagger-rails'
 gem 'uuid'              # UUID generation
 gem 'figaro'            # Supports application.yml and easy defaults override in specs
 
-gem 'koala'             # Facebook graph and realtime access (for email, fid, friends, etc.)
-
 gem 'hirb'
 gem 'wirble'
 
@@ -108,6 +106,7 @@ gem 'rack-cors', require: 'rack/cors'
 
 gem 'activerecord-import'           # Fast bulk database inserts (e.g. creating feed_items for new users)
 gem 'resque'                        # A Redis-backed library for creating background jobs
+gem 'resque-scheduler'              # An extension to Resque that adds support for queueing items in the future
 
 gem 'faraday'                       # An HTTP client lib that provides a common interface over many adapters
 
@@ -115,6 +114,9 @@ gem 'faraday'                       # An HTTP client lib that provides a common 
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
+
+gem 'koala'
+gem 'twitter'
 
 group :development do
 

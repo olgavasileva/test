@@ -9,6 +9,7 @@ class Question < ActiveRecord::Base
 	belongs_to :category
   belongs_to :target
   belongs_to :background_image, class_name: "QuestionImage"
+  belongs_to :trend
 
 	has_many :inclusions, dependent: :destroy
 	has_many :packs, through: :inclusions
@@ -28,7 +29,9 @@ class Question < ActiveRecord::Base
   has_many :response_comments, through: :responses, source: :comment
   has_many :inappropriate_flags, dependent: :destroy
   has_many :response_matchers, dependent: :destroy
-  has_many :communities, through: :user, source: :membership_communities
+  has_many :communities, through: :target, source: :communities
+
+  acts_as_taggable_on :tags
 
   scope :not_suspended, -> { where.not state: 'suspended' }
 	scope :active, -> { where state:"active" }
@@ -39,12 +42,11 @@ class Question < ActiveRecord::Base
 
   scope :latest, -> { order("feed_items_v2.published_at DESC, feed_items_v2.id DESC") }
   scope :by_relevance, -> { order("feed_items_v2.relevance DESC, feed_items_v2.published_at DESC, feed_items_v2.id DESC") }
-  scope :trending, -> { order("questions.trending_index DESC, feed_items_v2.published_at DESC") }
+  scope :trending, -> { joins(:trend).order("trends.rate * trending_multiplier DESC, feed_items_v2.published_at DESC") }
   scope :targeted, -> { where("feed_items_v2.targeted = ?", true) }
   scope :myfeed, -> { where("feed_items_v2.why" => %w(targeted leader follower group community)) }
 
 	default kind: "public"
-  default trending_index: 0
   default trending_multiplier: 1
 
 	validates :user, presence: true
@@ -53,15 +55,20 @@ class Question < ActiveRecord::Base
 	validates :state, presence: true, inclusion: {in: STATES}
 	validates :kind, inclusion: {in: KINDS}
   validates :background_image, presence:true
-  validates :trending_index, numericality: { only_integer: true, allow_nil: true }
   validates :trending_multiplier, numericality: { only_integer: true, allow_nil: true }
+  validates :trend, presence: true, uniqueness: true
 
   delegate :web_image_url, to: :background_image
   delegate :device_image_url, to: :background_image
   delegate :retina_device_image_url, to: :background_image
 
+  delegate :rate, to: :trend, prefix: true, allow_nil: true
+
   default share_count: 0
   default view_count: 1   # Creator has "viewed" it
+  default :trend do |q|
+    q.build_trend
+  end
 
   default :uuid do |question|
     "Q"+UUID.new.generate.gsub(/-/, '')
@@ -92,13 +99,8 @@ class Question < ActiveRecord::Base
     responses.joins(:user).where('users.id' => recipient.leaders.pluck(:id)).count
   end
 
-  def trending!
-    # TODO use IIR algorithm here and call this whenever needed
-    update_attribute :trending_index, (trending_index + trending_multiplier)
-  end
-
   def answered! user
-    trending!
+    trend.event!
     FeedItem.question_answered! self, user
   end
 
@@ -141,6 +143,10 @@ class Question < ActiveRecord::Base
 	def targeting?
 		state == "targeting"
 	end
+
+  def survey_only?
+    state == 'survey_only'
+  end
 
   def public?
     kind == 'public'

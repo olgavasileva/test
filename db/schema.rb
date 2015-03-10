@@ -50,8 +50,8 @@ ActiveRecord::Schema.define(version: 20150309203137) do
     t.integer  "user_id"
     t.string   "provider"
     t.string   "uid"
-    t.string   "token"
-    t.string   "token_secret"
+    t.text     "token"
+    t.text     "token_secret"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -609,17 +609,18 @@ ActiveRecord::Schema.define(version: 20150309203137) do
     t.decimal  "score",                            precision: 10, scale: 2, default: 0.0
     t.boolean  "special",                                                   default: false
     t.boolean  "require_comment",                                           default: false
-    t.integer  "trending_index",                                            default: 0
     t.integer  "trending_multiplier",                                       default: 1
     t.boolean  "disable_question_controls",                                 default: false
     t.boolean  "allow_multiple_answers_from_user",                          default: false
     t.boolean  "notifying",                                                 default: false
+    t.integer  "trend_id"
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
   add_index "questions", ["category_id"], name: "index_questions_on_category_id", using: :btree
   add_index "questions", ["created_at"], name: "index_questions_on_created_at", using: :btree
   add_index "questions", ["kind"], name: "index_questions_on_kind", using: :btree
+  add_index "questions", ["trend_id"], name: "index_questions_on_trend_id", using: :btree
   add_index "questions", ["user_id"], name: "index_questions_on_user_id", using: :btree
 
   create_table "questions_surveys", force: true do |t|
@@ -671,11 +672,13 @@ ActiveRecord::Schema.define(version: 20150309203137) do
     t.boolean  "anonymous"
     t.integer  "scene_id"
     t.integer  "comment_id"
+    t.string   "source"
   end
 
   add_index "responses", ["choice_id"], name: "index_responses_on_choice_id", using: :btree
   add_index "responses", ["comment_id"], name: "index_responses_on_comment_id", using: :btree
   add_index "responses", ["question_id"], name: "index_responses_on_question_id", using: :btree
+  add_index "responses", ["source"], name: "index_responses_on_source", using: :btree
   add_index "responses", ["user_id"], name: "index_responses_on_user_id", using: :btree
 
   create_table "roles", force: true do |t|
@@ -903,12 +906,15 @@ ActiveRecord::Schema.define(version: 20150309203137) do
     t.datetime "created_at"
   end
 
-  add_index "taggings", ["tag_id"], name: "index_taggings_on_tag_id", using: :btree
+  add_index "taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true, using: :btree
   add_index "taggings", ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context", using: :btree
 
   create_table "tags", force: true do |t|
-    t.string "name"
+    t.string  "name"
+    t.integer "taggings_count", default: 0
   end
+
+  add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree
 
   create_table "targets", force: true do |t|
     t.boolean  "all_users"
@@ -941,6 +947,16 @@ ActiveRecord::Schema.define(version: 20150309203137) do
   end
 
   add_index "translations", ["language_id"], name: "index_translations_on_language_id", using: :btree
+
+  create_table "trends", force: true do |t|
+    t.integer  "new_event_count"
+    t.datetime "calculated_at"
+    t.decimal  "filter_event_count", precision: 10, scale: 2
+    t.decimal  "filter_minutes",     precision: 10, scale: 2
+    t.decimal  "rate",               precision: 10, scale: 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "user_avatars", force: true do |t|
     t.string   "image"

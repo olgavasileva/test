@@ -115,6 +115,36 @@ describe :response do
         let(:other_params) { { choice_ids: [FactoryGirl.create(:order_choice, question: question).id] } }
 
         include_examples :success
+
+        context "When the source parameter is set" do
+          let(:other_params) { { source: source, choice_ids: [FactoryGirl.create(:order_choice, question: question).id] } }
+
+          context "When source is web" do
+            let(:source) {'web'}
+            it {expect(Response.last.source).to eq 'web'}
+          end
+
+          context "When source is embeddable" do
+            let(:source) {'embeddable'}
+            it {expect(Response.last.source).to eq 'embeddable'}
+          end
+
+          context "When source is ios" do
+            let(:source) {'ios'}
+            it {expect(Response.last.source).to eq 'ios'}
+          end
+
+          context "When source is android" do
+            let(:source) {'android'}
+            it {expect(Response.last.source).to eq 'android'}
+          end
+
+          context "When source is invalid" do
+            let(:source) {'invalid'}
+            it {expect(response.status).to eq 200}
+            it {expect(json['error_message']).to eq 'source does not have a valid value'}
+          end
+        end
       end
     end
   end

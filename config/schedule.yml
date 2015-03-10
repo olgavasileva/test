@@ -1,0 +1,7 @@
+trending:
+  every: 10m
+  queue: cron
+  class: CronTask
+  args: "trending"
+  description: Calculates trending quesitons
+  rails_envs: development, production, staging, labs

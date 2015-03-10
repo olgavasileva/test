@@ -146,11 +146,25 @@ class TwoCents::Auth < Grape::API
   resource :users do
     desc "Return an auth_token for the newly registered user who can login with an email/password", {
       notes: <<-END
-        Add a new user with the given name.  Use the resulting auth_token in API calls that require a logged in user.
-        In the future, this user can log in again by using the same email and password.
+        Add a new user with the given name.  Use the resulting auth_token in API
+        calls that require a logged in user. In the future, this user can log in
+        again by using the same email and password.
 
-        #### Example response
-            { auth_token: "SOME_STRING", user_id: 123 }
+        ### Example response
+        ```
+        {
+          auth_token: "SOME_STRING",
+          user_id: 123
+        }
+        ```
+
+        ### Associating a social provider account when registering
+
+        If you have previously attempted to login a user using the
+        `users/promote_social.json` endpoint, but the response indicated
+        that the login was not successful and gave you a `provider_id`, you
+        should supply that `provider_id` when registering the user so we may
+        associate that user with their social provider account.
       END
     }
     params do
@@ -161,6 +175,7 @@ class TwoCents::Auth < Grape::API
       optional :name, type: String, desc:"The user's name"
       optional :birthdate, type: String, desc: '1990-02-06'
       optional :gender, type:String, values: %w{male female}, desc: 'male or female'
+      optional :provider_id, type: Integer, desc: 'The social provider account to associate with this user'
     end
     post 'register', http_codes:[
         [200, "1001 - Invalid instance token"],
@@ -168,6 +183,7 @@ class TwoCents::Auth < Grape::API
         [200, "1009 - The Username is already taken"],
         [200, "1010 - Birthdate must be over 13 years ago"],
         [200, "1011 - Unable to save the user record (specific reason text will be included)"],
+        [200, "1012 - Provider could not be found"],
         [200, "400 - Missing required params"]
       ] do
 
@@ -187,6 +203,12 @@ class TwoCents::Auth < Grape::API
       user.update_tracked_fields(request)
       fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
       fail! 1011, user.errors.full_messages.join(", ") unless user.save
+
+      if declared_params[:provider_id]
+        auth = Authentication.find_by(id: declared_params[:provider_id])
+        fail! 1012, "Provider could not be found" unless auth
+        auth.update!(user: user)
+      end
 
       instance.update_attributes! user:user, auth_token: "A"+UUID.new.generate
 
@@ -282,10 +304,25 @@ class TwoCents::Auth < Grape::API
 
     desc "Promote an anonymous user to an authenticatable user", {
       notes: <<-END
-        NOTE - the auth_token returned from this API should be used in future API requests.
+        This API validates that the email/password match. If so, the instance
+        gets a new auth_token and any previously obtained auth_token for this
+        instance will become invalid.
 
-        #### Example response
-            { auth_token: "SOME_STRING", user_id: 123 }
+        ### Example response
+        ```
+        {
+          auth_token: "SOME_STRING",
+          user_id: 123
+        }
+        ```
+
+        ### Associating a social provider account when registering
+
+        If you have previously attempted to login a user using the
+        `users/promote_social.json` endpoint, but the response indicated
+        that the login was not successful and gave you a `provider_id`, you
+        should supply that `provider_id` when registering the user so we may
+        associate that user with their social provider account.
       END
     }
     params do
@@ -296,6 +333,7 @@ class TwoCents::Auth < Grape::API
       optional :name, type: String, desc:"The user's name"
       optional :birthdate, type: String, desc: '1990-02-06'
       optional :gender, type:String, values: %w{male female}, desc: 'male or female'
+      optional :provider_id, type: Integer, desc: 'The social provider id to associate with this user'
     end
     post 'promote', http_codes: [
         [200, "1002 - A user with that email is already registered"],
@@ -303,6 +341,7 @@ class TwoCents::Auth < Grape::API
         [200, "1010 - Birthdate must be over 13 years ago"],
         [200, "1011 - Unable to save the user record (specific reason text will be included)"],
         [200, "1012 - User must be anonymous"],
+        [200, "1013 - Provider could not be found"],
         [200, "400 - Missing required params"],
         [200, "402 - Invalid auth token"],
         [200, "403 - Login required"]
@@ -332,109 +371,158 @@ class TwoCents::Auth < Grape::API
         fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
         fail! 1011, user.errors.full_messages.join(", ") unless user.save
 
+        if declared_params[:provider_id]
+          auth = Authentication.find_by(id: declared_params[:provider_id])
+          fail! 1013, "Provider could not be found" unless auth
+          auth.update!(user: user)
+        end
+
         @instance.update_attributes! auth_token: "A"+UUID.new.generate
       end
 
       { auth_token: @instance.auth_token, user_id: user.id }
     end
 
-    desc "Promote an anonymous user to an authenticatable user using a social auth token", {
+    desc "Associates the OAuth provider with the current user", {
       notes: <<-END
+        NOTE - Anonymous users are automatically promoted to regular users
         NOTE - the auth_token returned from this API should be used in future API requests.
 
-        #### Example response
-            { auth_token: "SOME_STRING", user_id: 123 }
+        ### Example Responses
+
+        #### When User was logged in
+        ```
+          {
+            success: true,
+            provider_valid: true,
+            auth_token: "some_auth_token",
+            email: "example#me.com", // might be empty
+            username: "some_username",
+            user_id: 1
+          }
+        ```
+
+        When you receive this response, you should proceed as though you have an
+        authenticated user.
+
+        #### When User could not be logged in but the provider was valid
+        ```
+          {
+            success: false,
+            provider_valid: true,
+            provider_id: 1
+          }
+        ```
+
+        When you receive this response, you should assume that we were able to
+        access the provider and store the authentication recored associated with
+        it, but there was no user to login. Therefore, the user should be
+        redirected to a signup or login page, where you will send the
+        `provider_id` you received from this payload as part of the `promote` or
+        `login` enpoint payload.
       END
     }
     params do
-      requires :auth_token, type: String, desc: "Obtain this by registering as an anonymous user"
+      requires :instance_token, type: String, desc: 'Obtain this from the instances API'
       requires :provider, type: String, desc: "A valid provider. Can be one of: #{Authentication::PROVIDERS.join(',')}"
-      requires :provider_token, type: String, desc: 'The auth token obtained through the authentication handshake'
-      optional :email, type: String, desc: "The user's email. If omitted, will be pulled from the social profile"
-      optional :password, type: String, desc: "The user's desired password. Will be randomly generated if none is given"
-      optional :name, type: String, desc: "The user's name. If omitted, will be pulled from the social profile"
-      optional :username, type: String, desc: "The user's email. If omitted, will be pulled from the social profile"
-      optional :gender, type: String, desc: "The user's gender. If omitted, will be pulled from the social profile if possible"
-      optional :birthdate, type: String, desc: "The user's birthdate (1985-09-18). If omitted, will be pulled from the social profile if possible"
+      requires :provider_token, type: String, desc: 'The token obtained through the authentication handshake'
+      optional :provider_secret, type: String, desc: 'The secret token obtained through the authentication handshake'
     end
     post 'promote_social', http_codes: [
-      [200, "1001 - Provider invalid"],
-      [200, "1002 - Could not access profile"],
-      [200, "1003 - Profile information missing"],
-      [200, "1004 - Error saving the provider information"],
-      [200, "1008 - The desired email address is already taken"],
-      [200, "1009 - The username associated with the profile is already taken"],
-      [200, "1010 - Birthdate must be over 13 years ago"],
+      [200, "1001 - Instance token invalid"],
+      [200, "1002 - Provider invalid"],
+      [200, "1003 - Could not access profile"],
+      [200, "1004 - No user record can be determined"],
       [200, "1011 - Unable to save the user record (specific reason text will be included)"],
-      [200, "1012 - User must be anonymous"],
       [200, "400 - Missing required params"],
       [200, "402 - Invalid auth token"],
       [200, "403 - Login required"]
     ] do
-      validate_user!
-      user = current_user
-
-      fail! 1012, "User must be anonymous" unless user.kind_of?(Anonymous)
+      validate_instance!
 
       unless Authentication::PROVIDERS.include?(declared_params[:provider])
-        fail! 1001, "Provider invalid: #{declared_params[:provider]}"
+        fail! 1002, "Provider invalid: #{declared_params[:provider]}"
       end
 
       profile = SocialProfile.build(
         declared_params[:provider],
-        declared_params[:provider_token]
+        declared_params[:provider_token],
+        declared_params[:provider_secret]
       )
 
-      fail! 1002, "Could not access profile" unless profile.valid?
+      fail! 1003, "Could not access profile" unless profile.valid?
 
-      either = Hash.new { |h,k| h[k] = declared_params[k] || profile.send(k) }
+      auth = Authentication.from_social_profile(profile)
 
-      fail! 1003, "Profile has no name" unless either[:name].present?
-      fail! 1003, "Profile has no username" unless either[:username].present?
-
-      if either[:email] && User.where(email: either[:email]).exists?
-        fail! 1008, "User's email is already registered: #{either[:email]}"
-      end
-
-      if User.where(username: either[:username]).exists?
-        fail! 1009, "User's username is already registered: #{either[:username]}"
-      end
-
-      ActiveRecord::Base.transaction do
-        user.update_attribute :type, "User"
-        user = User.find(user.id)
-        user.name = either[:name]
-        user.email = either[:email]
-        user.username = either[:username]
-        user.gender = either[:gender]
-        user.birthdate = if either[:birthdate]
-          Date.parse(either[:birthdate]) rescue nil
+      Authentication.transaction do
+        if instance.user.is_a?(Anonymous)
+          if auth.user.present?
+            instance.user = auth.user
+          else
+            password = SecureRandom.hex(16)
+            auth.user = instance.user.promote!({
+              name: profile.name,
+              password: password,
+              password_confirmation: password
+            })
+          end
+        elsif instance.user.present?
+          auth.user = instance.user
+        elsif auth.user.present?
+          instance.user = auth.user
+        else
+          auth.save!
         end
 
-        password = declared_params[:password] || SecureRandom.hex(16)
-        user.password = password
-        user.password_confirmation = password
-
-        user.update_tracked_fields(request)
-
-        fail! 1010, "Birthdate must be over 13 years ago" if user.under_13?
-        fail! 1011, user.errors.full_messages.join(", ") unless user.save
-
-        Authentication.from_social_profile(profile, user).save!
-        @instance.update_attributes!(auth_token: "A"+UUID.new.generate)
+        if auth.user.present?
+          auth.user.update_tracked_fields!(request)
+          auth.save!
+          instance.refresh_auth_token
+          instance.save!
+        end
       end
 
-      {auth_token: @instance.auth_token, user_id: user.id}
+      if auth.user.present?
+        {
+          success: true,
+          provider_valid: true,
+          auth_token: instance.auth_token,
+          email: instance.user.email,
+          username: instance.user.username,
+          user_id: instance.user.id
+        }
+      else
+        {
+          success: false,
+          provider_valid: true,
+          provider_id: auth.id
+        }
+      end
     end
 
     desc "Return an auth_token for the newly logged in user", {
       notes: <<-END
-        This API validates that the email/password match.  If so, the instance gets a new auth_token and any previously obtained auth_token for this instance will become invalid.
+        This API validates that the email/password match. If so, the instance
+        gets a new auth_token and any previously obtained auth_token for this
+        instance will become invalid.
 
-        One of email or username is requried.
+        **One of email or username is requried.**
 
-        #### Example response
-            { auth_token: "SOME_STRING", email: "your@address.com", username: "Your Username" }
+        ### Example response
+        ```
+        {
+          auth_token: "SOME_STRING",
+          user_id: 123
+        }
+        ```
+
+        ### Associating a social provider account at login
+
+        If you have previously attempted to login a user using the
+        `users/promote_social.json` endpoint, but the response indicated
+        that the login was not successful and gave you a `provider_id`, you
+        should supply that `provider_id` when logging in the user so we may
+        associate that user with their social provider account.
       END
     }
     params do
@@ -442,6 +530,7 @@ class TwoCents::Auth < Grape::API
       requires :password, type: String, regexp: /.{6,20}/, desc:'6-20 character password'
       optional :email, type: String, desc:'e.g. oscar@madisononline.com'
       optional :username, type: String, regexp: /^[A-Z0-9\-_ ]{4,20}$/i, desc:'Unique username'
+      optional :provider_id, type: Integer, desc: 'The social provider id to associate with this user'
       mutually_exclusive :email, :username
     end
     post 'login', http_codes: [
@@ -451,6 +540,7 @@ class TwoCents::Auth < Grape::API
         [200, "1006 - Neither email nor username supplied"],
         [200, "1007 - Only one of email ane username are allowed"],
         [200, "1008 - Wrong password"],
+        [200, "1012 - Provider could not be found"],
         [200, "400 - Missing required params"],
         [200, "400 - [:email, :username] are mutually exclusive"]
       ] do
@@ -467,6 +557,12 @@ class TwoCents::Auth < Grape::API
 
       unless user.present? && user.valid_password?(declared_params[:password])
         fail! 1008, "Login Unsuccessful. The username and password you entered did not match our records. Please double-check and try again."
+      end
+
+      if declared_params[:provider_id]
+        auth = Authentication.find_by(id: declared_params[:provider_id])
+        fail! 1012, "Provider could not be found" unless auth
+        auth.update!(user: user)
       end
 
       user.update_tracked_fields!(request)

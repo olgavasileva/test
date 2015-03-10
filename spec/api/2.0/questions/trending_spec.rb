@@ -17,12 +17,12 @@ describe :trending do
       let(:user) {instance.user}
 
       context "With some questions" do
-        let(:q1) {FactoryGirl.create :text_choice_question, trending_index: 1}
+        let(:q1) {FactoryGirl.create :text_choice_question, trend: FactoryGirl.create(:trend, rate: 1)}
         let(:c1) {FactoryGirl.create :text_choice, question:q1, title:"Text Choice 1", rotate:true}
         let(:c2) {FactoryGirl.create :text_choice, question:q1, title:"Text Choice 2", rotate:true}
         let(:c3) {FactoryGirl.create :text_choice, question:q1, title:"Text Choice 3", rotate:false}
-        let(:q3) {FactoryGirl.create :text_choice_question, trending_index: 3}
-        let(:q2) {FactoryGirl.create :text_choice_question, trending_index: 2}
+        let(:q3) {FactoryGirl.create :text_choice_question, trend: FactoryGirl.create(:trend, rate: 3)}
+        let(:q2) {FactoryGirl.create :text_choice_question, trend: FactoryGirl.create(:trend, rate: 2)}
 
         let(:all_questions) { [q1,q2,q3] }
 

@@ -1,27 +1,26 @@
 require 'rails_helper'
 
-RSpec.describe SocialProfile::FacebookAdapter do
+RSpec.describe SocialProfile::TwitterAdapter do
 
   let(:token) { 'some_token' }
   let(:secret) { 'some_secret' }
   let(:adapter) { described_class.new(token, secret) }
 
+  let(:id) { '12345678' }
+
   let(:profile) do
-    {
-      'id' => '12345678',
-      'first_name' => 'Test',
-      'last_name' => 'User',
-      'email' => 'testuser@email.com',
-      'gender' => 'female',
-      'birthday' => '7/7/1985'
-    }
+    Twitter::User.new({
+      id: id,
+      name: 'Test A User',
+      screen_name: 'test_user'
+    })
   end
 
   before { allow(adapter).to receive(:profile).and_return(profile) }
 
   describe '#provider' do
     subject { adapter.provider }
-    it { should eq('facebook') }
+    it { should eq('twitter') }
   end
 
   describe '#valid?' do
@@ -31,21 +30,24 @@ RSpec.describe SocialProfile::FacebookAdapter do
       it { should eq(false) }
     end
 
-    context 'when a token is present' do
-      context 'and the profile is empty' do
-        let(:profile) { {} }
-        it { should eq(false) }
-      end
+    context 'when no secret is present' do
+      let(:secret) { nil }
+      it { should eq(false) }
+    end
 
-      context 'and the profile is not empty' do
-        it { should eq(true) }
-      end
+    context 'when no id is present' do
+      let(:id) { nil }
+      it { should eq(false) }
+    end
+
+    context 'when token, secret and id are present' do
+      it { should eq(true) }
     end
   end
 
   describe '#uid' do
     subject { adapter.uid }
-    it { should eq('12345678') }
+    it { should eq(id) }
   end
 
   describe '#first_name' do
@@ -55,36 +57,31 @@ RSpec.describe SocialProfile::FacebookAdapter do
 
   describe '#last_name' do
     subject { adapter.last_name }
-    it { should eq('User') }
+    it { should eq('A User') }
   end
 
   describe '#name' do
     subject { adapter.name }
-    it { should eq('Test User') }
+    it { should eq('Test A User') }
   end
 
   describe '#username' do
     subject { adapter.username }
-    it { should eq('testuser') }
+    it { should eq('test_user') }
   end
 
   describe '#email' do
     subject { adapter.email }
-    it { should eq('testuser@email.com') }
+    it { should eq(nil) }
   end
 
   describe '#gender' do
     subject { adapter.gender }
-    it { should eq('female') }
-
-    context 'when neither male nor female' do
-      before { profile.merge!('gender' => 'monkey') }
-      it { should eq(nil) }
-    end
+    it { should eq(nil) }
   end
 
   describe '#birthdate' do
     subject { adapter.birthdate }
-    it { should eq('7/7/1985') }
+    it { should eq(nil) }
   end
 end
