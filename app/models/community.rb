@@ -5,22 +5,25 @@ class Community < ActiveRecord::Base
   has_many :communities_targets
   has_many :targets, through: :communities_targets
 
-  scope :trending_for_user, ->(user, page, per_page) {
+  scope :trending_for_user, ->(user, page = 1, per_page = 20) {
     questions = Question.arel_table
     communities = arel_table
-    community_member = CommunityMember.arel_table
-    users = Respondent.arel_table
+    communities_targets = Arel::Table.new(:communities_targets)
+    targets = Target.arel_table
     membered_communities = CommunityMember.where(user_id: user.id).pluck(:community_id)
-    
+
     # there we have public not empty communities(that have some questions in it), and on what user
-    # is not subcribed. we set the limit and offset for records that will be returned 
-    trending = communities.
-        join(community_member).on(communities[:id].eq(community_member[:community_id])).
-        join(users).on(users[:id].eq(community_member[:user_id])).
-        join(questions).on(communities[:user_id].eq(questions[:user_id])).
-        group(questions[:user_id]).having(questions[:id].count.gt(0)).
+    # is not subcribed. we set the limit and offset for records that will be returned
+    not_empty_communities = communities.
+        join(communities_targets).on(communities[:id].eq(communities_targets[:community_id])).
+        join(targets).on(targets[:id].eq(communities_targets[:target_id])).
+        join(questions).on(targets[:id].eq(questions[:target_id])).
+        group(questions[:target_id]).having(questions[:id].count.gt(0))
+
+    trending = not_empty_communities.
         where(communities[:id].not_in(membered_communities).and(communities[:private].eq(false))).
         take(per_page).skip((page - 1) * per_page).project(communities[Arel.star])
+
     find_by_sql(trending)
   }
 
