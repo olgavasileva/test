@@ -126,7 +126,7 @@ RSpec.describe DemographicSummary do
 
             it {expect(hash['INCOME'][:buckets][0][:name]).to eq "$100k+"}
             it {expect(hash['INCOME'][:buckets][0][:percent]).to eq 1/2.0}
-            it {expect(hash['INCOME'][:buckets][1][:name]).to eq "$0-$100k"}
+            it {expect(hash['INCOME'][:buckets][1][:name]).to eq "$0-100k"}
             it {expect(hash['INCOME'][:buckets][1][:percent]).to eq 1/2.0}
 
             it {expect(hash['EDUCATION'][:buckets][0][:name]).to eq "No College"}

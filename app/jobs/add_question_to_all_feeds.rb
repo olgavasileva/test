@@ -9,53 +9,42 @@ class AddQuestionToAllFeeds
   def perform question
     FeedItem::WHY.each do |why|
       users_for_question(question, why).find_each do |user|
-        next if user.feed_items.exists?(question_id: question.id)
-
-        user.feed_items << FeedItem.new(question:question, relevance:question.relevance_to(user), why: why)
-        question.add_and_push_message user unless question.target.public?
+        unless user.feed_items.exists?(question_id: question.id)
+          user.feed_items << FeedItem.new(question:question, relevance:question.relevance_to(user), why: why)
+          question.add_and_push_message user unless question.target.public?
+        end
       end
     end
   end
 
+  # Return an active record relation of users who should get this question in their feed.
+  # No attempt is made here to exclude users who already have the question in their feed.
   def users_for_question question, why
-    ids = case why
+    case why
     when 'public'
-      []
+      question.target.public? ? Respondent.all : Respondent.none
     when 'targeted'
-      []
+      Respondent.none
     when 'leader'
-      []
+      Respondent.none
     when 'follower'
       if question.target.all_followers?
-        question.user.follower_ids
+        question.user.followers
       else
-        question.target.follower_ids
+        question.target.followers
       end
     when 'group'
       if question.target.all_groups?
-        question.user.group_member_ids
+        question.user.group_members
       else
-        question.target.group_member_ids
+        question.target.group_members
       end
     when 'community'
       if question.target.all_communities?
-        question.user.fellow_community_member_ids
+        question.user.fellow_community_members
       else
-        question.target.community_member_ids
+        question.target.community_members
       end
     end
-
-
-    table = FeedItem.table_name
-    query = Respondent.joins <<-SQL.squish
-      LEFT JOIN #{table}
-        ON #{table}.`user_id` = `users`.`id`
-        AND #{table}.`question_id` = #{question.id}
-    SQL
-
-    query = query.where(id: ids) unless question.target.public? && why == 'public'
-
-    join_atts = {FeedItem.table_name => {question_id: nil}}
-    query.where(join_atts).uniq
   end
 end
