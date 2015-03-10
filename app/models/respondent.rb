@@ -166,11 +166,13 @@ class Respondent < ActiveRecord::Base
       question_ids = Question.active.publik.order("created_at DESC").pluck(:id) - feed_items.pluck(:question_id)
       question_ids = question_ids[0..max_to_add-1] unless max_to_add.nil?
 
-      items = []
-      Question.where(id:question_ids).select([:id, :created_at]).each do |q|
-        items << FeedItem.new(user:self, question_id:q.id, published_at:q.created_at, why: "public")
+      Question.where(id:question_ids).select([:id, :created_at]).find_in_batches do |questions|
+        items = []
+        questions.each do |q|
+          items << FeedItem.new(user:self, question_id:q.id, published_at:q.created_at, why: "public")
+        end
+        FeedItem.import items
       end
-      FeedItem.import items
     end
   end
 
