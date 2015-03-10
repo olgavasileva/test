@@ -231,4 +231,8 @@ class UsersController < ApplicationController
         :current_password, :password, :password_confirmation
       )
     end
+
+    def read_all_messages
+      @user.read_all_messages
+    end
 end
