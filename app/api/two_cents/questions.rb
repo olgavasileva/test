@@ -13,6 +13,7 @@ class TwoCents::Questions < Grape::API
         optional :invite_phone_numbers, type: Array, desc: "Phone numbers of people to invite to answer."
         optional :invite_email_addresses, type: Array, desc: "Email addresses of people to invite to answer."
         optional :anonymous, type: Boolean, desc: "Whether question is anonymous"
+        optional :tag_list, type: Array[String], desc: 'An array of tags for the question'
 
         optional :targets, type: Hash do
           optional :all_users, type: Boolean, default: false, desc: "Whether question is targeted at all users."
@@ -139,7 +140,8 @@ class TwoCents::Questions < Grape::API
         description:declared_params[:description],
         rotate:declared_params[:rotate],
         background_image:background_image,
-        anonymous: params[:anonymous]
+        anonymous: params[:anonymous],
+        tag_list: declared_params[:tag_list]
       }
 
       @question = TextChoiceQuestion.new(question_params)
@@ -210,7 +212,8 @@ class TwoCents::Questions < Grape::API
         rotate:declared_params[:rotate],
         min_responses:min_responses,
         max_responses:max_responses,
-        anonymous: params[:anonymous]
+        anonymous: params[:anonymous],
+        tag_list: declared_params[:tag_list]
       }
 
       @question = MultipleChoiceQuestion.new(question_params)
@@ -275,7 +278,8 @@ class TwoCents::Questions < Grape::API
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
-        anonymous: params[:anonymous]
+        anonymous: params[:anonymous],
+        tag_list: declared_params[:tag_list]
       }
 
       @question = ImageChoiceQuestion.new(question_params)
@@ -341,7 +345,8 @@ class TwoCents::Questions < Grape::API
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
-        anonymous: params[:anonymous]
+        anonymous: params[:anonymous],
+        tag_list: declared_params[:tag_list]
       }
 
       @question = OrderQuestion.new(question_params)
@@ -410,7 +415,8 @@ class TwoCents::Questions < Grape::API
         text_type:declared_params[:text_type],
         min_characters:declared_params[:min_characters],
         max_characters:declared_params[:max_characters],
-        anonymous: params[:anonymous]
+        anonymous: params[:anonymous],
+        tag_list: declared_params[:tag_list]
       }
 
       @question = TextQuestion.new(question_params)
@@ -671,6 +677,31 @@ class TwoCents::Questions < Grape::API
       end
     end
 
+    desc 'Search for questions with the given tag.', {
+      notes: <<-END
+        Returns questions tagged with the given tag.
+
+        ### Example Response
+        ```
+        [
+          { question: {...} }, // Same as all other question responses
+          { question: {...} }
+        ]
+        ```
+      END
+    }
+    params do
+      use :auth
+      requires :tag, type: String, desc: 'The tag.'
+      optional :per_page, type: Integer, default: 50, desc: 'The max number of questions per page'
+      optional :page, type: Integer, default: 1, desc: 'The page of questions to return'
+    end
+    get :tagged, jbuilder: 'questions' do
+      validate_user!
+      @questions = Question.tagged_with(declared_params[:tag])
+        .order(created_at: :desc)
+        .paginate(declared_params.slice(:page, :per_page))
+    end
 
 
     desc "Legacy feed request - deprecated - depending on an environment variable, returns a fake question with a title indicating that the app must be upgraded or returns some questions."

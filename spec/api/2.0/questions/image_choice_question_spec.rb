@@ -17,7 +17,19 @@ describe :image_choice_question do
   end
 
   context "With all required params" do
-    let(:params) {{auth_token:auth_token, category_id:category_id, title:title, rotate:rotate, choices:choices, targets: targets, anonymous: anonymous }}
+    let(:params) do
+      {
+        auth_token: auth_token,
+        category_id: category_id,
+        title: title,
+        rotate: rotate,
+        choices: choices,
+        targets: targets,
+        anonymous: anonymous,
+        tag_list: tag_list
+      }
+    end
+
     let(:auth_token) {}
     let(:category_id) {}
     let(:title) {}
@@ -25,6 +37,7 @@ describe :image_choice_question do
     let(:choices) {}
     let(:targets) {}
     let(:anonymous) {}
+    let(:tag_list) { ['test', 'tag'] }
 
     context "With an invalid auth token" do
       let(:auth_token) {"INVALID"}
@@ -70,6 +83,7 @@ describe :image_choice_question do
             expect(q['creator_id']).to eq user.id
             expect(q['creator_name']).to eq user.username
             expect(q['member_community_ids']).to be_an Array
+            expect(q['tags']).to eq(tag_list)
           end
         end
 

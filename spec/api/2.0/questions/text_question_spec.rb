@@ -17,7 +17,21 @@ describe :text_question do
   end
 
   context "With all required params" do
-    let(:params) {{auth_token:auth_token, category_id:category_id, title:title, image_url:image_url, text_type:text_type, min_characters:min_characters, max_characters:max_characters, targets: targets, anonymous: anonymous }}
+    let(:params) do
+      {
+        auth_token: auth_token,
+        category_id: category_id,
+        title: title,
+        image_url: image_url,
+        text_type: text_type,
+        min_characters: min_characters,
+        max_characters: max_characters,
+        targets: targets,
+        anonymous: anonymous,
+        tag_list: tag_list
+      }
+    end
+
     let(:auth_token) {}
     let(:category_id) {}
     let(:title) {}
@@ -27,6 +41,7 @@ describe :text_question do
     let(:max_characters) {}
     let(:targets) {}
     let(:anonymous) {}
+    let(:tag_list) { ['test', 'tag'] }
 
     context "Witout a valid text_type value" do
       it {expect(response.status).to eq 200}
@@ -84,6 +99,7 @@ describe :text_question do
               expect(q['creator_id']).to eq user.id
               expect(q['creator_name']).to eq user.username
               expect(q['member_community_ids']).to be_an Array
+              expect(q['tags']).to eq(tag_list)
             end
           end
 
