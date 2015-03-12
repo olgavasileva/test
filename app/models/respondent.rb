@@ -164,7 +164,7 @@ class Respondent < ActiveRecord::Base
   def append_questions_to_feed! max_to_add = nil
     transaction do
       question_ids = Question.active.publik.order("created_at DESC").pluck(:id) - feed_items.pluck(:question_id)
-      question_ids = question_ids[0..max_to_add-1] unless max_to_add.nil?
+      question_ids = question_ids[0..max_to_add.to_i-1] unless max_to_add.nil?
 
       Question.where(id:question_ids).select([:id, :created_at]).find_in_batches do |questions|
         items = []
