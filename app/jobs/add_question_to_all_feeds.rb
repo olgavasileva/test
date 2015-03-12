@@ -12,11 +12,19 @@ class AddQuestionToAllFeeds
 
   def perform question
     FeedItem::WHY.each do |why|
-      users_for_question(question, why).find_each do |user|
-        unless user.feed_items.exists?(question_id: question.id)
-          user.feed_items << FeedItem.new(question:question, relevance:question.relevance_to(user), why: why)
-          question.add_and_push_message user unless question.target.public?
+      users_for_question(question, why).find_in_batches do |users|
+        items = []
+        users.each do |user|
+          unless user.feed_items.exists?(question_id: question.id)
+            items << FeedItem.new(user: user, question: question, relevance: question.relevance_to(user), why: why)
+          end
         end
+
+        # Batch import
+        FeedItem.import items
+
+        # Once the question is in their feed, push the message to each user (if it's not a public question)
+        users.each {|user| question.add_and_push_message user} unless question.target.public?
       end
     end
   end
