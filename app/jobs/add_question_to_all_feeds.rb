@@ -7,7 +7,7 @@ class AddQuestionToAllFeeds
       self.new.perform(question) if question
     end
 
-    Rails.logger.info "AddQuestionToAllFeeds #{Figaro.env['MAX_QUESTIONS_FOR_NEW_RESPONDENT']}: #{benchmark}"
+    Rails.logger.info "AddQuestionToAllFeeds: #{benchmark}"
   end
 
   def perform question
@@ -17,7 +17,7 @@ class AddQuestionToAllFeeds
           items = []
           users.each do |user|
             unless user.feed_items.exists?(question_id: question.id)
-              items << FeedItem.new(user: user, question: question, relevance: question.relevance_to(user), why: why)
+              items << FeedItem.new(user_id: user.id, question_id: question.id, relevance: question.relevance_to(user), why: why)
             end
           end
 
