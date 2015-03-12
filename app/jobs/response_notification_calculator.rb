@@ -24,6 +24,7 @@
 #   this worker is a multiple of the `expected` value we calculated above.
 #
 class ResponseNotificationCalculator
+  @queue = :notification
 
   DEFAULT_MULTIPLE = 25
 

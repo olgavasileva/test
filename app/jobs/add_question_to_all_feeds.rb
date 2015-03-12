@@ -1,5 +1,5 @@
 class AddQuestionToAllFeeds
-  @queue = :feed
+  @queue = :question
 
   def self.perform question_id
     question = Question.eager_load(:user, :target).find_by(id: question_id)

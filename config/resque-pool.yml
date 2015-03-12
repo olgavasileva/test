@@ -1,0 +1,10 @@
+email: 1
+cron: 1
+notification: 1
+question: 1
+respondent: 1
+
+production:
+  "email,cron,notification": 1
+  question: 2
+  respondent: 2
