@@ -2,8 +2,12 @@ class AddQuestionToAllFeeds
   @queue = :question
 
   def self.perform question_id
-    question = Question.eager_load(:user, :target).find_by(id: question_id)
-    self.new.perform(question) if question
+    benchmark = Benchmark.measure do
+      question = Question.eager_load(:user, :target).find_by(id: question_id)
+      self.new.perform(question) if question
+    end
+
+    Rails.logger.info "AddQuestionToAllFeeds #{Figaro.env['MAX_QUESTIONS_FOR_NEW_RESPONDENT']}: #{benchmark}"
   end
 
   def perform question
