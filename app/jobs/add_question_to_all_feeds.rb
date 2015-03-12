@@ -11,9 +11,9 @@ class AddQuestionToAllFeeds
   end
 
   def perform question
-    transaction do
-      FeedItem::WHY.each do |why|
-        users_for_question(question, why).find_in_batches do |users|
+    FeedItem::WHY.each do |why|
+      users_for_question(question, why).order("users.updated_at DESC").find_in_batches do |users|
+        ActiveRecord::Base.transaction do
           items = []
           users.each do |user|
             unless user.feed_items.exists?(question_id: question.id)
