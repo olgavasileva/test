@@ -1,17 +1,31 @@
 class AddQuestionToAllFeeds
-  @queue = :feed
+  @queue = :question
 
   def self.perform question_id
-    question = Question.eager_load(:user, :target).find_by(id: question_id)
-    self.new.perform(question) if question
+    benchmark = Benchmark.measure do
+      question = Question.eager_load(:user, :target).find_by(id: question_id)
+      self.new.perform(question) if question
+    end
+
+    Rails.logger.info "AddQuestionToAllFeeds: #{benchmark}"
   end
 
   def perform question
     FeedItem::WHY.each do |why|
-      users_for_question(question, why).find_each do |user|
-        unless user.feed_items.exists?(question_id: question.id)
-          user.feed_items << FeedItem.new(question:question, relevance:question.relevance_to(user), why: why)
-          question.add_and_push_message user unless question.target.public?
+      users_for_question(question, why).order("users.updated_at DESC").find_in_batches do |users|
+        ActiveRecord::Base.transaction do
+          items = []
+          users.each do |user|
+            unless user.feed_items.exists?(question_id: question.id)
+              items << FeedItem.new(user_id: user.id, question_id: question.id, relevance: question.relevance_to(user), why: why)
+            end
+          end
+
+          # Batch import
+          FeedItem.import items
+
+          # Once the question is in their feed, push the message to each user (if it's not a public question)
+          users.each {|user| question.add_and_push_message user} unless question.target.public?
         end
       end
     end

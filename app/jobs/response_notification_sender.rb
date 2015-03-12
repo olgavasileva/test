@@ -1,4 +1,6 @@
 class ResponseNotificationSender
+  @queue = :notification
+
   def self.perform(question_id)
     question = Question.find(question_id)
     self.new.perform(question)

@@ -1,5 +1,4 @@
-# config valid only for Capistrano 3.1
-lock '3.3.5'
+lock '3.4.0'
 
 set :application, '2cents'
 set :repo_url, 'git@github.com:FashionPlaytes/twocents.git'
@@ -30,7 +29,7 @@ set :deploy_to, "/app/#{fetch :application}"
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{config/database.yml config/application.yml}
+set :linked_files, %w{config/database.yml config/application.yml config/resque-pool.yml}
 
 # Default value for linked_dirs is []
 set :linked_dirs, %w{log tmp/pids public/uploads}
@@ -60,7 +59,7 @@ namespace :deploy do
 
   task :restart_resque_workers do
     on roles(:app), in: :sequence, wait: 5 do
-      sudo "monit restart all -g resque_workers"
+      sudo "monit restart all -g resque"
     end
   end
 
