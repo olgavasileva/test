@@ -111,6 +111,7 @@
     :options:
       :fields:
         - id
+        - country
         - gender
         - age_range
         - household_income
@@ -126,6 +127,7 @@
     :options:
       :fields:
         - id
+        - country
         - gender
         - age_range
         - household_income

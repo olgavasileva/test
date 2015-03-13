@@ -2,12 +2,14 @@ class DemographicSummary < DemographicBase
   validates :respondent, uniqueness: true
 
   def calculate!
-    respondent.demographics.includes(:data_provider).order("data_providers.priority asc").each do |d|
-      attributes.keys.reject{|attr| attr == 'id'}.each do |attr|
-        self[attr] = d[attr] if self[attr].nil?
+    if respondent
+      respondent.demographics.includes(:data_provider).order("data_providers.priority asc").each do |d|
+        attributes.keys.reject{|attr| attr == 'id'}.each do |attr|
+          self[attr] = d[attr] if self[attr].nil?
+        end
       end
+      save!
     end
-    save!
   end
 
   def self.average_for_label(label)

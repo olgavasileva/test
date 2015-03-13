@@ -125,6 +125,6 @@ class OmniauthController < ActionController::Base
   end
 
   def provider_cookie_domain
-    request.host.gsub(/(app|labs)\./, '')
+    request.host.gsub(/(app|labs|api)\./, '')
   end
 end
