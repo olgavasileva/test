@@ -19,11 +19,13 @@ class EmbeddableUnitsController < ApplicationController
 
   def start_survey
     @question = embeddable_unit.questions.first
+    @question.try :viewed!
     render :question
   end
 
   def survey_question
     @question = embeddable_unit.questions.find(params[:question_id])
+    @question.try :viewed!
     render :question
   end
 
