@@ -1,5 +1,5 @@
 class AddCountryToDemographicSummary < ActiveRecord::Migration
-  def change
+  def up
     add_column :demographic_summaries, :country, :string
     add_index :demographic_summaries, :country
 
