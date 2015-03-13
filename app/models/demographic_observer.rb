@@ -13,6 +13,6 @@ class DemographicObserver < ActiveRecord::Observer
 
   private
     def update_demographic_summary! respondent
-      DemographicSummary.where(respondent: respondent).first_or_create.calculate!
+      DemographicSummary.where(respondent: respondent).first_or_create.calculate! if respondent
     end
 end

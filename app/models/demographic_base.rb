@@ -12,6 +12,8 @@ class DemographicBase < ActiveRecord::Base
   POLITICAL_AFFILIATIONS ||= %w(republican democrat independent)
   POLITICAL_ENGAGEMENTS ||= %w(active somewhat_active inactive)
 
+  before_validation :integrate_geo_data
+
   validates :gender, inclusion: {in: GENDERS, allow_nil: true}
   validates :age_range, inclusion: {in: AGE_RANGES, allow_nil: true}
   validates :household_income, inclusion: {in: HOUSEHOLD_INCOMES, allow_nil: true}
@@ -70,12 +72,16 @@ class DemographicBase < ActiveRecord::Base
     geo && geo.postal.code
   end
 
-  def country
+  def country_code
     geo && geo.country.iso_code
   end
 
 
   private
+
+    def integrate_geo_data
+      self.country = country_code if geo
+    end
 
     def geo
       @geo ||= MaxMind.city_db.lookup ip_address if ip_address

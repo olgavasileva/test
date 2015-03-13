@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150312062459) do
+ActiveRecord::Schema.define(version: 20150313171559) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -197,8 +197,10 @@ ActiveRecord::Schema.define(version: 20150312062459) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "ip_address"
+    t.string   "country"
   end
 
+  add_index "demographic_summaries", ["country"], name: "index_demographic_summaries_on_country", using: :btree
   add_index "demographic_summaries", ["respondent_id"], name: "index_demographic_summaries_on_respondent_id", using: :btree
 
   create_table "demographics", force: true do |t|
@@ -217,8 +219,10 @@ ActiveRecord::Schema.define(version: 20150312062459) do
     t.string   "data_version"
     t.integer  "data_provider_id"
     t.string   "ip_address"
+    t.string   "country"
   end
 
+  add_index "demographics", ["country"], name: "index_demographics_on_country", using: :btree
   add_index "demographics", ["data_provider_id"], name: "index_demographics_on_data_provider_id", using: :btree
 
   create_table "devices", force: true do |t|
