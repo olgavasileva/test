@@ -1,6 +1,8 @@
 class EmbeddableUnitsController < ApplicationController
   layout "embeddable_unit"
 
+  protect_from_forgery with: :null_session
+
   helper_method :next_question_url, :current_embed_user
 
   skip_before_action :authenticate_user!, :find_recent_questions
