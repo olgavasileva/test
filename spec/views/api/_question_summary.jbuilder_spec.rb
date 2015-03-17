@@ -67,6 +67,14 @@ RSpec.describe 'api/_question_summary.jbuilder' do
 
     it { is_expected.to have_json_key(:anonymous).eq(true) }
 
+    context 'and there is no current user' do
+      let(:current_user) { nil }
+      let(:user) { FactoryGirl.build(:user, id: 1) }
+
+      it { is_expected.to_not have_json_key(:creator_id) }
+      it { is_expected.to have_json_key(:creator_name).eq('anonymous') }
+    end
+
     context 'and belongs to the current user' do
       it { is_expected.to have_json_key(:creator_id).eq(user.id) }
       it { is_expected.to have_json_key(:creator_name).eq(user.name) }
