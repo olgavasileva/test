@@ -89,7 +89,7 @@ class DemographicSummary < DemographicBase
 
     def self.age_info question_or_choice, options
       age_info = question_or_choice.responses.joins(:user).joins(:demographic_summary).group("demographic_summaries.age_range")
-      age_info = age_info.where(demographic_summaries: {country: "US"}) if options[:us_only]
+      age_info = age_info.where(demographic_summaries: {country: ["US", "", nil]}) if options[:us_only]
       age_info = age_info.count.except nil
 
       age_count = age_info.values.sum.to_f
@@ -108,7 +108,7 @@ class DemographicSummary < DemographicBase
 
     def self.gender_info question_or_choice, options
       gender_info = question_or_choice.responses.joins(:user).joins(:demographic_summary).group("demographic_summaries.gender")
-      gender_info = gender_info.where(demographic_summaries: {country: "US"}) if options[:us_only]
+      gender_info = gender_info.where(demographic_summaries: {country: ["US", "", nil]}) if options[:us_only]
       gender_info = gender_info.count.except nil
 
       gender_count = gender_info.values.sum.to_f
@@ -123,7 +123,7 @@ class DemographicSummary < DemographicBase
 
     def self.children_info question_or_choice, options
       children_info = question_or_choice.responses.joins(:user).joins(:demographic_summary).group("demographic_summaries.children")
-      children_info = children_info.where(demographic_summaries: {country: "US"}) if options[:us_only]
+      children_info = children_info.where(demographic_summaries: {country: ["US", "", nil]}) if options[:us_only]
       children_info = children_info.count.except nil
 
       children_count = children_info.values.sum.to_f
@@ -138,7 +138,7 @@ class DemographicSummary < DemographicBase
 
     def self.income_info question_or_choice, options
       income_info = question_or_choice.responses.joins(:user).joins(:demographic_summary).group("demographic_summaries.household_income")
-      income_info = income_info.where(demographic_summaries: {country: "US"}) if options[:us_only]
+      income_info = income_info.where(demographic_summaries: {country: ["US", "", nil]}) if options[:us_only]
       income_info = income_info.count.except nil
 
       income_count = income_info.values.sum.to_f
@@ -153,7 +153,7 @@ class DemographicSummary < DemographicBase
 
     def self.education_info question_or_choice, options
       education_info = question_or_choice.responses.joins(:user).joins(:demographic_summary).group("demographic_summaries.education_level")
-      education_info = education_info.where(demographic_summaries: {country: "US"}) if options[:us_only]
+      education_info = education_info.where(demographic_summaries: {country: ["US", "", nil]}) if options[:us_only]
       education_info = education_info.count.except nil
 
       education_count = education_info.values.sum.to_f
@@ -168,7 +168,7 @@ class DemographicSummary < DemographicBase
 
     def self.ethnicity_info question_or_choice, options
       ethnicity_info = question_or_choice.responses.joins(:user).joins(:demographic_summary).group("demographic_summaries.ethnicity")
-      ethnicity_info = ethnicity_info.where(demographic_summaries: {country: "US"}) if options[:us_only]
+      ethnicity_info = ethnicity_info.where(demographic_summaries: {country: ["US", "", nil]}) if options[:us_only]
       ethnicity_info = ethnicity_info.count.except nil
 
       ethnicity_count = ethnicity_info.values.sum.to_f
@@ -185,7 +185,7 @@ class DemographicSummary < DemographicBase
 
     def self.political_affiliation_info question_or_choice, options
       political_affiliation_info = question_or_choice.responses.joins(:user).joins(:demographic_summary).group("demographic_summaries.political_affiliation")
-      political_affiliation_info = political_affiliation_info.where(demographic_summaries: {country: "US"}) if options[:us_only]
+      political_affiliation_info = political_affiliation_info.where(demographic_summaries: {country: ["US", "", nil]}) if options[:us_only]
       political_affiliation_info = political_affiliation_info.count.except nil
 
       { id: "AFFILIATION", name: "Political Affiliation", buckets: []}
@@ -193,7 +193,7 @@ class DemographicSummary < DemographicBase
 
     def self.political_engagement_info question_or_choice, options
       political_engagement_info = question_or_choice.responses.joins(:user).joins(:demographic_summary).group("demographic_summaries.political_engagement")
-      political_engagement_info = political_engagement_info.where(demographic_summaries: {country: "US"}) if options[:us_only]
+      political_engagement_info = political_engagement_info.where(demographic_summaries: {country: ["US", "", nil]}) if options[:us_only]
       political_engagement_info = political_engagement_info.count.except nil
 
       { id: "ENGAGEMENT", name: "Political Engagement", buckets: []}
