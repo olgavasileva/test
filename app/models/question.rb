@@ -75,6 +75,7 @@ class Question < ActiveRecord::Base
   end
 
   before_create :add_creation_score
+  after_validation :force_rotate, on: :create
 
   # Uses squeel gem to make the query easier to write and read
   def self.search_for search_text
@@ -239,5 +240,9 @@ class Question < ActiveRecord::Base
     def add_creation_score
       self.score ||= 0
       self.score += comments.present? ? 1.5 : 1.0
+    end
+
+    def force_rotate
+      self.rotate = true
     end
 end
