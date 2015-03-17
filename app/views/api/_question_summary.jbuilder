@@ -15,7 +15,7 @@ json.start_count @question.start_count.to_i
 json.published_at @question.created_at.to_i
 json.sponsor nil
 
-if !@question.anonymous? || current_user.id == @question.user.id
+if !@question.anonymous? || (current_user && current_user.id == @question.user.id)
   json.creator_id @question.user.id
   json.creator_name @question.user.name
 else
