@@ -167,6 +167,10 @@ class Question < ActiveRecord::Base
 		responses.count
 	end
 
+  def targeted_reach
+    feed_items.where.not(why: :public).count
+  end
+
 	def comment_count
 		comments.count + response_comments.count
 	end
