@@ -147,7 +147,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @demographics = DemographicSummary.aggregate_data_for_question(@question) if @question
+        @demographics = DemographicSummary.aggregate_data_for_question(@question, us_only: true) if @question
         render layout: "pixel_admin"
       end
 
@@ -164,7 +164,7 @@ class UsersController < ApplicationController
   def question_analytics
     if params[:question_id]
       @question = @user.questions.find(params[:question_id])
-      @demographics = DemographicSummary.aggregate_data_for_question(@question)
+      @demographics = DemographicSummary.aggregate_data_for_question(@question, us_only: true)
     end
 
     render layout: false
@@ -175,9 +175,9 @@ class UsersController < ApplicationController
 
     @demographics = if params[:choice_id]
       @choice = @question.choices.find(params[:choice_id])
-      DemographicSummary.aggregate_data_for_choice(@choice)
+      DemographicSummary.aggregate_data_for_choice(@choice, us_only: true)
     else
-      DemographicSummary.aggregate_data_for_question(@question)
+      DemographicSummary.aggregate_data_for_question(@question, us_only: true)
     end
 
     render layout: false
