@@ -1,6 +1,20 @@
 require 'rails_helper'
 
 describe Question do
+
+  describe 'validation' do
+
+    context 'when creating' do
+      let(:question) { Question.new }
+
+      it 'forces rotate to true' do
+        question.rotate = false
+        question.valid?
+        expect(question.rotate).to eq(true)
+      end
+    end
+  end
+
   describe :image_question do
     let(:q) {FactoryGirl.build :image_question}
 
