@@ -50,7 +50,6 @@ class Question < ActiveRecord::Base
   default trending_multiplier: 1
 
 	validates :user, presence: true
-	validates :category, presence: true
 	validates :title, presence: true, length: { maximum: 250 }
 	validates :state, presence: true, inclusion: {in: STATES}
 	validates :kind, inclusion: {in: KINDS}
