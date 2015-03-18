@@ -26,7 +26,7 @@ json.choices question.ordered_choices_for(current_user) do |choice|
 end
 
 json.category do
-  json.(question.category, :id, :name)
+  json.((question.category || Category.find_by(name:"Random") || Category.first), :id, :name)
 end
 
 json.member_community_ids question.user.membership_communities.pluck(:id)
