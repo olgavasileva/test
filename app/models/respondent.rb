@@ -238,6 +238,10 @@ class Respondent < ActiveRecord::Base
     raise NotImplementedError.new("You must implement this method in a subclass")
   end
 
+  def is_pro?
+    false
+  end
+
   private
     def ensure_username
       if username.nil?
