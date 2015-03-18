@@ -3,6 +3,13 @@ require 'rails_helper'
 describe Question do
 
   describe 'validation' do
+    it { is_expected.to allow_value(nil).for(:category_id) }
+
+    it { is_expected.to allow_value(FactoryGirl.create(:category).id)
+          .for(:category_id) }
+
+    it { is_expected.to_not allow_value(787878).for(:category_id)
+          .with_message(/does not exist/, against: :base) }
 
     context 'when creating' do
       let(:question) { Question.new }

@@ -57,6 +57,7 @@ class Question < ActiveRecord::Base
   validates :background_image, presence:true
   validates :trending_multiplier, numericality: { only_integer: true, allow_nil: true }
   validates :trend, presence: true, uniqueness: true
+  validate :category_exists?, if: :category_id?
 
   delegate :web_image_url, to: :background_image
   delegate :device_image_url, to: :background_image
@@ -244,5 +245,11 @@ class Question < ActiveRecord::Base
 
     def force_rotate
       self.rotate = true
+    end
+
+    def category_exists?
+      unless Category.where(id: category_id).exists?
+        errors.add(:base, 'Selected category does not exists')
+      end
     end
 end
