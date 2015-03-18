@@ -6,8 +6,8 @@ class TwoCents::Questions < Grape::API
       end
 
       params :create do
-        requires :category_id, type:Integer, desc:"Category for this question"
         requires :title, type:String, desc:"Title of question to display to the user"
+        optional :category_id, type:Integer, desc: "Category for this question"
         optional :description, type:String, desc:"Description - do we need this?"
 
         optional :invite_phone_numbers, type: Array, desc: "Phone numbers of people to invite to answer."
@@ -124,8 +124,6 @@ class TwoCents::Questions < Grape::API
       fail!(2000, "At least 2 choice must be provided") if declared_params[:choices].count < 2
       fail!(2001, "Not more than 4 choice may be provided") if declared_params[:choices].count > 4
 
-      category = Category.find declared_params[:category_id]
-
       background_image = if URI(declared_params[:image_url]).scheme.nil?
         QuestionImage.create!(image:open(declared_params[:image_url]))
       else
@@ -135,7 +133,7 @@ class TwoCents::Questions < Grape::API
       question_params = {
         state: "active",
         user_id:current_user.id,
-        category_id:category.id,
+        category_id:declared_params[:category_id],
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
@@ -201,12 +199,10 @@ class TwoCents::Questions < Grape::API
       fail!(2003, "min_responses must be less than or equal to the number of choices") unless min_responses <= num_choices
       fail!(2004, "max_responses must be greater than or equal to min_responses") unless max_responses >= min_responses
 
-      category = Category.find declared_params[:category_id]
-
       question_params = {
         state: "active",
         user_id:current_user.id,
-        category_id:category.id,
+        category_id:declared_params[:category_id],
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
@@ -269,12 +265,10 @@ class TwoCents::Questions < Grape::API
       num_choices = declared_params[:choices].count
       fail!(2002, "The number of choices must be between 2 and 4") unless (2..4).include?(num_choices)
 
-      category = Category.find declared_params[:category_id]
-
       question_params = {
         state: "active",
         user_id:current_user.id,
-        category_id:category.id,
+        category_id:declared_params[:category_id],
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
@@ -336,12 +330,10 @@ class TwoCents::Questions < Grape::API
       num_choices = declared_params[:choices].count
       fail!(2002, "The number of choices must be between 2 and 4") unless (2..4).include?(num_choices)
 
-      category = Category.find declared_params[:category_id]
-
       question_params = {
         state: "active",
         user_id:current_user.id,
-        category_id:category.id,
+        category_id:declared_params[:category_id],
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
@@ -408,7 +400,7 @@ class TwoCents::Questions < Grape::API
       question_params = {
         state: "active",
         user_id:current_user.id,
-        category_id:category.id,
+        category_id:declared_params[:category_id],
         title:declared_params[:title],
         background_image:background_image,
         description:declared_params[:description],
