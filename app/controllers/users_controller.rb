@@ -6,6 +6,8 @@ class UsersController < ApplicationController
   before_action :load_and_authorize_user, except: [:profile]
   before_action :set_sample_data,
     only: [:analytics, :question_analytics, :demographics]
+  before_action :find_question,
+    only: [:analytics, :question_analytics, :demographics]
 
   def profile
     @user = current_user
@@ -141,10 +143,6 @@ class UsersController < ApplicationController
   end
 
   def analytics
-    if params[:question_id]
-      @question = @user.questions.find(params[:question_id])
-    end
-
     respond_to do |format|
       format.html do
         @demographics = DemographicSummary.aggregate_data_for_question(@question, us_only: true) if @question
@@ -162,31 +160,38 @@ class UsersController < ApplicationController
   end
 
   def question_analytics
-    if params[:question_id]
-      @question = @user.questions.find(params[:question_id])
-      @demographics = DemographicSummary.aggregate_data_for_question(@question, us_only: true)
-    end
+    @demographics = DemographicSummary.aggregate_data_for_question(@question, us_only: true) if @question
 
     render layout: false
   end
 
   def demographics
-    @question = @user.questions.find(params[:question_id])
+    if @question
+      @demographics = if params[:choice_id]
+        @choice = @question.choices.find(params[:choice_id])
+        DemographicSummary.aggregate_data_for_choice(@choice, us_only: true)
+      else
+        DemographicSummary.aggregate_data_for_question(@question, us_only: true)
+      end
 
-    @demographics = if params[:choice_id]
-      @choice = @question.choices.find(params[:choice_id])
-      DemographicSummary.aggregate_data_for_choice(@choice, us_only: true)
+      render layout: false
     else
-      DemographicSummary.aggregate_data_for_question(@question, us_only: true)
+      render text: "Question Not Accessable"
     end
-
-    render layout: false
   end
 
+  # search "any question" where "any question" is defined as any public question that is
+  # not created by a user that is marked "Pro"
+  # or any question owned by the current pro user
   def question_search
     search_term = params[:term]
-    questions = @user.questions.where("title like ?", "%#{search_term}%").select([:id, :title])
-    response = questions.map{|q| {id:q.id, title:q.title, load_url:view_context.question_analytics_user_url(@user, question_id:q)}}
+
+    my_questions = @user.questions.select([:id, :title, :user_id]).where("title like ?", "%#{search_term}%")
+    public_non_pro_questions = Question.publik.select([:id, :title, :user_id]).where("title like ?", "%#{search_term}%").limit(200).select{|q| !q.user.is_pro?}
+
+    questions = my_questions + public_non_pro_questions
+
+    response = questions.map{|q| {id:q.id, title:q.title, load_url:view_context.question_analytics_user_url(@user, question_id:q)}}.sort{|a,b| a[:title] <=> b[:title]}
     render json:response
   end
 
@@ -223,6 +228,13 @@ class UsersController < ApplicationController
     def set_sample_data
       session[:use_sample_demographics_data] = params[:sample].to_s.true? if params[:sample]
       DemographicSummary.use_sample_data = session[:use_sample_demographics_data]
+    end
+
+    def find_question
+      @question = if params[:question_id]
+        candidate = Question.find_by(id: params[:question_id])
+        candidate if candidate.user == @user || (candidate.public? && !candidate.user.is_pro?)
+      end
     end
 
     def user_params

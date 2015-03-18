@@ -57,6 +57,11 @@ class User < Respondent
     username == 'anonymous'
   end
 
+  # override superclass using underlying rolify method
+  def is_pro?
+    has_role? :pro
+  end
+
   # Enable saving users without a password if they have another authenication scheme
   def password_required?
     (authentications.empty? || !password.blank?) && super
