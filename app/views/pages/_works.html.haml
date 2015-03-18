@@ -15,8 +15,9 @@
               .floating-question-title
                 %span=question.title
               .icon
-                = responsive_image_tag question.category.icon.web.url
-                %small.category= question.category.name
+                - if question.category
+                  = responsive_image_tag question.category.icon.web.url
+                  %small.category= question.category.name
               .icon2
                 Answered
                 %hr
