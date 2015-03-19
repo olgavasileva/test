@@ -86,6 +86,11 @@ RSpec.describe EmbeddableUnitsController do
   end
 
   describe '#POST quantcast' do
+    before do
+      allow_any_instance_of(DemographicObserver).to receive(:after_create)
+        .and_return(nil)
+    end
+
     let(:user) { FactoryGirl.create(:user) }
     let(:data) { JSON.dump(%w{D T 50086 50084 50082 50076 50075 50074 50072 50062 50060 50059 50058 50057 50056 50054}.map{|h|{id: h}}) }
     subject { post :quantcast, embeddable_unit_uuid: unit.uuid, quantcast: data }

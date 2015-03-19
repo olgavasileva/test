@@ -1,6 +1,8 @@
 FactoryGirl.define do
   factory :survey do
 
+    name 'Soda Pop Questionaire'
+
     trait :embeddable do
       after(:create) do |survey|
         survey.questions = FactoryGirl.create_list(:image_choice_question, 2)
