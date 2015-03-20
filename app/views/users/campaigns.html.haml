@@ -21,7 +21,6 @@
         %th Creation Date
         %th Start / Stop Campaign
         %th Views
-        %th Targeted Reach
         %th Completes
         %th
     %tbody
@@ -31,10 +30,5 @@
           %td=q.created_at
           %td.text-center=check_box_tag "question[currently_targetable]", q.id, q.currently_targetable?, class:%w(switcher switcher-success), data:{active_switcher:true, url:update_targetable_question_path(q)}
           %td.text-right=q.view_count
-          -if q.targeted_reach.to_i > 0
-            %td.text-right=q.targeted_reach
-          -else
-            %td.text-center
-              &mdash;
           %td.text-right=q.response_count
           %td=link_to "Analytics", analytics_user_path(@user, q)

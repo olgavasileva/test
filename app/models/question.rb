@@ -170,15 +170,13 @@ class Question < ActiveRecord::Base
 
   # TODO Calculate targeted reach based on actual views of the targeted question
   def targeted_reach
-    view_count.to_i - viral_reach
+    response_count = respondents.count
+
+    response_count > 0 ? (view_count.to_i * respondents.where(type:'User').count.to_f / response_count).to_i : 0
   end
 
   def viral_reach
-    [0, view_count.to_i - potential_targeted_reach.to_i].max
-  end
-
-  def potential_targeted_reach
-    feed_items.where.not(why: :public).count
+    view_count.to_i - targeted_reach
   end
 
 	def comment_count
