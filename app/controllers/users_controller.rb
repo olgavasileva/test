@@ -150,11 +150,11 @@ class UsersController < ApplicationController
       end
 
       format.csv do
-        send_data DemographicCSV.export(@question)
+        send_data DemographicCSV.export(@question, us_only: true)
       end
 
       format.text do
-        render text: DemographicCSV.export(@question)
+        render text: DemographicCSV.export(@question, us_only: true)
       end
     end
   end

@@ -1,4 +1,4 @@
-class DemographicCSV < Struct.new(:question)
+class DemographicCSV < Struct.new(:question, :options)
 
   DEMOGRAPHICS = {
     gender: 'Gender',
@@ -18,8 +18,8 @@ class DemographicCSV < Struct.new(:question)
     country: 'Country'
   }.freeze
 
-  def self.export(question)
-    csv = self.new(question)
+  def self.export(question, options = {})
+    csv = self.new(question, options)
     csv.to_csv
   end
 
@@ -54,15 +54,17 @@ class DemographicCSV < Struct.new(:question)
     question.responses.each do |response|
       respondent = response.user
       demographic = respondent.demographic_summary
-      line = [nil]
-      line += if demographic
-        DEMOGRAPHICS.map{|key,label| demographic.send key}
-      else
-        Array.new(DEMOGRAPHICS.keys.count)
-      end
-      line += response.csv_data
+      unless options[:us_only] && demographic.country != "US"
+        line = [nil]
+        line += if demographic
+          DEMOGRAPHICS.map{|key,label| demographic.send key}
+        else
+          Array.new(DEMOGRAPHICS.keys.count)
+        end
+        line += response.csv_data
 
-      csv << line
+        csv << line
+      end
     end
   end
 
@@ -90,17 +92,22 @@ class DemographicCSV < Struct.new(:question)
     respondent = comment.user
     demographic = respondent.demographic_summary
 
-    line = [comment.body]
-    line += if demographic
-      DEMOGRAPHICS.map{|key,label| demographic.send key}
-    else
-      Array.new(DEMOGRAPHICS.keys.count)
+    lines = []
+
+    unless options[:us_only] && demographic && demographic.country != "US"
+      line = [comment.body]
+      line += if demographic
+        DEMOGRAPHICS.map{|key,label| demographic.send key}
+      else
+        Array.new(DEMOGRAPHICS.keys.count)
+      end
+
+      lines << line
+      comment.comments.find_each do |c|
+        lines += comment_lines c
+      end
     end
 
-    lines = [line]
-    comment.comments.find_each do |c|
-      lines += comment_lines c
-    end
     lines
   end
 
