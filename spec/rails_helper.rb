@@ -58,6 +58,10 @@ RSpec.configure do |config|
 
   config.include Requests::JsonHelpers, type: :request
 
+  config.before(:each, type: :view) do
+    view.lookup_context.prefixes << "api"
+  end
+
   config.before(:each) do
     mock_montage = instance_double("Magick::ImageList", write:nil)
     allow(Magick::ImageList).to receive_message_chain(:new, :montage => mock_montage)
