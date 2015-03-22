@@ -95,6 +95,7 @@ describe :order_question do
 
         it_behaves_like :uses_targets
         it_behaves_like :uses_anonymous
+        it_behaves_like :uses_survey
       end
     end
   end

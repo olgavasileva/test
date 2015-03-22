@@ -58,3 +58,15 @@ shared_examples :uses_anonymous do
     end
   end
 end
+
+shared_examples :uses_survey do
+  let(:survey) { FactoryGirl.create(:survey, user: user) }
+  let(:before_api_call) { params.merge!(survey_id: survey.id) }
+
+  context 'given a survey_id' do
+    it 'assigns the question to the survey' do
+      question_id = JSON.parse(response.body)['question']['id']
+      expect(survey.reload.question_ids).to include(question_id)
+    end
+  end
+end

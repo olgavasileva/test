@@ -9,6 +9,7 @@ class TwoCents::Questions < Grape::API
         requires :title, type:String, desc:"Title of question to display to the user"
         optional :category_id, type:Integer, desc: "Category for this question"
         optional :description, type:String, desc:"Description - do we need this?"
+        optional :survey_id, type: Integer, desc: "Survey to add this question to. Must be a survey the user created."
 
         optional :invite_phone_numbers, type: Array, desc: "Phone numbers of people to invite to answer."
         optional :invite_email_addresses, type: Array, desc: "Email addresses of people to invite to answer."
@@ -134,6 +135,7 @@ class TwoCents::Questions < Grape::API
         state: "active",
         user_id:current_user.id,
         category_id:declared_params[:category_id],
+        survey_id: declared_params[:survey_id],
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
@@ -203,6 +205,7 @@ class TwoCents::Questions < Grape::API
         state: "active",
         user_id:current_user.id,
         category_id:declared_params[:category_id],
+        survey_id: declared_params[:survey_id],
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
@@ -269,6 +272,7 @@ class TwoCents::Questions < Grape::API
         state: "active",
         user_id:current_user.id,
         category_id:declared_params[:category_id],
+        survey_id: declared_params[:survey_id],
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
@@ -334,6 +338,7 @@ class TwoCents::Questions < Grape::API
         state: "active",
         user_id:current_user.id,
         category_id:declared_params[:category_id],
+        survey_id: declared_params[:survey_id],
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
@@ -401,6 +406,7 @@ class TwoCents::Questions < Grape::API
         state: "active",
         user_id:current_user.id,
         category_id:declared_params[:category_id],
+        survey_id: declared_params[:survey_id],
         title:declared_params[:title],
         background_image:background_image,
         description:declared_params[:description],
@@ -495,9 +501,6 @@ class TwoCents::Questions < Grape::API
         q.viewed!
       end
     end
-
-
-
 
     desc "Get trending (popular) questions for a user to answer", {
       notes: <<-END
