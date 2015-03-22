@@ -8,7 +8,7 @@ RSpec.describe DemographicSummary do
 
     it 'builds a demographics hash' do
       expect(DemographicSummary).to receive(:aggregate_data_for)
-        .with(question)
+        .with(question, {})
         .and_return(example: 'data')
 
       hash = DemographicSummary.aggregate_data_for_question(question)
@@ -157,7 +157,7 @@ RSpec.describe DemographicSummary do
 
     it 'builds a demographics hash' do
       expect(DemographicSummary).to receive(:aggregate_data_for)
-        .with(choice)
+        .with(choice, {})
         .and_return(example: 'data')
 
       hash = DemographicSummary.aggregate_data_for_choice(choice)
