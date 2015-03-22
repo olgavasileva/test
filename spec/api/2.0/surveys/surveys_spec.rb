@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe TwoCents::Surveys do
+RSpec.describe TwoCents::Surveys, '/surveys' do
   before(:all) { @auth = FactoryGirl.create(:instance, :logged_in) }
   after(:all) { @auth.destroy! }
 

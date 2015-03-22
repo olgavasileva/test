@@ -7,7 +7,11 @@ class QuestionsSurvey < ActiveRecord::Base
   after_save :update_question_state
 
   private
-    def update_question_state
-      question.update_attributes state: "survey_only"
-    end
+
+  def update_question_state
+    question.update_columns({
+      state: 'survey_only',
+      updated_at: Time.zone.now
+    })
+  end
 end

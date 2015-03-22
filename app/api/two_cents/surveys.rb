@@ -20,6 +20,10 @@ module TwoCents
         requires :uuid, type: String, desc: 'The EmbeddableUnit uuid.'
       end
 
+      params :question_id do |opts|
+        requires :question_id, type: Integer, desc: 'The question id.'
+      end
+
       params :embeddable_unit do |opts|
         type = opts[:type] || :optional
         requires :embeddable_unit, type: Hash do
@@ -45,6 +49,10 @@ module TwoCents
 
       def load_embeddable_unit!
         embeddable_unit_scope.find_by!(uuid: params[:uuid])
+      end
+
+      def question_atts
+        {question_id: declared_params[:question_id]}
       end
     end
 
@@ -130,9 +138,12 @@ module TwoCents
           status 204
         end
 
+        # ----------------------------------------------------------------------
+        # Survey -> Embeddable Units
+        #
         resource :units do
 
-          # ----------------------------------------------------------------------
+          # --------------------------------------------------------------------
           # Embeddable Units: Create
           #
           desc 'Create an embeddable unit', {
@@ -213,6 +224,54 @@ module TwoCents
               validate_user!
               unit = load_embeddable_unit!
               unit.destroy!
+              status 204
+            end
+          end
+        end
+
+        # ----------------------------------------------------------------------
+        # Survey -> Questions
+        #
+        resource :questions do
+          route_param :question_id do
+
+            # ------------------------------------------------------------------
+            # Questions: Add
+            #
+            desc 'Adds a question to the survey.', {
+              notes: "Returns a `204 No Content` on success"
+            }
+            params do
+              use :auth
+              use :survey_id
+              use :question_id
+            end
+            post '/' do
+              validate_user!
+              survey = load_survey!
+              # Load the question through the user to ensure its the same user
+              # as the survey.... only reason we're making the query here
+              question = current_user.questions.find(params[:question_id])
+              query = survey.questions_surveys.where(question: question)
+              query.first_or_create!
+              status 204
+            end
+
+            # ------------------------------------------------------------------
+            # Questions: Remove
+            #
+            desc 'Removes a question from the survey.', {
+              notes: "Returns a `204 No Content` on success"
+            }
+            params do
+              use :auth
+              use :survey_id
+              use :question_id
+            end
+            delete '/' do
+              validate_user!
+              survey = load_survey!
+              survey.questions_surveys.where(question_atts).delete_all
               status 204
             end
           end
