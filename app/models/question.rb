@@ -11,6 +11,10 @@ class Question < ActiveRecord::Base
   belongs_to :background_image, class_name: "QuestionImage"
   belongs_to :trend
 
+  # Attribute that allows questions to be added to surveys
+  attr_accessor :survey_id
+  has_one :questions_survey, dependent: :destroy
+
 	has_many :inclusions, dependent: :destroy
 	has_many :packs, through: :inclusions
 	has_many :sharings, dependent: :destroy
@@ -57,6 +61,7 @@ class Question < ActiveRecord::Base
   validates :trending_multiplier, numericality: { only_integer: true, allow_nil: true }
   validates :trend, presence: true, uniqueness: true
   validate :category_exists?, if: :category_id?
+  validate :can_add_survey?, if: 'survey_id.present?'
 
   delegate :web_image_url, to: :background_image
   delegate :device_image_url, to: :background_image
@@ -74,8 +79,9 @@ class Question < ActiveRecord::Base
     "Q"+UUID.new.generate.gsub(/-/, '')
   end
 
-  before_create :add_creation_score
   after_validation :force_rotate, on: :create
+  before_create :add_creation_score
+  after_create :add_to_survey, if: 'survey_id.present?'
 
   # Uses squeel gem to make the query easier to write and read
   def self.search_for search_text
@@ -248,5 +254,19 @@ class Question < ActiveRecord::Base
       unless Category.where(id: category_id).exists?
         errors.add(:base, 'Selected category does not exists')
       end
+    end
+
+    def can_add_survey?
+      if survey = Survey.find_by(id: survey_id)
+        unless user_id == survey.user_id
+          errors.add(:survey_id, "is unauthorized for this user")
+        end
+      else
+        errors.add(:base, "Survey does not exist")
+      end
+    end
+
+    def add_to_survey
+      create_questions_survey!(survey_id: survey_id)
     end
 end

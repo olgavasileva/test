@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe 'views/api/survey.jbuilder' do
 
   before(:all) do
-    @survey = FactoryGirl.create(:embeddable_survey)
-    @unit = FactoryGirl.create(:embeddable_unit, survey: @survey)
+    @unit = FactoryGirl.create(:embeddable_unit)
+    @survey = @unit.survey
   end
 
   after(:all) do

@@ -2,6 +2,8 @@ require 'rails_helper'
 
 describe Question do
 
+  it { is_expected.to have_one(:questions_survey).dependent(:destroy) }
+
   describe 'validation' do
     it { is_expected.to allow_value(nil).for(:category_id) }
 
@@ -18,6 +20,45 @@ describe Question do
         question.rotate = false
         question.valid?
         expect(question.rotate).to eq(true)
+      end
+    end
+
+    context 'for survey_id' do
+      let(:user) { FactoryGirl.create(:user) }
+      let(:survey_user) { user }
+      let(:survey) { FactoryGirl.create(:survey, user: survey_user) }
+
+      subject { Question.new(user: user) }
+
+      context 'when the survey does not exists' do
+        it { is_expected.to_not allow_value(99999).for(:survey_id)
+              .with_message(/Survey does not exist/, against: :base) }
+      end
+
+      context 'when the user owns the survey' do
+        it { is_expected.to allow_value(survey.id).for(:survey_id) }
+      end
+
+      context 'when the user does not own the survey' do
+        let(:survey_user) { FactoryGirl.create(:user) }
+        it { is_expected.to_not allow_value(survey.id).for(:survey_id)
+              .with_message(/is unauthorized for this user/) }
+      end
+    end
+  end
+
+  describe 'creating' do
+    context 'when a valid :survey_id is present' do
+      let!(:user) { FactoryGirl.create(:user) }
+      let!(:survey)  { FactoryGirl.create(:survey, user: user) }
+
+      let(:question) do
+        FactoryGirl.build(:question, user: user, survey_id: survey.id)
+      end
+
+      it 'creates a QuestionsSurvey record' do
+        expect{question.save!}.to change(QuestionsSurvey, :count).by(1)
+        expect(question.questions_survey).to be_present
       end
     end
   end
