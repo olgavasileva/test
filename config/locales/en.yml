@@ -43,3 +43,7 @@ en:
       instance_required: Instance token required
       missing_user: No user to login or promote
       process_error: There was an error processing the authentication
+
+  errors:
+    messages:
+      must_exist: record must exists

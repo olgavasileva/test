@@ -5,7 +5,7 @@ RSpec.describe TwoCents::Surveys do
   after(:all) { @auth.destroy! }
 
   let(:auth) { @auth }
-  let(:survey) { FactoryGirl.create(:survey) }
+  let(:survey) { FactoryGirl.create(:survey, user: auth.user) }
 
   describe 'POST /surveys/:survey_id/units' do
     let(:params) do

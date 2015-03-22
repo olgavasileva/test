@@ -898,7 +898,10 @@ ActiveRecord::Schema.define(version: 20150323161613) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id",    null: false
   end
+
+  add_index "surveys", ["user_id"], name: "index_surveys_on_user_id", using: :btree
 
   create_table "taggings", force: true do |t|
     t.integer  "tag_id"

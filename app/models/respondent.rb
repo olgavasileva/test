@@ -71,6 +71,9 @@ class Respondent < ActiveRecord::Base
 
   default auto_feed: true
 
+  has_many :surveys, foreign_key: :user_id
+  has_many :embeddable_units, through: :surveys
+
   VALID_USERNAME_REGEX ||= /\A[a-z0-9\-_]{4,50}\z/i
   validates :username,
               presence: true,

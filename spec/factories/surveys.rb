@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :survey do
+    association :user
 
     name 'Soda Pop Questionaire'
 

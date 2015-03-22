@@ -20,7 +20,7 @@ module TwoCents
         requires :uuid, type: String, desc: 'The EmbeddableUnit uuid.'
       end
 
-      params :unit do |opts|
+      params :embeddable_unit do |opts|
         type = opts[:type] || :optional
         requires :embeddable_unit, type: Hash do
           optional :width, type: Integer, desc: 'The width for the embed'
@@ -31,13 +31,20 @@ module TwoCents
         end
       end
 
+      def survey_scope
+        current_user.surveys
+      end
+
       def load_survey!
-        Survey.find(params[:survey_id])
+        survey_scope.find(params[:survey_id])
+      end
+
+      def embeddable_unit_scope
+        current_user.embeddable_units
       end
 
       def load_embeddable_unit!
-        finders = {uuid: params[:uuid], survey_id: params[:survey_id]}
-        EmbeddableUnit.find_by!(finders)
+        embeddable_unit_scope.find_by!(uuid: params[:uuid])
       end
     end
 
@@ -55,7 +62,7 @@ module TwoCents
       end
       post '/', jbuilder: 'survey', http_codes: [] do
         validate_user!
-        @survey = Survey.create!(declared_params[:survey])
+        @survey = survey_scope.create!(declared_params[:survey])
       end
 
       route_param :survey_id do
@@ -70,7 +77,9 @@ module TwoCents
             ```
             {
               "survey": {
+                "id": 1,
                 "name": "Soda Pop Questionaire",
+                "user_id": 1,
                 "quesitons": [], // Array of questions,
                 "embeddable_units": [] // See GET /surveys/:survey_id/units/:uuid
               }
@@ -132,7 +141,7 @@ module TwoCents
           params do
             use :auth
             use :survey_id
-            use :unit, type: :requires
+            use :embeddable_unit, type: :requires
           end
           post '/', jbuilder: 'embeddable_unit' do
             validate_user!
@@ -181,7 +190,7 @@ module TwoCents
               use :auth
               use :survey_id
               use :unit_uuid
-              use :unit, type: :optional
+              use :embeddable_unit, type: :optional
             end
             put '/', jbuilder: 'embeddable_unit' do
               validate_user!

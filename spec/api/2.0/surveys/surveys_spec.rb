@@ -22,7 +22,7 @@ RSpec.describe TwoCents::Surveys do
   end
 
   describe 'GET /surveys/:survey_id' do
-    let(:survey) { FactoryGirl.create(:survey) }
+    let(:survey) { FactoryGirl.create(:survey, user: auth.user) }
 
     let(:params) do
       {
@@ -41,7 +41,7 @@ RSpec.describe TwoCents::Surveys do
   end
 
   describe 'PUT /surveys/:survey_id' do
-    let(:survey) { FactoryGirl.create(:survey) }
+    let(:survey) { FactoryGirl.create(:survey, user: auth.user) }
 
     let(:params) do
       {
@@ -58,7 +58,7 @@ RSpec.describe TwoCents::Surveys do
   end
 
   describe 'DELETE /surveys/:survey_id' do
-    let(:survey) { FactoryGirl.create(:survey) }
+    let(:survey) { FactoryGirl.create(:survey, user: auth.user) }
 
     let(:params) { {auth_token: auth.auth_token} }
 
