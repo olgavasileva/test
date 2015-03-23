@@ -991,6 +991,52 @@ class TwoCents::Questions < Grape::API
       @demographic_required = current_user.quantcast_demographic_required?
     end
 
+    desc "Submit a response to question as a new anonymous user", {
+      notes: <<-END
+        Use this API to submit a response to a question as a new anonymous user.
+        The new user will not get a feed and this API will always create a new user.
+        Supply a redirect_url to have the user redirected after the response is saved.
+      END
+    }
+    params do
+      requires :question_id, type: Integer, desc: 'Question this is a response to'
+
+      requires :source, type: String, values:%w(web embeddable ios android), desc: 'Source of this response: web, embeddable, ios, android'
+
+      optional :text, type: String, desc: 'What the user typed when responding to a TextQuestion'
+      optional :choice_id, type: Integer, desc: 'The single choice selected in a TextChoiceQuestion or ImageChoiceQuestion'
+      optional :choice_ids, type: Array, desc: 'The choices selected in a MultipleChoiceQuestion or ordered by an OrderQuestion'
+      mutually_exclusive :text, :choice_id, :choice_ids
+
+      optional :redirect_url, type: String, desc: 'Where to redirect the browser after processing the response'
+    end
+    get 'anonymous_response', http_codes:[
+      [200, "400 - Invalid params"],
+      [200, "401 - Couldn't find Question"],
+    ] do
+      anonymous_user! auto_feed: false
+      @question = Question.find declared_params[:question_id]
+
+      resp_param_keys = %w[text choice_id choice_ids source]
+      resp_params = params.to_h.slice(*resp_param_keys)
+      resp_params['user_id'] = current_user.id
+
+      response = @question.responses.new resp_params
+      response.user_ip = request.env['REMOTE_ADDR'] if response.kind_of? TextResponse
+
+      if response.is_a?(TextResponse) && response.spam?
+        fail! 200, "400 - Invalid params"
+      else
+        response.save!
+      end
+
+      if declared_params[:redirect_url]
+        redirect declared_params[:redirect_url]
+      else
+        {}
+      end
+    end
+
 
     #
     # Obtain summary information about a question

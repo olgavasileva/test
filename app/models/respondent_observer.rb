@@ -1,7 +1,7 @@
 class RespondentObserver < ActiveRecord::Observer
   def after_create respondent
     # New users get all the public questions for their feed
-    update_feed! respondent
+    update_feed! respondent if respondent.auto_feed?
 
     # Add a statisfy demographic record if they provided us with some data
     update_demographics! respondent

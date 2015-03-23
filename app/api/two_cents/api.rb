@@ -50,6 +50,10 @@ class TwoCents::API < Grape::API
       ENV['COMPATIBLE_APP_VERSION'].blank? || app_version == ENV['COMPATIBLE_APP_VERSION']
     end
 
+    def anonymous_user! options = {}
+      @current_user = Anonymous.create! options
+    end
+
     def current_user
       @current_user ||= if params[:auth_token]
         @instance = Instance.find_by auth_token:params[:auth_token]

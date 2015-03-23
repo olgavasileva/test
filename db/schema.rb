@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150317011806) do
+ActiveRecord::Schema.define(version: 20150323161613) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -994,6 +994,7 @@ ActiveRecord::Schema.define(version: 20150317011806) do
     t.string   "type",                      default: "User"
     t.integer  "push_on_question_asked",    default: -1
     t.integer  "push_on_question_answered", default: -1
+    t.boolean  "auto_feed",                 default: true
   end
 
   add_index "users", ["email"], name: "index_users_on_email", using: :btree

@@ -69,6 +69,8 @@ class Respondent < ActiveRecord::Base
 
   belongs_to :avatar, class_name: "UserAvatar", foreign_key: :user_avatar_id
 
+  default auto_feed: true
+
   VALID_USERNAME_REGEX ||= /\A[a-z0-9\-_]{4,50}\z/i
   validates :username,
               presence: true,
