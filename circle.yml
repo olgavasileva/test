@@ -1,0 +1,19 @@
+machine:
+  timezone: UTC
+
+checkout:
+  post:
+    - mv ./config/application.yml.example ./config/application.yml
+    - mkdir -p tmp
+
+dependencies:
+  cache_directories:
+    - geoip
+
+  pre:
+    - bundle config build.nokogiri --use-system-libraries
+    - bash ./circleci/install_geoip.sh
+
+test:
+  override:
+    - bundle exec rspec spec --format progress --color --order random
