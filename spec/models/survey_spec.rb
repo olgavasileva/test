@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Survey do
 
   it { is_expected.to belong_to(:user).class_name('Respondent') }
+  it { is_expected.to have_many(:embeddable_units).dependent(:destroy) }
 
   describe 'validations' do
     context 'for user' do
