@@ -6,6 +6,12 @@ else
 end
 json.creator_id question.user.id
 json.creator_name question.user.username
+if question.user.avatar
+  json.creator_avatar_url question.user.avatar.image_url
+else
+  json.creator_avatar_url gravatar_url(question.user.email, default: :identicon)
+end
+
 json.created_at question.created_at.to_i
 json.tags question.tag_list
 
