@@ -31,8 +31,17 @@ ActiveAdmin.register User do
   member_action :reset, method: :delete do
     user = User.find params[:id]
     user.reset_feed!
-
     redirect_to admin_users_path, notice: "Feed has been reset for #{user.username}."
+  end
+
+  member_action :delete_authentication, method: :delete do
+    user = Respondent.find(params[:id])
+    if params[:auth_id] && auth = user.authentications.find_by(id: params[:auth_id])
+      auth.destroy!
+      redirect_to admin_user_path(user), notice: 'Authentication deleted.'
+    else
+      redirect_to admin_user_path(user), warning: 'Nothing to delete.'
+    end
   end
 
   filter :email
@@ -52,17 +61,42 @@ ActiveAdmin.register User do
   end
 
   show do |u|
-    attributes_table do
-      row :email
-      row :roles do
-        u.roles.map{|r|r.name}.join ", "
+    columns do
+      column span: 3 do
+        attributes_table do
+          row :email
+          row :roles do
+            u.roles.map{|r|r.name}.join ", "
+          end
+          rows :current_sign_in_at, :sign_in_count, :created_at
+          row :push_tokens do
+            simple_format u.instances.where("push_token is not NULL").order("updated_at DESC").map{|i| "#{time_ago_in_words i.updated_at} ago: #{i.push_token}"}.join("\n")
+          end
+          row :studio_creation_links do
+            Studio.all.map{|studio| link_to(studio.name, new_user_scene_path(u, studio_id:studio), target: :blank)}.join(", ").html_safe
+          end
+        end
       end
-      rows :current_sign_in_at, :sign_in_count, :created_at
-      row :push_tokens do
-        simple_format u.instances.where("push_token is not NULL").order("updated_at DESC").map{|i| "#{time_ago_in_words i.updated_at} ago: #{i.push_token}"}.join("\n")
-      end
-      row :studio_creation_links do
-        Studio.all.map{|studio| link_to(studio.name, new_user_scene_path(u, studio_id:studio), target: :blank)}.join(", ").html_safe
+
+      column span: 2 do
+        panel "Social Providers" do
+          if u.authentications.size > 0
+            table_for u.authentications do
+              column(:provider) { |auth| auth.provider.humanize }
+              column :created_at
+              column :updated_at
+              column :actions do |auth|
+                path = delete_authentication_admin_user_path(u, auth_id: auth.id)
+                link_to 'Delete', path, {
+                  method: :delete,
+                  data: {confirm: "Are you sure you want to delete this provider?"}
+                }
+              end
+            end
+          else
+            text_node "This user has not connected any social providers"
+          end
+        end
       end
     end
   end
