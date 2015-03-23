@@ -1,31 +1,65 @@
 class TwoCents::Profile < Grape::API
   resource :profile do
     desc "Return the profile of current user", {
-      notes: <<-END
+      notes: <<-NOTES
         This API will return the profile of current user.
 
-              #### Example response
+        #### Example Response: Public
+        ```
+        {
+          "profile": {
+              "username": "Endre",
+              "user_id": "1",
+              "email": "endre1234@gmail.com",
+              "member_since": "2014-08-26T10:04:03+00:00",
+              "number_of_answered_questions": "1",
+              "number_of_asked_questions": "2",
+              "number_of_comments_left": "1",
+              "number_of_followers": "1"
+          }
+        }
+        ```
+
+        #### Example Response: Pro User
+
+        This will be the same as the public response, but include the following:
+
+        ```
+        {
+          "profile": {
+            // Public profile data plus:
+            "pro_dashboard_url": http://api.statisfy.co/users/:id/dashboard?auth_token=:auth_token
+          }
+        }
+        ```
+
+        #### Example Response: Current User
+
+        These attributes will only be returned when the user being requested is
+        also the user making the request.
+
+        ```
+        {
+          "profile": {
+            // Public profile data plus:
+            "providers": [
               {
-                  "profile": {
-                                  "username": "Endre",
-                                  "user_id": "1",
-                                  "email": "endre1234@gmail.com",
-                                  "member_since": "2014-08-26T10:04:03+00:00",
-                                  "number_of_answered_questions": "1",
-                                  "number_of_asked_questions": "2",
-                                  "number_of_comments_left": "1",
-                                  "number_of_followers": "1"
-
-
-                              }
-
+                "id": 1,
+                "provider": "facebook"
+              },
+              {
+                "id": 2,
+                "provider": "twitter"
               }
 
-        END
+            ]
+          }
+        }
+        ```
+      NOTES
     }
     params do
       requires :auth_token, type:String, desc:'Obtain this from the instances API'
-
       optional :user_id, type: Integer, desc: "ID of user, defaults to current user's ID"
     end
     post "/", jbuilder: "profile", http_codes:[
@@ -33,11 +67,12 @@ class TwoCents::Profile < Grape::API
         [200, "403 - Login required"]
     ] do
       validate_user!
-
-      @user = Respondent.find(declared_params.fetch(:user_id, current_user.id))
+      @user = if declared_params[:user_id]
+        Respondent.find(declared_params[:user_id])
+      else
+        current_user
+      end
     end
-
-
 
     desc "Upload user's avatar"
     params do
