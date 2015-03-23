@@ -9,6 +9,9 @@ LinkchatApp::Application.routes.draw do
     get "/liable" => redirect(ENV['IOS_DOWNLOAD_TRACKING_URL'])
   end
 
+  # Short Links
+  get '/q/l' => 'short_links#latest_question'
+
   get "/ie9proxy" => 'proxy#url'
 
   devise_for :users
