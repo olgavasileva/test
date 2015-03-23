@@ -76,31 +76,27 @@ describe :text_question do
           let(:max_characters) {100}
 
           it {expect(response.status).to eq 201}
-          it {expect(JSON.parse(response.body)['error_code']).to be_nil}
-          it {expect(JSON.parse(response.body)['error_message']).to be_nil}
 
-          describe :question do
-            it "should return all question fields" do
-              q = JSON.parse(response.body)['question']
+          it "should return all question fields" do
+            q = JSON.parse(response.body)['question']
 
-              expect(q).to_not be_nil
-              expect(q['id']).to_not be_nil
-              expect(q['uuid']).not_to be_nil
-              expect(q['type']).to eq "TextQuestion"
-              expect(q['title']).to eq "The Title"
-              expect(q['category']['id']).to eq category.id
-              expect(q['category']['name']).to eq category.name
-              expect(q['image_url']).not_to be_nil
-              expect(q['text_type']).to eq 'freeform'
-              expect(q['min_characters']).to eq 10
-              expect(q['max_characters']).to eq 100
-              expect(q['comment_count']).to eq 0
-              expect(q['response_count']).to eq 0
-              expect(q['creator_id']).to eq user.id
-              expect(q['creator_name']).to eq user.username
-              expect(q['member_community_ids']).to be_an Array
-              expect(q['tags']).to eq(tag_list)
-            end
+            expect(q).to_not be_nil
+            expect(q['id']).to_not be_nil
+            expect(q['uuid']).not_to be_nil
+            expect(q['type']).to eq "TextQuestion"
+            expect(q['title']).to eq "The Title"
+            expect(q['category']['id']).to eq category.id
+            expect(q['category']['name']).to eq category.name
+            expect(q['image_url']).not_to be_nil
+            expect(q['text_type']).to eq 'freeform'
+            expect(q['min_characters']).to eq 10
+            expect(q['max_characters']).to eq 100
+            expect(q['comment_count']).to eq 0
+            expect(q['response_count']).to eq 0
+            expect(q['creator_id']).to eq user.id
+            expect(q['creator_name']).to eq user.username
+            expect(q['member_community_ids']).to be_an Array
+            expect(q['tags']).to eq(tag_list)
           end
 
           it_behaves_like :uses_targets

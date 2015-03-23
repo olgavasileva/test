@@ -36,32 +36,27 @@ describe :search do
           c21
         }
 
+        it { expect(response.status).to eq 201 }
+
         context "When the search string doesn't match any questions" do
           let(:search_text) { "NO MATCH" }
 
-          it { expect(response.status).to eq 201 }
           it { expect(json).to eq [] }
         end
 
         context "When the search string matches one question" do
           let(:search_text) { "Green Eggs" }
-
-          it { expect(response.status).to eq 201 }
           it { expect(json.map { |q| q["question"]["id"] }).to eq [q2.id] }
-          it { expect(json[0]["question"].keys).to match_array ["id", "anonymous", "category", "choices", "comment_count", "created_at", "creator_id", "creator_name", 'tags', "description", "image_url", "member_community_ids", "response_count", "rotate", "title", "type", "uuid", "user_answered"] }
         end
 
         context "When the search string matches two questions" do
           let(:search_text) { "would" }
 
-          it { expect(response.status).to eq 201 }
           it { expect(json.map { |q| q["question"]["id"] }).to eq [q3.id, q1.id] }
         end
 
         context "When the search string matches the choice of one of the questions" do
           let(:search_text) { "Choice 21" }
-
-          it { expect(response.status).to eq 201 }
           it { expect(json.map { |q| q["question"]["id"] }).to eq [q2.id] }
         end
 
