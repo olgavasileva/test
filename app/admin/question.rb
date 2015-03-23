@@ -9,7 +9,7 @@ ActiveAdmin.register Question do
     end
   end
 
-  filter :user
+  filter :user_username, as: :string, label: "Asker's Username"
   filter :title
   filter :id
   filter :uuid
@@ -32,7 +32,9 @@ ActiveAdmin.register Question do
     column :title
     column :type
     column :category
-    column :user
+    column "Asked By", sortable: 'users.username' do |q|
+      q.user.username
+    end
     column "Resp" do |q|
       q.responses.count
     end
