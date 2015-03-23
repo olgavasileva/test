@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :embeddable_unit do
-    association :survey, factory: [:embeddable_survey]
+    association :survey, :embeddable
     thank_you_markdown "**Thanks for responding**"
   end
 end

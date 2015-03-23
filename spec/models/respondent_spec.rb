@@ -1,9 +1,11 @@
 require 'rails_helper'
 
 describe Respondent do
-  let(:respondent) { FactoryGirl.create(:user) }
+  it { is_expected.to have_many(:surveys) }
+  it { is_expected.to have_many(:embeddable_units).through(:surveys) }
 
   describe :quantcast_demographic_required? do
+    let(:respondent) { FactoryGirl.create(:user) }
     subject {respondent.reload.quantcast_demographic_required?}
 
     context "When there is no demographic data for this respondent" do

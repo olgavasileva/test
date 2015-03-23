@@ -5,7 +5,9 @@ RSpec.describe 'views/api/_embeddable_unit.jbuilder' do
   after(:all) { @unit.destroy! }
   let(:unit) { @unit }
 
-  before { render partial: 'api/embeddable_unit', locals: {unit: unit} }
+  before do
+    render partial: 'api/embeddable_unit', locals: {unit: unit}
+  end
 
   let(:json) { JSON.parse(rendered) }
   subject { json }
