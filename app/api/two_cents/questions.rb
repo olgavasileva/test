@@ -1046,38 +1046,43 @@ class TwoCents::Questions < Grape::API
       notes: <<-END
         Return a question's information.
         If "user_answered" is true then we'll have "answered" field consists of selected choises
+
         #### Example response
+        ```
         {
-            "category": {
-                "id": 1,
-                "name": "Name3"
-            },
-            "comment_count": 0,
-            "creator_id": 2,
-            "creator_name": "Name2",
-            "description": null,
+          "category": {
             "id": 1,
-            "response_count": 0,
-            "summary": {
-                "anonymous": null,
-                "choices": [{ ..., "user_answered": true|false }],
-                "comment_count": 0,
-                "creator_id": 2,
-                "creator_name": "Name2",
-                "published_at": 1412038351,
-                "response_count": 0,
-                "share_count": 0,
-                "skip_count": 0,
-                "start_count": 0,
-                "sponsor": null,
-                "view_count": null,
-                "created_at": 1415488652
-            },
-            "title": "Name4",
-            "type": null,
-            "user_answered": false,
-            "uuid": "Qfbad26b02a6901324a6e3c075421a6ee"
+            "name": "Name3"
+          },
+          "comment_count": 0,
+          "creator_id": 2,
+          "creator_name": "Name2",
+          "creator_avatar_url": "http://someurl.com/avatar.jpg",
+          "createor"
+          "description": null,
+          "id": 1,
+          "response_count": 0,
+          "summary": {
+              "anonymous": null,
+              "choices": [{ ..., "user_answered": true|false }],
+              "comment_count": 0,
+              "creator_id": 2,
+              "creator_name": "Name2",
+              "published_at": 1412038351,
+              "response_count": 0,
+              "share_count": 0,
+              "skip_count": 0,
+              "start_count": 0,
+              "sponsor": null,
+              "view_count": null,
+              "created_at": 1415488652
+          },
+          "title": "Name4",
+          "type": null,
+          "user_answered": false,
+          "uuid": "Qfbad26b02a6901324a6e3c075421a6ee"
         }
+        ```
       END
     }
 
