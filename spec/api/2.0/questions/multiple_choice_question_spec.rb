@@ -65,47 +65,38 @@ describe :multiple_choice_question do
         let(:choice2) {{rotate:true, title:"Choice Title 2", muex:false, image_url:FactoryGirl.generate(:sample_image_url)}}
         let(:choice3) {{rotate:false, title:"Choice Title 3", muex:true, image_url:FactoryGirl.generate(:sample_image_url)}}
 
-        it {expect(response.status).to eq 201}
-        it {expect(JSON.parse(response.body)['error_code']).to be_nil}
-        it {expect(JSON.parse(response.body)['error_message']).to be_nil}
+        it { expect(response.status).to eq 201 }
 
-        describe :question do
-          it "should return all question fields" do
-            q = JSON.parse(response.body)['question']
+        it "should return all question fields" do
+          q = JSON.parse(response.body)['question']
 
-            expect(q).to_not be_nil
-            expect(q['id']).to_not be_nil
-            expect(q['uuid']).not_to be_nil
-            expect(q['type']).to eq "MultipleChoiceQuestion"
-            expect(q['title']).to eq "The Title"
-            expect(q['rotate']).to eq true
-            expect(q['category']['id']).to eq category.id
-            expect(q['category']['name']).to eq category.name
-            expect(q['min_responses']).to eq 0
-            expect(q['comment_count']).to eq 0
-            expect(q['response_count']).to eq 0
-            expect(q['creator_id']).to eq user.id
-            expect(q['creator_name']).to eq user.username
-            expect(q['member_community_ids']).to be_an Array
-            expect(q['tags']).to eq(tag_list)
-          end
-        end
+          expect(q).to_not be_nil
+          expect(q['id']).to_not be_nil
+          expect(q['uuid']).not_to be_nil
+          expect(q['type']).to eq "MultipleChoiceQuestion"
+          expect(q['title']).to eq "The Title"
+          expect(q['rotate']).to eq true
+          expect(q['category']['id']).to eq category.id
+          expect(q['category']['name']).to eq category.name
+          expect(q['min_responses']).to eq 0
+          expect(q['comment_count']).to eq 0
+          expect(q['response_count']).to eq 0
+          expect(q['creator_id']).to eq user.id
+          expect(q['creator_name']).to eq user.username
+          expect(q['member_community_ids']).to be_an Array
+          expect(q['tags']).to eq(tag_list)
 
-        describe :choices do
-          it "should return all choices and their fields" do
-            q = JSON.parse(response.body)['question']
-            choices = q['choices']
+          choices = q['choices']
 
-            expect(choices.count).to eq 3
+          expect(choices.count).to eq 3
 
-            expect(choices.map{|c| c['choice']['rotate']}).to match_array [true, true, false]
-            expect(choices.map{|c| c['choice']['title']}).to match_array ["Choice Title 1", "Choice Title 2", "Choice Title 3"]
-            expect(choices.map{|c| c['choice']['muex']}).to match_array [false, false, true]
+          expect(choices.map{|c| c['choice']['rotate']}).to match_array [true, true, false]
+          expect(choices.map{|c| c['choice']['title']}).to match_array ["Choice Title 1", "Choice Title 2", "Choice Title 3"]
+          expect(choices.map{|c| c['choice']['muex']}).to match_array [false, false, true]
 
-            expect(choices[0]['choice']['image_url']).not_to be_nil
-            expect(choices[1]['choice']['image_url']).not_to be_nil
-            expect(choices[2]['choice']['image_url']).not_to be_nil
-          end
+          expect(choices[0]['choice']['image_url']).not_to be_nil
+          expect(choices[1]['choice']['image_url']).not_to be_nil
+          expect(choices[2]['choice']['image_url']).not_to be_nil
         end
 
         it_behaves_like :uses_targets

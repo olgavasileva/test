@@ -7,12 +7,12 @@ describe 'GET questions/question' do
       auth_token: instance.auth_token,
       question_id: question.id
   } }
+
   before { get 'v/2.0/questions/question', params }
 
-  describe "response with all question data" do
-    it { expect(json.keys).to match_array %w(category choices comment_count creator_id creator_name tags description id response_count summary title type user_answered uuid image_url created_at member_community_ids anonymous) }
-    it { expect(json["category"].keys).to match_array %w(id name) }
-    it { expect(json["summary"].keys).to match_array %w(anonymous choices comment_count creator_id creator_name published_at response_count share_count skip_count sponsor view_count start_count) }
+  it 'responds with all question data' do
+    expect(json).to have_json_key(:id).eq(question.id)
+    expect(json).to have_json_key(:summary)
   end
 
   context 'when have responses to this question by user' do
@@ -54,10 +54,9 @@ describe 'GET questions/question' do
         question_uuid: question.uuid
     } }
 
-    describe "response with all question data" do
-      it { expect(json.keys).to match_array %w(category choices comment_count creator_id creator_name tags description id response_count summary title type user_answered uuid image_url created_at member_community_ids anonymous) }
-      it { expect(json["category"].keys).to match_array %w(id name) }
-      it { expect(json["summary"].keys).to match_array %w(anonymous choices comment_count creator_id creator_name published_at response_count share_count skip_count sponsor view_count start_count) }
+    it 'responds with all question data' do
+      expect(json).to have_json_key(:id).eq(question.id)
+      expect(json).to have_json_key(:summary)
     end
   end
 
@@ -66,6 +65,9 @@ describe 'GET questions/question' do
         question_id: question.id
     } }
 
-    it { expect(json.keys).to match_array %w(category choices comment_count creator_id creator_name tags description id response_count summary title type user_answered uuid image_url created_at member_community_ids anonymous) }
+    it 'responds with all question data' do
+      expect(json).to have_json_key(:id).eq(question.id)
+      expect(json).to have_json_key(:summary)
+    end
   end
 end
