@@ -9,6 +9,9 @@
 /log
 /tmp
 
+# Ignore GEOIP databases
+*.mmdb
+
 # Ignore other unneeded files.
 config/application.yml
 config/database.yml

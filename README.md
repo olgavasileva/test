@@ -1,5 +1,7 @@
 # Statisfy
 
+[![Circle CI](https://circleci.com/gh/FashionPlaytes/twocents.svg?style=svg&circle-token=080923be113c23e7fee6e96840cab5c98868582c)](https://circleci.com/gh/FashionPlaytes/twocents)
+
   ## Feed Logic
 
     When a user asks a question, it can be targeted to certain other users or it can be made available to all users.
