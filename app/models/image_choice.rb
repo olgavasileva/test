@@ -5,6 +5,8 @@ class ImageChoice < Choice
 
   default background_image_id: lambda{ |q| CannedChoiceImage.pluck(:id).sample }
 
+  accepts_nested_attributes_for :background_image
+
   validates :background_image, presence: true
 
   delegate :web_image_url, to: :background_image

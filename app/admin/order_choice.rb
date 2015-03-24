@@ -1,5 +1,5 @@
-ActiveAdmin.register MultipleChoice  do
-  belongs_to :multiple_choice_question
+ActiveAdmin.register OrderChoice  do
+  belongs_to :order_question
 
   config.filters = false
   batch_action :destroy, false
@@ -9,7 +9,7 @@ ActiveAdmin.register MultipleChoice  do
     link_to('All Questions', admin_questions_path)
   end
 
-  permit_params :id, :title, :position, :rotate, :muex, :background_image_id, background_image_attributes: [:id, :image, :remove_image]
+  permit_params :id, :title, :position, :rotate, :muex, :background_image_id, background_image_attributes: [:id, :image]
 
   index do
     column :id
@@ -18,7 +18,6 @@ ActiveAdmin.register MultipleChoice  do
     column :background_image do |q|
       image_tag q.background_image.image.url, style:"max-height: 100px"
     end
-    column :muex
     column :rotate
     column :position
     column :created_at
@@ -35,7 +34,6 @@ ActiveAdmin.register MultipleChoice  do
       row :background_image do |choice|
         image_tag choice.background_image.image.url, style:"max-height: 100px"
       end
-      row :muex
       row :rotate
       row :position
       row :created_at

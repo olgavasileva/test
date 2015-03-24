@@ -2,10 +2,10 @@
   .image-preview
     max-height: 100px
 
-= semantic_form_for [:admin, @multiple_choice.question, @multiple_choice] do |f|
+= semantic_form_for [:admin, @order_choice.question, @order_choice] do |f|
   = f.inputs f.object.type do
     = f.input :title, as: :string
-    - if @multiple_choice.persisted?
+    - if @order_choice.persisted?
       = f.semantic_fields_for :background_image do |bi|
         = bi.input :image, as: :file, image_preview: true
         = bi.input :image_cache, as: :hidden

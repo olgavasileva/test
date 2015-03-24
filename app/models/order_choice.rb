@@ -12,6 +12,8 @@ class OrderChoice < Choice
   delegate :device_image_url, to: :background_image
   delegate :retina_device_image_url, to: :background_image
 
+  accepts_nested_attributes_for :background_image
+
   # This amounts to the score (or weight) for all responses to this choice.
   def top_count
     @top_count ||= begin

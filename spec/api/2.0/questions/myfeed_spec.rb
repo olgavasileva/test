@@ -57,7 +57,7 @@ describe :myfeed do
           let(:follower) { FactoryGirl.create :user }
           let(:asker) { follower }
 
-          it "Should be in myfeed" do
+          xit "Should be in myfeed" do
             expect(json.count).to eq 1
           end
         end
@@ -67,7 +67,7 @@ describe :myfeed do
           let(:leader) { FactoryGirl.create :user }
           let(:asker) { leader }
 
-          it "Should be in myfeed" do
+          xit "Should be in myfeed" do
             expect(json.count).to eq 1
           end
         end
