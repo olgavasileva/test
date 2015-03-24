@@ -25,6 +25,9 @@ ActiveAdmin.register EmbeddableUnit do
         "<label>Script</label><div><textarea rows='7' style='width: 100%' onmouseenter='$(this).select()'>#{eu.script request}</textarea></div>".html_safe +
         "<label>iFrame</label><div><input style='width: 100%' onmouseenter='$(this).select()' value='#{eu.iframe request}'></div>".html_safe
       end
+      row "Demo" do
+        eu.iframe(request).html_safe
+      end
     end
   end
 
