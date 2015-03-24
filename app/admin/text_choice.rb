@@ -1,10 +1,17 @@
 ActiveAdmin.register TextChoice  do
   belongs_to :text_choice_question
 
+  config.filters = false
+  batch_action :destroy, false
+
+  actions :index, :edit, :show
+  action_item do
+    link_to('All Questions', admin_questions_path)
+  end
+
   permit_params :id, :title, :position, :rotate, :muex, :background_image_id, background_image_attributes: [:image]
 
   index do
-    selectable_column
     column :id
     column :question
     column :title

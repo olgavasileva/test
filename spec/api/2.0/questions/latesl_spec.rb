@@ -102,7 +102,7 @@ describe :latest do
               expect(q['type']).to eq "ImageChoiceQuestion"
               expect(q['title']).to eq "Image Choice Title"
               expect(q['description']).to eq "Image Choice Description"
-              expect(q['rotate']).to eq false
+              expect(q['rotate']).to eq true
               expect(q['category']['name']).to eq "Category 2"
               expect(q['comment_count']).to eq 0
               expect(q['response_count']).to eq 0

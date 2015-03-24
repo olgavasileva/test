@@ -30,6 +30,20 @@ ActiveAdmin.register Question do
     selectable_column
     column :id
     column :title
+    column "Choices" do |q|
+      case q.type
+      when 'MultipleChoiceQuestion'
+        link_to pluralize(q.choices.count, "choice"), admin_multiple_choice_question_multiple_choices_path(q)
+      when 'TextChoiceQuestion'
+        link_to pluralize(q.choices.count, "choice"), admin_text_choice_question_text_choices_path(q)
+      when 'OrderQuestion'
+        link_to pluralize(q.choices.count, "choice"), admin_order_question_order_choices_path(q)
+      when 'YesNoQuestion'
+        link_to pluralize(q.choices.count, "choice"), admin_yes_no_question_yes_no_choices_path(q)
+      when 'ImageChoiceQuestion'
+        link_to pluralize(q.choices.count, "choice"), admin_image_choice_question_image_choices_path(q)
+      end
+    end
     column :type
     column :category
     column "Asked By", sortable: 'users.username' do |q|
