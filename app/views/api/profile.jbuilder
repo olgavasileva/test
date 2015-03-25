@@ -7,16 +7,20 @@ json.profile do
   json.number_of_comments_left @user.number_of_comments_left
   json.number_of_followers @user.number_of_followers
 
-  if @user.kind_of?(User) && @user.is_pro?
-    urls = Rails.application.routes.url_helpers
-    json.pro_dashboard_url urls.dashboard_user_url(@user, auth_token: @instance.auth_token)
-  end
+  if @user.kind_of?(User)
 
-  if current_user && current_user.id == @user.id
-    json.providers do
-      json.array! @user.authentications do |authentication|
-        json.extract! authentication, :id, :provider
+    if @user.is_pro?
+      urls = Rails.application.routes.url_helpers
+      json.pro_dashboard_url urls.dashboard_user_url(@user, auth_token: @instance.auth_token)
+    end
+
+    if current_user.id == @user.id
+      json.providers do
+        json.array! @user.authentications do |authentication|
+          json.extract! authentication, :id, :provider
+        end
       end
     end
+
   end
 end
