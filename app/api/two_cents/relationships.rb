@@ -83,18 +83,21 @@ class TwoCents::Relationships < Grape::API
       # users += Respondent.search(q: params[:search_text]).result
       # users.uniq!
 
-      users = Respondent.where("username like ?", "%#{params[:search_text]}%")
-                  .where.not(id: current_user.id)
-                  .order(:username)
+      query = Respondent.where.not(id: current_user.id).order(:username)
 
-      if params[:page]
-        users = users.paginate(page: params[:page],
-                               per_page: params[:per_page])
+      if declared_params[:search_text]
+        query = query.where("username like ?", "%#{params[:search_text]}%")
       end
 
-      users.map do |u|
-        relationship =
-          current_user.followership_relationships.where(leader_id: u.id).first
+      if params[:page]
+        query = query.paginate(page: params[:page], per_page: params[:per_page])
+      end
+
+      query.map do |u|
+        relationship = current_user.followership_relationships
+          .where(leader_id: u.id)
+          .first
+
         groups = relationship.try(:groups) || []
 
         {

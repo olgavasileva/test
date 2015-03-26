@@ -2,17 +2,10 @@ require 'rails_helper'
 
 RSpec.describe 'views/api/survey.jbuilder' do
 
-  before(:all) do
-    @unit = FactoryGirl.create(:embeddable_unit)
-    @survey = @unit.survey
-  end
+  before(:all) { @unit = FactoryGirl.create(:embeddable_unit) }
+  after(:all) { DatabaseCleaner.clean_with(:truncation) }
 
-  after(:all) do
-    @unit.destroy!
-    @survey.destroy!
-  end
-
-  let(:survey) { @survey }
+  let(:survey) { @unit.survey }
 
   before { allow(view).to receive(:current_user).and_return(User.new) }
   before { assign(:survey, survey) }
