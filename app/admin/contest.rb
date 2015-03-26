@@ -68,6 +68,7 @@ ActiveAdmin.register Contest do
   #                else
   #                     CSV.columns << blank for the data columns
   member_action :csv_report do
+
     contest = Contest.find params[:id]
     survey = contest.survey
 
@@ -80,63 +81,68 @@ ActiveAdmin.register Contest do
       headers["Pragma"] = "no-cache"
       headers["Expires"] = "0"
 
-      csv_body = CSV.generate do |csv|
+      # Set streaming headers
+      headers['X-Accel-Buffering'] = 'no'
+      headers["Cache-Control"] ||= "no-cache"
+      headers.delete("Content-Length")
 
-        # Add some overview rows
-        csv << ["Contest ID", "Contest Name"]
-        csv << [contest.id, contest.name]
-        csv << []
+      self.response_body = Enumerator.new do |body|
+        CSV.generate do |csv|
 
-        csv << ["Survey ID", "Survey Name"]
-        csv << [survey.id, survey.name]
-        csv << []
+          # Add some overview rows
+          body << ["Contest ID", "Contest Name"].to_csv
+          body << [contest.id, contest.name].to_csv
+          body << [].to_csv
 
-        leading_columns = ["User ID", "username", "Age", "Gender"]
+          body << ["Survey ID", "Survey Name"].to_csv
+          body << [survey.id, survey.name].to_csv
+          body << [].to_csv
 
-        # Build the columns row
-        columns = Array.new(leading_columns.count)
-        survey.questions.each do |q|
-          columns << nil  # blank column before each question
-          columns << q.title
-          columns += Array.new(q.csv_columns.count)
-        end
+          leading_columns = ["User ID", "username", "Age", "Gender"]
 
-        csv << columns
+          # Build the columns row
+          columns = Array.new(leading_columns.count)
+          survey.questions.each do |q|
+            columns << nil  # blank column before each question
+            columns << q.title
+            columns += Array.new(q.csv_columns.count)
+          end
 
+          body << columns.to_csv
 
-        columns = leading_columns
-        survey.questions.each do |q|
-          columns << nil  # blank column before each question
-          columns << "Response ID"
-          columns += q.csv_columns
-        end
+          columns = leading_columns
+          survey.questions.each do |q|
+            columns << nil  # blank column before each question
+            columns << "Response ID"
+            columns += q.csv_columns
+          end
 
-        csv << columns
+          body << columns.to_csv
 
-        # Build a line for each respondent
-        contest.key_question.respondents.each do |respondent|
-          contest.key_question.responses.where(user:respondent).order(:created_at).each_with_index do |key_response, index|
-            line = [respondent.id, respondent.username, respondent.age, respondent.gender]
-            survey.questions.each do |question|
-              responses = question.responses.where(user:respondent)
+          # Build a line for each respondent
+          contest.key_question.respondents.find_each do |respondent|
+            contest.key_question.responses.where(user:respondent).order(:created_at).each_with_index do |key_response, index|
+              line = [respondent.id, respondent.username, respondent.age, respondent.gender]
+              survey.questions.each do |question|
+                responses = question.responses.where(user:respondent)
 
-              line << nil  # blank column before each question
+                line << nil  # blank column before each question
 
-              if responses.count > index
-                line << responses[index].id
-                line += responses[index].csv_data
-              else
-                line << nil # blank column for response id
-                line += Array.new(question.csv_columns.count) # blank column for each csv_data column
+                if responses.count > index
+                  line << responses[index].id
+                  line += responses[index].csv_data
+                else
+                  line << nil # blank column for response id
+                  line += Array.new(question.csv_columns.count) # blank column for each csv_data column
+                end
               end
-            end
 
-            csv << line
+              body << line.to_csv
+            end
           end
         end
       end
 
-      render text: csv_body
     end
   end
 end
