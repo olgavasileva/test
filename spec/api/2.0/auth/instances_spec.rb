@@ -86,9 +86,9 @@ describe :instances do
 
         context "When there is one background image of each type (quetion, choice, order choice) and for standard and retina displays" do
           let(:before_api_call) do
-            CannedQuestionImage.stub(:all).and_return([question_image])
-            CannedChoiceImage.stub(:all).and_return([choice_image])
-            CannedOrderChoiceImage.stub(:all).and_return([order_choice_image])
+            allow(CannedQuestionImage).to receive(:all).and_return([question_image])
+            allow(CannedChoiceImage).to receive(:all).and_return([choice_image])
+            allow(CannedOrderChoiceImage).to receive(:all).and_return([order_choice_image])
           end
           let(:question_image) {double(:question_image, device_image_url:"DEVICE QUESTION URL", retina_device_image_url:"RETINA DEVICE QUESTION URL")}
           let(:choice_image) {double(:choice_image, device_image_url:"DEVICE CHOICE URL", retina_device_image_url:"RETINA DEVICE CHOICE URL")}
