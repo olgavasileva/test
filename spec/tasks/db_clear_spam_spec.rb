@@ -6,7 +6,7 @@ describe 'db:clear_spam' do
   let!(:ok_comments) { FactoryGirl.create_list :comment, 10, body: 'some text' }
   let!(:spam_comments) { FactoryGirl.create_list :comment, 10, body: 'some text http://hello.world' }
   it 'removes all these comments' do
-    subject.invoke
+    output = capture(:stdout) { subject.invoke }
     expect(Comment.all.pluck(:id)).to eq ok_comments.map(&:id)
   end
   context 'nested comments' do
@@ -15,7 +15,7 @@ describe 'db:clear_spam' do
     }
 
     it 'removes it cascade' do
-      subject.invoke
+      output = capture(:stdout) { subject.invoke }
       expect(Comment.all.pluck(:id)).to eq ok_comments.map(&:id)
     end
   end
@@ -26,7 +26,7 @@ describe 'db:clear_spam:dry' do
   let!(:ok_comments) { FactoryGirl.create_list :comment, 10, body: 'some text' }
   let!(:spam_comments) { FactoryGirl.create_list :comment, 10, body: 'some text http://hello.world' }
   it 'should not remove these comments' do
-    subject.invoke
+    output = capture(:stdout) { subject.invoke }
     expect(Comment.all.pluck(:id)).to eq (ok_comments + spam_comments).map(&:id)
   end
 end
