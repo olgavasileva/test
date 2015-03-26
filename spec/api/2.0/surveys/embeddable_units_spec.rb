@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe TwoCents::Surveys, '/surveys/:survey_id/units' do
   before(:all) { @auth = FactoryGirl.create(:instance, :logged_in) }
-  after(:all) { @auth.destroy! }
+  after(:all) { DatabaseCleaner.clean_with(:truncation) }
 
   let(:auth) { @auth }
   let(:survey) { FactoryGirl.create(:survey, user: auth.user) }

@@ -1,16 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe TwoCents::Questions do
-  let(:instance) { FactoryGirl.create(:instance, :logged_in) }
-  let(:token) { instance.auth_token }
-
   before(:all) do
+    @instance = FactoryGirl.create(:instance, :logged_in)
     @questions = FactoryGirl.create_list(:text_choice_question, 2, {
-      tag_list: ['test']
+      tag_list: ['test'],
+      user: @instance.user
     })
   end
 
-  after(:all) { @questions.map(&:destroy!) }
+  after(:all) { DatabaseCleaner.clean_with(:truncation) }
+
+  let(:instance) { @instance }
+  let(:token) { instance.auth_token }
 
   describe 'GET #tagged' do
     it 'returns the questions matching the tag' do

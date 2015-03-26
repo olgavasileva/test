@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'views/api/_embeddable_unit.jbuilder' do
   before(:all) { @unit = FactoryGirl.create(:embeddable_unit) }
-  after(:all) { @unit.destroy! }
+  after(:all) { DatabaseCleaner.clean_with(:truncation) }
+
   let(:unit) { @unit }
 
   before do

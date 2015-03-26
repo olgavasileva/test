@@ -4,7 +4,7 @@ RSpec.describe EmbeddableUnitsController do
   include Devise::TestHelpers
 
   before(:all) { @unit = FactoryGirl.create(:embeddable_unit) }
-  after(:all) { @unit.destroy! }
+  after(:all) { DatabaseCleaner.clean_with(:truncation) }
 
   let(:unit) { @unit }
   let(:question) { unit.questions.to_a.shuffle.first }
