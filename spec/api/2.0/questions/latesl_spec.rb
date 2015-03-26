@@ -2,37 +2,37 @@ require 'rails_helper'
 require_relative 'shared_questions'
 
 describe :latest do
+  after(:all) { DatabaseCleaner.clean_with(:truncation) }
+
   let(:params) {{}}
   let(:setup_questions) {}
   let(:before_api_call) {}
-  before { setup_questions }
   before { before_api_call }
   before { post "v/2.0/questions/latest", Hash[params].to_json,{"CONTENT_TYPE" => "application/json"}}
 
   context "With all required params" do
-    let(:params) {{auth_token: auth_token, cursor: cursor, count: count}}
     let(:cursor) {0}
     let(:count) {10}
+    let(:params) {{auth_token: auth_token, cursor: cursor, count: count}}
 
     context "With a logged in user" do
-      let(:auth_token) {instance.auth_token}
-      let(:instance) {FactoryGirl.create :instance, :logged_in}
-      let(:user) {instance.user}
+      let(:instance) { FactoryGirl.create(:instance, :logged_in) }
+      let(:auth_token) { instance.auth_token }
+      let(:user) { instance.user }
 
       context "With one of each type of question" do
         include_context :shared_questions
 
-        it {expect(json['cursor']).not_to be_nil}
-        it {expect(json['questions']).not_to be_nil}
-        it {expect(json['questions'].count).to eq 5}
+        it 'returns the correct data' do
+          expect(json['cursor']).not_to be_nil
+          expect(json['questions'].count).to eq 5
 
-        it {expect(response.status).to eq 201}
-        it {expect(json['error_code']).to be_nil}
-        it {expect(json['error_message']).to be_nil}
+          expect(response.status).to eq 201
+          expect(json['error_code']).to be_nil
+          expect(json['error_message']).to be_nil
+        end
 
         describe "Question Output" do
-          it {expect(json['questions'].count).to eq 5}
-
           describe "TextChoiceQuestion" do
             it "should have all required fields" do
               q = json['questions'][4]
@@ -173,57 +173,30 @@ describe :latest do
           end
         end
 
-        context "When the params include category_ids" do
+        context "when the params include category_ids" do
+          let(:category_ids) { [category1.id, category2.id] }
           let(:params) {{auth_token: auth_token, cursor: cursor, count: count, category_ids: category_ids}}
 
-          context "When filtering on category1, which has 3 questions" do
-            let(:category_ids) {[category1.id]}
-
-            it {expect(json['questions'].count).to eq 3}
-          end
-
-          context "When filtering on category2, which has 2 questions" do
-            let(:category_ids) {[category2.id]}
-
-            it {expect(json['questions'].count).to eq 2}
-          end
-
-          context "When filtering on category1 and category2" do
-            let(:category_ids) {[category1.id, category2.id]}
-
-            it {expect(json['questions'].count).to eq 5}
+          it 'returns only questions for the given categories' do
+            expect(json['questions'].count).to eq(5)
           end
         end
 
         context "When the params include community_ids" do
+          let(:c1) { FactoryGirl.create(:community) }
+          let(:c2) { FactoryGirl.create(:community) }
+          let(:community_ids) { [c1.id] }
           let(:params) {{auth_token: auth_token, cursor: cursor, count: count, community_ids: community_ids}}
-          let(:c1) {FactoryGirl.create :community}
-          let(:c2) {FactoryGirl.create :community}
 
-          context "When q1 and q2 were targeted to community 1 and q3 targeted to c2" do
-            let(:before_api_call) do
-              q1.update_attributes target: FactoryGirl.create(:target, community_ids: [c1.id])
-              q2.update_attributes target: FactoryGirl.create(:target, community_ids: [c1.id])
-              q3.update_attributes target: FactoryGirl.create(:target, community_ids: [c2.id])
-            end
+          let(:before_api_call) do
+            q1.update_attributes(target: FactoryGirl.create(:target, community_ids: [c1.id]))
+            q2.update_attributes(target: FactoryGirl.create(:target, community_ids: [c1.id]))
+            q3.update_attributes(target: FactoryGirl.create(:target, community_ids: [c2.id]))
+          end
 
-            context "When filtering on community 1" do
-              let(:community_ids) {[c1.id]}
-
-              it {expect(json['questions'].map{|q| q['id']}).to match_array [q1.id, q2.id]}
-            end
-
-            context "When filtering on community 2" do
-              let(:community_ids) {[c2.id]}
-
-              it {expect(json['questions'].map{|q| q['id']}).to match_array [q3.id]}
-            end
-
-            context "When filtering on community 1 or 2" do
-              let(:community_ids) {[c1.id, c2.id]}
-
-              it {expect(json['questions'].map{|q| q['id']}).to match_array [q1.id, q2.id, q3.id]}
-            end
+          it 'returns only questions for the given communities' do
+            ids = json['questions'].map { |q| q['id'] }
+            expect(ids.sort).to eq([q1.id, q2.id])
           end
         end
 
@@ -253,19 +226,23 @@ describe :latest do
           let(:text_choice_response) {FactoryGirl.create :text_choice_response, question:text_choice_question, choice:text_choice1}
           let(:user) {text_choice_response.user}
 
-          it {expect(json['questions'].count).to eq all_questions.count}
-          it {expect(json['questions'][3]['id']).to eq multiple_choice_question.id}
-          it {expect(json['questions'][2]['id']).to eq image_choice_question.id}
+          it 'returns the correct response' do
+            expect(json['questions'].count).to eq all_questions.count
+            expect(json['questions'][3]['id']).to eq multiple_choice_question.id
+            expect(json['questions'][2]['id']).to eq image_choice_question.id
+          end
         end
 
         context "When the text_choice_question has been responded to by another user" do
           context "With no comment" do
             let(:before_api_call) {FactoryGirl.create :text_choice_response, question:text_choice_question, choice:text_choice1}
 
-            it {expect(json['questions'].count).to eq all_questions.count}
-            it {expect(json['questions'][4]['id']).to eq text_choice_question.id}
-            it {expect(json['questions'][4]['comment_count']).to eq 0}
-            it {expect(json['questions'][4]['response_count']).to eq 1}
+            it 'returns the correct response' do
+              expect(json['questions'].count).to eq all_questions.count
+              expect(json['questions'][4]['id']).to eq text_choice_question.id
+              expect(json['questions'][4]['comment_count']).to eq 0
+              expect(json['questions'][4]['response_count']).to eq 1
+            end
           end
 
           context "With a comment" do
@@ -274,10 +251,12 @@ describe :latest do
               response.create_comment user:response.user, body:"Some comment"
             }
 
-            it {expect(json['questions'].count).to eq all_questions.count}
-            it {expect(json['questions'][4]['id']).to eq text_choice_question.id}
-            it {expect(json['questions'][4]['comment_count']).to eq 1}
-            it {expect(json['questions'][4]['response_count']).to eq 1}
+            it 'returns the correct response' do
+              expect(json['questions'].count).to eq all_questions.count
+              expect(json['questions'][4]['id']).to eq text_choice_question.id
+              expect(json['questions'][4]['comment_count']).to eq 1
+              expect(json['questions'][4]['response_count']).to eq 1
+            end
           end
         end
 
@@ -286,34 +265,43 @@ describe :latest do
             let(:cursor) {0}
             let(:count) {2}
 
-            it {expect(json['questions'].count).to eq 2}
-            it {expect(json['questions'].map{|q| q["id"]}).to eq [q5.id, q4.id]}
-            it {expect(json['cursor']).to eq q4.id}
+            it 'returns the correct response' do
+              expect(json['questions'].count).to eq 2
+              expect(json['questions'].map{|q| q["id"]}).to eq [q5.id, q4.id]
+              expect(json['cursor']).to eq q4.id
+            end
           end
 
           context "When the cursor is the id of the 2nd newest question and count is 2" do
             let(:cursor) {q4.id}
             let(:count) {2}
 
-            it {expect(json['questions'].count).to eq 2}
-            it {expect(json['questions'].map{|q| q["id"]}).to eq [q3.id, q2.id]}
-            it {expect(json['cursor']).to eq q2.id}
+            it 'returns the correct response' do
+              expect(json['questions'].count).to eq 2
+              expect(json['questions'].map{|q| q["id"]}).to eq [q3.id, q2.id]
+              expect(json['cursor']).to eq q2.id
+            end
+
 
             context "When count is greater than the number of questions remaining" do
               let(:count) {200}
 
-              it {expect(json['questions'].count).to eq 3}
-              it {expect(json['questions'].map{|q| q["id"]}).to eq [q3.id, q2.id, q1.id]}
-              it {expect(json['cursor']).to eq q1.id}
+              it 'returns the correct response' do
+                expect(json['questions'].count).to eq 3
+                expect(json['questions'].map{|q| q["id"]}).to eq [q3.id, q2.id, q1.id]
+                expect(json['cursor']).to eq q1.id
+              end
             end
 
             context "When the cursor is the last item in the list" do
               let(:cursor) {q1.id}
               let(:count) {2}
 
-              it {expect(json['questions'].count).to eq 0}
-              it {expect(json['questions']).to eq []}
-              it {expect(json['cursor']).to eq 0}
+              it 'returns the correct response' do
+                expect(json['questions'].count).to eq 0
+                expect(json['questions']).to eq []
+                expect(json['cursor']).to eq 0
+              end
             end
           end
         end
