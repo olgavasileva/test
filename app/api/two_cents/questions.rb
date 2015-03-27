@@ -498,7 +498,6 @@ class TwoCents::Questions < Grape::API
       @answered_questions = {}
       @questions.each do |q|
         @answered_questions[q.id] = false
-        q.viewed!
       end
     end
 
@@ -545,7 +544,6 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       @questions = current_user.feed_questions.trending.offset(declared_params[:index]).limit(declared_params[:count])
-      @questions.each{|q| q.viewed!}
     end
 
 
@@ -600,7 +598,6 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       @questions = current_user.feed_questions.myfeed.by_relevance.offset(declared_params[:index]).limit(declared_params[:count])
-      @questions.each{|q| q.viewed!}
     end
 
 
@@ -668,7 +665,6 @@ class TwoCents::Questions < Grape::API
       @answered_questions = {}
       @questions.each do |q|
         @answered_questions[q.id] = q.user_answered?(current_user)
-        q.viewed!
       end
     end
 
@@ -720,7 +716,6 @@ class TwoCents::Questions < Grape::API
         per_page = page ? declared_params[:per_page] : 15
 
         @questions = current_user.feed_questions.latest.paginate(page: page, per_page: per_page)
-        @questions.each{|q| q.viewed!}
       else
         error_message = ENV['OUT_OF_DATE_QUESTION_TITLE'] || "Update required.  Please check the app store for an update available within an hour."
         @questions = [Question.new(id:0, user:Respondent.first, category:Category.first, title:error_message, state:"active", kind:"public", background_image:BackgroundImage.first)]
@@ -1040,6 +1035,10 @@ class TwoCents::Questions < Grape::API
       end
     end
 
+    get 'ad' do
+      { header: headers, params: params }
+    end
+
 
     #
     # Obtain summary information about a question
@@ -1249,7 +1248,7 @@ class TwoCents::Questions < Grape::API
 
       requires :question_id, type: Integer, desc: 'Question this is a response to'
     end
-    post 'follow', http_codes:[
+    post 'start', http_codes:[
       [200, "400 - Invalid params"],
       [200, "401 - Couldn't find Question"],
       [200, "402 - Invalid auth token"],
@@ -1259,11 +1258,10 @@ class TwoCents::Questions < Grape::API
       @question = Question.find declared_params[:question_id]
       fail! 401, "Coulnd't find Question" unless @question
 
-      @question.start!
+      @question.started!
 
       {}
     end
-
 
     #
     # Increment a question's view count.
@@ -1274,10 +1272,17 @@ class TwoCents::Questions < Grape::API
 
       requires :question_id, type: Integer, desc: 'Question this is a response to'
     end
-    post 'view' do
+    post 'view', http_codes:[
+      [200, "400 - Invalid params"],
+      [200, "401 - Couldn't find Question"],
+      [200, "402 - Invalid auth token"],
+      [200, "403 - Login required"]
+    ] do
       validate_user!
+      @question = Question.find(params[:question_id])
+      fail! 401, "Coulnd't find Question" unless @question
 
-      Question.find(params[:question_id]).increment! :view_count
+      @question.viewed!
 
       {}
     end
@@ -1294,20 +1299,6 @@ class TwoCents::Questions < Grape::API
       question = Question.find(params[:question_id])
 
       FeedItem.question_skipped! question, current_user
-
-      {}
-    end
-
-    desc "Start a question."
-    params do
-      use :auth
-
-      requires :question_id, type: Integer, desc: "ID of question."
-    end
-    post 'start' do
-      validate_user!
-
-      Question.find(params[:question_id]).increment! :start_count
 
       {}
     end
