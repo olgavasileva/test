@@ -11,6 +11,8 @@ class Demographic < DemographicBase
 
   delegate :name, to: :data_provider, allow_nil: true, prefix: true
 
+  # raw_data can be a JSON encoded string like this: [{"id":"D"},{"id":"T"},{"id":"50070"},{"id":"50058"}]
+  # or it can be a ruby array of values like this: ["D", "T", "50070", "50058"]
   def update_from_provider_data! provider, version, raw_data
     @data_values = nil
     self.data_provider = DataProvider.find_by name:provider
@@ -40,9 +42,13 @@ class Demographic < DemographicBase
     ## Data parsing methods
     ##
 
-    # "qcseg=D;qcseg=T;qcseg=50082;qcseg=50079;qcseg=50076;qcseg=50075;qcseg=50074;qcseg=50073;qcseg=50062;qcseg=50060;qcseg=50059;qcseg=50057;qcseg=50054;"
+    # [{"id":"D"},{"id":"T"},{"id":"50070"},{"id":"50058"}]
     def data_values
-      @data_values ||= JSON.parse(raw_data).map{|h| h['id']}
+      @data_values ||= case true
+      when raw_data.kind_of?(String) then JSON.parse(raw_data).map{|h| h['id']}
+      when raw_data.kind_of?(Array) then raw_data
+      else []
+      end
     end
 
     def raw_data_contains_some_info?

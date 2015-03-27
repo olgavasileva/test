@@ -994,6 +994,12 @@ class TwoCents::Questions < Grape::API
         Use this API to submit a response to a question as a new anonymous user.
         The new user will not get a feed and this API will always create a new user.
         Supply a redirect_url to have the user redirected after the response is saved.
+
+        You can use substitutions for %%CACHEBUSTER%% and %%RESPONSE_ID%% in the redirect_url.
+        Be sure to escape the % characters (%25)
+
+        An example call to this api that uses substitutions looks like:
+        api.statisfy.com/v/2.0/questions/anonymous_response.json?question_id=59&source=web&choice_id=147&redirect_url=http://segapi.quantserve.com%2Fseg%2Fr%3Ba%3Dp-7NVqWByLF6AVK%3Brand=%25%25CACHEBUSTER%25%25*http://api.statisfy.com/v/2.0/questions/ad?seg=%21qcsegt%26response_id=%25%25RESPONSE_ID%25%25
       END
     }
     params do
@@ -1029,14 +1035,37 @@ class TwoCents::Questions < Grape::API
       end
 
       if declared_params[:redirect_url]
-        redirect declared_params[:redirect_url].gsub '%%CACHEBUSTER%%', Time.now.to_i.to_s
+        redirect_url = declared_params[:redirect_url]
+        redirect_url.gsub! '%%CACHEBUSTER%%', Time.now.to_i.to_s
+        redirect_url.gsub! '%%RESPONSE_ID%%', response.id.to_s
+
+        redirect redirect_url
       else
         {}
       end
     end
 
+    desc "Attach Quantcast Demographics"
+    params do
+      requires :response_id, type: Integer, desc: 'Response that the demographic data relates to'
+    end
     get 'ad' do
-      { header: headers, params: params }
+      @response = Response.find declared_params[:response_id]
+
+      # Save quantcast data to this responder
+      # (We have to parse the query string ourselves since there are duplicate keys)
+      uri = URI.parse(request.url)
+      hash = HashWithIndifferentAccess.new(Rack::Utils.parse_query uri.query)
+      raw_data = hash[:seg]
+
+      provider = 'quantcast'
+      version = "1.0"
+      DataProvider.where(name:provider).first_or_create
+      demographic = @response.user.demographics.quantcast.first_or_create
+      demographic.update_from_provider_data! provider, version, raw_data
+
+      # Redirect to the web app's question result page
+      redirect File.join(ENV['WEB_APP_URL'], "#/app/question", @response.question.id.to_s, "stats")
     end
 
 
