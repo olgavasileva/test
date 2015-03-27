@@ -1034,7 +1034,7 @@ class TwoCents::Questions < Grape::API
       end
 
       if declared_params[:redirect_url]
-        redirect declared_params[:redirect_url]
+        redirect declared_params[:redirect_url].gsub '%%CACHEBUSTER%%', Time.now.to_i.to_s
       else
         {}
       end
