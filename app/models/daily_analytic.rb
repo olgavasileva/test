@@ -1,6 +1,5 @@
 class DailyAnalytic < ActiveRecord::Base
   scope :views, -> { where metric: :views }
-  scope :starts, -> { where metric: :starts }
   scope :responses, -> { where metric: :responses }
 
   def self.increment! metric, user

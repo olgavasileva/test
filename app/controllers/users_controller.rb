@@ -81,7 +81,6 @@ class UsersController < ApplicationController
     reach = @user.questions.sum(:view_count)
     targeted_reach = @user.questions.map{|q| q.targeted_reach.to_i }.sum
     viral_reach = reach - targeted_reach
-    engagements = @user.questions.sum(:start_count)
     completes = @user.questions.map{|q| q.response_count }.sum
     skips = @user.questions.map{|q| q.skip_count }.sum
     comments = @user.questions.map{|q| q.comment_count }.sum
@@ -90,7 +89,6 @@ class UsersController < ApplicationController
 
     @campaign_data = [
       { label: "Reach", value: reach },
-      { label: "Engagements", value: engagements },
       { label: "Completes", value: completes },
       { label: "Skips", value: skips },
       { label: "Comments", value: comments },
@@ -99,16 +97,10 @@ class UsersController < ApplicationController
 
     if reach != 0
       @viral_rate = viral_reach.to_f / reach
-      @engagement_rate = engagements.to_f / reach
       @complete_rate = completes.to_f / reach
     end
 
     @responses_by_day_data = (0..29).to_a.reverse.map{|days_ago| {day: (Date.today - days_ago).to_formatted_s(:sql), v: DailyAnalytic.fetch(:responses, Date.today - days_ago, @user)}}
-
-    engagements_yesterday = DailyAnalytic.fetch(:starts, Date.today - 1, @user)
-    engagements_day_before = DailyAnalytic.fetch(:starts, Date.today - 2, @user)
-    @engagement_increase_rate = engagements_yesterday.to_f / engagements_day_before - 1 unless engagements_day_before == 0
-    @engagement_data_points = (0..29).to_a.reverse.map{|days_ago| DailyAnalytic.fetch(:starts, Date.today - days_ago, @user)}
 
     @reach_today = DailyAnalytic.fetch(:views, Date.today, @user)
 

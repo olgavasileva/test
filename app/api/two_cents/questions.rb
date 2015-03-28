@@ -916,7 +916,6 @@ class TwoCents::Questions < Grape::API
                 comment_count:500,
                 share_count:150,
                 skip_count:1000,
-                start_count:500,
                 published_at: "June 5, 2014",
                 sponsor: "Some Person" or nil,
                 creator_id: <User ID of creator>,
@@ -1268,16 +1267,16 @@ class TwoCents::Questions < Grape::API
 
 
     #
-    # Start to answer a question
+    # Increment a question's view count.
     #
 
-    desc "Start to answer a question"
+    desc "Increment a question's view count"
     params do
       use :auth
 
       requires :question_id, type: Integer, desc: 'Question this is a response to'
     end
-    post 'start', http_codes:[
+    post ['view', 'start'], http_codes:[
       [200, "400 - Invalid params"],
       [200, "401 - Couldn't find Question"],
       [200, "402 - Invalid auth token"],
@@ -1285,30 +1284,6 @@ class TwoCents::Questions < Grape::API
     ] do
       validate_user!
       @question = Question.find declared_params[:question_id]
-      fail! 401, "Coulnd't find Question" unless @question
-
-      @question.started!
-
-      {}
-    end
-
-    #
-    # Increment a question's view count.
-    #
-    desc "Increment a question's view count"
-    params do
-      use :auth
-
-      requires :question_id, type: Integer, desc: 'Question this is a response to'
-    end
-    post 'view', http_codes:[
-      [200, "400 - Invalid params"],
-      [200, "401 - Couldn't find Question"],
-      [200, "402 - Invalid auth token"],
-      [200, "403 - Login required"]
-    ] do
-      validate_user!
-      @question = Question.find(params[:question_id])
       fail! 401, "Coulnd't find Question" unless @question
 
       @question.viewed!

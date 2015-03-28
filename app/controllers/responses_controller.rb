@@ -9,7 +9,7 @@ class ResponsesController < ApplicationController
       redirect_to File.join(ENV['WEB_APP_URL'], "#/app/question", params[:question_id])
     else
       @question = Question.find params[:question_id]
-      @question.started!
+      @question.viewed!
 
       @response = @question.responses.new user: current_user
       @response.build_comment user:current_user

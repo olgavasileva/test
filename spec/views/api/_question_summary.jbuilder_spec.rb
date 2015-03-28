@@ -14,7 +14,6 @@ RSpec.describe 'api/_question_summary.jbuilder' do
       anonymous: anonymous,
       view_count: 100,
       share_count: 20,
-      start_count: 40,
       created_at: Time.parse('2012-01-01 00:00:00'),
     })
   end
@@ -45,7 +44,7 @@ RSpec.describe 'api/_question_summary.jbuilder' do
   it { is_expected.to have_json_key(:comment_count).eq(question.comment_count) }
   it { is_expected.to have_json_key(:share_count).eq(question.share_count) }
   it { is_expected.to have_json_key(:skip_count).eq(question.skip_count) }
-  it { is_expected.to have_json_key(:start_count).eq(question.start_count) }
+  it { is_expected.to have_json_key(:start_count).eq(0) }
   it { is_expected.to have_json_key(:published_at).eq(Time.parse('2012-01-01 00:00:00').to_i) }
   it { is_expected.to have_json_key(:sponsor).eq(nil) }
 
