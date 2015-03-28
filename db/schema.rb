@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150317011806) do
+ActiveRecord::Schema.define(version: 20150327233855) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -597,8 +597,8 @@ ActiveRecord::Schema.define(version: 20150317011806) do
     t.string   "state"
     t.string   "kind"
     t.integer  "studio_id"
-    t.integer  "view_count"
-    t.integer  "start_count"
+    t.integer  "legacy_view_count"
+    t.integer  "legacy_start_count"
     t.boolean  "target_all",                                                default: false
     t.boolean  "target_all_followers",                                      default: false
     t.boolean  "target_all_groups",                                         default: false
@@ -616,6 +616,7 @@ ActiveRecord::Schema.define(version: 20150317011806) do
     t.boolean  "allow_multiple_answers_from_user",                          default: false
     t.boolean  "notifying",                                                 default: false
     t.integer  "trend_id"
+    t.integer  "view_count"
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree

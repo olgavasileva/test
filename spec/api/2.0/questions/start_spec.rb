@@ -9,9 +9,9 @@ describe 'POST questions/start' do
   } }
   let(:request) { -> { post 'v/2.0/questions/start', params } }
 
-  it "increments question's start count" do
+  it "increments question's view count" do
     2.times do
-      expect {request.call}.to change {question.reload.start_count || 0}.by(1)
+      expect {request.call}.to change {question.reload.view_count || 0}.by(1)
     end
   end
 end
