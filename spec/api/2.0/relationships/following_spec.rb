@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'relationships/following' do
-  let(:count) { 20 }
+  let(:count) { 2 }
   let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let(:common_params) { {
     auth_token: instance.auth_token
@@ -68,6 +68,7 @@ describe 'relationships/following' do
   end
 
   context "with page" do
+    let(:count) { 15 }
     let(:params) { common_params.merge(page: 1) }
 
     before { request.call }
@@ -79,7 +80,7 @@ describe 'relationships/following' do
     include_examples :correct_fields
 
     context "with per_page" do
-      let(:per_page) { 5 }
+      let(:per_page) { 1 }
       let(:params) { common_params.merge(page: 1, per_page: per_page) }
 
       it "responds with data for up to `per_page` leaders" do
