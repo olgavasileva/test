@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe :answered do
-  let(:count) { 20 }
+  let(:count) { 2 }
   let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let!(:questions) { FactoryGirl.create_list(:question, count) }
   let!(:responses) { questions.map { |q| FactoryGirl.create(:text_response, question: q, user: instance.user) } }
@@ -54,6 +54,7 @@ describe :answered do
   end
 
   context "with count" do
+    let(:count) { 3 }
     let(:other_params) {{ count: 2 }}
 
     it "returns first n records specified by count" do

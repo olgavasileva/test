@@ -47,30 +47,39 @@ RSpec.describe DemographicSummary do
       let(:el3) {'college'}
 
       describe "Gender" do
-        let!(:hash) {DemographicSummary.aggregate_data_for_question(question)}
+        let!(:hash) { DemographicSummary.aggregate_data_for_question(question) }
+        let(:gender) { hash['GENDER'] }
 
-        it {expect(hash['GENDER'][:largest_bucket][:name]).to eq 'Male'}
-        it {expect(hash['GENDER'][:buckets][0][:name]).to eq "Male"}
-        it {expect(hash['GENDER'][:buckets][0][:percent]).to eq 1.0}
-        it {expect(hash['GENDER'][:buckets][1][:name]).to eq "Female"}
-        it {expect(hash['GENDER'][:buckets][1][:percent]).to eq 0.0}
+        it 'returns the correct data' do
+          expect(gender[:largest_bucket][:name]).to eq 'Male'
+          expect(gender[:buckets][0][:name]).to eq "Male"
+          expect(gender[:buckets][0][:percent]).to eq 1.0
+          expect(gender[:buckets][1][:name]).to eq "Female"
+          expect(gender[:buckets][1][:percent]).to eq 0.0
+        end
 
         context "When one response is female" do
-          let(:g2) {'female'}
+          let(:g2) { 'female' }
 
-          it {expect(hash['GENDER'][:largest_bucket][:name]).to eq 'Male'}
-          it {expect(hash['GENDER'][:buckets][0][:name]).to eq "Male"}
-          it {expect(hash['GENDER'][:buckets][0][:percent]).to eq 2/3.0}
-          it {expect(hash['GENDER'][:buckets][1][:name]).to eq "Female"}
-          it {expect(hash['GENDER'][:buckets][1][:percent]).to eq 1/3.0}
+          it 'returns the correct data' do
+            expect(gender[:largest_bucket][:name]).to eq 'Male'
+            expect(gender[:buckets][0][:name]).to eq "Male"
+            expect(gender[:buckets][0][:percent]).to eq 2/3.0
+            expect(gender[:buckets][1][:name]).to eq "Female"
+            expect(gender[:buckets][1][:percent]).to eq 1/3.0
+          end
 
           context "When one response has an unset gender" do
             let(:g3) {}
-            it {expect(hash['GENDER'][:largest_bucket][:name]).to eq 'Male'}
-            it {expect(hash['GENDER'][:buckets][0][:name]).to eq "Male"}
-            it {expect(hash['GENDER'][:buckets][0][:percent]).to eq 1/2.0}
-            it {expect(hash['GENDER'][:buckets][1][:name]).to eq "Female"}
-            it {expect(hash['GENDER'][:buckets][1][:percent]).to eq 1/2.0}
+
+            it 'returns the correct data' do
+              expect(gender[:largest_bucket][:name]).to eq 'Male'
+              expect(gender[:buckets][0][:name]).to eq "Male"
+              expect(gender[:buckets][0][:percent]).to eq 1/2.0
+              expect(gender[:buckets][1][:name]).to eq "Female"
+              expect(gender[:buckets][1][:percent]).to eq 1/2.0
+            end
+
           end
         end
       end
@@ -101,51 +110,53 @@ RSpec.describe DemographicSummary do
 
             let!(:hash) {DemographicSummary.aggregate_data_for_question(question)}
 
-            it {expect(hash['GENDER'][:buckets][0][:name]).to eq "Male"}
-            it {expect(hash['GENDER'][:buckets][0][:percent]).to eq 1/2.0}
-            it {expect(hash['GENDER'][:buckets][1][:name]).to eq "Female"}
-            it {expect(hash['GENDER'][:buckets][1][:percent]).to eq 1/2.0}
+            it 'returns the correct data' do
+              expect(hash['GENDER'][:buckets][0][:name]).to eq "Male"
+              expect(hash['GENDER'][:buckets][0][:percent]).to eq 1/2.0
+              expect(hash['GENDER'][:buckets][1][:name]).to eq "Female"
+              expect(hash['GENDER'][:buckets][1][:percent]).to eq 1/2.0
 
-            it {expect(hash['AGE'][:buckets][0][:name]).to eq "18-24"}
-            it {expect(hash['AGE'][:buckets][0][:percent]).to eq 1/2.0}
-            it {expect(hash['AGE'][:buckets][1][:name]).to eq "45-54"}
-            it {expect(hash['AGE'][:buckets][1][:percent]).to eq 1/2.0}
-            it {expect(hash['AGE'][:buckets][2][:name]).to eq "0-18"}
-            it {expect(hash['AGE'][:buckets][2][:percent]).to eq 0.0}
-            it {expect(hash['AGE'][:buckets][3][:name]).to eq "25-34"}
-            it {expect(hash['AGE'][:buckets][3][:percent]).to eq 0.0}
-            it {expect(hash['AGE'][:buckets][4][:name]).to eq "35-44"}
-            it {expect(hash['AGE'][:buckets][4][:percent]).to eq 0.0}
-            it {expect(hash['AGE'][:buckets][5][:name]).to eq "55+"}
-            it {expect(hash['AGE'][:buckets][5][:percent]).to eq 0.0}
+              expect(hash['AGE'][:buckets][0][:name]).to eq "18-24"
+              expect(hash['AGE'][:buckets][0][:percent]).to eq 1/2.0
+              expect(hash['AGE'][:buckets][1][:name]).to eq "45-54"
+              expect(hash['AGE'][:buckets][1][:percent]).to eq 1/2.0
+              expect(hash['AGE'][:buckets][2][:name]).to eq "0-18"
+              expect(hash['AGE'][:buckets][2][:percent]).to eq 0.0
+              expect(hash['AGE'][:buckets][3][:name]).to eq "25-34"
+              expect(hash['AGE'][:buckets][3][:percent]).to eq 0.0
+              expect(hash['AGE'][:buckets][4][:name]).to eq "35-44"
+              expect(hash['AGE'][:buckets][4][:percent]).to eq 0.0
+              expect(hash['AGE'][:buckets][5][:name]).to eq "55+"
+              expect(hash['AGE'][:buckets][5][:percent]).to eq 0.0
 
-            it {expect(hash['CHILDREN'][:buckets][0][:name]).to eq "Has Kids"}
-            it {expect(hash['CHILDREN'][:buckets][0][:percent]).to eq 1/2.0}
-            it {expect(hash['CHILDREN'][:buckets][1][:name]).to eq "No Kids"}
-            it {expect(hash['CHILDREN'][:buckets][1][:percent]).to eq 1/2.0}
+              expect(hash['CHILDREN'][:buckets][0][:name]).to eq "Has Kids"
+              expect(hash['CHILDREN'][:buckets][0][:percent]).to eq 1/2.0
+              expect(hash['CHILDREN'][:buckets][1][:name]).to eq "No Kids"
+              expect(hash['CHILDREN'][:buckets][1][:percent]).to eq 1/2.0
 
-            it {expect(hash['INCOME'][:buckets][0][:name]).to eq "$100k+"}
-            it {expect(hash['INCOME'][:buckets][0][:percent]).to eq 1/2.0}
-            it {expect(hash['INCOME'][:buckets][1][:name]).to eq "$0-100k"}
-            it {expect(hash['INCOME'][:buckets][1][:percent]).to eq 1/2.0}
+              expect(hash['INCOME'][:buckets][0][:name]).to eq "$100k+"
+              expect(hash['INCOME'][:buckets][0][:percent]).to eq 1/2.0
+              expect(hash['INCOME'][:buckets][1][:name]).to eq "$0-100k"
+              expect(hash['INCOME'][:buckets][1][:percent]).to eq 1/2.0
 
-            it {expect(hash['EDUCATION'][:buckets][0][:name]).to eq "No College"}
-            it {expect(hash['EDUCATION'][:buckets][0][:percent]).to eq 1/2.0}
-            it {expect(hash['EDUCATION'][:buckets][1][:name]).to eq "College"}
-            it {expect(hash['EDUCATION'][:buckets][1][:percent]).to eq 1/2.0}
+              expect(hash['EDUCATION'][:buckets][0][:name]).to eq "No College"
+              expect(hash['EDUCATION'][:buckets][0][:percent]).to eq 1/2.0
+              expect(hash['EDUCATION'][:buckets][1][:name]).to eq "College"
+              expect(hash['EDUCATION'][:buckets][1][:percent]).to eq 1/2.0
 
-            it {expect(hash['ETHNICITY'][:buckets][0][:name]).to eq "Asian"}
-            it {expect(hash['ETHNICITY'][:buckets][0][:percent]).to eq 1/2.0}
-            it {expect(hash['ETHNICITY'][:buckets][1][:name]).to eq "Hispanic"}
-            it {expect(hash['ETHNICITY'][:buckets][1][:percent]).to eq 1/2.0}
-            it {expect(hash['ETHNICITY'][:buckets][2][:name]).to eq "African American"}
-            it {expect(hash['ETHNICITY'][:buckets][2][:percent]).to eq 0.0}
-            it {expect(hash['ETHNICITY'][:buckets][3][:name]).to eq "Caucasian"}
-            it {expect(hash['ETHNICITY'][:buckets][3][:percent]).to eq 0.0}
+              expect(hash['ETHNICITY'][:buckets][0][:name]).to eq "Asian"
+              expect(hash['ETHNICITY'][:buckets][0][:percent]).to eq 1/2.0
+              expect(hash['ETHNICITY'][:buckets][1][:name]).to eq "Hispanic"
+              expect(hash['ETHNICITY'][:buckets][1][:percent]).to eq 1/2.0
+              expect(hash['ETHNICITY'][:buckets][2][:name]).to eq "African American"
+              expect(hash['ETHNICITY'][:buckets][2][:percent]).to eq 0.0
+              expect(hash['ETHNICITY'][:buckets][3][:name]).to eq "Caucasian"
+              expect(hash['ETHNICITY'][:buckets][3][:percent]).to eq 0.0
 
-            it {expect(hash['AFFILIATION'][:buckets]).to be_empty}
+              expect(hash['AFFILIATION'][:buckets]).to be_empty
 
-            it {expect(hash['ENGAGEMENT'][:buckets]).to be_empty}
+              expect(hash['ENGAGEMENT'][:buckets]).to be_empty
+            end
           end
         end
       end
