@@ -434,17 +434,16 @@ class TwoCents::Questions < Grape::API
     params do
       use :auth
       requires :image_id, type: Integer, desc: 'The id of the image to update'
-      optional :image, type: Hash do
-        optional :meta_data, type: Hash, desc: 'Survey image meta data hash'
-      end
+      optional :meta_data, type: Hash, desc: 'Survey image meta data hash'
     end
     put 'image', jbuilder: 'background_image' do
       validate_user!
       @image = current_user.questions
+        .eager_load(:background_image)
         .find_by!(background_image_id: params[:image_id])
         .background_image
 
-      @image.update!(declared_params(:image))
+      @image.update!(declared_params.slice(:meta_data))
     end
 
     #
