@@ -408,6 +408,44 @@ class TwoCents::Questions < Grape::API
       create_question_target(@question, params[:targets])
     end
 
+    desc 'Update a questions image meta data', notes: <<-NOTES
+      #### Example Response
+
+      This response is also part of the question response, though it is not
+      namespaced with `image` like it is here.
+
+      ```
+      {
+        "image": {
+          "image_id": 1,
+          "image_url": "http://placeholdit/100x100.png",
+          "image_meta_data": {
+            "skyscraper": {
+              "example": "metadata"
+            },
+            "wide_banner": {
+              "more": "metadata",
+            }
+          }
+        }
+      }
+      ```
+    NOTES
+    params do
+      use :auth
+      requires :image_id, type: Integer, desc: 'The id of the image to update'
+      optional :image, type: Hash do
+        optional :meta_data, type: Hash, desc: 'Survey image meta data hash'
+      end
+    end
+    put 'image', jbuilder: 'background_image' do
+      validate_user!
+      @image = current_user.questions
+        .find_by!(background_image_id: params[:image_id])
+        .background_image
+
+      @image.update!(declared_params(:image))
+    end
 
     #
     # Feed related APIs
