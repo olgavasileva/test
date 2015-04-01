@@ -14,4 +14,12 @@ RSpec.describe Survey do
       it { is_expected.to allow_value(FactoryGirl.create(:user)).for(:user) }
     end
   end
+
+  describe '#thank_you_markdown' do
+    it 'sets the #thank_you_html' do
+      survey = Survey.new(thank_you_markdown: '**Thank You**')
+      survey.send(:convert_markdown)
+      expect(survey.thank_you_html).to_not be_nil
+    end
+  end
 end

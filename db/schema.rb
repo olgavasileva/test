@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150401001154) do
+ActiveRecord::Schema.define(version: 20150401204518) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -919,12 +919,14 @@ ActiveRecord::Schema.define(version: 20150401001154) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id",    null: false
-    t.string   "uuid"
+    t.integer  "user_id",            null: false
+    t.string   "uuid",               null: false
+    t.text     "thank_you_markdown"
+    t.text     "thank_you_html"
   end
 
   add_index "surveys", ["user_id"], name: "index_surveys_on_user_id", using: :btree
-  add_index "surveys", ["uuid"], name: "index_surveys_on_uuid", using: :btree
+  add_index "surveys", ["uuid"], name: "index_surveys_on_uuid", unique: true, using: :btree
 
   create_table "taggings", force: true do |t|
     t.integer  "tag_id"
