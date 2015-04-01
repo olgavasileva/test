@@ -10,7 +10,7 @@ RSpec.describe TwoCents::Surveys, '/surveys' do
     let(:params) do
       {
         auth_token: auth.auth_token,
-        survey: {name: 'Soda Pop Questions'}
+        name: 'Soda Pop Questions'
       }
     end
 
@@ -46,7 +46,7 @@ RSpec.describe TwoCents::Surveys, '/surveys' do
     let(:params) do
       {
         auth_token: auth.auth_token,
-        survey: {name: SecureRandom.hex(10)}
+        name: SecureRandom.hex(10)
       }
     end
 

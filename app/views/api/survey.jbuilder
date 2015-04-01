@@ -6,10 +6,4 @@ json.survey do
       json.partial! 'question', question: question
     end
   end
-
-  json.embeddable_units do
-    json.array! @survey.embeddable_units do |unit|
-      json.partial! 'embeddable_unit', unit: unit
-    end
-  end
 end
