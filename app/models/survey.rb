@@ -9,7 +9,12 @@ class Survey < ActiveRecord::Base
 
   accepts_nested_attributes_for :questions_surveys, allow_destroy: true
 
+  validates :uuid, presence: true
   validate :user_exists?
+
+  default :uuid do |eu|
+    "S"+UUID.new.generate.gsub(/-/, '')
+  end
 
   def next_question question
     q = questions_surveys.where(question_id:question).first

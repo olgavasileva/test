@@ -4,7 +4,6 @@ ActiveAdmin.register DailyAnalytic do
   #Index scopes
   scope :all, default: true
   scope :views
-  scope :starts
   scope :responses
 
   config.sort_order = 'date ASC'

@@ -13,6 +13,7 @@ ActiveAdmin.register Survey do
   index do
     column :id
     column :name
+    column :uuid
     column "Questions" do |survey|
       link_to pluralize(survey.questions_surveys.count, 'Question'), admin_survey_questions_surveys_path(survey)
     end
