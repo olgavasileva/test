@@ -10,7 +10,8 @@ RSpec.describe TwoCents::Surveys, '/surveys' do
     let(:params) do
       {
         auth_token: auth.auth_token,
-        name: 'Soda Pop Questions'
+        name: 'Soda Pop Questions',
+        thank_you_markdown: '**Thank You**'
       }
     end
 
@@ -24,11 +25,7 @@ RSpec.describe TwoCents::Surveys, '/surveys' do
   describe 'GET /surveys/:survey_id' do
     let(:survey) { FactoryGirl.create(:survey, user: auth.user) }
 
-    let(:params) do
-      {
-        auth_token: auth.auth_token,
-      }
-    end
+    let(:params) { {auth_token: auth.auth_token} }
 
     subject { get "v/2.0/surveys/#{survey.id}", params }
 
