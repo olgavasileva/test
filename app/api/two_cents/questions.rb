@@ -679,7 +679,10 @@ class TwoCents::Questions < Grape::API
         end
       end
 
-      @questions = filtered_questions.latest.search_for(declared_params[:search_text]).limit(declared_params[:count])
+      @questions = filtered_questions.latest
+        .search_for(declared_params[:search_text])
+        .limit(declared_params[:count])
+
       @answered_questions = {}
       @questions.each do |q|
         @answered_questions[q.id] = q.user_answered?(current_user)

@@ -84,10 +84,19 @@ class Question < ActiveRecord::Base
   after_create :add_to_survey, if: 'survey_id.present?'
 
   # Uses squeel gem to make the query easier to write and read
+  # - Outer join to include questions without the association
+  # - Group by question id to get unique questions
+  #
   def self.search_for search_text
-    # Outer join to include questions without any choices
-    # Group by question id to just get unique questions
-    joins{choices.outer}.where{(title =~ "%#{search_text}%") | (choices.title =~ "%#{search_text}%")}.group{questions.id}
+    search_text = search_text.downcase
+
+    joins{choices.outer}.joins{tags.outer}
+      .where {
+        (lower(title) =~ "%#{search_text}%") |
+        (lower(choices.title) =~ "%#{search_text}%") |
+        (lower(tags.name) =~ "%#{search_text}%")
+      }
+      .group{questions.id}
   end
 
   # Returns the number of individual responses - override if multiple choices are allowed

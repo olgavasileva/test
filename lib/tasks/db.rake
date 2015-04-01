@@ -110,4 +110,87 @@ namespace :db do
       end
     end
   end
+
+  task migrate_categories: :environment do
+    tags_count = ActsAsTaggableOn::Tag.count
+    taggings_count = ActsAsTaggableOn::Tagging.count
+
+    puts "=> Existing Counts:"
+    puts " - Tags: #{tags_count}"
+    puts " - Taggings: #{taggings_count}"
+
+    Category.transaction do
+      batch_inserts = []
+
+      puts "=> Migrating categories to tags"
+      Category.includes(:questions).find_each do |category|
+        tags = get_category_tags(category.name)
+        ids = category.questions.pluck(:id, :user_id)
+
+        puts " * Category #{category.name}: #{tags.inspect}"
+        tags.map! do |tag|
+          ActsAsTaggableOn::Tag.where(name: tag).first_or_create!
+        end
+
+        tags.each do |tag|
+          batch_inserts += ids.map do |id|
+            "(#{tag.id}, 'Question', #{id[0]}, 'tags', #{id[1]}, 'User')"
+          end
+        end
+      end
+
+      puts "=> Mass Inserting/Updating Question <> Tag data"
+      conn = ActiveRecord::Base.connection
+      conn.execute <<-SQL.squish
+        INSERT INTO taggings
+          (tag_id, taggable_type, taggable_id, context, tagger_id, tagger_type)
+          VALUES #{batch_inserts.join(', ')}
+        ON DUPLICATE KEY UPDATE tag_id=tag_id;
+      SQL
+
+      ActsAsTaggableOn::Tagging.update_all(created_at: Time.zone.now)
+
+      puts "=> Updating tag counts"
+      conn.execute <<-SQL.squish
+        UPDATE tags
+        SET taggings_count = (
+          SELECT COUNT(tag_id)
+          FROM taggings
+          WHERE taggings.tag_id = tags.id
+          GROUP BY tag_id
+        )
+      SQL
+    end
+
+    new_tags_count = ActsAsTaggableOn::Tag.count
+    new_taggings_count = ActsAsTaggableOn::Tagging.count
+
+    puts "=> New Counts:"
+    puts " - Tags: #{new_tags_count} (diff: #{(new_tags_count - tags_count).inspect})"
+    puts " - Taggings: #{new_taggings_count} (diff: #{(new_taggings_count - taggings_count).inspect})"
+    puts " - Sum tagging_counts: #{ActsAsTaggableOn::Tag.sum(:taggings_count)}"
+  end
+
+  private
+
+  def get_category_tags(name)
+    tags = [name]
+    tags += case name
+      when /&/
+        name.split(' & ')
+      when "Life Hacks"
+        ['Life', 'Hacks']
+      when 'Basic-ness'
+        ['Basicness']
+      when /statisfied/i
+        ['statisfied']
+      when /awkward\z/i
+        ['awkward']
+      when /rather/i
+        []
+      else
+        name.split(' ')
+    end
+    tags.compact.uniq.map(&:strip)
+  end
 end
