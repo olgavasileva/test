@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe 'views/api/survey.jbuilder' do
 
-  before(:all) { @unit = FactoryGirl.create(:embeddable_unit) }
+  before(:all) { @survey = FactoryGirl.create(:survey) }
   after(:all) { DatabaseCleaner.clean_with(:truncation) }
 
-  let(:survey) { @unit.survey }
+  let(:survey) { @survey }
 
   before { allow(view).to receive(:current_user).and_return(User.new) }
   before { assign(:survey, survey) }
@@ -23,6 +23,5 @@ RSpec.describe 'views/api/survey.jbuilder' do
     it { is_expected.to have_json_key(:name).eq(survey.name) }
     it { is_expected.to have_json_key(:user_id) }
     it { is_expected.to have_json_key(:questions) }
-    it { is_expected.to have_json_key(:embeddable_units) }
   end
 end

@@ -11,9 +11,7 @@ module TwoCents
 
       params :survey do |opts|
         type = opts[:type] || :optional
-        requires :survey, type: Hash do
-          send(type, :name, type: String, desc: 'The name for the survey')
-        end
+        send(type, :name, type: String, desc: 'The name for the survey')
       end
 
       params :unit_uuid do |opts|
@@ -24,15 +22,8 @@ module TwoCents
         requires :question_id, type: Integer, desc: 'The question id.'
       end
 
-      params :embeddable_unit do |opts|
-        type = opts[:type] || :optional
-        requires :embeddable_unit, type: Hash do
-          optional :width, type: Integer, desc: 'The width for the embed'
-          optional :height, type: Integer, desc: 'The height for the embed'
-          send(type, :thank_you_markdown, {
-            desc: 'The thank you message in Markdown format'
-          })
-        end
+      def survey_params
+        declared_params.slice(:name)
       end
 
       def survey_scope
@@ -70,7 +61,7 @@ module TwoCents
       end
       post '/', jbuilder: 'survey', http_codes: [] do
         validate_user!
-        @survey = survey_scope.create!(declared_params[:survey])
+        @survey = survey_scope.create!(survey_params)
       end
 
       route_param :survey_id do
@@ -89,7 +80,6 @@ module TwoCents
                 "name": "Soda Pop Questionaire",
                 "user_id": 1,
                 "quesitons": [], // Array of questions,
-                "embeddable_units": [] // See GET /surveys/:survey_id/units/:uuid
               }
             }
             ```
@@ -118,7 +108,7 @@ module TwoCents
         put '/', jbuilder: 'survey' do
           validate_user!
           @survey = load_survey!
-          @survey.update!(declared_params[:survey])
+          @survey.update!(survey_params)
         end
 
         # ----------------------------------------------------------------------
@@ -136,97 +126,6 @@ module TwoCents
           survey = load_survey!
           survey.destroy!
           status 204
-        end
-
-        # ----------------------------------------------------------------------
-        # Survey -> Embeddable Units
-        #
-        resource :units do
-
-          # --------------------------------------------------------------------
-          # Embeddable Units: Create
-          #
-          desc 'Create an embeddable unit', {
-            notes: "See `GET /surveys/:survey_id/units/:uuid` for example response."
-          }
-          params do
-            use :auth
-            use :survey_id
-            use :embeddable_unit, type: :requires
-          end
-          post '/', jbuilder: 'embeddable_unit' do
-            validate_user!
-            survey = load_survey!
-            @unit = survey.embeddable_units.create!(declared_params[:embeddable_unit])
-          end
-
-          route_param :uuid do
-
-            # ----------------------------------------------------------------------
-            # Embeddable Units: Retreive
-            #
-            desc 'Retrieve an embeddable unit', {
-              notes: <<-NOTES
-                ### Example Response
-                ```
-                {
-                  "embeddable_unit": {
-                    "uuid": "EU...",
-                    "width": 300,
-                    "height": 250,
-                    "thank_you_markdown": "**Thanks**",
-                    "thank_you_html": "<strong>Thanks</strong>"
-                  }
-                }
-                ```
-              NOTES
-            }
-            params do
-              use :auth
-              use :survey_id
-              use :unit_uuid
-            end
-            get '/', jbuilder: 'embeddable_unit' do
-              validate_user!
-              @unit = load_embeddable_unit!
-            end
-
-            # ----------------------------------------------------------------------
-            # Embeddable Units: Update
-            #
-            desc 'Updates an embeddable unit', {
-              notes: "See `GET /surveys/:survey_id/units/:uuid` for example response."
-            }
-            params do
-              use :auth
-              use :survey_id
-              use :unit_uuid
-              use :embeddable_unit, type: :optional
-            end
-            put '/', jbuilder: 'embeddable_unit' do
-              validate_user!
-              @unit = load_embeddable_unit!
-              @unit.update!(declared_params[:embeddable_unit])
-            end
-
-            # ----------------------------------------------------------------------
-            # Embeddable Units: Delete
-            #
-            desc 'Deletes an embeddable unit', {
-              notes: 'Returns a `204 No Content` status only on success.'
-            }
-            params do
-              use :auth
-              use :survey_id
-              use :unit_uuid
-            end
-            delete '/' do
-              validate_user!
-              unit = load_embeddable_unit!
-              unit.destroy!
-              status 204
-            end
-          end
         end
 
         # ----------------------------------------------------------------------
