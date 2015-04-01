@@ -12,6 +12,9 @@ ActiveAdmin.register Survey do
 
   index do
     column :id
+    column :user do |survey|
+      link_to survey.user.username, admin_users_path(survey.user)
+    end
     column :name
     column :uuid
     column "Questions" do |survey|
@@ -24,6 +27,7 @@ ActiveAdmin.register Survey do
   form do |f|
     f.inputs do
       f.input :name
+      f.input :user_id, label: 'User ID (owner)'
       f.input :contests, as: :check_boxes, label_method: :name
     end
     f.actions
