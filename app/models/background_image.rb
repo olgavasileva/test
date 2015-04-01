@@ -7,6 +7,7 @@ class BackgroundImage < ActiveRecord::Base
     dependent: :delete_all
 
   attr_accessor :meta_data
+  attr_accessor :new_image_url
 
   before_validation :setup_image, if: 'new_image_url.present?'
 
@@ -38,6 +39,14 @@ class BackgroundImage < ActiveRecord::Base
   end
 
   private
+
+  def setup_image
+    if URI(new_image_url).scheme.nil?
+      self.image = open(new_image_url)
+    else
+      self.remote_image_url = new_image_url
+    end
+  end
 
   def meta_data_is_valid_type?
     unless meta_data.is_a?(Hash) && meta_data.values.all? { |v| v.is_a?(Hash) && !v.empty? }

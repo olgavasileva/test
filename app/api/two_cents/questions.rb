@@ -5,6 +5,11 @@ class TwoCents::Questions < Grape::API
         requires :auth_token, type: String, desc: "Obtain this from the instance's API."
       end
 
+      params :image_data do
+        requires :image_url, type:String, desc:"URL of the overview image"
+        optional :image_meta_data, type: Hash, desc: 'Size meta data for use with survey sizes'
+      end
+
       params :create do
         requires :title, type:String, desc:"Title of question to display to the user"
         optional :category_id, type:Integer, desc: "Category for this question"
@@ -86,6 +91,12 @@ class TwoCents::Questions < Grape::API
         target
       end
 
+      def create_image(klass, _atts=nil)
+        hash = _atts || declared_params
+        data = hash.slice(:image_meta_data)
+        data[:new_image_url] = hash.fetch(:image_url, nil)
+        klass.create!(data)
+      end
     end
 
     #
@@ -104,8 +115,8 @@ class TwoCents::Questions < Grape::API
     params do
       use :auth
       use :create
+      use :image_data
 
-      requires :image_url, type:String, desc:"URL of the overview image"
       requires :rotate, type:Boolean, desc:"True if choices should be presented in a random order", default:false
 
       requires :choices, type:Array do
@@ -125,13 +136,7 @@ class TwoCents::Questions < Grape::API
       fail!(2000, "At least 2 choice must be provided") if declared_params[:choices].count < 2
       fail!(2001, "Not more than 4 choice may be provided") if declared_params[:choices].count > 4
 
-      background_image = if URI(declared_params[:image_url]).scheme.nil?
-        QuestionImage.create!(image:open(declared_params[:image_url]))
-      else
-        QuestionImage.create!(remote_image_url:declared_params[:image_url])
-      end
-
-      question_params = {
+      @question = TextChoiceQuestion.new({
         state: "active",
         user_id:current_user.id,
         category_id:declared_params[:category_id],
@@ -139,12 +144,10 @@ class TwoCents::Questions < Grape::API
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
-        background_image:background_image,
+        background_image: create_image(QuestionImage),
         anonymous: params[:anonymous],
         tag_list: declared_params[:tag_list]
-      }
-
-      @question = TextChoiceQuestion.new(question_params)
+      })
 
       declared_params[:choices].each do |choice_params|
         @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate]
@@ -178,9 +181,9 @@ class TwoCents::Questions < Grape::API
 
       requires :choices, type:Array do
         requires :title, type:String, desc:"Title of the choice to display to the user"
-        requires :image_url, type:String, desc:"URL of the choice image"
         requires :rotate, type:Boolean, desc:"This value is logically ANDed with question.rotate", default:true
         requires :muex, type:Boolean, desc:"If a muex choice is selected, no other choices are alloweed", default:false
+        use :image_data
       end
     end
     post 'multiple_choice_question', jbuilder: "question", http_codes:[
@@ -201,7 +204,7 @@ class TwoCents::Questions < Grape::API
       fail!(2003, "min_responses must be less than or equal to the number of choices") unless min_responses <= num_choices
       fail!(2004, "max_responses must be greater than or equal to min_responses") unless max_responses >= min_responses
 
-      question_params = {
+      @question = MultipleChoiceQuestion.new({
         state: "active",
         user_id:current_user.id,
         category_id:declared_params[:category_id],
@@ -213,18 +216,15 @@ class TwoCents::Questions < Grape::API
         max_responses:max_responses,
         anonymous: params[:anonymous],
         tag_list: declared_params[:tag_list]
-      }
-
-      @question = MultipleChoiceQuestion.new(question_params)
+      })
 
       declared_params[:choices].each do |choice_params|
-        background_image = if URI(choice_params[:image_url]).scheme.nil?
-          ChoiceImage.create!(image:open(choice_params[:image_url]))
-        else
-          ChoiceImage.create!(remote_image_url:choice_params[:image_url])
-        end
-
-        @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate], muex:choice_params[:muex], background_image:background_image
+        @question.choices.build({
+          title: choice_params[:title],
+          rotate: choice_params[:rotate],
+          muex: choice_params[:muex],
+          background_image: create_image(ChoiceImage, choice_params)
+        })
       end
 
       @question.save!
@@ -253,8 +253,8 @@ class TwoCents::Questions < Grape::API
 
       requires :choices, type:Array do
         requires :title, type:String, desc:"Title of the choice to display to the user"
-        requires :image_url, type:String, desc:"URL of the choice image"
         requires :rotate, type:Boolean, desc:"This value is logically ANDed with question.rotate", default:true
+        use :image_data
       end
     end
     post 'image_choice_question', jbuilder: "question", http_codes:[
@@ -268,7 +268,7 @@ class TwoCents::Questions < Grape::API
       num_choices = declared_params[:choices].count
       fail!(2002, "The number of choices must be between 2 and 4") unless (2..4).include?(num_choices)
 
-      question_params = {
+      @question = ImageChoiceQuestion.new({
         state: "active",
         user_id:current_user.id,
         category_id:declared_params[:category_id],
@@ -278,18 +278,14 @@ class TwoCents::Questions < Grape::API
         rotate:declared_params[:rotate],
         anonymous: params[:anonymous],
         tag_list: declared_params[:tag_list]
-      }
-
-      @question = ImageChoiceQuestion.new(question_params)
+      })
 
       declared_params[:choices].each do |choice_params|
-        background_image = if URI(choice_params[:image_url]).scheme.nil?
-          ChoiceImage.create!(image:open(choice_params[:image_url]))
-        else
-          ChoiceImage.create!(remote_image_url:choice_params[:image_url])
-        end
-
-        @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate], background_image:background_image
+        @question.choices.build({
+          title: choice_params[:title],
+          rotate: choice_params[:rotate],
+          background_image: create_image(ChoiceImage, choice_params)
+        })
       end
 
       @question.save!
@@ -319,8 +315,8 @@ class TwoCents::Questions < Grape::API
 
       requires :choices, type:Array do
         requires :title, type:String, desc:"Title of the choice to display to the user"
-        requires :image_url, type:String, desc:"URL of the choice image"
         requires :rotate, type:Boolean, desc:"This value is logically ANDed with question.rotate", default:true
+        use :image_data
       end
     end
     post 'order_question', jbuilder: "question", http_codes:[
@@ -334,7 +330,7 @@ class TwoCents::Questions < Grape::API
       num_choices = declared_params[:choices].count
       fail!(2002, "The number of choices must be between 2 and 4") unless (2..4).include?(num_choices)
 
-      question_params = {
+      @question = OrderQuestion.new({
         state: "active",
         user_id:current_user.id,
         category_id:declared_params[:category_id],
@@ -344,18 +340,14 @@ class TwoCents::Questions < Grape::API
         rotate:declared_params[:rotate],
         anonymous: params[:anonymous],
         tag_list: declared_params[:tag_list]
-      }
-
-      @question = OrderQuestion.new(question_params)
+      })
 
       declared_params[:choices].each do |choice_params|
-        background_image = if URI(choice_params[:image_url]).scheme.nil?
-          OrderChoiceImage.create!(image:open(choice_params[:image_url]))
-        else
-          OrderChoiceImage.create!(remote_image_url:choice_params[:image_url])
-        end
-
-        @question.choices.build title:choice_params[:title], rotate:choice_params[:rotate], background_image:background_image
+        @question.choices.build({
+          title: choice_params[:title],
+          rotate: choice_params[:rotate],
+          background_image: create_image(OrderChoiceImage, choice_params)
+        })
       end
 
       @question.save!
@@ -380,8 +372,7 @@ class TwoCents::Questions < Grape::API
     params do
       use :auth
       use :create
-
-      requires :image_url, type:String, desc:"URL of the overview image"
+      use :image_data
 
       requires :text_type, type:String, values: TextQuestion::TEXT_TYPES, desc:"Type of text to collect: #{TextQuestion::TEXT_TYPES}"
       requires :min_characters, type:Integer
@@ -396,30 +387,20 @@ class TwoCents::Questions < Grape::API
 
       category = Category.find declared_params[:category_id]
 
-      background_image = if URI(declared_params[:image_url]).scheme.nil?
-        QuestionImage.create!(image:open(declared_params[:image_url]))
-      else
-        QuestionImage.create!(remote_image_url:declared_params[:image_url])
-      end
-
-      question_params = {
+      @question = TextQuestion.create!({
         state: "active",
-        user_id:current_user.id,
-        category_id:declared_params[:category_id],
+        user_id: current_user.id,
+        category_id: declared_params[:category_id],
         survey_id: declared_params[:survey_id],
-        title:declared_params[:title],
-        background_image:background_image,
+        title: declared_params[:title],
+        background_image: create_image(QuestionImage),
         description:declared_params[:description],
         text_type:declared_params[:text_type],
         min_characters:declared_params[:min_characters],
         max_characters:declared_params[:max_characters],
         anonymous: params[:anonymous],
         tag_list: declared_params[:tag_list]
-      }
-
-      @question = TextQuestion.new(question_params)
-
-      @question.save!
+      })
 
       # Send SMS Message or Email to invited contacts
       send_email_or_sms_to_invited_users @question, params[:invite_phone_numbers], params[:invite_email_addresses]
