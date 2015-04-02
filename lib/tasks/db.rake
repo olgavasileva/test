@@ -121,36 +121,24 @@ namespace :db do
 
     Category.transaction do
       batch_inserts = []
+      created_at = Time.zone.now.to_s(:db)
 
       puts "=> Migrating categories to tags"
       Category.includes(:questions).find_each do |category|
         tags = get_category_tags(category.name)
-        ids = category.questions.pluck(:id, :user_id)
 
         puts " * Category #{category.name}: #{tags.inspect}"
-        tags.map! do |tag|
-          ActsAsTaggableOn::Tag.where(name: tag).first_or_create!
-        end
-
-        tags.each do |tag|
-          batch_inserts += ids.map do |id|
-            "(#{tag.id}, 'Question', #{id[0]}, 'tags', #{id[1]}, 'User')"
+        tags.map! do |name|
+          ActsAsTaggableOn::Tag.where(name: name).first_or_create!.tap do |tag|
+            category.questions.each do |question|
+              question.tag_list.add(tag)
+            end
           end
         end
       end
 
-      puts "=> Mass Inserting/Updating Question <> Tag data"
-      conn = ActiveRecord::Base.connection
-      conn.execute <<-SQL.squish
-        INSERT INTO taggings
-          (tag_id, taggable_type, taggable_id, context, tagger_id, tagger_type)
-          VALUES #{batch_inserts.join(', ')}
-        ON DUPLICATE KEY UPDATE tag_id=tag_id;
-      SQL
-
-      ActsAsTaggableOn::Tagging.update_all(created_at: Time.zone.now)
-
       puts "=> Updating tag counts"
+      conn = ActiveRecord::Base.connection
       conn.execute <<-SQL.squish
         UPDATE tags
         SET taggings_count = (
