@@ -24,6 +24,8 @@ json.choices question.ordered_choices_for(current_user) do |choice|
   end
 end
 
+json.tags question.tag_list.map { |t| "##{t}" }
+
 json.category do
   json.(question.category, :id, :name)
 end
