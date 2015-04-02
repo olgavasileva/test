@@ -35,23 +35,34 @@ class TwoCents::Auth < Grape::API
             device_vendor_identifier: TEST
 
         #### Example response
+
+        ```
+        {
+          "instance_token": "SOME_STRING",
+          "api_domain": "https://somewhere.com",
+          "google_gtm": "GTM-SOMETHING",
+          "background_images": [
+            "http://some.url.png",
+            "http://some.other.url.png"
+          ],
+          "background_images_retina": [
+            "http://some.url@2x.png",
+            "http://some.other.url@2x.png"
+          ]
+          "faq_url": "http://some.url.com?page=123"
+          "feedback_url": "http://some.url.com?page=124"
+          "about_url": "http://some.url.com?page=125"
+          "terms_and_conditions_url": "http://some.url.com?page=126",
+          "ad_units": [
             {
-              instance_token: "SOME_STRING",
-              api_domain:"https://somewhere.com",
-              google_gtm:"GTM-SOMETHING",
-              background_images: [
-                "http://some.url.png",
-                "http://some.other.url.png"
-              ],
-              background_images_retina: [
-                "http://some.url@2x.png",
-                "http://some.other.url@2x.png"
-              ]
-              faq_url:"http://some.url.com?page=123"
-              feedback_url:"http://some.url.com?page=124"
-              about_url:"http://some.url.com?page=125"
-              terms_and_conditions_url:"http://some.url.com?page=126"
+              "name": "skyscraper",
+              "width": 90,
+              "height": 700,
+              "default_meta_data": {"some": "data"}
             }
+          ]
+        }
+        ```
       END
     }
     params do
@@ -98,6 +109,10 @@ class TwoCents::Auth < Grape::API
         background_order_choice_images:CannedOrderChoiceImage.all.map{ |i| i.device_image_url },
         background_order_choice_images_retina:CannedOrderChoiceImage.all.map{ |i| i.retina_device_image_url }
       })
+
+      hash[:ad_units] = AdUnit.all.map do |unit|
+        unit.as_json(only: [:name, :width, :height, :default_meta_data])
+      end
 
       # Remove sensitive AWS info except for the iOS app
       unless declared_params[:manufacturer] == "Apple Inc." && declared_params[:platform] == "ios"
