@@ -19,7 +19,7 @@ RSpec.describe StatisfyTagParser do
     end
 
     it 'parses the tags' do
-      expect(parser.parse).to eq(%w{canI kickit})
+      expect(parser.parse).to eq(%w{cani kickit})
     end
   end
 end

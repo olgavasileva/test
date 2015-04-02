@@ -96,7 +96,7 @@ describe :text_question do
             expect(q['creator_id']).to eq user.id
             expect(q['creator_name']).to eq user.username
             expect(q['member_community_ids']).to be_an Array
-            expect(q['tags']).to eq(tag_list)
+            expect(q['tags']).to eq(tag_list.map{|t| "##{t}" })
           end
 
           it_behaves_like :uses_targets

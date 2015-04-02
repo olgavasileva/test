@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'api/_question_summary.jbuilder' do
+RSpec.describe 'api/_question.jbuilder' do
   let(:user) { FactoryGirl.build(:user, id: 1) }
 
   let(:question) do
@@ -40,7 +40,7 @@ RSpec.describe 'api/_question_summary.jbuilder' do
   it { is_expected.to have_json_key(:comment_count).eq(question.comment_count) }
   it { is_expected.to have_json_key(:uuid).eq(question.uuid) }
   it { is_expected.to have_json_key(:created_at) }
-  it { is_expected.to have_json_key(:tags).eq(question.tag_list) }
+  it { is_expected.to have_json_key(:tags).eq(question.tag_list.map{|t| "##{t}"}) }
   it { is_expected.to have_json_key(:image_url).eq(question.device_image_url) }
 
   it { is_expected.to have_json_key(:creator_id).eq(user.id) }
