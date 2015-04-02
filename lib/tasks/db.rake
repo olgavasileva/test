@@ -132,6 +132,7 @@ namespace :db do
           ActsAsTaggableOn::Tag.where(name: name).first_or_create!.tap do |tag|
             category.questions.each do |question|
               question.tag_list.add(tag)
+              question.save!
             end
           end
         end
