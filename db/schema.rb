@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150402200638) do
+ActiveRecord::Schema.define(version: 20150402215605) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -523,9 +523,9 @@ ActiveRecord::Schema.define(version: 20150402200638) do
     t.string   "type"
     t.datetime "read_at"
     t.datetime "completed_at"
-    t.integer  "response_count"
-    t.integer  "comment_count"
-    t.integer  "share_count"
+    t.integer  "response_count", default: 0
+    t.integer  "comment_count",  default: 0
+    t.integer  "share_count",    default: 0
     t.integer  "question_id"
     t.integer  "user_id"
     t.datetime "created_at"
