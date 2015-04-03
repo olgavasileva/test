@@ -86,6 +86,8 @@ module TwoCents
               }
             }
             ```
+
+            **Important**: To retreive a survey, you must be validated as the user who created the survey.
           NOTES
         }
         params do
@@ -101,7 +103,11 @@ module TwoCents
         # Surveys: Update
         #
         desc 'Updates a survey', {
-          notes: "See `GET surveys/:survey_id` for example response."
+          notes: <<-NOTES
+            See `GET surveys/:survey_id` for example response.
+
+            **Important**: To update a survey, you must be validated as the user who created the survey.
+          NOTES
         }
         params do
           use :auth
@@ -118,7 +124,11 @@ module TwoCents
         # Surveys: Delete
         #
         desc 'Deletes a survey', {
-          notes: 'Returns a `204 No Content` status only on success.'
+          notes: <<-NOTES
+            Returns a `204 No Content` status only on success.
+
+            **Important**: To delete a survey, you must be validated as the user who created the survey.
+          NOTES
         }
         params do
           use :auth
@@ -141,7 +151,11 @@ module TwoCents
             # Questions: Add
             #
             desc 'Adds a question to the survey.', {
-              notes: "Returns a `204 No Content` on success"
+              notes: <<-NOTES
+                Returns a `204 No Content` on success.
+
+                **Important**: To add a question to a survey, you must be validated as the user who created both the survey and the question.
+              NOTES
             }
             params do
               use :auth
@@ -163,7 +177,11 @@ module TwoCents
             # Questions: Remove
             #
             desc 'Removes a question from the survey.', {
-              notes: "Returns a `204 No Content` on success"
+              notes: <<-NOTES
+                Returns a `204 No Content` on success
+
+                **Important**: To remove a question from a survey, you must be validated as the user who created both the survey and the question.
+              NOTES
             }
             params do
               use :auth
