@@ -35,14 +35,6 @@ module TwoCents
         survey_scope.find(params[:survey_id])
       end
 
-      def embeddable_unit_scope
-        current_user.embeddable_units
-      end
-
-      def load_embeddable_unit!
-        embeddable_unit_scope.find_by!(uuid: params[:uuid])
-      end
-
       def question_atts
         {question_id: declared_params[:question_id]}
       end
