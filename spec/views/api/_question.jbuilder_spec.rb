@@ -12,7 +12,7 @@ RSpec.describe 'api/_question.jbuilder' do
       uuid: "Qtest-uuid",
       min_responses: 2,
       max_responses: 4,
-      survey_id: 1,
+      questions_survey: QuestionsSurvey.new(survey_id: 1),
       tag_list: %w{tag1 tag2},
       rotate: true
     })
@@ -46,7 +46,7 @@ RSpec.describe 'api/_question.jbuilder' do
   it { is_expected.to have_json_key(:creator_id).eq(user.id) }
   it { is_expected.to have_json_key(:creator_name).eq(user.username) }
 
-  it { is_expected.to have_json_key(:survey_id).eq(question.survey_id) }
+  it { is_expected.to have_json_key(:survey_id).eq(1) }
 
   it { is_expected.to have_json_key(:choices).eq([]) }
   it { is_expected.to have_json_key(:category) }

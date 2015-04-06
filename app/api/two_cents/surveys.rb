@@ -78,17 +78,13 @@ module TwoCents
               }
             }
             ```
-
-            **Important**: To retreive a survey, you must be validated as the user who created the survey.
           NOTES
         }
         params do
-          use :auth
           use :survey_id
         end
         get '/', jbuilder: 'survey' do
-          validate_user!
-          @survey = load_survey!
+          @survey = Survey.find(params[:survey_id])
         end
 
         # ----------------------------------------------------------------------

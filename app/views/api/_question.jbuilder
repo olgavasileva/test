@@ -12,7 +12,7 @@ else
   json.creator_avatar_url gravatar_url(question.user.email, default: :identicon)
 end
 
-json.survey_id question.survey_id
+json.survey_id question.questions_survey.try(:survey_id)
 json.created_at question.created_at.to_i
 json.tags question.tag_list
 

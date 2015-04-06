@@ -25,9 +25,7 @@ RSpec.describe TwoCents::Surveys, '/surveys' do
   describe 'GET /surveys/:survey_id' do
     let(:survey) { FactoryGirl.create(:survey, user: auth.user) }
 
-    let(:params) { {auth_token: auth.auth_token} }
-
-    subject { get "v/2.0/surveys/#{survey.id}", params }
+    subject { get "v/2.0/surveys/#{survey.id}" }
 
     it 'is successful' do
       subject
