@@ -30,4 +30,3 @@ $ ->
 
   # Animate the graph after a short delay
   setTimeout animateGraphs, 500
-
