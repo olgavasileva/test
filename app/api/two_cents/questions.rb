@@ -6,7 +6,7 @@ class TwoCents::Questions < Grape::API
       end
 
       params :create do
-        requires :category_id, type:Integer, desc:"Category for this question"
+        optional :category_id, type:Integer, desc: "Category for this question"
         requires :title, type:String, desc:"Title of question to display to the user"
         optional :description, type:String, desc:"Description - do we need this?"
 
