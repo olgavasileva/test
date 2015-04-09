@@ -1,0 +1,18 @@
+- question = response.question
+.summary
+  .title.resize
+    .table
+      .cell=question.title
+  .vote
+  .back
+  -question.choices.each do |c|
+    .choice
+      %label
+        =responsive_image_tag(c.web_image_url, class: "img-responsive", style:"width: 125px; height: 125px;")
+        .subtitle
+          .table
+            .cell=c.title
+  .next=link_to ">", next_question_path(question), target: "_self"
+  .footer
+    .share
+    .logo

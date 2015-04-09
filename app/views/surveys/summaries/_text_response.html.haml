@@ -1,0 +1,13 @@
+- question = response.question
+.summary
+  .title.resize
+    .table
+      .cell=question.title
+  .back
+  =responsive_image_tag((question.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive", style:"width: 125px; height: 125px;")
+  .next=link_to ">", next_question_path(question), target: "_self"
+  .text #{pluralize question.responses.count, "Person"} Answered This Question
+  =link_to "Click here to see their responses", '#'
+  .footer
+    .share
+    .logo

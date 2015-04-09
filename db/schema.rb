@@ -520,16 +520,19 @@ ActiveRecord::Schema.define(version: 20150402215605) do
   add_index "localizations", ["language_id"], name: "index_localizations_on_language_id", using: :btree
 
   create_table "messages", force: true do |t|
+    t.text     "content"
     t.string   "type"
     t.datetime "read_at"
-    t.datetime "completed_at"
-    t.integer  "response_count", default: 0
-    t.integer  "comment_count",  default: 0
-    t.integer  "share_count",    default: 0
+    t.integer  "other_user_id"
     t.integer  "question_id"
+    t.integer  "response_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "response_count", default: 0
+    t.integer  "comment_count",  default: 0
+    t.integer  "share_count",    default: 0
+    t.datetime "completed_at"
     t.integer  "follower_id"
     t.text     "body"
   end
@@ -630,8 +633,8 @@ ActiveRecord::Schema.define(version: 20150402215605) do
     t.boolean  "require_comment",                                           default: false
     t.integer  "trending_multiplier",                                       default: 1
     t.boolean  "disable_question_controls",                                 default: false
-    t.boolean  "notifying",                                                 default: false
     t.boolean  "allow_multiple_answers_from_user",                          default: false
+    t.boolean  "notifying",                                                 default: false
     t.integer  "trend_id"
     t.integer  "view_count"
   end
@@ -1014,8 +1017,8 @@ ActiveRecord::Schema.define(version: 20150402215605) do
     t.date     "birthdate"
     t.string   "gender"
     t.string   "company_name"
-    t.integer  "user_avatar_id"
     t.integer  "feed_page",                 default: 0
+    t.integer  "user_avatar_id"
     t.string   "type",                      default: "User"
     t.integer  "push_on_question_asked",    default: -1
     t.integer  "push_on_question_answered", default: -1

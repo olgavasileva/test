@@ -1,0 +1,16 @@
+- # We only support certain question structures
+- if question.kind_of?(ImageChoiceQuestion) && [2,4].include?(question.choices.count)
+  = render "surveys/response_fields/image_choice_response", question: question
+- elsif question.kind_of?(TextQuestion)
+  = render "surveys/response_fields/text_response", question: question
+- elsif question.kind_of?(TextChoiceQuestion) && [3,4].include?(question.choices.count)
+  = render "surveys/response_fields/text_choice_response", question: question
+- elsif question.kind_of?(YesNoQuestion)
+  = render "surveys/response_fields/text_choice_response", question: question
+- elsif question.kind_of?(OrderQuestion) && question.choices.count == 4
+  = render "surveys/response_fields/order_response", question: question
+- elsif question.kind_of?(MultipleChoiceQuestion) && question.choices.count == 4
+  = render "surveys/response_fields/multiple_choice_response", question: question
+- else
+  #error "Unsupported question type for ad units (id #{question.id})"
+  = link_to "Skip", next_question_path(question), target: "_self"

@@ -1,0 +1,14 @@
+.title.resize
+  .table
+    .cell=question.title
+.back
+=responsive_image_tag((question.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive", style:"width: 125px; height: 125px;")
+.next=link_to ">", next_question_path(question), target: "_self"
+- question.choices.each do |c|
+  =radio_button_tag("response[choice_id]",c.id,false,{class:'selected-choice', onclick: "this.form.submit();"}) \
+  .subtitle
+    .table
+      .cell=c.title
+.footer
+  .share
+  .logo
