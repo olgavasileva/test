@@ -28,7 +28,23 @@
 
   %body{class: @ad_unit.name}
     #content
-      = yield(:content)
+      #survey-title
+        %h1= @question.title
+
+      #question{class: "#{@question.try(:class).try(:name)} choices-#{@question.try(:choices).try(:length)}"}
+        #between-buttons
+          #back-button.nav-button.disabled
+            .icon <
+          %a#next-button.nav-button{target: '_self', href: next_question_path(@question)}
+            .icon >
+          - if content_for?(:between_buttons)
+            #between-button-content= yield(:between_buttons)
+        - if content_for?(:below_buttons)
+          #below-buttons= yield(:below_buttons)
+
+        .clearfix
+
+      #footer
 
     = debug(params) if Rails.env.development?
     = render 'layouts/shared/analytics'

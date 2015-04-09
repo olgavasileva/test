@@ -1,14 +1,18 @@
-.vote
-.back
--question.choices.each do |c|
-  .choice
-    %label
-      =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive", style:"width: 125px; height: 125px;")
-      =radio_button_tag("response[choice_id]",c.id,false,{class:'selected-choice', onclick: "this.form.submit();"}) \
-      .subtitle
-        .table
-          .cell=c.title
-.next=link_to ">", next_question_path(question), target: "_self"
-.footer
-  .share
-  .logo
+- content_for :between_buttons do
+  - question.choices.each_with_index do |c, i|
+    - style = "background-image: url(http://placehold.it/300/4eadcf.png);"
+    - if answer
+      %div{class: "image-choice index-#{i}", style: style}
+        - ratio = (c.response_ratio * 100).to_i
+        %div{class: "bar-blue #{'selected' if answer.choice_id == c.id}"}
+          .bar-graph{style: "width: #{ratio}%;"}
+          .bar-selected
+          .bar-response #{ratio}%
+        .spacer
+        .text= c.title
+
+    - else
+      - url = qp_create_response_path(@survey.uuid, @ad_unit.name, question)
+      = button_to url, form: {target: '_self', style: style, class: "image-choice index-#{i}"}, params: {'response[choice_id]' => c.id} do
+        .spacer
+        .text= c.title
