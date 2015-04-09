@@ -32,6 +32,7 @@ class EmbeddableUnitsController < ApplicationController
   end
 
   def survey_response
+    @auto_advance = Setting.fetch_value('embeddable_unit_auto_forward')
     @question = embeddable_unit.questions.find(params[:question_id])
     @response = @question.responses.create!(response_params) do |r|
       r.user = current_embed_user
