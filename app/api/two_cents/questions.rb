@@ -385,8 +385,6 @@ class TwoCents::Questions < Grape::API
     ] do
       validate_user!
 
-      category = Category.find declared_params[:category_id]
-
       @question = TextQuestion.create!({
         state: "active",
         user_id: current_user.id,
@@ -714,7 +712,6 @@ class TwoCents::Questions < Grape::API
         .order(created_at: :desc)
         .paginate(declared_params.slice(:page, :per_page))
     end
-
 
     desc "Legacy feed request - deprecated - depending on an environment variable, returns a fake question with a title indicating that the app must be upgraded or returns some questions."
     params do
