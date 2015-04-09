@@ -3,9 +3,7 @@
   = render "surveys/response_fields/image_choice_response", question: question
 - elsif question.kind_of?(TextQuestion)
   = render "surveys/response_fields/text_response", question: question
-- elsif question.kind_of?(TextChoiceQuestion) && [3,4].include?(question.choices.count)
-  = render "surveys/response_fields/text_choice_response", question: question
-- elsif question.kind_of?(YesNoQuestion)
+- elsif question.kind_of?(TextChoiceQuestion) || question.kind_of?(YesNoQuestion)
   = render "surveys/response_fields/text_choice_response", question: question
 - elsif question.kind_of?(OrderQuestion) && question.choices.count == 4
   = render "surveys/response_fields/order_response", question: question

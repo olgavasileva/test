@@ -1,10 +1,9 @@
 class SurveysController < ApplicationController
-  layout "ad_unit"
+  layout "../surveys/layout"
 
   skip_before_action :authenticate_user!, :find_recent_questions
 
-  before_action :authorize_survey
-  before_action :find_ad_unit_class
+  before_action :preload_and_authorize
 
   protect_from_forgery with: :null_session
 
@@ -18,7 +17,6 @@ class SurveysController < ApplicationController
     Airbrake.notify_or_ignore(ex)
     render :invalid_survey
   end
-
 
   def start
     @question = survey.questions.first
@@ -52,17 +50,19 @@ class SurveysController < ApplicationController
     head :ok
   end
 
-
   private
+
     def survey
-      @survey ||= Survey.find_by( uuid: params[:survey_uuid])
+      @survey ||= Survey.find_by!( uuid: params[:survey_uuid])
     end
 
     def ad_unit
-      @ad_unit ||= AdUnit.find_by(name: (params[:unit_name] || AdUnit::DEFAULT_NAME))
+      @ad_unit ||= AdUnit.find_by!(name: (params[:unit_name] || AdUnit::DEFAULT_NAME))
     end
 
-    def authorize_survey
+    def preload_and_authorize
+      survey
+      ad_unit
       authorize survey
     end
 
@@ -70,10 +70,6 @@ class SurveysController < ApplicationController
       # Using 'response' as the base param with all the parts allowed for various resposne types
       # Relying on response validation to sort out bad params
       params.require(:response).permit(:choice_id, :choice_ids, :text)
-    end
-
-    def find_ad_unit_class
-      @ad_unit_class ||= ad_unit.try :name
     end
 
     def current_ad_unit_user
@@ -96,5 +92,4 @@ class SurveysController < ApplicationController
         qp_thank_you_path(survey.uuid, @ad_unit.name)
       end
     end
-
 end

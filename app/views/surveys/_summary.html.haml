@@ -1,13 +1,9 @@
 - question = response.question
--
-- # We only support certain question structures
 - if question.kind_of?(ImageChoiceQuestion) && [2,4].include?(question.choices.count)
   = render "surveys/summaries/image_choice_response", response: response
 - elsif question.kind_of?(TextQuestion)
   = render "surveys/summaries/text_response", response: response
-- elsif question.kind_of?(TextChoiceQuestion) && [3,4].include?(question.choices.count)
-  = render "surveys/summaries/text_choice_response", response: response
-- elsif question.kind_of?(YesNoQuestion)
+- elsif question.kind_of?(TextChoiceQuestion) || question.kind_of?(YesNoQuestion)
   = render "surveys/summaries/text_choice_response", response: response
 - elsif question.kind_of?(OrderQuestion) && question.choices.count == 4
   = render "surveys/summaries/order_response", response: response
