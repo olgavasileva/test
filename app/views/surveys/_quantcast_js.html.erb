@@ -1,19 +1,21 @@
-<script type="text/javascript">
-  var qd = $.Deferred();
-  window.qr = function(r){qd.resolve(r.segments)};
+<% content_for :script do %>
+  <script type="text/javascript">
+    var qd = $.Deferred();
+    window.qr = function(r){qd.resolve(r.segments)};
 
-  $(document).ready(function() {
-    var $n = $('#next-button'), qt;
-    $n.hide();
-    qt = setTimeout(function(){qd.reject()}, 500);
-    qd.then(function(d) {
-      $.ajax(<%= qp_quantcast_path(@survey.uuid, @ad_unit.name).to_json.html_safe %>, {
-        type: 'POST', dataType: 'json', data: {quantcast: JSON.stringify(d)},
-        headers: {'X-CSRF-Token': <%= form_authenticity_token.to_json.html_safe %>}
-      });
-    }).always(function() { $n.show(); clearTimeout(qt); });
-  });
-</script>
+    $(document).ready(function() {
+      var $n = $('#next-button'), qt;
+      $n.hide();
+      qt = setTimeout(function(){qd.reject()}, 500);
+      qd.then(function(d) {
+        $.ajax(<%= qp_quantcast_path(@survey.uuid, @ad_unit.name).to_json.html_safe %>, {
+          type: 'POST', dataType: 'json', data: {quantcast: JSON.stringify(d)},
+          headers: {'X-CSRF-Token': <%= form_authenticity_token.to_json.html_safe %>}
+        });
+      }).always(function() { $n.show(); clearTimeout(qt); });
+    });
+  </script>
 
-<% qCode = ENV['QUANTCAST_P_CODE'] %>
-<script src="//segapi.quantserve.com/api/segments.json?a=<%= qCode %>&callback=qr"></script>
+  <% qCode = ENV['QUANTCAST_P_CODE'] %>
+  <script src="//segapi.quantserve.com/api/segments.json?a=<%= qCode %>&callback=qr"></script>
+<% end %>

@@ -1,3 +1,32 @@
-.question-response{class: @question.type}
-  = form_tag qp_create_response_path(@survey.uuid, @ad_unit.name, @question), target: '_self' do
-    = render "surveys/response_fields", question: @question, survey: @survey, ad_unit_name: @ad_unit.name
+- content_for :content do
+  #survey-title
+    %h1= @question.title
+
+  #question{class: "#{@question.try(:class).try(:name)} choices-#{@question.try(:choices).try(:length)}"}
+    #between-buttons
+      #back-button.nav-button.disabled
+        .icon <
+      %a#next-button.nav-button{target: '_self', href: next_question_path(@question)}
+        .icon >
+      - if content_for?(:between_buttons)
+        #between-button-content= yield(:between_buttons)
+    - if content_for?(:below_buttons)
+      #below-buttons= yield(:below_buttons)
+
+    .clearfix
+
+  #footer
+
+- if @response
+  - if current_ad_unit_user.quantcast_demographic_required?
+    = render partial: 'quantcast_js'
+
+  - content_for :script do
+    :javascript
+      $(document).ready(function() {
+        var next = function(){document.getElementById('next-button').click();};
+        setTimeout(next, 3*1000);
+      })
+
+- template = @question.class.name.underscore
+= render "surveys/response_fields/#{template}", answer: @response, question: @question

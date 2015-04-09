@@ -36,7 +36,7 @@ class SurveysController < ApplicationController
       r.user = current_ad_unit_user
     end
 
-    render :summary
+    render :question
   end
 
   def thank_you

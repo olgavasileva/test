@@ -1,0 +1,16 @@
+- content_for :between_buttons do
+  = image_tag("http://placehold.it/300x300.png", class: 'background')
+
+- content_for :below_buttons do
+  - question.choices.each do |c|
+    - if answer.present?
+      - ratio = (c.response_ratio * 100).to_i
+      %div{class: "bar-blue #{'selected' if answer.choice_id == c.id}"}
+        .bar-graph{style: "width: #{ratio}%;"}
+        .bar-selected
+        .bar-response #{ratio}%
+        .bar-title= c.title
+    - else
+      - url = qp_create_response_path(@survey.uuid, @ad_unit.name, @question)
+      = button_to url, form: {target: '_self', class: 'bar-blue'}, params: {'response[choice_id]' => c.id} do
+        = c.title

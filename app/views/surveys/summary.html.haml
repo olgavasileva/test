@@ -1,8 +1,0 @@
-- if current_ad_unit_user.quantcast_demographic_required?
-  = render partial: 'quantcast_js'
-
-:javascript
-  var next = function(){document.getElementById('next').click();};
-  setTimeout(next, 3*1000);
-
-= render 'surveys/summary', response: @response, survey: @survey, ad_unit_name: @ad_unit.name
