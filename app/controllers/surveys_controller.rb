@@ -58,6 +58,7 @@ class SurveysController < ApplicationController
 
     def survey
       @survey ||= Survey.eager_load(questions_surveys: [:question])
+        .order('questions_surveys.position ASC')
         .find_by!(uuid: params[:survey_uuid])
     end
 
