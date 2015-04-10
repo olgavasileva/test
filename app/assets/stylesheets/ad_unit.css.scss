@@ -49,9 +49,12 @@ button {
 }
 
 #footer {
+  position: fixed;
   background-color: $light_gray;
   height: 19px;
   clear: both;
+  background: image-url('ad_units/medium-rectangle-footer.png');
+  background-size: cover;
 }
 
 // -----------------------------------------------------------------------------
@@ -180,9 +183,10 @@ a.nav-button {
 // -----------------------------------------------------------------------------
 // Background Image (Temporary)
 
-img.background {
-  width: 100%;
+.main-image {
   height: 100%;
+  background-size: cover;
+  background-position: center;
 }
 
 // -----------------------------------------------------------------------------
@@ -269,7 +273,6 @@ img.background {
 // AdUnit layout and font sizes
 
 .medium_rectangle {
-  #question { height: 183px; }
   #survey-title {
     height: 36px;
     h1 {
@@ -278,6 +281,8 @@ img.background {
     }
   }
 
+  #question { height: 183px; }
+
   .nav-button {
     width: 18px;
   }
@@ -285,6 +290,17 @@ img.background {
   #between-button-content {
     margin-left: 19px;
     margin-right: 19px;
+  }
+
+  #footer {
+    top: 231px;
+    width: 300px;
+  }
+
+  #thank_you {
+    height: 230px;
+    max-resolution: 230px;
+    overflow: hidden;
   }
 
   // ********************************

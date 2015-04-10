@@ -1,5 +1,5 @@
 - content_for :between_buttons do
-  = image_tag(question.web_image_url, class: 'background')
+  .main-image{style: "background-image: url(#{question.web_image_url})"}
 
 - content_for :below_buttons do
   - question.choices.each do |c|
