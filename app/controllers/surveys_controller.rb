@@ -22,20 +22,20 @@ class SurveysController < ApplicationController
   end
 
   def start
-    @question = survey.questions.first
+    @question = question_scope.first
     @question.try :viewed!
     render :question
   end
 
   def question
-    @question = survey.questions.find(params[:question_id])
+    @question = question_scope.find(params[:question_id])
     @response = @question.responses.where(user_id: current_ad_unit_user.id).last
     @question.try :viewed!
     render :question
   end
 
   def create_response
-    @question = survey.questions.find(params[:question_id])
+    @question = question_scope.find(params[:question_id])
     @response = @question.responses.create!(response_params) do |r|
       r.user = current_ad_unit_user
     end
@@ -55,6 +55,10 @@ class SurveysController < ApplicationController
   end
 
   private
+
+    def question_scope
+      survey.questions.eager_load(:background_image, :choices)
+    end
 
     def survey
       @survey ||= Survey.eager_load(questions_surveys: [:question])
