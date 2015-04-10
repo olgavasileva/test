@@ -29,8 +29,7 @@
   %body{class: @ad_unit.name}
     #content
       #thank_you
-        %h1 Thank You
-        #message= @survey.thank_you_html.try(:html_safe)
+        #message= CGI.unescapeHTML(@survey.thank_you_html).html_safe
 
       #footer
 
