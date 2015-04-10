@@ -28,7 +28,7 @@
 
   %body{class: @ad_unit.name}
     #content
-      #survey-title
+      #survey-title.textfill
         %h1= @question.title
 
       #question{class: "#{@question.try(:class).try(:name)} choices-#{@question.try(:choices).try(:length)}"}
