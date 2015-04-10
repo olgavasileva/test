@@ -1,6 +1,6 @@
 - content_for :between_buttons do
   - question.choices.each_with_index do |c, i|
-    - style = "background-image: url(http://placehold.it/300/4eadcf.png);"
+    - style = "background-image: url(#{c.web_image_url});"
     - if answer
       %div{class: "image-choice index-#{i}", style: style}
         - ratio = (c.response_ratio * 100).to_i

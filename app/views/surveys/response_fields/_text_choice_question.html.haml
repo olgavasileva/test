@@ -1,5 +1,5 @@
 - content_for :between_buttons do
-  = image_tag("http://placehold.it/300x300.png", class: 'background')
+  = image_tag(question.web_image_url, class: 'background')
 
 - content_for :below_buttons do
   - question.choices.each do |c|

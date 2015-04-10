@@ -4,10 +4,14 @@ $light_gray: #eeeeee;
 $dark_gray: #dddddd;
 $lighter_gray: #fbfbfb;
 
-$choice-bar-blue: #2691d9;
-$choice-bar-blue-hover: darken(#2691d9, 10%);
-$choice-bar-blue-progress: #32b8e7;
-$choice-bar-blue-selected: #ffa325;
+$blue: #2691d9;
+$blue-dark: darken($blue, 10%);
+$blue-progress: #32b8e7;
+$blue-selected: #ffa325;
+
+$orange: orange;
+$orange-light: lighten($orange, 20%);
+$orange-dark: darken($orange, 10%);
 
 $footer-height: 19px;
 
@@ -149,18 +153,27 @@ a.nav-button {
 
 .bar-blue {
   @extend .bar;
-  background: $choice-bar-blue;
+  background: $blue;
 
   button:hover {
-    background: $choice-bar-blue-hover;
+    background: $blue-dark;
   }
 
   .bar-graph {
-    background: $choice-bar-blue-progress;
+    background: $blue-progress;
   }
 
   .bar-selected {
-    background: $choice-bar-blue-selected;
+    background: $blue-selected;
+  }
+}
+
+.bar-orange {
+  @extend .bar;
+  background: $orange;
+
+  button:hover {
+    background: $orange-light;
   }
 }
 
@@ -218,6 +231,41 @@ img.background {
 }
 
 // -----------------------------------------------------------------------------
+// Text Question Text Area
+
+#question.TextQuestion {
+  .textarea {
+    background: $orange-light;
+    textarea {
+      resize: none;
+      outline: none;
+      font-size: 14px;
+      display: block;
+      border: 5px solid $orange-light;
+      border-radius: 6px;
+      margin-bottom: 1px;
+      color: #000;
+    }
+
+    textarea::-webkit-input-placeholder {
+      color: $orange-light;
+    }
+
+    textarea:-moz-placeholder {
+      color: $orange-light;
+    }
+
+    textarea::-moz-placeholder {
+      color: $orange-light;
+    }
+
+    textarea:-ms-input-placeholder {
+      color: $orange-light;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
 // AdUnit layout and font sizes
 
 .medium_rectangle {
@@ -268,7 +316,7 @@ img.background {
     &.choices-1, &.choices-2 {
       .image-choice {
         height: 182px;
-        .spacer { height: 147px; }
+        .spacer { height: 149px; }
       }
     }
 
@@ -277,6 +325,24 @@ img.background {
         height: (182px / 2) - 1px;
         .spacer { height: 58px; }
       }
+    }
+  }
+
+  // ********************************
+  // Text Question
+
+  #question.TextQuestion {
+    .nav-button .icon { margin-top: 30px; }
+    #between-buttons { height: 90px; }
+
+    textarea {
+      width: 300px - 14px;
+      height: 44px;
+    }
+
+    .bar-blue {
+      height: 61px;
+      padding-top: 30px;
     }
   }
 }
