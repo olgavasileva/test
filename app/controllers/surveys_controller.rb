@@ -40,7 +40,7 @@ class SurveysController < ApplicationController
   end
 
   def thank_you
-    render :thank_you
+    render :thank_you, layout: false
   end
 
   def quantcast

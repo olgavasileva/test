@@ -1,2 +1,39 @@
-%h1 Thank you
-#message= @survey.thank_you_html.try(:html_safe)
+!!!
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+:plain
+  <!--[if gt IE 9] -->
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %title= full_title(yield(:title))
+
+    %meta{"http-equiv" => "Content-Type", content: "text/html; charset=utf-8"}
+    = yield :meta if content_for :meta
+
+    = csrf_meta_tags
+
+    / Open Sans font from Google CDN
+    %link{href: 'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,700,600:latin', rel: 'stylesheet', type: 'text/css'}/
+    %base{target: "_blank"}
+
+    = stylesheet_link_tag "ad_unit", media: "all", data: { turbolinks_track: true }
+    = render partial: 'ad_unit_css', locals: {ad_unit: @ad_unit}
+
+    = javascript_include_tag "ad_unit", data: { turbolinks_track: true }
+    /[if lt IE 9]
+      <script src="assets/javascripts/ie.min.js"></script>
+
+    = yield(:script)
+
+  %body{class: @ad_unit.name}
+    #content
+      #thank_you
+        %h1 Thank You
+        #message= @survey.thank_you_html.try(:html_safe)
+
+      #footer
+
+    = debug(params) if Rails.env.development?
+    = render 'layouts/shared/analytics'
+    = render 'layouts/shared/tag_manager'
