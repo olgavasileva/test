@@ -1,0 +1,15 @@
+.vote
+.back
+-question.choices.each do |c|
+  .choice
+    %label
+      =responsive_image_tag(c.web_image_url, class: "img-responsive", style:"width: 125px; height: 125px;")
+      =check_box_tag("response[choice_ids][]",c.id,false,{class:'selected-choice'})
+      .subtitle
+        .table
+          .cell=c.title
+.next=link_to ">", next_question_path(question), target: "_self"
+.submitable Submit
+.footer
+  .share
+  .logo

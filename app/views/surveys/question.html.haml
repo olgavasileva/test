@@ -1,0 +1,13 @@
+- if @response
+  - if current_ad_unit_user.quantcast_demographic_required?
+    = render partial: 'quantcast_js'
+
+  - content_for :script do
+    :javascript
+      // $(document).ready(function() {
+      //   var next = function(){document.getElementById('next-button').click();};
+      //   setTimeout(next, 3*1000);
+      // })
+
+- template = @question.class.name.underscore
+= render "surveys/response_fields/#{template}", answer: @response, question: @question

@@ -1,4 +1,6 @@
 class AdUnit < ActiveRecord::Base
+  DEFAULT_NAME = 'medium_rectangle'.freeze
+
   has_many :background_images_ad_units, dependent: :delete_all
   has_many :background_images, through: :background_images_ad_units
 
