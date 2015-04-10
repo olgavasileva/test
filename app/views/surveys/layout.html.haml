@@ -33,8 +33,12 @@
 
       #question{class: "#{@question.try(:class).try(:name)} choices-#{@question.try(:choices).try(:length)}"}
         #between-buttons
-          #back-button.nav-button.disabled
-            .icon <
+          - if prev_path = previous_question_path(@question)
+            %a#back-button.nav-button{target: '_self', href: prev_path}
+              .icon <
+          - else
+            #back-button.nav-button.disabled
+              .icon <
           %a#next-button.nav-button{target: '_self', href: next_question_path(@question)}
             .icon >
           - if content_for?(:between_buttons)
@@ -47,5 +51,6 @@
       #footer
 
     = debug(params) if Rails.env.development?
+    = debug(@response) if Rails.env.development?
     = render 'layouts/shared/analytics'
     = render 'layouts/shared/tag_manager'
