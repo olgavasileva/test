@@ -3,7 +3,7 @@ ActiveAdmin.register QuestionsSurvey do
 
   belongs_to :survey
 
-  permit_params :question_id
+  permit_params :question_id, :position
 
   config.sort_order = 'position_asc' # assumes you are using 'position' for your acts_as_list column
   sortable # creates the controller action which handles the sorting
