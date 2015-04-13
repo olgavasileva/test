@@ -1,13 +1,26 @@
-.back
--question.choices.each do |c|
-  .choice
-    %label
-      =responsive_image_tag((c.web_image_url || image_path("fallback/choice#{n}.png")), class: "img-responsive", style:"width: 125px; height: 125px;")
-      .subtitle
-        .table
-          .cell=c.title
-.next=link_to ">", next_question_path(question), target: "_self"
-.submitable Submit
-.footer
-  .share
-  .logo
+- content_for :between_buttons do
+  #order-choice-sort
+    - question.choices.each_with_index do |c, i|
+      .order-choice-bar{data: {choice_id: c.id}, style: "background-image: url(#{c.web_image_url});"}
+        .order-choice-title= c.title
+        - if answer
+          - ratio = (c.response_ratio * 100).to_i
+          .bar-blue
+            .bar-graph{style: "width: #{ratio}%;"}
+            .bar-selected
+            .bar-response #{ratio}%
+        - else
+          .order-choice-orderer
+            &#9650;
+            %br
+            &#9660;
+
+- unless answer.present?
+  - content_for :below_buttons do
+    - url = qp_create_response_path(@survey.uuid, @ad_unit.name, question)
+    = form_tag url, target: '_self' do
+      - question.choices.each_with_index do |c, i|
+        = hidden_field_tag 'response[choice_ids][]', c.id, id: "index-#{i}"
+
+      .bar-orange
+        %button#order-choice-submit{type:'submit'}= 'Submit'
