@@ -50,6 +50,14 @@ LinkchatApp::Application.routes.draw do
     post '/quantcast', action: :quantcast, as: :embeddable_unit_quantcast
   end
 
+  scope '/qp/:survey_uuid(/:unit_name)', controller: 'surveys' do
+    get '/', action: 'start', as: :qp_start
+    get '/q/:question_id', action: :question, as: :qp_question
+    post '/q/:question_id', action: :create_response, as: :qp_create_response
+    get '/thank_you', action: :thank_you, as: :qp_thank_you
+    post '/quantcast', action: :quantcast, as: :qp_quantcast
+  end
+
   resources :questions, shallow:true do
     get :preview, on: :member
     get :summary, on: :member

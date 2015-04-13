@@ -15,9 +15,36 @@ class Survey < ActiveRecord::Base
 
   before_save :convert_markdown
 
-  def next_question question
-    q = questions_surveys.where(question_id:question).first
-    q.lower_items.first.try(:question) unless q.nil?
+  # Assuming `question_surveys: [:question]` was used to eager load the Survey,
+  # this is INFINITELY faster than a database query
+  def next_question(question)
+    items = questions_surveys.to_a
+    index = 0
+    found = false
+
+    begin
+      found = (items[index].try(:question_id) == question.id)
+      index += 1
+    end while !found && index < items.length
+
+    found && (index < items.length) && items[index].question
+  end
+
+  # Assuming `question_surveys: [:question]` was used to eager load the Survey,
+  # this is INFINITELY faster than a database query
+  #
+  def previous_question(question)
+    items = questions_surveys.to_a
+    index = items.length - 1
+    found = false
+
+    begin
+      item = items[index]
+      found = (items[index].try(:question_id) == question.id)
+      index -= 1
+    end while !found && index >= 0
+
+    found && (index >= 0) && items[index].question
   end
 
   private
