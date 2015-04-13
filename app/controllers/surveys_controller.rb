@@ -10,7 +10,8 @@ class SurveysController < ApplicationController
   helper_method \
     :previous_question_path,
     :next_question_path,
-    :current_ad_unit_user
+    :current_ad_unit_user,
+    :question_class
 
   rescue_from(Pundit::NotAuthorizedError) do
     render :invalid_survey
@@ -83,6 +84,13 @@ class SurveysController < ApplicationController
       # Using 'response' as the base param with all the parts allowed for various resposne types
       # Relying on response validation to sort out bad params
       params.require(:response).permit(:choice_id, :choice_ids, :text)
+    end
+
+    def question_class
+      classes = [@question.try(:class).try(:name)]
+      classes.push "choices-#{@question.try(:choices).try(:length)}"
+      classes.push('has-response') if @response
+      classes.join(' ')
     end
 
     def current_ad_unit_user

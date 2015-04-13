@@ -175,7 +175,7 @@ a.nav-button {
   @extend .bar;
   background: $orange;
 
-  button:hover {
+  button:hover, button:disabled, &.disabled {
     background: $orange-light;
   }
 }
@@ -270,6 +270,42 @@ a.nav-button {
 }
 
 // -----------------------------------------------------------------------------
+// Order Choice Bar
+
+.order-choice-bar {
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 1px;
+  &:last-of-type { margin-bottom: 0px; }
+
+  .order-choice-title {
+    float: left;
+    width: 40%;
+    text-align: center;
+    color: #fff;
+    background: #000000;
+    background: rgba(#000000, 0.85);
+    padding: 0px 5px;
+    line-height: 35px;
+  }
+
+  .order-choice-orderer {
+    font-size: 11px;
+    color: #fff;
+    float: right;
+    padding-top: 2px;
+  }
+
+  .bar-blue {
+    float: right;
+    width: 15%;
+  }
+
+  cursor: move;
+  .has-response & { cursor: default; }
+}
+
+// -----------------------------------------------------------------------------
 // AdUnit layout and font sizes
 
 .medium_rectangle {
@@ -361,6 +397,30 @@ a.nav-button {
     .bar-blue {
       height: 61px;
       padding-top: 30px;
+    }
+  }
+
+  #question.OrderQuestion {
+    @mixin order-choice-height($height) {
+      #between-buttons { height: $height; }
+
+      $choices: 2 3 4;
+      @each $choice in $choices {
+        &.choices-#{$choice} {
+          $bar-height: ($height - 3px) / $choice;
+          .order-choice-bar, .order-choice-title, .bar-blue, .bar-graph {
+            height: $bar-height;
+          }
+        }
+      }
+    }
+
+    .nav-button .icon { margin-top: 64px; }
+    @include order-choice-height(149px);
+
+    &.has-response {
+      .nav-button .icon { margin-top: 85px; }
+      @include order-choice-height(182px);
     }
   }
 }
