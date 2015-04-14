@@ -1,13 +1,20 @@
-- if @response
-  - if current_ad_unit_user.quantcast_demographic_required?
-    = render partial: 'quantcast_js'
+- content_for :script do
+  - if ENV['GOOGLE_ANALYTICS_ID'].present?
+    :javascript
+      ga('send', 'event', 'embeddable', 'view', '#{@question.uuid}', 3);
 
-  - content_for :script do
+    - if responding?
+      :javascript
+        ga('send', 'event', 'embeddable', 'response', '#{@question.uuid}', 3);
+
+  - if @response
     :javascript
       // $(document).ready(function() {
       //   var next = function(){document.getElementById('next-button').click();};
       //   setTimeout(next, 3*1000);
       // })
+
+= render partial: 'quantcast_js' if @response && current_ad_unit_user.quantcast_demographic_required?
 
 - template = @question.class.name.underscore
 = render "surveys/response_fields/#{template}", answer: @response, question: @question

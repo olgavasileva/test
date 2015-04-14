@@ -24,6 +24,13 @@
     /[if lt IE 9]
       <script src="assets/javascripts/ie.min.js"></script>
 
+    = render 'surveys/analytics'
+    = render 'layouts/shared/tag_manager'
+
+    - if ENV['GOOGLE_ANALYTICS_ID'].present?
+      :javascript
+        ga('send', 'event', 'embeddable', 'end', "#{@survey.uuid}", 3);
+
     = yield(:script)
 
   %body{class: @ad_unit.name}
