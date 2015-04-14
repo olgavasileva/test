@@ -1,4 +1,4 @@
-= semantic_form_for @yes_no_choice, url:admin_yes_no_question_yes_no_choice_path(@yes_no_choice.question, @yes_no_choice) do |f|
+= semantic_form_for @yes_no_choice, as: :yes_no_choice, url:admin_yes_no_question_yes_no_choice_path(@yes_no_choice.question, @yes_no_choice) do |f|
   = f.inputs f.object.type do
     = f.input :title, as: :string
     = f.input :position
