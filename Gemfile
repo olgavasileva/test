@@ -126,6 +126,8 @@ group :development do
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
   gem 'capistrano-rails-collection' # Adds some db related commands to cap, like seed
+  gem 'capistrano-deploytags',      # Auto-tag all deploys
+    require: false
   gem 'thin'
 
   gem 'better_errors'               # More useful error pages in development
