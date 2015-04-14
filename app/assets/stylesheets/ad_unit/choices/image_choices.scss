@@ -1,0 +1,85 @@
+@import 'ad_unit/variables';
+
+/*
+  Image Choices
+
+  Displays image choices and responses for multiple kinds of questions types.
+
+  ## Example image choice selection markup
+
+  <div class="bar-{color}">
+    <div class="bar-graph" style="width: 50%"></div>
+    <div class="bar-selected"></div>
+    <div class="bar-response">50%</div>
+    <div class="bar-title">Choice Text</div>
+  </div>
+
+  ## Example for bar with response
+
+  <div class="bar-{color}">
+    <div class="bar-graph" style="width: 50%"></div>
+    <div class="bar-response">50%</div>
+    <div class="bar-title">Choice Text</div>
+  </div>
+
+  ## Displaying the orange `selected` indicator
+
+  Just add the `selected` class to the main wrapper and make sure the that the
+  `<div class="bar-selected">` comes after the `<div class="bar-graph">`.
+
+  <div class="bar-{color} selected">
+    <div class="bar-graph" style="width: 50%"></div>
+    <div class="bar-selected"></div>
+    <div class="bar-response">50%</div>
+    <div class="bar-title">Choice Text</div>
+  </div>
+*/
+
+.image-choice {
+  width: 49.5%;
+  float: left;
+  overflow: hidden;
+
+  background-size: cover;
+  background-position: center center;
+
+  &.index-0, &.index-2 {
+    margin-right: 1%;
+  }
+
+  &.index-2, &.index-3 {
+    margin-top: 2px;
+  }
+
+  button, .spacer, .text {
+    font-family: $font-family;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+  }
+
+  .text {
+    color: #fff;
+    font-weight: 400;
+    text-align: center;
+    height: $image-choice-text-height;
+    background: #000;
+    background: rgba(0, 0, 0, .70);
+    padding-top: 5px;
+    font-size: 16px;
+    height: 28px;
+  }
+
+  .bar-blue {
+    float: right;
+    width: 35%;
+    margin-left: 65%;
+  }
+
+  &.selected {
+    .text {
+      background: $blue;
+      background: rgba($blue, .70);
+    }
+  }
+}

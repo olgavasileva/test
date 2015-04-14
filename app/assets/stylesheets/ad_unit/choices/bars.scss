@@ -1,0 +1,121 @@
+@import 'ad_unit/variables';
+
+/*
+  Blue & Orange Choice/Results Bars
+
+  * Display `TextChoiceQuestion` choices as a, wait for it.... blue bar.
+  * Display response ratio for ImageChoice and TextChoice questions.
+  * Orange "Submit" button.
+
+  ## Example for bar with choice text only
+
+  <div class="bar-{color}">
+    <div class="bar-graph" style="width: 50%"></div>
+    <div class="bar-selected"></div>
+    <div class="bar-response">50%</div>
+    <div class="bar-title">Choice Text</div>
+  </div>
+
+  ## Example for bar with response
+
+  <div class="bar-{color}">
+    <div class="bar-graph" style="width: 50%"></div>
+    <div class="bar-response">50%</div>
+    <div class="bar-title">Choice Text</div>
+  </div>
+
+  ## Displaying the orange `selected` indicator
+
+  Just add the `selected` class to the main wrapper and make sure the that the
+  `<div class="bar-selected">` comes after the `<div class="bar-graph">`.
+
+  <div class="bar-{color} selected">
+    <div class="bar-graph" style="width: 50%"></div>
+    <div class="bar-selected"></div>
+    <div class="bar-response">50%</div>
+    <div class="bar-title">Choice Text</div>
+  </div>
+*/
+
+.bar {
+  display: block;
+  width: 100%;
+  margin-bottom: 1px;
+  position: relative;
+
+  &, button { color: #ffffff; }
+
+  button,
+  .bar-title,
+  .bar-graph,
+  .bar-response,
+  .bar-selected {
+    position: absolute;
+    display: block;
+  }
+
+  &,
+  .bar-graph,
+  .bar-selected {
+    height: 32px;
+  }
+
+  button, .bar-title {
+    text-align: center;
+    font-weight: 400;
+    font-size: 16px;
+    display: block;
+    padding: 5px 0px;
+    width: 100%;
+  }
+
+  button {
+    font-family: $font-family;
+    padding: 5px 0px;
+  }
+
+  .bar-response {
+    width: 98%;
+    text-align: right;
+    font-weight: bold;
+    float: right;
+    padding-top: 5px;
+  }
+
+  .bar-selected {
+    width: 6px;
+    display: none;
+  }
+
+  &.selected {
+    .bar-selected {
+      display: block;
+    }
+  }
+}
+
+.bar-blue {
+  @extend .bar;
+  background: $blue;
+
+  button:hover {
+    background: $blue-dark;
+  }
+
+  .bar-graph {
+    background: $blue-progress;
+  }
+
+  .bar-selected {
+    background: $blue-selected;
+  }
+}
+
+.bar-orange {
+  @extend .bar;
+  background: $orange;
+
+  button:hover, button:disabled, &.disabled {
+    background: $orange-light;
+  }
+}
