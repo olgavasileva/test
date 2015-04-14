@@ -1,0 +1,96 @@
+@import './variables';
+
+/*
+  Base Layout for an AdUnit:
+
+  <body class="{ad-unit-name}">
+    <div id="#content">
+      <div id="title"></div>
+      <div id="question" class="{QuestionClassName} choices-{n}"></div>
+      <div id="footer"></div>
+    </div>
+  </body>
+
+  ---
+
+  ## Content Descriptions
+
+  - #content
+
+  The main wrapper for an ad unit. The width and height will be set
+  dynamically inside a `<style>` tag after all ad_unit css has been imported,
+  meaning they will always override anything in the ad_unit.css stylesheet.
+
+  - #title
+
+  This is the title of the current question being presented to the user. From
+  the mockups, it looks like this will always be on top.
+
+  - #question
+
+  The content of the question. Will contain the forward and back buttons, the
+  question choices and question response results.
+
+  - #footer
+
+  Self explanatory.
+
+  ---
+
+  ## Question DIV sub-classes
+
+  - .{questionType}
+
+  The kind of question being represented. For example,
+  `#question.ImageChoiceQuestion` or `#question.MultipleChoiceQuestion`.
+
+  - .choices-{n}
+
+  The number of choices being presented. Some layouts are different based on the
+  number of choices being presented. This won't really affect open ended
+  question types (i.e. a `TextQuestion`).
+
+  - .has-response
+
+  Whether we are displaying a response or not.
+*/
+
+body {
+  background: #fbfbfb;
+  padding: 0px;
+  margin: 0px;
+  font-family: $font-family;
+}
+
+#content {
+  background: #ffffff;
+  overflow: hidden;
+  margin: 0px auto;
+}
+
+#title, #question, #footer {
+  width: 100%;
+}
+
+#title {
+  background: $gray-light;
+  border-bottom: 1px solid $gray-dark;
+  margin-bottom: 1px;
+  color: #000;
+  text-align: center;
+  overflow: hidden;
+
+  h1 {
+    margin: 0px;
+    font-weight: 600;
+  }
+}
+
+#footer {
+  position: fixed;
+  background-color: $gray-light;
+  height: 19px;
+  clear: both;
+  background: image-url('ad_units/medium-rectangle-footer.png');
+  background-size: cover;
+}

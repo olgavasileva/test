@@ -1,29 +1,11 @@
-$font_family: 'Open Sans', Helvetica, Arial, sans-serif;
+//= require_self
+//= require ad_unit/base
+//= require ad_unit/choices
 
-$light_gray: #eeeeee;
-$dark_gray: #dddddd;
-$lighter_gray: #fbfbfb;
-
-$blue: #2691d9;
-$blue-dark: darken($blue, 10%);
-$blue-progress: #32b8e7;
-$blue-selected: #ffa325;
-
-$orange: orange;
-$orange-light: lighten($orange, 20%);
-$orange-dark: darken($orange, 10%);
-
-$footer-height: 19px;
+@import "ad_unit/variables";
 
 // -----------------------------------------------------------------------------
-// Setup
-
-body {
-  background: #fbfbfb;
-  padding: 0px;
-  margin: 0px;
-  font-family: $font_family;
-}
+// Misc
 
 .clearfix { clear: both; }
 
@@ -34,31 +16,12 @@ button {
   cursor: pointer;
 }
 
-#content {
-  background: #ffffff;
-  overflow: hidden;
-  margin: 0px auto;
-}
-
-#question, #footer, #survey-title {
-  width: 100%;
-}
+// -----------------------------------------------------------------------------
+// Layout
 
 #below-buttons {
   clear: both;
 }
-
-#footer {
-  position: fixed;
-  background-color: $light_gray;
-  height: 19px;
-  clear: both;
-  background: image-url('ad_units/medium-rectangle-footer.png');
-  background-size: cover;
-}
-
-// -----------------------------------------------------------------------------
-// Between Button
 
 #between-buttons {
   margin-bottom: 1px;
@@ -70,15 +33,15 @@ button {
 }
 
 .nav-button {
-  background: $light_gray;
+  background: $gray-light;
   font-weight: 600;
   height: 100%;
   text-align: center;
 
   &.disabled {
-    background: $lighter_gray;
+    background: $gray-lighter;
     cursor: not-allowed;
-    color: $dark_gray;
+    color: $gray-dark;
   }
 }
 
@@ -87,98 +50,12 @@ a.nav-button {
   text-decoration: none;
 
   &:hover {
-    background: $dark_gray;
+    background: $gray-dark;
   }
 }
 
 #back-button { float: left; }
 #next-button { float: right; }
-
-// -----------------------------------------------------------------------------
-// Choice Bar
-
-.bar {
-  display: block;
-  width: 100%;
-  margin-bottom: 1px;
-  position: relative;
-
-  &, button { color: #ffffff; }
-
-  button,
-  .bar-title,
-  .bar-graph,
-  .bar-response,
-  .bar-selected {
-    position: absolute;
-    display: block;
-  }
-
-  &,
-  .bar-graph,
-  .bar-selected {
-    height: 32px;
-  }
-
-  button, .bar-title {
-    text-align: center;
-    font-weight: 400;
-    font-size: 16px;
-    display: block;
-    padding: 5px 0px;
-    width: 100%;
-  }
-
-  button {
-    font-family: $font_family;
-    padding: 5px 0px;
-  }
-
-  .bar-response {
-    width: 98%;
-    text-align: right;
-    font-weight: bold;
-    float: right;
-    padding-top: 5px;
-  }
-
-  .bar-selected {
-    width: 6px;
-    display: none;
-  }
-
-  &.selected {
-    .bar-selected {
-      display: block;
-    }
-  }
-}
-
-.bar-blue {
-  @extend .bar;
-  background: $blue;
-
-  button:hover {
-    background: $blue-dark;
-  }
-
-  .bar-graph {
-    background: $blue-progress;
-  }
-
-  .bar-selected {
-    background: $blue-selected;
-  }
-}
-
-.bar-orange {
-  @extend .bar;
-  background: $orange;
-
-  button:hover, button:disabled, &.disabled {
-    background: $orange-light;
-  }
-}
 
 // -----------------------------------------------------------------------------
 // Background Image (Temporary)
@@ -187,51 +64,6 @@ a.nav-button {
   height: 100%;
   background-size: cover;
   background-position: center;
-}
-
-// -----------------------------------------------------------------------------
-// Image Choice (Temporary)
-
-.image-choice {
-  width: 49.5%;
-  float: left;
-  overflow: hidden;
-
-  background-size: cover;
-  background-position: center center;
-
-  &.index-0, &.index-2 {
-    margin-right: 1%;
-  }
-
-  &.index-2, &.index-3 {
-    margin-top: 2px;
-  }
-
-  button, .spacer, .text {
-    font-family: $font_family;
-    width: 100%;
-    height: 100%;
-    padding: 0px;
-  }
-
-  .text {
-    color: #fff;
-    font-weight: 400;
-    text-align: center;
-    height: 35px;
-    background: #000;
-    background: rgba(0, 0, 0, .70);
-    padding-top: 5px;
-    font-size: 16px;
-    height: 28px;
-  }
-
-  .bar-blue {
-    float: right;
-    width: 35%;
-    margin-left: 65%;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -309,7 +141,7 @@ a.nav-button {
 // AdUnit layout and font sizes
 
 .medium_rectangle {
-  #survey-title {
+  #title {
     height: 36px;
     width: 294px;
     padding: 5px 3px;
@@ -400,6 +232,9 @@ a.nav-button {
     }
   }
 
+  // ********************************
+  // Order Question
+
   #question.OrderQuestion {
     @mixin order-choice-height($height) {
       #between-buttons { height: $height; }
@@ -422,22 +257,5 @@ a.nav-button {
       .nav-button .icon { margin-top: 85px; }
       @include order-choice-height(182px);
     }
-  }
-}
-
-// -----------------------------------------------------------------------------
-// Survey Titles
-
-#survey-title {
-  background: $light_gray;
-  border-bottom: 1px solid $dark_gray;
-  margin-bottom: 1px;
-  color: #000;
-  text-align: center;
-  overflow: hidden;
-
-  h1 {
-    margin: 0px;
-    font-weight: 600;
   }
 }

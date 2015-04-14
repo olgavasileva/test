@@ -1,0 +1,89 @@
+@import 'ad_unit/variables';
+
+/*
+  Image Choices
+
+  Displays image choices and responses for multiple kinds of questions types.
+
+  # Basic Markup
+
+  <div class="image-choice index-{i}">
+    <div class="spacer">
+    <div class="text">Choice Text</div>
+  </div>
+
+  Additional Classes/Elements
+
+  - .index-{i}
+
+  This allows us to style margins/spacing for different choice layouts.
+
+  - <div class="spacer">
+
+  Creates space from the top so the choice text can be displayed at the bottom
+  of the image choice.
+
+  - <div class="text">
+
+  Holds the choice text and is positioned at the bottom of the choice.
+
+  ---
+
+  # Pick One Markup
+
+  THe pick one markup uses Rails' `button_to` helper. You can see an example in
+  `surveys/response_fields/_image_choice_question.html.haml`.
+
+  # Adding response ratio to top-left corner
+
+  This is the same as the basic markup, except it includes markup styling for
+  `.bar-blue`, which is documented at `ad_unit/choices/bars.scss`.
+
+  <div class="image-choice index-{i}">
+    <!-- insert markup for .bar-blue response ratio bar here -->
+    <div class="spacer">
+    <div class="text">Choice Text</div>
+  </div>
+*/
+
+.image-choice {
+  width: 49.5%;
+  float: left;
+  overflow: hidden;
+
+  background-size: cover;
+  background-position: center center;
+
+  &.index-0, &.index-2 {
+    margin-right: 1%;
+  }
+
+  &.index-2, &.index-3 {
+    margin-top: 2px;
+  }
+
+  button, .spacer, .text {
+    font-family: $font-family;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+  }
+
+  .text {
+    color: #fff;
+    font-weight: 400;
+    text-align: center;
+    height: 35px;
+    background: #000;
+    background: rgba(0, 0, 0, .70);
+    padding-top: 5px;
+    font-size: 16px;
+    height: 28px;
+  }
+
+  .bar-blue {
+    float: right;
+    width: 35%;
+    margin-left: 65%;
+  }
+}
