@@ -62,7 +62,7 @@
     color: #fff;
     font-weight: 400;
     text-align: center;
-    height: 35px;
+    height: $image-choice-text-height;
     background: #000;
     background: rgba(0, 0, 0, .70);
     padding-top: 5px;
@@ -74,5 +74,12 @@
     float: right;
     width: 35%;
     margin-left: 65%;
+  }
+
+  &.selected {
+    .text {
+      background: $blue;
+      background: rgba($blue, .70);
+    }
   }
 }
