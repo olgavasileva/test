@@ -1,15 +1,19 @@
-.vote
-.back
--question.choices.each do |c|
-  .choice
-    %label
-      =responsive_image_tag(c.web_image_url, class: "img-responsive", style:"width: 125px; height: 125px;")
-      =check_box_tag("response[choice_ids][]",c.id,false,{class:'selected-choice'})
-      .subtitle
-        .table
-          .cell=c.title
-.next=link_to ">", next_question_path(question), target: "_self"
-.submitable Submit
-.footer
-  .share
-  .logo
+- content_for :between_buttons do
+  - question.choices.each_with_index do |c, i|
+    - style = "background-image: url(#{c.web_image_url});"
+    %div{class: "image-choice index-#{i}", style: style, data: {index: i, choice_id: c.id}}
+      - if answer
+        - ratio = (c.response_ratio * 100).to_i
+        %div{class: "bar-blue #{'selected' if answer.choice_id == c.id}"}
+          .bar-graph{style: "width: #{ratio}%;"}
+          .bar-selected
+          .bar-response #{ratio}%
+      .spacer
+      .text= c.title
+
+- unless answer
+  - content_for :below_buttons do
+    - url = qp_create_response_path(@survey.uuid, @ad_unit.name, question)
+    = form_tag url, target: '_self', id: 'order-choice-form', data: {min: question.min_responses, max: question.max_responses} do
+      .bar-orange
+        %button#multiple-choice-submit{type:'submit'}= 'Submit'

@@ -4,7 +4,7 @@
 
 
 $(document).ready ->
-  $question = $('#question')
+  $q = $('#question')
 
   $('.textfill').textfill
     innerTag: 'h1'
@@ -16,13 +16,13 @@ $(document).ready ->
 
   # OrderQuestion
 
-  if $question.hasClass('OrderQuestion')
+  if $q.hasClass('OrderQuestion')
     $submit = $('#order-choice-submit')
 
     sort = document.getElementById('order-choice-sort')
     sortable = Sortable.create sort,
       scroll: false
-      disabled: $question.hasClass('has-response')
+      disabled: $q.hasClass('has-response')
       onStart: -> $submit.attr('disabled', 'disabled')
       onEnd: ->
         $('.order-choice-bar').each (index)->
@@ -30,3 +30,34 @@ $(document).ready ->
           $("#index-#{index}").val(id)
 
         $submit.attr('disabled', false)
+
+  else if $q.hasClass('MultipleChoiceQuestion') && !$q.hasClass('has-response')
+    $form = $('#order-choice-form')
+    $submit = $('#multiple-choice-submit')
+    data = $form.data()
+    $submit.attr('disabled', 'disabled')
+
+    console.log(data)
+
+    $('.image-choice').click (e) ->
+      e.preventDefault()
+      $el = $(@)
+      id = $el.data('choice-id')
+
+      if $el.hasClass('selected')
+        $("input#choice-#{id}").remove()
+      else
+        $input = $ '<input>',
+          id: "choice-#{id}",
+          name: 'response[choice_ids][]'
+          class: 'input-choice'
+          type: 'hidden'
+          value: id
+        $input.appendTo($form)
+
+      $el.toggleClass('selected')
+
+      if $('input.input-choice').length >= data.min
+        $submit.attr('disabled', false)
+      else
+        $submit.attr('disabled', 'disabled')
