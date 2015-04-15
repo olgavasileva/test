@@ -51,14 +51,31 @@ describe Question do
     context 'when a valid :survey_id is present' do
       let!(:user) { FactoryGirl.create(:user) }
       let!(:survey)  { FactoryGirl.create(:survey, user: user) }
+      let(:position) { nil }
+
+      before do
+        survey.questions << FactoryGirl.create_list(:text_question, 2, user: user)
+      end
 
       let(:question) do
-        FactoryGirl.build(:question, user: user, survey_id: survey.id)
+        FactoryGirl.build(:question, {
+          user: user,
+          survey_id: survey.id,
+          survey_position: position
+        })
       end
 
       it 'creates a QuestionsSurvey record' do
         expect{question.save!}.to change(QuestionsSurvey, :count).by(1)
         expect(question.questions_survey).to be_present
+      end
+
+      context 'given a survey_position' do
+        let(:position) { 2 }
+        it 'sets the position' do
+          question.save!
+          expect(question.questions_survey.position).to eq(position)
+        end
       end
     end
   end

@@ -12,7 +12,7 @@ class Question < ActiveRecord::Base
   belongs_to :trend
 
   # Attribute that allows questions to be added to surveys
-  attr_accessor :survey_id
+  attr_accessor :survey_id, :survey_position
   has_one :questions_survey, dependent: :destroy
 
 	has_many :inclusions, dependent: :destroy
@@ -271,6 +271,6 @@ class Question < ActiveRecord::Base
     end
 
     def add_to_survey
-      create_questions_survey!(survey_id: survey_id)
+      create_questions_survey!(survey_id: survey_id, position: survey_position)
     end
 end

@@ -15,6 +15,7 @@ class TwoCents::Questions < Grape::API
         optional :category_id, type:Integer, desc: "Category for this question"
         optional :description, type:String, desc:"Description - do we need this?"
         optional :survey_id, type: Integer, desc: "Survey to add this question to. Must be a survey the user created."
+        optional :survey_position, type: Integer, desc: 'The position of this question in th survey. Ignored unless survey_id is present.'
 
         optional :invite_phone_numbers, type: Array, desc: "Phone numbers of people to invite to answer."
         optional :invite_email_addresses, type: Array, desc: "Email addresses of people to invite to answer."
@@ -141,6 +142,7 @@ class TwoCents::Questions < Grape::API
         user_id:current_user.id,
         category_id:declared_params[:category_id],
         survey_id: declared_params[:survey_id],
+        survey_position: declared_params[:survey_position],
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
@@ -209,6 +211,7 @@ class TwoCents::Questions < Grape::API
         user_id:current_user.id,
         category_id:declared_params[:category_id],
         survey_id: declared_params[:survey_id],
+        survey_position: declared_params[:survey_position],
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
@@ -273,6 +276,7 @@ class TwoCents::Questions < Grape::API
         user_id:current_user.id,
         category_id:declared_params[:category_id],
         survey_id: declared_params[:survey_id],
+        survey_position: declared_params[:survey_position],
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
@@ -335,6 +339,7 @@ class TwoCents::Questions < Grape::API
         user_id:current_user.id,
         category_id:declared_params[:category_id],
         survey_id: declared_params[:survey_id],
+        survey_position: declared_params[:survey_position],
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
@@ -390,6 +395,7 @@ class TwoCents::Questions < Grape::API
         user_id: current_user.id,
         category_id: declared_params[:category_id],
         survey_id: declared_params[:survey_id],
+        survey_position: declared_params[:survey_position],
         title: declared_params[:title],
         background_image: create_image(QuestionImage),
         description:declared_params[:description],

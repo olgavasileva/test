@@ -21,6 +21,7 @@ module TwoCents
 
       params :question_id do |opts|
         requires :question_id, type: Integer, desc: 'The question id.'
+        optional :position, type: Integer, desc: 'The position of the question in the survey.'
       end
 
       def survey_params
@@ -138,8 +139,10 @@ module TwoCents
             # ------------------------------------------------------------------
             # Questions: Add
             #
-            desc 'Adds a question to the survey.', {
+            desc "Adds a question to the survey.", {
               notes: <<-NOTES
+                You can also use this endpoint to update a question's position in the survey. Positions start at 1.
+
                 Returns a `204 No Content` on success.
 
                 **Important**: To add a question to a survey, you must be validated as the user who created both the survey and the question.
@@ -153,11 +156,13 @@ module TwoCents
             post '/' do
               validate_user!
               survey = load_survey!
-              # Load the question through the user to ensure its the same user
-              # as the survey.... only reason we're making the query here
               question = current_user.questions.find(params[:question_id])
               query = survey.questions_surveys.where(question: question)
-              query.first_or_create!
+              query.first_or_initialize.tap do |qs|
+                qs.position = params[:position] if params[:position].present?
+                qs.save!
+              end
+
               status 204
             end
 
