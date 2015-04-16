@@ -3,6 +3,7 @@ require 'rails_helper'
 describe :trending do
   let(:params) {{}}
   let(:setup_questions) {}
+  before { allow(Figaro.env).to receive(:USE_RESPONSE_COUNT_TRENDING?).and_return false}
   before { setup_questions }
   before { post "v/2.0/questions/trending", Hash[params].to_json,{"CONTENT_TYPE" => "application/json"}}
 

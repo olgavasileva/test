@@ -542,7 +542,11 @@ class TwoCents::Questions < Grape::API
     post 'trending', jbuilder: 'questions' do
       validate_user!
 
-      @questions = current_user.feed_questions.trending.offset(declared_params[:index]).limit(declared_params[:count])
+      @questions = if Figaro.env.USE_RESPONSE_COUNT_TRENDING?
+        current_user.feed_questions.trending_on_response_count.offset(declared_params[:index]).limit(declared_params[:count])
+      else
+        current_user.feed_questions.trending.offset(declared_params[:index]).limit(declared_params[:count])
+      end
     end
 
 

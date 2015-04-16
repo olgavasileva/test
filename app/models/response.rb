@@ -1,6 +1,6 @@
 class Response < ActiveRecord::Base
   belongs_to :user, class_name:"Respondent"
-  belongs_to :question
+  belongs_to :question, counter_cache: true
   has_one :comment, as: :commentable, dependent: :destroy
   has_many :contest_response_votes, dependent: :destroy
   has_many :demographics, through: :user

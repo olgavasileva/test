@@ -2,7 +2,7 @@ json.choices question.choices do |c|
   json.id c.id
   top_count = c.try :top_count
   json.top_count top_count unless top_count.nil?
-  json.user_answered current_user.choice_ids_made_for_question(question).include?(c.id) if current_user.choice_ids_made_for_question(question)
+  json.user_answered current_user.choice_ids_made_for_question(question).include?(c.id) if current_user && current_user.choice_ids_made_for_question(question)
   json.response_ratio question.kind_of?(OrderQuestion) ? c.weighted_response_count / question.weighted_total_responses.to_f : c.responses.count.to_f / question.choice_count
 end
 json.response_count question.response_count

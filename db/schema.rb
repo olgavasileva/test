@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150402200638) do
+ActiveRecord::Schema.define(version: 20150416061642) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -27,6 +27,15 @@ ActiveRecord::Schema.define(version: 20150402200638) do
   add_index "active_admin_comments", ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id", using: :btree
   add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
+
+  create_table "ad_units", force: true do |t|
+    t.string   "name"
+    t.text     "default_meta_data"
+    t.integer  "width"
+    t.integer  "height"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "admin_users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -65,6 +74,17 @@ ActiveRecord::Schema.define(version: 20150402200638) do
     t.datetime "updated_at"
     t.string   "type"
   end
+
+  create_table "background_images_ad_units", force: true do |t|
+    t.integer  "background_image_id"
+    t.integer  "ad_unit_id"
+    t.text     "meta_data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "background_images_ad_units", ["ad_unit_id"], name: "index_background_images_ad_units_on_ad_unit_id", using: :btree
+  add_index "background_images_ad_units", ["background_image_id"], name: "index_background_images_ad_units_on_background_image_id", using: :btree
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -617,12 +637,14 @@ ActiveRecord::Schema.define(version: 20150402200638) do
     t.boolean  "notifying",                                                 default: false
     t.integer  "trend_id"
     t.integer  "view_count"
+    t.integer  "responses_count",                                           default: 0
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
   add_index "questions", ["category_id"], name: "index_questions_on_category_id", using: :btree
   add_index "questions", ["created_at"], name: "index_questions_on_created_at", using: :btree
   add_index "questions", ["kind"], name: "index_questions_on_kind", using: :btree
+  add_index "questions", ["responses_count"], name: "index_questions_on_responses_count", using: :btree
   add_index "questions", ["trend_id"], name: "index_questions_on_trend_id", using: :btree
   add_index "questions", ["type"], name: "index_questions_on_type", using: :btree
   add_index "questions", ["user_id"], name: "index_questions_on_user_id", using: :btree
@@ -899,7 +921,14 @@ ActiveRecord::Schema.define(version: 20150402200638) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id",            null: false
+    t.string   "uuid",               null: false
+    t.text     "thank_you_markdown"
+    t.text     "thank_you_html"
   end
+
+  add_index "surveys", ["user_id"], name: "index_surveys_on_user_id", using: :btree
+  add_index "surveys", ["uuid"], name: "index_surveys_on_uuid", unique: true, using: :btree
 
   create_table "taggings", force: true do |t|
     t.integer  "tag_id"
@@ -995,6 +1024,7 @@ ActiveRecord::Schema.define(version: 20150402200638) do
     t.string   "type",                      default: "User"
     t.integer  "push_on_question_asked",    default: -1
     t.integer  "push_on_question_answered", default: -1
+    t.boolean  "auto_feed",                 default: true
   end
 
   add_index "users", ["email"], name: "index_users_on_email", using: :btree
