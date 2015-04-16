@@ -6,6 +6,7 @@ class FeedItem < ActiveRecord::Base
 
   belongs_to :user, class_name: "Respondent"
   belongs_to :question
+  has_many :responses, through: :question
 
   default hidden: false
   default published_at: lambda { |uq| Time.current }

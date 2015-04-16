@@ -72,6 +72,7 @@
         - title
         - state
         - position
+        - responses_count
   Response:
     :options:
       :fields:

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150402215605) do
+ActiveRecord::Schema.define(version: 20150416061642) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -637,12 +637,14 @@ ActiveRecord::Schema.define(version: 20150402215605) do
     t.boolean  "notifying",                                                 default: false
     t.integer  "trend_id"
     t.integer  "view_count"
+    t.integer  "responses_count",                                           default: 0
   end
 
   add_index "questions", ["background_image_id"], name: "index_questions_on_background_image_id", using: :btree
   add_index "questions", ["category_id"], name: "index_questions_on_category_id", using: :btree
   add_index "questions", ["created_at"], name: "index_questions_on_created_at", using: :btree
   add_index "questions", ["kind"], name: "index_questions_on_kind", using: :btree
+  add_index "questions", ["responses_count"], name: "index_questions_on_responses_count", using: :btree
   add_index "questions", ["trend_id"], name: "index_questions_on_trend_id", using: :btree
   add_index "questions", ["type"], name: "index_questions_on_type", using: :btree
   add_index "questions", ["user_id"], name: "index_questions_on_user_id", using: :btree
