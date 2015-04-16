@@ -28,13 +28,12 @@ RSpec.describe 'api/_question_summary.jbuilder' do
   # View Setup
 
   before { allow(view).to receive(:current_user).and_return(current_user) }
-  before { assign(:question, question) }
 
   # ----------------------------------------------------------------------------
   # Tests
 
   subject do
-    render partial: 'api/question_summary'
+    render partial: 'api/question_summary', locals: { question: question }
     JSON.parse(rendered)
   end
 

@@ -1011,7 +1011,6 @@ class TwoCents::Questions < Grape::API
 
       @question = Question.find_by id:declared_params[:question_id]
       fail! 401, "That question does not exist." unless @question
-      @answers = Response.where(user_id: current_user, question: @question).pluck(:choice_id)
       @anonymous = @question.responses.where(user:current_user).last.try(:anonymous)
     end
 
@@ -1072,8 +1071,6 @@ class TwoCents::Questions < Grape::API
       end
 
       asking_user_id = declared_params[:user_id] || current_user.try(:id)
-
-      @answers = Response.where(user_id: current_user, question: @question).pluck(:choice_id)
 
       @user_answered = asking_user_id ? Respondent.find(asking_user_id).answered_questions.include?(@question) : false
     end
