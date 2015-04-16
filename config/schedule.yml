@@ -1,5 +1,5 @@
 trending:
-  every: 10m
+  every: 1h
   queue: cron
   class: CronTask
   args: "trending"

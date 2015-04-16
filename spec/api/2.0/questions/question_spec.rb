@@ -15,6 +15,12 @@ describe 'GET questions/question' do
     expect(json).to have_json_key(:summary)
   end
 
+  describe "response with all question data" do
+    it { expect(json.keys).to match_array %w(category choices comment_count creator_id creator_name description id response_count summary title type user_answered uuid image_url created_at member_community_ids anonymous tags creator_avatar_url image_id image_meta_data survey_id) }
+    it { expect(json["category"].keys).to match_array %w(id name) }
+    it { expect(json["summary"].keys).to match_array %w(anonymous choices comment_count creator_id creator_name published_at response_count share_count skip_count sponsor view_count start_count) }
+  end
+
   context 'when have responses to this question by user' do
     before { @choice = FactoryGirl.create :choice, question: question }
     before { @answer = FactoryGirl.create :response, question: question, user: instance.user, choice_id: @choice.id }
@@ -58,6 +64,12 @@ describe 'GET questions/question' do
       expect(json).to have_json_key(:id).eq(question.id)
       expect(json).to have_json_key(:summary)
     end
+
+    describe "response with all question data" do
+      it { expect(json.keys).to match_array %w(category choices comment_count creator_id creator_name description id response_count summary title type user_answered uuid image_url created_at member_community_ids anonymous tags creator_avatar_url image_id image_meta_data survey_id) }
+      it { expect(json["category"].keys).to match_array %w(id name) }
+      it { expect(json["summary"].keys).to match_array %w(anonymous choices comment_count creator_id creator_name published_at response_count share_count skip_count sponsor view_count start_count) }
+    end
   end
 
   context "Without authenticating" do
@@ -69,5 +81,7 @@ describe 'GET questions/question' do
       expect(json).to have_json_key(:id).eq(question.id)
       expect(json).to have_json_key(:summary)
     end
+
+    it { expect(json.keys).to match_array %w(category choices comment_count creator_id creator_name description id response_count summary title type user_answered uuid image_url created_at member_community_ids anonymous tags creator_avatar_url image_id image_meta_data survey_id) }
   end
 end

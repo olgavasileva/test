@@ -44,3 +44,8 @@ end
 
 json.member_community_ids question.user.membership_communities.pluck(:id)
 json.user_answered @answered_questions[question.id] if @answered_questions
+if @answered_questions
+  json.summary do
+    json.partial! 'question_summary', question: question
+  end
+end
