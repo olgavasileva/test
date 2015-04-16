@@ -19,7 +19,7 @@ class ChoiceResultCache < Struct.new(:question)
       results = {}
 
       data = question.choices.map do |choice|
-        percent = (choice.responses.size * 100) / response_count.to_f
+        percent = (choice.responses.count * 100) / response_count.to_f
         whole = percent.to_i
         remainder -= whole
         {id: choice.id, decimals: percent % 1, whole: whole}
@@ -45,6 +45,6 @@ class ChoiceResultCache < Struct.new(:question)
   end
 
   def response_count
-    @response_count ||= question.responses.size
+    @response_count ||= question.responses.count
   end
 end
