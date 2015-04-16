@@ -1,7 +1,7 @@
 class TwoCents::Auth < Grape::API
   helpers do
     def validate_api_signature! token, signature
-      fail! 1000, 'Invalid API signature' unless Digest::SHA2.hexdigest(token + Figaro.env["api_shared_secret"].to_s).downcase == signature.downcase
+      fail! 1000, 'Invalid API signature' unless Digest::SHA2.hexdigest(token + Figaro.env.api_shared_secret).downcase == signature.downcase
     end
 
     def instance
@@ -18,7 +18,7 @@ class TwoCents::Auth < Grape::API
     end
 
     def google_gtm
-      Figaro.env['google_gtm']
+      Figaro.env.google_gtm
     end
   end
 
