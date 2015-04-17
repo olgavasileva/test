@@ -21,7 +21,8 @@
 
     :javascript
       window.adUnitConfig = {
-        embeddable_unit_auto_forward: #{Setting.fetch_value('embeddable_unit_auto_forward').to_i}
+        autoForward: #{Setting.fetch_value('embeddable_unit_auto_forward').to_i},
+        autoForwardEnabled: #{(Rails.env.production? || Rails.env.staging?).to_json}
       };
 
     = javascript_include_tag "ad_unit", data: { turbolinks_track: true }

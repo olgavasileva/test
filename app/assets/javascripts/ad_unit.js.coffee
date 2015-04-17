@@ -6,6 +6,8 @@
 $(document).ready ->
   $q = $('#question')
 
+  console.log $('#next-button').attr('style')
+
   $('.textfill').textfill
     innerTag: 'h1'
     minFontPixels: 11
@@ -45,11 +47,11 @@ $(document).ready ->
   # ----------------------------------------------------------------------------
   # Auto Forward
   #
-  if $q.hasClass('has-response')
+  if adUnitConfig.autoForwardEnabled && $q.hasClass('has-response')
     console.log('has-response')
-    delay = adUnitConfig.embeddable_unit_auto_forward * 1000
+    delay = adUnitConfig.autoForward * 1000
     next = -> document.getElementById('next-button').click()
-    # setTimeout(next, delay)
+    setTimeout(next, delay)
 
   # ----------------------------------------------------------------------------
   # OrderQuestion

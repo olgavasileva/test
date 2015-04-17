@@ -1,0 +1,52 @@
+#footer {
+  background-color: $gray-light;
+  height: 15px;
+  padding: 2px 3px;
+  clear: both;
+
+  .share-icon, #embed-icon, .logo {
+    height: 15px;
+    background-repeat: no-repeat;
+  }
+
+  .share-icon, #embed-icon {
+    margin-right: 2px;
+    float: left;
+  }
+
+  .logo {
+    margin-left: 2px;
+    float: right;
+  }
+
+  .share-icon {
+    $size: 14px;
+    width: $size;
+    height: $size;
+    background-size: $size;
+    overflow: hidden;
+    display: block;
+
+
+    &.facebook {
+      background-image: image-url('ad_units/facebook.svg');
+    }
+
+    &.twitter {
+      background-image: image-url('ad_units/twitter.svg');
+    }
+  }
+
+  #embed-icon {
+    width: 60px;
+    background-image: image-url('ad_units/embed.svg');
+    background-size: 60px;
+  }
+
+  .logo {
+    width: 50px;
+    background-image: image-url('ad_units/statisfy.svg');
+    background-size: 50px;
+    background-position: 2px;
+  }
+}

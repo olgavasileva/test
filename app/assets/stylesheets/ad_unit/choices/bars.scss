@@ -98,10 +98,6 @@
   @extend .bar;
   background: $blue;
 
-  button:hover {
-    background: $blue-dark;
-  }
-
   .bar-graph {
     background: $blue-progress;
   }
@@ -111,6 +107,10 @@
   }
 }
 
+form.bar-blue:hover {
+  background: $blue-dark;
+}
+
 .bar-orange {
   @extend .bar;
   background: $orange;
@@ -118,4 +118,8 @@
   button:hover, button:disabled, &.disabled {
     background: $orange-light;
   }
+}
+
+form.bar-orange:hover {
+  background: $orange-light;
 }

@@ -55,7 +55,6 @@
 */
 
 @import './variables';
-@import './base/embed';
 
 body {
   background: #fbfbfb;
@@ -73,6 +72,9 @@ body {
   width: 100%;
 }
 
+@import './base/embed';
+
+
 #title {
   background: $gray-light;
   border-bottom: 1px solid $gray-dark;
@@ -87,85 +89,5 @@ body {
   }
 }
 
-.nav-button {
-  height: 100%;
-  text-align: center;
-  img { width: 10px; }
-}
-
-a.nav-button {
-  color: #000000;
-  text-decoration: none;
-}
-
-@mixin nav-button-colors($normal, $hover, $disabled: $gray-light) {
-  background: $normal;
-  &:hover { background: $hover; }
-  &.disabled, &.disabled:hover {
-    background: $disabled;
-  }
-}
-
-#next-button {
-  float: right;
-  @include nav-button-colors($orange-light, $orange);
-}
-
-#back-button {
-  float: left;
-  @include nav-button-colors($gray-light, $gray-dark);
-}
-
-#footer {
-  background-color: $gray-light;
-  height: 15px;
-  padding: 2px 3px;
-  clear: both;
-
-  .share-icon, #embed-icon, .logo {
-    height: 15px;
-    background-repeat: no-repeat;
-  }
-
-  .share-icon, #embed-icon {
-    margin-right: 2px;
-    float: left;
-  }
-
-  .logo {
-    margin-left: 2px;
-    float: right;
-  }
-
-  .share-icon {
-    width: 15px;
-    overflow: hidden;
-    display: block;
-
-    &.facebook {
-      height: 15px;
-      background-image: image-url('ad_units/facebook.svg');
-      background-size: 15px;
-    }
-
-    &.twitter {
-      height: 18px;
-      background-image: image-url('ad_units/twitter.svg');
-      background-size: 15px;
-      background-position: center -6px;
-    }
-  }
-
-  #embed-icon {
-    width: 60px;
-    background-image: image-url('ad_units/embed.svg');
-    background-size: 60px;
-  }
-
-  .logo {
-    width: 50px;
-    background-image: image-url('ad_units/statisfy.svg');
-    background-size: 50px;
-    background-position: 2px;
-  }
-}
+@import './base/nav_buttons';
+@import './base/footer';

@@ -5,6 +5,11 @@ class ShortLinksController < ActionController::Base
     redirect_to web_app_question_url(question)
   end
 
+  def app_question
+    question = Question.find(params[:id])
+    redirect_to web_app_question_url(question)
+  end
+
   private
 
   def web_app_question_url(question)

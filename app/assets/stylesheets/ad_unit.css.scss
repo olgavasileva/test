@@ -60,19 +60,19 @@ button {
     }
 
     textarea::-webkit-input-placeholder {
-      color: $orange-light;
+      color: $orange;
     }
 
     textarea:-moz-placeholder {
-      color: $orange-light;
+      color: $orange;
     }
 
     textarea::-moz-placeholder {
-      color: $orange-light;
+      color: $orange;
     }
 
     textarea:-ms-input-placeholder {
-      color: $orange-light;
+      color: $orange;
     }
   }
 }
@@ -218,7 +218,7 @@ button {
       }
 
       &.choices-3, &.choices-4 {
-        $half-height: ($height / 2) - 1px;
+        $half-height: ($height / 2);
         .image-choice {
           height: $half-height;
           .spacer { height: $half-height - $image-choice-text-height; }
@@ -246,12 +246,12 @@ button {
 
     textarea {
       width: 300px - 14px;
-      height: 44px;
+      height: 45px;
     }
 
     .bar-blue {
-      height: 61px;
-      padding-top: 30px;
+      height: 47px;
+      padding-top: 12px;
     }
   }
 
