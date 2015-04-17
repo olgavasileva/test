@@ -14,6 +14,21 @@ $(document).ready ->
       $el = $('h1', el)
       $el.css('line-height', $el.css('font-size'))
 
+  $('a.popup').click (e) ->
+    e.preventDefault()
+
+    width = 600
+    height = 400
+    left = Number((screen.width/2)-(width/2))
+    top = Number((screen.height/2)-(height/2))
+
+    window.open(
+      this.href,
+      'Share Statisfy',
+      "width=#{width},height=#{height},top=#{top},left=#{left}"
+    )
+
+
   # OrderQuestion
 
   if $q.hasClass('OrderQuestion')

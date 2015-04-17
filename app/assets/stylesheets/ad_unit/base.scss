@@ -87,11 +87,55 @@ body {
 }
 
 #footer {
-  position: fixed;
   background-color: $gray-light;
-  height: 19px;
+  height: 15px;
+  padding: 2px 3px;
   clear: both;
-  background: image-url('ad_units/medium-rectangle-footer.png');
-  background-size: cover;
-  z-index: 10000;
+
+  .share-icon, .embed-icon, .logo {
+    height: 15px;
+    background-repeat: no-repeat;
+  }
+
+  .share-icon, .embed-icon {
+    margin-right: 2px;
+    float: left;
+  }
+
+  .logo {
+    margin-left: 2px;
+    float: right;
+  }
+
+  .share-icon {
+    width: 15px;
+    overflow: hidden;
+    display: block;
+
+    &.facebook {
+      height: 15px;
+      background-image: image-url('ad_units/facebook.svg');
+      background-size: 15px;
+    }
+
+    &.twitter {
+      height: 18px;
+      background-image: image-url('ad_units/twitter.svg');
+      background-size: 15px;
+      background-position: center -6px;
+    }
+  }
+
+  .embed-icon {
+    width: 60px;
+    background-image: image-url('ad_units/embed.svg');
+    background-size: 60px;
+  }
+
+  .logo {
+    width: 50px;
+    background-image: image-url('ad_units/statisfy.svg');
+    background-size: 50px;
+    background-position: 2px;
+  }
 }
