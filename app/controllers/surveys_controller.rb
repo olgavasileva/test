@@ -22,7 +22,19 @@ class SurveysController < ApplicationController
     render :invalid_survey, layout: false
   end
 
+  # <iframe width="300" height="250" src="http://api.statisfy.co/unit/EU5f36fea0c4710132654712fb30fc1ffe/unit?key=value" frameborder="0"></iframe>
+  # -OR-
+  # <script type="text/javascript"><!--
+  #   statisfy_unit = "EU5f36fea0c4710132654712fb30fc1ffe/unit?key=value";
+  #   statisfy_unit_width = 300; statisfy_unit_height = 250;
+  # //-->
+  # </script>
+  # <script type="text/javascript" src="http://api.statisfy.co/production/show_unit.js">
+  # </script>
+
   def start
+    store_query_params
+
     @question = question_scope.first
     @question.try :viewed!
     render :question
@@ -45,6 +57,7 @@ class SurveysController < ApplicationController
   end
 
   def thank_you
+    @thank_you_html = @survey.parsed_thank_you_html stored_query_params
     render :thank_you, layout: false
   end
 
@@ -56,6 +69,10 @@ class SurveysController < ApplicationController
   end
 
   private
+
+    def quantcast_data
+      params[:quantcast]
+    end
 
     def question_scope
       survey.questions.eager_load(:background_image, :choices)
@@ -119,4 +136,13 @@ class SurveysController < ApplicationController
         qp_thank_you_path(survey.uuid, @ad_unit.name)
       end
     end
+
+    def store_query_params
+      session[survey.uuid] = request.query_parameters
+    end
+
+    def stored_query_params
+      session[survey.uuid]
+    end
+
 end

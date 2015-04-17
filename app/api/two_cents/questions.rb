@@ -15,6 +15,7 @@ class TwoCents::Questions < Grape::API
         optional :category_id, type:Integer, desc: "Category for this question"
         optional :description, type:String, desc:"Description - do we need this?"
         optional :survey_id, type: Integer, desc: "Survey to add this question to. Must be a survey the user created."
+        optional :survey_position, type: Integer, desc: 'The position of this question in th survey. Ignored unless survey_id is present.'
 
         optional :invite_phone_numbers, type: Array, desc: "Phone numbers of people to invite to answer."
         optional :invite_email_addresses, type: Array, desc: "Email addresses of people to invite to answer."
@@ -141,6 +142,7 @@ class TwoCents::Questions < Grape::API
         user_id:current_user.id,
         category_id:declared_params[:category_id],
         survey_id: declared_params[:survey_id],
+        survey_position: declared_params[:survey_position],
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
@@ -209,6 +211,7 @@ class TwoCents::Questions < Grape::API
         user_id:current_user.id,
         category_id:declared_params[:category_id],
         survey_id: declared_params[:survey_id],
+        survey_position: declared_params[:survey_position],
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
@@ -273,6 +276,7 @@ class TwoCents::Questions < Grape::API
         user_id:current_user.id,
         category_id:declared_params[:category_id],
         survey_id: declared_params[:survey_id],
+        survey_position: declared_params[:survey_position],
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
@@ -335,6 +339,7 @@ class TwoCents::Questions < Grape::API
         user_id:current_user.id,
         category_id:declared_params[:category_id],
         survey_id: declared_params[:survey_id],
+        survey_position: declared_params[:survey_position],
         title:declared_params[:title],
         description:declared_params[:description],
         rotate:declared_params[:rotate],
@@ -390,6 +395,7 @@ class TwoCents::Questions < Grape::API
         user_id: current_user.id,
         category_id: declared_params[:category_id],
         survey_id: declared_params[:survey_id],
+        survey_position: declared_params[:survey_position],
         title: declared_params[:title],
         background_image: create_image(QuestionImage),
         description:declared_params[:description],
@@ -432,7 +438,7 @@ class TwoCents::Questions < Grape::API
     params do
       use :auth
       requires :image_id, type: Integer, desc: 'The id of the image to update'
-      optional :meta_data, type: Hash, desc: 'Survey image meta data hash'
+      requires :meta_data, type: Hash, desc: 'Survey image meta data hash'
     end
     put 'image', jbuilder: 'background_image' do
       validate_user!
@@ -559,7 +565,11 @@ class TwoCents::Questions < Grape::API
     post 'trending', jbuilder: 'questions' do
       validate_user!
 
-      @questions = current_user.feed_questions.trending.offset(declared_params[:index]).limit(declared_params[:count])
+      @questions = if Figaro.env.USE_RESPONSE_COUNT_TRENDING?
+        current_user.feed_questions.trending_on_response_count.offset(declared_params[:index]).limit(declared_params[:count])
+      else
+        current_user.feed_questions.trending.offset(declared_params[:index]).limit(declared_params[:count])
+      end
     end
 
 
@@ -1131,7 +1141,6 @@ class TwoCents::Questions < Grape::API
 
       @question = Question.find_by id:declared_params[:question_id]
       fail! 401, "That question does not exist." unless @question
-      @answers = Response.where(user_id: current_user, question: @question).pluck(:choice_id)
       @anonymous = @question.responses.where(user:current_user).last.try(:anonymous)
     end
 
@@ -1198,8 +1207,6 @@ class TwoCents::Questions < Grape::API
       end
 
       asking_user_id = declared_params[:user_id] || current_user.try(:id)
-
-      @answers = Response.where(user_id: current_user, question: @question).pluck(:choice_id)
 
       @user_answered = asking_user_id ? Respondent.find(asking_user_id).answered_questions.include?(@question) : false
     end

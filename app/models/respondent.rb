@@ -83,6 +83,10 @@ class Respondent < ActiveRecord::Base
 
   before_validation :ensure_username
 
+  def choice_ids_made_for_question question
+    @choice_ids ||= {}
+    @choice_ids[question.id] ||= responses.where(question_id:question).pluck(:choice_id)
+  end
 
   def quantcast_demographic_required?
     demographics.quantcast.blank? || demographics.quantcast.first.updated_at < (Date.current - 1.month)

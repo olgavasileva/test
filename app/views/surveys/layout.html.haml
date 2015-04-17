@@ -23,6 +23,8 @@
     /[if lt IE 9]
       <script src="assets/javascripts/ie.min.js"></script>
 
+    = render 'surveys/analytics'
+    = render 'layouts/shared/tag_manager'
     = yield(:script)
 
   %body{class: @ad_unit.name}
@@ -74,5 +76,3 @@
         %a#embed-icon{href: '#embed'}
 
     = debug(params) if Rails.env.development?
-    = render 'layouts/shared/analytics'
-    = render 'layouts/shared/tag_manager'

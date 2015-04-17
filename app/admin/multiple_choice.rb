@@ -4,7 +4,7 @@ ActiveAdmin.register MultipleChoice  do
   config.filters = false
   batch_action :destroy, false
 
-  actions :index, :edit, :show
+  actions :index, :edit, :update, :show
   action_item do
     link_to('All Questions', admin_questions_path)
   end

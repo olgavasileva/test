@@ -47,6 +47,19 @@ class Survey < ActiveRecord::Base
     found && (index >= 0) && items[index].question
   end
 
+  # Replace %key% or %key|default% strings with values from the hash
+  # For example, the string: "This is a %xyz%."
+  # with a hash of {"xyz" => "test"} results in "This is a test."
+  # And "This is a %pdq|cat%." with the same hash results in "This is a cat."
+  # Multiple replacements can be included.
+  def parsed_thank_you_html hash
+    thank_you_html.gsub(/%[^%]+%/) do |s|
+      s.match /%([^\|]*)(\|([^%]*))?%/ do |matches|
+        hash[matches[1]] || matches[3]
+      end
+    end
+  end
+
   private
 
   def user_exists?

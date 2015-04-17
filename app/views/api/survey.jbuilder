@@ -4,7 +4,8 @@ json.survey do
     :name,
     :thank_you_markdown,
     :thank_you_html,
-    :user_id
+    :user_id,
+    :uuid
 
   json.questions do
     json.array! @survey.questions do |question|

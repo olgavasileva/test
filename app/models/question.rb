@@ -12,7 +12,7 @@ class Question < ActiveRecord::Base
   belongs_to :trend
 
   # Attribute that allows questions to be added to surveys
-  attr_accessor :survey_id
+  attr_accessor :survey_id, :survey_position
   has_one :questions_survey, dependent: :destroy
 
 	has_many :inclusions, dependent: :destroy
@@ -47,6 +47,7 @@ class Question < ActiveRecord::Base
   scope :latest, -> { order("feed_items_v2.published_at DESC, feed_items_v2.id DESC") }
   scope :by_relevance, -> { order("feed_items_v2.relevance DESC, feed_items_v2.published_at DESC, feed_items_v2.id DESC") }
   scope :trending, -> { joins(:trend).order("trends.rate * trending_multiplier DESC, feed_items_v2.published_at DESC") }
+  scope :trending_on_response_count, -> { order("responses_count DESC, feed_items_v2.published_at DESC") }
   scope :targeted, -> { where("feed_items_v2.targeted = ?", true) }
   scope :myfeed, -> { where("feed_items_v2.why" => %w(targeted leader follower group community)) }
 
@@ -271,6 +272,6 @@ class Question < ActiveRecord::Base
     end
 
     def add_to_survey
-      create_questions_survey!(survey_id: survey_id)
+      create_questions_survey!(survey_id: survey_id, position: survey_position)
     end
 end
