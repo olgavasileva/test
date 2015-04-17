@@ -51,12 +51,12 @@
   .bar-response,
   .bar-selected {
     position: absolute;
-    display: block;
   }
 
   &,
   .bar-graph,
-  .bar-selected {
+  .bar-selected,
+  .bar-overlay {
     height: 32px;
   }
 
@@ -72,6 +72,8 @@
   button {
     font-family: $font-family;
     padding: 5px 0px;
+
+    .bar-title { padding: 0px; }
   }
 
   .bar-response {
@@ -85,6 +87,14 @@
   .bar-selected {
     width: 6px;
     display: none;
+  }
+
+  .bar-overlay {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 0px;
+    font-size: 22px;
   }
 
   &.selected {

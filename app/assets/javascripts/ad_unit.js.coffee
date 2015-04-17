@@ -1,12 +1,10 @@
 #= require jquery
 #= require jquery.textfill
 #= require Sortable.min
-
+#= require ad_units/overlays
 
 $(document).ready ->
   $q = $('#question')
-
-  console.log $('#next-button').attr('style')
 
   $('.textfill').textfill
     innerTag: 'h1'
@@ -47,11 +45,9 @@ $(document).ready ->
   # ----------------------------------------------------------------------------
   # Auto Forward
   #
-  if adUnitConfig.autoForwardEnabled && $q.hasClass('has-response')
-    console.log('has-response')
-    delay = adUnitConfig.autoForward * 1000
+  if adUnitConfig.autoForward.Enabled && $q.hasClass('has-response')
     next = -> document.getElementById('next-button').click()
-    setTimeout(next, delay)
+    setTimeout(next, adUnitConfig.autoForward.speed)
 
   # ----------------------------------------------------------------------------
   # OrderQuestion
@@ -70,37 +66,3 @@ $(document).ready ->
           $("#index-#{index}").val(id)
 
         $submit.attr('disabled', false)
-
-  # ----------------------------------------------------------------------------
-  # OrderQuestion
-  #
-  else if $q.hasClass('MultipleChoiceQuestion') && !$q.hasClass('has-response')
-    $form = $('#order-choice-form')
-    $submit = $('#multiple-choice-submit')
-    data = $form.data()
-    $submit.attr('disabled', 'disabled')
-
-    console.log(data)
-
-    $('.image-choice').click (e) ->
-      e.preventDefault()
-      $el = $(@)
-      id = $el.data('choice-id')
-
-      if $el.hasClass('selected')
-        $("input#choice-#{id}").remove()
-      else
-        $input = $ '<input>',
-          id: "choice-#{id}",
-          name: 'response[choice_ids][]'
-          class: 'input-choice'
-          type: 'hidden'
-          value: id
-        $input.appendTo($form)
-
-      $el.toggleClass('selected')
-
-      if $('input.input-choice').length >= data.min
-        $submit.attr('disabled', false)
-      else
-        $submit.attr('disabled', 'disabled')

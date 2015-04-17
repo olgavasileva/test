@@ -3,7 +3,7 @@ class Setting < ActiveRecord::Base
 
   scope :enabled, -> { where enabled: true }
 
-  def self.fetch_value(key)
-    Setting.find_by(key: key).try(:value)
+  def self.fetch_value(key, default=nil)
+    Setting.find_by(key: key).try(:value) || default
   end
 end

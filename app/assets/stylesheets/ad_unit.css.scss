@@ -1,3 +1,4 @@
+//= require font-awesome
 //= require_self
 //= require ad_unit/base
 //= require ad_unit/choices
@@ -185,20 +186,24 @@ button {
   // Image Choice Question (Pick One)
 
   #question.ImageChoiceQuestion {
-    .nav-button .icon { margin-top: 75px; }
-    #between-buttons { height: 182px; }
+    $total: 182px;
+    $text: 33px;
+    $margin: 75px;
+
+    .nav-button .icon { margin-top: $margin; }
+    #between-buttons { height: $total; }
 
     &.choices-1, &.choices-2 {
       .image-choice {
-        height: 182px;
-        .spacer { height: 149px; }
+        .spacer { height: $total - $text; }
+        .overlay .overlay-text { margin-top: $margin; }
       }
     }
 
     &.choices-3, &.choices-4 {
       .image-choice {
-        height: (182px / 2) - 1px;
-        .spacer { height: 58px; }
+        .spacer { height: ($total / 2) - $text; }
+        .overlay .overlay-text { margin-top: 20px; }
       }
     }
   }
@@ -208,32 +213,36 @@ button {
 
   #question.MultipleChoiceQuestion {
     @mixin multiple-choice-height($height) {
+      $text: 33px;
       #between-buttons { height: $height; }
 
       &.choices-1, &.choices-2 {
         .image-choice {
           height: $height;
-          .spacer { height: $height - $image-choice-text-height; }
+          .spacer { height: $height - $text; }
         }
       }
 
       &.choices-3, &.choices-4 {
-        $half-height: ($height / 2);
+        $half-height: ($height / 2) - 1px;
         .image-choice {
           height: $half-height;
-          .spacer { height: $half-height - $image-choice-text-height; }
+          .spacer { height: $half-height - $text; }
         }
       }
     }
 
     .image-choice:hover { cursor: pointer; }
     .nav-button .icon { margin-top: 64px; }
+    .overlay .overlay-text { margin: 20px; }
+
     @include multiple-choice-height(149px);
 
     &.has-response {
       .image-choice:hover { cursor: default; }
       .nav-button .icon { margin-top: 75px; }
-      @include multiple-choice-height(182px);
+      .overlay .overlay-text { margin: 31px; }
+      @include multiple-choice-height(181px);
     }
   }
 
