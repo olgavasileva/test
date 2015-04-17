@@ -1,6 +1,6 @@
 class Trend < ActiveRecord::Base
   FILTER_N ||= 8.0
-  EVENT_NOISE_THRESHOLD ||= 10
+  DEFAULT_NOISE_THRESHOLD = 3
   MIN_RATE_FOR_CALCULATION ||= 0.5
 
   default rate: 0.0
@@ -26,8 +26,10 @@ class Trend < ActiveRecord::Base
 
   def calculate!
     calculated = false
+    threshold = Setting.fetch_value('view_noise_threshold')
+    threshold ||= DEFAULT_NOISE_THRESHOLD
 
-    unless new_event_count < EVENT_NOISE_THRESHOLD
+    unless new_event_count < threshold
       filterCoefficient = 1 - 1 / FILTER_N
       self.filter_minutes = filter_minutes * filterCoefficient + minutes_since_last_calculation
       self.filter_event_count = filter_event_count * filterCoefficient + new_event_count
