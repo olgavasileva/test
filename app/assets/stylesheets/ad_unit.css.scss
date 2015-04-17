@@ -34,25 +34,26 @@ button {
 }
 
 .nav-button {
-  background: $gray-light;
   font-weight: 600;
   height: 100%;
   text-align: center;
 
-  &.disabled {
+  & {
+    background: $orange-light;
+  }
+
+  &:hover {
+    background: $orange;
+  }
+
+  &.disabled, &.disabled:hover {
     background: $gray-lighter;
-    cursor: not-allowed;
-    color: $gray-dark;
   }
 }
 
 a.nav-button {
   color: #000000;
   text-decoration: none;
-
-  &:hover {
-    background: $gray-dark;
-  }
 }
 
 #back-button { float: left; }

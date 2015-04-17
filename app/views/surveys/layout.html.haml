@@ -33,14 +33,18 @@
 
       #question{class: question_class}
         #between-buttons
-          - if prev_path = previous_question_path(@question)
+          - if @response && prev_path = previous_question_path(@question)
             %a#back-button.nav-button{target: '_self', href: prev_path}
               .icon <
           - else
             #back-button.nav-button.disabled
-              .icon <
-          %a#next-button.nav-button{target: '_self', href: next_question_path(@question)}
-            .icon >
+
+          - if @response
+            %a#next-button.nav-button{target: '_self', href: next_question_path(@question)}
+              .icon >
+          - else
+            #next-button.nav-button.disabled
+
           - if content_for?(:between_buttons)
             #between-button-content= yield(:between_buttons)
         - if content_for?(:below_buttons)
