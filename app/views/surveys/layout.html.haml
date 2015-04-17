@@ -46,13 +46,13 @@
         #between-buttons
           - if @response && prev_path = previous_question_path(@question)
             %a#back-button.nav-button{target: '_self', href: prev_path}
-              .icon <
+              .icon= image_tag 'ad_units/arrow-left.svg'
           - else
             #back-button.nav-button.disabled
 
           - if @response
             %a#next-button.nav-button{target: '_self', href: next_question_path(@question)}
-              .icon >
+              .icon= image_tag 'ad_units/arrow-right.svg'
           - else
             #next-button.nav-button.disabled
 

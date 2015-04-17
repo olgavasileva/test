@@ -33,32 +33,6 @@ button {
   overflow: hidden;
 }
 
-.nav-button {
-  font-weight: 600;
-  height: 100%;
-  text-align: center;
-
-  & {
-    background: $orange-light;
-  }
-
-  &:hover {
-    background: $orange;
-  }
-
-  &.disabled, &.disabled:hover {
-    background: $gray-lighter;
-  }
-}
-
-a.nav-button {
-  color: #000000;
-  text-decoration: none;
-}
-
-#back-button { float: left; }
-#next-button { float: right; }
-
 // -----------------------------------------------------------------------------
 // Background Image (Temporary)
 

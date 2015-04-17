@@ -1,0 +1,43 @@
+#embed {
+  position: fixed;
+  background: #ffffff;
+  top: 0;
+  left: 0;
+  z-index: 9999999999;
+  display: none;
+}
+
+#embed-title { float: left; }
+#embed-close {
+  float: right;
+  height: 19px;
+  width: 19px;
+  border-radius: 10px;
+  background: $orange-light;
+  color: #ffffff;
+  font-size: 12px;
+  text-align: center;
+
+  &:hover {
+    cursor: pointer;
+    background: $orange;
+  }
+}
+
+#embed-select {
+  clear: both;
+  width: 100%;
+  font-size: 18px;
+}
+
+#embed-input {
+  margin-top: 10px;
+  border: 1px solid $gray-dark;
+  background: $gray-light;
+  outline: none;
+  border-radius: 5px;
+  width: 92%;
+  padding: 4%;
+  color: #000000;
+  font-family: monospace;
+}

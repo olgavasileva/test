@@ -1,10 +1,9 @@
-@import './variables';
-
 /*
   Base Layout for an AdUnit:
 
   <body class="{ad-unit-name}">
     <div id="#content">
+      <div id="embed"></div>
       <div id="title"></div>
       <div id="question" class="{QuestionClassName} choices-{n}"></div>
       <div id="footer"></div>
@@ -55,6 +54,9 @@
   Whether we are displaying a response or not.
 */
 
+@import './variables';
+@import './base/embed';
+
 body {
   background: #fbfbfb;
   padding: 0px;
@@ -71,50 +73,6 @@ body {
   width: 100%;
 }
 
-#embed {
-  position: fixed;
-  background: #ffffff;
-  top: 0;
-  left: 0;
-  z-index: 9999999999;
-  display: none;
-}
-
-#embed-title { float: left; }
-#embed-close {
-  float: right;
-  height: 19px;
-  width: 19px;
-  border-radius: 10px;
-  background: $orange-light;
-  color: #ffffff;
-  font-size: 12px;
-  text-align: center;
-
-  &:hover {
-    cursor: pointer;
-    background: $orange;
-  }
-}
-
-#embed-select {
-  clear: both;
-  width: 100%;
-  font-size: 18px;
-}
-
-#embed-input {
-  margin-top: 10px;
-  border: 1px solid $gray-dark;
-  background: $gray-light;
-  outline: none;
-  border-radius: 5px;
-  width: 92%;
-  padding: 4%;
-  color: #000000;
-  font-family: monospace;
-}
-
 #title {
   background: $gray-light;
   border-bottom: 1px solid $gray-dark;
@@ -127,6 +85,35 @@ body {
     margin: 0px;
     font-weight: 600;
   }
+}
+
+.nav-button {
+  height: 100%;
+  text-align: center;
+  img { width: 10px; }
+}
+
+a.nav-button {
+  color: #000000;
+  text-decoration: none;
+}
+
+@mixin nav-button-colors($normal, $hover, $disabled: $gray-light) {
+  background: $normal;
+  &:hover { background: $hover; }
+  &.disabled, &.disabled:hover {
+    background: $disabled;
+  }
+}
+
+#next-button {
+  float: right;
+  @include nav-button-colors($orange-light, $orange);
+}
+
+#back-button {
+  float: left;
+  @include nav-button-colors($gray-light, $gray-dark);
 }
 
 #footer {
