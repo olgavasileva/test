@@ -18,11 +18,7 @@
     %base{target: "_blank"}
 
     = stylesheet_link_tag "ad_unit", media: "all", data: { turbolinks_track: true }
-    = render partial: 'ad_unit_css', locals: {ad_unit: @ad_unit}
-
     = javascript_include_tag "ad_unit", data: { turbolinks_track: true }
-    /[if lt IE 9]
-      <script src="assets/javascripts/ie.min.js"></script>
 
     = render 'surveys/analytics'
     = render 'layouts/shared/tag_manager'

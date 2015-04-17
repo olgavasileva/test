@@ -19,9 +19,12 @@
 
     = stylesheet_link_tag "ad_unit", media: "all", data: { turbolinks_track: true }
 
+    :javascript
+      window.adUnitConfig = {
+        embeddable_unit_auto_forward: #{Setting.fetch_value('embeddable_unit_auto_forward').to_i}
+      };
+
     = javascript_include_tag "ad_unit", data: { turbolinks_track: true }
-    /[if lt IE 9]
-      <script src="assets/javascripts/ie.min.js"></script>
 
     = render 'surveys/analytics'
     = render 'layouts/shared/tag_manager'

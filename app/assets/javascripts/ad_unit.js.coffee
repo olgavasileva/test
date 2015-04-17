@@ -42,9 +42,18 @@ $(document).ready ->
     e.preventDefault()
     $('#embed').toggle()
 
+  # ----------------------------------------------------------------------------
+  # Auto Forward
+  #
+  if $q.hasClass('has-response')
+    console.log('has-response')
+    delay = adUnitConfig.embeddable_unit_auto_forward * 1000
+    next = -> document.getElementById('next-button').click()
+    # setTimeout(next, delay)
 
+  # ----------------------------------------------------------------------------
   # OrderQuestion
-
+  #
   if $q.hasClass('OrderQuestion')
     $submit = $('#order-choice-submit')
 
@@ -60,6 +69,9 @@ $(document).ready ->
 
         $submit.attr('disabled', false)
 
+  # ----------------------------------------------------------------------------
+  # OrderQuestion
+  #
   else if $q.hasClass('MultipleChoiceQuestion') && !$q.hasClass('has-response')
     $form = $('#order-choice-form')
     $submit = $('#multiple-choice-submit')
