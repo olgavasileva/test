@@ -117,7 +117,10 @@ class SurveysController < ApplicationController
         end
 
         ad_unit_user = Anonymous.create!(auto_feed: false) unless ad_unit_user
-        cookies.permanent.signed[:eu_user] = ad_unit_user.id
+        cookies.permanent.signed[:eu_user] = {
+          value: ad_unit_user.id,
+          domain: request.host.split('.').last(2).join('.')
+        }
         ad_unit_user
       end
     end
