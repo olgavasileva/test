@@ -28,6 +28,20 @@ $(document).ready ->
       "width=#{width},height=#{height},top=#{top},left=#{left}"
     )
 
+  $('#embed-select').change (e) ->
+    e.preventDefault()
+    data = $("option:selected", this).data()
+    url = $(this).data('url').replace('__ad_unit_name__', data.name)
+    tmpl  = "<iframe src='#{url}' width='#{data.width}' height='#{data.height}'></iframe>"
+    $('#embed-input').val(tmpl)
+
+  $("#embed-input").focus -> $(this).select()
+  $('#embed-select').change()
+
+  $('#embed-icon, #embed-close').click (e) ->
+    e.preventDefault()
+    $('#embed').toggle()
+
 
   # OrderQuestion
 

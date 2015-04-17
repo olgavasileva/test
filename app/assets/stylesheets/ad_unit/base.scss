@@ -65,11 +65,54 @@ body {
 #content {
   background: #ffffff;
   overflow: hidden;
-  margin: 0px auto;
 }
 
-#title, #question, #footer {
+#title, #question, #footer, #embed {
   width: 100%;
+}
+
+#embed {
+  position: fixed;
+  background: #ffffff;
+  top: 0;
+  left: 0;
+  z-index: 9999999999;
+  display: none;
+}
+
+#embed-title { float: left; }
+#embed-close {
+  float: right;
+  height: 19px;
+  width: 19px;
+  border-radius: 10px;
+  background: $orange-light;
+  color: #ffffff;
+  font-size: 12px;
+  text-align: center;
+
+  &:hover {
+    cursor: pointer;
+    background: $orange;
+  }
+}
+
+#embed-select {
+  clear: both;
+  width: 100%;
+  font-size: 18px;
+}
+
+#embed-input {
+  margin-top: 10px;
+  border: 1px solid $gray-dark;
+  background: $gray-light;
+  outline: none;
+  border-radius: 5px;
+  width: 92%;
+  padding: 4%;
+  color: #000000;
+  font-family: monospace;
 }
 
 #title {
@@ -92,12 +135,12 @@ body {
   padding: 2px 3px;
   clear: both;
 
-  .share-icon, .embed-icon, .logo {
+  .share-icon, #embed-icon, .logo {
     height: 15px;
     background-repeat: no-repeat;
   }
 
-  .share-icon, .embed-icon {
+  .share-icon, #embed-icon {
     margin-right: 2px;
     float: left;
   }
@@ -126,7 +169,7 @@ body {
     }
   }
 
-  .embed-icon {
+  #embed-icon {
     width: 60px;
     background-image: image-url('ad_units/embed.svg');
     background-size: 60px;

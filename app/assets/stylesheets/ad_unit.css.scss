@@ -143,6 +143,20 @@ a.nav-button {
 // AdUnit layout and font sizes
 
 .medium_rectangle {
+  #content, #embed {
+    width: 300px;
+    height: 250px;
+    max-width: 300px;
+    max-height: 250px;
+  }
+
+  #embed {
+    $padding: 5px;
+    width: 300px - ($padding * 2);
+    height: 250px - 19px - ($padding * 2);
+    padding: $padding;
+  }
+
   #title {
     height: 36px;
     width: 294px;

@@ -18,7 +18,6 @@
     %base{target: "_blank"}
 
     = stylesheet_link_tag "ad_unit", media: "all", data: { turbolinks_track: true }
-    = render partial: 'ad_unit_css', locals: {ad_unit: @ad_unit}
 
     = javascript_include_tag "ad_unit", data: { turbolinks_track: true }
     /[if lt IE 9]
@@ -28,6 +27,18 @@
 
   %body{class: @ad_unit.name}
     #content
+      #embed
+        - ad_units = AdUnit.all.to_a
+        #embed-header
+          #embed-title Select Size
+          %a#embed-close x
+          %select#embed-select{data: {url: qp_start_url(@survey.uuid, '__ad_unit_name__', subdomain: 'a')}}
+            - ad_units.each do |unit|
+              %option{value: unit.name, data: unit.as_json(only: [:width, :height, :name])}
+                #{unit.name.titleize} (#{unit.width}x#{unit.height})
+
+        %input#embed-input
+
       #title.textfill
         %h1= @question.title
 
@@ -60,7 +71,7 @@
         %a.logo{href: 'http://www.statisfy.co/'}
         %a.share-icon.popup.facebook{href: facebook_url, target: 'popup'}
         %a.share-icon.popup.twitter{href: twitter_url, target: 'popup'}
-        %a.embed-icon
+        %a#embed-icon{href: '#embed'}
 
     = debug(params) if Rails.env.development?
     = render 'layouts/shared/analytics'
