@@ -19,12 +19,7 @@
 
     = stylesheet_link_tag "ad_unit", media: "all", data: { turbolinks_track: true }
 
-    :javascript
-      window.adUnitConfig = {
-        autoForward: #{Setting.fetch_value('embeddable_unit_auto_forward').to_i},
-        autoForwardEnabled: #{(Rails.env.production? || Rails.env.staging?).to_json}
-      };
-
+    = render partial: 'js_config'
     = javascript_include_tag "ad_unit", data: { turbolinks_track: true }
 
     = render 'surveys/analytics'
@@ -33,17 +28,7 @@
 
   %body{class: @ad_unit.name}
     #content
-      #embed
-        - ad_units = AdUnit.all.to_a
-        #embed-header
-          #embed-title Select Size
-          %a#embed-close x
-          %select#embed-select{data: {url: qp_start_url(@survey.uuid, '__ad_unit_name__', subdomain: 'a')}}
-            - ad_units.each do |unit|
-              %option{value: unit.name, data: unit.as_json(only: [:width, :height, :name])}
-                #{unit.name.titleize} (#{unit.width}x#{unit.height})
-
-        %input#embed-input
+      = render partial: 'embed'
 
       #title.textfill
         %h1= @question.title
@@ -69,14 +54,6 @@
 
         .clearfix
 
-      #footer
-        - question_url = question_sharing_url(uuid: @survey.questions.first.uuid, subdomain: 'a')
-        - facebook_url = "https://facebook.com/sharer.php?#{{u: question_url}.to_query}"
-        - twitter_url = "https://twitter.com/intent/tweet?#{{text: "Check this out! #{question_url}"}.to_query}"
-
-        %a.logo{href: 'http://www.statisfy.co/'}
-        %a.share-icon.popup.facebook{href: facebook_url, target: 'popup'}
-        %a.share-icon.popup.twitter{href: twitter_url, target: 'popup'}
-        %a#embed-icon{href: '#embed'}
+      = render partial: 'footer'
 
     = debug(params) if Rails.env.development?

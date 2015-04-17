@@ -1,0 +1,11 @@
+#embed
+  - ad_units = AdUnit.all.to_a
+  #embed-header
+    #embed-title Select Size
+    %a#embed-close.close-button x
+    %select#embed-select{data: {url: qp_start_url(@survey.uuid, '__ad_unit_name__', subdomain: 'a')}}
+      - ad_units.each do |unit|
+        %option{value: unit.name, data: unit.as_json(only: [:width, :height, :name])}
+          #{unit.name.titleize} (#{unit.width}x#{unit.height})
+
+  %input#embed-input

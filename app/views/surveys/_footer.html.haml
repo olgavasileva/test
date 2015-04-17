@@ -1,0 +1,9 @@
+#footer
+  - question_url = question_sharing_url(uuid: @survey.questions.first.uuid, subdomain: 'a')
+  - facebook_url = "https://facebook.com/sharer.php?#{{u: question_url}.to_query}"
+  - twitter_url = "https://twitter.com/intent/tweet?#{{text: "Check this out! #{question_url}"}.to_query}"
+
+  %a.logo{href: 'http://www.statisfy.co/'}
+  %a.share-icon.popup.facebook{href: facebook_url, target: 'popup'}
+  %a.share-icon.popup.twitter{href: twitter_url, target: 'popup'}
+  %a#embed-icon{href: '#embed'}

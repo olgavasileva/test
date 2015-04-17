@@ -1,0 +1,6 @@
+<script type="text/javascript">
+  window.adUnitConfig = {
+    autoForward: <%= Setting.fetch_value('embeddable_unit_auto_forward').to_i %>,
+    autoForwardEnabled: <%= (Rails.env.production? || Rails.env.staging?).to_json %>
+  };
+</script>

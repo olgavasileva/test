@@ -10,18 +10,9 @@
 #embed-title { float: left; }
 #embed-close {
   float: right;
-  height: 19px;
-  width: 19px;
-  border-radius: 10px;
   background: $orange-light;
   color: #ffffff;
-  font-size: 12px;
-  text-align: center;
-
-  &:hover {
-    cursor: pointer;
-    background: $orange;
-  }
+  &:hover { background: $orange; }
 }
 
 #embed-select {

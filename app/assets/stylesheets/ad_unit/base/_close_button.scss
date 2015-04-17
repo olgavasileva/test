@@ -1,0 +1,10 @@
+.close-button {
+  height: 19px;
+  width: 19px;
+  font-size: 12px;
+  text-align: center;
+  border-radius: 10px;
+  text-decoration: none;
+
+  &:hover { cursor: pointer; }
+}

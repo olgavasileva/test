@@ -1,0 +1,21 @@
+#thank-you {
+  overflow: hidden;
+  background: #000;
+  color: #ffffff;
+  text-align: center;
+}
+
+#thank-you-message {
+  margin-top: 29px;
+}
+
+#thank-you-close {
+  background: $gray-light;
+  color: #000000;
+  float: right;
+  margin: 10px 10px 0px 0px;
+}
+
+#thank-you-message {
+  a { color: red; }
+}

@@ -18,6 +18,8 @@
     %base{target: "_blank"}
 
     = stylesheet_link_tag "ad_unit", media: "all", data: { turbolinks_track: true }
+
+    = render partial: 'js_config'
     = javascript_include_tag "ad_unit", data: { turbolinks_track: true }
 
     = render 'surveys/analytics'
@@ -31,10 +33,12 @@
 
   %body{class: @ad_unit.name}
     #content
-      #thank_you
-        #message= CGI.unescapeHTML(@thank_you_html).html_safe
+      = render partial: 'embed'
+      #thank-you
+        %a#thank-you-close.close-button{href: qp_start_url(@survey.uuid, @ad_unit.name), target: '_self'} x
+        #thank-you-message= CGI.unescapeHTML(@thank_you_html).html_safe
 
-      #footer
+    = render partial: 'footer'
 
     = debug(params) if Rails.env.development?
     = render 'layouts/shared/analytics'
