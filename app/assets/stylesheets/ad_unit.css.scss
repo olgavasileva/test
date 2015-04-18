@@ -103,6 +103,10 @@ button {
     color: #fff;
     float: right;
     padding-top: 2px;
+    img {
+      height: 28px;
+      margin: 2px 3px 0px 0px;
+    }
   }
 
   .bar-blue {
@@ -297,6 +301,8 @@ button {
 
     .nav-button .icon { margin-top: 64px; }
     .overlay .overlay-text { margin-top: 6px; }
+
+
     @include order-choice-height(149px);
 
     &.has-response {

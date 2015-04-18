@@ -60,10 +60,12 @@ $(document).ready ->
     sortable = Sortable.create sort,
       scroll: false
       disabled: $q.hasClass('has-response')
-      onStart: ->
+      onStart: (e) ->
         window.clearCta()
+        $(e.item).css(opacity: 0)
         $submit.attr('disabled', 'disabled')
-      onEnd: ->
+      onEnd: (e) ->
+        $(e.item).css(opacity: 1)
         $('.order-choice-bar').each (index)->
           id = $(@).data('choice-id')
           $("#index-#{index}").val(id)
