@@ -1,6 +1,11 @@
 - content_for :between_buttons do
   #order-choice-sort
-    - question.choices.each_with_index do |c, i|
+    - if answer
+      - choices = answer.choices
+    - else
+      - choices = question.choices
+
+    - choices.each_with_index do |c, i|
       .order-choice-bar{data: {choice_id: c.id}, style: "background-image: url(#{c.web_image_url});"}
         .order-choice-title= c.title
         - if answer
