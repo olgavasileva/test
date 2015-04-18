@@ -1,7 +1,8 @@
 #= require jquery
 #= require jquery.textfill
 #= require Sortable.min
-#= require ad_units/overlays
+#= require ad_units/overlay_cta
+#= require ad_units/overlay_feedback
 
 $(document).ready ->
   $q = $('#question')
@@ -59,7 +60,9 @@ $(document).ready ->
     sortable = Sortable.create sort,
       scroll: false
       disabled: $q.hasClass('has-response')
-      onStart: -> $submit.attr('disabled', 'disabled')
+      onStart: ->
+        window.clearCta()
+        $submit.attr('disabled', 'disabled')
       onEnd: ->
         $('.order-choice-bar').each (index)->
           id = $(@).data('choice-id')

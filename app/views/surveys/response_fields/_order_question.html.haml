@@ -10,10 +10,14 @@
             .bar-selected
             .bar-response #{ratio}%
         - else
+          .overlay
+            .overlay-text Drag to vote!
           .order-choice-orderer
             &#9650;
             %br
             &#9660;
+
+
 
 - unless answer.present?
   - content_for :below_buttons do
