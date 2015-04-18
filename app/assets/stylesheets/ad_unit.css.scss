@@ -228,19 +228,20 @@ button {
       $text: 33px;
       #between-buttons { height: $height; }
 
-      &.choices-1, &.choices-2 {
-        .image-choice {
-          height: $height;
-          .spacer { height: $height - $text; }
-        }
+      $half-height: ($height / 2) - 1px;
+      .image-choice {
+        height: $half-height;
+        .spacer { height: $half-height - $text; }
       }
 
-      &.choices-3, &.choices-4 {
-        $half-height: ($height / 2) - 1px;
-        .image-choice {
-          height: $half-height;
-          .spacer { height: $half-height - $text; }
-        }
+      .overlay .overlay-text  {
+        margin-top: 26px;
+        font-size: 16px;
+      }
+      
+      .overlay i.overlay-text {
+        margin-top: 20px;
+        font-size: 24px;
       }
     }
 
