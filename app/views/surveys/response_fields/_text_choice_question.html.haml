@@ -13,4 +13,6 @@
     - else
       - url = qp_create_response_path(@survey.uuid, @ad_unit.name, @question)
       = button_to url, form: {target: '_self', class: 'bar-blue'}, params: {'response[choice_id]' => c.id} do
-        = c.title
+        .bar-title= c.title
+        .bar-overlay.overlay
+          %i.fa.fa-check

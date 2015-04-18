@@ -14,5 +14,7 @@
     - else
       - url = qp_create_response_path(@survey.uuid, @ad_unit.name, question)
       = button_to url, form: {target: '_self', style: style, class: "image-choice index-#{i}"}, params: {'response[choice_id]' => c.id} do
+        .overlay
+          %i.overlay-text.fa.fa-check
         .spacer
         .text= c.title

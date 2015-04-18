@@ -1,0 +1,27 @@
+.nav-button {
+  height: 100%;
+  text-align: center;
+  img { width: 10px; }
+}
+
+a.nav-button {
+  color: #000000;
+  text-decoration: none;
+}
+
+@mixin nav-button-colors($normal, $disabled: $gray-dark) {
+  background: $normal;
+  &.disabled, &.disabled:hover {
+    background: $disabled;
+  }
+}
+
+#next-button {
+  float: right;
+  @include nav-button-colors($orange-light);
+}
+
+#back-button {
+  float: left;
+  @include nav-button-colors($gray-dark);
+}

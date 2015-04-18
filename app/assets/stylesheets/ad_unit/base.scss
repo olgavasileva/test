@@ -1,10 +1,9 @@
-@import './variables';
-
 /*
   Base Layout for an AdUnit:
 
   <body class="{ad-unit-name}">
     <div id="#content">
+      <div id="embed"></div>
       <div id="title"></div>
       <div id="question" class="{QuestionClassName} choices-{n}"></div>
       <div id="footer"></div>
@@ -55,6 +54,8 @@
   Whether we are displaying a response or not.
 */
 
+@import './variables';
+
 body {
   background: #fbfbfb;
   padding: 0px;
@@ -65,33 +66,17 @@ body {
 #content {
   background: #ffffff;
   overflow: hidden;
-  margin: 0px auto;
 }
 
-#title, #question, #footer {
+#title, #question, #footer, #embed {
   width: 100%;
 }
 
-#title {
-  background: $gray-light;
-  border-bottom: 1px solid $gray-dark;
-  margin-bottom: 1px;
-  color: #000;
-  text-align: center;
-  overflow: hidden;
+@import './base/close_button';
+@import './base/overlays';
 
-  h1 {
-    margin: 0px;
-    font-weight: 600;
-  }
-}
-
-#footer {
-  position: fixed;
-  background-color: $gray-light;
-  height: 19px;
-  clear: both;
-  background: image-url('ad_units/medium-rectangle-footer.png');
-  background-size: cover;
-  z-index: 10000;
-}
+@import './base/embed';
+@import './base/title';
+@import './base/nav_buttons';
+@import './base/footer';
+@import './base/thank_you';
