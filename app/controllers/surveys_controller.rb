@@ -100,7 +100,7 @@ class SurveysController < ApplicationController
     def response_params
       # Using 'response' as the base param with all the parts allowed for various resposne types
       # Relying on response validation to sort out bad params
-      params.require(:response).permit(:choice_id, :choice_ids, :text)
+      params.require(:response).permit(:choice_id, :text, choice_ids: [])
     end
 
     def question_class

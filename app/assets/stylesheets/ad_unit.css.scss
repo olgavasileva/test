@@ -196,14 +196,22 @@ button {
     &.choices-1, &.choices-2 {
       .image-choice {
         .spacer { height: $total - $text; }
-        .overlay .overlay-text { margin-top: $margin; }
+        .overlay .overlay-text  { margin-top: $margin - 23px; }
+        .overlay i.overlay-text { margin-top: $margin; }
       }
     }
 
     &.choices-3, &.choices-4 {
       .image-choice {
         .spacer { height: ($total / 2) - $text; }
-        .overlay .overlay-text { margin-top: 20px; }
+        .overlay .overlay-text  {
+          margin-top: 20px;
+          font-size: 18px;
+        }
+        .overlay i.overlay-text {
+          margin-top: 20px;
+          font-size: 24px;
+        }
       }
     }
   }
@@ -275,7 +283,12 @@ button {
       @each $choice in $choices {
         &.choices-#{$choice} {
           $bar-height: ($height - 3px) / $choice;
-          .order-choice-bar, .order-choice-title, .bar-blue, .bar-graph {
+
+          .order-choice-bar,
+          .order-choice-title,
+          .overlay,
+          .bar-blue,
+          .bar-graph {
             height: $bar-height;
           }
         }
@@ -283,6 +296,7 @@ button {
     }
 
     .nav-button .icon { margin-top: 64px; }
+    .overlay .overlay-text { margin-top: 6px; }
     @include order-choice-height(149px);
 
     &.has-response {

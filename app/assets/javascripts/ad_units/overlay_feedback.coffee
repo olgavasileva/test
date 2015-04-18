@@ -1,8 +1,9 @@
 $(document).ready ->
-  $q = $('#question')
-  return false if $q.hasClass('has-response')
+  return false unless adUnitConfig.feedback.enabled
 
-  $('.image-choice').each ->
+  $q = $('#question')
+
+  $('.image-choice, .order-choice-bar').each ->
     $el = $(this)
     $('.overlay', $el).css
       width: $el.width()
@@ -12,8 +13,8 @@ $(document).ready ->
     e.preventDefault()
     return false
 
-  toggleOverlay = ($el, show, duration) ->
-    $('.overlay', $el).toggle(show, duration)
+  toggleOverlay = ($el, show) ->
+    $('.overlay', $el).toggle(show)
 
   submitForm = ($form) ->
     $form.off('submit', preventSubmit)
@@ -21,11 +22,14 @@ $(document).ready ->
 
   autoSubmit = (e) ->
     e.preventDefault()
+    window.clearCta()
+
     $button = $(this)
     $form = $button.closest('form')
-
     $form.on('submit', preventSubmit)
+
     toggleOverlay($form, true)
+
     setTimeout ->
       submitForm($form)
     , adUnitConfig.feedback.duration
@@ -43,6 +47,7 @@ $(document).ready ->
     $submit.attr('disabled', 'disabled')
 
     $('.image-choice').click (e) ->
+      window.clearCta()
       e.preventDefault()
 
       $el = $(@)
