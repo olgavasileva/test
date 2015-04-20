@@ -10,7 +10,7 @@ class SurveysController < ApplicationController
   helper_method \
     :previous_question_path,
     :next_question_path,
-    :user_from_cookie_only,
+    :cookie_user,
     :current_ad_unit_user,
     :question_class
 
