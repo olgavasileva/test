@@ -12,7 +12,7 @@ module TwoCents
       params :survey do |opts|
         type = opts[:type] || :optional
         send(type, :name, type: String, desc: 'Survey name')
-        send(type, :thank_you_markdown, type: String, desc: 'Thank you message in Markdown format')
+        send(type, :thank_you_html, type: String, desc: 'Thank you message in HTML format')
       end
 
       params :unit_uuid do |opts|
@@ -72,7 +72,6 @@ module TwoCents
               "survey": {
                 "id": 1,
                 "name": "Soda Pop Questionaire",
-                "thank_you_markdown": '**Thank You**',
                 "thank_you_html": '<p><strong>Thank You</strong></p>',
                 "user_id": 1,
                 "questions": [], // Array of questions,
