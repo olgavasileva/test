@@ -15,6 +15,10 @@
     feedback: {
       enabled: <%= (!@response.present?).to_json %>,
       duration: <%= Setting.fetch_value('embeddable_unit_feedback_duration', 300).to_i %>
+    },
+    responseAnimation: {
+      enabled: <%= @response.present?.to_json %>,
+      speed: 750,
     }
   };
 </script>

@@ -10,10 +10,10 @@
         .order-choice-title= c.title
         - if answer
           - ratio = (c.response_ratio * 100).to_i
-          .bar-blue
-            .bar-graph{style: "width: #{ratio}%;"}
+          .bar-blue{data: {response: ratio}}
+            .bar-graph
             .bar-selected
-            .bar-response #{ratio}%
+            .bar-response
         - else
           .overlay
             .overlay-text= t('embeddable_unit.cta_drag')
