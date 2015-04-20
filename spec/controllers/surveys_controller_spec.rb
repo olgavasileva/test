@@ -129,7 +129,7 @@ RSpec.describe SurveysController do
 
     it 'remembers the current ad unit user' do
       ad_unit_user = controller.send(:current_ad_unit_user)
-      expect(request.cookies[:eu_user]).to eq(ad_unit_user.id)
+      expect(request.cookies[:eu_user][:value]).to eq(ad_unit_user.id)
     end
 
     context 'when no :eu_user cookie is present' do
