@@ -1,5 +1,5 @@
 - content_for :between_buttons do
-  - question.choices.each_with_index do |c, i|
+  - question.ordered_choices_for(cookie_user).each_with_index do |c, i|
     - style = "background-image: url(#{c.web_image_url});"
     %div{class: "image-choice index-#{i}", style: style, data: {index: i, choice_id: c.id}}
       - if !answer

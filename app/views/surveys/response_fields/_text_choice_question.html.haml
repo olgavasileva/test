@@ -2,7 +2,7 @@
   .main-image{style: "background-image: url(#{question.web_image_url})"}
 
 - content_for :below_buttons do
-  - question.choices.each do |c|
+  - question.ordered_choices_for(cookie_user).each do |c|
     - if answer.present?
       - ratio = (c.response_ratio * 100).to_i
       %div{class: "bar-blue #{'selected' if answer.choice_id == c.id}", data: {response: ratio}}
