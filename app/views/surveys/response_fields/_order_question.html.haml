@@ -1,7 +1,12 @@
 - content_for :between_buttons do
   #order-choice-sort
-    - question.choices.each_with_index do |c, i|
-      .order-choice-bar{data: {choice_id: c.id}, style: "background-image: url(#{c.web_image_url});"}
+    - if answer
+      - choices = answer.choices
+    - else
+      - choices = question.choices
+
+    - choices.each_with_index do |c, i|
+      .order-choice-bar{data: {choice_id: c.id}, style: "background-image: url(http://placehold.it/350x200.png);"}
         .order-choice-title= c.title
         - if answer
           - ratio = (c.response_ratio * 100).to_i
@@ -10,10 +15,12 @@
             .bar-selected
             .bar-response #{ratio}%
         - else
+          .overlay
+            .overlay-text= t('embeddable_unit.cta_drag')
           .order-choice-orderer
-            &#9650;
-            %br
-            &#9660;
+            = image_tag 'ad_units/prioritizer.png'
+
+
 
 - unless answer.present?
   - content_for :below_buttons do

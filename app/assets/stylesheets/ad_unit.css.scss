@@ -1,3 +1,4 @@
+//= require font-awesome
 //= require_self
 //= require ad_unit/base
 //= require ad_unit/choices
@@ -33,31 +34,6 @@ button {
   overflow: hidden;
 }
 
-.nav-button {
-  background: $gray-light;
-  font-weight: 600;
-  height: 100%;
-  text-align: center;
-
-  &.disabled {
-    background: $gray-lighter;
-    cursor: not-allowed;
-    color: $gray-dark;
-  }
-}
-
-a.nav-button {
-  color: #000000;
-  text-decoration: none;
-
-  &:hover {
-    background: $gray-dark;
-  }
-}
-
-#back-button { float: left; }
-#next-button { float: right; }
-
 // -----------------------------------------------------------------------------
 // Background Image (Temporary)
 
@@ -85,19 +61,19 @@ a.nav-button {
     }
 
     textarea::-webkit-input-placeholder {
-      color: $orange-light;
+      color: $orange;
     }
 
     textarea:-moz-placeholder {
-      color: $orange-light;
+      color: $orange;
     }
 
     textarea::-moz-placeholder {
-      color: $orange-light;
+      color: $orange;
     }
 
     textarea:-ms-input-placeholder {
-      color: $orange-light;
+      color: $orange;
     }
   }
 }
@@ -127,6 +103,10 @@ a.nav-button {
     color: #fff;
     float: right;
     padding-top: 2px;
+    img {
+      height: 28px;
+      margin: 2px 3px 0px 0px;
+    }
   }
 
   .bar-blue {
@@ -142,6 +122,20 @@ a.nav-button {
 // AdUnit layout and font sizes
 
 .medium_rectangle {
+  #content, #embed {
+    width: 300px;
+    height: 250px;
+    max-width: 300px;
+    max-height: 250px;
+  }
+
+  #embed {
+    $padding: 5px;
+    width: 300px - ($padding * 2);
+    height: 250px - 19px - ($padding * 2);
+    padding: $padding;
+  }
+
   #title {
     height: 36px;
     width: 294px;
@@ -164,13 +158,12 @@ a.nav-button {
   }
 
   #footer {
-    top: 231px;
-    width: 300px;
+    width: 294px;
   }
 
-  #thank_you {
-    height: 230px;
-    max-resolution: 230px;
+  #thank-you {
+    height: 231px;
+    max-height: 231px;
     overflow: hidden;
   }
 
@@ -197,20 +190,32 @@ a.nav-button {
   // Image Choice Question (Pick One)
 
   #question.ImageChoiceQuestion {
-    .nav-button .icon { margin-top: 75px; }
-    #between-buttons { height: 182px; }
+    $total: 182px;
+    $text: 33px;
+    $margin: 75px;
+
+    .nav-button .icon { margin-top: $margin; }
+    #between-buttons { height: $total; }
 
     &.choices-1, &.choices-2 {
       .image-choice {
-        height: 182px;
-        .spacer { height: 149px; }
+        .spacer { height: $total - $text; }
+        .overlay .overlay-text  { margin-top: $margin - 23px; }
+        .overlay i.overlay-text { margin-top: $margin; }
       }
     }
 
     &.choices-3, &.choices-4 {
       .image-choice {
-        height: (182px / 2) - 1px;
-        .spacer { height: 58px; }
+        .spacer { height: ($total / 2) - $text; }
+        .overlay .overlay-text  {
+          margin-top: 20px;
+          font-size: 18px;
+        }
+        .overlay i.overlay-text {
+          margin-top: 20px;
+          font-size: 24px;
+        }
       }
     }
   }
@@ -220,32 +225,37 @@ a.nav-button {
 
   #question.MultipleChoiceQuestion {
     @mixin multiple-choice-height($height) {
+      $text: 33px;
       #between-buttons { height: $height; }
 
-      &.choices-1, &.choices-2 {
-        .image-choice {
-          height: $height;
-          .spacer { height: $height - $image-choice-text-height; }
-        }
+      $half-height: ($height / 2) - 1px;
+      .image-choice {
+        height: $half-height;
+        .spacer { height: $half-height - $text; }
       }
 
-      &.choices-3, &.choices-4 {
-        $half-height: ($height / 2) - 1px;
-        .image-choice {
-          height: $half-height;
-          .spacer { height: $half-height - $image-choice-text-height; }
-        }
+      .overlay .overlay-text  {
+        margin-top: 26px;
+        font-size: 16px;
+      }
+      
+      .overlay i.overlay-text {
+        margin-top: 20px;
+        font-size: 24px;
       }
     }
 
     .image-choice:hover { cursor: pointer; }
     .nav-button .icon { margin-top: 64px; }
+    .overlay .overlay-text { margin: 20px; }
+
     @include multiple-choice-height(149px);
 
     &.has-response {
       .image-choice:hover { cursor: default; }
       .nav-button .icon { margin-top: 75px; }
-      @include multiple-choice-height(182px);
+      .overlay .overlay-text { margin: 31px; }
+      @include multiple-choice-height(181px);
     }
   }
 
@@ -258,12 +268,12 @@ a.nav-button {
 
     textarea {
       width: 300px - 14px;
-      height: 44px;
+      height: 45px;
     }
 
     .bar-blue {
-      height: 61px;
-      padding-top: 30px;
+      height: 47px;
+      padding-top: 12px;
     }
   }
 
@@ -278,7 +288,12 @@ a.nav-button {
       @each $choice in $choices {
         &.choices-#{$choice} {
           $bar-height: ($height - 3px) / $choice;
-          .order-choice-bar, .order-choice-title, .bar-blue, .bar-graph {
+
+          .order-choice-bar,
+          .order-choice-title,
+          .overlay,
+          .bar-blue,
+          .bar-graph {
             height: $bar-height;
           }
         }
@@ -286,6 +301,9 @@ a.nav-button {
     }
 
     .nav-button .icon { margin-top: 64px; }
+    .overlay .overlay-text { margin-top: 6px; }
+
+
     @include order-choice-height(149px);
 
     &.has-response {

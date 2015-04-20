@@ -4,15 +4,24 @@
     window.qr = function(r){qd.resolve(r.segments)};
 
     $(document).ready(function() {
-      var $n = $('#next-button'), qt;
-      $n.hide();
+      var $n = $('#next-button'), qt, click;
+
+      click = function(e) {
+        e.preventDefault();
+        return false;
+      }
+
+      $n.on('click', click);
       qt = setTimeout(function(){qd.reject()}, 500);
       qd.then(function(d) {
         $.ajax(<%= qp_quantcast_path(@survey.uuid, @ad_unit.name).to_json.html_safe %>, {
           type: 'POST', dataType: 'json', data: {quantcast: JSON.stringify(d)},
           headers: {'X-CSRF-Token': <%= form_authenticity_token.to_json.html_safe %>}
         });
-      }).always(function() { $n.show(); clearTimeout(qt); });
+      }).always(function() {
+        $n.off('click', click);
+        clearTimeout(qt);
+      });
     });
   </script>
 

@@ -26,6 +26,7 @@ TWITTER_API_KEY: ~
 TWITTER_API_SECRET: ~
 
 test:
+  api_shared_secret: example_shared_secret
   AWS_ACCESS_KEY: fake
   AWS_SECRET_ACCESS_KEY: fake
   DEVICE_AWS_ACCESS_KEY: fake

@@ -11,8 +11,12 @@ module TwoCents
 
       params :survey do |opts|
         type = opts[:type] || :optional
+        markup_type = (type == :optional) ? :mutually_exclusive : :exactly_one_of
+
         send(type, :name, type: String, desc: 'Survey name')
-        send(type, :thank_you_markdown, type: String, desc: 'Thank you message in Markdown format')
+        optional :thank_you_html, type: String, desc: 'Thank you message in HTML format'
+        optional :thank_you_markdown, type: String, desc: 'Thank you message in Markdown format'
+        send(markup_type, :thank_you_html, :thank_you_markdown)
       end
 
       params :unit_uuid do |opts|
@@ -25,7 +29,7 @@ module TwoCents
       end
 
       def survey_params
-        declared_params.slice(:name, :thank_you_markdown)
+        declared_params.slice(:name, :thank_you_html, :thank_you_markdown)
       end
 
       def survey_scope
@@ -72,8 +76,8 @@ module TwoCents
               "survey": {
                 "id": 1,
                 "name": "Soda Pop Questionaire",
-                "thank_you_markdown": '**Thank You**',
                 "thank_you_html": '<p><strong>Thank You</strong></p>',
+                "thank_you_markdown": '**Thank You**',
                 "user_id": 1,
                 "questions": [], // Array of questions,
               }

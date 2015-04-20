@@ -10,7 +10,7 @@ LinkchatApp::Application.routes.draw do
   end
 
   # Short Links
-  get '/q/l' => 'short_links#latest_question'
+  get '/q/l' => 'short_links#latest_question', as: :short_latest_question
 
   get "/ie9proxy" => 'proxy#url'
 

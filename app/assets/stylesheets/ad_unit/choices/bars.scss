@@ -51,12 +51,12 @@
   .bar-response,
   .bar-selected {
     position: absolute;
-    display: block;
   }
 
   &,
   .bar-graph,
-  .bar-selected {
+  .bar-selected,
+  .bar-overlay {
     height: 32px;
   }
 
@@ -72,6 +72,8 @@
   button {
     font-family: $font-family;
     padding: 5px 0px;
+
+    .bar-title { padding: 0px; }
   }
 
   .bar-response {
@@ -87,6 +89,14 @@
     display: none;
   }
 
+  .bar-overlay {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 0px;
+    font-size: 22px;
+  }
+
   &.selected {
     .bar-selected {
       display: block;
@@ -98,10 +108,6 @@
   @extend .bar;
   background: $blue;
 
-  button:hover {
-    background: $blue-dark;
-  }
-
   .bar-graph {
     background: $blue-progress;
   }
@@ -111,6 +117,10 @@
   }
 }
 
+form.bar-blue:hover {
+  background: $blue-dark;
+}
+
 .bar-orange {
   @extend .bar;
   background: $orange;
@@ -118,4 +128,8 @@
   button:hover, button:disabled, &.disabled {
     background: $orange-light;
   }
+}
+
+form.bar-orange:hover {
+  background: $orange-light;
 }

@@ -7,6 +7,8 @@ RSpec.describe TwoCents::Questions do
       tag_list: ['test'],
       user: @instance.user
     })
+
+    @questions.last.update_column(:created_at, 1.day.ago)
   end
 
   after(:all) { DatabaseCleaner.clean_with(:truncation) }

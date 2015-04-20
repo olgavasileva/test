@@ -100,7 +100,7 @@ class SurveysController < ApplicationController
     def response_params
       # Using 'response' as the base param with all the parts allowed for various resposne types
       # Relying on response validation to sort out bad params
-      params.require(:response).permit(:choice_id, :choice_ids, :text)
+      params.require(:response).permit(:choice_id, :text, choice_ids: [])
     end
 
     def question_class
@@ -117,7 +117,10 @@ class SurveysController < ApplicationController
         end
 
         ad_unit_user = Anonymous.create!(auto_feed: false) unless ad_unit_user
-        cookies.permanent.signed[:eu_user] = ad_unit_user.id
+        cookies.permanent.signed[:eu_user] = {
+          value: ad_unit_user.id,
+          domain: request.host.split('.').last(2).join('.')
+        }
         ad_unit_user
       end
     end
