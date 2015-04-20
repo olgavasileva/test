@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :survey do
     association :user
 
-    name 'Soda Pop Questionaire'
+    name
     thank_you_markdown '**Thank You**'
 
     trait :embeddable do

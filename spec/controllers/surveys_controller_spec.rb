@@ -1,47 +1,51 @@
 require 'rails_helper'
 
-RSpec.describe EmbeddableUnitsController do
+RSpec.describe SurveysController do
   include Devise::TestHelpers
 
-  before(:all) { @unit = FactoryGirl.create(:embeddable_unit) }
-  after(:all) { DatabaseCleaner.clean_with(:truncation) }
+  before(:all) {
+    @survey = FactoryGirl.create :survey, :embeddable
+    @ad_unit = FactoryGirl.create :ad_unit
+  }
+  after(:all) { DatabaseCleaner.clean_with :truncation }
 
-  let(:unit) { @unit }
-  let(:question) { unit.questions.to_a.shuffle.first }
+  let(:survey) { @survey }
+  let(:ad_unit) { @ad_unit }
+  let(:question) { survey.questions.to_a.shuffle.first }
 
-  describe 'loading the EmbeddableUnit' do
-    subject { get :start_survey, embeddable_unit_uuid: unit.try(:uuid) }
+  describe 'loading the Survey' do
+    subject { get :start, survey_uuid: survey.uuid, unit_name: ad_unit.name }
 
-    context 'given an invalid :embeddable_unit_uuid' do
-      let(:unit) { EmbeddableUnit.new(uuid: 'invalid') }
-      it { is_expected.to render_template(:invalid_unit) }
+    context 'given an invalid :survey_uuid' do
+      let(:survey) { Survey.new(uuid: 'invalid') }
+      it { is_expected.to render_template(:invalid_survey) }
     end
 
-    context 'given a valid :embeddable_unit_uuid' do
+    context 'given a valid :survey_uuid' do
       context 'that is not authorized' do
-        let(:unit) { EmbeddableUnit.create }
-        it { is_expected.to render_template(:invalid_unit) }
+        let(:survey) { FactoryGirl.create :survey }
+        it { is_expected.to render_template(:invalid_survey) }
       end
 
       context 'that is authorized' do
-        it { is_expected.to_not render_template(:invalid_unit) }
+        it { is_expected.to_not render_template(:invalid_survey) }
       end
     end
   end
 
   describe 'GET #start_survey' do
-    subject { get :start_survey, embeddable_unit_uuid: unit.uuid }
+    subject { get :start, survey_uuid: survey.uuid, unit_name: ad_unit.name }
 
     it { is_expected.to render_template(:question) }
 
     it 'assigns the question correctly' do
       subject
-      expect(assigns(:question)).to eq(unit.questions.first)
+      expect(assigns(:question)).to eq(survey.questions.first)
     end
   end
 
-  describe 'GET #survey_question' do
-    subject { get :survey_question, embeddable_unit_uuid: unit.uuid, question_id: question.id }
+  describe 'GET #question' do
+    subject { get :question, survey_uuid: survey.uuid, unit_name: ad_unit.name, question_id: question.id }
 
     it { is_expected.to render_template(:question) }
 
@@ -51,17 +55,18 @@ RSpec.describe EmbeddableUnitsController do
     end
   end
 
-  describe 'POST #survey_response' do
+  describe 'POST #create_response' do
     let(:choice) { question.choices.to_a.shuffle.first }
 
     subject do
-      post :survey_response,
-        embeddable_unit_uuid: unit.uuid,
+      post :create_response,
+        survey_uuid: survey.uuid,
+        unit_name: ad_unit.name,
         question_id: question.id,
-        image_choice_response: {choice_id: choice.id}
+        response: {choice_id: choice.id}
     end
 
-    it { is_expected.to render_template(:summary) }
+    it { is_expected.to render_template(:question) }
 
     it 'assigns the question correctly' do
       subject
@@ -70,7 +75,7 @@ RSpec.describe EmbeddableUnitsController do
 
     it 'creates a response correctly' do
       user = FactoryGirl.create(:user)
-      allow(controller).to receive(:current_embed_user) { user }
+      allow(controller).to receive(:current_ad_unit_user) { user }
 
       expect{subject}.to change(Response, :count).by(1)
       response = assigns(:response)
@@ -82,7 +87,7 @@ RSpec.describe EmbeddableUnitsController do
   end
 
   describe 'GET #thank_you' do
-    subject { get :thank_you, embeddable_unit_uuid: unit.uuid }
+    subject { get :thank_you, survey_uuid: survey.uuid, unit_name: ad_unit.name }
     it { is_expected.to render_template(:thank_you) }
   end
 
@@ -94,9 +99,9 @@ RSpec.describe EmbeddableUnitsController do
 
     let(:user) { FactoryGirl.create(:user) }
     let(:data) { JSON.dump(%w{D T 50086 50084 50082 50076 50075 50074 50072 50062 50060 50059 50058 50057 50056 50054}.map{|h|{id: h}}) }
-    subject { post :quantcast, embeddable_unit_uuid: unit.uuid, quantcast: data }
+    subject { post :quantcast, survey_uuid: survey.uuid, unit_name: ad_unit.name, quantcast: data }
 
-    before { allow(controller).to receive(:current_embed_user).and_return(user) }
+    before { allow(controller).to receive(:current_ad_unit_user).and_return(user) }
 
     context 'when the user already has a demographic' do
       before { FactoryGirl.create :demographic, :quantcast, respondent: user }
@@ -113,7 +118,7 @@ RSpec.describe EmbeddableUnitsController do
     end
   end
 
-  describe '#current_embed_user' do
+  describe '#current_ad_unit_user' do
     before do
       allow(controller).to receive(:cookies) { request.cookies }
       allow(request.cookies).to receive_messages(
@@ -122,32 +127,32 @@ RSpec.describe EmbeddableUnitsController do
       )
     end
 
-    it 'remembers the current embed user' do
-      embed_user = controller.send(:current_embed_user)
-      expect(request.cookies[:eu_user]).to eq(embed_user.id)
+    it 'remembers the current ad unit user' do
+      ad_unit_user = controller.send(:current_ad_unit_user)
+      expect(request.cookies[:eu_user]).to eq(ad_unit_user.id)
     end
 
     context 'when no :eu_user cookie is present' do
       it 'creates an Anonymous user record' do
         expect {
-          controller.send(:current_embed_user)
+          controller.send(:current_ad_unit_user)
         }.to change(Anonymous, :count).by(1)
       end
     end
 
-    context 'when an :eu_user cookies is present' do
+    context 'when an :eu_user cookie is present' do
       let(:user) { FactoryGirl.create(:user) }
       before { request.cookies[:eu_user] = user.id }
 
       it 'does not create an Anonymous user record' do
         expect {
-          controller.send(:current_embed_user)
+          controller.send(:current_ad_unit_user)
         }.to_not change(Anonymous, :count)
       end
 
       it 'loads the user from the :eu_user cookie' do
-        embed_user = controller.send(:current_embed_user)
-        expect(embed_user).to eq(user)
+        ad_unit_user = controller.send(:current_ad_unit_user)
+        expect(ad_unit_user).to eq(user)
       end
     end
   end

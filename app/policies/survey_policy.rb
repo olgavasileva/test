@@ -1,7 +1,11 @@
 class SurveyPolicy < ApplicationPolicy
-  def start?;             true; end
-  def question?;          true; end
-  def create_response?;   true; end
-  def thank_you?;         true; end
-  def quantcast?;         true; end
+  def start?;             has_survey_questions?; end
+  def question?;          has_survey_questions?; end
+  def create_response?;   has_survey_questions?; end
+  def thank_you?;         has_survey_questions?; end
+  def quantcast?;         has_survey_questions?; end
+
+  def has_survey_questions?
+    @record.try(:questions).present?
+  end
 end

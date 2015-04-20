@@ -49,7 +49,7 @@ class SurveysController < ApplicationController
 
   def create_response
     @question = question_scope.find(params[:question_id])
-    @response = @question.responses.create!(response_params) do |r|
+    @response = @question.responses.create!(response_params.merge(source: 'embeddable')) do |r|
       r.user = current_ad_unit_user
     end
 

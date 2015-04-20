@@ -33,7 +33,7 @@ class EmbeddableUnitsController < ApplicationController
 
   def survey_response
     @question = embeddable_unit.questions.find(params[:question_id])
-    @response = @question.responses.create!(response_params) do |r|
+    @response = @question.responses.create!(response_params.merge({source: 'embeddable'})) do |r|
       r.user = current_embed_user
     end
 
