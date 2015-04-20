@@ -36,6 +36,7 @@ class SurveysController < ApplicationController
     store_query_params
 
     @question = question_scope.first
+    @response = @question.responses.where(user_id: current_ad_unit_user.id).last
     @question.try :viewed!
     render :question
   end
