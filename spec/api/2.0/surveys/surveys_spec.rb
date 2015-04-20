@@ -11,7 +11,7 @@ RSpec.describe TwoCents::Surveys, '/surveys' do
       {
         auth_token: auth.auth_token,
         name: 'Soda Pop Questions',
-        thank_you_html: '<strong>Thank You</strong>'
+        thank_you_markdown: '**Thank You**'
       }
     end
 
