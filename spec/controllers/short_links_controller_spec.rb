@@ -19,14 +19,4 @@ RSpec.describe ShortLinksController do
       expect(response).to redirect_to(expected_url)
     end
   end
-
-  describe 'GET #app_question' do
-    let!(:question) { FactoryGirl.create(:question) }
-
-    it 'redirects the correct question' do
-      get :app_question, id: question.id
-      expected_url = "http://app.#{request.host}/#/app/questions/#{question.id}"
-      expect(response).to redirect_to(expected_url)
-    end
-  end
 end

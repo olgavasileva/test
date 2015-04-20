@@ -6,7 +6,7 @@
     .bar-blue
       .bar-title
         = pluralize(question.responses.size, 'Person', 'People') + " answered this question."
-    %a.bar-orange{href: short_app_question_url(question.id, subdomain: 'a')}
+    %a.bar-orange{href: question_sharing_url(uuid: question.id, subdomain: 'a')}
       .bar-title Click here to their responses
   - else
     - url = qp_create_response_path(@survey.uuid, @ad_unit.name, question)
