@@ -27,7 +27,7 @@
 
     - if ENV['GOOGLE_ANALYTICS_ID'].present?
       :javascript
-        ga('send', 'event', 'embeddable', 'end', "#{@survey.uuid}", 3);
+        ga('send', 'event', 'embeddable', 'end', "#{@survey.uuid}", 0);
 
     = yield(:script)
 
@@ -41,5 +41,3 @@
     = render partial: 'footer'
 
     = debug(params) if Rails.env.development?
-    = render 'layouts/shared/analytics'
-    = render 'layouts/shared/tag_manager'
