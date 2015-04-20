@@ -51,3 +51,7 @@ en:
   embeddable_unit:
     cta_click: Click here to vote!
     cta_drag: Drag to vote!
+    see_responses: Click here to see their responses
+    response_count:
+      one: 1 person answered this question.
+      other: '%{count} people answered this question.'
