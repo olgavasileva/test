@@ -11,10 +11,12 @@ module TwoCents
 
       params :survey do |opts|
         type = opts[:type] || :optional
+        markup_type = (type == :optional) ? :mutually_exclusive : :exactly_one_of
+
         send(type, :name, type: String, desc: 'Survey name')
         optional :thank_you_html, type: String, desc: 'Thank you message in HTML format'
         optional :thank_you_markdown, type: String, desc: 'Thank you message in Markdown format'
-        exactly_one_of :thank_you_html, :thank_you_markdown
+        send(markup_type, :thank_you_html, :thank_you_markdown)
       end
 
       params :unit_uuid do |opts|
