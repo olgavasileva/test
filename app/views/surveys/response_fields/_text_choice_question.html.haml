@@ -5,10 +5,10 @@
   - question.choices.each do |c|
     - if answer.present?
       - ratio = (c.response_ratio * 100).to_i
-      %div{class: "bar-blue #{'selected' if answer.choice_id == c.id}"}
-        .bar-graph{style: "width: #{ratio}%;"}
+      %div{class: "bar-blue #{'selected' if answer.choice_id == c.id}", data: {response: ratio}}
+        .bar-graph
         .bar-selected
-        .bar-response #{ratio}%
+        .bar-response
         .bar-title= c.title
     - else
       - url = qp_create_response_path(@survey.uuid, @ad_unit.name, @question)

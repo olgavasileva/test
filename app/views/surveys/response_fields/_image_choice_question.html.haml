@@ -4,10 +4,11 @@
     - if answer
       %div{class: "image-choice index-#{i}", style: style}
         - ratio = (c.response_ratio * 100).to_i
-        %div{class: "bar-blue #{'selected' if answer.choice_id == c.id}"}
-          .bar-graph{style: "width: #{ratio}%;"}
+        %div{class: "bar-blue #{'selected' if answer.choice_id == c.id}", data: {response: ratio}}
+          .bar-graph
           .bar-selected
-          .bar-response #{ratio}%
+          .bar-response
+
         .spacer
         .text= c.title
 
