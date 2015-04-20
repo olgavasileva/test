@@ -10,6 +10,7 @@ class SurveysController < ApplicationController
   helper_method \
     :previous_question_path,
     :next_question_path,
+    :user_from_cookie_only,
     :current_ad_unit_user,
     :question_class
 
@@ -36,8 +37,14 @@ class SurveysController < ApplicationController
     store_query_params
 
     @question = question_scope.first
-    @response = @question.responses.where(user_id: current_ad_unit_user.id).last
     @question.try :viewed!
+
+    if user_from_cookie_only.present?
+      @response = @question.responses
+        .where(user_id: user_from_cookie_only.id)
+        .last
+    end
+
     render :question
   end
 
@@ -111,12 +118,16 @@ class SurveysController < ApplicationController
       classes.join(' ')
     end
 
+    def user_from_cookie_only
+      return @user_from_cookie_only if defined?(@user_from_cookie_only)
+      @user_from_cookie_only = if cookies.signed[:eu_user]
+        Respondent.find_by(id: cookies.signed[:eu_user])
+      end
+    end
+
     def current_ad_unit_user
       @ad_unit_user ||= begin
-        ad_unit_user = if cookies.signed[:eu_user]
-          Respondent.find_by(id: cookies.signed[:eu_user])
-        end
-
+        ad_unit_user = user_from_cookie_only
         ad_unit_user = Anonymous.create!(auto_feed: false) unless ad_unit_user
         cookies.permanent.signed[:eu_user] = {
           value: ad_unit_user.id,
