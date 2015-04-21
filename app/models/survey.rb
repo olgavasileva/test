@@ -1,4 +1,5 @@
 class Survey < ActiveRecord::Base
+  attr_accessor :username
 
   belongs_to :user, class_name: 'Respondent'
 
@@ -9,9 +10,12 @@ class Survey < ActiveRecord::Base
 
   accepts_nested_attributes_for :questions_surveys, allow_destroy: true
 
+  before_validation :set_user_from_username_if_present
   before_validation :generate_uuid, on: :create
   validates :uuid, presence: true, uniqueness: {case_sensitive: true}
   validate :user_exists?
+
+  delegate :username, to: :user, allow_nil: true
 
   before_save :convert_markdown
 
@@ -65,6 +69,10 @@ class Survey < ActiveRecord::Base
   end
 
   private
+
+  def set_user_from_username_if_present
+    self.user = Respondent.find_by username:@username if @username.present?
+  end
 
   def user_exists?
     errors.add(:user, :must_exist) unless user.present?
