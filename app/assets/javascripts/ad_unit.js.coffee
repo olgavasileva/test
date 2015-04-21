@@ -47,7 +47,7 @@ $(document).ready ->
   # ----------------------------------------------------------------------------
   # Auto Forward
   #
-  if adUnitConfig.autoForward.Enabled && $q.hasClass('has-response')
+  if adUnitConfig.autoForward.enabled && $q.hasClass('has-response')
     next = -> document.getElementById('next-button').click()
     setTimeout(next, adUnitConfig.autoForward.speed)
 
