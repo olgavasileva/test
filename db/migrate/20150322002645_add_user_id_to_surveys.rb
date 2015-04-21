@@ -5,7 +5,7 @@ class AddUserIdToSurveys < ActiveRecord::Migration
     say_with_time "Setting user_id on existing Survey records" do
       Survey.find_each do |survey|
         if user_id = survey.questions.first.try(:user_id)
-          survey.update_attribute :user_id, user_id
+          survey.update_columns user_id: user_id
         end
       end
     end
