@@ -1,6 +1,6 @@
 class AddUserIdToSurveys < ActiveRecord::Migration
   def up
-    # add_column :surveys, :user_id, :integer
+    add_column :surveys, :user_id, :integer
 
     say_with_time "Setting user_id on existing Survey records" do
       Survey.find_each do |survey|
