@@ -53,10 +53,14 @@ class Survey < ActiveRecord::Base
   # And "This is a %pdq|cat%." with the same hash results in "This is a cat."
   # Multiple replacements can be included.
   def parsed_thank_you_html hash
-    thank_you_html.gsub(/%[^%]+%/) do |s|
-      s.match /%([^\|]*)(\|([^%]*))?%/ do |matches|
-        hash[matches[1]] || matches[3]
+    if thank_you_html.present?
+      thank_you_html.gsub(/%[^%]+%/) do |s|
+        s.match /%([^\|]*)(\|([^%]*))?%/ do |matches|
+          hash[matches[1]] || matches[3]
+        end
       end
+    else
+      "Thank you!"
     end
   end
 
