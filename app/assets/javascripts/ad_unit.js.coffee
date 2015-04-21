@@ -5,7 +5,18 @@
 #= require ad_units/overlay_feedback
 #= require ad_units/response_animation
 
-$(document).ready ->
+$ ->
+  resizeText = ->
+    $(".resize").textfill
+      innerTag: ".cell"
+      explicitHeight: 39
+      changeLineHeight: true
+      complete: ->
+        $(".resize .cell").animate(opacity: 1.0)
+
+  # Resize text after font is loaded
+  setTimeout resizeText, 100
+
   $q = $('#question')
 
   $('.textfill').textfill

@@ -31,7 +31,10 @@
       = render partial: 'embed'
 
       #title.textfill
-        %h1= @question.title
+        %h1.resize
+          .title
+            .table
+              .cell=@question.title
 
       #question{class: question_class}
         #between-buttons
