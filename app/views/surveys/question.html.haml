@@ -1,11 +1,11 @@
 - content_for :script do
   - if ENV['GOOGLE_ANALYTICS_ID'].present?
     :javascript
-      ga('send', 'event', 'embeddable', 'view', '#{@survey.uuid}', #{@question.id});
+      ga('send', 'event', 'embeddable', 'view', '#{@question.uuid}', 3);
 
     - if responding?
       :javascript
-        ga('send', 'event', 'embeddable', 'response', '#{@survey.uuid}', #{@question.id});
+        ga('send', 'event', 'embeddable', 'response', '#{@question.uuid}', 3);
 
   - if @response
     :javascript
