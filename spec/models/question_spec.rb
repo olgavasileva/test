@@ -163,4 +163,52 @@ describe Question do
       expect(orderer.reader).to eq(user)
     end
   end
+
+  describe :refresh_recent_responses_count! do
+    context "With 5 questions" do
+      before(:all) { @qq = FactoryGirl.create_list :question, 5 }
+      let(:qq) { @qq }
+
+      it "All questions should have no responses" do
+        Question.refresh_recent_responses_count!
+        expect(Question.where(recent_responses_count: 0).count).to eq qq.count
+      end
+
+      context "When the first quesiton has 5 responses, one in each of the last 5 days" do
+        before(:all) { (1..5).to_a.each{|n| FactoryGirl.create :response, question: @qq[0], created_at: Time.current - n.days + 15.minutes } }
+
+        it "Before refresing, the first question's recent_responses_count should be 5" do
+          expect(qq[0].reload.recent_responses_count).to eq 5
+        end
+
+        it "The first question should have 5 responses within 5 days" do
+          Question.refresh_recent_responses_count! 5
+          expect(qq[0].reload.recent_responses_count).to eq 5
+        end
+
+        it "The first question should have 4 responses within 4 days" do
+          Question.refresh_recent_responses_count! 4
+          expect(qq[0].reload.recent_responses_count).to eq 4
+        end
+
+        it "The other questions should have no responses within 5 days" do
+          Question.refresh_recent_responses_count! 5
+          expect(Question.where(recent_responses_count: 0).count).to eq 4
+        end
+
+        context "When the last question has 1 response 7 days ago" do
+          before { FactoryGirl.create :response, question: @qq[4], created_at: Time.current - 7.days }
+          before { Question.refresh_recent_responses_count! 14 }
+
+          it "The first question should have 5 responses within 14 days" do
+            expect(qq[0].reload.recent_responses_count).to eq 5
+          end
+
+          it "The last quesiton should have 1 response withing 14 days" do
+            expect(qq[4].reload.recent_responses_count).to eq 1
+          end
+        end
+      end
+    end
+  end
 end

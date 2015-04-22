@@ -47,7 +47,7 @@ class Question < ActiveRecord::Base
   scope :latest, -> { order("feed_items_v2.published_at DESC, feed_items_v2.id DESC") }
   scope :by_relevance, -> { order("feed_items_v2.relevance DESC, feed_items_v2.published_at DESC, feed_items_v2.id DESC") }
   scope :trending, -> { joins(:trend).order("trends.rate * trending_multiplier DESC, feed_items_v2.published_at DESC") }
-  scope :trending_on_response_count, -> { order("responses_count DESC, feed_items_v2.published_at DESC") }
+  scope :trending_on_recent_response_count, -> { order("recent_responses_count DESC, feed_items_v2.published_at DESC") }
   scope :targeted, -> { where("feed_items_v2.targeted = ?", true) }
   scope :myfeed, -> { where("feed_items_v2.why" => %w(targeted leader follower group community)) }
 
@@ -242,6 +242,23 @@ class Question < ActiveRecord::Base
 
   def ordered_choices_for(reader=nil)
     QuestionChoiceOrderer.new(self, reader)
+  end
+
+  # We are using recent_responses_count to tell us how many recent responses have been made
+  # lookback_days is the number of days we will consider
+  def self.refresh_recent_responses_count! lookback_days = 14
+    # Count recent responses
+    count_info = Response.where{created_at >= Time.current - lookback_days.days}.group(:question_id).count
+    ids = count_info.keys
+    counts = count_info.values
+
+    # Clear all question response counters without recent responses
+    Question.where.not(id: ids).update_all(recent_responses_count: 0)
+
+    # Update all response counters with the new count
+    count_info.each do |id, count|
+      Question.where(id: id).update_all(recent_responses_count: count)
+    end
   end
 
   private

@@ -1,6 +1,6 @@
 class Response < ActiveRecord::Base
   belongs_to :user, class_name:"Respondent"
-  belongs_to :question, counter_cache: true
+  belongs_to :question
   has_one :comment, as: :commentable, dependent: :destroy
   has_many :contest_response_votes, dependent: :destroy
   has_many :demographics, through: :user
@@ -16,6 +16,10 @@ class Response < ActiveRecord::Base
   after_create :record_analytics
   after_create :modify_question_score
   after_commit :calculate_response_notification, on: :create
+
+  # Roll our own counter cache updating because we need recent_responses_count to be writable so we can keep a rolling count
+  after_create { Question.increment_counter :recent_responses_count, question_id }
+  before_destroy { Question.decrement_counter :recent_responses_count, question_id }
 
   accepts_nested_attributes_for :comment, reject_if: proc { |attributes| attributes['body'].blank? }
 

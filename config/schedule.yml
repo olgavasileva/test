@@ -5,3 +5,11 @@ trending:
   args: "trending"
   description: Calculates trending quesitons
   rails_envs: development, production, staging, labs
+
+count_recent_responses:
+  cron: "5 0 0 * *" # 12:05 AM every day
+  queue: cron
+  class: CronTask
+  args: "count_recent_responses"
+  description: Calculates trending quesitons using most recent responses method
+  rails_envs: development, production, staging, labs

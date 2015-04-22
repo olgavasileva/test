@@ -29,4 +29,8 @@ class CronTask
     Trend.calculate!
   end
 
+  def count_recent_responses
+    Question.refresh_recent_responses_count! Setting.fetch_value('trend_lookback_days', 14).to_i
+  end
+
 end
