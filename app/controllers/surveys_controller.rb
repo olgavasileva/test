@@ -89,6 +89,12 @@ class SurveysController < ApplicationController
     end
 
     def preload_and_authorize
+      # Migrate old cookie from statisfy subdomain to base domain
+      if _user = cookies.signed[:eu_user]
+        cookies.delete(:eu_user, domain: request.host)
+        store_eu_user(_user)
+      end
+
       survey
       ad_unit
       authorize survey
@@ -118,10 +124,7 @@ class SurveysController < ApplicationController
       @ad_unit_user ||= begin
         ad_unit_user = cookie_user
         ad_unit_user = Anonymous.create!(auto_feed: false) unless ad_unit_user
-        cookies.permanent.signed[:eu_user] = {
-          value: ad_unit_user.id,
-          domain: request.host.split('.').last(2).join('.')
-        }
+        store_eu_user(ad_unit_user.id)
         ad_unit_user
       end
     end
@@ -147,6 +150,13 @@ class SurveysController < ApplicationController
 
     def stored_query_params
       session[survey.uuid]
+    end
+
+    def store_eu_user(user_id)
+      cookies.permanent.signed[:eu_user] = {
+        value: user_id,
+        domain: request.host.split('.').last(2).join('.')
+      }
     end
 
     def meta_data_for(image)
