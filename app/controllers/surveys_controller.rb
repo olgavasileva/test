@@ -12,7 +12,8 @@ class SurveysController < ApplicationController
     :next_question_path,
     :cookie_user,
     :current_ad_unit_user,
-    :question_class
+    :question_class,
+    :meta_data_for
 
   rescue_from(Pundit::NotAuthorizedError) do
     render :invalid_survey
@@ -22,16 +23,6 @@ class SurveysController < ApplicationController
     Airbrake.notify_or_ignore(ex)
     render :invalid_survey, layout: false
   end
-
-  # <iframe width="300" height="250" src="http://api.statisfy.co/unit/EU5f36fea0c4710132654712fb30fc1ffe/unit?key=value" frameborder="0"></iframe>
-  # -OR-
-  # <script type="text/javascript"><!--
-  #   statisfy_unit = "EU5f36fea0c4710132654712fb30fc1ffe/unit?key=value";
-  #   statisfy_unit_width = 300; statisfy_unit_height = 250;
-  # //-->
-  # </script>
-  # <script type="text/javascript" src="http://api.statisfy.co/production/show_unit.js">
-  # </script>
 
   def start
     store_query_params
@@ -158,4 +149,11 @@ class SurveysController < ApplicationController
       session[survey.uuid]
     end
 
+    def meta_data_for(image)
+      {
+        id: image.id,
+        url: image.web_image_url,
+        meta: image.ad_unit_info(@ad_unit.name).try(:meta_data)
+      }.to_json
+    end
 end

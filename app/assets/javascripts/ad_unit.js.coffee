@@ -1,6 +1,7 @@
 #= require jquery
 #= require jquery.textfill
 #= require Sortable.min
+#= require ad_units/image_manipulation
 #= require ad_units/overlay_cta
 #= require ad_units/overlay_feedback
 #= require ad_units/response_animation
