@@ -38,6 +38,6 @@
         %a#thank-you-close.close-button{href: qp_start_url(@survey.uuid, @ad_unit.name), target: '_self'} x
         #thank-you-message= CGI.unescapeHTML(@thank_you_html).html_safe
 
-    = render partial: 'footer'
+      = render partial: 'footer'
 
     = debug(params) if Rails.env.development?
