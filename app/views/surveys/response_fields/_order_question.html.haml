@@ -6,7 +6,7 @@
       - choices = question.ordered_choices_for(cookie_user)
 
     - choices.each_with_index do |c, i|
-      .order-choice-bar{data: {choice_id: c.id}, style: "background-image: url(#{c.web_image_url});"}
+      .order-choice-bar{data: {choice_id: c.id, image: meta_data_for(c.background_image)}}
         .order-choice-title= c.title
         - if answer
           - ratio = (c.response_ratio * 100).to_i

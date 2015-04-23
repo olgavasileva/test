@@ -12,7 +12,8 @@ class SurveysController < ApplicationController
     :next_question_path,
     :cookie_user,
     :current_ad_unit_user,
-    :question_class
+    :question_class,
+    :meta_data_for
 
   rescue_from(Pundit::NotAuthorizedError) do
     render :invalid_survey
@@ -22,16 +23,6 @@ class SurveysController < ApplicationController
     Airbrake.notify_or_ignore(ex)
     render :invalid_survey, layout: false
   end
-
-  # <iframe width="300" height="250" src="http://api.statisfy.co/unit/EU5f36fea0c4710132654712fb30fc1ffe/unit?key=value" frameborder="0"></iframe>
-  # -OR-
-  # <script type="text/javascript"><!--
-  #   statisfy_unit = "EU5f36fea0c4710132654712fb30fc1ffe/unit?key=value";
-  #   statisfy_unit_width = 300; statisfy_unit_height = 250;
-  # //-->
-  # </script>
-  # <script type="text/javascript" src="http://api.statisfy.co/production/show_unit.js">
-  # </script>
 
   def start
     store_query_params
@@ -98,6 +89,12 @@ class SurveysController < ApplicationController
     end
 
     def preload_and_authorize
+      # Migrate old cookie from statisfy subdomain to base domain
+      if _user = cookies.signed[:eu_user]
+        cookies.delete(:eu_user, domain: request.host)
+        store_eu_user(_user)
+      end
+
       survey
       ad_unit
       authorize survey
@@ -127,10 +124,7 @@ class SurveysController < ApplicationController
       @ad_unit_user ||= begin
         ad_unit_user = cookie_user
         ad_unit_user = Anonymous.create!(auto_feed: false) unless ad_unit_user
-        cookies.permanent.signed[:eu_user] = {
-          value: ad_unit_user.id,
-          domain: request.host.split('.').last(2).join('.')
-        }
+        store_eu_user(ad_unit_user.id)
         ad_unit_user
       end
     end
@@ -158,4 +152,18 @@ class SurveysController < ApplicationController
       session[survey.uuid]
     end
 
+    def store_eu_user(user_id)
+      cookies.permanent.signed[:eu_user] = {
+        value: user_id,
+        domain: request.host.split('.').last(2).join('.')
+      }
+    end
+
+    def meta_data_for(image)
+      {
+        id: image.id,
+        url: image.web_image_url,
+        meta: image.ad_unit_info(@ad_unit.name).try(:meta_data)
+      }.to_json
+    end
 end
