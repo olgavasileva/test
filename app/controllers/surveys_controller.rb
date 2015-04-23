@@ -163,11 +163,13 @@ class SurveysController < ApplicationController
     end
 
     def session_response_for_question question
+      session[:survey_response_ids] ||= {}
       response_id = session[:survey_response_ids][question.id]
       question.responses.where(user_id: current_ad_unit_user.id).find_by(id: response_id) if response_id
     end
 
     def remember_session_response response
+      session[:survey_response_ids] ||= {}
       session[:survey_response_ids][response.question.id] = response.id
     end
 

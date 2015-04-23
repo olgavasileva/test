@@ -129,7 +129,7 @@ RSpec.describe SurveysController do
 
     it 'remembers the current ad unit user' do
       ad_unit_user = controller.send(:current_ad_unit_user)
-      expect(request.cookies[:eu_user][:value]).to eq(ad_unit_user.id)
+      expect(request.cookies[:eu_user_test][:value]).to eq(ad_unit_user.id)
     end
 
     context 'when no :eu_user cookie is present' do
@@ -142,7 +142,7 @@ RSpec.describe SurveysController do
 
     context 'when an :eu_user cookie is present' do
       let(:user) { FactoryGirl.create(:user) }
-      before { request.cookies[:eu_user] = user.id }
+      before { request.cookies[:eu_user_test] = user.id }
 
       it 'does not create an Anonymous user record' do
         expect {

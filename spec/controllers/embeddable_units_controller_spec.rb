@@ -124,7 +124,7 @@ RSpec.describe EmbeddableUnitsController do
 
     it 'remembers the current embed user' do
       embed_user = controller.send(:current_embed_user)
-      expect(request.cookies[:eu_user]).to eq(embed_user.id)
+      expect(request.cookies[:eu_user_test][:value]).to eq(embed_user.id)
     end
 
     context 'when no :eu_user cookie is present' do
@@ -137,7 +137,7 @@ RSpec.describe EmbeddableUnitsController do
 
     context 'when an :eu_user cookies is present' do
       let(:user) { FactoryGirl.create(:user) }
-      before { request.cookies[:eu_user] = user.id }
+      before { request.cookies[:eu_user_test] = user.id }
 
       it 'does not create an Anonymous user record' do
         expect {
