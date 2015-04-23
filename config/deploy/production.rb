@@ -11,7 +11,7 @@ set :keep_releases, 5
 # property set.  Don't declare `role :all`, it's a meta role.
 
 role :app, %w{deploy@ec2-54-165-58-17.compute-1.amazonaws.com deploy@batch.statisfy.co}
-role :web, %w{deploy@ec2-54-165-58-17.compute-1.amazonaws.com deploy@batch.statisfy.co}
+role :web, %w{deploy@ec2-54-165-58-17.compute-1.amazonaws.com}
 role :db,  %w{deploy@ec2-54-165-58-17.compute-1.amazonaws.com}
 
 
