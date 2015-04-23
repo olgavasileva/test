@@ -10,9 +10,9 @@ set :keep_releases, 5
 # is considered to be the first unless any hosts have the primary
 # property set.  Don't declare `role :all`, it's a meta role.
 
-role :app, %w{deploy@ec2-54-165-58-17.compute-1.amazonaws.com}
-role :web, %w{deploy@ec2-54-165-58-17.compute-1.amazonaws.com}
-role :db,  %w{deploy@ec2-54-165-58-17.compute-1.amazonaws.com}
+role :app, %w{deploy@api.statisfy.co deploy@batch.statisfy.co}
+role :web, %w{deploy@api.statisfy.co deploy@batch.statisfy.co}
+role :db,  %w{deploy@api.statisfy.co}
 
 
 # Extended Server Syntax
