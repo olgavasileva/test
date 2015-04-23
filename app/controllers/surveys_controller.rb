@@ -3,6 +3,7 @@ class SurveysController < ApplicationController
 
   skip_before_action :authenticate_user!, :find_recent_questions
 
+  before_action :migrate_user_cookie
   before_action :preload_and_authorize
 
   protect_from_forgery with: :null_session
@@ -26,20 +27,20 @@ class SurveysController < ApplicationController
 
   def start
     store_query_params
+    reset_session_responses
 
     @question = question_scope.first
     @question.try :viewed!
-
-    if cookie_user.present?
-      @response = @question.responses.where(user_id: cookie_user.id).last
-    end
 
     render :question
   end
 
   def question
     @question = question_scope.find(params[:question_id])
-    @response = @question.responses.where(user_id: current_ad_unit_user.id).last
+
+    # Find the response if they responded in this session (since the last time they started)
+    @response = session_response_for_question @question
+
     @question.try :viewed!
     render :question
   end
@@ -49,6 +50,8 @@ class SurveysController < ApplicationController
     @response = @question.responses.create!(response_params.merge(source: 'embeddable')) do |r|
       r.user = current_ad_unit_user
     end
+
+    remember_session_response @response
 
     render :question
   end
@@ -89,19 +92,13 @@ class SurveysController < ApplicationController
     end
 
     def preload_and_authorize
-      # Migrate old cookie from statisfy subdomain to base domain
-      if _user = cookies.signed[:eu_user]
-        cookies.delete(:eu_user, domain: request.host)
-        store_eu_user(_user)
-      end
-
       survey
       ad_unit
       authorize survey
     end
 
     def response_params
-      # Using 'response' as the base param with all the parts allowed for various resposne types
+      # Using 'response' as the base param with all the parts allowed for various response types
       # Relying on response validation to sort out bad params
       params.require(:response).permit(:choice_id, :text, choice_ids: [])
     end
@@ -113,17 +110,30 @@ class SurveysController < ApplicationController
       classes.join(' ')
     end
 
-    def cookie_user
-      return @cookie_user if defined?(@cookie_user)
-      @cookie_user = if cookies.signed[:eu_user]
-        Respondent.find_by(id: cookies.signed[:eu_user])
+    def migrate_user_cookie
+      # Migrate old cookie from statisfy subdomain to base domain
+      if Rails.env.production? && ((_user = cookies.signed[:eu_user]))
+        cookies.delete(:eu_user, domain: request.host)
+        store_eu_user(_user)
       end
+    end
+
+    def cookie_user
+      @cookie_user ||= if cookies.signed["eu_user_#{Rails.env}"]
+        Respondent.find_by(id: cookies.signed["eu_user_#{Rails.env}"])
+      end
+    end
+
+    def store_eu_user(user_id)
+      cookies.permanent.signed["eu_user_#{Rails.env}"] = {
+        value: user_id,
+        domain: request.host.split('.').last(2).join('.')
+      }
     end
 
     def current_ad_unit_user
       @ad_unit_user ||= begin
-        ad_unit_user = cookie_user
-        ad_unit_user = Anonymous.create!(auto_feed: false) unless ad_unit_user
+        ad_unit_user = cookie_user || Anonymous.create!(auto_feed: false)
         store_eu_user(ad_unit_user.id)
         ad_unit_user
       end
@@ -144,19 +154,33 @@ class SurveysController < ApplicationController
       end
     end
 
+    ##
+    ## Helpers for storing and retrieving responses during one survey session
+    ##
+
+    def reset_session_responses
+      session[:survey_response_ids] = {}
+    end
+
+    def session_response_for_question question
+      response_id = session[:survey_response_ids][question.id]
+      question.responses.where(user_id: current_ad_unit_user.id).find_by(id: response_id) if response_id
+    end
+
+    def remember_session_response response
+      session[:survey_response_ids][response.question.id] = response.id
+    end
+
+    ##
+    ## Helpers for storing and retrieving query params
+    ##
+
     def store_query_params
       session[survey.uuid] = request.query_parameters
     end
 
     def stored_query_params
       session[survey.uuid]
-    end
-
-    def store_eu_user(user_id)
-      cookies.permanent.signed[:eu_user] = {
-        value: user_id,
-        domain: request.host.split('.').last(2).join('.')
-      }
     end
 
     def meta_data_for(image)

@@ -1,6 +1,6 @@
 - content_for :between_buttons do
   - question.ordered_choices_for(cookie_user).each_with_index do |c, i|
-    %div{class: "image-choice index-#{i}", style: style, data: {index: i, choice_id: c.id, image: meta_data_for(c.background_image)}}
+    %div{class: "image-choice index-#{i}", data: {index: i, choice_id: c.id, image: meta_data_for(c.background_image)}}
       - if !answer
         .overlay
           .overlay-text= t('embeddable_unit.cta_click')

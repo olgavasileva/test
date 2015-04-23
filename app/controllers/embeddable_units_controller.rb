@@ -7,6 +7,7 @@ class EmbeddableUnitsController < ApplicationController
 
   skip_before_action :authenticate_user!, :find_recent_questions
 
+  before_action :migrate_user_cookie
   before_action :authorize_embeddable_unit
   after_action :allow_iframe
 
@@ -58,14 +59,31 @@ class EmbeddableUnitsController < ApplicationController
     @embeddable_unit ||= EmbeddableUnit.find_by!(uuid: params[:embeddable_unit_uuid])
   end
 
+  def migrate_user_cookie
+    # Migrate old cookie from statisfy subdomain to base domain
+    if Rails.env.production? && ((user_id = cookies.signed[:eu_user]))
+      cookies.delete(:eu_user, domain: request.host)
+      store_eu_user(user_id)
+    end
+  end
+
+  def cookie_user
+    @cookie_user ||= if cookies.signed["eu_user_#{Rails.env}"]
+      Respondent.find_by(id: cookies.signed["eu_user_#{Rails.env}"])
+    end
+  end
+
+  def store_eu_user(user_id)
+    cookies.permanent.signed["eu_user_#{Rails.env}"] = {
+      value: user_id,
+      domain: request.host.split('.').last(2).join('.')
+    }
+  end
+
   def current_embed_user
     @embed_user ||= begin
-      embed_user = if cookies.signed[:eu_user]
-        Respondent.find_by(id: cookies.signed[:eu_user])
-      end
-
-      embed_user = Anonymous.create! unless embed_user
-      cookies.permanent.signed[:eu_user] = embed_user.id
+      embed_user = cookie_user || Anonymous.create!(auto_feed: false)
+      store_eu_user(embed_user.id)
       embed_user
     end
   end
