@@ -4,6 +4,7 @@ machine:
 checkout:
   post:
     - mv ./config/application.yml.example ./config/application.yml
+    - mv ./config/schedule.yml.example ./config/schedule.yml
     - mkdir -p tmp
 
 dependencies:
