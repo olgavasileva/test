@@ -120,6 +120,7 @@ class TwoCents::API < Grape::API
   mount Demographics => '/v/2.0'
   mount Tags => '/v/2.0'
   mount Surveys => '/v/2.0'
+  mount Trending => '/v/2.0'
 
   add_swagger_documentation markdown:true, hide_documentation_path:true
 end
