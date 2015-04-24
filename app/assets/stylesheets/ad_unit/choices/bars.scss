@@ -72,8 +72,10 @@
   button {
     font-family: $font-family;
     padding: 5px 0px;
-
-    .bar-title { padding: 0px; }
+    .bar-title {
+      padding: 0px;
+      position: relative;
+    }
   }
 
   .bar-response {
