@@ -200,11 +200,13 @@ class Respondent < ActiveRecord::Base
     end
   end
 
-  # Remote the oldest public unanswered items from the feed, keeping min_to_keep so there are available in case the user comes back
+  # Remove the oldest public unanswered items from the feed, keeping min_to_keep so there are available in case the user comes back
   def purge_feed_items! min_to_keep = nil
-    transaction do
-      num_to_destroy = feed_items.visible.publik.count - min_to_keep
-      feed_items.visible.publik.order('published_at ASC').limit(num_to_destroy).destroy_all if num_to_destroy > 0
+    unless min_to_keep.nil?
+      transaction do
+        num_to_destroy = feed_items.visible.publik.count - min_to_keep.to_i
+        feed_items.visible.publik.order('published_at ASC').limit(num_to_destroy).destroy_all if num_to_destroy > 0
+      end
     end
   end
 

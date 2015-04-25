@@ -52,21 +52,21 @@ describe Respondent do
 
     context "When there are n+2 visible public items in the respondent's feed" do
       before {FactoryGirl.create_list :feed_item, n+2, user: respondent }
-      it { expect{respondent.purge_feed_items! n}.to change{respondent.reload.feed_items.visible.count}.to(n) }
+      it { expect{respondent.purge_feed_items! n.to_s}.to change{respondent.reload.feed_items.visible.count}.to(n) }
 
       context "When the user has 1 answered and 1 skipped feed item" do
         before {FactoryGirl.create :feed_item, :answered, user: respondent}
         before {FactoryGirl.create :feed_item, :skipped, user: respondent}
 
-        it { expect{respondent.purge_feed_items! n}.to change{respondent.reload.feed_items.visible.count}.to(n) }
-        it { expect{respondent.purge_feed_items! n}.not_to change{respondent.reload.feed_items.skipped.count} }
-        it { expect{respondent.purge_feed_items! n}.not_to change{respondent.reload.feed_items.answered.count} }
+        it { expect{respondent.purge_feed_items! n.to_s}.to change{respondent.reload.feed_items.visible.count}.to(n) }
+        it { expect{respondent.purge_feed_items! n.to_s}.not_to change{respondent.reload.feed_items.skipped.count} }
+        it { expect{respondent.purge_feed_items! n.to_s}.not_to change{respondent.reload.feed_items.answered.count} }
       end
     end
 
     context "When there are n-1 visible public items in the respondent's feed" do
       before {FactoryGirl.create_list :feed_item, n-1, user: respondent }
-      it { expect{respondent.purge_feed_items! n}.not_to change{respondent.reload.feed_items.visible.count} }
+      it { expect{respondent.purge_feed_items! n.to_s}.not_to change{respondent.reload.feed_items.visible.count} }
     end
   end
 
