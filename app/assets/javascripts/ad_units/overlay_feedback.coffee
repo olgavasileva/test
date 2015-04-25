@@ -40,8 +40,7 @@ $(document).ready ->
   else if $q.hasClass('ImageChoiceQuestion')
     $('button').on('click', autoSubmit)
 
-  else if $q.hasClass('MultipleChoiceQuestion')
-    $form = $('#multiple-choice-form')
+  else if $form = $('#multiple-choice-form')
     $submit = $('#multiple-choice-submit')
     data = $form.data()
     $submit.attr('disabled', 'disabled')

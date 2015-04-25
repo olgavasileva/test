@@ -17,4 +17,5 @@
 = render partial: 'quantcast_js' if @response && current_ad_unit_user.quantcast_demographic_required?
 
 - template = @question.class.name.underscore
+- template = 'multiple_choice_question' if @question.min_responses > 1
 = render "surveys/response_fields/#{template}", answer: @response, question: @question
