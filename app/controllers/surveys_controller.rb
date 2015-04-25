@@ -104,7 +104,7 @@ class SurveysController < ApplicationController
     end
 
     def question_class
-      classes = if @question.min_responses > 1
+      classes = if @question.min_responses.to_i > 1
         ['MultipleChoiceQuestion']
       else
          [@question.try(:class).try(:name)]
