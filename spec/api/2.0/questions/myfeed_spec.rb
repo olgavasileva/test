@@ -2,8 +2,6 @@ require 'rails_helper'
 require_relative 'shared_questions'
 
 describe :myfeed do
-  after(:all) { DatabaseCleaner.clean_with(:truncation) }
-
   let(:params) {{}}
   let(:setup_relationships) {}
   let(:setup_questions) {}

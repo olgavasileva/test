@@ -3,8 +3,7 @@ require 'rails_helper'
 RSpec.describe EmbeddableUnitsController do
   include Devise::TestHelpers
 
-  before(:all) { @unit = FactoryGirl.create(:embeddable_unit) }
-  after(:all) { DatabaseCleaner.clean_with(:truncation) }
+  before { @unit = FactoryGirl.create(:embeddable_unit) }
 
   let(:unit) { @unit }
   let(:question) { unit.questions.to_a.shuffle.first }

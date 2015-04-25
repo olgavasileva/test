@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'api/_background_image.jbuilder' do
-  before(:all) do
+  before do
     @ad_unit_one = FactoryGirl.create(:ad_unit)
     @ad_unit_two = FactoryGirl.create(:ad_unit)
     @image = ChoiceImage.create!(meta_data: {
@@ -9,8 +9,6 @@ RSpec.describe 'api/_background_image.jbuilder' do
       @ad_unit_two.name => {example: 'other'}
     })
   end
-
-  after(:all) { DatabaseCleaner.clean_with(:truncation) }
 
   let(:ad_unit_one) { @ad_unit_one }
   let(:ad_unit_two) { @ad_unit_two }

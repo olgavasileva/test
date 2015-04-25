@@ -166,7 +166,7 @@ describe Question do
 
   describe :refresh_recent_responses_count! do
     context "With 5 questions" do
-      before(:all) { @qq = FactoryGirl.create_list :question, 5 }
+      before { @qq = FactoryGirl.create_list :question, 5 }
       let(:qq) { @qq }
 
       it "All questions should have no responses" do
@@ -175,7 +175,7 @@ describe Question do
       end
 
       context "When the first quesiton has 5 responses, one in each of the last 5 days" do
-        before(:all) { (1..5).to_a.each{|n| FactoryGirl.create :response, question: @qq[0], created_at: Time.current - n.days + 15.minutes } }
+        before { (1..5).to_a.each{|n| FactoryGirl.create :response, question: @qq[0], created_at: Time.current - n.days + 15.minutes } }
 
         it "Before refresing, the first question's recent_responses_count should be 5" do
           expect(qq[0].reload.recent_responses_count).to eq 5

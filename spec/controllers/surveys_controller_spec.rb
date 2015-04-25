@@ -3,11 +3,10 @@ require 'rails_helper'
 RSpec.describe SurveysController do
   include Devise::TestHelpers
 
-  before(:all) {
+  before {
     @survey = FactoryGirl.create :survey, :embeddable
     @ad_unit = FactoryGirl.create :ad_unit
   }
-  after(:all) { DatabaseCleaner.clean_with :truncation }
 
   let(:survey) { @survey }
   let(:ad_unit) { @ad_unit }

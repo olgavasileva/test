@@ -1,12 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe BackgroundImagesAdUnit do
-  before(:all) do
+  before do
     @ad_unit = FactoryGirl.create(:ad_unit)
     @image = BackgroundImage.create!
   end
-
-  after(:all) { DatabaseCleaner.clean_with(:truncation) }
 
   let(:ad_unit) { @ad_unit }
   let(:image) { @image }

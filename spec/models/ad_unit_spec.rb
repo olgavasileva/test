@@ -9,8 +9,7 @@ RSpec.describe AdUnit do
         .through(:background_images_ad_units) }
 
   describe 'validations' do
-    before(:all) { @ad_unit = FactoryGirl.create(:ad_unit) }
-    after(:all) { DatabaseCleaner.clean_with(:truncation) }
+    before { @ad_unit = FactoryGirl.create(:ad_unit) }
     let(:ad_unit) { @ad_unit }
 
     it { is_expected.to validate_presence_of(:name) }

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe TwoCents::Questions do
-  before(:all) do
+  before do
     @instance = FactoryGirl.create(:instance, :logged_in)
     @questions = FactoryGirl.create_list(:text_choice_question, 2, {
       tag_list: ['test'],
@@ -10,8 +10,6 @@ RSpec.describe TwoCents::Questions do
 
     @questions.last.update_column(:created_at, 1.day.ago)
   end
-
-  after(:all) { DatabaseCleaner.clean_with(:truncation) }
 
   let(:instance) { @instance }
   let(:token) { instance.auth_token }

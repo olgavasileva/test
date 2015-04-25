@@ -2,8 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'views/api/survey.jbuilder' do
 
-  before(:all) { @survey = FactoryGirl.create(:survey) }
-  after(:all) { DatabaseCleaner.clean_with(:truncation) }
+  before { @survey = FactoryGirl.create(:survey) }
 
   let(:survey) { @survey }
 

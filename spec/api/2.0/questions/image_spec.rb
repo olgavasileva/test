@@ -1,13 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe TwoCents::Questions, '/image' do
-  before(:all) do
+  before do
     @instance = FactoryGirl.create(:instance, :logged_in)
     @ad_unit = FactoryGirl.create(:ad_unit, name: 'skyscraper')
     @question = FactoryGirl.create(:text_choice_question, user: @instance.user)
   end
-
-  after(:all) { DatabaseCleaner.clean_with(:truncation) }
 
   let(:token) { @instance.auth_token }
   let(:image) { @question.background_image}

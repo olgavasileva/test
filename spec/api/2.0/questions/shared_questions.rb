@@ -1,5 +1,5 @@
 RSpec.shared_context :shared_questions do
-  before(:all) do
+  def build_questions
     @question_user = FactoryGirl.create(:user)
 
     @question_image = FactoryGirl.create(:question_image)
@@ -112,5 +112,14 @@ RSpec.shared_context :shared_questions do
 
   let(:all_questions) { [q1, q2, q3, q4, q5] }
 
-  let(:setup_questions) { }
+  let(:setup_questions) {
+    build_questions
+
+    all_questions
+
+    text_choice1; text_choice2; text_choice3
+    multiple_choice1; multiple_choice2; multiple_choice3
+    image_choice1; image_choice2
+    order_choice1; order_choice2; order_choice3
+  }
 end

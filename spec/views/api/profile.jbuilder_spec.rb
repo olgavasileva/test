@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'views/api/profile.jbuilder' do
-  before(:all) { @user = FactoryGirl.create(:user) }
-  after(:all) { DatabaseCleaner.clean_with(:truncation) }
+  before { @user = FactoryGirl.create(:user) }
 
   let(:user) { @user }
   let(:instance) { user.instances.first }

@@ -4,13 +4,11 @@ RSpec.describe TwoCents::Tags do
   let(:instance) { FactoryGirl.create(:instance, :logged_in, :can_push) }
   let(:token) { instance.auth_token }
 
-  before(:all) do
+  before do
     @tags = (1..20).to_a.map do |n|
       ActsAsTaggableOn::Tag.create!(name: "tag%02d" % n )
     end
   end
-
-  after(:all) { ActsAsTaggableOn::Tag.delete_all }
 
   describe 'GET #search' do
     it 'returns an array of tags ordered by name' do

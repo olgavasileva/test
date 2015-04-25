@@ -2,11 +2,10 @@ require 'rails_helper'
 require_relative 'shared_questions'
 
 describe :latest do
-  after(:all) { DatabaseCleaner.clean_with(:truncation) }
-
   let(:params) {{}}
   let(:setup_questions) {}
   let(:before_api_call) {}
+  before { setup_questions }
   before { before_api_call }
   before { post "v/2.0/questions/latest", Hash[params].to_json,{"CONTENT_TYPE" => "application/json"}}
 
