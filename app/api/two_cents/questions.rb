@@ -442,11 +442,7 @@ class TwoCents::Questions < Grape::API
     end
     put 'image', jbuilder: 'background_image' do
       validate_user!
-      @image = current_user.questions
-        .eager_load(:background_image)
-        .find_by!(background_image_id: params[:image_id])
-        .background_image
-
+      @image = BackgroundImage.find(params[:image_id])
       @image.update!(declared_params.slice(:meta_data))
     end
 
