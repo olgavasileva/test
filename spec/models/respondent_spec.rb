@@ -27,19 +27,19 @@ describe Respondent do
 
   describe :needs_more_feed_items? do
     context "When there are n active public questions" do
+      before { expect(Question).to receive_message_chain(:active, :publik, :count).and_return(n) }
       let(:n) {6}
-      let(:questions) {FactoryGirl.create_list :text_question, n}
 
       context "When all but one of them are public visible feed items for the respondent" do
         let(:respondent) {FactoryGirl.create :user, auto_feed:false}
-        before { questions.first(n-1).map{|q| FactoryGirl.create :feed_item, question: q, user: respondent} }
+        before { expect(respondent).to receive_message_chain(:feed_items, :publik, :count).and_return(n-1) }
 
         it {expect(respondent.needs_more_feed_items?).to be_truthy}
       end
 
       context "When all of them are public visible feed items for the respondent" do
         let(:respondent) {FactoryGirl.create :user, auto_feed:false}
-        before { questions.first(n).map{|q| FactoryGirl.create :feed_item, question: q, user: respondent} }
+        before { expect(respondent).to receive_message_chain(:feed_items, :publik, :count).and_return(n) }
 
         it {expect(respondent.needs_more_feed_items?).to be_falsy}
       end
@@ -79,13 +79,13 @@ describe Respondent do
     context "When there is a response from n-1 days ago" do
       before {FactoryGirl.create :feed_item, :answered, user: respondent, updated_at: Date.current - (n-1).days}
 
-      it {is_expected.to match_array [respondent]}
+      it {is_expected.to include respondent}
     end
 
     context "When there is a response from n+1 days ago" do
       before {FactoryGirl.create :feed_item, :answered, user: respondent, updated_at: Date.current - (n+1).days}
 
-      it {is_expected.to match_array []}
+      it {is_expected.not_to include respondent}
     end
   end
 
