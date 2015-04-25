@@ -95,7 +95,7 @@ class Respondent < ActiveRecord::Base
   end
 
   def needs_more_feed_items?
-    feed_items.publik.count < Question.active.publik.count
+    feed_items.visible.publik.count < Question.active.publik.count
   end
 
   def choice_ids_made_for_question question

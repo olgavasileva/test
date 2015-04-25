@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150422024432) do
+ActiveRecord::Schema.define(version: 20150425023141) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -314,6 +314,7 @@ ActiveRecord::Schema.define(version: 20150422024432) do
   end
 
   add_index "feed_items_v2", ["hidden", "hidden_reason", "question_id"], name: "idx2", using: :btree
+  add_index "feed_items_v2", ["hidden", "why"], name: "index_feed_items_v2_on_hidden_and_why", using: :btree
   add_index "feed_items_v2", ["question_id"], name: "index_feed_items_v2_on_question_id", using: :btree
   add_index "feed_items_v2", ["user_id", "hidden", "hidden_reason", "question_id"], name: "idx5", using: :btree
   add_index "feed_items_v2", ["user_id", "hidden", "published_at"], name: "idx3", using: :btree
@@ -645,6 +646,7 @@ ActiveRecord::Schema.define(version: 20150422024432) do
   add_index "questions", ["created_at"], name: "index_questions_on_created_at", using: :btree
   add_index "questions", ["kind"], name: "index_questions_on_kind", using: :btree
   add_index "questions", ["recent_responses_count"], name: "index_questions_on_recent_responses_count", using: :btree
+  add_index "questions", ["state", "kind"], name: "index_questions_on_state_and_kind", using: :btree
   add_index "questions", ["trend_id"], name: "index_questions_on_trend_id", using: :btree
   add_index "questions", ["type"], name: "index_questions_on_type", using: :btree
   add_index "questions", ["user_id"], name: "index_questions_on_user_id", using: :btree

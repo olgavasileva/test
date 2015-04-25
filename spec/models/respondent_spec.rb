@@ -32,14 +32,14 @@ describe Respondent do
 
       context "When all but one of them are public visible feed items for the respondent" do
         let(:respondent) {FactoryGirl.create :user, auto_feed:false}
-        before { expect(respondent).to receive_message_chain(:feed_items, :publik, :count).and_return(n-1) }
+        before { expect(respondent).to receive_message_chain(:feed_items, :visible, :publik, :count).and_return(n-1) }
 
         it {expect(respondent.needs_more_feed_items?).to be_truthy}
       end
 
       context "When all of them are public visible feed items for the respondent" do
         let(:respondent) {FactoryGirl.create :user, auto_feed:false}
-        before { expect(respondent).to receive_message_chain(:feed_items, :publik, :count).and_return(n) }
+        before { expect(respondent).to receive_message_chain(:feed_items, :visible, :publik, :count).and_return(n) }
 
         it {expect(respondent.needs_more_feed_items?).to be_falsy}
       end
