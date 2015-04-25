@@ -83,6 +83,21 @@ class Respondent < ActiveRecord::Base
 
   before_validation :ensure_username
 
+  # respondents with responses or skips within the last n days
+  def self.active n = 10
+    joins(:feed_items).where{feed_items.hidden == true}.where{feed_items.hidden_reason.in %w(skipped answered)}.where{feed_items.updated_at >= Date.current - n.days}
+  end
+
+  # respondents with no responses or skips within the last n days
+  def self.inactive n = 10
+    a = active(n)
+    where{id.not_in(a)}
+  end
+
+  def needs_more_feed_items?
+    feed_items.publik.count < Question.active.publik.count
+  end
+
   def choice_ids_made_for_question question
     @choice_ids ||= {}
     @choice_ids[question.id] ||= responses.where(question_id:question).pluck(:choice_id)
@@ -182,6 +197,14 @@ class Respondent < ActiveRecord::Base
         end
         FeedItem.import items
       end
+    end
+  end
+
+  # Remote the oldest public unanswered items from the feed, keeping min_to_keep so there are available in case the user comes back
+  def purge_feed_items! min_to_keep = nil
+    transaction do
+      num_to_destroy = feed_items.visible.publik.count - min_to_keep
+      feed_items.visible.publik.order('published_at ASC').limit(num_to_destroy).destroy_all if num_to_destroy > 0
     end
   end
 

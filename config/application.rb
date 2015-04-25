@@ -50,6 +50,6 @@ module LinkchatApp
       end
     end
 
-    config.active_record.observers = [:question_observer, :response_observer, :respondent_observer, :demographic_observer]
+    config.active_record.observers = [:question_observer, :response_observer, :respondent_observer, :demographic_observer, :feed_item_observer]
   end
 end

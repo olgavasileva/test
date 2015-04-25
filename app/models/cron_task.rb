@@ -33,4 +33,10 @@ class CronTask
     Question.refresh_recent_responses_count! Setting.fetch_value('trend_lookback_days', 14).to_i
   end
 
+  def purge_inactive_user_feed_items
+    Respondent.inactive.find_each do |respondent|
+      respondent.purge_feed_items! Figaro.env.QUESTIONS_TO_KEEP_WHEN_INACTIVE
+    end
+  end
+
 end

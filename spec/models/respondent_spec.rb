@@ -24,4 +24,88 @@ describe Respondent do
       it { expect(subject).to eq true}
     end
   end
+
+  describe :needs_more_feed_items? do
+    context "When there are n active public questions" do
+      let(:n) {6}
+      let(:questions) {FactoryGirl.create_list :text_question, n}
+
+      context "When all but one of them are public visible feed items for the respondent" do
+        let(:respondent) {FactoryGirl.create :user, auto_feed:false}
+        before { questions.first(n-1).map{|q| FactoryGirl.create :feed_item, question: q, user: respondent} }
+
+        it {expect(respondent.needs_more_feed_items?).to be_truthy}
+      end
+
+      context "When all of them are public visible feed items for the respondent" do
+        let(:respondent) {FactoryGirl.create :user, auto_feed:false}
+        before { questions.first(n).map{|q| FactoryGirl.create :feed_item, question: q, user: respondent} }
+
+        it {expect(respondent.needs_more_feed_items?).to be_falsy}
+      end
+    end
+  end
+
+  describe :purge_feed_items! do
+    let(:respondent) { FactoryGirl.create :user }
+    let(:n) { 2 }
+
+    context "When there are n+2 visible public items in the respondent's feed" do
+      before {FactoryGirl.create_list :feed_item, n+2, user: respondent }
+      it { expect{respondent.purge_feed_items! n}.to change{respondent.reload.feed_items.visible.count}.to(n) }
+
+      context "When the user has 1 answered and 1 skipped feed item" do
+        before {FactoryGirl.create :feed_item, :answered, user: respondent}
+        before {FactoryGirl.create :feed_item, :skipped, user: respondent}
+
+        it { expect{respondent.purge_feed_items! n}.to change{respondent.reload.feed_items.visible.count}.to(n) }
+        it { expect{respondent.purge_feed_items! n}.not_to change{respondent.reload.feed_items.skipped.count} }
+        it { expect{respondent.purge_feed_items! n}.not_to change{respondent.reload.feed_items.answered.count} }
+      end
+    end
+
+    context "When there are n-1 visible public items in the respondent's feed" do
+      before {FactoryGirl.create_list :feed_item, n-1, user: respondent }
+      it { expect{respondent.purge_feed_items! n}.not_to change{respondent.reload.feed_items.visible.count} }
+    end
+  end
+
+  describe :active do
+    let(:respondent) { FactoryGirl.create :user }
+    let(:n) {5}
+
+    subject {Respondent.active n}
+
+    context "When there is a response from n-1 days ago" do
+      before {FactoryGirl.create :feed_item, :answered, user: respondent, updated_at: Date.current - (n-1).days}
+
+      it {is_expected.to match_array [respondent]}
+    end
+
+    context "When there is a response from n+1 days ago" do
+      before {FactoryGirl.create :feed_item, :answered, user: respondent, updated_at: Date.current - (n+1).days}
+
+      it {is_expected.to match_array []}
+    end
+  end
+
+  describe :inactive do
+    let(:respondent) { FactoryGirl.create :user }
+    let(:n) {5}
+
+    subject {Respondent.inactive n}
+
+    context "When there is a response from n-1 days ago" do
+      before {@fi = FactoryGirl.create :feed_item, :answered, updated_at: Date.current - (n-1).days}
+      let(:respondent) {@fi.user}
+
+      it {is_expected.not_to include respondent}
+    end
+
+    context "When there is a response from n+1 days ago" do
+      before {FactoryGirl.create :feed_item, :answered, user: respondent, updated_at: Date.current - (n+1).days}
+
+      it {is_expected.to include respondent}
+    end
+  end
 end

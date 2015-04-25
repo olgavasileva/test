@@ -1,12 +1,14 @@
 class BuildRespondentFeed
   @queue = :respondent
 
-  def self.perform respondent_id
+  def self.perform respondent_id, num_questions_to_add = nil
     benchmark = Benchmark.measure do
       respondent = Respondent.find_by id: respondent_id
-      respondent.append_questions_to_feed! Figaro.env.MAX_QUESTIONS_FOR_NEW_RESPONDENT if respondent.present?
+      if respondent.present? && respondent.needs_more_feed_items?
+        respondent.append_questions_to_feed! num_questions_to_add
+      end
     end
 
-    Rails.logger.info "BuildRespondentFeed #{Figaro.env.MAX_QUESTIONS_FOR_NEW_RESPONDENT}: #{benchmark}"
+    Rails.logger.info "BuildRespondentFeed(#{respondent_id}, #{num_questions_to_add}): #{benchmark}"
   end
 end
