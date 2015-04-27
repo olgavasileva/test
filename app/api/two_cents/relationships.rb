@@ -149,6 +149,19 @@ class TwoCents::Relationships < Grape::API
       {}
     end
 
+    # Remove Follower
+    desc "Removes a user from following you", notes: 'Returns a 204 Status on success'
+    params do
+      requires :auth_token, type: String, desc: "Obtain this from the instance's API."
+      requires :user_id, type: Integer, desc: "ID of user to unfollow."
+    end
+    delete 'block' do
+      validate_user!
+      user = Respondent.find(params[:user_id])
+      current_user.followers.delete(user)
+      status 204
+    end
+
     desc "Whether following a user"
     params do
       requires :auth_token, type: String, desc: "Obtain this from the instance's API."
