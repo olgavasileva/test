@@ -5,6 +5,7 @@ class SurveysController < ApplicationController
 
   before_action :migrate_user_cookie
   before_action :preload_and_authorize
+  after_action :allow_iframe
 
   protect_from_forgery with: :null_session
 
