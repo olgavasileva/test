@@ -1,5 +1,7 @@
+- meta = meta_data_for(question.background_image)
+
 - content_for :between_buttons do
-  .main-image{style: "background-image: url(#{question.web_image_url})"}
+  .main-image{data: {image: meta}}
 
 - content_for :below_buttons do
   - if answer.present?

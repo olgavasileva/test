@@ -1,0 +1,32 @@
+@import 'ad_unit/variables';
+
+.textarea {
+  background: $orange-light;
+  textarea {
+    resize: none;
+    outline: none;
+    font-size: 14px;
+    display: block;
+    padding: $default-textarea-padding;
+    border: $default-textarea-border solid $orange-light;
+    border-radius: $default-textarea-border-radius;
+    margin-bottom: $default-spacing;
+    color: #000;
+  }
+
+  textarea::-webkit-input-placeholder {
+    color: $orange;
+  }
+
+  textarea:-moz-placeholder {
+    color: $orange;
+  }
+
+  textarea::-moz-placeholder {
+    color: $orange;
+  }
+
+  textarea:-ms-input-placeholder {
+    color: $orange;
+  }
+}

@@ -34,8 +34,10 @@ class CronTask
   end
 
   def purge_inactive_user_feed_items
-    Respondent.inactive.find_each do |respondent|
-      respondent.purge_feed_items! Figaro.env.QUESTIONS_TO_KEEP_WHEN_INACTIVE
+    if Figaro.env.DAYS_CONSIDERED_INACTIVE && Figaro.env.QUESTIONS_TO_KEEP_WHEN_INACTIVE
+      Respondent.inactive(Figaro.env.DAYS_CONSIDERED_INACTIVE.to_i).find_each do |respondent|
+        respondent.purge_feed_items!(Figaro.env.QUESTIONS_TO_KEEP_WHEN_INACTIVE.to_i)
+      end
     end
   end
 

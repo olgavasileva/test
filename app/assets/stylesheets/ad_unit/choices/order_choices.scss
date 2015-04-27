@@ -1,0 +1,38 @@
+@import 'ad_unit/variables';
+
+.order-choice-bar {
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 1px;
+  &:last-of-type { margin-bottom: 0px; }
+
+  .order-choice-title {
+    float: left;
+    width: 40%;
+    text-align: center;
+    color: #fff;
+    background: #000000;
+    background: rgba(#000000, 0.85);
+    padding: 0px 5px;
+    line-height: 35px;
+  }
+
+  .order-choice-orderer {
+    font-size: 11px;
+    color: #fff;
+    float: right;
+    padding-top: 2px;
+    img {
+      height: 28px;
+      margin: 2px 3px 0px 0px;
+    }
+  }
+
+  .bar-blue {
+    float: right;
+    width: 15%;
+  }
+
+  cursor: move;
+  .has-response & { cursor: default; }
+}

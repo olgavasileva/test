@@ -1,0 +1,232 @@
+@import 'ad_unit/variables';
+
+.medium_rectangle {
+  $width: 300px;
+  $height: 250px;
+
+  $title-height: 47px;
+  $question-height: $height - $title-height - $default-footer-outer-height - ($default-spacing * 2);
+
+  $nav-button-width: 18px;
+
+  $button-content-width: $width - ($nav-button-width * 2) - ($default-spacing * 2);
+  $button-content-margin: $nav-button-width + $default-spacing;
+
+  #content, #embed {
+    width: $width;
+    max-width: $width;
+    height: $height;
+    max-height: $height;
+  }
+
+  #footer {
+    width: $width - ($default-footer-padding-vertical * 2);
+  }
+
+  #embed {
+    $padding: 5px;
+    width: $width - ($padding * 2);
+    height: $height - $default-footer-outer-height - ($padding * 2);
+    padding: $padding;
+  }
+
+  #title {
+    $padding-horizontal: 5px;
+    $padding-vertical: 3px;
+
+    height: $title-height - ($padding-horizontal * 2);
+    width: $width - ($padding-vertical * 2);
+    padding: $padding-horizontal $padding-vertical;
+
+    h1 {
+      font-size: 15px;
+      line-height: 18px;
+    }
+  }
+
+  #question {
+    height: $question-height;
+  }
+
+  .nav-button {
+    width: $nav-button-width;
+  }
+
+  #between-button-content {
+    width: $button-content-width;
+    margin-left: $button-content-margin;
+    margin-right: $button-content-margin;
+  }
+
+  #thank-you {
+    height: $height - $default-footer-outer-height;
+    max-height: $height - $default-footer-outer-height;
+    overflow: hidden;
+  }
+
+  // ********************************
+  // TextChoiceQuestion/YesNoQuestion
+
+  #question.TextChoiceQuestion,
+  #question.YesNoQuestion {
+    @mixin content-height($choices) {
+      $total-bar-height: ($choices * ($default-bar-height + $default-spacing)) - $default-spacing;
+      #between-buttons { height: $question-height - $total-bar-height; }
+    }
+
+    .nav-button .icon { margin-top: 45px; }
+    @include content-height(2);
+
+    &.choices-3 {
+      .nav-button .icon { margin-top: 32px; }
+      @include content-height(3);
+    }
+
+    &.choices-4 {
+      .nav-button .icon { margin-top: 16px; }
+      @include content-height(4);
+    }
+  }
+
+  // ********************************
+  // Image Choice Question (Pick One)
+
+  @mixin image-choice-size($width, $height, $vertical-split: 1) {
+    $total-width: ($width - $default-spacing) / 2;
+    $total-height: ($height - ($default-spacing * ($vertical-split - 1))) / $vertical-split;
+    width: $total-width;
+    height: $total-height;
+
+    .spacer {
+      margin-top: $total-height - $default-image-choice-text-height - $default-image-choice-text-padding-top;
+    }
+  }
+
+  #question.ImageChoiceQuestion {
+    $margin: 75px;
+
+    .nav-button .icon { margin-top: $margin; }
+    #between-buttons { height: $question-height; }
+
+    &.choices-1, &.choices-2 {
+      .image-choice {
+        @include image-choice-size($button-content-width, $question-height, 1);
+        .overlay .overlay-text  { margin-top: $margin - 23px; }
+        .overlay i.overlay-text { margin-top: $margin; }
+      }
+    }
+
+    &.choices-3, &.choices-4 {
+      .image-choice {
+        @include image-choice-size($button-content-width, $question-height, 2);
+
+        .overlay .overlay-text  {
+          margin-top: 20px;
+          font-size: 18px;
+        }
+
+        .overlay i.overlay-text {
+          margin-top: 20px;
+          font-size: 24px;
+        }
+      }
+    }
+  }
+
+  // ********************************
+  // Multiple Choice Question (Pick Two)
+
+  #question.MultipleChoiceQuestion {
+    $height: $question-height - $default-spacing - $default-bar-height;
+
+    #between-buttons { height: $height; }
+    .nav-button .icon { margin-top: 64px; }
+
+    .image-choice {
+      &:hover { cursor: pointer; }
+
+      .overlay .overlay-text  {
+        margin-top: 17px;
+        font-size: 16px;
+      }
+
+      .overlay i.overlay-text {
+        margin-top: 20px;
+        font-size: 24px;
+      }
+
+      @include image-choice-size($button-content-width, $height, 2);
+    }
+
+    &.has-response {
+      $height: $question-height - $default-spacing;
+
+      #between-buttons { height: $height; }
+      .nav-button .icon { margin-top: 75px; }
+
+      .image-choice {
+        &:hover { cursor: default; }
+        @include image-choice-size($button-content-width, $height, 2);
+      }
+    }
+  }
+
+  // ********************************
+  // Text Question
+
+  #question.TextQuestion {
+    $textarea-height: 47px;
+    $content-height: $question-height - ($default-spacing + $textarea-height * 2);
+
+    .nav-button .icon { margin-top: 35px; }
+    #between-buttons { height: $content-height; }
+
+    textarea {
+      width: $width - (($default-textarea-border + $default-textarea-padding) * 2);
+      height: $textarea-height;
+    }
+
+    .bar-blue {
+      height: $textarea-height;
+      padding-top: 15px;
+    }
+  }
+
+  // ********************************
+  // Order Question
+
+  #question.OrderQuestion {
+
+
+    @mixin order-choice-height($height) {
+      #between-buttons { height: $height; }
+
+      $choices: 2 3 4;
+      @each $choice in $choices {
+        &.choices-#{$choice} {
+          $bar-height: ($height - (($choice - 1) * $default-spacing)) / $choice;
+
+          .order-choice-bar,
+          .order-choice-title,
+          .overlay,
+          .bar-blue,
+          .bar-graph {
+            height: $bar-height;
+          }
+        }
+      }
+    }
+
+    .nav-button .icon { margin-top: 64px; }
+    .overlay .overlay-text { margin-top: 6px; }
+
+    $height: $question-height - $default-spacing - $default-bar-height;
+    @include order-choice-height($height);
+
+    &.has-response {
+      .nav-button .icon { margin-top: 85px; }
+      $height: $question-height - $default-spacing;
+      @include order-choice-height($height);
+    }
+  }
+}

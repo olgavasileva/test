@@ -28,3 +28,25 @@ $blue-selected: #ffa325;
 $orange: orange;
 $orange-light: lighten($orange, 20%);
 $orange-dark: darken($orange, 10%);
+
+// -----------------------------------------------------------------------------
+// Choice Size Defaults
+
+$default-textarea-padding: 2px;
+$default-textarea-border: 5px;
+$default-textarea-border-radius: 6px;
+
+$default-bar-height: 32px;
+
+$default-image-choice-text-height: 28px;
+$default-image-choice-text-padding-top: 5px;
+
+// -----------------------------------------------------------------------------
+// Size Defaults
+
+$default-spacing: 1px;
+
+$default-footer-padding-horizontal: 2px;
+$default-footer-padding-vertical: 3px;
+$default-footer-inner-height: 15px;
+$default-footer-outer-height: $default-footer-inner-height + ($default-footer-padding-horizontal * 2);
