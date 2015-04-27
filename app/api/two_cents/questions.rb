@@ -22,6 +22,8 @@ class TwoCents::Questions < Grape::API
         optional :anonymous, type: Boolean, desc: "Whether question is anonymous"
         optional :tag_list, type: Array[String], desc: 'An array of tags for the question'
 
+        optional :publicly_searchable, type: Boolean, desc: 'Allow users to search for this question regardless of targeting'
+
         optional :targets, type: Hash do
           optional :all_users, type: Boolean, default: false, desc: "Whether question is targeted at all users."
           optional :all, type: Boolean, default: false, desc: "Alias for `all_users`."
