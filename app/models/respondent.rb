@@ -205,7 +205,11 @@ class Respondent < ActiveRecord::Base
     unless min_to_keep.nil?
       transaction do
         num_to_destroy = feed_items.visible.publik.count - min_to_keep.to_i
-        feed_items.visible.publik.order('published_at ASC').limit(num_to_destroy).destroy_all if num_to_destroy > 0
+        # NOTE: This bybasses any rails callbacks - it's OK as of 4/17/2015 as FeedItem doesn't have any callbacks realated to destroy
+        if num_to_destroy > 0
+          ids = feed_items.visible.publik.order('published_at ASC').limit(num_to_destroy).pluck(:id)
+          FeedItem.where(id:ids).delete_all
+        end
       end
     end
   end
