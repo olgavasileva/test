@@ -188,7 +188,7 @@ class SurveysController < ApplicationController
     def meta_data_for(image)
       {
         id: image.id,
-        url: image.web_image_url,
+        url: 'http://placehold.it/320x320.png',
         meta: image.ad_unit_info(@ad_unit.name).try(:meta_data)
       }.to_json
     end

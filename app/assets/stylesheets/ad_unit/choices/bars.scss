@@ -40,7 +40,7 @@
 .bar {
   display: block;
   width: 100%;
-  margin-bottom: 1px;
+  margin-bottom: $default-spacing;
   position: relative;
 
   &, button { color: #ffffff; }
@@ -57,7 +57,7 @@
   .bar-graph,
   .bar-selected,
   .bar-overlay {
-    height: 32px;
+    height: $default-bar-height;
   }
 
   button, .bar-title {

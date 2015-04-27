@@ -1,32 +1,31 @@
 #footer {
   background-color: $gray-light;
-  height: 15px;
-  padding: 2px 3px;
+  height: $default-footer-inner-height;
+  padding: $default-footer-padding-horizontal $default-footer-padding-vertical;
   clear: both;
 
   .share-icon, #embed-icon, .logo {
-    height: 15px;
+    height: $default-footer-inner-height;
     background-repeat: no-repeat;
   }
 
   .share-icon, #embed-icon {
-    margin-right: 2px;
+    margin-right: $default-footer-padding-vertical;
     float: left;
   }
 
   .logo {
-    margin-left: 2px;
+    margin-left: $default-footer-padding-horizontal;
     float: right;
   }
 
   .share-icon {
-    $size: 14px;
+    $size: $default-footer-inner-height - $default-spacing;
     width: $size;
     height: $size;
     background-size: $size;
     overflow: hidden;
     display: block;
-
 
     &.facebook {
       background-image: image-url('ad_units/facebook.png');

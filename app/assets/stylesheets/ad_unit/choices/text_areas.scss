@@ -7,9 +7,10 @@
     outline: none;
     font-size: 14px;
     display: block;
-    border: 5px solid $orange-light;
-    border-radius: 6px;
-    margin-bottom: 1px;
+    padding: $default-textarea-padding;
+    border: $default-textarea-border solid $orange-light;
+    border-radius: $default-textarea-border-radius;
+    margin-bottom: $default-spacing;
     color: #000;
   }
 

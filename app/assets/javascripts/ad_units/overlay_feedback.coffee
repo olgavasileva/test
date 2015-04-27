@@ -5,9 +5,11 @@ $(document).ready ->
 
   $('.image-choice, .order-choice-bar').each ->
     $el = $(this)
+    $parent = $(this).parent()
     $('.overlay', $el).css
       width: $el.width()
       height: $el.height()
+      postion: 'fixed'
 
   preventSubmit = (e) ->
     e.preventDefault()

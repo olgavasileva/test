@@ -1,24 +1,43 @@
 @import 'ad_unit/variables';
 
 .medium_rectangle {
+  $width: 300px;
+  $height: 250px;
+
+  $title-height: 47px;
+  $question-height: $height - $title-height - $default-footer-outer-height - ($default-spacing * 2);
+
+  $nav-button-width: 18px;
+
+  $button-content-width: $width - ($nav-button-width * 2) - ($default-spacing * 2);
+  $button-content-margin: $nav-button-width + $default-spacing;
+
   #content, #embed {
-    width: 300px;
-    height: 250px;
-    max-width: 300px;
-    max-height: 250px;
+    width: $width;
+    max-width: $width;
+    height: $height;
+    max-height: $height;
+  }
+
+  #footer {
+    width: $width - ($default-footer-padding-vertical * 2);
   }
 
   #embed {
     $padding: 5px;
-    width: 300px - ($padding * 2);
-    height: 250px - 19px - ($padding * 2);
+    width: $width - ($padding * 2);
+    height: $height - $default-footer-outer-height - ($padding * 2);
     padding: $padding;
   }
 
   #title {
-    height: 36px;
-    width: 294px;
-    padding: 5px 3px;
+    $padding-horizontal: 5px;
+    $padding-vertical: 3px;
+
+    height: $title-height - ($padding-horizontal * 2);
+    width: $width - ($padding-vertical * 2);
+    padding: $padding-horizontal $padding-vertical;
+
     h1 {
       font-size: 15px;
       line-height: 18px;
@@ -26,25 +45,22 @@
   }
 
   #question {
-    height: 183px;
+    height: $question-height;
   }
 
   .nav-button {
-    width: 18px;
+    width: $nav-button-width;
   }
 
   #between-button-content {
-    margin-left: 19px;
-    margin-right: 19px;
-  }
-
-  #footer {
-    width: 294px;
+    width: $button-content-width;
+    margin-left: $button-content-margin;
+    margin-right: $button-content-margin;
   }
 
   #thank-you {
-    height: 231px;
-    max-height: 231px;
+    height: $height - $default-footer-outer-height;
+    max-height: $height - $default-footer-outer-height;
     overflow: hidden;
   }
 
@@ -53,34 +69,48 @@
 
   #question.TextChoiceQuestion,
   #question.YesNoQuestion {
+    @mixin content-height($choices) {
+      $total-bar-height: ($choices * ($default-bar-height + $default-spacing)) - $default-spacing;
+      #between-buttons { height: $question-height - $total-bar-height; }
+    }
+
     .nav-button .icon { margin-top: 45px; }
-    #between-buttons { height: 116px; }
+    @include content-height(2);
 
     &.choices-3 {
       .nav-button .icon { margin-top: 32px; }
-      #between-buttons { height: 83px; }
+      @include content-height(3);
     }
 
     &.choices-4 {
       .nav-button .icon { margin-top: 16px; }
-      #between-buttons { height: 50px; }
+      @include content-height(4);
     }
   }
 
   // ********************************
   // Image Choice Question (Pick One)
 
+  @mixin image-choice-size($width, $height, $vertical-split: 1) {
+    $total-width: ($width - $default-spacing) / 2;
+    $total-height: ($height - ($default-spacing * ($vertical-split - 1))) / $vertical-split;
+    width: $total-width;
+    height: $total-height;
+
+    .spacer {
+      margin-top: $total-height - $default-image-choice-text-height - $default-image-choice-text-padding-top;
+    }
+  }
+
   #question.ImageChoiceQuestion {
-    $total: 182px;
-    $text: 33px;
     $margin: 75px;
 
     .nav-button .icon { margin-top: $margin; }
-    #between-buttons { height: $total; }
+    #between-buttons { height: $question-height; }
 
     &.choices-1, &.choices-2 {
       .image-choice {
-        .spacer { height: $total - $text; }
+        @include image-choice-size($button-content-width, $question-height, 1);
         .overlay .overlay-text  { margin-top: $margin - 23px; }
         .overlay i.overlay-text { margin-top: $margin; }
       }
@@ -88,11 +118,13 @@
 
     &.choices-3, &.choices-4 {
       .image-choice {
-        .spacer { height: ($total / 2) - $text; }
+        @include image-choice-size($button-content-width, $question-height, 2);
+
         .overlay .overlay-text  {
           margin-top: 20px;
           font-size: 18px;
         }
+
         .overlay i.overlay-text {
           margin-top: 20px;
           font-size: 24px;
@@ -105,18 +137,16 @@
   // Multiple Choice Question (Pick Two)
 
   #question.MultipleChoiceQuestion {
-    @mixin multiple-choice-height($height) {
-      $text: 33px;
-      #between-buttons { height: $height; }
+    $height: $question-height - $default-spacing - $default-bar-height;
 
-      $half-height: ($height / 2) - 1px;
-      .image-choice {
-        height: $half-height;
-        .spacer { height: $half-height - $text; }
-      }
+    #between-buttons { height: $height; }
+    .nav-button .icon { margin-top: 64px; }
+
+    .image-choice {
+      &:hover { cursor: pointer; }
 
       .overlay .overlay-text  {
-        margin-top: 26px;
+        margin-top: 17px;
         font-size: 16px;
       }
 
@@ -124,19 +154,20 @@
         margin-top: 20px;
         font-size: 24px;
       }
+
+      @include image-choice-size($button-content-width, $height, 2);
     }
 
-    .image-choice:hover { cursor: pointer; }
-    .nav-button .icon { margin-top: 64px; }
-    .overlay .overlay-text { margin: 20px; }
-
-    @include multiple-choice-height(149px);
-
     &.has-response {
-      .image-choice:hover { cursor: default; }
+      $height: $question-height - $default-spacing;
+
+      #between-buttons { height: $height; }
       .nav-button .icon { margin-top: 75px; }
-      .overlay .overlay-text { margin: 31px; }
-      @include multiple-choice-height(181px);
+
+      .image-choice {
+        &:hover { cursor: default; }
+        @include image-choice-size($button-content-width, $height, 2);
+      }
     }
   }
 
@@ -144,17 +175,20 @@
   // Text Question
 
   #question.TextQuestion {
-    .nav-button .icon { margin-top: 30px; }
-    #between-buttons { height: 90px; }
+    $textarea-height: 47px;
+    $content-height: $question-height - ($default-spacing + $textarea-height * 2);
+
+    .nav-button .icon { margin-top: 35px; }
+    #between-buttons { height: $content-height; }
 
     textarea {
-      width: 300px - 14px;
-      height: 45px;
+      width: $width - (($default-textarea-border + $default-textarea-padding) * 2);
+      height: $textarea-height;
     }
 
     .bar-blue {
-      height: 47px;
-      padding-top: 12px;
+      height: $textarea-height;
+      padding-top: 15px;
     }
   }
 
@@ -162,13 +196,15 @@
   // Order Question
 
   #question.OrderQuestion {
+
+
     @mixin order-choice-height($height) {
       #between-buttons { height: $height; }
 
       $choices: 2 3 4;
       @each $choice in $choices {
         &.choices-#{$choice} {
-          $bar-height: ($height - 3px) / $choice;
+          $bar-height: ($height - (($choice - 1) * $default-spacing)) / $choice;
 
           .order-choice-bar,
           .order-choice-title,
@@ -184,12 +220,13 @@
     .nav-button .icon { margin-top: 64px; }
     .overlay .overlay-text { margin-top: 6px; }
 
-
-    @include order-choice-height(149px);
+    $height: $question-height - $default-spacing - $default-bar-height;
+    @include order-choice-height($height);
 
     &.has-response {
       .nav-button .icon { margin-top: 85px; }
-      @include order-choice-height(182px);
+      $height: $question-height - $default-spacing;
+      @include order-choice-height($height);
     }
   }
 }
