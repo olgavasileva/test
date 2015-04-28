@@ -1,6 +1,7 @@
 RSpec.shared_context :shared_questions do
   def build_questions
     @question_user = FactoryGirl.create(:user)
+    @question_user_2 = FactoryGirl.create(:user)
 
     @question_image = FactoryGirl.create(:question_image)
     @choice_image = FactoryGirl.create(:choice_image)
@@ -24,7 +25,7 @@ RSpec.shared_context :shared_questions do
     @text_choice3 = FactoryGirl.create(:text_choice, title: 'Text Choice 3', question: @text_choice_question, rotate: false)
 
     @multiple_choice_question = FactoryGirl.create(:multiple_choice_question, {
-      user: @question_user,
+      user: @question_user_2,
       category: @category2,
       title: "Multiple Choice Title",
       description: "Multiple Choice Description",

@@ -199,6 +199,23 @@ describe :latest do
           end
         end
 
+        context "When the params include user_ids" do
+          let(:user_ids) { [@question_user_2.id] }
+          let(:params) do
+            {
+              auth_token: auth_token,
+              cursor: cursor,
+              count: count,
+              user_ids: user_ids
+            }
+          end
+
+          it 'returns only questions for the given user' do
+            ids = json['questions'].map { |q| q['id'] }
+            expect(ids).to eq([@multiple_choice_question.id])
+          end
+        end
+
         context "When the params include community_ids and category_ids" do
           let(:params) {{auth_token: auth_token, cursor: cursor, count: count, category_ids: category_ids, community_ids: community_ids}}
 

@@ -499,14 +499,27 @@ class TwoCents::Questions < Grape::API
       optional :count, default: 20, type: Integer, desc: 'The maximum number of questions to return'
       optional :category_ids, type: Array, desc: 'Limit questions to only these categories'
       optional :community_ids, type: Array, desc: 'Limit questions to only those targeted to these communities'
+      optional :user_ids, type: Array, desc: 'Limit questions to only these users'
     end
     post 'latest', jbuilder: 'latest' do
       validate_user!
 
-      @questions = current_user.feed_questions.not_suspended.latest
-      @questions = @questions.where(category_id: declared_params[:category_ids]) if declared_params[:category_ids]
-      @questions = @questions.joins(:communities).merge(Community.where id: declared_params[:community_ids]) if declared_params[:community_ids]
-      @questions = @questions.uniq
+      query = current_user.feed_questions.not_suspended.latest
+
+      if declared_params[:user_ids]
+        query = query.where(user_id: declared_params[:user_ids])
+      end
+
+      if declared_params[:category_ids]
+        query = query.where(category_id: declared_params[:category_ids])
+      end
+
+      if declared_params[:community_ids]
+        query = query.joins(:communities)
+          .merge(Community.where(id: declared_params[:community_ids]))
+      end
+
+      @questions = query.uniq
 
       offset = if declared_params[:cursor] == 0
         0
