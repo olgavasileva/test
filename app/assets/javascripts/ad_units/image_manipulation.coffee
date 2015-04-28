@@ -11,6 +11,6 @@ $(document).ready ->
 
       $.extend cssOpts,
         'background-size': "#{scale}%"
-        'background-position': "#{data.meta.top}px #{data.meta.left}px"
+        'background-position': "#{data.meta.left}px #{data.meta.top}px"
 
     $el.css(cssOpts)
