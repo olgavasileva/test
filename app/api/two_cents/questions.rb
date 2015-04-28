@@ -94,8 +94,9 @@ class TwoCents::Questions < Grape::API
 
       def create_image(klass, _atts=nil)
         hash = _atts || declared_params
-        data = hash.slice(:image_meta_data)
+        data = {}
         data[:new_image_url] = hash.fetch(:image_url, nil)
+        data[:meta_data] = hash.fetch(:image_meta_data, nil)
         klass.create!(data)
       end
     end
