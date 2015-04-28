@@ -3,6 +3,8 @@
 .order-choice-bar {
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+
   margin-bottom: 1px;
   &:last-of-type { margin-bottom: 0px; }
 
