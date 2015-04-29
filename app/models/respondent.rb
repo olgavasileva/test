@@ -85,7 +85,7 @@ class Respondent < ActiveRecord::Base
 
   # respondents with responses or skips within the last n days
   def self.active n = 10
-    joins(:feed_items).where{feed_items.hidden == true}.where{feed_items.hidden_reason.in %w(skipped answered)}.where{feed_items.updated_at >= Date.current - n.days}
+    joins(:feed_items).where{feed_items.hidden == true}.where{feed_items.hidden_reason.in %w(skipped answered)}.where{feed_items.updated_at >= Date.current - n.days}.uniq
   end
 
   # respondents with no responses or skips within the last n days
