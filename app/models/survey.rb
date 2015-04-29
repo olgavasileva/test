@@ -95,7 +95,7 @@ class Survey < ActiveRecord::Base
   end
 
   def convert_markdown
-    unless thank_you_markdown.nil?
+    unless thank_you_markdown.nil? || thank_you_html_changed?
       html = RDiscount.new(thank_you_markdown, :filter_html).to_html
       self.thank_you_html = html
     end

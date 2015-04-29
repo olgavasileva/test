@@ -1,7 +1,7 @@
 ActiveAdmin.register Survey do
   menu parent: 'Surveys'
 
-  permit_params :name, :username, :thank_you_markdown, contest_ids: []
+  permit_params :name, :username, :thank_you_markdown, :thank_you_html, contest_ids: []
 
   filter :id
   filter :user_username, as: :string, label: "Username"
@@ -44,6 +44,7 @@ ActiveAdmin.register Survey do
       f.input :username
       f.input :contests, as: :check_boxes, label_method: :name
       f.input :thank_you_markdown, hint: "You can use markdown to style this text.  Note, this is used in new ad units, but not in former embeddable units."
+      f.input :thank_you_html, hint: "Editing this overrides anythin in the markdown"
     end
     f.actions
   end
