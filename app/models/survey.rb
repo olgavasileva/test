@@ -68,6 +68,22 @@ class Survey < ActiveRecord::Base
     end
   end
 
+  def script request, ad_unit
+    <<-END
+<script type="text/javascript"><!--
+  statisfy_unit = "#{uuid}/#{ad_unit.name}";
+  statisfy_unit_width = #{ad_unit.width}; statisfy_unit_height = #{ad_unit.height};
+//-->
+</script>
+<script type="text/javascript" src="#{request.base_url}/#{Rails.env}/show_qp.js">
+</script>
+    END
+  end
+
+  def iframe request, ad_unit
+    "<iframe width=\"#{ad_unit.width}\" height=\"#{ad_unit.height}\" src=\"#{request.base_url}/qp/#{uuid}/#{ad_unit.name}\" frameborder=\"0\"></iframe>"
+  end
+
   private
 
   def set_user_from_username_if_present
