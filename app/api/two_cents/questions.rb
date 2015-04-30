@@ -724,13 +724,25 @@ class TwoCents::Questions < Grape::API
     }
     params do
       use :auth
-      requires :tag, type: String, desc: 'The tag.'
+      optional :tag, type: String, desc: 'A single tag to search'
+      optional :tags, type: Array[String], desc: 'An array of tags to search'
+      exactly_one_of :tag, :tags
+
       optional :per_page, type: Integer, default: 50, desc: 'The max number of questions per page'
       optional :page, type: Integer, default: 1, desc: 'The page of questions to return'
     end
     get :tagged, jbuilder: 'questions' do
       validate_user!
-      @questions = Question.tagged_with(declared_params[:tag])
+
+      tags = if declared_params[:tag]
+        [declared_params[:tag]]
+      else
+        declared_params[:tags]
+      end.map(&:downcase)
+
+      ids = ActsAsTaggableOn::Tag.where(name: tags).select(:id)
+      @questions = Question.joins(:taggings)
+        .where(taggings: {tag_id: ids})
         .order(created_at: :desc)
         .paginate(declared_params.slice(:page, :per_page))
     end
