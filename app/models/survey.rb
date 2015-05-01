@@ -1,4 +1,7 @@
 class Survey < ActiveRecord::Base
+
+  PERMITTED_REDIRECTS = %w{none internal external}.freeze
+
   attr_accessor :username
 
   belongs_to :user, class_name: 'Respondent'
@@ -11,9 +14,15 @@ class Survey < ActiveRecord::Base
   accepts_nested_attributes_for :questions_surveys, allow_destroy: true
 
   before_validation :set_user_from_username_if_present
+  before_validation :set_default_redirect
   before_validation :generate_uuid, on: :create
+
   validates :uuid, presence: true, uniqueness: {case_sensitive: true}
   validate :user_exists?
+  validates_inclusion_of :redirect, in: PERMITTED_REDIRECTS
+  validates_numericality_of :redirect_timeout,
+    only_integer: true,
+    allow_nil: true
 
   delegate :username, to: :user, allow_nil: true
 
@@ -72,6 +81,10 @@ class Survey < ActiveRecord::Base
 
   def set_user_from_username_if_present
     self.user = Respondent.find_by username:@username if @username.present?
+  end
+
+  def set_default_redirect
+    self.redirect = PERMITTED_REDIRECTS.first unless redirect.present?
   end
 
   def user_exists?

@@ -6,6 +6,18 @@ RSpec.describe Survey do
   it { is_expected.to have_many(:embeddable_units).dependent(:destroy) }
 
   describe 'validations' do
+    it { is_expected.to validate_inclusion_of(:redirect)
+          .in_array(Survey::PERMITTED_REDIRECTS) }
+
+    it { is_expected.to validate_numericality_of(:redirect_timeout)
+          .only_integer }
+
+    it 'sets :redirect to the first PERMITTED_REDIRECTS as a default' do
+      survey = Survey.new
+      survey.valid?
+      expect(survey.redirect).to eq(Survey::PERMITTED_REDIRECTS.first)
+    end
+
     context 'for user' do
       it { is_expected.to_not allow_value(99999)
           .for(:user_id)

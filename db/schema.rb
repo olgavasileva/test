@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150425023141) do
+ActiveRecord::Schema.define(version: 20150501153331) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -927,8 +927,12 @@ ActiveRecord::Schema.define(version: 20150425023141) do
     t.string   "uuid",               null: false
     t.text     "thank_you_markdown"
     t.text     "thank_you_html"
+    t.string   "redirect"
+    t.string   "redirect_url"
+    t.integer  "redirect_timeout"
   end
 
+  add_index "surveys", ["redirect"], name: "index_surveys_on_redirect", using: :btree
   add_index "surveys", ["user_id"], name: "index_surveys_on_user_id", using: :btree
   add_index "surveys", ["uuid"], name: "index_surveys_on_uuid", unique: true, using: :btree
 
