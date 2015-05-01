@@ -1,7 +1,13 @@
 ActiveAdmin.register Survey do
   menu parent: 'Surveys'
 
-  permit_params :name, :username, :thank_you_markdown, contest_ids: []
+  permit_params :name, :username, :thank_you_markdown, :thank_you_html, contest_ids: []
+
+  filter :id
+  filter :user_username, as: :string, label: "Username"
+  filter :uuid
+  filter :created_at
+  filter :updated_at
 
   sidebar "Questions" do
     if params[:id]
@@ -38,6 +44,7 @@ ActiveAdmin.register Survey do
       f.input :username
       f.input :contests, as: :check_boxes, label_method: :name
       f.input :thank_you_markdown, hint: "You can use markdown to style this text.  Note, this is used in new ad units, but not in former embeddable units."
+      f.input :thank_you_html, hint: "Editing this overrides anythin in the markdown"
     end
     f.actions
   end
@@ -48,7 +55,14 @@ ActiveAdmin.register Survey do
       row :name
       row :user
       row :thank_you_html do
-        survey.thank_you_html.html_safe
+        survey.try(:thank_you_html).try(:html_safe)
+      end
+      AdUnit.all.map do |ad_unit|
+        row ad_unit.name.humanize.titleize do
+          "<label>Script</label><div><textarea rows='7' style='width: 100%' onmouseenter='$(this).select()'>#{survey.script request, ad_unit}</textarea></div>".html_safe +
+          "<label>iFrame</label><div><input style='width: 100%' onmouseenter='$(this).select()' value='#{survey.iframe request, ad_unit}'></div>".html_safe +
+          survey.iframe(request, ad_unit).html_safe
+        end
       end
     end
   end
