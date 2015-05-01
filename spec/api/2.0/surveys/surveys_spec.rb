@@ -10,6 +10,9 @@ RSpec.describe TwoCents::Surveys, '/surveys' do
       {
         auth_token: auth.auth_token,
         name: 'Soda Pop Questions',
+        redirect: 'none',
+        redirect_url: 'https://google.com',
+        redirect_timeout: 300,
         thank_you_markdown: '**Thank You**'
       }
     end

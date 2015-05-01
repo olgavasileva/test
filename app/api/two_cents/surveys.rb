@@ -11,12 +11,33 @@ module TwoCents
 
       params :survey do |opts|
         type = opts[:type] || :optional
-        markup_type = (type == :optional) ? :mutually_exclusive : :exactly_one_of
 
         send(type, :name, type: String, desc: 'Survey name')
-        optional :thank_you_html, type: String, desc: 'Thank you message in HTML format'
-        optional :thank_you_markdown, type: String, desc: 'Thank you message in Markdown format'
-        send(markup_type, :thank_you_html, :thank_you_markdown)
+
+        optional :redirect,
+          type: String,
+          desc: 'The redirect type',
+          values: Survey::PERMITTED_REDIRECTS,
+          default: Survey::PERMITTED_REDIRECTS.first
+
+        optional :redirect_url,
+          type: String,
+          desc: 'The redirect url'
+
+        optional :redirect_timeout,
+          type: Integer,
+          desc: 'The redirect timeout in MS.'
+
+        optional :thank_you_html,
+          type: String,
+          desc: 'Thank you message in HTML format'
+
+        optional :thank_you_markdown,
+          type: String,
+          desc: 'Thank you message in Markdown format'
+
+        ty_type = (type == :optional) ? :mutually_exclusive : :exactly_one_of
+        send(ty_type, :thank_you_html, :thank_you_markdown)
       end
 
       params :unit_uuid do |opts|
@@ -29,7 +50,14 @@ module TwoCents
       end
 
       def survey_params
-        declared_params.slice(:name, :thank_you_html, :thank_you_markdown)
+        declared_params.slice(
+          :name,
+          :redirect,
+          :redirect_url,
+          :redirect_timeout,
+          :thank_you_html,
+          :thank_you_markdown
+        )
       end
 
       def survey_scope
@@ -76,6 +104,9 @@ module TwoCents
               "survey": {
                 "id": 1,
                 "name": "Soda Pop Questionaire",
+                "redirect": "external",
+                "redirect_url": "https://google.com",
+                "redirect_timeout": 3000,
                 "thank_you_html": '<p><strong>Thank You</strong></p>',
                 "thank_you_markdown": '**Thank You**',
                 "user_id": 1,

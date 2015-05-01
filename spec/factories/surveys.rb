@@ -5,6 +5,10 @@ FactoryGirl.define do
     name
     thank_you_markdown '**Thank You**'
 
+    redirect { Survey::PERMITTED_REDIRECTS.first }
+    redirect_url 'https://google.com'
+    redirect_timeout 3000
+
     trait :embeddable do
       after(:create) do |survey|
         questions = FactoryGirl.create_list(:image_choice_question, 2, {
