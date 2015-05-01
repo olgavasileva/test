@@ -54,7 +54,7 @@ class DemographicCSV < Struct.new(:question, :options)
     question.responses.each do |response|
       respondent = response.user
       demographic = respondent.demographic_summary
-      unless options[:us_only] && demographic.country != "US"
+      unless options[:us_only] && demographic && demographic.country != "US"
         line = [nil]
         line += if demographic
           DEMOGRAPHICS.map{|key,label| demographic.send key}
