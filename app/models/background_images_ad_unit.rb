@@ -8,6 +8,7 @@ class BackgroundImagesAdUnit < ActiveRecord::Base
   before_validation :set_ad_unit_from_name
   validate :ad_unit_exists?, :background_image_exists?
   validate :meta_data_is_valid?
+  validates :ad_unit_id, presence: true, uniqueness: { scope: :background_image_id }
 
   def update_from_image_meta_data(unit_name, value)
     self.ad_unit_name = unit_name
