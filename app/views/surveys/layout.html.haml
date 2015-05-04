@@ -36,6 +36,7 @@
             .table
               .cell=@question.try :title
 
+      = yield
       #question{class: question_class}
         #between-buttons
           - if @response && prev_path = previous_question_path(@question)

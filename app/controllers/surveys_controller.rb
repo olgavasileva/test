@@ -3,9 +3,9 @@ class SurveysController < ApplicationController
 
   skip_before_action :authenticate_user!, :find_recent_questions
 
-  before_action :migrate_user_cookie
+  before_action :migrate_user_cookie, except: [:question_viewed]
   before_action :preload_and_authorize
-  after_action :allow_iframe
+  after_action :allow_iframe, except: [:question_viewed]
 
   protect_from_forgery with: :null_session
 
@@ -26,14 +26,15 @@ class SurveysController < ApplicationController
     render :invalid_survey, layout: false
   end
 
+  def question_viewed
+    question = question_scope.find(params[:question_id])
+    question.try :viewed!
+    render text: "OK #{question.try :id}"
+  end
+
   def start
-    store_query_params
-    reset_session_responses
-
+    @thank_you_html = survey.parsed_thank_you_html request.query_parameters
     @question = question_scope.first
-    @question.try :viewed!
-
-    render :question
   end
 
   def question
@@ -41,9 +42,6 @@ class SurveysController < ApplicationController
 
     # Find the response if they responded in this session (since the last time they started)
     @response = session_response_for_question @question
-
-    @question.try :viewed!
-    render :question
   end
 
   def create_response
@@ -58,7 +56,7 @@ class SurveysController < ApplicationController
   end
 
   def thank_you
-    @thank_you_html = @survey.parsed_thank_you_html stored_query_params
+    reset_session_responses
     render :thank_you, layout: false
   end
 
@@ -108,7 +106,7 @@ class SurveysController < ApplicationController
       classes = if @question.min_responses.to_i > 1
         ['MultipleChoiceQuestion']
       else
-         [@question.try(:class).try(:name)]
+        [@question.try(:class).try(:name)]
       end
 
       classes.push "choices-#{@question.try(:choices).try(:length)}"
@@ -182,14 +180,6 @@ class SurveysController < ApplicationController
     ##
     ## Helpers for storing and retrieving query params
     ##
-
-    def store_query_params
-      session[survey.uuid] = request.query_parameters
-    end
-
-    def stored_query_params
-      session[survey.uuid]
-    end
 
     def meta_data_for(image)
       {

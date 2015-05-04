@@ -56,6 +56,7 @@ LinkchatApp::Application.routes.draw do
     post '/q/:question_id', action: :create_response, as: :qp_create_response
     get '/thank_you', action: :thank_you, as: :qp_thank_you
     post '/quantcast', action: :quantcast, as: :qp_quantcast
+    post '/q/:question_id/viewed', action: :question_viewed, as: :qp_question_viewed
   end
 
   resources :questions, shallow:true do

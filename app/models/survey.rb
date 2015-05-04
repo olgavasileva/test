@@ -77,6 +77,10 @@ class Survey < ActiveRecord::Base
     end
   end
 
+  def base_url
+    Setting.fetch_value('ad_unit_cdn') || request.base_url
+  end
+
   def script request, ad_unit
     <<-END
 <script type="text/javascript"><!--
@@ -84,13 +88,13 @@ class Survey < ActiveRecord::Base
   statisfy_unit_width = #{ad_unit.width}; statisfy_unit_height = #{ad_unit.height};
 //-->
 </script>
-<script type="text/javascript" src="#{request.base_url}/#{Rails.env}/show_qp.js">
+<script type="text/javascript" src="#{base_url}/#{Rails.env}/show_qp.js">
 </script>
     END
   end
 
   def iframe request, ad_unit
-    "<iframe width=\"#{ad_unit.width}\" height=\"#{ad_unit.height}\" src=\"#{request.base_url}/qp/#{uuid}/#{ad_unit.name}\" frameborder=\"0\"></iframe>"
+    "<iframe width=\"#{ad_unit.width}\" height=\"#{ad_unit.height}\" src=\"#{base_url}/qp/#{uuid}/#{ad_unit.name}\" frameborder=\"0\"></iframe>"
   end
 
   private

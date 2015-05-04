@@ -11,7 +11,7 @@
         .bar-response
         .bar-title= c.title
     - else
-      - url = qp_create_response_path(@survey.uuid, @ad_unit.name, @question)
+      - url = qp_create_response_url(@survey.uuid, @ad_unit.name, @question)
       = button_to url, form: {target: '_self', class: 'bar-blue'}, params: {'response[choice_id]' => c.id} do
         .bar-title= c.title
         .bar-overlay.overlay

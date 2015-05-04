@@ -30,13 +30,18 @@
         ga('send', 'event', 'embeddable', 'end', "#{@survey.uuid}", 3);
 
     = yield(:script)
+    :coffee
+      $ ->
+        data = $('#thank-you-message').data()
+        $('#thank-you-message').html localStorage[data.uuid]
+        localStorage.removeItem data.uuid
 
   %body{class: @ad_unit.name}
     #content
       = render partial: 'embed'
       #thank-you
         %a#thank-you-close.close-button{href: qp_start_url(@survey.uuid, @ad_unit.name), target: '_self'} x
-        #thank-you-message= CGI.unescapeHTML(@thank_you_html).html_safe
+        #thank-you-message{data: {uuid: @survey.uuid}}
 
       = render partial: 'footer'
 

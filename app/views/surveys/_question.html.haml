@@ -1,0 +1,22 @@
+- question ||= nil
+- response ||= nil
+
+#viewed.hidden{data: {url: qp_question_viewed_url(@survey.uuid, @ad_unit.name, @question)}}
+:coffee
+  $ ->
+    $.post $("#viewed").data().url
+
+- content_for :script do
+  - if ENV['GOOGLE_ANALYTICS_ID'].present?
+    :javascript
+      ga('send', 'event', 'embeddable', 'view', '#{@question.uuid}', 3);
+
+    - if responding?
+      :javascript
+        ga('send', 'event', 'embeddable', 'response', '#{@question.uuid}', 3);
+
+= render partial: 'quantcast_js' if response && current_ad_unit_user.quantcast_demographic_required?
+
+- template = question.class.name.underscore
+- template = 'multiple_choice_question' if question.min_responses.to_i > 1
+= render "surveys/response_fields/#{template}", answer: response, question: question

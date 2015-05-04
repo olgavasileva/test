@@ -1,0 +1,8 @@
+- content_for :script do
+  :coffee
+    $ ->
+      data = $('#thankyou').data()
+      localStorage[data.uuid] = data.html
+
+= render "surveys/question", question: @question, response: @response
+.hidden#thankyou{data: {uuid: @survey.uuid, html: @thank_you_html}}

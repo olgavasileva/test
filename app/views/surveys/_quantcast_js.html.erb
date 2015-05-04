@@ -14,7 +14,7 @@
       $n.on('click', click);
       qt = setTimeout(function(){qd.reject()}, 500);
       qd.then(function(d) {
-        $.ajax(<%= qp_quantcast_path(@survey.uuid, @ad_unit.name).to_json.html_safe %>, {
+        $.ajax(<%= qp_quantcast_url(@survey.uuid, @ad_unit.name).to_json.html_safe %>, {
           type: 'POST', dataType: 'json', data: {quantcast: JSON.stringify(d)},
           headers: {'X-CSRF-Token': <%= form_authenticity_token.to_json.html_safe %>}
         });
