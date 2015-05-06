@@ -35,7 +35,7 @@ RSpec.describe SurveysController do
   describe 'GET #start_survey' do
     subject { get :start, survey_uuid: survey.uuid, unit_name: ad_unit.name }
 
-    it { is_expected.to render_template(:question) }
+    it { is_expected.to render_template(:start) }
 
     it 'assigns the question correctly' do
       subject
