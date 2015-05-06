@@ -20,6 +20,11 @@ button {
   background: none;
   cursor: pointer;
   &:disabled { cursor: not-allowed; }
+ }
+
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0
 }
 
 // -----------------------------------------------------------------------------
