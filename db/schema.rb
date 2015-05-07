@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150501153331) do
+ActiveRecord::Schema.define(version: 20150507190521) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -813,6 +813,8 @@ ActiveRecord::Schema.define(version: 20150501153331) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "settings", ["key"], name: "index_settings_on_key", unique: true, using: :btree
 
   create_table "sharings", force: true do |t|
     t.integer  "sender_id"
