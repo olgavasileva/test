@@ -2,19 +2,19 @@
   window.adUnitConfig = {
     autoForward: {
       enabled: <%= (Rails.env.production? || Rails.env.labs?).to_json %>,
-      speed: <%= Setting.fetch_value('embeddable_unit_auto_forward', 3).to_i * 1000 %>
+      speed: <%= settings.fetch(:embeddable_unit_auto_forward, 3).to_i * 1000 %>
     },
     cta: {
       enabled: <%= (!@response.present?).to_json %>,
-      minStart: <%= Setting.fetch_value('embeddable_unit_cta_min_start', 500).to_i %>,
-      maxStart: <%= Setting.fetch_value('embeddable_unit_cta_max_start', 3000).to_i %>,
-      fadeSpeed: <%= Setting.fetch_value('embeddable_unit_cta_fade_speed', 100).to_i %>,
-      duration: <%= Setting.fetch_value('embeddable_unit_cta_duration', 1000).to_i %>,
-      repeat: <%= Setting.fetch_value('embeddable_unit_cta_repeat', 15000).to_i %>
+      minStart: <%= settings.fetch(:embeddable_unit_cta_min_start, 500).to_i %>,
+      maxStart: <%= settings.fetch(:embeddable_unit_cta_max_start, 3000).to_i %>,
+      fadeSpeed: <%= settings.fetch(:embeddable_unit_cta_fade_speed, 100).to_i %>,
+      duration: <%= settings.fetch(:embeddable_unit_cta_duration, 1000).to_i %>,
+      repeat: <%= settings.fetch(:embeddable_unit_cta_repeat, 15000).to_i %>
     },
     feedback: {
       enabled: <%= (!@response.present?).to_json %>,
-      duration: <%= Setting.fetch_value('embeddable_unit_feedback_duration', 300).to_i %>
+      duration: <%= settings.fetch(:embeddable_unit_feedback_duration, 300).to_i %>
     },
     responseAnimation: {
       enabled: <%= @response.present?.to_json %>,

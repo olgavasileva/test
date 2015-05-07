@@ -3,6 +3,7 @@ class SurveysController < ApplicationController
 
   skip_before_action :authenticate_user!, :find_recent_questions
 
+  before_action :set_expiration_headers, only: [:start]
   before_action :migrate_user_cookie, except: [:question_viewed]
   before_action :preload_and_authorize
   after_action :allow_iframe, except: [:question_viewed]
@@ -10,6 +11,7 @@ class SurveysController < ApplicationController
   protect_from_forgery with: :null_session
 
   helper_method \
+    :settings,
     :previous_question_path,
     :next_question_path,
     :cookie_user,
@@ -35,8 +37,6 @@ class SurveysController < ApplicationController
   def start
     @thank_you_html = survey.parsed_thank_you_html request.query_parameters
     @question = question_scope.first
-    headers["Expires"] = Setting.fetch_value("ad_unit_expires") if Setting.fetch_value("ad_unit_expires")
-    headers["Cache-Control"] = Setting.fetch_value("ad_cache_control") if Setting.fetch_value("ad_cache_control")
   end
 
   def question
@@ -70,6 +70,29 @@ class SurveysController < ApplicationController
   end
 
   private
+
+    def settings
+      @survey_settings ||= Setting.fetch_values(
+        'ad_unit_expires',
+        'ad_cache_control',
+        'embeddable_unit_cta_min_start',
+        'embeddable_unit_cta_max_start',
+        'embeddable_unit_cta_fade_speed',
+        'embeddable_unit_cta_duration',
+        'embeddable_unit_cta_repeat',
+        'embeddable_unit_feedback_duration'
+      )
+    end
+
+    def set_expiration_headers
+      if settings[:ad_unit_expires]
+        headers["Expires"] = settings[:ad_unit_expires]
+      end
+
+      if settings[:ad_cache_control]
+        headers["Cache-Control"] = settings[:ad_cache_control]
+      end
+    end
 
     def quantcast_data
       params[:quantcast]
