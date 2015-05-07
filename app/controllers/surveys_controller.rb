@@ -35,6 +35,8 @@ class SurveysController < ApplicationController
   def start
     @thank_you_html = survey.parsed_thank_you_html request.query_parameters
     @question = question_scope.first
+    headers["Expires"] = Setting.fetch_value("ad_unit_expires") if Setting.fetch_value("ad_unit_expires")
+    headers["Cache-Control"] = Setting.fetch_value("ad_cache_control") if Setting.fetch_value("ad_cache_control")
   end
 
   def question
