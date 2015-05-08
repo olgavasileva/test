@@ -834,11 +834,16 @@ class TwoCents::Questions < Grape::API
       end
 
       questions.map do |q|
-        {
+        question = {
           id: q.id,
           title: q.title,
           created_at: q.created_at.to_i
         }
+        if q.survey_id
+          question[:survey_id] = q.survey_id
+          question[:survey_uuid] = Survey.find(q.survey_id).uuid
+        end
+        question
       end
     end
 
