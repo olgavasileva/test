@@ -78,7 +78,7 @@ class Survey < ActiveRecord::Base
   end
 
   def base_url
-    settings.fetch('ad_unit_cdn', request.base_url)
+    @base_url ||= Setting.fetch_value('ad_unit_cdn', request.base_url)
   end
 
   def script request, ad_unit
