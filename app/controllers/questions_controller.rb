@@ -44,7 +44,9 @@ class QuestionsController < ApplicationController
       if browser.bot?
         redirect_to new_question_response_path(@question)
       else
-        redirect_to File.join(ENV['WEB_APP_URL'], "#/app/question", @question.id.to_s)
+        url = File.join(ENV['WEB_APP_URL'], "#/app/question", @question.id.to_s)
+        query = {referral: request.referrer}.to_query
+        redirect_to "#{url}?#{query}"
       end
     else
       authorize Question, :index?
