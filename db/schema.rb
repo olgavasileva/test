@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150507190521) do
+ActiveRecord::Schema.define(version: 20150511193541) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -701,6 +701,7 @@ ActiveRecord::Schema.define(version: 20150507190521) do
     t.integer  "scene_id"
     t.integer  "comment_id"
     t.string   "source"
+    t.text     "original_referrer"
   end
 
   add_index "responses", ["choice_id"], name: "index_responses_on_choice_id", using: :btree

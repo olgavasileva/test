@@ -77,6 +77,17 @@ describe :response do
         end
       end
 
+      describe ':orginal_referrer' do
+        let(:question) {FactoryGirl.create :text_question}
+        let(:question_id) {question.id}
+        let(:other_params) { {text: 'yes', original_referrer: 'http://facebook.com/path'} }
+
+        it 'stores the referrer' do
+          referrer = 'http://facebook.com/path'
+          expect(question.responses.last.original_referrer).to eq(referrer)
+        end
+      end
+
       describe "TextQuestion response" do
         let(:question) {FactoryGirl.create :text_question}
         let(:question_id) {question.id}

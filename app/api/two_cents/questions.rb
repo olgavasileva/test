@@ -990,6 +990,7 @@ class TwoCents::Questions < Grape::API
       optional :anonymous, type: Boolean, default:false, desc: "True if the user want's to remain anonymous"
 
       optional :source, type: String, values:%w(web embeddable ios android), desc: 'Source of this response: web, embeddable, ios, android'
+      optional :original_referrer, type: String, desc: 'Question referrer'
 
       optional :text, type: String, desc: 'What the user typed when responding to a TextQuestion'
       optional :choice_id, type: Integer, desc: 'The single choice selected in a TextChoiceQuestion or ImageChoiceQuestion'
@@ -1011,7 +1012,7 @@ class TwoCents::Questions < Grape::API
 
       @question = Question.find declared_params[:question_id]
 
-      resp_param_keys = %w[anonymous text choice_id choice_ids source]
+      resp_param_keys = %w[anonymous text choice_id choice_ids source, original_referrer]
       resp_params = params.to_h.slice(*resp_param_keys)
       resp_params['user_id'] = current_user.id
 
