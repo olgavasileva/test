@@ -100,7 +100,7 @@ ActiveAdmin.register Question do
           table_for question.choices do
             column :id
             column :title
-            column(:actions) { |c| "View / Edit" }
+            column(:actions) { |c| link_to('View', admin_choice_path(c)) }
           end
         end
       end if question.choices.size > 0

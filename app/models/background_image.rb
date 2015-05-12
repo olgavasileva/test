@@ -7,9 +7,11 @@ class BackgroundImage < ActiveRecord::Base
     dependent: :delete_all
 
   attr_accessor :meta_data
+  attr_accessor :meta_data_json
   attr_accessor :new_image_url
 
   before_validation :setup_image, if: 'new_image_url.present?'
+  before_validation :convert_json, if: 'meta_data_json.present?'
 
   with_options if: 'meta_data.present?' do |meta|
     meta.validate :meta_data_is_valid_type?
@@ -45,6 +47,15 @@ class BackgroundImage < ActiveRecord::Base
       self.image = open(new_image_url)
     else
       self.remote_image_url = new_image_url
+    end
+  end
+
+  def convert_json
+    self.meta_data = {}
+    meta_data_json.each do |key, value|
+      if value.present?
+        self.meta_data[key] = JSON.parse(value) rescue nil
+      end
     end
   end
 
