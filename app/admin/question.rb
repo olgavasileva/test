@@ -75,6 +75,21 @@ ActiveAdmin.register Question do
     actions
   end
 
+  show do |question|
+    attributes_table do
+      row :id
+      row :question
+      row :title
+      row :background_image do |choice|
+        image_tag choice.background_image.image.url, style:"max-height: 100px"
+      end
+      row :rotate
+      row :position
+      row :created_at
+      row :updated_at
+    end
+  end
+
   form do |f|
     f.inputs f.object.type do
       f.input :state, collection: Question::STATES, include_blank: false
