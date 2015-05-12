@@ -75,6 +75,38 @@ ActiveAdmin.register Question do
     actions
   end
 
+  show do |question|
+    columns do
+      column do
+        attributes_table do
+          row :id
+          row :question
+          row(:type) { status_tag(question.type) }
+          row :title
+          row :rotate
+          row :position
+          row :created_at
+          row :updated_at
+        end
+
+        panel 'Background Image' do
+          image_url = question.background_image.image.url
+          image_tag image_url, style: 'max-width: 100%; display: block; margin: 0px auto 10px;'
+        end if question.background_image.present?
+      end
+
+      column do
+        panel 'Question Choices' do
+          table_for question.choices do
+            column :id
+            column :title
+            column(:actions) { |c| link_to('View', admin_choice_path(c)) }
+          end
+        end
+      end if question.choices.size > 0
+    end
+  end
+
   form do |f|
     f.inputs f.object.type do
       f.input :state, collection: Question::STATES, include_blank: false
