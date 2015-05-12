@@ -1,4 +1,10 @@
-class DemographicCSV < Struct.new(:question, :options)
+class DemographicCSV
+  attr_accessor :question, :options
+
+  def initialize question, options = {}
+    @question = question
+    @options = options
+  end
 
   DEMOGRAPHICS = {
     gender: 'Gender',
@@ -9,12 +15,14 @@ class DemographicCSV < Struct.new(:question, :options)
     education_level: 'Education Level',
     # political_affiliation: 'Politicial Affiliation',
     # political_engagement: 'Politicial Engagement',
-    latitude: 'Latitude',
-    longitude: 'Longitude',
-    metro_code: 'Metro Code',
-    city: 'City',
-    state: 'State',
-    postal_code: 'Postal Code',
+    # latitude: 'Latitude',
+    # longitude: 'Longitude',
+    # metro_code: 'Metro Code',
+    # city: 'City',
+    # state: 'State',
+    # postal_code: 'Postal Code',
+    region: 'Region',
+    ip_address: 'IP Address',
     country: 'Country'
   }.freeze
 
