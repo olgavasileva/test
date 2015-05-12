@@ -82,8 +82,12 @@ LinkchatApp::Application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
-  config.action_mailer.default_url_options = { host: 'statisfy.co' }
+  if ENV['RAILS_ASSET_HOST']
+    config.asset_host = ENV['RAILS_ASSET_HOST']
+    config.action_mailer.asset_host = ENV['RAILS_ASSET_HOST']
+  end
 
+  config.action_mailer.default_url_options = { host: 'statisfy.co' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
       :address              => ENV['SMTP_ADDRESS'],

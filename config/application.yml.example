@@ -25,6 +25,8 @@ FACEBOOK_APP_SECRET: ~
 TWITTER_API_KEY: ~
 TWITTER_API_SECRET: ~
 
+RAILS_ASSET_HOST: ~
+
 test:
   api_shared_secret: example_shared_secret
   AWS_ACCESS_KEY: fake
