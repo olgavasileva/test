@@ -22,7 +22,22 @@ describe :asked do
 
   it "responds with correct data fields" do
     response_body.each do |data|
-      expect(data.keys).to match_array %w[id title created_at]
+      expect(data.keys).to match_array %w[id title created_at survey_id survey_uuid]
+    end
+  end
+
+  context 'as part of a survey' do
+    let(:survey) { FactoryGirl.create(:survey, :embeddable) }
+    let!(:questions) do
+      survey.questions.tap do |qs|
+        qs.update_all(user_id: instance.user_id)
+      end
+    end
+
+    it 'returns survey information' do
+      json = response_body.first
+      expect(json['survey_id']).to eq(survey.id)
+      expect(json['survey_uuid']).to eq(survey.uuid)
     end
   end
 

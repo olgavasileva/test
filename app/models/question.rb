@@ -14,6 +14,7 @@ class Question < ActiveRecord::Base
   # Attribute that allows questions to be added to surveys
   attr_accessor :survey_id, :survey_position
   has_one :questions_survey, dependent: :destroy
+  has_one :survey, through: :questions_survey
 
 	has_many :inclusions, dependent: :destroy
 	has_many :packs, through: :inclusions
