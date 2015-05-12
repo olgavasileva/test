@@ -1012,7 +1012,7 @@ class TwoCents::Questions < Grape::API
 
       @question = Question.find declared_params[:question_id]
 
-      resp_param_keys = %w[anonymous text choice_id choice_ids source, original_referrer]
+      resp_param_keys = %w[anonymous text choice_id choice_ids source original_referrer]
       resp_params = params.to_h.slice(*resp_param_keys)
       resp_params['user_id'] = current_user.id
 
