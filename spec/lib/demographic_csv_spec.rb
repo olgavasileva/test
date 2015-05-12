@@ -10,23 +10,15 @@ RSpec.describe DemographicCSV do
   end
 
   describe '#to_csv' do
-    xit 'builds the csv correctly' do
-      demo = DemographicCSV.new(Question.new(title: 'Test'))
+    it 'builds the csv correctly' do
+      response = FactoryGirl.create :text_response
+      question = response.question
+      demo = DemographicCSV.new question
 
-      expect(demo).to receive(['Question', 'Title'])
-
-      expect(demo).to receive(:choice_rows).ordered
-        .and_yield([:choice_1])
-        .and_yield([:choice_2])
-
-      expect(demo.question_title_row).to eq(['Responses to:', 'Title'])
-
-      expect(demo).to receive(:response_rows).ordered
-        .and_yield([:response_1])
-        .and_yield([:response_2])
-
-      csv = demo.to_csv
-      expect(csv.to_s).to eq "q_title\nchoice_1\nchoice_2\n\nq_title\nr_title\nresponse_1\nresponse_2\n"
+      csv_text = demo.to_csv.to_s
+      expect(csv_text).to match /Question:,#{question.title}\n/
+      expect(csv_text).to match /Responses to:,#{question.title}\n/
+      expect(csv_text).to match /Gender,Age,Household Income,Children in Household,Ethnicity,Education Level,Region,IP Address,Country,#{question.title}\n/
     end
   end
 

@@ -76,6 +76,10 @@ class DemographicBase < ActiveRecord::Base
     geo && geo.country.iso_code
   end
 
+  def region
+    # based on state and a lookup table
+    StateInfo.new(state).region
+  end
 
   private
 
