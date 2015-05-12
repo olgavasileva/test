@@ -76,17 +76,34 @@ ActiveAdmin.register Question do
   end
 
   show do |question|
-    attributes_table do
-      row :id
-      row :question
-      row :title
-      row :background_image do |choice|
-        image_tag choice.background_image.image.url, style:"max-height: 100px"
+    columns do
+      column do
+        attributes_table do
+          row :id
+          row :question
+          row(:type) { status_tag(question.type) }
+          row :title
+          row :rotate
+          row :position
+          row :created_at
+          row :updated_at
+        end
+
+        panel 'Background Image' do
+          image_url = question.background_image.image.url
+          image_tag image_url, style: 'max-width: 100%; display: block; margin: 0px auto 10px;'
+        end if question.background_image.present?
       end
-      row :rotate
-      row :position
-      row :created_at
-      row :updated_at
+
+      column do
+        panel 'Question Choices' do
+          table_for question.choices do
+            column :id
+            column :title
+            column(:actions) { |c| "View / Edit" }
+          end
+        end
+      end if question.choices.size > 0
     end
   end
 
