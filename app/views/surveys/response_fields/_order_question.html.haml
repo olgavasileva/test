@@ -26,6 +26,7 @@
   - content_for :below_buttons do
     - url = qp_create_response_url(@survey.uuid, @ad_unit.name, question)
     = form_tag url, target: '_self' do
+      = hidden_field_tag 'response[original_referrer]', original_referrer
       - question.choices.each_with_index do |c, i|
         = hidden_field_tag 'response[choice_ids][]', c.id, id: "index-#{i}"
 

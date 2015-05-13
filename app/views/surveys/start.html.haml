@@ -1,8 +1,9 @@
 - content_for :script do
   :coffee
     $ ->
-      data = $('#thankyou').data()
-      localStorage[data.uuid] = data.html
+      info = $('#statisfyinfo').data()
+      localStorage[info.thankyouUuid] = info.thankyouHtml
+      $.cookie['original_referrer'] = info.originalReferrer
 
-= render "surveys/question", question: @question, response: @response
-.hidden#thankyou{data: {uuid: @survey.uuid, html: @thank_you_html}}
+= render "surveys/question", question: @question, response: @response, original_referrer: @original_referrer
+.hidden#statisfyinfo{data: {original_referrer: @original_referrer, thankyou: {uuid: @survey.uuid, html: @thank_you_html}}}

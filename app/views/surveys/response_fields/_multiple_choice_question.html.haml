@@ -17,5 +17,6 @@
   - content_for :below_buttons do
     - url = qp_create_response_url(@survey.uuid, @ad_unit.name, question)
     = form_tag url, target: '_self', id: 'multiple-choice-form', data: {min: question.min_responses, max: question.max_responses} do
+      = hidden_field_tag 'response[original_referrer]', original_referrer
       .bar-orange
         %button#multiple-choice-submit{type:'submit'}= 'Submit'

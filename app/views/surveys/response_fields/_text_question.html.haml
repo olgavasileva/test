@@ -12,6 +12,7 @@
   - else
     - url = qp_create_response_url(@survey.uuid, @ad_unit.name, question)
     = form_tag url, target: '_self' do
+      = hidden_field_tag 'response[original_referrer]', original_referrer
       .textarea
         = text_area_tag 'response[text]', nil, placeholder: 'Type your answer here'
       .bar-orange

@@ -1,5 +1,6 @@
 - question ||= nil
 - response ||= nil
+- original_referrer ||= nil
 
 #viewed.hidden{data: {url: qp_question_viewed_url(@survey.uuid, @ad_unit.name, @question)}}
 :coffee
@@ -19,4 +20,4 @@
 
 - template = question.class.name.underscore
 - template = 'multiple_choice_question' if question.min_responses.to_i > 1
-= render "surveys/response_fields/#{template}", answer: response, question: question
+= render "surveys/response_fields/#{template}", answer: response, question: question, original_referrer: original_referrer

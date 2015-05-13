@@ -12,7 +12,7 @@
         .bar-title= c.title
     - else
       - url = qp_create_response_url(@survey.uuid, @ad_unit.name, @question)
-      = button_to url, form: {target: '_self', class: 'bar-blue'}, params: {'response[choice_id]' => c.id} do
+      = button_to url, form: {target: '_self', class: 'bar-blue'}, params: {'response[choice_id]' => c.id, 'response[original_referrer]' => original_referrer} do
         .bar-title= c.title
         .bar-overlay.overlay
           %strong= t('embeddable_unit.cta_click')

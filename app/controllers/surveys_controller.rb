@@ -35,6 +35,7 @@ class SurveysController < ApplicationController
   end
 
   def start
+    @original_referrer = request.referrer
     @thank_you_html = survey.parsed_thank_you_html request.query_parameters
     @question = question_scope.first
   end
@@ -44,6 +45,7 @@ class SurveysController < ApplicationController
 
     # Find the response if they responded in this session (since the last time they started)
     @response = session_response_for_question @question
+    @original_referrer = @response.try :original_referrer
   end
 
   def create_response
@@ -51,6 +53,7 @@ class SurveysController < ApplicationController
     @response = @question.responses.create!(response_params.merge(source: 'embeddable')) do |r|
       r.user = current_ad_unit_user
     end
+    @original_referrer = @response.try :original_referrer
 
     remember_session_response @response
 
@@ -124,7 +127,7 @@ class SurveysController < ApplicationController
     def response_params
       # Using 'response' as the base param with all the parts allowed for various response types
       # Relying on response validation to sort out bad params
-      params.require(:response).permit(:choice_id, :text, choice_ids: [])
+      params.require(:response).permit(:choice_id, :text, :original_referrer, choice_ids: [])
     end
 
     def question_class
