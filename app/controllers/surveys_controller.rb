@@ -40,14 +40,6 @@ class SurveysController < ApplicationController
     @question = question_scope.first
   end
 
-  def question
-    @question = question_scope.find(params[:question_id])
-
-    # Find the response if they responded in this session (since the last time they started)
-    @response = session_response_for_question @question
-    @original_referrer = @response.try :original_referrer
-  end
-
   def create_response
     @question = question_scope.find(params[:question_id])
     @response = @question.responses.create!(response_params.merge(source: 'embeddable')) do |r|
@@ -55,9 +47,22 @@ class SurveysController < ApplicationController
     end
     @original_referrer = @response.try :original_referrer
 
+    # Whenever they answer the first question, reset the responses so they can answer them all again
+    # We can't do this in start since it may be cached on cloudfront
+    reset_session_responses if @question == question_scope.first
+
+    # Remember that they answered this question so we show summary data if the hit the back button
     remember_session_response @response
 
     render :question
+  end
+
+  def question
+    @question = question_scope.find(params[:question_id])
+
+    # Find the response if they responded in this session (since the last time they started)
+    @response = session_response_for_question @question
+    @original_referrer = @response.try :original_referrer
   end
 
   def thank_you
