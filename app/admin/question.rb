@@ -90,8 +90,11 @@ ActiveAdmin.register Question do
         end
 
         panel 'Background Image' do
-          image_url = question.background_image.image.url
-          image_tag image_url, style: 'max-width: 100%; display: block; margin: 0px auto 10px;'
+          image = question.background_image
+          content  = image_tag image.image.url, class: 'panel-image'
+          content += link_to('View', admin_background_image_path(image))
+          content += ' / '
+          content += link_to('Edit', edit_admin_background_image_path(image))
         end if question.background_image.present?
       end
 
