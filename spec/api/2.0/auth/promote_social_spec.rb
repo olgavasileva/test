@@ -135,7 +135,8 @@ RSpec.describe 'TwoCents::AuthApi#promote_social' do
       'auth_token' => instance.auth_token,
       'email' => instance.user.email,
       'username' => instance.user.username,
-      'user_id' => instance.user.id
+      'user_id' => instance.user.id,
+      'providers' => [{'id' => auth.id, 'provider' => auth.provider}]
     })
   end
 end

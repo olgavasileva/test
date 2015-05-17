@@ -17,7 +17,8 @@ class LoginResponse
 
   def to_hash
     {}.tap do |atts|
-      atts.merge!(instance_atts) if instance.user.present?
+      atts.merge!(instance_atts) if user.present?
+      atts.merge!(provider_atts) if user.respond_to?(:authentications)
       atts.merge!(auth_atts) if auth.present?
     end
   end
@@ -38,6 +39,12 @@ class LoginResponse
       user_id: user.try(:id),
       username: user.try(:username),
       email: user.try(:email)
+    }
+  end
+
+  def provider_atts
+    {
+      providers: user.authentications.as_json(only: [:id, :provider])
     }
   end
 

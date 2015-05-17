@@ -108,7 +108,8 @@ describe :login do
                   'auth_token' => instance.auth_token,
                   'email' => user.email,
                   'username' => user.username,
-                  'user_id' => user.id
+                  'user_id' => user.id,
+                  'providers' => []
                 })
               end
 
@@ -138,7 +139,8 @@ describe :login do
                   'auth_token' => instance.auth_token,
                   'email' => user.email,
                   'username' => user.username,
-                  'user_id' => user.id
+                  'user_id' => user.id,
+                  'providers' => []
                 })
               end
 
@@ -164,7 +166,8 @@ describe :login do
                   'auth_token' => instance.auth_token,
                   'email' => user.email,
                   'username' => user.username,
-                  'user_id' => user.id
+                  'user_id' => user.id,
+                  'providers' => []
                 })
               end
 
@@ -225,7 +228,8 @@ describe :login do
                   'auth_token' => instance.auth_token,
                   'email' => user.email,
                   'username' => user.username,
-                  'user_id' => user.id
+                  'user_id' => user.id,
+                  'providers' => []
                 })
               end
 
@@ -252,7 +256,8 @@ describe :login do
                   'auth_token' => instance.auth_token,
                   'email' => user.email,
                   'username' => user.username,
-                  'user_id' => user.id
+                  'user_id' => user.id,
+                  'providers' => []
                 })
               end
 
@@ -278,7 +283,8 @@ describe :login do
                   'auth_token' => instance.auth_token,
                   'email' => user.email,
                   'username' => user.username,
-                  'user_id' => user.id
+                  'user_id' => user.id,
+                  'providers' => []
                 })
               end
 
