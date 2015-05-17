@@ -8,7 +8,7 @@ class OmniauthController < ActionController::Base
   before_action :require_instance!, only: [:callback]
 
   rescue_from ActiveRecord::ActiveRecordError do
-    render_callback false, false, {error: t('omniauth.error.process_error')}
+    render_error t('omniauth.error.process_error')
   end
 
   def setup
@@ -67,38 +67,32 @@ class OmniauthController < ActionController::Base
       end
     end
 
-    if auth.user.present?
-      render_callback true, true, {
-        auth_token: instance.auth_token,
-        email: instance.user.email,
-        username: instance.user.username,
-        user_id: instance.user.id
-      }
-    else
-      render_callback false, true, {
-        provider_id: auth.id
-      }
-    end
+    render_callback LoginResponse.new(instance, auth)
   end
 
   def failure
-    render_callback false, false, {error: params[:message]}
+    render_error params[:message]
   end
 
   private
 
   def require_instance!
     unless instance.present?
-      render_callback false, false, {error: t('omniauth.error.instance_required')}
+      render_error t('omniauth.error.instance_required')
     end
   end
 
-  def render_callback(result, valid, data)
+  def render_error(error)
+    render_callback({success: false, provider_valid: false, error: error})
+  end
+
+  def render_callback(data)
     cookies[provider_cookie_name] = {
-      value: data.merge(success: result, provider_valid: valid).to_json,
+      value: data.to_json,
       expires: 15.minutes.from_now,
       domain: provider_cookie_domain
     }
+
     render :callback
   end
 

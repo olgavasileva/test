@@ -116,6 +116,7 @@ RSpec.describe OmniauthController do
         expect(cookie).to eq({
           'success' => true,
           'provider_valid' => true,
+          'provider_id' => auth.id,
           'auth_token' => instance.reload.auth_token,
           'email' => instance.user.email,
           'username' => instance.user.username,
