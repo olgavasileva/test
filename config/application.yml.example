@@ -15,6 +15,14 @@ DEVICE_AWS_SECRET_ACCESS_KEY: ~
 DEVICE_AWS_REGION: us-east-1
 DEVICE_AWS_BUCKET: crashmob-production
 
+SHOW_HOME_PAGE_FEED: true
+REDIRECT_QUESTIONS_NEW_TO_WEBAPP: false
+
+QUANTCAST_BASE_URL: https://measure.api.quantcast.com/api/v1
+QUANTCAST_API_KEY: ~
+QUANTCAST_SHARED_SECRET: ~
+QUANTCAST_P_CODE: ~
+
 GEOIP_PATH: geoip
 
 IOS_DOWNLOAD_TRACKING_URL: https://handler.fiksu.com/click?adid=e9739340-8863-0132-879a-22000b358176
@@ -29,10 +37,10 @@ RAILS_ASSET_HOST: ~
 
 test:
   api_shared_secret: example_shared_secret
-  AWS_ACCESS_KEY: fake
-  AWS_SECRET_ACCESS_KEY: fake
-  DEVICE_AWS_ACCESS_KEY: fake
-  DEVICE_AWS_SECRET_ACCESS_KEY: fake
+  AWS_ACCESS_KEY: ~
+  AWS_SECRET_ACCESS_KEY: ~
+  DEVICE_AWS_ACCESS_KEY: ~
+  DEVICE_AWS_SECRET_ACCESS_KEY: ~
 
 development:
   AWS_BUCKET: crashmob-development
