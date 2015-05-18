@@ -223,12 +223,22 @@
       .order-choice-orderer { padding-top: 10px; }
       .overlay { line-height: 40px; }
       .order-choice-title { line-height: 49px; }
+
+      &.has-response {
+        .order-choice-title { line-height: 60px; }
+        .bar-blue { line-height: 46px; }
+      }
     }
 
     &.choices-4 {
       .order-choice-orderer { padding-top: 3px; }
       .overlay { line-height: 26px; }
       .order-choice-title { line-height: 36px; }
+
+      &.has-response {
+        .order-choice-title { line-height: 44px; }
+        .bar-blue { line-height: 32px; }
+      }
     }
 
     .nav-button .icon { margin-top: 64px; }
