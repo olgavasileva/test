@@ -4,14 +4,14 @@
   padding: $default-footer-padding-horizontal $default-footer-padding-vertical;
   clear: both;
 
-  .share-icon, #embed-icon, .logo {
-    height: $default-footer-inner-height;
-    background-repeat: no-repeat;
+  @mixin icon-bg($icon) {
+    background-image: image-url("ad_units/#{$icon}.png");
+    background-image: image-url("ad_units/#{$icon}.svg"), none;
   }
 
-  .share-icon, #embed-icon {
-    margin-right: $default-footer-padding-vertical;
-    float: left;
+  .action-icon, .logo {
+    height: $default-footer-inner-height;
+    background-repeat: no-repeat;
   }
 
   .logo {
@@ -19,32 +19,27 @@
     float: right;
   }
 
-  .share-icon {
-    $size: $default-footer-inner-height - $default-spacing;
+  .action-icon {
+    $size: $default-footer-inner-height;
     width: $size;
     height: $size;
     background-size: $size;
     overflow: hidden;
     display: block;
+    float: left;
+    margin-right: 2px;
 
-    &.facebook {
-      background-image: image-url('ad_units/facebook.png');
-    }
-
-    &.twitter {
-      background-image: image-url('ad_units/twitter.png');
-    }
+    &.facebook { @include icon-bg('facebook'); }
+    &.twitter { @include icon-bg('twitter'); }
+    &.tumblr { @include icon-bg('tumblr'); }
+    &.embed { @include icon-bg('embed'); }
+    &.create { @include icon-bg('create'); }
   }
 
-  #embed-icon {
-    width: 61px;
-    background-image: image-url('ad_units/embed.png');
-    background-size: 61px;
-  }
 
   .logo {
     width: 53px;
-    background-image: image-url('ad_units/statisfy.png');
+    @include icon-bg('statisfy-logo');
     background-size: 50px;
     background-position: 2px;
   }

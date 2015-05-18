@@ -4,6 +4,9 @@
   - twitter_url = "https://twitter.com/intent/tweet?#{{text: "Check this out! #{question_url}"}.to_query}"
 
   %a.logo{href: 'http://www.statisfy.co/'}
-  %a.share-icon.popup.facebook{href: facebook_url, target: 'popup'}
-  %a.share-icon.popup.twitter{href: twitter_url, target: 'popup'}
-  %a#embed-icon{href: '#embed'}
+
+  %a.action-icon.tumblr{target: 'popup'}
+  %a.action-icon.facebook{href: facebook_url, target: 'popup'}
+  %a.action-icon.twitter{href: twitter_url, target: 'popup'}
+  %a.action-icon.embed#embed-icon{href: '#embed'}
+  %a.action-icon.create{href: '#create'}
