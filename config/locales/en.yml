@@ -49,8 +49,16 @@ en:
       must_exist: record must exists
 
   embeddable_unit:
-    cta_click: Click here to vote!
-    cta_drag: Drag to vote!
+    cta_click:
+      zero: "Click here to vote!"
+      one: "%{count} Answer. Vote Now!"
+      other: "%{count} Answers. Vote Now!"
+
+    cta_drag:
+      zero: Drag to vote!
+      one: "%{count} Answer. Drag to vote!"
+      other: "%{count} Answers. Drag to vote!"
+
     see_responses: Click here to see their responses
     response_count:
       one: 1 person answered this question.

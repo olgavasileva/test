@@ -4,6 +4,9 @@
   - twitter_url = "https://twitter.com/intent/tweet?#{{text: "Check this out! #{question_url}"}.to_query}"
 
   %a.logo{href: 'http://www.statisfy.co/'}
+  - if @response.present?
+    %a.responses{href: question_sharing_url(uuid: @response.question.id, subdomain: 'a')}
+      = pluralize(@question.responses.size, 'answers')
 
   %a.action-icon.tumblr{target: 'popup'}
   %a.action-icon.facebook{href: facebook_url, target: 'popup'}
