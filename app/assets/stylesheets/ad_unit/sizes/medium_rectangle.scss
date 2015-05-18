@@ -25,8 +25,12 @@
 
   #embed {
     $padding: 5px;
-    width: $width - ($padding * 2);
-    height: $height - $default-footer-outer-height - ($padding * 2);
+    $e_w: $width - ($padding * 2);
+    $e_h: $height - ($padding * 2);
+    width: $e_w;
+    max-width: $e_w;
+    height: $e_h;
+    max-height: $e_h;
     padding: $padding;
   }
 
