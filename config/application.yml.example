@@ -1,17 +1,17 @@
 # Add application configuration variables here, as shown below.
 #
 
-DEVELOPER_NAME:
+DEVELOPER_NAME: developer
 
-api_shared_secret:
+api_shared_secret: example_secret
 
-AWS_ACCESS_KEY: ~
-AWS_SECRET_ACCESS_KEY: ~
+AWS_ACCESS_KEY: replace_me
+AWS_SECRET_ACCESS_KEY: replace_me
 AWS_REGION: us-east-1
 AWS_BUCKET: crashmob-production
 
-DEVICE_AWS_ACCESS_KEY: ~
-DEVICE_AWS_SECRET_ACCESS_KEY: ~
+DEVICE_AWS_ACCESS_KEY: replace_me
+DEVICE_AWS_SECRET_ACCESS_KEY: replace_me
 DEVICE_AWS_REGION: us-east-1
 DEVICE_AWS_BUCKET: crashmob-production
 
@@ -19,9 +19,9 @@ SHOW_HOME_PAGE_FEED: true
 REDIRECT_QUESTIONS_NEW_TO_WEBAPP: false
 
 QUANTCAST_BASE_URL: https://measure.api.quantcast.com/api/v1
-QUANTCAST_API_KEY: ~
-QUANTCAST_SHARED_SECRET: ~
-QUANTCAST_P_CODE: ~
+QUANTCAST_API_KEY: replace_me
+QUANTCAST_SHARED_SECRET: replace_me
+QUANTCAST_P_CODE: replace_me
 
 GEOIP_PATH: geoip
 
@@ -37,10 +37,10 @@ RAILS_ASSET_HOST: ~
 
 test:
   api_shared_secret: example_shared_secret
-  AWS_ACCESS_KEY: ~
-  AWS_SECRET_ACCESS_KEY: ~
-  DEVICE_AWS_ACCESS_KEY: ~
-  DEVICE_AWS_SECRET_ACCESS_KEY: ~
+  AWS_ACCESS_KEY: fake
+  AWS_SECRET_ACCESS_KEY: fake
+  DEVICE_AWS_ACCESS_KEY: fake
+  DEVICE_AWS_SECRET_ACCESS_KEY: fake
 
 development:
   AWS_BUCKET: crashmob-development
