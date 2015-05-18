@@ -33,7 +33,8 @@
     :coffee
       $ ->
         data = $('#thank-you-message').data()
-        $('#thank-you-message').html localStorage[data.uuid]
+        html = localStorage[data.uuid] || data.html
+        $('#thank-you-message').html(html)
         localStorage.removeItem data.uuid
 
   %body{class: @ad_unit.name}
@@ -41,7 +42,7 @@
       = render partial: 'embed'
       #thank-you
         %a#thank-you-close.close-button{href: qp_start_url(@survey.uuid, @ad_unit.name), target: '_self'} x
-        #thank-you-message{data: {uuid: @survey.uuid}}
+        #thank-you-message{data: {uuid: @survey.uuid, html: @survey.parsed_thank_you_html({}).html_safe}}
 
       = render partial: 'footer'
 
