@@ -200,8 +200,6 @@
   // Order Question
 
   #question.OrderQuestion {
-
-
     @mixin order-choice-height($height) {
       #between-buttons { height: $height; }
 
@@ -219,6 +217,18 @@
           }
         }
       }
+    }
+
+    &.choices-3 {
+      .order-choice-orderer { padding-top: 10px; }
+      .overlay { line-height: 40px; }
+      .order-choice-title { line-height: 49px; }
+    }
+
+    &.choices-4 {
+      .order-choice-orderer { padding-top: 3px; }
+      .overlay { line-height: 26px; }
+      .order-choice-title { line-height: 36px; }
     }
 
     .nav-button .icon { margin-top: 64px; }
