@@ -226,8 +226,7 @@ class TwoCents::Auth < Grape::API
       end
 
       instance.update_attributes! user:user, auth_token: "A"+UUID.new.generate
-
-      {auth_token: instance.auth_token, user_id: user.id}
+      LoginResponse.respond_with(instance)
     end
 
 
@@ -285,8 +284,7 @@ class TwoCents::Auth < Grape::API
       user.save!
 
       instance.update_attributes! auth_token: "A"+UUID.new.generate, user: user
-
-      {auth_token: instance.auth_token, user_id: user.id}
+      LoginResponse.respond_with(instance)
     end
 
     desc "Register as an anonymous user", {
@@ -313,8 +311,7 @@ class TwoCents::Auth < Grape::API
       fail! 1011, user.errors.full_messages.join(", ") unless user.save
 
       instance.update_attributes! auth_token: "A"+UUID.new.generate, user: user
-
-      {auth_token: instance.auth_token, username: user.username, email: user.email, user_id: user.id}
+      LoginResponse.respond_with(instance)
     end
 
     desc "Promote an anonymous user to an authenticatable user", {
@@ -395,7 +392,7 @@ class TwoCents::Auth < Grape::API
         @instance.update_attributes! auth_token: "A"+UUID.new.generate
       end
 
-      { auth_token: @instance.auth_token, user_id: user.id }
+      LoginResponse.respond_with(@instance)
     end
 
     desc "Associates the OAuth provider with the current user", {
@@ -497,22 +494,7 @@ class TwoCents::Auth < Grape::API
         end
       end
 
-      if auth.user.present?
-        {
-          success: true,
-          provider_valid: true,
-          auth_token: instance.auth_token,
-          email: instance.user.email,
-          username: instance.user.username,
-          user_id: instance.user.id
-        }
-      else
-        {
-          success: false,
-          provider_valid: true,
-          provider_id: auth.id
-        }
-      end
+      LoginResponse.respond_with(instance, auth)
     end
 
     desc "Return an auth_token for the newly logged in user", {
@@ -583,9 +565,8 @@ class TwoCents::Auth < Grape::API
       user.update_tracked_fields!(request)
       instance.update_attributes! auth_token: "A"+UUID.new.generate, user: user
 
-      {auth_token: instance.auth_token, email: user.email, username: user.username, user_id: user.id}
+      LoginResponse.respond_with(instance)
     end
-
 
     desc "Log out the user", {
       notes: <<-END
