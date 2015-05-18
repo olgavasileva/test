@@ -10,7 +10,7 @@ $ ->
   resizeText = ->
     $(".resize").textfill
       innerTag: ".cell"
-      explicitHeight: 39
+      maxFontPixels: 16
       changeLineHeight: true
       complete: ->
         $(".resize .cell").animate(opacity: 1.0)
