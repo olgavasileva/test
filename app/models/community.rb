@@ -3,13 +3,13 @@ class Community < ActiveRecord::Base
   has_many :members, class_name: 'CommunityMember', dependent: :destroy
   has_many :member_users, through: :members, source: :user
   has_many :communities_targets
-  has_many :targets, through: :communities_targets
+  has_many :consumer_targets, through: :communities_targets
 
   scope :trending_for_user, ->(user, page = 1, per_page = 20) {
     questions = Question.arel_table
     communities = arel_table
     communities_targets = Arel::Table.new(:communities_targets)
-    targets = Target.arel_table
+    targets = ConsumerTarget.arel_table
     membered_communities = CommunityMember.where(user_id: user.id).pluck(:community_id)
 
     # there we have public not empty communities(that have some questions in it), and on what user

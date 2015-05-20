@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150511193541) do
+ActiveRecord::Schema.define(version: 20150520203923) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -267,17 +267,6 @@ ActiveRecord::Schema.define(version: 20150511193541) do
   end
 
   add_index "embeddable_units", ["survey_id"], name: "index_embeddable_units_on_survey_id", using: :btree
-
-  create_table "enterprise_targets", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "min_age"
-    t.integer  "max_age"
-    t.string   "gender"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "enterprise_targets", ["user_id"], name: "index_enterprise_targets_on_user_id", using: :btree
 
   create_table "enterprise_targets_segments", force: true do |t|
     t.integer  "enterprise_target_id"
@@ -584,6 +573,17 @@ ActiveRecord::Schema.define(version: 20150511193541) do
     t.float    "percent",             limit: 24
   end
 
+  create_table "question_actions", force: true do |t|
+    t.string   "type"
+    t.integer  "question_id"
+    t.integer  "respondent_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "question_actions", ["question_id"], name: "index_question_actions_on_question_id", using: :btree
+  add_index "question_actions", ["respondent_id"], name: "index_question_actions_on_respondent_id", using: :btree
+
   create_table "question_reports", force: true do |t|
     t.integer  "question_id"
     t.integer  "user_id"
@@ -594,6 +594,18 @@ ActiveRecord::Schema.define(version: 20150511193541) do
 
   add_index "question_reports", ["question_id"], name: "index_question_reports_on_question_id", using: :btree
   add_index "question_reports", ["user_id"], name: "index_question_reports_on_user_id", using: :btree
+
+  create_table "question_targets", force: true do |t|
+    t.integer  "respondent_id"
+    t.integer  "question_id"
+    t.integer  "target_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "question_targets", ["question_id"], name: "index_question_targets_on_question_id", using: :btree
+  add_index "question_targets", ["respondent_id"], name: "index_question_targets_on_respondent_id", using: :btree
+  add_index "question_targets", ["target_id"], name: "index_question_targets_on_target_id", using: :btree
 
   create_table "questions", force: true do |t|
     t.integer  "user_id"
@@ -967,6 +979,10 @@ ActiveRecord::Schema.define(version: 20150511193541) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.boolean  "all_communities"
+    t.string   "type",            default: "ConsumerTarget"
+    t.integer  "min_age"
+    t.integer  "max_age"
+    t.string   "gender"
   end
 
   add_index "targets", ["user_id"], name: "index_targets_on_user_id", using: :btree

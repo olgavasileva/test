@@ -1,4 +1,4 @@
 FactoryGirl.define do
-  factory :target do
+  factory :consumer_target do
   end
 end

@@ -25,10 +25,11 @@ class Respondent < ActiveRecord::Base
   has_many :fellow_community_members, through: :membership_communities, source: :member_users
 
   has_many :targets, dependent: :destroy, foreign_key: :user_id
-  has_many :enterprise_targets, dependent: :destroy, foreign_key: :user_id
+  has_many :consumer_targets, foreign_key: :user_id
+  has_many :enterprise_targets, foreign_key: :user_id
 
   has_many :targets_users, foreign_key: :user_id
-  has_many :following_targets, through: :targets_users, source: :target
+  has_many :following_targets, through: :targets_users, source: :consumer_target
 
   has_many :messages, dependent: :destroy, foreign_key: :user_id
 
@@ -68,6 +69,15 @@ class Respondent < ActiveRecord::Base
   has_one :demographic_summary, dependent: :destroy
 
   belongs_to :avatar, class_name: "UserAvatar", foreign_key: :user_avatar_id
+
+  # Questions targeted to this respondent
+  has_many :question_targets
+  has_many :targeted_questions, through: :question_targets, source: :question
+
+  # Things this respondent did with various questions
+  has_many :question_actions
+  has_many :question_action_skips
+  has_many :skipped_questions, through: :question_action_skips, source: :question
 
   default auto_feed: true
 

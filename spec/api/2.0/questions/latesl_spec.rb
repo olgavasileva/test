@@ -188,9 +188,9 @@ describe :latest do
           let(:params) {{auth_token: auth_token, cursor: cursor, count: count, community_ids: community_ids}}
 
           let(:before_api_call) do
-            q1.update_attributes(target: FactoryGirl.create(:target, community_ids: [c1.id]))
-            q2.update_attributes(target: FactoryGirl.create(:target, community_ids: [c1.id]))
-            q3.update_attributes(target: FactoryGirl.create(:target, community_ids: [c2.id]))
+            q1.update_attributes(target: FactoryGirl.create(:consumer_target, community_ids: [c1.id]))
+            q2.update_attributes(target: FactoryGirl.create(:consumer_target, community_ids: [c1.id]))
+            q3.update_attributes(target: FactoryGirl.create(:consumer_target, community_ids: [c2.id]))
           end
 
           it 'returns only questions for the given communities' do
@@ -225,8 +225,8 @@ describe :latest do
 
             context "When q1 and q2 were targeted at community 1" do
               let(:before_api_call) do
-                q1.update_attributes target: FactoryGirl.create(:target, community_ids: [c1.id])
-                q2.update_attributes target: FactoryGirl.create(:target, community_ids: [c1.id])
+                q1.update_attributes target: FactoryGirl.create(:consumer_target, community_ids: [c1.id])
+                q2.update_attributes target: FactoryGirl.create(:consumer_target, community_ids: [c1.id])
               end
 
               context "When filtering on community 1" do

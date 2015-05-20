@@ -78,7 +78,7 @@ class TwoCents::Questions < Grape::API
       def create_question_target(question, params)
         params = params.to_h
 
-        target = Target.create!(
+        target = ConsumerTarget.create!(
           user: current_user,
           all_users: params['all_users'] || params['all'],
           all_followers: params['all_followers'],

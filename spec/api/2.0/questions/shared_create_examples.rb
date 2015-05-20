@@ -14,7 +14,7 @@ shared_examples :uses_targets do
   let(:question) { Question.find(question_id) }
 
   it "creates a target for question" do
-    target = Target.last
+    target = ConsumerTarget.last
 
     expect(target).to_not be_nil
     expect(target.all_users).to be_truthy
@@ -38,7 +38,7 @@ shared_examples :uses_targets do
     }}
 
     it "creates a target for all users" do
-      target = Target.last
+      target = ConsumerTarget.last
 
       expect(target.all_users).to be_truthy
     end

@@ -1,5 +1,4 @@
-class EnterpriseTarget < ActiveRecord::Base
-  belongs_to :user, class_name: "Respondent"
+class EnterpriseTarget < Target
   has_and_belongs_to_many :segments
 
   default min_age: 14

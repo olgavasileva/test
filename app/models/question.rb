@@ -7,7 +7,7 @@ class Question < ActiveRecord::Base
 
 	belongs_to :user, class_name: "Respondent"
 	belongs_to :category
-  belongs_to :target
+  belongs_to :target      # This is the target criteria that the user specified when the question was created
   belongs_to :background_image, class_name: "QuestionImage"
   belongs_to :trend
 
@@ -34,7 +34,20 @@ class Question < ActiveRecord::Base
   has_many :response_comments, through: :responses, source: :comment
   has_many :inappropriate_flags, dependent: :destroy
   has_many :response_matchers, dependent: :destroy
-  has_many :communities, through: :target, source: :communities
+  has_many :communities, through: :cnosumer_target, source: :communities
+
+  # Respondents to whom question was targeted
+  has_many :question_targets
+  has_many :targeted_respondents, through: :question_targets, source: :respondents
+
+  # Respondents who took an action with this question
+  has_many :question_actions
+  has_many :question_action_skips
+  # Respondents who skipped this question
+  has_many :skippers, through: :question_skip_actions, source: :respondets
+  has_many :question_action_responses
+  # Respondents who answered this question (different way to the same set as :respondents, above)
+  has_many :responders, through: :question_action_responses, source: :respondents
 
   acts_as_taggable_on :tags
 

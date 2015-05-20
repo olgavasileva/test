@@ -10,7 +10,7 @@ class QuestionsControllerBase < ApplicationController
     authorize @question
 
     if @question.save
-      redirect_to @question.preview? ? preview_question_path(@question) : [:target, @question]
+      redirect_to @question.preview? ? preview_question_path(@question) : [:consumer_target, @question]
     else
       flash[:error] = @question.errors.full_messages.join('; ')
       render "new"
@@ -27,7 +27,7 @@ class QuestionsControllerBase < ApplicationController
     authorize @question
 
     if @question.update safe_params.merge(state:params[:commit] == "Preview" ? "preview" : "targeting")
-      redirect_to @question.preview? ? new_question_response_path(@question) : [:target, @question]
+      redirect_to @question.preview? ? new_question_response_path(@question) : [:consumer_target, @question]
     else
       flash[:error] = "There was a problem updating your question."
       render :edit
@@ -41,7 +41,7 @@ class QuestionsControllerBase < ApplicationController
     if session[:use_enterprise_targeting]
       redirect_to new_question_enterprise_target_path(@question)
     else
-      redirect_to new_question_target_path(@question)
+      redirect_to new_question_consumer_target_path(@question)
     end
   end
 

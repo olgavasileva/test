@@ -1,7 +1,7 @@
-class TargetsController < ApplicationController
+class ConsumerTargetsController < ApplicationController
   def new
     @question = Question.find params[:question_id]
-    @target = current_user.targets.build
+    @target = current_user.consumer_targets.build
     @followers = current_user.followers
     @groups = current_user.groups
     authorize @target
@@ -25,7 +25,7 @@ class TargetsController < ApplicationController
 
   protected
     def target_params
-      params.require(:target).permit(
+      params.require(:consumer_target).permit(
         :question_id, :all_users, :all_followers, :all_groups, :user_id,
         follower_ids: [], group_ids: [])
     end
