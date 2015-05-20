@@ -146,6 +146,7 @@ group :development, :test do
   gem 'rb-readline'                 # Readline in binding.pry
   gem 'spring'
   gem 'factory_girl_rails'
+  gem 'bullet'
 end
 
 group :test do

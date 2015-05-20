@@ -99,24 +99,27 @@ class UsersController < ApplicationController
       @viral_rate = viral_reach.to_f / reach
       @complete_rate = completes.to_f / reach
     end
-
-    @responses_by_day_data = (0..29).to_a.reverse.map{|days_ago| {day: (Date.today - days_ago).to_formatted_s(:sql), v: DailyAnalytic.fetch(:responses, Date.today - days_ago, @user)}}
+    dates = (0..29).to_a.reverse.map{ |days_ago| Date.today - days_ago }
+    @responses_by_day_data = dates.zip(DailyAnalytic.fetch_array(:responses, dates, @user))
 
     @reach_today = DailyAnalytic.fetch(:views, Date.today, @user)
 
     @targeted_reach = targeted_reach
     @viral_reach = viral_reach
-    @reach_data_points = (0..29).to_a.reverse.map{|days_ago| DailyAnalytic.fetch(:views, Date.today - days_ago, @user)}
+    @reach_data_points = DailyAnalytic.fetch_array(:views, dates, @user)
 
     render layout: "pixel_admin"
   end
 
   def recent_responses
-    @recent_responses = @user.responses_to_questions.order("responses.created_at DESC").kpage(params[:page]).per(5)
+    @recent_responses = @user.responses_to_questions
+                            .includes(:user, :question, :choice)
+                            .order("responses.created_at DESC").kpage(params[:page]).per(5)
   end
 
   def recent_comments
     @recent_comments = @user.comments_on_questions_and_responses
+      .includes(:user, :commentable)
       .order("comments.created_at DESC")
       .kpage(params[:page])
       .per(5)
@@ -208,6 +211,17 @@ class UsersController < ApplicationController
     else
       redirect_to gravatar_url(@user.email, default: :identicon)
     end
+  end
+
+  def new_question
+    @app_host = if Rails.env.production?
+                  "app.statisfy.co"
+                elsif Rails.env.labs? || Rails.env.development?
+                  "labs.app.statisfy.co"
+                else
+                  "app." + request.host
+                end
+    render layout: 'pixel_admin'
   end
 
   private

@@ -103,6 +103,7 @@ LinkchatApp::Application.routes.draw do
       get :recent_comments
       get :campaigns
       get :new_campaign
+      get :new_question
       get 'analytics/(:question_id)', to:'users#analytics', as: :analytics
       get 'question_analytics/:question_id', to:'users#question_analytics', as: :question_analytics
       get 'demographics/:question_id/(:choice_id)', to:'users#demographics', as: :demographics
