@@ -500,7 +500,7 @@ class TwoCents::Auth < Grape::API
     desc 'Remove a users social login', notes: 'Returns 204 No Content on success'
     params do
       requires :auth_token
-      requires :provider_id
+      requires :provider_id, type: Integer, desc: 'The users social provider id to remove'
     end
     delete 'social' do
       validate_user!
