@@ -504,7 +504,7 @@ class TwoCents::Auth < Grape::API
     end
     delete 'social' do
       validate_user!
-      auth = current_user.authentications.find(params[:provider_id])
+      auth = current_user.authentications.find(declared_params[:provider_id])
       auth.destroy!
       status 204
     end
