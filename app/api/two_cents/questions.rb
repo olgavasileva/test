@@ -23,6 +23,7 @@ class TwoCents::Questions < Grape::API
         optional :tag_list, type: Array[String], desc: 'An array of tags for the question'
 
         optional :publicly_searchable, type: Boolean, desc: 'Allow users to search for this question regardless of targeting'
+        optional :show_to_public, type: Boolean, default: true, desc: "Question shows in the related profiles"
 
         optional :targets, type: Hash do
           optional :all_users, type: Boolean, default: false, desc: "Whether question is targeted at all users."
