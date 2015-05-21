@@ -137,11 +137,6 @@ class Question < ActiveRecord::Base
     FeedItem.question_answered! self, user
   end
 
-  def apply_target! target
-    update_attributes target: target, state: :targeting
-    Resque.enqueue(ApplyTargetingToQuestion, id, target.id)
-  end
-
   def suspend!
     transaction do
       update_attribute :state, "suspended"
@@ -178,9 +173,12 @@ class Question < ActiveRecord::Base
     kind == 'public'
   end
 
+  def targeting! target
+    update_attributes target: target, state: :targeting
+  end
+
 	def activate!
-		self.state = "active"
-		self.save!
+    update_attribute :state, :active
 	end
 
 	def included_by?(pack)

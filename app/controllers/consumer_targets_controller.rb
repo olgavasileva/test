@@ -13,13 +13,11 @@ class ConsumerTargetsController < ApplicationController
     authorize question.target
 
     target.save!
-    target_count = question.apply_target! target  # TODO - do this on a background resque queue or delayed job - it will take time when there are lots of users
-    reports = target.public? ? ["the public feed"] : []
-    reports << view_context.pluralize( target_count, "direct feed") if target_count > 0
+    target.apply_to_question! question
 
     question.update_attributes(anonymous: params.fetch(:anonymous))
 
-    flash[:alert] = "Question added to #{ reports.join " and " }."
+    flash[:alert] = target.public? ? "Question added to the public feed" : "Question will be added to the targeted feeds"
     redirect_to results_question_path(question)
   end
 

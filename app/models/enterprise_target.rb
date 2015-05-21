@@ -10,29 +10,16 @@ class EnterpriseTarget < Target
   validates :max_age, numericality: { only_integer: true, greater_than_or_equal_to: :min_age, allow_nil: true }
   validates :gender, inclusion: { in: %w(male female both) }
 
-  # Adds the question to appropriate feeds and returns the number of feeds affected
-  def apply_to_question question
-    ActiveRecord::Base.transaction do
-      question.activate!
+  protected
+    def apply! question
+      question.update_attribute :kind, :targeted
 
-      # Intersection of age, gender and segments
-      matching_ids = matching_age_and_gender_ids(question) & matching_segment_ids(question)
-      target_count = 0
-
-      Respondent.find(matching_ids).each do |user|
-        item = user.feed_items.find_by question_id:question
-
-        if item
-          item.update_attributes why: "targeted"
-        else
-          user.feed_items << FeedItem.new(question:question, relevance:1, why: "targeted")
-          target_count += 1
-        end
+      ActiveRecord::Base.transaction do
+        # Intersection of age, gender and segments
+        matching_ids = matching_age_and_gender_ids(question) & matching_segment_ids(question)
+        target_respondents! question, Respondent.find(matching_ids)
       end
-
-      target_count
     end
-  end
 
   private
     def matching_age_and_gender_ids question

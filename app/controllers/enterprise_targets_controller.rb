@@ -13,12 +13,12 @@ class EnterpriseTargetsController < ApplicationController
     authorize @enterprise_target
 
     if @enterprise_target.save
-      @enterprise_target.apply_to_question @question
+      @enterprise_target.apply_to_question! @question
 
       # Done building the campaign so next time, they can target however is appropriate
       session.delete :use_enterprise_targeting
 
-      flash[:alert] = "Question has been added to the desired feeds."
+      flash[:alert] = "Question has been added to the indicated feeds."
       redirect_to [:dashboard, current_user]
     else
       render "new"

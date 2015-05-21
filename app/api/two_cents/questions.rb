@@ -90,7 +90,7 @@ class TwoCents::Questions < Grape::API
         )
 
 
-        question.apply_target! target
+        target.apply_to_question! question
 
         target
       end
