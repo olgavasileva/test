@@ -27,7 +27,7 @@
 
     - if ENV['GOOGLE_ANALYTICS_ID'].present?
       :javascript
-        ga('send', 'event', 'embeddable', 'end', "#{@survey.uuid}", 3);
+        ga('send', 'event', 'embeddable', 'end', "#{@survey.id}", 3);
 
     = yield(:script)
     :coffee
