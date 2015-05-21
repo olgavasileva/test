@@ -1,4 +1,5 @@
-class AddQuestionToAllFeeds
+# Deprecated
+class xAddQuestionToAllFeeds
   @queue = :question
 
   def self.perform question_id

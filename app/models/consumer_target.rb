@@ -18,12 +18,21 @@ class ConsumerTarget < Target
     !!all_users
   end
 
-  # Sends the question to be added to feeds in the background while updating the
-  # `question#kind` attribute based on the targets attributes.
-  #
   def apply_to_question question
     question.update_attribute(:kind, all_users ? "public" : "targeted")
-    Resque.enqueue(AddQuestionToAllFeeds, question.id)
+
+    if all_followers
+      # Target each follower
+    end
+
+    if all_groups
+      # Target each group member
+    end
+
+    if all_communities
+      # Target each community member
+
+    end
   end
 
   private

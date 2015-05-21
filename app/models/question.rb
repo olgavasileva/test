@@ -138,10 +138,8 @@ class Question < ActiveRecord::Base
   end
 
   def apply_target! target
-    transaction do
-      update_attribute :target, target
-      target.apply_to_question self
-    end
+    update_attributes target: target, state: :targeting
+    Resque.enqueue(ApplyTargetingToQuestion, id, target.id)
   end
 
   def suspend!
