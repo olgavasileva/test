@@ -37,3 +37,4 @@ doc/
 public/uploads
 .capistrano/metrics
 public/devtest.html
+.ruby-gemset

@@ -84,4 +84,8 @@ class UserPolicy < ApplicationPolicy
   def avatar?
     true
   end
+
+  def new_question?
+    is_owner? && is_pro?
+  end
 end
