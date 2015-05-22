@@ -823,7 +823,7 @@ class TwoCents::Questions < Grape::API
 
       query = user.questions.not_suspended.order(:created_at).includes(:survey)
       query = query.where.not(anonymous: true) if params[:user_id]
-      query = query.reverse if params[:reverse]
+      query = query.reverse_order if params[:reverse]
       query = query.where('id > ?', previous_last_id) if previous_last_id.present?
       query = query.limit(count) if count.present?
 
