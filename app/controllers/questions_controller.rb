@@ -4,8 +4,6 @@ class QuestionsController < ApplicationController
       policy_scope(Question)  # satisfy authorization check
       redirect_to ENV['WEB_APP_URL']
     else
-      current_user.update_feed_if_needed!
-
       per_page = 8
       @questions = policy_scope(Question).latest.kpage(params[:page]).per(per_page)
       @questions.each{|q| q.viewed!}
@@ -66,7 +64,7 @@ class QuestionsController < ApplicationController
   def skip
     @question = Question.find params[:id]
     authorize @question
-    FeedItem.question_skipped! @question, current_user
+    @question.skipped! current_user
 
     next_q = next_question @question
     if next_q

@@ -599,6 +599,7 @@ ActiveRecord::Schema.define(version: 20150520203923) do
     t.integer  "respondent_id"
     t.integer  "question_id"
     t.integer  "target_id"
+    t.integer  "relevance",     default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

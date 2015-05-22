@@ -25,51 +25,6 @@ describe Respondent do
     end
   end
 
-  describe :needs_more_feed_items? do
-    context "When there are n active public questions" do
-      before { expect(Question).to receive_message_chain(:active, :publik, :count).and_return(n) }
-      let(:n) {6}
-
-      context "When all but one of them are public visible feed items for the respondent" do
-        let(:respondent) {FactoryGirl.create :user, auto_feed:false}
-        before { expect(respondent).to receive_message_chain(:feed_items, :visible, :publik, :count).and_return(n-1) }
-
-        it {expect(respondent.needs_more_feed_items?).to be_truthy}
-      end
-
-      context "When all of them are public visible feed items for the respondent" do
-        let(:respondent) {FactoryGirl.create :user, auto_feed:false}
-        before { expect(respondent).to receive_message_chain(:feed_items, :visible, :publik, :count).and_return(n) }
-
-        it {expect(respondent.needs_more_feed_items?).to be_falsy}
-      end
-    end
-  end
-
-  describe :purge_feed_items! do
-    let(:respondent) { FactoryGirl.create :user }
-    let(:n) { 2 }
-
-    context "When there are n+2 visible public items in the respondent's feed" do
-      before {FactoryGirl.create_list :feed_item, n+2, user: respondent }
-      it { expect{respondent.purge_feed_items! n.to_s}.to change{respondent.reload.feed_items.visible.count}.to(n) }
-
-      context "When the user has 1 answered and 1 skipped feed item" do
-        before {FactoryGirl.create :feed_item, :answered, user: respondent}
-        before {FactoryGirl.create :feed_item, :skipped, user: respondent}
-
-        it { expect{respondent.purge_feed_items! n.to_s}.to change{respondent.reload.feed_items.visible.count}.to(n) }
-        it { expect{respondent.purge_feed_items! n.to_s}.not_to change{respondent.reload.feed_items.skipped.count} }
-        it { expect{respondent.purge_feed_items! n.to_s}.not_to change{respondent.reload.feed_items.answered.count} }
-      end
-    end
-
-    context "When there are n-1 visible public items in the respondent's feed" do
-      before {FactoryGirl.create_list :feed_item, n-1, user: respondent }
-      it { expect{respondent.purge_feed_items! n.to_s}.not_to change{respondent.reload.feed_items.visible.count} }
-    end
-  end
-
   describe :active do
     let(:respondent) { FactoryGirl.create :user }
     let(:n) {5}

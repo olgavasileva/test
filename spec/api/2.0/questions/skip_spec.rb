@@ -16,7 +16,7 @@ describe 'PUT questions/skip' do
   end
 
   it "skips the question" do
-    expect(instance.user.feed_items.where(question_id:question.id).first.skipped?).to eq true
+    expect(instance.user.question_action_skips.where(question_id: question.id)).to be_present
   end
 
   context "with invalid question ID" do

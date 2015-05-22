@@ -34,22 +34,7 @@ class CronTask
   end
 
   def purge_inactive_user_feed_items
-    if Figaro.env.DAYS_CONSIDERED_INACTIVE && Figaro.env.QUESTIONS_TO_KEEP_WHEN_INACTIVE
-      candidates = FeedItem.visible.publik.where{user_id.not_in Respondent.active}.group(:user_id).count(:id)
-      CronTask.log "#{candidates.count} candidate respondents"
-
-      to_purge = candidates.select{|respondent_id, count| count > Figaro.env.QUESTIONS_TO_KEEP_WHEN_INACTIVE.to_i}
-      CronTask.log "#{to_purge.count} respondents to purge"
-
-      to_purge.each do |respondent_id, count|
-        begin
-          Respondent.find(respondent_id).purge_feed_items! Figaro.env.QUESTIONS_TO_KEEP_WHEN_INACTIVE.to_i
-        rescue ActiveRecord::StatementInvalid => e
-          CronTask.log "Skipping respondent #{respondent.id} due to exception:"
-          CronTask.log e, 'purge_inactive_user_feed_items'
-        end
-      end
-    end
+    # legacy method - no longer used
   end
 
 end

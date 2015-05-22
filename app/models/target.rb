@@ -33,7 +33,7 @@ class Target < ActiveRecord::Base
 
       respondents.find_in_batches do |respondent|
         unless respondent.question_targets.exists?(question_id: question.id)
-          items << QuestionTarget.new target_id: id, question_id: question.id, respondent_id: respondent.id
+          items << QuestionTarget.new(target_id: id, question_id: question.id, respondent_id: respondent.id, relevance: question.relevance_to(respondent))
         end
       end
 

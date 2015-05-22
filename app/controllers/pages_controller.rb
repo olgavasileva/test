@@ -27,8 +27,6 @@ class PagesController < ApplicationController
     if user_signed_in?
       redirect_to questions_path
     else
-      current_user.update_feed_if_needed!
-
       @questions = if current_user.anonymous?
         Question.active.publik.order("created_at DESC").paginate(page: 1, per_page: 8)
       else
