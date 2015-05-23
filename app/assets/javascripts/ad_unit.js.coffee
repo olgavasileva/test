@@ -1,5 +1,6 @@
 #= require jquery
 #= require jquery.textfill
+#= require jquery.cookie
 #= require Sortable.min
 #= require ad_units/image_manipulation
 #= require ad_units/overlay_cta
