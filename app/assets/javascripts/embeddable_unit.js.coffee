@@ -1,6 +1,7 @@
 #= require jquery
 #= require jquery_ujs
 #= require jquery.textfill
+#= require jquery.cookie
 
 $ ->
   resizeText = ->
