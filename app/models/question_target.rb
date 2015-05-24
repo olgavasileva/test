@@ -5,5 +5,4 @@ class QuestionTarget < ActiveRecord::Base
 
   validates :respondent, presence: true
   validates :question, presence: true
-  validates :target, presence: true
 end

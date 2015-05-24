@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150520203923) do
+ActiveRecord::Schema.define(version: 20150524201331) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -583,6 +583,7 @@ ActiveRecord::Schema.define(version: 20150520203923) do
 
   add_index "question_actions", ["question_id"], name: "index_question_actions_on_question_id", using: :btree
   add_index "question_actions", ["respondent_id"], name: "index_question_actions_on_respondent_id", using: :btree
+  add_index "question_actions", ["type", "respondent_id"], name: "index_question_actions_on_type_and_respondent_id", using: :btree
 
   create_table "question_reports", force: true do |t|
     t.integer  "question_id"

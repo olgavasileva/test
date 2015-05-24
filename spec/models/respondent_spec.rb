@@ -86,4 +86,25 @@ describe Respondent do
       it {is_expected.to include respondent}
     end
   end
+
+  describe :followers do
+    let(:respondent) { FactoryGirl.create :respondent }
+
+    context "When the user has 3 followers and 2 non-followers" do
+      before { FactoryGirl.create_list :relationship, 3, leader: respondent }
+      before { FactoryGirl.create_list :respondent, 2 }
+      it { expect(respondent.followers.count).to eq 3 }
+    end
+  end
+
+  describe :fellow_community_members do
+    context "When the user belongs to a community with 3 other members and 2 non-members" do
+      let(:community) { FactoryGirl.create :community }
+      before { FactoryGirl.create_list :community_member, 3, community: community }
+      before { FactoryGirl.create_list :respondent, 2 }
+      let(:respondent) { community.user }
+
+      it { expect(respondent.fellow_community_members.count).to eq 3 + 1}
+    end
+  end
 end

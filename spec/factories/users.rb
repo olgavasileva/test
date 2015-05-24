@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :respondent do
+  factory :respondent, aliases: [:follower, :leader] do
     username
   end
 
