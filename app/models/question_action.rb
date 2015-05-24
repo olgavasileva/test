@@ -3,4 +3,7 @@ class QuestionAction < ActiveRecord::Base
 
   belongs_to :question
   belongs_to :respondent
+
+  validates :question, presence: true
+  validates :respondent, presence: true
 end

@@ -5,12 +5,12 @@ class Target < ActiveRecord::Base
   def apply_to_question! question, options = {}
     options.reverse_merge background: :auto
 
-    question.targeting! target
+    question.targeting! self
 
     if should_perform_in_background? options[:background]
       Resque.enqueue(ApplyTargetingToQuestion, question.id, id)
     else
-      self.apply_in_foreground! question
+      apply_in_foreground! question
     end
   end
 

@@ -1,7 +1,11 @@
 FactoryGirl.define do
-  factory :user do
-    name
+  factory :respondent do
     username
+  end
+
+  factory :user do
+    username
+    name
     email {generate :email_address}
     password "testing123"
     password_confirmation { password }
@@ -14,8 +18,6 @@ FactoryGirl.define do
   end
 
   factory :anonymous do
-  end
-
-  factory :respondent do
+    username
   end
 end

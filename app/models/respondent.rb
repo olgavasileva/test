@@ -93,7 +93,7 @@ class Respondent < ActiveRecord::Base
 
   # respondents with responses or skips within the last n days
   def self.active n = 10
-    joins(:feed_items).where{feed_items.hidden == true}.where{feed_items.hidden_reason.in %w(skipped answered)}.where{feed_items.updated_at >= Date.current - n.days}.uniq
+    joins(:question_actions).where{question_actions.created_at >= Date.current - n.days}.uniq
   end
 
   # respondents with no responses or skips within the last n days
@@ -115,14 +115,25 @@ class Respondent < ActiveRecord::Base
   end
 
   def my_feed
-    feed_questions(omit_public_questions: true).joins(:question_targets).by_relevance
+    feed_questions(omit_public_questions: true, include_public_leader_questions: true).includes(:question_targets).by_relevance
   end
 
+  ##
+  # All active public questions plus active questions targeted to this respondent
+  # Minus answered and skipped questions
+  # Returned as a query
+  #
+  # Options can be used to modify the result set:
+  #    omit_public_questions: don't include public questions (default is false)
+  #    include_answered_questions: include answered questions (default is false)
+  #    include_skipped_questions: include skipped questions (default is false)
+  #    include_public_leader_questions: include active public questions asked by my leaders (default is false)
   def feed_questions options = {}
-    options.reverse_merge omit_public_questions: false, include_answered_questions: false, include_skipped_questions: false
+    options.reverse_merge omit_public_questions: false, include_answered_questions: false, include_skipped_questions: false, include_public_leader_questions: false
 
     ids = targeted_questions.active.pluck(:id)
     ids += Question.active.publik.pluck(:id) unless options[:omit_public_questions]
+    ids += Question.active.publik.where(user: leaders).pluck(:id) if options[:include_public_leader_questions]
     ids -= answered_questions.active.pluck(:id) unless options[:include_answered_questions]
     ids -= skipped_questions.active.pluck(:id) unless options[:include_skipped_questions]
 

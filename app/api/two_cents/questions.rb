@@ -142,7 +142,7 @@ class TwoCents::Questions < Grape::API
       fail!(2001, "Not more than 4 choice may be provided") if declared_params[:choices].count > 4
 
       @question = TextChoiceQuestion.new({
-        state: :targeting,
+        state: 'targeting',
         user_id:current_user.id,
         category_id:declared_params[:category_id],
         survey_id: declared_params[:survey_id],
@@ -211,7 +211,7 @@ class TwoCents::Questions < Grape::API
       fail!(2004, "max_responses must be greater than or equal to min_responses") unless max_responses >= min_responses
 
       @question = MultipleChoiceQuestion.new({
-        state: :targeting,
+        state: 'targeting',
         user_id:current_user.id,
         category_id:declared_params[:category_id],
         survey_id: declared_params[:survey_id],
@@ -276,7 +276,7 @@ class TwoCents::Questions < Grape::API
       fail!(2002, "The number of choices must be between 2 and 4") unless (2..4).include?(num_choices)
 
       @question = ImageChoiceQuestion.new({
-        state: :targeting,
+        state: 'targeting',
         user_id:current_user.id,
         category_id:declared_params[:category_id],
         survey_id: declared_params[:survey_id],
@@ -339,7 +339,7 @@ class TwoCents::Questions < Grape::API
       fail!(2002, "The number of choices must be between 2 and 4") unless (2..4).include?(num_choices)
 
       @question = OrderQuestion.new({
-        state: :targeting,
+        state: 'targeting',
         user_id:current_user.id,
         category_id:declared_params[:category_id],
         survey_id: declared_params[:survey_id],
@@ -395,7 +395,7 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       @question = TextQuestion.create!({
-        state: :targeting,
+        state: 'targeting',
         user_id: current_user.id,
         category_id: declared_params[:category_id],
         survey_id: declared_params[:survey_id],

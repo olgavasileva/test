@@ -65,7 +65,9 @@ describe :answered do
   context "with reverse" do
     let(:other_params) {{ reverse: true }}
 
-    it "returns questions in reverse order"
+    it "returns questions in reverse order" do
+      expect(response_question_ids).to eq ordered_question_ids.reverse
+    end
   end
 
 end

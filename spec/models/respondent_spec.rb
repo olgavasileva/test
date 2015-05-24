@@ -32,13 +32,25 @@ describe Respondent do
     subject {Respondent.active n}
 
     context "When there is a response from n-1 days ago" do
-      before {FactoryGirl.create :feed_item, :answered, user: respondent, updated_at: Date.current - (n-1).days}
+      before {FactoryGirl.create :question_action_response, respondent: respondent, created_at: Date.current - (n-1).days}
 
       it {is_expected.to include respondent}
     end
 
     context "When there is a response from n+1 days ago" do
-      before {FactoryGirl.create :feed_item, :answered, user: respondent, updated_at: Date.current - (n+1).days}
+      before {FactoryGirl.create :question_action_response, respondent: respondent, created_at: Date.current - (n+1).days}
+
+      it {is_expected.not_to include respondent}
+    end
+
+    context "When there is a skip from n-1 days ago" do
+      before {FactoryGirl.create :question_action_skip, respondent: respondent, created_at: Date.current - (n-1).days}
+
+      it {is_expected.to include respondent}
+    end
+
+    context "When there is a skip from n+1 days ago" do
+      before {FactoryGirl.create :question_action_skip, respondent: respondent, created_at: Date.current - (n+1).days}
 
       it {is_expected.not_to include respondent}
     end
@@ -51,14 +63,25 @@ describe Respondent do
     subject {Respondent.inactive n}
 
     context "When there is a response from n-1 days ago" do
-      before {@fi = FactoryGirl.create :feed_item, :answered, updated_at: Date.current - (n-1).days}
-      let(:respondent) {@fi.user}
+      before {FactoryGirl.create :question_action_response, respondent: respondent, created_at: Date.current - (n-1).days}
 
       it {is_expected.not_to include respondent}
     end
 
     context "When there is a response from n+1 days ago" do
-      before {FactoryGirl.create :feed_item, :answered, user: respondent, updated_at: Date.current - (n+1).days}
+      before {FactoryGirl.create :question_action_response, respondent: respondent, created_at: Date.current - (n+1).days}
+
+      it {is_expected.to include respondent}
+    end
+
+    context "When there is a skip from n-1 days ago" do
+      before {FactoryGirl.create :question_action_skip, respondent: respondent, created_at: Date.current - (n-1).days}
+
+      it {is_expected.not_to include respondent}
+    end
+
+    context "When there is a skip from n+1 days ago" do
+      before {FactoryGirl.create :question_action_skip, respondent: respondent, created_at: Date.current - (n+1).days}
 
       it {is_expected.to include respondent}
     end

@@ -37,8 +37,8 @@ describe :myfeed do
           let(:answer) { FactoryGirl.create :text_response, question:q, user:follower }
           let(:before_api_call) { follower.follow!(user); answer }
 
-          it "Should be in myfeed" do
-            expect(json.count).to eq 1
+          it "Should not be in myfeed" do
+            expect(json.count).to eq 0
           end
         end
 
@@ -47,8 +47,8 @@ describe :myfeed do
           let(:answer) { FactoryGirl.create :text_response, question:q, user:leader }
           let(:before_api_call) { user.follow!(leader); answer }
 
-          it "Should be in myfeed" do
-            expect(json.count).to eq 1
+          it "Should not be in myfeed" do
+            expect(json.count).to eq 0
           end
         end
 
@@ -57,8 +57,8 @@ describe :myfeed do
           let(:follower) { FactoryGirl.create :user }
           let(:asker) { follower }
 
-          xit "Should be in myfeed" do
-            expect(json.count).to eq 1
+          it "Should not be in myfeed" do
+            expect(json.count).to eq 0
           end
         end
 
@@ -67,7 +67,7 @@ describe :myfeed do
           let(:leader) { FactoryGirl.create :user }
           let(:asker) { leader }
 
-          xit "Should be in myfeed" do
+          it "Should be in myfeed" do
             expect(json.count).to eq 1
           end
         end
@@ -83,8 +83,8 @@ describe :myfeed do
 
         context "With two of the questions targeted to this user" do
           let(:setup_targeting) {
-            user.feed_items.find_by_question_id(q1).update_attributes why:"targeted"
-            user.feed_items.find_by_question_id(q2).update_attributes why:"targeted"
+            FactoryGirl.create :question_target, question: q1, respondent: user
+            FactoryGirl.create :question_target, question: q2, respondent: user
           }
 
           it {expect(json).not_to be_nil}

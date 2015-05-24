@@ -24,7 +24,6 @@ class Question < ActiveRecord::Base
   has_many :respondents, through: :responses, source: :user
   has_many :users,  through: :responses
 	has_many :feed_items, dependent: :destroy
-  has_many :skip_users, -> {where "feed_items_v2.hidden" => true, "feed_items_v2.hidden_reason" => 'skipped'}, through: :feed_items, source: :user
   has_many :choices
   has_many :question_reports
   has_many :group_targets
@@ -45,10 +44,10 @@ class Question < ActiveRecord::Base
   has_many :question_actions
   has_many :question_action_skips
   # Respondents who skipped this question
-  has_many :skippers, through: :question_skip_actions, source: :respondets
+  has_many :skippers, through: :question_action_skips, source: :respondent
   has_many :question_action_responses
   # Respondents who answered this question (different way to the same set as :respondents, above)
-  has_many :responders, through: :question_action_responses, source: :respondents
+  has_many :responders, through: :question_action_responses, source: :respondent
 
   acts_as_taggable_on :tags
 
