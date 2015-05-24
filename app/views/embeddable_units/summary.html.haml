@@ -1,8 +1,8 @@
 - content_for :script do
   - if ENV['GOOGLE_ANALYTICS_ID'].present?
     :javascript
-      ga('send', 'event', 'embeddable', 'view', '#{@question.uuid}', 3);
-      ga('send', 'event', 'embeddable', 'response', '#{@question.uuid}', 3);
+      ga('send', 'event', 'embeddable', 'view', '#{@question.id}', 3);
+      ga('send', 'event', 'embeddable', 'response', '#{@question.id}', 3);
 
 - if current_embed_user.quantcast_demographic_required?
   = render partial: 'quantcast_js'

@@ -815,13 +815,13 @@ class TwoCents::Questions < Grape::API
       previous_last_id = params[:previous_last_id]
       count = params[:count]
 
-      query = user.questions.not_suspended.order(:created_at).includes(:survey)
-      query = query.where.not(anonymous: true) if params[:user_id]
-      query = query.reverse if params[:reverse]
-      query = query.where('id > ?', previous_last_id) if previous_last_id.present?
-      query = query.limit(count) if count.present?
+      questions = user.questions.not_suspended.order(:created_at).includes(:survey)
+      questions = questions.where.not(anonymous: true) if params[:user_id]
+      questions = questions.reverse_order if params[:reverse]
+      questions = questions.where('id > ?', previous_last_id) if previous_last_id.present?
+      questions = questions.limit(count) if count.present?
 
-      query.to_a.map do |q|
+      questions.to_a.map do |q|
         {
           id: q.id,
           title: q.title,
