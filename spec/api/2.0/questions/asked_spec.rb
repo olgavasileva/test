@@ -3,7 +3,7 @@ require 'rails_helper'
 describe :asked do
   let(:count) { 5 }
   let(:instance) { FactoryGirl.create(:instance, :logged_in) }
-  let!(:questions) { FactoryGirl.create_list(:question, count, user: instance.user) }
+  let!(:questions) { (1..count).map{|n| FactoryGirl.create(:question, user: instance.user, created_at: Time.now - (count - n).hours)} }
   let(:common_params) { {
     auth_token: instance.auth_token
   } }
@@ -44,7 +44,7 @@ describe :asked do
   context 'with user_id' do
     let(:user) { FactoryGirl.create(:user) }
     let(:other_params) {{ user_id: user.id }}
-    let!(:questions) { FactoryGirl.create_list(:question, count, user: user) }
+    let!(:questions) {(1..count).map{|n| FactoryGirl.create(:question, user: user, created_at: Time.now - n.hours)}}
 
     it "responds with data for all given user's questions" do
       expect(response_body.count).to eq count
