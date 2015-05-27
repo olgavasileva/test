@@ -22,7 +22,7 @@ describe :asked do
 
   it "responds with correct data fields" do
     response_body.each do |data|
-      expect(data.keys).to match_array %w[id title created_at survey_id survey_uuid]
+      expect(data.keys).to match_array %w[id title created_at survey_id survey_uuid creator_id]
     end
   end
 
