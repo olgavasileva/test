@@ -8,3 +8,40 @@
   font-weight: bold;
   position: absolute;
 }
+#tumblr-overlay {
+  @extend .overlay;
+  color: white;
+  z-index: 5555556;
+  background: transparent;
+  width: 300px;
+  height: 165px;
+  .title {
+    height: 65px;
+    background: rgba(#33465e, 1);
+    margin-bottom: 2px;
+    line-height: 1;
+    img {
+      margin: 20px auto 0;
+    }
+  }
+  .link-button {
+    cursor: pointer;
+    line-height: 1;
+    background: rgba(#33465e, 0.9);
+    width: 149px;
+    height: 165px;
+    float: left;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    img {
+      margin: 40px auto 10%;
+    }
+  }
+  .link-button:visited {
+    color: white
+  }
+  .link-button:first-child {
+    margin-right: 2px;
+  }
+}

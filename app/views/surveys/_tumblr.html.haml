@@ -1,0 +1,15 @@
+- tumblr_url = "http://www.tumblr.com/share?v=3&u=http://e.statisfy.co/s/#{@survey.uuid}&t=#{@survey.name}"
+#tumblr-overlay
+  .title
+    = image_tag asset_path('embed/tumblr_logo.png'), height: 25, width: 115
+  .buttons-container
+    %a.link-button{href: "javascript:window.open('#{tumblr_url}', '_blank', 'width=400,height=500');void(0);"}
+      = image_tag asset_path 'embed/blog-this.png'
+      %br
+      Blog this
+    %a.link-button(href='http://labs.app.statisfy.co/#/app/questions/new')
+      = image_tag asset_path 'embed/create-big.png'
+      %br
+      Create your
+      %br
+      own poll
