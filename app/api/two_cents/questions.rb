@@ -831,6 +831,7 @@ class TwoCents::Questions < Grape::API
         {
           id: q.id,
           title: q.title,
+          creator_id: q.user_id,
           created_at: q.created_at.to_i,
           survey_id: q.survey.try(:id),
           survey_uuid: q.survey.try(:uuid)
