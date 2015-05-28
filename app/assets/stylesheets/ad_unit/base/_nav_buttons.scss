@@ -25,3 +25,12 @@ a.nav-button {
   float: left;
   @include nav-button-colors($gray-dark);
 }
+
+.answers-count {
+  background-color: #37b7e5;
+  float: right;
+  padding: 0.1em 5px;
+  font-size: 0.8em;
+  height: 100%;
+  color: white;
+}
