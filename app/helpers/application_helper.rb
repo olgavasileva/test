@@ -38,4 +38,14 @@ module ApplicationHelper
   def get_the_app_path
     "https://itunes.apple.com/us/app/statisfy/id918625793?mt=8"
   end
+
+  def app_host
+    if Rails.env.production?
+      "app.statisfy.co"
+    elsif Rails.env.labs?
+      "labs.app.statisfy.co"
+    else
+      "app." + request.host
+    end
+  end
 end
