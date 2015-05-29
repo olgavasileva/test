@@ -214,13 +214,6 @@ class UsersController < ApplicationController
   end
 
   def new_question
-    @app_host = if Rails.env.production?
-                  "app.statisfy.co"
-                elsif Rails.env.labs? || Rails.env.development?
-                  "labs.app.statisfy.co"
-                else
-                  "app." + request.host
-                end
     render layout: 'pixel_admin'
   end
 
