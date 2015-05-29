@@ -8,14 +8,6 @@ class ShortLinksController < ActionController::Base
   private
 
   def web_app_question_url(question)
-    app_host = if Rails.env.production?
-      "app.statisfy.co"
-    elsif Rails.env.labs?
-      "labs.app.statisfy.co"
-    else
-      "app." + request.host
-    end
-
-    URI.join(root_url(host: app_host), "/#/app/questions/#{question.id}").to_s
+    "#{ENV['WEB_APP_URL']}/#/app/questions/#{question.id}"
   end
 end

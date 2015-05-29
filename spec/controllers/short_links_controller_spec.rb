@@ -15,7 +15,7 @@ RSpec.describe ShortLinksController do
 
     it 'redirects the current question on the web app' do
       get :latest_question
-      expected_url = "http://app.#{request.host}/#/app/questions/#{question.id}"
+      expected_url = "#{ENV['WEB_APP_URL']}/#/app/questions/#{question.id}"
       expect(response).to redirect_to(expected_url)
     end
   end

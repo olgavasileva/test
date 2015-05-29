@@ -53,14 +53,17 @@ class TwoCents::ImageSearch < Grape::API
       headers['Access-Control-Max-Age'] = '1728000'
 
       @data = 'data:image'
-      open(params[:url]) do |io|
-        if io.content_type =~ /image/
-          @data += io.content_type[io.content_type.index('/')..-1]
-          @data += ';base64,'
-          @data += Base64.encode64(io.read)
+      begin
+        open(params[:url]) do |io|
+          if io.content_type =~ /image/
+            @data += io.content_type[io.content_type.index('/')..-1]
+            @data += ';base64,'
+            @data += Base64.encode64(io.read)
+          end
         end
+      rescue
+        fail! 400, 'Cannot get this image'
       end
-
       {image_data: @data}
     end
   end

@@ -41,8 +41,14 @@
     #content
       = render partial: 'embed'
       #thank-you
-        %a#thank-you-close.close-button{href: qp_start_url(@survey.uuid, @ad_unit.name), target: '_self'} x
-        #thank-you-message{data: {uuid: @survey.uuid, html: @survey.parsed_thank_you_html({}).html_safe}}
+        - thank_you_html = @survey.parsed_thank_you_html({}).html_safe
+        - unless thank_you_html.empty?
+          %a#thank-you-close.close-button{href: qp_start_url(@survey.uuid, @ad_unit.name), target: '_self'} x
+          #thank-you-message{data: {uuid: @survey.uuid, html: thank_you_html}}
+        - else
+          #thank-you-message{data: {uuid: @survey.uuid}}
+            =render 'surveys/default_thank_you'
+
 
       = render partial: 'footer'
 

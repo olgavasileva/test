@@ -7,7 +7,7 @@
   - question = @response.present? ? @response.question : @question
   - if question.present?
     %span.answers-count
-      = pluralize @question.response_count, 'answer'
+      = pluralize question.response_count, 'answer'
 
   %a.action-icon.tumblr{href: 'javascript:openTumblr()'}
   %a.action-icon.facebook{href: facebook_url, target: 'popup'}

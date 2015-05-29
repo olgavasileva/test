@@ -18,7 +18,7 @@
                 %i.fa.fa-arrow-circle-o-down
                 GET STARTED
             - else
-              =link_to "http://app.statisfy.co", class:%w(btn-about btn btn-info btn-lg) do
+              =link_to ENV['WEB_APP_URL'], class:%w(btn-about btn btn-info btn-lg) do
                 %i.fa.fa-check
                 GET STARTED
             =link_to get_the_app_path, class:%w(btn-contact btn btn-primary btn-lg) do
