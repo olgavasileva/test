@@ -33,22 +33,15 @@
     :coffee
       $ ->
         data = $('#thank-you-message').data()
-        html = localStorage[data.uuid] || data.html
-        $('#thank-you-message').html(html)
+        $('#thank-you-message').html localStorage[data.uuid]
         localStorage.removeItem data.uuid
 
   %body{class: @ad_unit.name}
     #content
       = render partial: 'embed'
       #thank-you
-        - thank_you_html = @survey.parsed_thank_you_html({}).html_safe
-        - unless thank_you_html.empty?
-          %a#thank-you-close.close-button{href: qp_start_url(@survey.uuid, @ad_unit.name), target: '_self'} x
-          #thank-you-message{data: {uuid: @survey.uuid, html: thank_you_html}}
-        - else
-          #thank-you-message{data: {uuid: @survey.uuid}}
-            =render 'surveys/default_thank_you'
-
+        %a#thank-you-close.close-button{href: qp_start_url(@survey.uuid, @ad_unit.name), target: '_self'} x
+        #thank-you-message{data: {uuid: @survey.uuid}}
 
       = render partial: 'footer'
 
