@@ -1,38 +1,63 @@
 class Target < ActiveRecord::Base
   belongs_to :user, class_name: "Respondent"
   has_many :questions
-  has_and_belongs_to_many :followers, class_name: "Respondent", association_foreign_key: :user_id
-  has_and_belongs_to_many :groups
-  has_many :group_members, through: :groups, source: :members
 
-  has_and_belongs_to_many :communities
-  has_many :community_members, through: :communities, source: :member_users
+  def apply_to_question! question, options = {}
+    options.reverse_merge background: :auto
 
-  validates :all_users, inclusion:{in:[true, false]}
-  validates :all_followers, inclusion:{in:[true, false]}
-  validates :all_groups, inclusion:{in:[true, false]}
-  validates :all_communities, inclusion:{in:[true,false]}
+    question.targeting! self
 
-  after_initialize :set_defaults
+    if should_perform_in_background? options[:background]
+      Resque.enqueue(ApplyTargetingToQuestion, question.id, id)
+    else
+      apply_in_foreground! question
+    end
+  end
 
   def public?
-    !!all_users
+    targeting_all_users?
   end
 
-  # Sends the question to be added to feeds in the background while updating the
-  # `question#kind` attribute based on the targets attributes.
-  #
-  def apply_to_question question
-    question.update_attribute(:kind, all_users ? "public" : "targeted")
-    Resque.enqueue(AddQuestionToAllFeeds, question.id)
-  end
+  protected
+    # override in subclass if not always false
+    def targeting_all_users?
+      false
+    end
+
+    def apply! question
+      # subclass should override
+    end
+
+    def target_respondents! question, respondents
+      items = []
+
+      respondents.find_in_batches do |respondents|
+        respondents.each do |respondent|
+          unless respondent.question_targets.exists?(question_id: question.id)
+            items << QuestionTarget.new(target_id: id, question_id: question.id, respondent_id: respondent.id, relevance: question.relevance_to(respondent))
+          end
+        end
+      end
+
+      # Batch import
+      QuestionTarget.import items
+
+      # Push notification for targeted questions
+      respondents.find_each {|respondent| question.add_and_push_message respondent}
+    end
 
   private
+    def should_perform_in_background? in_background
+      if in_background == :auto
+        targeting_all_users?
+      else
+        in_background
+      end
+    end
 
-  def set_defaults
-    self.all_users = false if all_users.nil?
-    self.all_followers = false if all_followers.nil?
-    self.all_groups = false if all_groups.nil?
-    self.all_communities = false if all_communities.nil?
-  end
+    def apply_in_foreground! question
+      apply! question
+      question.activate!
+    end
+
 end

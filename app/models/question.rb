@@ -7,9 +7,10 @@ class Question < ActiveRecord::Base
 
 	belongs_to :user, class_name: "Respondent"
 	belongs_to :category
-  belongs_to :target
+  belongs_to :target      # This is the target criteria that the user specified when the question was created
   belongs_to :background_image, class_name: "QuestionImage"
   belongs_to :trend
+  belongs_to :consumer_target, foreign_key: :target_id
 
   # Attribute that allows questions to be added to surveys
   attr_accessor :survey_id, :survey_position
@@ -23,7 +24,6 @@ class Question < ActiveRecord::Base
   has_many :respondents, through: :responses, source: :user
   has_many :users,  through: :responses
 	has_many :feed_items, dependent: :destroy
-  has_many :skip_users, -> {where "feed_items_v2.hidden" => true, "feed_items_v2.hidden_reason" => 'skipped'}, through: :feed_items, source: :user
   has_many :choices
   has_many :question_reports
   has_many :group_targets
@@ -34,7 +34,20 @@ class Question < ActiveRecord::Base
   has_many :response_comments, through: :responses, source: :comment
   has_many :inappropriate_flags, dependent: :destroy
   has_many :response_matchers, dependent: :destroy
-  has_many :communities, through: :target, source: :communities
+  has_many :communities, through: :consumer_target, source: :communities
+
+  # Respondents to whom question was targeted
+  has_many :question_targets
+  has_many :targeted_respondents, through: :question_targets, source: :respondents
+
+  # Respondents who took an action with this question
+  has_many :question_actions
+  has_many :question_action_skips
+  # Respondents who skipped this question
+  has_many :skippers, through: :question_action_skips, source: :respondent
+  has_many :question_action_responses
+  # Respondents who answered this question (different way to the same set as :respondents, above)
+  has_many :responders, through: :question_action_responses, source: :respondent
 
   acts_as_taggable_on :tags
 
@@ -42,15 +55,14 @@ class Question < ActiveRecord::Base
 	scope :active, -> { where state:"active" }
   scope :suspended, -> { where state:"suspended" }
   scope :publik, -> { where kind:"public" }
+  scope :targeted, -> { where kind:"targeted" }
   scope :currently_targetable, -> { where currently_targetable:true }
   scope :inappropriate, -> { includes(:inappropriate_flags).having("count(inappropriate_flags.id) > 0") }
 
-  scope :latest, -> { order("feed_items_v2.published_at DESC, feed_items_v2.id DESC") }
-  scope :by_relevance, -> { order("feed_items_v2.relevance DESC, feed_items_v2.published_at DESC, feed_items_v2.id DESC") }
-  scope :trending, -> { joins(:trend).order("trends.rate * trending_multiplier DESC, feed_items_v2.published_at DESC") }
-  scope :trending_on_recent_response_count, -> { order("recent_responses_count DESC, feed_items_v2.published_at DESC") }
-  scope :targeted, -> { where("feed_items_v2.targeted = ?", true) }
-  scope :myfeed, -> { where("feed_items_v2.why" => %w(targeted leader follower group community)) }
+  scope :latest, -> { order("created_at DESC, id DESC") }
+  scope :by_relevance, -> { order("question_targets.relevance DESC, question_targets.created_at DESC, question_targets.id DESC") }
+  scope :trending, -> { joins(:trend).order("trends.rate * trending_multiplier DESC, questions.created_at DESC") }
+  scope :trending_on_recent_response_count, -> { order("recent_responses_count DESC, questions.created_at DESC") }
 
 	default kind: "public"
   default trending_multiplier: 1
@@ -110,6 +122,7 @@ class Question < ActiveRecord::Base
   # +1 if asked by one of the recipient's leaders
   # +1 for each of the recipient's followers who answered this question
   # +1 for each of the recipient's leaders who answered this question
+  # TODO: Caculate this for each question in the background periodically
   def relevance_to recipient
     follower_ids = recipient.followers.pluck(:id)
     leader_ids = recipient.leaders.pluck(:id)
@@ -119,22 +132,14 @@ class Question < ActiveRecord::Base
     responses.joins(:user).where('users.id' => follower_ids + leader_ids).count
   end
 
-  def answered! user
+  def answered! respondent
+    QuestionActionResponse.create! question: self, respondent: respondent
     trend.event!
-    FeedItem.question_answered! self, user
-  end
-
-  def apply_target! target
-    transaction do
-      update_attribute :target, target
-      target.apply_to_question self
-    end
   end
 
   def suspend!
     transaction do
       update_attribute :state, "suspended"
-      FeedItem.question_suspended! self
     end
   end
 
@@ -142,6 +147,11 @@ class Question < ActiveRecord::Base
 		update_attribute :view_count, (view_count.to_i + 1)
 		DailyAnalytic.increment! :views, self.user
 	end
+
+  def skipped! respondent
+    QuestionActionSkip.create! question: self, respondent: respondent
+    decrement! :score, 0.25
+  end
 
   def active?
 		state == "active"
@@ -167,9 +177,12 @@ class Question < ActiveRecord::Base
     kind == 'public'
   end
 
+  def targeting! target
+    update_attributes target: target, state: :targeting
+  end
+
 	def activate!
-		self.state = "active"
-		self.save!
+    update_attribute :state, :active
 	end
 
 	def included_by?(pack)
@@ -197,7 +210,7 @@ class Question < ActiveRecord::Base
 
 
 	def skip_count
-    FeedItem.skipped.where(question_id: self).count
+    question_action_skips.count
 	end
 
   def add_and_push_message recipient

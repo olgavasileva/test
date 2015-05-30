@@ -73,7 +73,7 @@ LinkchatApp::Application.routes.draw do
     resources :text_responses
     resources :order_responses
     resources :studio_responses
-    resources :targets
+    resources :consumer_targets
     resources :enterprise_targets
   end
 

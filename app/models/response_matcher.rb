@@ -22,7 +22,7 @@ class ResponseMatcher < ActiveRecord::Base
   def matched_users
     case inclusion
     when "skip"
-      question.skip_users
+      question.skippers
     when "respond"
       question.respondents
     when "specific"

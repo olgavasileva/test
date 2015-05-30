@@ -75,7 +75,7 @@ describe :search do
         context 'include_skipped = true' do
           let(:search_text) { 'Text Choice 21' }
           let(:params) { {auth_token: auth_token, search_text: search_text, count: count, include_skipped: true} }
-          before { FeedItem.question_skipped! q2, user }
+          before { q2.skipped! user }
           before { Response.create(question: q1, user: user) }
           it { expect(json.length).to eq 1 }
         end
@@ -83,7 +83,7 @@ describe :search do
         context 'include_skipped = true && include_answered = true' do
           let(:search_text) { 'Text Choice' }
           let(:params) { {auth_token: auth_token, search_text: search_text, count: count, include_skipped: true, include_answered: true} }
-          before { FeedItem.question_skipped! q2, user }
+          before { q2.skipped! user }
           before { Response.create(question: q1, user: user) }
           it { expect(json.length).to eq 2 }
         end
@@ -91,7 +91,7 @@ describe :search do
         context 'include_answered = true' do
           let(:search_text) { 'Text Choice 21' }
           let(:params) { {auth_token: auth_token, search_text: search_text, count: count, include_answered: true} }
-          before { FeedItem.question_skipped! q2, user }
+          before { q2.skipped! user }
           before { Response.create(question: q1, user: user) }
           it { expect(json.length).to eq 1 }
         end

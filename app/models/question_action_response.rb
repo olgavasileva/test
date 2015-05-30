@@ -1,0 +1,2 @@
+class QuestionActionResponse < QuestionAction
+end

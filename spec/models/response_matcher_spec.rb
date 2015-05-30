@@ -16,7 +16,7 @@ describe ResponseMatcher do
       let(:question) {FactoryGirl.create :text_question}
       let(:skippers) {FactoryGirl.create_list :user, 3}
       let!(:responders) {FactoryGirl.create_list :text_response, 2, question:question}
-      before {skippers.each{|user| FeedItem.question_skipped! question, user}}
+      before {skippers.each{|user| question.skipped! user}}
 
       describe :skippers do
         let(:matcher) {FactoryGirl.create :text_response_matcher, :skip, question:question}

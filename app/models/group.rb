@@ -3,7 +3,7 @@ class Group < ActiveRecord::Base
   has_many :members, class_name: "GroupMember", dependent: :destroy
   has_many :member_users, through: :members, source: :user
   has_many :groups_targets
-  has_many :targets, through: :groups_targets
+  has_many :consumer_targets, through: :groups_targets, foreign_key: :target_id
 
   validates :name, uniqueness: { scope: :user_id,
                                  message: "already used by this user" }

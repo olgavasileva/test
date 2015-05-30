@@ -1,4 +1,4 @@
-class TargetPolicy < ApplicationPolicy
+class ConsumerTargetPolicy < ApplicationPolicy
   def require_user? ; true; end
   def new?;           @record.user == @user; end
   def create?;        @record.user == @user; end

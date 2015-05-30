@@ -18,20 +18,11 @@ ActiveAdmin.register User do
     column "Items in Feed" do |u|
       link_to u.feed_items.count, admin_user_feed_items_path(u)
     end
-    column "Actions" do |u|
-      link_to "Reset this feed", reset_admin_user_path(u), method: :delete
-    end
     column :created_at
     column "Scenes" do |user|
       link_to pluralize(user.scenes.count, 'Scene'), admin_user_scenes_path(user)
     end
     actions
-  end
-
-  member_action :reset, method: :delete do
-    user = User.find params[:id]
-    user.reset_feed!
-    redirect_to admin_users_path, notice: "Feed has been reset for #{user.username}."
   end
 
   member_action :delete_authentication, method: :delete do

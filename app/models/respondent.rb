@@ -7,8 +7,6 @@ class Respondent < ActiveRecord::Base
   has_many :order_responses, class_name: "OrderResponse", foreign_key: :user_id
   has_many :choice_responses, class_name: "ChoiceResponse", foreign_key: :user_id
   has_many :multiple_choice_responses, class_name: "MultipleChoiceResponse", foreign_key: :user_id
-  has_many :feed_items, dependent: :destroy, foreign_key: :user_id
-  has_many :feed_questions, -> { where(feed_items_v2:{hidden: false}).active }, through: :feed_items, source: :question, foreign_key: :user_id
   has_many :answered_questions, through: :responses, source: :question, foreign_key: :user_id
   has_many :inappropriate_flags, dependent: :destroy, foreign_key: :user_id
   has_many :scenes, dependent: :destroy, foreign_key: :user_id
@@ -25,10 +23,11 @@ class Respondent < ActiveRecord::Base
   has_many :fellow_community_members, through: :membership_communities, source: :member_users
 
   has_many :targets, dependent: :destroy, foreign_key: :user_id
-  has_many :enterprise_targets, dependent: :destroy, foreign_key: :user_id
+  has_many :consumer_targets, foreign_key: :user_id
+  has_many :enterprise_targets, foreign_key: :user_id
 
   has_many :targets_users, foreign_key: :user_id
-  has_many :following_targets, through: :targets_users, source: :target
+  has_many :following_targets, through: :targets_users, source: :consumer_target
 
   has_many :messages, dependent: :destroy, foreign_key: :user_id
 
@@ -69,6 +68,15 @@ class Respondent < ActiveRecord::Base
 
   belongs_to :avatar, class_name: "UserAvatar", foreign_key: :user_avatar_id
 
+  # Questions targeted to this respondent
+  has_many :question_targets
+  has_many :targeted_questions, through: :question_targets, source: :question
+
+  # Things this respondent did with various questions
+  has_many :question_actions
+  has_many :question_action_skips
+  has_many :skipped_questions, through: :question_action_skips, source: :question
+
   default auto_feed: true
 
   has_many :surveys, foreign_key: :user_id
@@ -85,7 +93,7 @@ class Respondent < ActiveRecord::Base
 
   # respondents with responses or skips within the last n days
   def self.active n = 10
-    joins(:feed_items).where{feed_items.hidden == true}.where{feed_items.hidden_reason.in %w(skipped answered)}.where{feed_items.updated_at >= Date.current - n.days}.uniq
+    joins(:question_actions).where{question_actions.created_at >= Date.current - n.days}.uniq
   end
 
   # respondents with no responses or skips within the last n days
@@ -94,8 +102,54 @@ class Respondent < ActiveRecord::Base
     where{id.not_in(a)}
   end
 
-  def needs_more_feed_items?
-    feed_items.visible.publik.count < Question.active.publik.count
+  def latest_feed
+    feed_questions.latest
+  end
+
+  def trending_feed
+    if Figaro.env.USE_RESPONSE_COUNT_TRENDING?
+      feed_questions.trending_on_recent_response_count
+    else
+      feed_questions.trending
+    end
+  end
+
+  def my_feed
+    feed_questions(omit_public_questions: true, include_public_leader_questions: true).includes(:question_targets).by_relevance
+  end
+
+  ##
+  # All active public questions plus active questions targeted to this respondent
+  # Minus answered and skipped questions
+  # Returned as a query
+  #
+  # Options can be used to modify the result set:
+  #    omit_public_questions: don't include public questions (default is false)
+  #    include_answered_questions: include answered questions (default is false)
+  #    include_skipped_questions: include skipped questions (default is false)
+  #    include_public_leader_questions: include active public questions asked by my leaders (default is false)
+  def feed_questions options = {}
+    options.reverse_merge omit_public_questions: false, include_answered_questions: false, include_skipped_questions: false, include_public_leader_questions: false
+
+    ids = targeted_questions.active.pluck(:id)
+    ids += Question.active.publik.pluck(:id) unless options[:omit_public_questions]
+    ids += Question.active.publik.where(user: leaders).pluck(:id) if options[:include_public_leader_questions]
+    ids -= answered_questions.active.pluck(:id) unless options[:include_answered_questions]
+    ids -= skipped_questions.active.pluck(:id) unless options[:include_skipped_questions]
+
+    Question.where id: ids.uniq
+  end
+
+  def feed_questions_with_answered
+    feed_questions include_answered_questions: true
+  end
+
+  def feed_questions_with_skipped
+    feed_questions include_skipped_questions: true
+  end
+
+  def feed_questions_with_skipped_and_answered
+    feed_questions include_skipped_questions: true, include_answered_questions: true
   end
 
   def choice_ids_made_for_question question
@@ -105,39 +159,6 @@ class Respondent < ActiveRecord::Base
 
   def quantcast_demographic_required?
     demographics.quantcast.blank? || demographics.quantcast.first.updated_at < (Date.current - 1.month)
-  end
-
-  def feed_questions_with_answered
-    feed_items = FeedItem.arel_table
-    questions  = Question.arel_table
-    Question.joins(:feed_items).where(feed_items[:user_id].eq(self.id)
-      .and(
-          (feed_items[:hidden].eq(false).and(questions[:state].eq('active')))
-              .or(feed_items[:hidden_reason].eq('answered').and(feed_items[:hidden].eq(true)))
-      )
-    )
-  end
-
-  def feed_questions_with_skipped
-    feed_items = FeedItem.arel_table
-    questions  = Question.arel_table
-    Question.joins(:feed_items).where(feed_items[:user_id].eq(self.id)
-      .and(
-        (feed_items[:hidden].eq(false).and(questions[:state].eq('active')))
-         .or(feed_items[:hidden_reason].eq('skipped').and(feed_items[:hidden].eq(true)))
-      )
-    )
-  end
-
-  def feed_questions_with_skipped_and_answered
-    feed_items = FeedItem.arel_table
-    questions  = Question.arel_table
-    Question.joins(:feed_items).where(feed_items[:user_id].eq(self.id)
-      .and((
-          feed_items[:hidden].eq(false).and(questions[:state].eq('active')))
-          .or(feed_items[:hidden_reason].eq('skipped').and(feed_items[:hidden].eq(true))
-          .or(feed_items[:hidden_reason].eq('answered').and(feed_items[:hidden].eq(true))
-          ))))
   end
 
   # Comments made by other users about this user's questions and responses
@@ -182,86 +203,6 @@ class Respondent < ActiveRecord::Base
 
   def number_of_unread_messages
     return self.messages.where("read_at is ?", nil).count
-  end
-
-  # if max_to_add is nil or 0, add them all
-  def append_questions_to_feed! max_to_add = nil
-    transaction do
-      question_ids = Question.active.publik.order("created_at DESC").pluck(:id) - feed_items.pluck(:question_id)
-      question_ids = question_ids[0..max_to_add.to_i-1] unless max_to_add.nil?
-
-      Question.where(id:question_ids).select([:id, :created_at]).find_in_batches do |questions|
-        items = []
-        questions.each do |q|
-          items << FeedItem.new(user:self, question_id:q.id, published_at:q.created_at, why: "public")
-        end
-        FeedItem.import items
-      end
-    end
-  end
-
-  # Remove the oldest public unanswered items from the feed, keeping min_to_keep so there are available in case the user comes back
-  def purge_feed_items! min_to_keep = nil
-    unless min_to_keep.nil?
-      transaction do
-        num_to_destroy = feed_items.visible.publik.count - min_to_keep.to_i
-        # NOTE: This bybasses any rails callbacks - it's OK as of 4/17/2015 as FeedItem doesn't have any callbacks realated to destroy
-        if num_to_destroy > 0
-          ids = feed_items.visible.publik.order('published_at ASC').limit(num_to_destroy).pluck(:id)
-          FeedItem.where(id:ids).delete_all
-        end
-      end
-    end
-  end
-
-  # Clear and then add all the active public questions to the feed
-  def reset_feed!
-    transaction do
-      feed_items.destroy_all
-      items = []
-      Question.active.publik.select([:id, :created_at]).order("created_at DESC").each do |q|
-        items << FeedItem.new(user:self, question_id:q.id, published_at:q.created_at, why: "public")
-      end
-      FeedItem.import items
-    end
-  end
-
-  def feed_needs_updating?
-    feed_items.empty? || feed_items.order("published_at ASC").first.published_at > Date.parse("2014/12/31") # 1/8/2015 mitigation
-  end
-
-  def update_feed_if_needed!
-    if feed_needs_updating?
-      transaction do
-        question_ids_to_add = Question.active.publik.pluck(:id) - feed_items.pluck(:question_id)
-
-        items = []
-        question_ids_to_add.each do |question_id|
-          q = Question.select(:created_at).find_by(id:question_id)
-          items << FeedItem.new(user_id:id, question_id:question_id, published_at:q.created_at, why:"public")
-        end
-        FeedItem.import items
-
-        udpate_feed_statuses!
-      end
-    end
-  end
-
-  def udpate_feed_statuses!
-    SkippedItem.where(user_id:id).pluck(:question_id).each do |question_id|
-      feed_item = feed_items.find_by question_id:question_id
-      feed_item.question_skipped! if feed_item
-    end
-
-    Response.where(user_id:id).pluck(:question_id).each do |question_id|
-      feed_item = feed_items.find_by question_id:question_id
-      feed_item.question_answered! if feed_item
-    end
-
-    Question.suspended.pluck(:id).each do |question_id|
-      feed_item = feed_items.find_by question_id:question_id
-      feed_item.suspended! if feed_item
-    end
   end
 
   def under_13?

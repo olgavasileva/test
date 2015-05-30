@@ -78,7 +78,7 @@ class TwoCents::Questions < Grape::API
       def create_question_target(question, params)
         params = params.to_h
 
-        target = Target.create!(
+        target = ConsumerTarget.create!(
           user: current_user,
           all_users: params['all_users'] || params['all'],
           all_followers: params['all_followers'],
@@ -90,7 +90,7 @@ class TwoCents::Questions < Grape::API
         )
 
 
-        question.apply_target! target
+        target.apply_to_question! question
 
         target
       end
@@ -142,7 +142,7 @@ class TwoCents::Questions < Grape::API
       fail!(2001, "Not more than 4 choice may be provided") if declared_params[:choices].count > 4
 
       @question = TextChoiceQuestion.new({
-        state: "active",
+        state: 'targeting',
         user_id:current_user.id,
         category_id:declared_params[:category_id],
         survey_id: declared_params[:survey_id],
@@ -211,7 +211,7 @@ class TwoCents::Questions < Grape::API
       fail!(2004, "max_responses must be greater than or equal to min_responses") unless max_responses >= min_responses
 
       @question = MultipleChoiceQuestion.new({
-        state: "active",
+        state: 'targeting',
         user_id:current_user.id,
         category_id:declared_params[:category_id],
         survey_id: declared_params[:survey_id],
@@ -276,7 +276,7 @@ class TwoCents::Questions < Grape::API
       fail!(2002, "The number of choices must be between 2 and 4") unless (2..4).include?(num_choices)
 
       @question = ImageChoiceQuestion.new({
-        state: "active",
+        state: 'targeting',
         user_id:current_user.id,
         category_id:declared_params[:category_id],
         survey_id: declared_params[:survey_id],
@@ -339,7 +339,7 @@ class TwoCents::Questions < Grape::API
       fail!(2002, "The number of choices must be between 2 and 4") unless (2..4).include?(num_choices)
 
       @question = OrderQuestion.new({
-        state: "active",
+        state: 'targeting',
         user_id:current_user.id,
         category_id:declared_params[:category_id],
         survey_id: declared_params[:survey_id],
@@ -395,7 +395,7 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       @question = TextQuestion.create!({
-        state: "active",
+        state: 'targeting',
         user_id: current_user.id,
         category_id: declared_params[:category_id],
         survey_id: declared_params[:survey_id],
@@ -500,12 +500,12 @@ class TwoCents::Questions < Grape::API
       optional :count, default: 20, type: Integer, desc: 'The maximum number of questions to return'
       optional :category_ids, type: Array, desc: 'Limit questions to only these categories'
       optional :community_ids, type: Array, desc: 'Limit questions to only those targeted to these communities'
-      optional :user_ids, type: Array, desc: 'Limit questions to only these users'
+      optional :user_ids, type: Array, desc: 'Limit questions to only those asked by these users'
     end
     post 'latest', jbuilder: 'latest' do
       validate_user!
 
-      query = current_user.feed_questions.not_suspended.latest
+      query = current_user.latest_feed
 
       if declared_params[:user_ids]
         query = query.where(user_id: declared_params[:user_ids])
@@ -578,11 +578,7 @@ class TwoCents::Questions < Grape::API
     post 'trending', jbuilder: 'questions' do
       validate_user!
 
-      @questions = if Figaro.env.USE_RESPONSE_COUNT_TRENDING?
-        current_user.feed_questions.trending_on_recent_response_count.offset(declared_params[:index]).limit(declared_params[:count])
-      else
-        current_user.feed_questions.trending.offset(declared_params[:index]).limit(declared_params[:count])
-      end
+      @questions = current_user.trending_feed.offset(declared_params[:index]).limit(declared_params[:count])
     end
 
 
@@ -636,13 +632,13 @@ class TwoCents::Questions < Grape::API
     post 'myfeed', jbuilder: 'questions' do
       validate_user!
 
-      @questions = current_user.feed_questions.myfeed.by_relevance.offset(declared_params[:index]).limit(declared_params[:count])
+      @questions = current_user.my_feed.offset(declared_params[:index]).limit(declared_params[:count])
     end
 
 
 
 
-    desc 'Search for questions that match some text withing the universe of questions for this user.', {
+    desc 'Search for questions that match some text within the universe of questions for this user.', {
       notes: <<-END
         This API searches the question text and any choice text and returns them ordered from newest to oldest.
 
@@ -763,8 +759,6 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       if ENV['LEGACY_FEED_API'].true?
-        current_user.update_feed_if_needed!
-
         page = declared_params[:page]
         per_page = page ? declared_params[:per_page] : 15
 
@@ -1348,8 +1342,7 @@ class TwoCents::Questions < Grape::API
       validate_user!
 
       question = Question.find(params[:question_id])
-
-      FeedItem.question_skipped! question, current_user
+      question.skipped! current_user
 
       {}
     end

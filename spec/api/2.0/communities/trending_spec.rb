@@ -10,7 +10,7 @@ describe 'GET /communities/trending' do
   let!(:community) { FactoryGirl.create :community, user: another_instance.user, private: false }
   let!(:another_community) { FactoryGirl.create :community, user: another_instance.user, private: false }
   let!(:question) { FactoryGirl.create :question, user: another_instance.user }
-  let!(:target) { FactoryGirl.create :target, user: another_instance.user, communities: [community], questions: [question] }
+  let!(:target) { FactoryGirl.create :consumer_target, user: another_instance.user, communities: [community], questions: [question] }
 
   it 'responds with communities' do
     get 'v/2.0/communities/trending', params
