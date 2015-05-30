@@ -73,7 +73,7 @@ class Survey < ActiveRecord::Base
         end
       end
     else
-      "Thank you!"
+      String.new
     end
   end
 

@@ -36,7 +36,7 @@ class SurveysController < ApplicationController
 
   def start
     @original_referrer = request.referrer
-    @thank_you_html = survey.parsed_thank_you_html request.query_parameters
+    @thank_you_html = survey.parsed_thank_you_html(request.query_parameters) || default_thank_you
     @question = question_scope.first
   end
 
@@ -75,6 +75,10 @@ class SurveysController < ApplicationController
     demographic = current_ad_unit_user.demographics.quantcast.first_or_create
     demographic.update_from_provider_data!('quantcast', '1.0', quantcast_data)
     head :ok
+  end
+
+  def default_thank_you
+    render_to_string partial: 'surveys/default_thank_you'
   end
 
   private
