@@ -31,21 +31,12 @@ namespace :feed do
   desc "Move from feedv2 to new faster model"
   task migrate: [:skipped, :answered, :targeted]
 
-  task skipped: :environment do
+  task actions: :environment do
     sql = []
     sql << "INSERT INTO question_actions (type, question_id, respondent_id, created_at, updated_at)"
-    sql << "SELECT 'QuestionActionSkip', question_id, user_id, hidden_at, hidden_at"
+    sql << "SELECT (CASE WHEN feed_items_v2.hidden_reason = 'skipped' THEN 'QuestionActionSkip' ELSE 'QuestionActionResponse' END), question_id, user_id, hidden_at, hidden_at"
     sql << "FROM feed_items_v2"
-    sql << "WHERE feed_items_v2.hidden = 1 AND feed_items_v2.hidden_reason = 'skipped'"
-    ActiveRecord::Base.connection.execute sql.join(" ")
-  end
-
-  task answered: :environment do
-    sql = []
-    sql << "INSERT INTO question_actions (type, question_id, respondent_id, created_at, updated_at)"
-    sql << "SELECT 'QuestionActionResponse', question_id, user_id, hidden_at, hidden_at"
-    sql << "FROM feed_items_v2"
-    sql << "WHERE feed_items_v2.hidden = 1 AND feed_items_v2.hidden_reason = 'answered'"
+    sql << "WHERE feed_items_v2.hidden = 1 AND feed_items_v2.hidden_reason IN ('answered','skipped')"
     ActiveRecord::Base.connection.execute sql.join(" ")
   end
 
