@@ -29,7 +29,20 @@
 
 namespace :feed do
   desc "Move from feedv2 to new faster model"
-  task migrate: [:skipped, :answered, :targeted]
+  task migrate: [:remove_indexes, :delete_unhidden_public, :actions, :targeted]
+
+  task remove_indexes: :environment do
+    ActiveRecord::Base.connection.execute "ALTER TABLE `feed_items_v2` DROP INDEX `index_feed_items_v2_on_why`"
+    ActiveRecord::Base.connection.execute "ALTER TABLE `feed_items_v2` DROP INDEX `idx2`"
+    ActiveRecord::Base.connection.execute "ALTER TABLE `feed_items_v2` DROP INDEX `idx3`"
+    ActiveRecord::Base.connection.execute "ALTER TABLE `feed_items_v2` DROP INDEX `idx5`"
+    ActiveRecord::Base.connection.execute "ALTER TABLE `feed_items_v2` DROP INDEX `index_feed_items_v2_on_question_id`"
+  end
+
+  task delete_unhidden_public: :environment do
+    ActiveRecord::Base.connection.execute "DELETE FROM feed_items_v2 WHERE hidden = 0 AND why = 'public'"
+  end
+
 
   task actions: :environment do
     sql = []
