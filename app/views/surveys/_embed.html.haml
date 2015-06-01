@@ -1,6 +1,6 @@
 #embed
   = render partial: 'tumblr'
-  - ad_units = AdUnit.all.to_a
+  - ad_units = AdUnit.by_name('medium_rectangle') #AdUnit.all.to_a
   #embed-header
     #embed-title Select Size
     %a#embed-close.close-button x
