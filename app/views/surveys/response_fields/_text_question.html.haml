@@ -17,3 +17,13 @@
         = text_area_tag 'response[text]', nil, placeholder: 'Type your answer here'
       .bar-orange
         %button{type:'submit'}= 'Submit'
+  :javascript
+    $('button[type="submit"]').on('click', function(e) {
+      e.preventDefault();
+      var text = $('#response_text').val();
+      if (!text.length) {
+        alert('Your response cannot be empty, please write something');
+      } else {
+        $('form').submit();
+      }
+    });
