@@ -66,12 +66,21 @@ class Survey < ActiveRecord::Base
   # And "This is a %pdq|cat%." with the same hash results in "This is a cat."
   # Multiple replacements can be included.
   def parsed_thank_you_html hash
-    if thank_you_html.present?
+    if thank_you_message_exist?
       thank_you_html.gsub(/%[^%]+%/) do |s|
         s.match /%([^\|]*)(\|([^%]*))?%/ do |matches|
           hash[matches[1]] || matches[3]
         end
       end
+    end
+  end
+
+  def thank_you_message_exist?
+    if thank_you_html.present?
+      doc = Nokogiri.HTML(thank_you_html)
+      styles = doc.css('style').text
+      thank_you_text = doc.text.gsub styles, ''
+      thank_you_text.strip.empty?
     end
   end
 

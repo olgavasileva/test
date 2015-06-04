@@ -38,7 +38,10 @@
 
   %body{class: @ad_unit.name}
     #content
-      = render partial: 'embed'
+      - if @survey.thank_you_message_exist?
+        = render partial: 'embed'
+      - else
+        = render partial: 'default_thank_you'
       #thank-you
         %a#thank-you-close.close-button{href: qp_start_url(@survey.uuid, @ad_unit.name), target: '_self'} x
         #thank-you-message{data: {uuid: @survey.uuid}}
