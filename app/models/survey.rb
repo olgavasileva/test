@@ -72,6 +72,8 @@ class Survey < ActiveRecord::Base
           hash[matches[1]] || matches[3]
         end
       end
+    else
+      String.new
     end
   end
 
