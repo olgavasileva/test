@@ -63,3 +63,8 @@ en:
     response_count:
       one: 1 person answered this question.
       other: '%{count} people answered this question.'
+
+    cta_answer:
+      zero: "Answer now!"
+      one: "%{count} response. Answer now!"
+      other: "%{count} responses. Answer now!"

@@ -33,15 +33,20 @@
     :coffee
       $ ->
         data = $('#thank-you-message').data()
-        $('#thank-you-message').html localStorage[data.uuid]
-        localStorage.removeItem data.uuid
+        if data
+          $('#thank-you-message').html localStorage[data.uuid]
+          localStorage.removeItem data.uuid
 
   %body{class: @ad_unit.name}
     #content
-      = render partial: 'embed'
-      #thank-you
-        %a#thank-you-close.close-button{href: qp_start_url(@survey.uuid, @ad_unit.name), target: '_self'} x
-        #thank-you-message{data: {uuid: @survey.uuid}}
+      = render partial: 'tumblr'
+      - if @survey.thank_you_message_exist?
+        = render partial: 'embed'
+        #thank-you
+          %a#thank-you-close.close-button{href: qp_start_url(@survey.uuid, @ad_unit.name), target: '_self'} x
+          #thank-you-message{data: {uuid: @survey.uuid, html: @survey.parsed_thank_you_html({}).html_safe}}
+      - else
+        = render partial: 'default_thank_you'
 
       = render partial: 'footer'
 

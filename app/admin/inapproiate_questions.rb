@@ -26,9 +26,6 @@ ActiveAdmin.register Question, as: "InappropriateQuestion"  do
     column "Reports" do |q|
       link_to q.inappropriate_flags.count, admin_inappropriate_question_inappropriate_flags_path(q)
     end
-    column "Feeds" do |q|
-      link_to q.feed_items.count
-    end
     column "State" do |q|
       q.state.titleize
     end

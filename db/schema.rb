@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150524201331) do
+ActiveRecord::Schema.define(version: 20150602114309) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -302,12 +302,7 @@ ActiveRecord::Schema.define(version: 20150524201331) do
     t.string   "why"
   end
 
-  add_index "feed_items_v2", ["hidden", "hidden_reason", "question_id"], name: "idx2", using: :btree
   add_index "feed_items_v2", ["hidden", "why"], name: "index_feed_items_v2_on_hidden_and_why", using: :btree
-  add_index "feed_items_v2", ["question_id"], name: "index_feed_items_v2_on_question_id", using: :btree
-  add_index "feed_items_v2", ["user_id", "hidden", "hidden_reason", "question_id"], name: "idx5", using: :btree
-  add_index "feed_items_v2", ["user_id", "hidden", "published_at"], name: "idx3", using: :btree
-  add_index "feed_items_v2", ["why"], name: "index_feed_items_v2_on_why", using: :btree
 
   create_table "follower_targets", force: true do |t|
     t.integer  "question_id"
@@ -940,13 +935,14 @@ ActiveRecord::Schema.define(version: 20150524201331) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id",            null: false
-    t.string   "uuid",               null: false
+    t.integer  "user_id",                            null: false
+    t.string   "uuid",                               null: false
     t.text     "thank_you_markdown"
     t.text     "thank_you_html"
     t.string   "redirect"
     t.string   "redirect_url"
     t.integer  "redirect_timeout"
+    t.boolean  "thank_you_default",  default: false, null: false
   end
 
   add_index "surveys", ["redirect"], name: "index_surveys_on_redirect", using: :btree

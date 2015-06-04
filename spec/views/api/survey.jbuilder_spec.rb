@@ -25,6 +25,7 @@ RSpec.describe 'views/api/survey.jbuilder' do
     it { is_expected.to have_json_key(:redirect_timeout).eq(survey.redirect_timeout) }
     it { is_expected.to have_json_key(:thank_you_markdown).eq(survey.thank_you_markdown) }
     it { is_expected.to have_json_key(:thank_you_html).eq(survey.thank_you_html) }
+    it { is_expected.to have_json_key(:thank_you_default).eq(survey.thank_you_default) }
     it { is_expected.to have_json_key(:user_id) }
     it { is_expected.to have_json_key(:questions) }
   end

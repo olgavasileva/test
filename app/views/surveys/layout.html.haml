@@ -35,7 +35,8 @@
         %h1.resize
           .title
             .table
-              .cell=@question.try :title
+              .cell
+                =@question.try :title
 
       = yield
       #question{class: question_class}

@@ -56,7 +56,8 @@ module TwoCents
           :redirect_url,
           :redirect_timeout,
           :thank_you_html,
-          :thank_you_markdown
+          :thank_you_markdown,
+          :thank_you_default
         )
       end
 

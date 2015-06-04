@@ -181,11 +181,31 @@
   .gwd-span-e0gy {
     color: rgb(255, 255, 255);
   }
+
+  .image-holder {
+    width: 300px;
+    height: 231px;
+    overflow-y: hidden;
+    position: relative
+  }
+
+  #thank-you-close {
+    z-index: 2;
+    position: absolute;
+    margin-left: 270px;
+    margin-top: 10px;
+    font-weight: bold;
+  }
 </style>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
 
 <div class="gwd-body">
-  <img src="https://trello-attachments.s3.amazonaws.com/5554f0b0da69177665026cbd/299x251/1210222638e27873d934f39b46251060/question-exampe.jpg" class="gwd-img-8rdd">
+  <a href="<%= qp_start_url(@survey.uuid, @ad_unit.name) %>" id="thank-you-close" class="close-button" target="_self">x</a>
+
+  <div class="image-holder">
+    <img style="position: absolute"
+         src="https://trello-attachments.s3.amazonaws.com/5554f0b0da69177665026cbd/299x251/1210222638e27873d934f39b46251060/question-exampe.jpg" class="gwd-img-8rdd">
+  </div>
   <div class="gwd-div-3umj editable"></div>
   <a class="button-share">Share</a>
   <a href="<%= ENV['WEB_APP_URL'] %>/#/app/questions/new" class="button1 gwd-a-ve6x">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="gwd-span-e0gy">Create your own</span></a>
