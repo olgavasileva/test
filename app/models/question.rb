@@ -23,7 +23,6 @@ class Question < ActiveRecord::Base
 	has_many :responses, dependent: :destroy
   has_many :respondents, through: :responses, source: :user
   has_many :users,  through: :responses
-	has_many :feed_items, dependent: :destroy
   has_many :choices
   has_many :question_reports
   has_many :group_targets
