@@ -80,7 +80,7 @@ class Survey < ActiveRecord::Base
       doc = Nokogiri.HTML(thank_you_html)
       styles = doc.css('style').text
       thank_you_text = doc.text.gsub styles, ''
-      thank_you_text.strip.empty?
+      !thank_you_text.strip.empty?
     end
   end
 
