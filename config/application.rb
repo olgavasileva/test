@@ -31,6 +31,7 @@ module LinkchatApp
     end
 
     config.autoload_paths += Dir[Rails.root.join('app', 'jobs')]
+    config.assets.precompile << /\.(?:svg|eot|woff|ttf)\z/
 
     # For grape (API)
     config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')

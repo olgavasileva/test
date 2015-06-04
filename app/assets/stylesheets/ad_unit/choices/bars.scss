@@ -62,7 +62,7 @@
 
   button, .bar-title {
     text-align: center;
-    font-weight: 400;
+    font-weight: 500;
     font-size: 16px;
     display: block;
     padding: 7px 0px;
@@ -83,8 +83,12 @@
     width: 98%;
     text-align: right;
     font-weight: bold;
+    font-family: roboto-black;
     float: right;
     padding-top: 7px;
+  }
+  .bar-title {
+    font-family: roboto-medium;
   }
 
   .bar-selected {

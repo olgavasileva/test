@@ -43,7 +43,6 @@ namespace :feed do
     ActiveRecord::Base.connection.execute "DELETE FROM feed_items_v2 WHERE hidden = 0 AND why = 'public'"
   end
 
-
   task actions: :environment do
     sql = []
     sql << "INSERT INTO question_actions (type, question_id, respondent_id, created_at, updated_at)"
