@@ -19,10 +19,11 @@ ActiveAdmin.register Question do
   filter :kind, as: :check_boxes, collection: Question::KINDS
   filter :allow_multiple_answers_from_user
 
-  member_action :apply_created_at_to_feed_items do
+  member_action :set_created_at_to_now do
     q = Question.find params[:id]
-    q.feed_items.update_all published_at: q.created_at
-    flash[:notice] = "Updated feed #{q.feed_items.count} items"
+    q.created_at = Time.current
+    q.save!
+    flash[:notice] = "Updated created_at to now"
     redirect_to action: :index
   end
 
@@ -67,10 +68,7 @@ ActiveAdmin.register Question do
     end
     column :created_at
     column do |q|
-      link_to "Update All Published At Dates", apply_created_at_to_feed_items_admin_question_path(q)
-    end
-    column "In Feeds" do |q|
-      q.feed_items.count
+      link_to "Update Created At to Now", set_created_at_to_now_admin_question_path(q)
     end
     actions
   end
