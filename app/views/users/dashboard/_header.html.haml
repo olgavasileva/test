@@ -7,11 +7,8 @@
       .row
         %hr.visible-xs.no-grid-gutter-h
         .pull-right.col-xs-12.col-sm-auto{style: 'font-size: 0'}
-          =link_to [:new_campaign, current_user], class: %w(btn btn-primary btn-labeled), style: 'width: 50%;display: inline-block' do
+          =link_to [:new_question, current_user], class: %w(btn btn-primary btn-labeled) do
             %span.btn-label.fa.fa-plus
             Create Campaign
-          =link_to [:new_question, current_user], class: %w(btn btn-primary btn-labeled), style: 'width: 50%;display: inline-block' do
-            %span.btn-label.fa.fa-plus
-            Create Question
 
         .visible-xs.clearfix.form-group-margin

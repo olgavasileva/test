@@ -21,3 +21,9 @@
       /     &times;
 
     =render_navigation context: :pro
+    :javascript
+      document.getElementById('pro_logout').addEventListener('click', function() {
+        if (localStorage){
+          localStorage.clear();
+        }
+      });
