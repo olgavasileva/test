@@ -6,7 +6,7 @@
 
   @mixin icon-bg($icon) {
     background-image: image-url("ad_units/#{$icon}.png");
-    background-image: image-url("ad_units/#{$icon}.svg"), none;
+    //background-image: image-url("ad_units/#{$icon}.svg"), none; it costs too much.
   }
 
   .action-icon, .logo {
