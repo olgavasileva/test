@@ -13,6 +13,9 @@
     height: $default-footer-inner-height;
     background-repeat: no-repeat;
   }
+  .action-icon {
+    cursor: pointer;
+  }
 
   .logo {
     float: right;
@@ -41,13 +44,22 @@
     float: left;
     margin-right: 2px;
 
-    &.facebook { @include icon-bg('facebook'); }
-    &.twitter { @include icon-bg('twitter'); }
-    &.tumblr { @include icon-bg('tumblr'); }
-    &.embed { @include icon-bg('embed'); }
-    &.create { @include icon-bg('create'); }
+    &.facebook {
+      @include icon-bg('facebook');
+    }
+    &.twitter {
+      @include icon-bg('twitter');
+    }
+    &.tumblr {
+      @include icon-bg('tumblr');
+    }
+    &.embed {
+      @include icon-bg('embed');
+    }
+    &.create {
+      @include icon-bg('create');
+    }
   }
-
 
   .logo {
     width: 53px;

@@ -9,9 +9,9 @@
     %span.answers-count
       = pluralize question.response_count, 'answer'
 
-  %a.action-icon.tumblr{href: 'javascript:openTumblr()'}
-  %a.action-icon.twitter{href: "javascript: window.open('#{twitter_url}', '','width=600,height=400')", target: 'popup'}
-  %a.action-icon.facebook{href: "javascript: window.open('#{facebook_url}', '','width=600,height=400')", target: 'popup'}
+  %a.action-icon.tumblr{onclick: 'openTumblr()'}
+  %a.action-icon.twitter{onclick: "window.open('#{twitter_url}', '','width=600,height=400')", target: 'popup'}
+  %a.action-icon.facebook{onclick: "window.open('#{facebook_url}', '','width=600,height=400')", target: 'popup'}
   %a.action-icon.embed#embed-icon{href: '#embed'}
   %a.action-icon.create{href: "#{ENV['WEB_APP_URL']}/#/app/questions/new"}
 :javascript
