@@ -1,7 +1,7 @@
-#footer {
+#footer, .up-menu {
   background-color: $gray-light;
   height: $default-footer-inner-height;
-  padding: $default-footer-padding-horizontal $default-footer-padding-vertical;
+  padding: $default-footer-padding-horizontal+1 $default-footer-padding-vertical;
   clear: both;
 
   @mixin icon-bg($icon) {

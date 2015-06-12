@@ -1,232 +1,116 @@
-<% first_question = @survey.questions.first %>
+<% first_question = @survey.questions.first
+   question_url = question_sharing_url(uuid: first_question.uuid, subdomain: 'a')
+   facebook_url = "https://facebook.com/sharer.php?#{{u: question_url}.to_query}"
+   twitter_url = "https://twitter.com/intent/tweet?#{{text: "Check this out! #{question_url}"}.to_query}"
+   sample_surveys = Survey.joins(:questions).group("surveys.id").having("COUNT(questions.id) > 0").limit(3).to_a
+
+%>
 <style>
-  .gwd-img-8rdd {
-    position: absolute;
-    left: 0px;
-    top: 0px;
+  .polls {
+    background-color: rgb(38, 145, 217);
+    color: white;
+    font-family: roboto-medium;
+    font-size: 12px;
+    height: 185px;
+    padding: 10px 15px 0 15px;
   }
 
-  .gwd-div-3umj {
-    position: absolute;
-    font-family: 'Times New Roman';
-    text-align: left;
-    color: rgb(0, 0, 0);
-    width: 300px;
-    opacity: 0.85;
-    height: 233px;
-    border-image-source: none;
-    border-color: rgb(0, 0, 0);
-    left: 0px;
-    top: 0px;
-    background-image: none;
-    background-color: rgb(255, 255, 255);
+  .polls div:first-child {
+    margin-bottom: 5px;
   }
 
-  .button-share {
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    border: 1px solid rgb(24, 49, 64);
-    padding: 8px 21px;
-    border-radius: 30px;
-    color: black !important;
-    text-shadow: rgb(126, 164, 189) 0px 1px 0px;
-    font-family: 'Open Sans';
-    text-align: left;
-    text-decoration: none;
-    width: 170px;
-    height: 20px;
-    font-size: 14px;
-    left: 41px;
-    top: 88.5px;
-    background: none rgb(255, 255, 255);
+  .poll {
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 3px;
+    height: 50px;
+    width: 270px;
+    background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
   }
 
-  .button3 {
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    border: 1px solid rgb(24, 49, 64);
-    padding: 8px 21px;
-    border-radius: 30px;
-    text-shadow: rgb(126, 164, 189) 0px 1px 0px;
-    font-family: 'Open Sans';
-    text-decoration: none;
+  .poll img {
+    width: 50px;
+    margin: 0;
+    float: left;
+    display: inline-block;
+  }
+
+  .poll a:hover {
+    color: #d1d3d4;
+  }
+
+  .poll a {
     font-size: 15px;
-    color: rgb(0, 0, 0);
-    height: 16px;
-    width: 120px;
-    left: 72px;
-    top: 194.5px;
-    background: white;
-  }
-
-  .button1 {
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    border: 1px solid rgb(24, 49, 64);
-    padding: 8px 21px;
-    border-radius: 30px;
-    text-shadow: rgb(126, 164, 189) 0px 1px 0px;
-    font-family: 'Open Sans';
+    float: right;
+    width: 200px;
+    font-weight: 500;
+    word-break: break-all;
+    overflow: hidden;
+    margin: 0;
+    display: inline-block;
+    height: 30px;
+    padding: 10px 10px 0 5px;
+    color: white;
     text-decoration: none;
-    left: 69px;
-    top: 163px;
-    width: 170px;
-    color: rgb(0, 0, 0);
-    font-size: 15px;
-    background: rgb(38, 146, 217);
   }
 
-  .follow {
-    -webkit-filter: drop-shadow(black 1px 1px 0px) drop-shadow(black -1px -1px 0px);
+  .up-menu {
+    padding: 10px 5px;
+    font-size: 13px;
+    font-family: roboto-medium;
+    color: #414042;
+    font-weight: 100;
+    height: 15px;
   }
 
-  .button1:hover {
-    border: 1px solid rgb(10, 60, 89);
-    text-shadow: rgb(30, 65, 88) 0px 1px 0px;
-    background: rgb(103, 179, 229);
+  .up-menu .action-icon {
+    height: 21px !important;
+    width: 21px !important;
+    margin-right: 4px !important;
+    background-size: 21px 21px !important;
   }
 
-  .gwd-img-2okp {
-    position: absolute;
-    left: 62px;
-    top: 184px;
+  .follow-tumblr {
+    min-width: 61px;
+    min-height: 21px;
   }
 
-  .gwd-div-512s {
-    text-align: center;
+  .create-survey {
+    float: left;
+    text-decoration: none;
+    color: #414042;
+    margin-left: 10px;
   }
 
-  .gwd-a-drjd {
+  .up-menu .close-button {
+    background-color: #ececec !important;
+    color: #414042 !important;
   }
 
-  .gwd-a-ve6x {
-    left: 40.5px;
-    top: 134px;
-    height: 20px;
-  }
-
-  .gwd-body {
-    background-color: transparent;
-  }
-
-  .gwd-span-ktqh {
-    color: rgb(255, 255, 255);
-  }
-
-  .gwd-div-j5nd {
-    position: absolute;
-    width: 216px;
-    height: 29px;
-    font-family: 'Open Sans';
-    text-align: left;
-    font-size: 23px;
-    color: rgb(0, 0, 0);
-    border-image-source: none;
-    border-color: rgb(0, 0, 0);
-    left: 58px;
-    top: 48px;
-    background-image: none;
-  }
-
-  .gwd-span-3p0b {
-    font-family: 'Open Sans';
-    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-    -webkit-transform-style: preserve-3d;
-    color: rgb(0, 0, 0);
-    font-weight: bold;
-  }
-
-  .gwd-img-xwsz {
-    position: absolute;
-    left: 70px;
-    top: 141.05px;
-  }
-
-  .tumblrshare {
-    position: absolute;
-    left: 65.899999999648px;
-    top: 139.2px;
-  }
-
-  .gwd-a-imw7 {
-    left: 49.1px;
-    top: -45px;
-  }
-
-  .twittershare {
-    position: absolute;
-    left: 160.899999999648px;
-    top: 93.7px;
-  }
-
-  .gwd-a-imw8 {
-    left: 153.34999999982px;
-    top: 94.15px;
-  }
-
-  .fbshare {
-    position: absolute;
-    left: 193.899999999648px;
-    top: 93.7px;
-  }
-
-  .gwd-a-imw9 {
-    left: 191.5px;
-    top: 94px;
-  }
-
-  .gwd-span-e0gy {
-    color: rgb(255, 255, 255);
-  }
-
-  .image-holder {
-    width: 300px;
-    height: 231px;
-    overflow-y: hidden;
-    position: relative
-  }
-
-  #thank-you-close {
-    z-index: 2;
-    position: absolute;
-    margin-left: 270px;
-    margin-top: 10px;
-    font-weight: bold;
-  }
 </style>
-<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+<div class="up-menu">
+  <span style="float: left; margin-right: 4px">Share</span>
+  <a class="action-icon tumblr" onclick="openTumblr()"></a>
+  <a class="action-icon twitter" onclick="window.open('<%= twitter_url %>', '','width=600,height=400')" target="popup"></a>
+  <a class="action-icon facebook" onclick="window.open('<%= facebook_url %>', '','width=600,height=400')" target="popup"></a>
+  <a class="create-survey" href="<%= ENV['WEB_APP_URL'] %>/#/app/questions/new">Create</a>&nbsp;
+  <a href="<%= ENV['WEB_APP_URL'] %>/#/app/questions/new" style="text-decoration: none; margin-right: 10px">
+    <img src="<%= asset_path 'ad_units/header-create.png' %>" width="21" height="21"/>
+  </a>
+  <a href="http://www.tumblr.com/follow/gostatisfy" class="follow-tumblr">
+    <img src="<%= asset_path 'ad_units/follow-tumblr.png' %>" width="61" height="21"/>
+  </a>
+  <a href id="embed-close" class="close-button">x</a>
+</div>
+<div class="polls">
+  <div style="text-align: center">See Related Posts</div>
+  <% sample_surveys.each do |survey| %>
+    <% question = survey.questions.first %>
+    <div class="poll">
+      <img width="50" height="50" src="<%= question.background_image.device_image_url %>"/>
 
-<div class="gwd-body">
-  <a href="<%= qp_start_url(@survey.uuid, @ad_unit.name) %>" id="thank-you-close" class="close-button" target="_self">x</a>
-
-  <div class="image-holder">
-    <img style="position: absolute"
-         src="https://trello-attachments.s3.amazonaws.com/5554f0b0da69177665026cbd/299x251/1210222638e27873d934f39b46251060/question-exampe.jpg" class="gwd-img-8rdd">
-  </div>
-  <div class="gwd-div-3umj editable"></div>
-  <a class="button-share">Share</a>
-  <a href="<%= ENV['WEB_APP_URL'] %>/#/app/questions/new" class="button1 gwd-a-ve6x">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="gwd-span-e0gy">Create your own</span></a>
-  <a href="http://www.tumblr.com/follow/gostatisfy" class="follow">
-    <img src="<%= asset_path 'embed/follow-tumblr.png' %>"
-         class="gwd-img-2okp" -webkit-filter:="" "drop-shadow(1px="" 1px="" 0="" black)="" drop-shadow(-1px="" -1px=""
-    black)";="" filter:="" black)"="">
-  </a>
-
-  <div class="gwd-div-j5nd"><span class="gwd-span-3p0b">Did you have fun?</span>
-  </div>
-  <div></div>
-  <img src="https://trello-attachments.s3.amazonaws.com/5554f0b0da69177665026cbd/24x23/374ecc50f1e4c1da0bb5eef5c6488990/create.png" class="gwd-img-xwsz">
-  <a class="tumblrshare gwd-a-imw7"
-     href="javascript:window.open('http://www.tumblr.com/share?v=3&u=<%= request.referer %>&t=hello', '_blank', 'width=400,height=500');void(0);">
-    <img src="https://trello-attachments.s3.amazonaws.com/5554f0b0da69177665026cbd/27x27/b63a8c821fc2c67ec3eab0900f06fca7/tumblr.png" class="tumblrshare">
-  </a>
-  <a class="twittershare gwd-a-imw8" href="javascript:window.open('https://twitter.com/share?text=<%= first_question.title %>-%20<%= request.referer %>', '_blank', 'width=400,height=500');void(0);">
-    <img src="https://trello-attachments.s3.amazonaws.com/5554f0b0da69177665026cbd/27x27/9f14da3bfe45197a616cc97f9fd89073/twitter.png">
-  </a>
-  <a class="fbshare gwd-a-imw9" href="javascript:window.open('https://www.facebook.com/sharer/sharer.php?u=<%= request.referer %>' , '_blank', 'width=400,height=500');void(0);">
-    <img src="https://trello-attachments.s3.amazonaws.com/5554f0b0da69177665026cbd/27x27/599ace80a70b30e4d823b932b52af9d7/facebook.png">
-  </a>
+      <%= link_to question.title, qp_start_url(survey.uuid, @ad_unit.name), target: '_self' %>
+    </div>
+  <% end %>
 </div>
