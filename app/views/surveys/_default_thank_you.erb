@@ -2,7 +2,6 @@
    question_url = question_sharing_url(uuid: first_question.uuid, subdomain: 'a')
    facebook_url = "https://facebook.com/sharer.php?#{{u: question_url}.to_query}"
    twitter_url = "https://twitter.com/intent/tweet?#{{text: "Check this out! #{question_url}"}.to_query}"
-   sample_surveys = Survey.joins(:questions).group("surveys.id").having("COUNT(questions.id) > 0").limit(3).to_a
 
 %>
 <style>
@@ -105,7 +104,7 @@
 </div>
 <div class="polls">
   <div style="text-align: center">See Related Posts</div>
-  <% sample_surveys.each do |survey| %>
+  <% @sample_surveys.each do |survey| %>
     <% question = survey.questions.first %>
     <div class="poll">
       <img width="50" height="50" src="<%= question.background_image.device_image_url %>"/>
