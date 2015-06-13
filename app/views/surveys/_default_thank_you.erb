@@ -1,8 +1,8 @@
 <% first_question = @survey.questions.first
    question_url = question_sharing_url(uuid: first_question.uuid, subdomain: 'a')
-   facebook_url = "https://facebook.com/sharer.php?#{{u: question_url}.to_query}"
-   twitter_url = "https://twitter.com/intent/tweet?#{{text: "Check this out! #{question_url}"}.to_query}"
-
+   referrer = first_question.responses.where.not(original_referrer: nil).last.original_referrer || question_url
+   facebook_url = "https://facebook.com/sharer.php?#{{u: referrer}.to_query}"
+   twitter_url = "https://twitter.com/intent/tweet?#{{text: "#{first_question.title} - #{question_url}"}.to_query}"
 %>
 <style>
   .polls {
@@ -91,8 +91,8 @@
 <div class="up-menu">
   <span style="float: left; margin-right: 4px">Share</span>
   <a class="action-icon tumblr" onclick="openTumblr()"></a>
-  <a class="action-icon twitter" onclick="window.open('<%= twitter_url %>', '','width=600,height=400')" target="popup"></a>
-  <a class="action-icon facebook" onclick="window.open('<%= facebook_url %>', '','width=600,height=400')" target="popup"></a>
+  <a class="action-icon twitter" onclick="window.open('<%= twitter_url %>', '','width=600,height=400')" target="_blank"></a>
+  <a class="action-icon facebook" onclick="window.open('<%= facebook_url %>', '','width=600,height=400')" target="_blank"></a>
   <a class="create-survey" href="<%= ENV['WEB_APP_URL'] %>/#/app/questions/new">Create</a>&nbsp;
   <a href="<%= ENV['WEB_APP_URL'] %>/#/app/questions/new" style="text-decoration: none; margin-right: 10px">
     <img src="<%= asset_path 'ad_units/header-create.png' %>" width="21" height="21"/>

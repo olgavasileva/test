@@ -1,7 +1,8 @@
 #footer
-  - question_url = question_sharing_url(uuid: @survey.questions.first.uuid, subdomain: 'a')
-  - facebook_url = "https://facebook.com/sharer.php?#{{u: question_url}.to_query}"
-  - twitter_url = "https://twitter.com/intent/tweet?#{{text: "Check this out! #{question_url}"}.to_query}"
+  - first_question = @survey.questions.first
+  - question_url = question_sharing_url(uuid: first_question.uuid, subdomain: 'a')
+  - facebook_url = "https://facebook.com/sharer.php?#{{u: question_url}.to_query}".html_safe
+  - twitter_url = "https://twitter.com/intent/tweet?#{{text: "#{first_question.title} - #{question_url}"}.to_query}".html_safe
 
   %a.logo{href: 'http://www.statisfy.co/'}
   - question = @response.present? ? @response.question : @question
@@ -10,17 +11,16 @@
       = pluralize question.response_count, 'answer'
 
   %a.action-icon.tumblr{onclick: 'openTumblr()'}
-  %a.action-icon.twitter{onclick: "window.open('#{twitter_url.html_safe}', '','width=600,height=400')", target: 'popup'}
-  %a.action-icon.facebook{onclick: "window.open('#{facebook_url.html_safe}', '','width=600,height=400')", target: 'popup'}
+  %a.action-icon.twitter{onclick: "window.open('#{twitter_url}', '','width=600,height=400')", target: 'popup'}
+  %a.action-icon.facebook{onclick: "window.open('#{facebook_url}', '','width=600,height=400')", target: 'popup'}
   %a.action-icon.embed#embed-icon{href: '#embed'}
   %a.action-icon.create{href: "#{ENV['WEB_APP_URL']}/#/app/questions/new"}
 :javascript
-  var tumblrOverlay = $('#tumblr-overlay');
   function openTumblr() {
+    var tumblrOverlay = $('#tumblr-overlay');
     if (tumblrOverlay.css('display') === 'none') {
       tumblrOverlay.css('display', 'initial');
     } else {
       tumblrOverlay.css('display', 'none');
     }
-
   }
