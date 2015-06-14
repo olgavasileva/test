@@ -113,7 +113,7 @@ class UsersController < ApplicationController
 
   def recent_responses
     @recent_responses = @user.responses_to_questions
-                            .includes(:user, :question, :choice)
+                            .includes(:user, :question)
                             .order("responses.created_at DESC").kpage(params[:page]).per(5)
   end
 
