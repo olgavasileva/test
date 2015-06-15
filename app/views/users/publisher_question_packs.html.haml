@@ -1,0 +1,44 @@
+.panel
+  .panel-heading
+    %h2.panel-title
+      .row
+        .col-sm-6 QUESTION PACKS MANAGEMENT
+        .col-sm-6.text-right-not-xs
+          =link_to '#', class: %w(btn btn-sm btn-success btn-labeled) do
+            %span.btn-label.glyphicon.glyphicon-download-alt
+            Export to .csv
+          =link_to [:new_question, current_user], class: %w(btn btn-sm btn-primary btn-labeled) do
+            %span.btn-label.fa.fa-plus
+            Create Question Pack
+.table-primary
+  %table.table.table-striped.table-bordered#campaigns{cellpadding:0, cellspacing:0, border:0}
+    %thead
+      %tr
+        %th.bg-success{colspan:3} These are all of your question packs
+        %th.bg-default{colspan:4} Engagements
+      %tr
+        %th Question Packs
+        %th Additional Time on Site
+        %th Additional Traffic
+        %th Shares
+        %th Views
+        %th Completes
+        %th
+    %tbody
+      - @surveys.each do |survey|
+        - q = survey.questions.first
+        %tr
+          %td
+            = link_to q.title, "/#/app/questions/#{q.id}", target: '_blank'
+            - more_question_count = survey.questions.length - 1
+            - if more_question_count > 0
+              %i.fa.fa-plus-circle
+              more
+              = pluralize more_question_count, 'question'
+          = ''#todo implement this
+          %td=q.created_at
+          %td.text-center=check_box_tag "question[currently_targetable]", q.id, q.currently_targetable?, class:%w(switcher switcher-success), data:{active_switcher:true, url: update_targetable_question_path(q)}
+          %td.text-right=q.view_count
+          %td.text-center= 5
+          %td.text-right=q.response_count
+          %td=link_to 'Analytics', analytics_user_path(@user, q)

@@ -22,7 +22,7 @@ class UserPolicy < ApplicationPolicy
 
 
   def dashboard?
-    is_owner? && is_pro?
+    is_owner? && (is_pro? || publisher?)
   end
 
   def recent_responses?
@@ -85,11 +85,19 @@ class UserPolicy < ApplicationPolicy
     is_owner?
   end
 
+  def publisher_question_packs?
+    is_owner? && publisher?
+  end
+
+  def publisher_dashboard?
+    is_owner? && publisher?
+  end
+
   def avatar?
     true
   end
 
   def new_question?
-    is_owner? && is_pro?
+    is_owner? && (is_pro? || publisher?)
   end
 end

@@ -102,6 +102,8 @@ LinkchatApp::Application.routes.draw do
       get :recent_responses
       get :recent_comments
       get :campaigns
+      get :publisher_question_packs
+      get :publisher_dashboard
       get :new_campaign
       get :new_question
       get 'analytics/(:question_id)', to:'users#analytics', as: :analytics
