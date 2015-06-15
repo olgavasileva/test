@@ -16,6 +16,10 @@ class UserPolicy < ApplicationPolicy
     @user.has_role?(:pro)
   end
 
+  def publisher?
+    @user.publisher?
+  end
+
 
   def dashboard?
     is_owner? && is_pro?
