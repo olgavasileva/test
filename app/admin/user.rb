@@ -16,7 +16,8 @@ ActiveAdmin.register User do
       u.responses.count
     end
     column "Items in Feed" do |u|
-      link_to u.feed_items.count, admin_user_feed_items_path(u)
+      # link_to u.feed_items.count, admin_user_feed_items_path(u)
+    #   TODO rewrite this!
     end
     column :created_at
     column "Scenes" do |user|
