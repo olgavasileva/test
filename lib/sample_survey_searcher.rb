@@ -11,9 +11,12 @@ class SampleSurveySearcher
     @sample_surveys = for_current_domain
     @sample_surveys += for_any_domain
     if @sample_surveys.length != @count
-      surveys_ids = Setting.fetch_values('thankyou_suggested_polls').values.first.split ','
-      count = @count - @sample_surveys.length
-      @sample_surveys += Survey.where(id: surveys_ids).where.not(id: @sample_surveys.map(&:id)).limit(count).to_a
+      settings = Setting.fetch_values('thankyou_suggested_polls')
+      if settings && !settings.empty?
+        surveys_ids = settings.values.first.split ','
+        count = @count - @sample_surveys.length
+        @sample_surveys += Survey.where(id: surveys_ids).where.not(id: @sample_surveys.map(&:id)).limit(count).to_a
+      end
     end
     @sample_surveys
   end
