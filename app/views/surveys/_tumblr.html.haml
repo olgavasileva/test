@@ -1,12 +1,10 @@
 - first_question = @survey.questions.first
-- question_url = question_sharing_url(uuid: first_question.uuid, subdomain: 'a')
-- referrer = first_question.responses.where.not(original_referrer: nil).last.original_referrer || question_url
-- tumblr_url = "http://www.tumblr.com/share?v=3&#{{u: referrer}.to_query}&t=#{first_question.title}"
+- tumblr_url = "http://www.tumblr.com/share?v=3&#{{u: @referrer}.to_query}&t=#{first_question.title}"
 #tumblr-overlay
   .title
     = image_tag asset_path('embed/tumblr_logo.png'), height: 25, width: 115
   .buttons-container
-    %a#open-popup.link-button{href: "javascript:window.open('#{tumblr_url}', '_blank', 'width=400,height=500');void(0);"}
+    %a#open-popup.link-button{href: "javascript:window.open(\"#{tumblr_url}\", '_blank', 'width=400,height=500');void(0);"}
       = image_tag asset_path 'embed/blog-this.png'
       %br
       Blog this

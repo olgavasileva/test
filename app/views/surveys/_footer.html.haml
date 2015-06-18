@@ -1,8 +1,7 @@
 #footer
   - first_question = @survey.questions.first
-  - question_url = question_sharing_url(uuid: first_question.uuid, subdomain: 'a')
-  - facebook_url = "https://facebook.com/sharer.php?#{{u: question_url}.to_query}".html_safe
-  - twitter_url = "https://twitter.com/intent/tweet?#{{text: "#{first_question.title} - #{question_url}"}.to_query}".html_safe
+  - facebook_url = "https://facebook.com/sharer.php?#{{t: first_question.title, u: @referrer}.to_query}"
+  - twitter_url = "https://twitter.com/intent/tweet?#{{text: "#{first_question.title} - #{@referrer}"}.to_query}"
 
   %a.logo{href: 'http://www.statisfy.co/'}
   - question = @response.present? ? @response.question : @question
