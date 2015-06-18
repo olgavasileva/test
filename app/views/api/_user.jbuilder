@@ -9,7 +9,7 @@ json.number_of_followers user.number_of_followers
 
 if user.kind_of?(User)
 
-  if user.is_pro?
+  if user.is_pro? || user.publisher?
     urls = Rails.application.routes.url_helpers
     json.pro_dashboard_url urls.dashboard_user_url(user, auth_token: @instance.auth_token)
   end

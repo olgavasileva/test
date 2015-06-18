@@ -62,6 +62,10 @@ class User < Respondent
     has_role? :pro
   end
 
+  def publisher?
+    has_role? :publisher
+  end
+
   # Enable saving users without a password if they have another authenication scheme
   def password_required?
     (authentications.empty? || !password.blank?) && super

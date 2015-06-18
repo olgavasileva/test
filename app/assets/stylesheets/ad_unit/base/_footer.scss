@@ -1,17 +1,20 @@
-#footer {
+#footer, .up-menu {
   background-color: $gray-light;
   height: $default-footer-inner-height;
-  padding: $default-footer-padding-horizontal $default-footer-padding-vertical;
+  padding: $default-footer-padding-horizontal+1 $default-footer-padding-vertical;
   clear: both;
 
   @mixin icon-bg($icon) {
     background-image: image-url("ad_units/#{$icon}.png");
-    background-image: image-url("ad_units/#{$icon}.svg"), none;
+    //background-image: image-url("ad_units/#{$icon}.svg"), none; it costs too much.
   }
 
   .action-icon, .logo {
     height: $default-footer-inner-height;
     background-repeat: no-repeat;
+  }
+  .action-icon {
+    cursor: pointer;
   }
 
   .logo {
@@ -41,13 +44,22 @@
     float: left;
     margin-right: 2px;
 
-    &.facebook { @include icon-bg('facebook'); }
-    &.twitter { @include icon-bg('twitter'); }
-    &.tumblr { @include icon-bg('tumblr'); }
-    &.embed { @include icon-bg('embed'); }
-    &.create { @include icon-bg('create'); }
+    &.facebook {
+      @include icon-bg('facebook');
+    }
+    &.twitter {
+      @include icon-bg('twitter');
+    }
+    &.tumblr {
+      @include icon-bg('tumblr');
+    }
+    &.embed {
+      @include icon-bg('embed');
+    }
+    &.create {
+      @include icon-bg('create');
+    }
   }
-
 
   .logo {
     width: 53px;

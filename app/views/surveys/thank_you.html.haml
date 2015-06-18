@@ -46,6 +46,7 @@
           %a#thank-you-close.close-button{href: qp_start_url(@survey.uuid, @ad_unit.name), target: '_self'} x
           #thank-you-message{data: {uuid: @survey.uuid, html: @survey.parsed_thank_you_html({}).html_safe}}
       - else
+        = render partial: 'embed'
         = render partial: 'default_thank_you'
 
       = render partial: 'footer'

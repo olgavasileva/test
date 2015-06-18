@@ -58,11 +58,9 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.dom_class = %w{navigation}
 
     primary.item :pro_dashboard, '<i class="menu-icon fa fa-dashboard"></i><span class="mm-text">Dashboard</span>'.html_safe, [:dashboard, current_user]
-    primary.item :pro_campaigns, '<i class="menu-icon fa fa-crosshairs"></i><span class="mm-text">Campaigns</span>'.html_safe, [:campaigns, current_user]
-    primary.item :pro_segments, '<i class="menu-icon fa fa-cubes"></i><span class="mm-text">Segments</span>'.html_safe, [current_user, :segments]
-    primary.item :pro_analytics, '<i class="menu-icon fa fa-bar-chart-o"></i><span class="mm-text">Analytics</span>'.html_safe, [:analytics, current_user]
+    primary.item :pro_question_packs, '<i class="menu-icon fa fa-file-code-o"></i><span class="mm-text">Question Packs</span>'.html_safe, [:publisher_question_packs, current_user]
     primary.item :pro_account, '<i class="menu-icon fa fa-cog"></i><span class="mm-text">Account Management</span>'.html_safe, [:account, current_user]
-    primary.item :pro_create_campaign, '<i class="menu-icon fa fa-plus-square"></i><span class="mm-text">Create Campaign</span>'.html_safe, [:new_question, current_user]
+    primary.item :pro_create_question_pack, '<i class="menu-icon fa fa-plus-square"></i><span class="mm-text">Create Question Pack</span>'.html_safe, [:new_question, current_user]
     primary.item :pro_logout, '<i class="menu-icon fa fa-power-off"></i><span class="mm-text">Logout</span>'.html_safe, destroy_user_session_path, method: :delete
     primary.item :pro_home, '<i class="menu-icon fa fa-home"></i><span class="mm-text">Statisfy Home</span>'.html_safe, ENV['MAIN_APP_URL'] || root_url
   end

@@ -77,6 +77,7 @@ class UsersController < ApplicationController
   end
 
   def dashboard
+    return publisher_dashboard if @user.publisher?
     # TODO - lazy load this data
     reach = @user.questions.sum(:view_count)
     targeted_reach = @user.questions.map{|q| q.targeted_reach.to_i }.sum
@@ -113,7 +114,7 @@ class UsersController < ApplicationController
 
   def recent_responses
     @recent_responses = @user.responses_to_questions
-                            .includes(:user, :question, :choice)
+                            .includes(:user, :question)
                             .order("responses.created_at DESC").kpage(params[:page]).per(5)
   end
 
@@ -128,6 +129,24 @@ class UsersController < ApplicationController
   def campaigns
     @questions = @user.questions
     render layout: "pixel_admin"
+  end
+
+  def publisher_question_packs
+    @surveys = @user.surveys
+    render layout: "pixel_admin"
+  end
+
+  def publisher_dashboard
+    completes = @user.questions.map { |q| q.response_count }.sum
+    shares = @user.questions.map { |q| q.share_count.to_i }.sum
+
+    @campaign_data = [
+        {label: 'Views', value: 1000}, #TODO implement this
+        {label: 'Completes', value: completes},
+        {label: 'Shares', value: shares}
+    ]
+
+    render 'publisher_dashboard', layout: "pixel_admin"
   end
 
   def new_campaign

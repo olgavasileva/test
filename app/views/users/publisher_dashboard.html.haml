@@ -1,0 +1,12 @@
+#dashboard
+  %ul.breadcrumb.breadcrumb-page
+    .breadcrumb-label.text-light-gray You are here:
+    %li=link_to "Home", root_path
+    %li.active=link_to "Dashboard", '#'
+
+  = render 'users/dashboard/header'
+  .row
+    .col-md-8
+      = render 'users/dashboard/chart'
+
+  %hr.no-grid-gutter-h.grid-gutter-margin-b.no-margin-t/

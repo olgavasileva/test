@@ -20,4 +20,10 @@
       /   =link_to '#', class: :close do
       /     &times;
 
-    =render_navigation context: :pro
+    =render_navigation context: (current_user.has_role?(:publisher) ? :publisher : :pro)
+    :javascript
+      document.getElementById('pro_logout').addEventListener('click', function() {
+        if (localStorage){
+          localStorage.clear();
+        }
+      });

@@ -99,4 +99,8 @@ class ApplicationController < ActionController::Base
       # response.headers['Content-Security-Policy'] = "default-src 'self' *; style-src 'self' * 'unsafe-inline'; script-src 'self' 'unsafe-eval'"
       # response.headers['Access-Control-Allow-Origin'] = '*'
     end
+
+    def after_sign_out_path_for(resource_or_scope)
+      ENV['MAIN_APP_URL'] || root_path
+    end
 end
