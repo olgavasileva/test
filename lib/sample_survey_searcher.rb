@@ -10,6 +10,15 @@ class SampleSurveySearcher
   def search_surveys
     @sample_surveys = for_current_domain
     @sample_surveys += for_any_domain
+    if @sample_surveys.length != @count
+      settings = Setting.fetch_values('thankyou_suggested_polls')
+      if settings && !settings.empty?
+        surveys_ids = settings.values.first.split ','
+        count = @count - @sample_surveys.length
+        @sample_surveys += Survey.where(id: surveys_ids).where.not(id: @sample_surveys.map(&:id)).limit(count).to_a
+      end
+    end
+    @sample_surveys
   end
 
   private
@@ -36,7 +45,10 @@ class SampleSurveySearcher
 
   def popular_surveys_for_referrer
     responses = Response.arel_table
-    popular_surveys.where(responses[:original_referrer].eq(@referrer))
+    popular_surveys.where(responses[:original_referrer].eq(@referrer)
+                              .and(responses[:original_referrer].not_eq(nil))
+                              .and(responses[:original_referrer].not_eq(''))
+                              .and(responses[:original_referrer].does_not_match('%statisfy.co%')))
   end
 
   def popular_surveys(except_surveys = [])

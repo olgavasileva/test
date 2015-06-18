@@ -1,8 +1,6 @@
 <% first_question = @survey.questions.first
-   question_url = question_sharing_url(uuid: first_question.uuid, subdomain: 'a')
-   referrer = first_question.responses.where.not(original_referrer: nil).last.original_referrer || question_url
-   facebook_url = "https://facebook.com/sharer.php?#{{u: referrer}.to_query}"
-   twitter_url = "https://twitter.com/intent/tweet?#{{text: "#{first_question.title} - #{question_url}"}.to_query}"
+   facebook_url = "https://facebook.com/sharer.php?#{{t: first_question.title, u: @referrer}.to_query}"
+   twitter_url = "https://twitter.com/intent/tweet?#{{text: "#{first_question.title} - #{@referrer}"}.to_query}"
 %>
 <style>
   .polls {
@@ -100,7 +98,7 @@
   <a href="http://www.tumblr.com/follow/gostatisfy" class="follow-tumblr">
     <img src="<%= asset_path 'ad_units/follow-tumblr.png' %>" width="61" height="21"/>
   </a>
-  <a href id="embed-close" class="close-button">x</a>
+  <a href="<%= qp_start_url(@survey.uuid, @ad_unit.name) %>" target="_self" id="embed-close" class="close-button">x</a>
 </div>
 <div class="polls">
   <div style="text-align: center">See Related Posts</div>
@@ -108,8 +106,10 @@
     <% question = survey.questions.first %>
     <div class="poll">
       <img width="50" height="50" src="<%= question.background_image.device_image_url %>"/>
-
-      <%= link_to question.title, qp_start_url(survey.uuid, @ad_unit.name), target: '_self' %>
+      <% response = question.responses
+        .where.not(original_referrer: nil)
+        .where(original_referrer: 'NOT LIKE %statisfy.co%').last %>
+      <%= link_to question.title, response.present? ? response.original_referrer : '', target: '_blank' %>
     </div>
   <% end %>
 </div>

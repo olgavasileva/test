@@ -53,7 +53,7 @@ $ ->
   $("#embed-input").focus -> $(this).select()
   $('#embed-select').change()
 
-  $('#embed-icon, #embed-close').click (e) ->
+  $('#embed-icon').click (e) ->
     e.preventDefault()
     $('#embed').toggle()
 
