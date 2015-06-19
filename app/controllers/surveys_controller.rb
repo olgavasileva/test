@@ -67,8 +67,8 @@ class SurveysController < ApplicationController
   end
 
   def thank_you
-    @sample_surveys = sample_surveys
     @referrer = session[:survey_original_referrer]
+    @sample_surveys = sample_surveys
     reset_session_responses
     render :thank_you, layout: false
   end
@@ -81,15 +81,15 @@ class SurveysController < ApplicationController
   end
 
   def default_thank_you
-    @sample_surveys = sample_surveys
     @referrer = session[:survey_original_referrer]
+    @sample_surveys = sample_surveys
     render_to_string partial: 'surveys/default_thank_you'
   end
 
   private
 
     def sample_surveys
-      SampleSurveySearcher.new(current_user, @survey, request.referrer || '').search_surveys
+      SampleSurveySearcher.new(current_user, @survey, @referrer || request.referrer || '').search_surveys
     end
 
     def settings
