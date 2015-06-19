@@ -21,8 +21,8 @@ class Survey < ActiveRecord::Base
   validate :user_exists?
   validates_inclusion_of :redirect, in: PERMITTED_REDIRECTS
   validates_numericality_of :redirect_timeout,
-    only_integer: true,
-    allow_nil: true
+                            only_integer: true,
+                            allow_nil: true
 
   delegate :username, to: :user, allow_nil: true
 
@@ -92,12 +92,14 @@ class Survey < ActiveRecord::Base
 
   def referrer
     responses = Response.arel_table
-    Response.find_by_sql(responses.where(responses[:id].eq(questions.first.id)
+    question_ids = questions.map(&:id)
+    return unless question_ids
+    Response.find_by_sql(responses.where(responses[:question_id].in(question_ids)
                                              .and(responses[:original_referrer].not_eq(nil))
                                              .and(responses[:original_referrer].not_eq(''))
                                              .and(responses[:original_referrer].does_not_match('%statisfy.co%'))
                                              .and(responses[:original_referrer].does_not_match('/%')))
-                             .order(responses[:created_at]).take(1)
+                             .order(responses[:created_at].desc).take(1)
                              .project(responses[:original_referrer]).to_sql)
         .try(:original_referrer)
   end
