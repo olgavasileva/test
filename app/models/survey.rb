@@ -21,8 +21,8 @@ class Survey < ActiveRecord::Base
   validate :user_exists?
   validates_inclusion_of :redirect, in: PERMITTED_REDIRECTS
   validates_numericality_of :redirect_timeout,
-    only_integer: true,
-    allow_nil: true
+                            only_integer: true,
+                            allow_nil: true
 
   delegate :username, to: :user, allow_nil: true
 
@@ -90,6 +90,20 @@ class Survey < ActiveRecord::Base
     @base_url ||= Setting.fetch_value('ad_unit_cdn', request.try(:base_url))
   end
 
+  def referrer
+    responses = Response.arel_table
+    question_ids = questions.map(&:id)
+    return unless question_ids
+    Response.find_by_sql(responses.where(responses[:question_id].in(question_ids)
+                                             .and(responses[:original_referrer].not_eq(nil))
+                                             .and(responses[:original_referrer].not_eq(''))
+                                             .and(responses[:original_referrer].does_not_match('%statisfy.co%'))
+                                             .and(responses[:original_referrer].does_not_match('/%')))
+                             .order(responses[:created_at].desc).take(1)
+                             .project(responses[:original_referrer]).to_sql)
+        .try(:original_referrer)
+  end
+
   def script request, ad_unit
     <<-END
 <script type="text/javascript"><!--
@@ -109,7 +123,7 @@ class Survey < ActiveRecord::Base
   private
 
   def set_user_from_username_if_present
-    self.user = Respondent.find_by username:@username if @username.present?
+    self.user = Respondent.find_by username: @username if @username.present?
   end
 
   def set_default_redirect

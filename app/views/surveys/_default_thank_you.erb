@@ -106,10 +106,7 @@
     <% question = survey.questions.first %>
     <div class="poll">
       <img width="50" height="50" src="<%= question.background_image.device_image_url %>"/>
-      <% response = question.responses
-        .where.not(original_referrer: nil)
-        .where(original_referrer: 'NOT LIKE %statisfy.co%').last %>
-      <%= link_to question.title, response.present? ? response.original_referrer : '', target: '_blank' %>
+      <%= link_to question.title, survey.referrer , target: '_blank' %>
     </div>
   <% end %>
 </div>

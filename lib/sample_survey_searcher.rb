@@ -15,7 +15,8 @@ class SampleSurveySearcher
       if settings && !settings.empty?
         surveys_ids = settings.values.first.split ','
         count = @count - @sample_surveys.length
-        @sample_surveys += Survey.where(id: surveys_ids).where.not(id: @sample_surveys.map(&:id)).limit(count).to_a
+        @sample_surveys += Survey.where(id: surveys_ids)
+                               .where.not(id: @sample_surveys.map(&:id)).limit(count).to_a
       end
     end
     @sample_surveys
@@ -45,10 +46,7 @@ class SampleSurveySearcher
 
   def popular_surveys_for_referrer
     responses = Response.arel_table
-    popular_surveys.where(responses[:original_referrer].eq(@referrer)
-                              .and(responses[:original_referrer].not_eq(nil))
-                              .and(responses[:original_referrer].not_eq(''))
-                              .and(responses[:original_referrer].does_not_match('%statisfy.co%')))
+    popular_surveys.where(responses[:original_referrer].eq(@referrer))
   end
 
   def popular_surveys(except_surveys = [])
@@ -61,7 +59,11 @@ class SampleSurveySearcher
         .join(questions_surveys).on(surveys[:id].eq(questions_surveys[:survey_id]))
         .join(questions).on(questions[:id].eq(questions_surveys[:question_id]))
         .join(responses).on(questions[:id].eq(responses[:question_id]).and(responses[:user_id].not_eq(@user.id)))
-        .where(surveys[:id].not_in(except_surveys_ids))
+        .where(surveys[:id].not_in(except_surveys_ids)
+                   .and(responses[:original_referrer].not_eq(nil))
+                   .and(responses[:original_referrer].not_eq(''))
+                   .and(responses[:original_referrer].does_not_match('%statisfy.co%'))
+                   .and(responses[:original_referrer].does_not_match('/%')))
         .group(surveys[:id]).order(responses[:id].count.desc)
   end
 
