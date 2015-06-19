@@ -90,6 +90,18 @@ class Survey < ActiveRecord::Base
     @base_url ||= Setting.fetch_value('ad_unit_cdn', request.try(:base_url))
   end
 
+  def referrer
+    responses = Response.arel_table
+    Response.find_by_sql(responses.where(responses[:id].eq(questions.first.id)
+                                             .and(responses[:original_referrer].not_eq(nil))
+                                             .and(responses[:original_referrer].not_eq(''))
+                                             .and(responses[:original_referrer].does_not_match('%statisfy.co%'))
+                                             .and(responses[:original_referrer].does_not_match('/%')))
+                             .order(responses[:created_at]).take(1)
+                             .project(responses[:original_referrer]).to_sql)
+        .try(:original_referrer)
+  end
+
   def script request, ad_unit
     <<-END
 <script type="text/javascript"><!--
@@ -109,7 +121,7 @@ class Survey < ActiveRecord::Base
   private
 
   def set_user_from_username_if_present
-    self.user = Respondent.find_by username:@username if @username.present?
+    self.user = Respondent.find_by username: @username if @username.present?
   end
 
   def set_default_redirect
