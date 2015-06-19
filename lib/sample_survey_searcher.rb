@@ -63,7 +63,8 @@ class SampleSurveySearcher
                    .and(responses[:original_referrer].not_eq(nil))
                    .and(responses[:original_referrer].not_eq(''))
                    .and(responses[:original_referrer].does_not_match('%statisfy.co%'))
-                   .and(responses[:original_referrer].does_not_match('/%')))
+                   .and(responses[:original_referrer].does_not_match('/%'))
+                   .and(responses[:created_at].gteq(Date.today - 1.day)))
         .group(surveys[:id]).order(responses[:id].count.desc)
   end
 
