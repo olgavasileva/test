@@ -1,5 +1,5 @@
 class SurveysController < ApplicationController
-  layout "../surveys/layout"
+  layout "surveys"
 
   skip_before_action :authenticate_user!, :find_recent_questions
 
@@ -36,17 +36,17 @@ class SurveysController < ApplicationController
 
   def start
     @original_referrer = @referrer = request.referrer
-    session[:survey_original_referrer] = @original_referrer
     @thank_you_html = survey.parsed_thank_you_html(request.query_parameters).html_safe || default_thank_you
     @question = question_scope.first
   end
 
   def create_response
     @question = question_scope.find(params[:question_id])
+
     @response = @question.responses.create!(response_params.merge(source: 'embeddable')) do |r|
       r.user = current_ad_unit_user
     end
-    @original_referrer = @response.try :original_referrer
+    @original_referrer = @response.original_referrer
 
     # Whenever they answer the first question, reset the responses so they can answer them all again
     # We can't do this in start since it may be cached on cloudfront
@@ -63,11 +63,11 @@ class SurveysController < ApplicationController
 
     # Find the response if they responded in this session (since the last time they started)
     @response = session_response_for_question @question
-    @original_referrer = @response.try :original_referrer
+    @original_referrer = params[:original_referrer]
   end
 
   def thank_you
-    @referrer = session[:survey_original_referrer]
+    @referrer = params[:original_referrer]
     @sample_surveys = sample_surveys
     reset_session_responses
     render :thank_you, layout: false
@@ -81,7 +81,7 @@ class SurveysController < ApplicationController
   end
 
   def default_thank_you
-    @referrer = session[:survey_original_referrer]
+    @referrer = params[:original_referrer]
     @sample_surveys = sample_surveys
     render_to_string partial: 'surveys/default_thank_you'
   end
@@ -189,18 +189,17 @@ class SurveysController < ApplicationController
       end
     end
 
-    def previous_question_path(question)
-      return @previous_question if defined?(@previous_question)
+    def previous_question_path(question, original_referrer)
       @prev_question = if prev_question = survey.previous_question(question)
-        qp_question_path(survey.uuid, ad_unit.name, prev_question.id)
+        qp_question_path(survey.uuid, ad_unit.name, prev_question.id, original_referrer: original_referrer)
       end
     end
 
-    def next_question_path(question)
+    def next_question_path(question, original_referrer)
       @next_question = if next_question = survey.next_question(question)
-        qp_question_path(survey.uuid, @ad_unit.name, next_question.id)
+        qp_question_path(survey.uuid, @ad_unit.name, next_question.id, original_referrer: original_referrer)
       else
-        qp_thank_you_path(survey.uuid, @ad_unit.name)
+        qp_thank_you_path(survey.uuid, @ad_unit.name, original_referrer: original_referrer)
       end
     end
 

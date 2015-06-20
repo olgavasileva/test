@@ -57,7 +57,8 @@ RSpec.describe SurveysController do
   end
 
   describe 'GET #question' do
-    subject { get :question, survey_uuid: survey.uuid, unit_name: ad_unit.name, question_id: question.id }
+    subject { get :question, survey_uuid: survey.uuid, unit_name: ad_unit.name, question_id: question.id, original_referrer: original_referrer }
+    let(:original_referrer) { nil }
 
     it { is_expected.to render_template(:question) }
 
@@ -67,7 +68,6 @@ RSpec.describe SurveysController do
     end
 
     context "When the session has a response for the question" do
-      let(:original_referrer) { nil }
       let(:response) { FactoryGirl.create :image_choice_response, question: question, original_referrer: original_referrer }
       before { expect_any_instance_of(SurveysController).to receive(:session_response_for_question).with(question).and_return(response) }
 
