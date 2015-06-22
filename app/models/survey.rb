@@ -94,14 +94,15 @@ class Survey < ActiveRecord::Base
     responses = Response.arel_table
     question_ids = questions.map(&:id)
     return unless question_ids
-    response = Response.find_by_sql(responses.where(responses[:question_id].in(question_ids)
-                                                        .and(responses[:original_referrer].not_eq(nil))
-                                                        .and(responses[:original_referrer].not_eq(''))
-                                                        .and(responses[:original_referrer].does_not_match('%statisfy.co%'))
-                                                        .and(responses[:original_referrer].does_not_match('/%'))
-                                                        .and(responses[:created_at].gteq(Date.today - 1.day)))
-                                        .order(responses[:created_at].desc).take(1)
-                                        .project(responses[:original_referrer]).to_sql).first
+    response = Response.find_by_sql(
+      responses.where(responses[:question_id].in(question_ids)
+                        .and(responses[:original_referrer].not_eq(nil))
+                        .and(responses[:original_referrer].not_eq(''))
+                        .and(responses[:original_referrer].does_not_match('%statisfy.co%'))
+                        .and(responses[:original_referrer].does_not_match('/%'))
+                        .and(responses[:created_at].gteq(Date.today - 1.day)))
+        .order(Arel.star.count.desc).take(1)
+        .project(responses[:original_referrer], Arel.star.count).to_sql).first
     response.try(:original_referrer)
   end
 
