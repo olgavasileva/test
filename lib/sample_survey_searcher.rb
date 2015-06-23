@@ -60,18 +60,20 @@ class SampleSurveySearcher
     questions_surveys = QuestionsSurvey.arel_table
     responses = Response.arel_table
     except_surveys_ids = except_surveys.map(&:id).push @survey.id
-    surveys
-        .join(questions_surveys).on(surveys[:id].eq(questions_surveys[:survey_id]))
-        .join(questions).on(questions[:id].eq(questions_surveys[:question_id]))
-        .join(responses).on(questions[:id].eq(responses[:question_id]).and(responses[:user_id].not_eq(@user.id)))
-        .where(surveys[:id].not_in(except_surveys_ids)
-                   .and(responses[:original_referrer].not_eq(nil))
-                   .and(responses[:original_referrer].not_eq(''))
-                   .and(responses[:original_referrer].does_not_match('%statisfy.c%'))
-                   .and(responses[:original_referrer].does_not_match('%localhost%'))
-                   .and(responses[:original_referrer].does_not_match('%ostatisfy.tumblr.co%'))
-                   .and(responses[:original_referrer].matches('http%//%'))
-                   .and(responses[:created_at].gteq(DateTime.now - 1.day)))
+    query = surveys
+                .join(questions_surveys).on(surveys[:id].eq(questions_surveys[:survey_id]))
+                .join(questions).on(questions[:id].eq(questions_surveys[:question_id]))
+                .join(responses).on(questions[:id].eq(responses[:question_id]).and(responses[:user_id].not_eq(@user.id)))
+    unless except_surveys_ids.empty?
+      query = query.where(surveys[:id].not_in(except_surveys_ids))
+    end
+    query.where(responses[:original_referrer].not_eq(nil)
+                    .and(responses[:original_referrer].not_eq(''))
+                    .and(responses[:original_referrer].does_not_match('%statisfy.c%'))
+                    .and(responses[:original_referrer].does_not_match('%localhost%'))
+                    .and(responses[:original_referrer].does_not_match('%ostatisfy.tumblr.co%'))
+                    .and(responses[:original_referrer].matches('http%//%'))
+                    .and(responses[:created_at].gteq(DateTime.now - 1.day)))
         .group(surveys[:id]).order(responses[:id].count.desc)
   end
 

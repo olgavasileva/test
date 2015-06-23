@@ -95,16 +95,17 @@ class Survey < ActiveRecord::Base
     question_ids = questions.map(&:id)
     return unless question_ids
     response = Response.find_by_sql(
-      responses.where(responses[:question_id].in(question_ids)
-                        .and(responses[:original_referrer].not_eq(nil))
-                        .and(responses[:original_referrer].not_eq(''))
-                        .and(responses[:original_referrer].does_not_match('%statisfy.c%'))
-                        .and(responses[:original_referrer].does_not_match('%localhost%'))
-                        .and(responses[:original_referrer].does_not_match('%ostatisfy.tumblr.co%'))
-                        .and(responses[:original_referrer].matches('http%//%'))
-                        .and(responses[:created_at].gteq(DateTime.now - 1.day)))
-        .order(Arel.star.count.desc).take(1)
-        .project(responses[:original_referrer], Arel.star.count).to_sql).first
+        responses.where(responses[:question_id].in(question_ids)
+                            .and(responses[:original_referrer].not_eq(nil))
+                            .and(responses[:original_referrer].not_eq(''))
+                            .and(responses[:original_referrer].does_not_match('%statisfy.c%'))
+                            .and(responses[:original_referrer].does_not_match('%localhost%'))
+                            .and(responses[:original_referrer].does_not_match('%ostatisfy.tumblr.co%'))
+                            .and(responses[:original_referrer].matches('http%//%'))
+                            .and(responses[:created_at].gteq(DateTime.now - 1.day)))
+            .group(responses[:original_referrer])
+            .order(responses[:original_referrer].count(true).desc).take(1)
+            .project(responses[:original_referrer]).to_sql).first
     response.try(:original_referrer)
   end
 
