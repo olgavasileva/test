@@ -36,6 +36,7 @@ class SurveysController < ApplicationController
 
   def start
     @original_referrer = @referrer = request.referrer
+    session[:survey_original_referrer] = @original_referrer
     @thank_you_html = survey.parsed_thank_you_html(request.query_parameters).html_safe || default_thank_you
     @question = question_scope.first
   end
@@ -63,11 +64,13 @@ class SurveysController < ApplicationController
 
     # Find the response if they responded in this session (since the last time they started)
     @response = session_response_for_question @question
-    @original_referrer = params[:original_referrer]
+    # @original_referrer = params[:original_referrer]
+    @original_referrer = session[:survey_original_referrer]
   end
 
   def thank_you
-    @referrer = params[:original_referrer]
+    # @referrer = params[:original_referrer]
+    @referrer = session[:survey_original_referrer]
     @sample_surveys = sample_surveys
     reset_session_responses
     render :thank_you, layout: false
@@ -81,7 +84,8 @@ class SurveysController < ApplicationController
   end
 
   def default_thank_you
-    @referrer = params[:original_referrer]
+    # @referrer = params[:original_referrer]
+    @referrer = session[:survey_original_referrer]
     @sample_surveys = sample_surveys
     render_to_string partial: 'surveys/default_thank_you'
   end
