@@ -4,12 +4,12 @@ class SampleSurveySearcher
 
   def initialize(user, survey, referrer, count = 3)
     @user, @survey, @referrer, @count = user, survey, referrer, count
+    @sample_surveys = []
     search_surveys
   end
 
   def search_surveys
-    @sample_surveys = for_current_domain
-    @sample_surveys += for_any_domain
+    @sample_surveys = for_any_domain
     if @sample_surveys.length != @count
       settings = Setting.fetch_values('thankyou_suggested_polls')
       if settings && !settings.empty?
@@ -44,9 +44,14 @@ class SampleSurveySearcher
     Survey.find_by_sql(limit(popular_surveys(@sample_surveys), @count - @sample_surveys.length)).to_a
   end
 
+  # deprecated
   def popular_surveys_for_referrer
-    responses = Response.arel_table
-    popular_surveys.where(responses[:original_referrer].eq(@referrer))
+    if @referrer && !@referrer.empty?
+      responses = Response.arel_table
+      popular_surveys.where(responses[:original_referrer].eq(@referrer))
+    else
+      popular_surveys
+    end
   end
 
   def popular_surveys(except_surveys = [])
@@ -62,9 +67,11 @@ class SampleSurveySearcher
         .where(surveys[:id].not_in(except_surveys_ids)
                    .and(responses[:original_referrer].not_eq(nil))
                    .and(responses[:original_referrer].not_eq(''))
-                   .and(responses[:original_referrer].does_not_match('%statisfy.co%'))
-                   .and(responses[:original_referrer].does_not_match('/%'))
-                   .and(responses[:created_at].gteq(Date.today - 1.day)))
+                   .and(responses[:original_referrer].does_not_match('%statisfy.c%'))
+                   .and(responses[:original_referrer].does_not_match('%localhost%'))
+                   .and(responses[:original_referrer].does_not_match('%ostatisfy.tumblr.co%'))
+                   .and(responses[:original_referrer].matches('http%//%'))
+                   .and(responses[:created_at].gteq(DateTime.now - 1.day)))
         .group(surveys[:id]).order(responses[:id].count.desc)
   end
 
