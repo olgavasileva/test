@@ -9,3 +9,7 @@
           #{unit.name.titleize} (#{unit.width}x#{unit.height})
 
   %input#embed-input
+  :javascript
+    $('#embed #embed-close').click(function(){
+      $('#embed').hide();
+    });
