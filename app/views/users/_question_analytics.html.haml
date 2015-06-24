@@ -17,11 +17,8 @@
             %span.mm-text Statistics
         %table.table
           %tr
-            %td Total Reach
+            %td Views
             %td.text-right= question.view_count.to_i
-          %tr
-            %td Targeted Reach
-            %td.text-right= question.targeted_reach.to_i
           %tr
             %td Viral Reach
             %td.text-right= question.viral_reach
@@ -34,10 +31,13 @@
           %tr
             %td Comments
             %td.text-right= question.comment_count
+          - unless question.view_count.to_i == 0
+            %tr
+              %td Complete Rate
+              %td.text-right= question.response_count / question.view_count.to_i
           %tr
-            %td Shares
-            %td.text-right= question.share_count.to_i
-
+            %td Viral Distribution
+            %td.text-right= question.unique_referrer_count
     .col-sm-8
       - if @demographics
         #demographics= render 'users/demographics', demographics: @demographics

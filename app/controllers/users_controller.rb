@@ -83,16 +83,11 @@ class UsersController < ApplicationController
     targeted_reach = @user.questions.map{|q| q.targeted_reach.to_i }.sum
     viral_reach = reach - targeted_reach
     completes = @user.questions.map{|q| q.response_count }.sum
-    skips = @user.questions.map{|q| q.skip_count }.sum
-    comments = @user.questions.map{|q| q.comment_count }.sum
-    shares = @user.questions.map{|q| q.share_count.to_i }.sum
-
+    shares = @user.share_count
 
     @campaign_data = [
       { label: "Reach", value: reach },
       { label: "Completes", value: completes },
-      { label: "Skips", value: skips },
-      { label: "Comments", value: comments },
       { label: "Shares", value: shares }
     ]
 

@@ -117,6 +117,10 @@ class Question < ActiveRecord::Base
     responses.count
   end
 
+  def unique_referrer_count
+    responses.pluck(:original_referrer).uniq.reject{|c| c.blank?}.count
+  end
+
   # +1 if asked by one of the recipient's followers
   # +1 if asked by one of the recipient's leaders
   # +1 for each of the recipient's followers who answered this question

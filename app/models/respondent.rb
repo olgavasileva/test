@@ -102,6 +102,11 @@ class Respondent < ActiveRecord::Base
     where{id.not_in(a)}
   end
 
+  # Share count is defined as the number or uniqe original referrers
+  def share_count
+    responses_to_questions.pluck(:original_referrer).uniq.reject{|c| c.blank?}.count
+  end
+
   def latest_feed
     feed_questions.latest
   end
