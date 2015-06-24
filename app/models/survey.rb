@@ -94,7 +94,7 @@ class Survey < ActiveRecord::Base
     responses = Response.arel_table
     question_ids = questions.map(&:id)
     return unless question_ids
-    response = Response.find_by_sql(
+    response_array = Response.find_by_sql(
         responses.where(responses[:question_id].in(question_ids)
                             .and(responses[:original_referrer].not_eq(nil))
                             .and(responses[:original_referrer].not_eq(''))
@@ -104,9 +104,17 @@ class Survey < ActiveRecord::Base
                             .and(responses[:original_referrer].matches('http%//%'))
                             .and(responses[:created_at].gteq(DateTime.now - 1.day)))
             .group(responses[:original_referrer])
-            .order(responses[:original_referrer].count(true).desc).take(1)
-            .project(responses[:original_referrer]).to_sql).first
-    response.try(:original_referrer)
+            .order(responses[:original_referrer].count(true).desc)
+            .project(responses[:original_referrer]).to_sql).to_a
+    response_array.map(&:original_referrer).each do |referrer|
+      url_regex = /^https?:\/\/\w+\.\w+.*\/\w+/i
+      if referrer['tumblr.com']
+        return referrer
+      elsif referrer.match(url_regex)
+        return referrer
+      end
+    end
+    response_array.first
   end
 
   def script request, ad_unit
