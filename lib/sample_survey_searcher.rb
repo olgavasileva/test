@@ -10,7 +10,7 @@ class SampleSurveySearcher
 
   def search_surveys
     @sample_surveys = for_any_domain
-    if @sample_surveys.length != @count
+    if @sample_surveys.length < @count
       settings = Setting.fetch_values('thankyou_suggested_polls')
       if settings && !settings.empty?
         surveys_ids = settings.values.first.split ','
@@ -41,7 +41,8 @@ class SampleSurveySearcher
   end
 
   def for_any_domain
-    Survey.find_by_sql(limit(popular_surveys(@sample_surveys), @count - @sample_surveys.length)).to_a
+    query = limit popular_surveys(@sample_surveys), @count - @sample_surveys.length
+    Survey.find_by_sql(query).to_a
   end
 
   # deprecated
