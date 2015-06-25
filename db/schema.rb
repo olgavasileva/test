@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150615122402) do
+ActiveRecord::Schema.define(version: 20150625101514) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -255,6 +255,14 @@ ActiveRecord::Schema.define(version: 20150615122402) do
     t.string   "model"
   end
 
+  create_table "embeddable_unit_themes", force: true do |t|
+    t.string  "title",      null: false
+    t.string  "main_color", null: false
+    t.string  "color1",     null: false
+    t.string  "color2",     null: false
+    t.integer "user_id"
+  end
+
   create_table "embeddable_units", force: true do |t|
     t.string   "uuid"
     t.integer  "survey_id"
@@ -302,7 +310,12 @@ ActiveRecord::Schema.define(version: 20150615122402) do
     t.string   "why"
   end
 
+  add_index "feed_items_v2", ["hidden", "hidden_reason", "question_id"], name: "idx2", using: :btree
   add_index "feed_items_v2", ["hidden", "why"], name: "index_feed_items_v2_on_hidden_and_why", using: :btree
+  add_index "feed_items_v2", ["question_id"], name: "index_feed_items_v2_on_question_id", using: :btree
+  add_index "feed_items_v2", ["user_id", "hidden", "hidden_reason", "question_id"], name: "idx5", using: :btree
+  add_index "feed_items_v2", ["user_id", "hidden", "published_at"], name: "idx3", using: :btree
+  add_index "feed_items_v2", ["why"], name: "index_feed_items_v2_on_why", using: :btree
 
   create_table "follower_targets", force: true do |t|
     t.integer  "question_id"
