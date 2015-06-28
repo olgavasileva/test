@@ -36,6 +36,19 @@ class TwoCents::EmbeddableUnitThemes < Grape::API
       end
     end
 
+    desc 'Get available themes'
+    params do
+      use :auth
+    end
+    get do
+      default_themes = EmbeddableUnitTheme.default_themes
+      user_themes = current_user.embeddable_unit_themes
+      {
+          default_themes: default_themes.map { |theme| serialize_theme theme },
+          user_themes: user_themes.map { |theme| serialize_theme theme }
+      }
+    end
+
     desc 'Create theme'
     params do
       use :auth

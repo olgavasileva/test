@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'GET /embeddable_unit_themes' do
+describe 'embeddable_unit_themes ENDPOINT' do
   let(:instance) { FactoryGirl.create(:instance, :logged_in) }
   let(:user) { instance.user }
   let(:params) { {auth_token: instance.auth_token} }
@@ -34,4 +34,23 @@ describe 'GET /embeddable_unit_themes' do
     expect(themes.length).to eq 0
   end
 
+  context 'GET themes' do
+    before do
+      @user_created_theme = user.embeddable_unit_themes.create title: 'title',
+                                                              main_color: 'blue',
+                                                              color1: 'green', color2: 'yellow'
+      @default_theme = EmbeddableUnitTheme.create title: 'title1',
+                                                main_color: 'blue',
+                                                color1: 'green', color2: 'yellow'
+    end
+    it 'returnes list of available themes' do
+      get '/v/2.0/embeddable_unit_themes', params
+
+      expect(json['default_themes'].length).to eq 1
+      expect(json['default_themes'][0]['id']).to eq @default_theme.id
+
+      expect(json['user_themes'].length).to eq 1
+      expect(json['user_themes'][0]['id']).to eq @user_created_theme.id
+    end
+  end
 end

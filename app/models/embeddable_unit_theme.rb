@@ -6,4 +6,5 @@ class EmbeddableUnitTheme < ActiveRecord::Base
   has_many :surveys
 
   scope :default_themes, -> { where user: nil }
+  scope :user_themes, ->(user) { where user: user }
 end
