@@ -36,6 +36,8 @@ module TwoCents
           type: String,
           desc: 'Thank you message in Markdown format'
 
+        optional :theme_id, type: Integer, desc: 'Id of survey theme'
+
         ty_type = (type == :optional) ? :mutually_exclusive : :exactly_one_of
         send(ty_type, :thank_you_html, :thank_you_markdown)
       end
@@ -57,7 +59,8 @@ module TwoCents
           :redirect_timeout,
           :thank_you_html,
           :thank_you_markdown,
-          :thank_you_default
+          :thank_you_default,
+          :theme_id
         )
       end
 

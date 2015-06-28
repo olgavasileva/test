@@ -43,7 +43,8 @@ RSpec.describe TwoCents::Surveys, '/surveys' do
     let(:params) do
       {
         auth_token: auth.auth_token,
-        name: SecureRandom.hex(10)
+        name: SecureRandom.hex(10),
+        theme_id: 2
       }
     end
 
@@ -51,6 +52,7 @@ RSpec.describe TwoCents::Surveys, '/surveys' do
 
     it 'updates the Survey' do
       expect{subject}.to change{survey.reload.name}
+      expect(survey.reload.theme_id).to eq 2
     end
   end
 
