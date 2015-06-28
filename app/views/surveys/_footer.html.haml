@@ -6,7 +6,7 @@
   %a.logo{href: 'http://www.statisfy.co/'}
   - question = @response.present? ? @response.question : @question
   - if question.present?
-    %span.answers-count
+    %span.answers-count{style: "background-color: #{@survey.theme.color1}"}
       = pluralize question.response_count, 'answer'
 
   %a.action-icon.tumblr{onclick: 'openTumblr()'}

@@ -8,7 +8,8 @@ class CreateEmbeddableUnitThemes < ActiveRecord::Migration
       t.integer :user_id
     end
     if Object.const_defined? 'EmbeddableUnitTheme'
-      EmbeddableUnitTheme.create title: 'statisfy', main_color: '#F1F3F2', color1: '#2E92D6', color2: '#FDAD4C'
+      EmbeddableUnitTheme.create title: EmbeddableUnitTheme::DEFAULT_THEME,
+                                 main_color: '#F1F3F2', color1: '#2E92D6', color2: '#32B8E7'
     end
   end
 

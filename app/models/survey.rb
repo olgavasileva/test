@@ -10,6 +10,7 @@ class Survey < ActiveRecord::Base
   has_many :questions, -> { order "questions_surveys.position ASC" }, through: :questions_surveys
   has_many :contests
   has_many :embeddable_units, dependent: :destroy
+  belongs_to :theme, class_name: 'EmbeddableUnitTheme'
 
   accepts_nested_attributes_for :questions_surveys, allow_destroy: true
 

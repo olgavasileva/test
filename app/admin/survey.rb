@@ -1,7 +1,7 @@
 ActiveAdmin.register Survey do
   menu parent: 'Surveys'
 
-  permit_params :name, :username, :thank_you_markdown, :thank_you_html, contest_ids: []
+  permit_params :name, :username, :thank_you_markdown, :thank_you_html, :theme_id, contest_ids: []
 
   filter :id
   filter :user_username, as: :string, label: "Username"
@@ -16,6 +16,9 @@ ActiveAdmin.register Survey do
     end
     column :name
     column :uuid
+    column "Theme" do |survey|
+      survey.theme.title
+    end
     column "Questions" do |survey|
       link_to pluralize(survey.questions_surveys.count, 'Question'), admin_survey_questions_surveys_path(survey)
     end
@@ -40,6 +43,7 @@ ActiveAdmin.register Survey do
   form do |f|
     f.inputs do
       f.input :name
+      f.input :theme, as: :select
       f.input :username
       f.input :contests, as: :check_boxes, label_method: :name
       f.input :thank_you_markdown, hint: "You can use markdown to style this text.  Note, this is used in new ad units, but not in former embeddable units."
@@ -56,6 +60,7 @@ ActiveAdmin.register Survey do
             row :uuid
             row :name
             row :user
+            row :theme
             row :thank_you_html do
               survey.try(:thank_you_html).try(:html_safe)
             end

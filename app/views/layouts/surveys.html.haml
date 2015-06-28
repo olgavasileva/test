@@ -31,7 +31,7 @@
       = render partial: 'tumblr'
       = render partial: 'embed'
 
-      #title.textfill
+      #title.textfill{style: "background-color: #{@survey.theme.main_color}"}
         %h1.resize
           .title
             .table
@@ -48,7 +48,9 @@
             #back-button.nav-button.disabled
 
           - if @response
-            %a#next-button.nav-button{target: '_self', href: next_question_path(@question, @original_referrer)}
+            %a#next-button.nav-button{target: '_self',
+            style: "background-color: #{@survey.theme.color2} !important;",
+            href: next_question_path(@question, @original_referrer)}
               .icon= image_tag 'ad_units/arrow-right.png'
           - else
             #next-button.nav-button.disabled
