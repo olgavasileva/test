@@ -17,7 +17,7 @@ describe 'embeddable_unit_themes ENDPOINT' do
   it 'updates theme' do
     theme = user.embeddable_unit_themes.create title: 'title', main_color: 'blue', color1: 'green', color2: 'yellow'
 
-    put '/v/2.0/embeddable_unit_themes', {title: 'asd', id: theme.id}.merge(params)
+    put "/v/2.0/embeddable_unit_themes/#{theme.id}", {title: 'asd'}.merge(params)
 
     expect(json['title']).to eq 'asd'
   end
@@ -25,7 +25,7 @@ describe 'embeddable_unit_themes ENDPOINT' do
   it 'deletes theme' do
     theme = user.embeddable_unit_themes.create title: 'title', main_color: 'blue', color1: 'green', color2: 'yellow'
 
-    delete '/v/2.0/embeddable_unit_themes', {id: theme.id}.merge(params)
+    delete "/v/2.0/embeddable_unit_themes/#{theme.id}", params
 
     themes = user.embeddable_unit_themes.reload
 
@@ -42,6 +42,11 @@ describe 'embeddable_unit_themes ENDPOINT' do
       @default_theme = EmbeddableUnitTheme.create title: 'title1',
                                                 main_color: 'blue',
                                                 color1: 'green', color2: 'yellow'
+    end
+
+    it 'returns a theme' do
+      get "/v/2.0/embeddable_unit_themes/#{@user_created_theme.id}", params
+      expect(json['title']).to eq @user_created_theme.title
     end
     it 'returnes list of available themes' do
       get '/v/2.0/embeddable_unit_themes', params

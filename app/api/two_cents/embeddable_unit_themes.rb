@@ -62,45 +62,63 @@ class TwoCents::EmbeddableUnitThemes < Grape::API
       serialize_theme theme
     end
 
-    desc 'Update theme'
-    params do
-      use :auth
-      use :id
-      use :optional_theme
-    end
-    put do
-      validate_user!
-
-      theme_id = theme_params['id']
-      theme = current_user.embeddable_unit_themes.find theme_id
-
-      if theme
-        theme.update_attributes! theme_params
-        fail! 400, theme.errors.full_messages unless theme.valid?
-      else
-        fail! 404, "Theme #{theme_id} not found"
+    route_param :id do
+      desc 'Get theme'
+      params do
+        use :id
+        use :auth
       end
 
-      serialize_theme theme
-    end
+      get do
+        theme_id = theme_params['id']
+        theme = current_user.embeddable_unit_themes.find theme_id
+        theme = EmbeddableUnitTheme.find_by(user: nil, id: theme_id) unless theme
 
-    desc 'Delete theme'
-    params do
-      use :auth
-      use :id
-    end
-    delete do
-      validate_user!
-      theme_id = theme_params['id']
-      theme = current_user.embeddable_unit_themes.find(theme_id)
-
-      if theme
-        theme.destroy
-      else
-        fail! 404, "Theme #{theme_id} not found"
+        fail! 404 unless theme
+        serialize_theme theme
       end
 
-      {}
+
+      desc 'Update theme'
+      params do
+        use :auth
+        use :id
+        use :optional_theme
+      end
+      put do
+        validate_user!
+
+        theme_id = theme_params['id']
+        theme = current_user.embeddable_unit_themes.find theme_id
+
+        if theme
+          theme.update_attributes! theme_params
+          fail! 400, theme.errors.full_messages unless theme.valid?
+        else
+          fail! 404, "Theme #{theme_id} not found"
+        end
+
+        serialize_theme theme
+      end
+
+      desc 'Delete theme'
+      params do
+        use :auth
+        use :id
+      end
+      delete do
+        validate_user!
+        theme_id = theme_params['id']
+        theme = current_user.embeddable_unit_themes.find(theme_id)
+
+        if theme
+          theme.destroy
+        else
+          fail! 404, "Theme #{theme_id} not found"
+        end
+
+        {}
+      end
     end
   end
 end
