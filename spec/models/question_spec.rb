@@ -211,4 +211,92 @@ describe Question do
       end
     end
   end
+
+  describe :deployment_count do
+    context "When unique_referrers has some data" do
+      let(:q) {FactoryGirl.create :question}
+      let(:unique_referrers) {
+        ["http://site1.com/qp/10",
+        "http://site1.com/qp/11",
+        "http://site2.com/qp/10",
+        "http://site2.com/qp/11",
+        "http://foo.site2.com/qp/10",
+        "http://bar.site2.com/qp/11",
+        "http://site3.com/qp/10",
+        "http://site3.com/qp/10",
+        "/qp/20",
+        "/qp/30",
+        "foo.com/qp/40",
+        "bar.com/qp/50"]
+      }
+      before {expect(q).to receive(:unique_referrers).and_return(unique_referrers)}
+
+      it {expect(q.deployment_count).to eq 6}
+
+      context "When there are no referrers" do
+        let(:unique_referrers) {[]}
+
+        it {expect(q.deployment_count).to eq 0}
+      end
+    end
+  end
+
+  describe :unique_deployments do
+    context "When unique_referrers has some data" do
+      let(:q) {FactoryGirl.create :question}
+      let(:unique_referrers) {
+        ["http://site1.com/qp/10",
+        "http://site1.com/qp/11",
+        "http://site2.com/qp/10",
+        "http://site2.com/qp/11",
+        "http://foo.site2.com/qp/10",
+        "http://bar.site2.com/qp/11",
+        "http://site3.com/qp/10",
+        "http://site3.com/qp/10",
+        "/qp/20",
+        "/qp/30",
+        "foo.com/qp/40",
+        "bar.com/qp/50"]
+      }
+      before {expect(q).to receive(:unique_referrers).and_return(unique_referrers)}
+
+      it {expect(q.unique_deployments).to match_array %w(site1.com site2.com foo.site2.com bar.site2.com site3.com) + [true]}
+
+      context "When there are no referrers" do
+        let(:unique_referrers) {[]}
+
+        it {expect(q.unique_deployments).to eq []}
+      end
+    end
+  end
+
+  describe :complete_rate do
+    let(:q) {FactoryGirl.create :question}
+    before {allow(q).to receive(:response_count).and_return(response_count)}
+    before {allow(q).to receive(:view_count).and_return(view_count)}
+
+    context "With valid response and view counts" do
+      let(:response_count) {10}
+      let(:view_count) {20}
+
+      it {expect(q.complete_rate).to eq 0.5}
+
+      context "With 0 for the response count" do
+        let(:response_count) {0}
+        it {expect(q.complete_rate).to eq 0.0}
+      end
+
+      context "With 0 for the view count" do
+        let(:view_count) {0}
+        it {expect(q.complete_rate).to be_nil}
+      end
+
+      context "With 0 for the view and response counts" do
+        let(:response_count) {0}
+        let(:view_count) {0}
+        it {expect(q.complete_rate).to eq 0.0}
+      end
+    end
+
+  end
 end

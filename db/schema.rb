@@ -310,12 +310,7 @@ ActiveRecord::Schema.define(version: 20150625123652) do
     t.string   "why"
   end
 
-  add_index "feed_items_v2", ["hidden", "hidden_reason", "question_id"], name: "idx2", using: :btree
   add_index "feed_items_v2", ["hidden", "why"], name: "index_feed_items_v2_on_hidden_and_why", using: :btree
-  add_index "feed_items_v2", ["question_id"], name: "index_feed_items_v2_on_question_id", using: :btree
-  add_index "feed_items_v2", ["user_id", "hidden", "hidden_reason", "question_id"], name: "idx5", using: :btree
-  add_index "feed_items_v2", ["user_id", "hidden", "published_at"], name: "idx3", using: :btree
-  add_index "feed_items_v2", ["why"], name: "index_feed_items_v2_on_why", using: :btree
 
   create_table "follower_targets", force: true do |t|
     t.integer  "question_id"

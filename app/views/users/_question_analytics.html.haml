@@ -20,11 +20,17 @@
             %td Views
             %td.text-right= question.view_count.to_i
           %tr
-            %td Viral Reach
-            %td.text-right= question.viral_reach
+            %td Viral Distribution
+            %td.text-right= question.viral_distribution
+          %tr
+            %td Virality Rate
+            %td.text-right= number_to_percentage 100 * question.virality_rate.to_f, precision: 1
           %tr
             %td Completes
             %td.text-right= question.response_count
+          %tr
+            %td Complete Rate
+            %td.text-right= number_to_percentage 100 * question.complete_rate.to_f, precision: 1
           %tr
             %td Skips
             %td.text-right= question.skip_count
@@ -35,9 +41,6 @@
             %tr
               %td Complete Rate
               %td.text-right= question.response_count / question.view_count.to_i
-          %tr
-            %td Viral Distribution
-            %td.text-right= question.unique_referrer_count
     .col-sm-8
       - if @demographics
         #demographics= render 'users/demographics', demographics: @demographics
