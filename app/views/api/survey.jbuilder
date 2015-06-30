@@ -9,7 +9,8 @@ json.survey do
     :thank_you_html,
     :thank_you_default,
     :user_id,
-    :uuid
+    :uuid,
+    :theme_id
 
   json.questions do
     json.array! @survey.questions do |question|
