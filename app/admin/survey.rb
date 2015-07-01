@@ -67,6 +67,29 @@ ActiveAdmin.register Survey do
           end
         end
 
+        panel 'Survey Questions' do
+          x = survey.questions.to_a
+          total_views = survey.questions.sum(:view_count)
+          total_responses = survey.questions.map{|q|q.response_count}.sum
+          x << OpenStruct.new(id: nil, title: "TOTAL", type: nil,  view_count: total_views,  response_count: total_responses)
+          table_for x do
+            column :id
+            column(:title) { |q| q.id ? link_to(q.title, admin_question_path(q)) : q.title  }
+            column(:type) { |q| status_tag q.type, :ok if q.id }
+            column(:views, class: 'aa-number') { |q| number_with_delimiter q.view_count }
+            column(:responses, class: 'aa-number') { |q| number_with_delimiter q.response_count }
+            column(:actions) do |q|
+              if q.id
+                url = remove_question_admin_survey_path(survey, question_id: q.id)
+                content  = link_to 'View', admin_question_path(q)
+                content += ' / '
+                content += link_to 'Remove', url, method: :delete, data: {confirm: 'Are you sure?'}
+                content.html_safe
+              end
+            end
+          end
+        end
+
         panel 'Embeddables' do
           attributes_table_for survey do
             AdUnit.all.map do |ad_unit|
@@ -75,23 +98,6 @@ ActiveAdmin.register Survey do
                 "<label>iFrame</label><div><input style='width: 100%' onmouseenter='$(this).select()' value='#{survey.iframe request, ad_unit}'></div>".html_safe +
                 survey.iframe(request, ad_unit).html_safe
               end
-            end
-          end
-        end
-      end
-
-      column span: 2 do
-        panel 'Survey Questions' do
-          table_for survey.questions do
-            column :id
-            column(:title) { |q| link_to q.title, admin_question_path(q) }
-            column(:type) { |q| status_tag q.type, :ok }
-            column(:actions) do |q|
-              url = remove_question_admin_survey_path(survey, question_id: q.id)
-              content  = link_to 'View', admin_question_path(q)
-              content += ' / '
-              content += link_to 'Remove', url, method: :delete, data: {confirm: 'Are you sure?'}
-              content.html_safe
             end
           end
         end
