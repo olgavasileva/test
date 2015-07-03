@@ -276,6 +276,17 @@ ActiveRecord::Schema.define(version: 20150625123652) do
 
   add_index "embeddable_units", ["survey_id"], name: "index_embeddable_units_on_survey_id", using: :btree
 
+  create_table "enterprise_targets", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "min_age"
+    t.integer  "max_age"
+    t.string   "gender"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "enterprise_targets", ["user_id"], name: "index_enterprise_targets_on_user_id", using: :btree
+
   create_table "enterprise_targets_segments", force: true do |t|
     t.integer  "enterprise_target_id"
     t.integer  "segment_id"

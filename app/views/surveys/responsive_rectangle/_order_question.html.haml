@@ -1,0 +1,34 @@
+- content_for :between_buttons do
+  #order-choice-sort
+    - if answer
+      - choices = answer.choices
+    - else
+      - choices = question.ordered_choices_for(cookie_user)
+
+    - choices.each_with_index do |c, i|
+      .order-choice-bar{data: {choice_id: c.id, image: meta_data_for(c.background_image)}}
+        .order-choice-title= c.title
+        - if answer
+          - ratio = (c.response_ratio * 100).to_i
+          .bar-blue{data: {response: ratio}, style: "background-color: #{@survey.theme.color1}"}
+            .bar-graph{style: "background-color: #{@survey.theme.color2}"}
+            .bar-selected
+            .bar-response
+        - else
+          .overlay{style: "color: #{@survey.theme.color1}"}
+            .overlay-text= t('embeddable_unit.cta_drag', count: @question.responses.size)
+          .order-choice-orderer
+            = image_tag 'ad_units/prioritizer.png'
+
+
+
+- unless answer.present?
+  - content_for :below_buttons do
+    - url = qp_create_response_url(@survey.uuid, @ad_unit.name, question)
+    = form_tag url, target: '_self' do
+      = hidden_field_tag 'response[original_referrer]', original_referrer
+      - question.choices.each_with_index do |c, i|
+        = hidden_field_tag 'response[choice_ids][]', c.id, id: "index-#{i}"
+
+      .bar{style: "background-color: #{@survey.theme.color1}"}
+        %button#order-choice-submit{type:'submit'}= 'Submit'

@@ -4,6 +4,10 @@
       enabled: <%= (Rails.env.production? || Rails.env.labs?).to_json %>,
       speed: <%= settings.fetch(:embeddable_unit_auto_forward, 3).to_i * 1000 %>
     },
+    vote: {
+      text: "<%= settings.fetch(:embeddable_unit_vote_text, 'Vote Here!').to_s %>",
+      speed: <%= settings.fetch(:embeddable_unit_vote_bounce_speed, 1.5).to_f %>
+    },
     cta: {
       enabled: <%= (!@response.present?).to_json %>,
       minStart: <%= settings.fetch(:embeddable_unit_cta_min_start, 500).to_i %>,
@@ -18,7 +22,7 @@
     },
     responseAnimation: {
       enabled: <%= @response.present?.to_json %>,
-      speed: 750,
+      speed: 750
     }
   };
 </script>

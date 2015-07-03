@@ -1,0 +1,22 @@
+= render partial: 'surveys/responsive_rectangle/vote'
+- content_for :between_buttons do
+  - question.ordered_choices_for(cookie_user).each_with_index do |c, i|
+    - meta = meta_data_for(c.background_image)
+    - if answer
+      %div{class: "image-choice index-#{i}", data: {image: meta}}
+        - ratio = (c.response_ratio * 100).to_i
+        %div.bar-blue{data: {response: ratio}, style: "background-color: #{@survey.theme.color1}"}
+          .bar-graph{style: "background-color: #{@survey.theme.color2}"}
+          .bar-selected
+          .bar-response
+
+        .spacer
+        .text= c.title
+
+    - else
+      - url = qp_create_response_url(@survey.uuid, @ad_unit.name, question)
+      = button_to url, form: {target: '_self', data: {image: meta}, class: "image-choice index-#{i}"}, params: {'response[choice_id]' => c.id, 'response[original_referrer]' => original_referrer} do
+        .overlay
+          .overlay-text{style: "color: #{@survey.theme.color1};"}= t('embeddable_unit.cta_click', count: @question.responses.size)
+        .spacer
+        .text= c.title

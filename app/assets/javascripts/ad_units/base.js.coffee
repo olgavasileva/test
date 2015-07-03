@@ -2,11 +2,10 @@
 #= require jquery.textfill
 #= require jquery.cookie
 #= require Sortable.min
-#= require ad_units/image_manipulation
-#= require ad_units/overlay_cta
-#= require ad_units/overlay_feedback
-#= require ad_units/response_animation
-
+#= require ./image_manipulation.coffee
+#= require ./overlay_cta.coffee
+#= require ./overlay_feedback.coffee
+#= require ./response_animation.coffee
 $ ->
   resizeText = ->
     $(".resize").textfill
@@ -60,6 +59,7 @@ $ ->
   # ----------------------------------------------------------------------------
   # Auto Forward
   #
+  console.log adUnitConfig.autoForward
   if adUnitConfig.autoForward.enabled && $q.hasClass('has-response')
     next = -> document.getElementById('next-button').click()
     setTimeout(next, adUnitConfig.autoForward.speed)

@@ -1,0 +1,125 @@
+.TextChoiceQuestion {
+  .main-image {
+    display: inline-block;
+    height: 199px;
+    margin-left: 3px;
+    margin-right: 3px;
+    background-color: #fff;
+    width: 311px;
+  }
+  #between-button-content {
+    background-color: #fff;
+    font-size: 0;
+    border: solid rgb(238, 238, 238);
+    border-right-width: 7px;
+    border-left-width: 7px;
+    height: 199px;
+  }
+  #below-buttons {
+    width: 312px;
+    padding: 0 2px;
+    margin-top: -4px;
+    border: solid rgb(238, 238, 238);
+    border-right-width: 7px;
+    border-left-width: 7px;
+    background: #fff;
+    position: relative;
+    form {
+      margin: 2px 0;
+      width: 100%;
+      height: 31px;
+    }
+    .bar {
+      width: 312px;
+      .bar-graph {
+        position: absolute;
+      }
+      .bar-selected {
+        position: absolute;
+      }
+      .bar-title {
+        width: 311px;
+        padding: 4px;
+        position: absolute;
+        display: inline-block;
+      }
+      .bar-response {
+        position: absolute;
+        display: inline-block;
+        right: 5px;
+        top: 5px;
+        color: white;
+      }
+    }
+    button[type="submit"] {
+      height: 31px;
+      position: relative;
+      width: 100%;
+      &:focus {
+        outline: 0;
+      }
+      padding: 0;
+      .bar-title {
+        padding-top: 5px;
+      }
+      .bar-overlay, .bar-title {
+        top: 0;
+      }
+    }
+    .bar {
+      position: relative;
+      margin-bottom: 2px;
+    }
+    button[type="submit"], .bar {
+      cursor: pointer;
+      height: 31px;
+      background: none;
+      border-style: none;
+      font-family: Roboto, Helvetica, sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      .bar-title {
+        position: absolute;
+        color: white;
+        height: 31px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .bar-overlay {
+        background: white;
+        opacity: 0.9;
+        position: absolute;
+        text-align: center;
+        z-index: 55555;
+        height: 31px;
+        width: 312px;
+        font-size: 20px;
+        line-height: 31px;
+      }
+      .bar-selected {
+        height: 31px;
+      }
+      .bar-graph {
+        height: 31px;
+        background-color: green;
+      }
+    }
+  }
+  &.choices-3 {
+    #between-button-content {
+      height: 163px;
+    }
+    .main-image {
+      height: 163px;
+    }
+  }
+  &.choices-4 {
+    #between-button-content {
+      height: 130px;
+    }
+    .main-image {
+      height: 130px;
+    }
+  }
+}
