@@ -41,11 +41,11 @@
       = yield
       #question{class: question_class}
         #between-buttons
-          -#- if @response && prev_path = previous_question_path(@question, @original_referrer)
-            %a#back-button.nav-button{target: '_self', href: prev_path}
-              .icon= image_tag 'ad_units/arrow-left.svg'
+          -#%a#back-button.nav-button{target: '_self', href: prev_path}
+          -#  .icon= image_tag 'ad_units/arrow-left.svg'
           -#- else
-          %a#back-button.nav-button.disabled{target: '_self', href: nil}
+          %a#back-button.nav-button.disabled{target: '_self',  href: nil,
+          style: "background-color: #{@survey.theme.main_color};"}
 
           -#- if @response
             %a#next-button.nav-button{target: '_self',
@@ -53,7 +53,8 @@
             href: next_question_path(@question, @original_referrer)}
               .icon= image_tag 'ad_units/arrow-right.png'
           -#- else
-          %a#next-button.nav-button.disabled{target: '_self',href: next_question_path(@question, @original_referrer)}
+          %a#next-button.nav-button.disabled{target: '_self', style: "background-color: #{@survey.theme.main_color};",
+          href: next_question_path(@question, @original_referrer)}
 
           - if content_for?(:between_buttons)
             #between-button-content= yield(:between_buttons)
