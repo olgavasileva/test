@@ -20,4 +20,4 @@
 
 - template = question.class.name.underscore
 - template = 'multiple_choice_question' if question.min_responses.to_i > 1
-= render "surveys/response_fields/#{template}", answer: response, question: question, original_referrer: original_referrer
+= render "surveys/#{@ad_unit.name}/#{template}", answer: response, question: question, original_referrer: original_referrer

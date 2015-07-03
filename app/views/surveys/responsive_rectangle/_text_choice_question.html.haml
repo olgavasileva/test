@@ -1,0 +1,19 @@
+= render partial: 'surveys/responsive_rectangle/vote'
+- content_for :between_buttons do
+  .main-image{data: {image: meta_data_for(question.background_image)}}
+- content_for :below_buttons do
+  - question.ordered_choices_for(cookie_user).each do |c|
+    - if answer.present?
+      - ratio = (c.response_ratio * 100).to_i
+      %div.bar{style: "background-color: #{@survey.theme.color1}", data: {response: ratio}}
+        .bar-graph{style: "background-color: #{@survey.theme.color2}"}
+        .bar-selected
+        .bar-response
+        .bar-title= c.title
+    - else
+      - url = qp_create_response_url(@survey.uuid, @ad_unit.name, @question)
+      = button_to url, form: {target: '_self', style: "background-color: #{@survey.theme.color1}", class: 'bar-blue'},
+      params: {'response[choice_id]' => c.id, 'response[original_referrer]' => original_referrer} do
+        .bar-title= c.title
+        .bar-overlay.overlay{style: "color: #{@survey.theme.color1}"}
+          %strong= t('embeddable_unit.cta_click', count: @question.responses.size)

@@ -105,7 +105,9 @@ class SurveysController < ApplicationController
         'embeddable_unit_cta_fade_speed',
         'embeddable_unit_cta_duration',
         'embeddable_unit_cta_repeat',
-        'embeddable_unit_feedback_duration'
+        'embeddable_unit_feedback_duration',
+        'embeddable_unit_vote_text',
+        'embeddable_unit_vote_bounce_speed'
       )
     end
 

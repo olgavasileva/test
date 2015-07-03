@@ -1,20 +1,17 @@
 //= require font-awesome
+//= require ./base
 //= require_self
 
-//= require ad_unit/base
-//= require ad_unit/choices/bars
-//= require ad_unit/choices/image_choices
-//= require ad_unit/choices/order_choices
-//= require ad_unit/choices/text_areas
+//= require ./medium_rectangle/base
+//= require ./medium_rectangle/choices/bars
+//= require ./medium_rectangle/choices/image_choices
+//= require ./medium_rectangle/choices/order_choices
+//= require ./medium_rectangle/choices/text_areas
 
-//= require ad_unit/sizes/medium_rectangle
+//= require ./medium_rectangle/sizes/medium_rectangle
 
 
-@import "ad_unit/variables";
-
-body { font-family: 'Roboto', Helvetica, sans-serif; }
-
-.clearfix { clear: both; }
+@import "./medium_rectangle/variables";
 
 button {
   outline: none;

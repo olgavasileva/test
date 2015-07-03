@@ -1,0 +1,146 @@
+//= require ./base
+//= require ./responsive_rectangle/image_choice
+//= require ./responsive_rectangle/text_choice
+.responsive_rectangle {
+  margin: 0;
+  width: 330px;
+  height: 405px;
+}
+
+#embed {
+  display: none;
+}
+
+#tumblr-overlay {
+  display: none;
+}
+
+#content {
+  background-color: rgb(238, 238, 238);
+  border-radius: 5px;
+}
+
+#title {
+  h1 {
+    padding-top: 18px;
+    text-align: center;
+    margin: 0;
+  }
+  height: 60px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+#vote-block {
+  background: none;
+  min-height: 45px;
+}
+
+@keyframes tooltip-bouncing {
+  from {
+    margin-top: 0;
+  }
+  to {
+    margin-top: 10px;
+  }
+}
+
+#vote-tooltip {
+  display: inline;
+  background: rgb(56, 167, 220);
+  position: absolute;
+  text-align: center;
+  border-radius: 5px;
+  margin-left: 29px;
+  padding: 5px 5px 0 5px;
+  height: 25px;
+  color: white;
+  animation: tooltip-bouncing linear 0.7s infinite alternate;
+}
+
+#vote-tooltip:after {
+  margin-top: 6px;
+  margin-left: 40%;
+  content: ' ';
+  display: block;
+  position: absolute;
+  border-style: solid;
+  border-width: 6px 5px 0 5px;
+  border-color: rgb(56, 167, 220) transparent transparent transparent;
+}
+
+#footer {
+  @mixin icon-bg($icon) {
+    background-image: image-url("ad_units/#{$icon}.png");
+  }
+  height: 24px;
+  padding: 3px 7px;
+  line-height: 1.4;
+  margin-top: -2px;
+  .action-icon {
+    display: inline-block;
+    border-radius: 50%;
+    float: left;
+    margin-right: 2px;
+    background-position: 1px 1px;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+    &.facebook {
+      @include icon-bg('facebook');
+    }
+    &.twitter {
+      @include icon-bg('twitter');
+    }
+    &.tumblr {
+      @include icon-bg('tumblr');
+    }
+    &.embed {
+      @include icon-bg('embed');
+    }
+    &.create {
+      @include icon-bg('create');
+    }
+  }
+  .answers-count {
+    border-radius: 10px;
+    color: white;
+    position: relative;
+    float: right;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 4px 10px;
+    margin-right: 5px;
+    transform-style: preserve-3d;
+    transition: transform 1.5s;
+    .first {
+      z-index: 2;
+      width: 100%;
+    }
+    .second {
+      width: 100%;
+      display: none;
+      transform: rotateX(180deg);
+    }
+    &.flipped {
+      .second {
+        display: initial;
+        transform: rotateX(-180deg);
+      }
+      .first {
+        display: none;
+        transform: rotateX(180deg);
+      }
+      transform: rotateX(180deg);
+    }
+  }
+  .logo {
+    width: 53px;
+    height: 20px;
+    @include icon-bg('statisfy-logo');
+    background-size: 50px;
+    background-position: 2px;
+    background-repeat: no-repeat;
+    float: right;
+  }
+}
