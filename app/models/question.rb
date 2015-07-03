@@ -117,8 +117,62 @@ class Question < ActiveRecord::Base
     responses.count
   end
 
-  def unique_referrer_count
-    responses.pluck(:original_referrer).uniq.reject{|c| c.blank?}.count
+  def unique_referrers
+    responses.pluck(:original_referrer).uniq.reject{|c| c.blank?}
+  end
+
+  def unique_deployments
+    @unique_deployments ||= unique_referrers.map do |r|
+      matches = r.match(/https?:\/\/([^\/]+)\/.*/)
+      if matches
+        matches[1]
+      else
+        Rails.logger.error "Invalid referrer: #{r}"
+        # TODO: Trigger a Air Brake notification or email to Endre
+      end
+    end.uniq
+  end
+
+  # Number of deployments has to be calculated from the list of unique referrers.
+  # If one of the unique referrers lose match to /gostatisfy.tumblr.com/,
+  # then no matter the number of matches, it counts as 1.
+  # If one of the unique referrers has a lose match to /statisfy.co/,
+  # then no matter the number of matches, it counts as 1.
+  # This number can never be zero. So it has to be 1 if 0.
+  # or 1 if 1 of the two conditions are met. Or 2 if both conditions are met.
+  #
+  # For example:
+  #   All values in this questions's responses.original_referrer:
+  #   http://site1.com/qp/10        site1.com
+  #   http://site1.com/qp/11        site1.com
+  #   http://site2.com/qp/10        site2.com
+  #   http://site2.com/qp/11        site2.com
+  #   http://foo.site2.com/qp/10    foo.site2.com
+  #   http://bar.site2.com/qp/11    bar.site2.com
+  #   http://site3.com/qp/10        site3.com
+  #   http://site3.com/qp/10        site3.com
+  #   /qp/20                        nil
+  #   /qp/30                        nil
+  #   foo.com/qp/40                 nil
+  #   bar.com/qp/50                 nil
+  #   result =>                            6
+  def deployment_count
+    unique_deployments.count
+  end
+
+  def complete_rate
+    @complete_rate ||= if view_count.to_i == 0 && response_count.to_i > 0
+      Rails.logger.error "Invalid for view_count to be 0 when response_count > 0"
+      nil
+    elsif view_count.to_i == 0 && response_count.to_i == 0
+      0
+    else
+      response_count.to_f / view_count.to_f
+    end
+  end
+
+  def viral_distribution
+    unique_referrers.count
   end
 
   # +1 if asked by one of the recipient's followers
@@ -198,13 +252,19 @@ class Question < ActiveRecord::Base
 
   # TODO Calculate targeted reach based on actual views of the targeted question
   def targeted_reach
-    response_count = respondents.count
+    @targeted_reach ||= begin
+      response_count = respondents.count
 
-    response_count > 0 ? (view_count.to_i * respondents.where(type:'User').count.to_f / response_count).to_i : 0
+      response_count > 0 ? (view_count.to_i * respondents.where(type:'User').count.to_f / response_count).to_i : 0
+    end
   end
 
   def viral_reach
-    view_count.to_i - targeted_reach
+    @viral_reach ||= view_count.to_i - targeted_reach
+  end
+
+  def virality_rate
+    @virality_rate ||= unique_referrers.count.to_f / deployment_count.to_f unless deployment_count.to_i == 0
   end
 
 	def comment_count
