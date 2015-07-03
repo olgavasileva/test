@@ -45,7 +45,7 @@
             %a#back-button.nav-button{target: '_self', href: prev_path}
               .icon= image_tag 'ad_units/arrow-left.svg'
           -#- else
-          #back-button.nav-button.disabled
+          %a#back-button.nav-button.disabled{target: '_self', href: nil}
 
           -#- if @response
             %a#next-button.nav-button{target: '_self',
@@ -53,7 +53,7 @@
             href: next_question_path(@question, @original_referrer)}
               .icon= image_tag 'ad_units/arrow-right.png'
           -#- else
-          #next-button.nav-button.disabled
+          %a#next-button.nav-button.disabled{target: '_self',href: next_question_path(@question, @original_referrer)}
 
           - if content_for?(:between_buttons)
             #between-button-content= yield(:between_buttons)
