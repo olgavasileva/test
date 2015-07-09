@@ -1,0 +1,92 @@
+.OrderQuestion {
+  &.has-response {
+    margin-bottom: 2px;
+  }
+  font-weight: 500;
+  height: 270px;
+  font-family: 'Roboto', Helvetica, sans-serif;
+  #between-buttons {
+    height: 240px;
+    background: white;
+    border: 0 solid #F1F3F2;
+    border-right-width: 7px;
+    border-left-width: 7px;
+  }
+  .bar-response {
+    height: 38px;
+    text-align: center;
+    padding-top: 20px;
+    width: 100%;
+    position: absolute;
+  }
+  .bar-blue {
+    position: relative;
+    height: 58px;
+    width: 44px;
+    float: right;
+    text-align: center;
+    color: white;
+    margin-top: -58px;
+  }
+  .bar-graph {
+    float: left;
+    height: 58px;
+    position: absolute;
+  }
+  #order-choice-sort {
+    .order-choice-bar {
+      height: 58px;
+      margin-bottom: 1px;
+      .order-choice-orderer {
+        float: right;
+        position: relative;
+        top: -48px;
+      }
+      .overlay {
+        position: absolute;
+        margin-top: -58px;
+        background: white;
+        width: 330px;
+        text-align: center;
+        opacity: 0.5;
+      }
+      .order-choice-title {
+        background: rgba(0, 0, 0, 0.5);
+        width: 100px;
+        height: 42px;
+        padding-top: 16px;
+        padding-left: 20px;
+        color: white;
+      }
+    }
+  }
+  #below-buttons {
+    height: 30px;
+    .bar {
+      height: 30px;
+    }
+    form {
+      height: 30px;
+    }
+    button[type="submit"] {
+      &:focus {
+        outline: 0;
+      }
+      position: absolute;
+      padding: 2px 0;
+      background: transparent;
+      width: 330px;
+      height: 30px;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border-bottom: 4px solid #F1F3F2;
+    }
+  }
+  &.choices-4:not(.has-response) + #footer {
+    .logo {
+      margin-right: -22px;
+    }
+  }
+}

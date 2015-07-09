@@ -13,7 +13,7 @@
     - else
       - url = qp_create_response_url(@survey.uuid, @ad_unit.name, @question)
       = button_to url, form: {target: '_self', style: "background-color: #{@survey.theme.color1}", class: 'bar-blue'},
-      params: {'response[choice_id]' => c.id, 'response[original_referrer]' => original_referrer} do
+        params: {'response[choice_id]' => c.id, 'response[original_referrer]' => original_referrer} do
         .bar-title= c.title
         .bar-overlay.overlay{style: "color: #{@survey.theme.color1}"}
           %strong= t('embeddable_unit.cta_click', count: @question.responses.size)
