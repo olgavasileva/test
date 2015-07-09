@@ -42,21 +42,12 @@
       = yield
       #question{class: question_class}
         #between-buttons
-          -#%a#back-button.nav-button{target: '_self', href: prev_path}
-          -#  .icon= image_tag 'ad_units/arrow-left.svg'
-          -#- else
-          %a#back-button.nav-button.disabled{target: '_self',  href: nil,
-          style: "background-color: #{@survey.theme.main_color};"}
-
-          -#- if @response
-            %a#next-button.nav-button{target: '_self',
-            style: "background-color: #{@survey.theme.color2} !important;",
-            href: next_question_path(@question, @original_referrer)}
-              .icon= image_tag 'ad_units/arrow-right.png'
-          -#- else
-          %a#next-button.nav-button.disabled{target: '_self', style: "background-color: #{@survey.theme.main_color};",
-          href: next_question_path(@question, @original_referrer)}
-
+          %a#back-button.nav-button{target: '_self', style: "background-color: #{@response ? @survey.theme.color1 : @survey.theme.main_color};",
+          href: @response ? previous_question_path(@question, @original_referrer) : nil, class: "#{!@response ? 'disabled' : ''}"}
+            .icon.fa.fa-chevron-left
+          %a#next-button.nav-button{target: '_self', style: "background-color: #{@response ? @survey.theme.color1 : @survey.theme.main_color};",
+          href: @response ? next_question_path(@question, @original_referrer) : nil, class: "#{!@response ? 'disabled' : ''}"}
+            .icon.fa.fa-chevron-right
           - if content_for?(:between_buttons)
             #between-button-content= yield(:between_buttons)
         - if content_for?(:below_buttons)

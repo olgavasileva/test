@@ -105,7 +105,7 @@
     <% question = survey.questions.first %>
     <div class="poll">
       <img width="50" height="50" src="<%= question.background_image.device_image_url %>"/>
-      <%= link_to question.title, survey.referrer , target: '_blank' %>
+      <a target="_blank" href="<%= survey.referrer %>"><%= question.title %></a>
     </div>
   <% end %>
 </div>

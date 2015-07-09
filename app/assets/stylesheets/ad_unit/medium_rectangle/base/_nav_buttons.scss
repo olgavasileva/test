@@ -18,12 +18,23 @@ a.nav-button {
 
 #next-button {
   float: right;
-  @include nav-button-colors($orange-light);
+  @include nav-button-colors(white);
+}
+
+#next-button, #back-button {
+  &.disabled {
+    .icon {
+      color: transparent;
+    }
+  }
+  .icon {
+    color: white;
+  }
 }
 
 #back-button {
   float: left;
-  @include nav-button-colors($gray-dark);
+  @include nav-button-colors(white);
 }
 
 .answers-count {
