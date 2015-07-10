@@ -1,12 +1,12 @@
 <script type="text/javascript">
   window.adUnitConfig = {
     autoForward: {
-//      enabled: <%= (Rails.env.production? || Rails.env.labs?).to_json%>,
+      enabled: <%= (Rails.env.production? || Rails.env.labs?).to_json%>,
       speed: <%= settings.fetch(:embeddable_unit_auto_forward, 3).to_i * 1000 %>
     },
     vote: {
       text: "<%= settings.fetch(:embeddable_unit_vote_text, 'Vote Here!').to_s %>",
-      speed: <%= settings.fetch(:embeddable_unit_vote_bounce_speed, 1.5).to_f %>
+      duration: <%= settings.fetch(:embeddable_unit_vote_bounce_speed, 1.5).to_f %>
     },
     cta: {
       enabled: <%= (!@response.present?).to_json %>,
@@ -23,6 +23,10 @@
     responseAnimation: {
       enabled: <%= @response.present?.to_json %>,
       speed: 750
+    },
+    shareSuggest: {
+      text: "<%= settings.fetch(:embeddable_unit_share_suggest_text, 'Share with your friends!').to_s %>",
+      duration: "<%= settings.fetch(:embeddable_unit_share_suggest_duration, 1).to_s %>"
     }
   };
 </script>

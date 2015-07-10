@@ -3,7 +3,7 @@
 $ ->
   voteEl = $('#vote-tooltip')
   voteEl.text adUnitConfig.vote.text
-  voteEl.css 'animation-duration', "#{adUnitConfig.vote.speed}s"
+  voteEl.css 'animation-duration', "#{adUnitConfig.vote.duration}s"
 
   answersCountEl = $('.answers-count')
   answersCount = parseInt answersCountEl.text()
@@ -11,24 +11,22 @@ $ ->
   asnwersCount = 0 if isNaN answersCount
 
   answersCountElText = "See what #{answersCount} people think"
-  answersCountElText2 = 'Share with your friends!'
+  answersCountElText2 = adUnitConfig.shareSuggest.text || 'Share with your friends!'
 
   answersCountEl.html "<div class='first'>" + answersCountElText + "</div>" +
       "<div class='second'>" + answersCountElText2 + "</div>"
 
   answersCountColor = answersCountEl.css('background-color')
 
+  answersCountEl.css('transition-duration', "#{adUnitConfig.shareSuggest.duration}s")
+
+  answersCountEl.find('.first').css('color', answersCountColor).css('background-color', 'white')
+  answersCountEl.find('.second').css('color', 'white').css('background-color', answersCountColor)
+
   toggleAnswersCountEl = ->
     if answersCountEl.hasClass('flipped')
       answersCountEl.removeClass('flipped')
     else
       answersCountEl.addClass('flipped')
-    setTimeout(->
-      if answersCountEl.css('background-color') == answersCountColor
-        answersCountEl.css('color', answersCountColor)
-        answersCountEl.css('background-color', 'white')
-      else
-        answersCountEl.css('color', 'white')
-        answersCountEl.css('background-color', answersCountColor)
-    , 500)
+
   setInterval toggleAnswersCountEl, 3000
