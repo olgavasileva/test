@@ -1,0 +1,89 @@
+.TextQuestion {
+  font-weight: 500;
+  #between-buttons {
+    height: 172px;
+    border: 7px solid #f1f3f2;
+    border-top-width: 0;
+    border-bottom-width: 0;
+  }
+  .overlay {
+    position: absolute;
+    text-align: center;
+    background: white;
+    height: 70px !important;
+    width: 316px !important;
+  }
+  form {
+    padding: 0;
+  }
+  textarea {
+    &:focus {
+      outline: 0;
+    }
+    height: 49px;
+    width: 298px;
+    border: none;
+    border-radius: 2px;
+    resize: none;
+    font-size: 14px;
+    padding: 5px;
+  }
+  .textarea {
+    padding: 4px;
+    padding-bottom: 0;
+    height: 63px;
+  }
+  #below-buttons {
+    height: 100px;
+    padding: 7px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  button[type="submit"] {
+    &:focus {
+      outline: 0;
+    }
+    font-size: 16px;
+    width: 100%;
+    border: none;
+    border-top: 1px solid white;
+    background-color: transparent;
+    color: white;
+    height: 30px;
+  }
+  #between-button-content {
+    background-color: #fff;
+    height: 172px;
+    padding: 1px 2px;
+  }
+  .main-image {
+    width: 311px;
+    margin-left: 1px;
+    height: 170px;
+  }
+  &.has-response {
+    color: white;
+    text-align: center;
+    .bar {
+      height: 35px;
+      padding-top: 25px;
+    }
+    .bar-orange {
+      &:visited {
+        color: white;
+      }
+      &:active {
+        color: white;
+      }
+      text-decoration: none;
+      .bar-title {
+        background: inherit;
+        border-top: 1px solid white;
+        color: white;
+        padding-top: 8px;
+        height: 27px;
+      }
+      height: 25px;
+    }
+  }
+}
