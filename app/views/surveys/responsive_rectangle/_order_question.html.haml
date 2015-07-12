@@ -16,10 +16,10 @@
             .bar-selected
             .bar-response
         - else
-          .overlay{style: "color: #{@survey.theme.color1}"}
-            .overlay-text= t('embeddable_unit.cta_drag', count: @question.responses.size)
-          .order-choice-orderer
-            = image_tag 'ad_units/prioritizer.png'
+          %div{style: 'position: relative'}
+            .overlay
+            .order-choice-orderer
+              = image_tag 'ad_units/prioritizer.png'
 
 
 

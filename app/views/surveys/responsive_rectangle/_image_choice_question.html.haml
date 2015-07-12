@@ -17,6 +17,5 @@
       - url = qp_create_response_url(@survey.uuid, @ad_unit.name, question)
       = button_to url, form: {target: '_self', data: {image: meta}, class: "image-choice index-#{i}"}, params: {'response[choice_id]' => c.id, 'response[original_referrer]' => original_referrer} do
         .overlay
-          .overlay-text{style: "color: #{@survey.theme.color1};"}= t('embeddable_unit.cta_click', count: @question.responses.size)
         .spacer
         .text= c.title

@@ -13,9 +13,6 @@
   - else
     - url = qp_create_response_url(@survey.uuid, @ad_unit.name, question)
     = form_tag url, target: '_self' do
-      .bar-overlay.overlay{style: "height: 61px; width: 300px; color: #{@survey.theme.color1}"}
-        %br
-        %strong= t('embeddable_unit.cta_answer', count: @question.responses.size)
       = hidden_field_tag 'response[original_referrer]', original_referrer
       .textarea{style: "background-color: #{@survey.theme.color1}"}
         = text_area_tag 'response[text]', nil, placeholder: 'Type your answer here', style: "border-color: #{@survey.theme.color1}"

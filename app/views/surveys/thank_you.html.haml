@@ -17,10 +17,10 @@
     %link{href: 'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,700,600:latin', rel: 'stylesheet', type: 'text/css'}/
     %base{target: "_blank"}
 
-    = stylesheet_link_tag "ad_unit", media: "all", data: { turbolinks_track: true }
+    = stylesheet_link_tag "ad_unit/#{@ad_unit.name}", media: "all", data: { turbolinks_track: true }
 
     = render partial: 'js_config'
-    = javascript_include_tag "ad_units/#{@ad_unit.name}/base", data: { turbolinks_track: true }
+    = javascript_include_tag "ad_units/#{@ad_unit.name}", data: { turbolinks_track: true }
 
     = render 'surveys/analytics'
     = render 'layouts/shared/tag_manager'
@@ -38,6 +38,10 @@
           localStorage.removeItem data.uuid
 
   %body{class: @ad_unit.name}
+    - if content_for?(:top_content)
+      #top-content =yield :top_content
+    - if @ad_unit.name == 'responsive_rectangle'
+      = render partial: 'surveys/responsive_rectangle/vote'
     #content
       = render partial: 'tumblr'
       - if @survey.thank_you_message_exist?

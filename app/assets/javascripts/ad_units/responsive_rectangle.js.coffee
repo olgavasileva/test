@@ -1,5 +1,5 @@
 #= require ./base
-
+#= require ./responsive_rectangle/overlay_cta
 $ ->
   voteEl = $('#vote-tooltip')
   voteEl.text adUnitConfig.vote.text

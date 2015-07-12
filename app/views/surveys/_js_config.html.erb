@@ -1,7 +1,7 @@
 <script type="text/javascript">
   window.adUnitConfig = {
     autoForward: {
-      enabled: <%= (Rails.env.production? || Rails.env.labs?).to_json%>,
+      enabled: <%= (Rails.env.production? || Rails.env.labs?).to_json %>,
       speed: <%= settings.fetch(:embeddable_unit_auto_forward, 3).to_i * 1000 %>
     },
     vote: {

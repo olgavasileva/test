@@ -3,7 +3,6 @@
 #= require jquery.cookie
 #= require Sortable.min
 #= require ./image_manipulation.coffee
-#= require ./overlay_cta.coffee
 #= require ./overlay_feedback.coffee
 #= require ./response_animation.coffee
 $ ->
@@ -59,7 +58,7 @@ $ ->
   # ----------------------------------------------------------------------------
   # Auto Forward
   #
-  console.log adUnitConfig.autoForward
+
   if adUnitConfig.autoForward.enabled && $q.hasClass('has-response')
     next = -> document.getElementById('next-button').click()
     setTimeout(next, adUnitConfig.autoForward.speed)
