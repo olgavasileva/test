@@ -5,14 +5,16 @@
   - question.ordered_choices_for(cookie_user).each do |c|
     - if answer.present?
       - ratio = (c.response_ratio * 100).to_i
-      %div.bar{style: "background-color: #{@survey.theme.color1}", data: {response: ratio}}
-        .bar-graph{style: "background-color: #{@survey.theme.color2}"}
+      %div.bar.color1-bg{data: {response: ratio}}
+        .bar-graph.color2-bg
         .bar-selected
         .bar-response
         .bar-title= c.title
     - else
       - url = qp_create_response_url(@survey.uuid, @ad_unit.name, @question)
-      = button_to url, form: {target: '_self', style: "background-color: #{@survey.theme.color1}", class: 'bar-blue'},
+      = button_to url, form: {target: '_self', class: 'bar-blue color1-bg'},
         params: {'response[choice_id]' => c.id, 'response[original_referrer]' => original_referrer} do
+        .is-selected
+          %i.fa.fa-check.color1
         .bar-title= c.title
         .bar-overlay.overlay

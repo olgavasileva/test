@@ -1,4 +1,9 @@
 .TextChoiceQuestion {
+  .is-selected {
+    float: left;
+    margin-left: 5px;
+    margin-top: -13px;
+  }
   .main-image {
     display: inline-block;
     height: 199px;

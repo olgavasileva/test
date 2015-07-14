@@ -30,3 +30,18 @@ $ ->
       answersCountEl.addClass('flipped')
 
   setInterval toggleAnswersCountEl, 3000
+
+  showCheckmark = ->
+    window.clearCta()
+    $el = $(@)
+    isSelected = $el.find('.overlay').css('display') != 'none'
+    isCheckboxHidden = $el.find('.is-selected').css('display') == 'none'
+    if isSelected && isCheckboxHidden
+      $el.find('.is-selected').css('display', 'block')
+    else
+      $el.find('.is-selected').css('display', 'none')
+
+  $('.TextChoiceQuestion:not(.has-response) button[type="submit"]').click showCheckmark
+
+  $('.ImageChoiceQuestion:not(.has-response) .image-choice').click showCheckmark
+  $('.MultipleChoiceQuestion:not(.has-response) .image-choice').click showCheckmark

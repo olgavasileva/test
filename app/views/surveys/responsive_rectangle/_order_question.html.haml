@@ -11,8 +11,8 @@
         .order-choice-title= c.title
         - if answer
           - ratio = (c.response_ratio * 100).to_i
-          .bar-blue{data: {response: ratio}, style: "background-color: #{@survey.theme.color1}"}
-            .bar-graph{style: "background-color: #{@survey.theme.color2}"}
+          .bar-blue.color1-bg{data: {response: ratio}}
+            .bar-graph.color2-bg
             .bar-selected
             .bar-response
         - else
@@ -31,5 +31,5 @@
       - question.choices.each_with_index do |c, i|
         = hidden_field_tag 'response[choice_ids][]', c.id, id: "index-#{i}"
 
-      .bar{style: "background-color: #{@survey.theme.color1}"}
+      .bar.color1-bg
         %button#order-choice-submit{type:'submit'}= 'Submit'

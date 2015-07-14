@@ -26,6 +26,9 @@
     font-size: 24px;
   }
   &.choices-2 {
+    .is-selected {
+      margin-left: 47%;
+    }
     #between-buttons {
       height: 262px;
       background-color: #fff;
@@ -138,6 +141,10 @@
 
   }
   &.choices-3, &.choices-4 {
+    .is-selected {
+      margin-left: 40%;
+      margin-top: 15%;
+    }
     #between-buttons {
       background: #F1F3F2;
       padding: 6px;

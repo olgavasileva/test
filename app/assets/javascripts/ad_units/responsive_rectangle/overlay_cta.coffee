@@ -34,4 +34,4 @@ $(document).ready ->
 
   setTimeout overlayFn, randomStart
 
-  setInterval overlayFn, randomStart + cta.maxStart
+  window.ctaRepeatTimeout = setInterval overlayFn, randomStart + cta.maxStart

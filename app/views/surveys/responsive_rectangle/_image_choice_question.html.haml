@@ -5,8 +5,10 @@
     - if answer
       %div{class: "image-choice index-#{i}", data: {image: meta}}
         - ratio = (c.response_ratio * 100).to_i
-        %div.bar-blue{data: {response: ratio}, style: "background-color: #{@survey.theme.color1}"}
-          .bar-graph{style: "background-color: #{@survey.theme.color2}"}
+        .is-selected
+          %i.fa.fa-check.color1
+        %div.bar-blue.color1-bg{data: {response: ratio}}
+          .bar-graph.color2-bg
           .bar-selected
           .bar-response
 
@@ -16,6 +18,8 @@
     - else
       - url = qp_create_response_url(@survey.uuid, @ad_unit.name, question)
       = button_to url, form: {target: '_self', data: {image: meta}, class: "image-choice index-#{i}"}, params: {'response[choice_id]' => c.id, 'response[original_referrer]' => original_referrer} do
+        .is-selected
+          %i.fa.fa-check.color1
         .overlay
         .spacer
         .text= c.title
