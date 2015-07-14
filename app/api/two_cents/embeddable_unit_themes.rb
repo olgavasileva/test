@@ -71,8 +71,11 @@ class TwoCents::EmbeddableUnitThemes < Grape::API
 
       get do
         theme_id = theme_params['id']
-        theme = current_user.embeddable_unit_themes.find theme_id
-        theme = EmbeddableUnitTheme.find_by(user: nil, id: theme_id) unless theme
+        begin
+          theme = current_user.embeddable_unit_themes.find theme_id
+        rescue
+          theme = EmbeddableUnitTheme.find_by(user: nil, id: theme_id) unless theme
+        end
 
         fail! 404 unless theme
         serialize_theme theme
