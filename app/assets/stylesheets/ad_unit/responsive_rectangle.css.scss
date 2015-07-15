@@ -4,6 +4,8 @@
 //= require ./responsive_rectangle/text_choice
 //= require ./responsive_rectangle/order
 //= require ./responsive_rectangle/text_question
+//= require ./responsive_rectangle/embed
+
 .nav-button {
   display: none;
 }
@@ -75,39 +77,44 @@
   border-color: rgb(56, 167, 220) transparent transparent transparent;
 }
 
-#footer {
-  @mixin icon-bg($icon) {
-    background-image: image-url("ad_units/#{$icon}.png");
+.up-menu .action-icon {
+  background-size: 19px 19px !important;
+}
+
+@mixin icon-bg($icon) {
+  background-image: image-url("ad_units/#{$icon}.png");
+}
+.action-icon {
+  display: inline-block;
+  border-radius: 50%;
+  float: left;
+  margin-right: 2px;
+  background-position: 1px 1px;
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+  &.facebook {
+    @include icon-bg('facebook');
   }
+  &.twitter {
+    @include icon-bg('twitter');
+  }
+  &.tumblr {
+    @include icon-bg('tumblr');
+  }
+  &.embed {
+    @include icon-bg('embed');
+  }
+  &.create {
+    @include icon-bg('create');
+  }
+}
+
+#footer {
   height: 24px;
   padding: 3px 7px;
   line-height: 1.4;
   margin-top: -2px;
-  .action-icon {
-    display: inline-block;
-    border-radius: 50%;
-    float: left;
-    margin-right: 2px;
-    background-position: 1px 1px;
-    height: 20px;
-    width: 20px;
-    cursor: pointer;
-    &.facebook {
-      @include icon-bg('facebook');
-    }
-    &.twitter {
-      @include icon-bg('twitter');
-    }
-    &.tumblr {
-      @include icon-bg('tumblr');
-    }
-    &.embed {
-      @include icon-bg('embed');
-    }
-    &.create {
-      @include icon-bg('create');
-    }
-  }
   perspective: 50px;
   .answers-count {
     position: relative;
@@ -235,4 +242,7 @@
 
 .overlay-text.fa-check {
   display: none;
+}
+.close-button {
+  text-decoration: none;
 }
