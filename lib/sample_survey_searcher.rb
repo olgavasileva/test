@@ -68,14 +68,18 @@ class SampleSurveySearcher
     unless except_surveys_ids.empty?
       query = query.where(surveys[:id].not_in(except_surveys_ids))
     end
+
     query.where(responses[:original_referrer].not_eq(nil)
                     .and(responses[:original_referrer].not_eq(''))
-                    .and(responses[:original_referrer].does_not_match('%statisfy.c%'))
-                    .and(responses[:original_referrer].does_not_match('%localhost%'))
-                    .and(responses[:original_referrer].does_not_match('%ostatisfy.tumblr.co%'))
                     .and(responses[:original_referrer].matches('http%//%'))
                     .and(responses[:created_at].gteq(DateTime.now - 1.day)))
-        .group(surveys[:id]).order(responses[:id].count.desc)
+
+    exclusions = Setting.fetch_value('related_survey_exclusions').split ','
+    exclusions.each do |exclusion|
+      query.where responses[:original_referrer].does_not_match(exclusion)
+    end
+
+    query.group(surveys[:id]).order(responses[:id].count.desc)
   end
 
 end

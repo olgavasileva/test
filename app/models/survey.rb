@@ -95,18 +95,20 @@ class Survey < ActiveRecord::Base
     responses = Response.arel_table
     question_ids = questions.map(&:id)
     return unless question_ids
-    response_array = Response.find_by_sql(
-        responses.where(responses[:question_id].in(question_ids)
-                            .and(responses[:original_referrer].not_eq(nil))
-                            .and(responses[:original_referrer].not_eq(''))
-                            .and(responses[:original_referrer].does_not_match('%statisfy.c%'))
-                            .and(responses[:original_referrer].does_not_match('%localhost%'))
-                            .and(responses[:original_referrer].does_not_match('%ostatisfy.tumblr.co%'))
-                            .and(responses[:original_referrer].matches('http%//%'))
-                            .and(responses[:created_at].gteq(DateTime.now - 1.day)))
-            .group(responses[:original_referrer])
-            .order(responses[:original_referrer].count(true).desc)
-            .project(responses[:original_referrer]).to_sql).to_a
+    query = responses.where(responses[:question_id].in(question_ids)
+                                .and(responses[:original_referrer].not_eq(nil))
+                                .and(responses[:original_referrer].not_eq(''))
+                                .and(responses[:original_referrer].matches('http%//%'))
+                                .and(responses[:created_at].gteq(DateTime.now - 1.day)))
+    exclusions = Setting.fetch_value('related_survey_exclusions').split ','
+    exclusions.each do |exclusion|
+      query.where responses[:original_referrer].does_not_match(exclusion)
+    end
+    query = query.group(responses[:original_referrer])
+                 .order(responses[:original_referrer].count(true).desc)
+                 .project(responses[:original_referrer])
+
+    response_array = Response.find_by_sql(query.to_sql).to_a
     response_array.map(&:original_referrer).each do |referrer|
       url_regex = /^https?:\/\/\w+\.\w+.*\/\w+/i
       if referrer['tumblr.com']
