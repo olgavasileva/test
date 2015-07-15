@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150625123652) do
+ActiveRecord::Schema.define(version: 20150715064046) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20150625123652) do
     t.integer  "height"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "related_surveys_count", default: 3, null: false
   end
 
   create_table "admin_users", force: true do |t|
@@ -276,17 +277,6 @@ ActiveRecord::Schema.define(version: 20150625123652) do
 
   add_index "embeddable_units", ["survey_id"], name: "index_embeddable_units_on_survey_id", using: :btree
 
-  create_table "enterprise_targets", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "min_age"
-    t.integer  "max_age"
-    t.string   "gender"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "enterprise_targets", ["user_id"], name: "index_enterprise_targets_on_user_id", using: :btree
-
   create_table "enterprise_targets_segments", force: true do |t|
     t.integer  "enterprise_target_id"
     t.integer  "segment_id"
@@ -321,7 +311,12 @@ ActiveRecord::Schema.define(version: 20150625123652) do
     t.string   "why"
   end
 
+  add_index "feed_items_v2", ["hidden", "hidden_reason", "question_id"], name: "idx2", using: :btree
   add_index "feed_items_v2", ["hidden", "why"], name: "index_feed_items_v2_on_hidden_and_why", using: :btree
+  add_index "feed_items_v2", ["question_id"], name: "index_feed_items_v2_on_question_id", using: :btree
+  add_index "feed_items_v2", ["user_id", "hidden", "hidden_reason", "question_id"], name: "idx5", using: :btree
+  add_index "feed_items_v2", ["user_id", "hidden", "published_at"], name: "idx3", using: :btree
+  add_index "feed_items_v2", ["why"], name: "index_feed_items_v2_on_why", using: :btree
 
   create_table "follower_targets", force: true do |t|
     t.integer  "question_id"

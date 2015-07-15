@@ -9,6 +9,7 @@
 //= require ./medium_rectangle/choices/text_areas
 
 //= require ./medium_rectangle/sizes/medium_rectangle
+//= require ./thank_you
 
 
 @import "./medium_rectangle/variables";
@@ -57,4 +58,7 @@ button::-moz-focus-inner {
   width: 21px !important;
   margin-right: 4px !important;
   background-size: 21px 21px !important;
+}
+.polls {
+  height: 185px;
 }

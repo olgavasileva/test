@@ -93,7 +93,8 @@ class SurveysController < ApplicationController
   private
 
     def sample_surveys
-      SampleSurveySearcher.new(current_user, @survey, @referrer || request.referrer || '').sample_surveys
+      SampleSurveySearcher.new(current_user, @survey, @referrer || request.referrer || '',
+                               @ad_unit.related_surveys_count).sample_surveys
     end
 
     def settings

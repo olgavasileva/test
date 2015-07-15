@@ -5,6 +5,7 @@
 //= require ./responsive_rectangle/order
 //= require ./responsive_rectangle/text_question
 //= require ./responsive_rectangle/embed
+//= require ./thank_you
 
 .nav-button {
   display: none;
@@ -245,4 +246,27 @@
 }
 .close-button {
   text-decoration: none;
+}
+.polls {
+  height: 340px;
+}
+#thank-you {
+  height: 375px;
+  background: black;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  color: white !important;
+  div {
+    height: 100%;
+  }
+  .close-button {
+    width: 20px;
+    height: 20px;
+    color: black;
+    background-color: #fff;
+    border-radius: 50%;
+    float: right;
+    margin-right: 10px;
+    margin-top: 10px;
+  }
 }

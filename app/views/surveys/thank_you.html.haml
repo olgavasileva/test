@@ -33,9 +33,7 @@
     :coffee
       $ ->
         data = $('#thank-you-message').data()
-        if data
-          $('#thank-you-message').html localStorage[data.uuid]
-          localStorage.removeItem data.uuid
+        $('#thank-you-message').html data.html if data
 
   %body{class: @ad_unit.name}
     - if content_for?(:top_content)

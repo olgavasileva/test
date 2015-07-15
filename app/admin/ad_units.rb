@@ -1,7 +1,7 @@
 ActiveAdmin.register AdUnit do
   menu parent: 'Surveys'
 
-  permit_params :name, :width, :height, :json_meta_data
+  permit_params :name, :width, :height, :json_meta_data, :related_surveys_count
 
   filter :name
   filter :width
@@ -12,12 +12,13 @@ ActiveAdmin.register AdUnit do
     column :name
     column :width
     column :height
+    column :related_surveys_count
     actions
   end
 
   show do |unit|
     attributes_table do
-      rows :id, :name, :width, :height
+      rows :id, :name, :width, :height, :related_surveys_count
       row :default_meta_data do
         html  = "<code>"
         if unit.default_meta_data?
@@ -34,6 +35,7 @@ ActiveAdmin.register AdUnit do
       f.input :name
       f.input :width
       f.input :height
+      f.input :related_surveys_count, as: :number
       f.input :json_meta_data,
         as: :text,
         label: 'Default Metadata',
