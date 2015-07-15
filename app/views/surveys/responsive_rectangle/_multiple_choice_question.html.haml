@@ -13,7 +13,7 @@
           .bar-selected
           .bar-response
       .spacer
-      .text= c.title
+      .text.tooltip{title: c.title}= c.title
 
 - unless answer
   - content_for :below_buttons do

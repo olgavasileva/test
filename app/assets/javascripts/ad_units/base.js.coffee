@@ -2,6 +2,7 @@
 #= require jquery.textfill
 #= require jquery.cookie
 #= require Sortable.min
+#= require tooltipster
 #= require ./image_manipulation.coffee
 #= require ./overlay_feedback.coffee
 #= require ./response_animation.coffee

@@ -13,7 +13,7 @@
           .bar-response
 
         .spacer
-        .text= c.title
+        .text.tooltip{title: c.title}= c.title
 
     - else
       - url = qp_create_response_url(@survey.uuid, @ad_unit.name, question)
@@ -22,4 +22,4 @@
           %i.fa.fa-check.color1
         .overlay
         .spacer
-        .text= c.title
+        .text.tooltip{title: c.title}= c.title

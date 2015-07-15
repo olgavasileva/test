@@ -166,3 +166,6 @@ gem 'social-share-button'
 gem 'rakismet'
 gem 'searchbing', '0.2.3'
 gem 'maxminddb'
+source 'https://rails-assets.org' do
+  gem 'rails-assets-tooltipster'
+end

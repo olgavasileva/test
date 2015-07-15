@@ -45,3 +45,7 @@ $ ->
 
   $('.ImageChoiceQuestion:not(.has-response) .image-choice').click showCheckmark
   $('.MultipleChoiceQuestion:not(.has-response) .image-choice').click showCheckmark
+
+  $('.tooltip').tooltipster(
+    theme: 'tooltipster-theme'
+  )
