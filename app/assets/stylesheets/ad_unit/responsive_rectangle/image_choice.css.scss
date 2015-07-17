@@ -1,15 +1,10 @@
 .ImageChoiceQuestion, .MultipleChoiceQuestion {
+  #between-buttons {
+    height: 100%;
+  }
   .image-choice {
-    &:first-child, &:nth-child(2) {
-      margin-bottom: 2px;
-    }
-    &:nth-child(1), &:nth-child(3) {
-      margin-right: 2px;
-      margin-left: 3px;
-    }
-    width: 155px;
-    height: 99px;
     display: inline-block;
+    position: relative;
   }
   .overlay {
     top: 0;
@@ -26,51 +21,52 @@
     font-size: 24px;
   }
   &.choices-2 {
+    form {
+      margin-left: 0.6060606061%;
+    }
+    form > div {
+      height: 100%;
+    }
     .is-selected {
       margin-left: 47%;
     }
+    #between-button-content {
+      height: 100%;
+    }
     #between-buttons {
-      height: 262px;
       background-color: #fff;
       border: solid rgb(241, 243, 242);
       border-left-width: 7px;
       border-right-width: 7px;
-      margin-bottom: 10px;
     }
     .image-choice:first-child {
-      margin-left: 2px;
-      margin-right: 2px;
       .bar-graph, .bar-response {
         float: right;
       }
     }
-    &:not(.has-response) {
-      .image-choice .text {
-        margin-bottom: -62px;
-      }
-    }
     .image-choice {
-      margin: 0 0 6px 0;
-      height: 262px;
+      width: 49.05063291%;
+      // margin: 0 0.60606061%;
+      height: 100%;
       .text {
         position: absolute;
         bottom: 0;
         text-align: center;
-        padding: 15px 0;
-        height: 32px;
+        padding: 12.913334% 0 0 0;
+        height: 16.03333333%;
         font-size: 20px;
         font-weight: 500;
-        width: 155px;
+        width: 100%;
         color: white;
       }
     }
     position: relative;
     .bar-blue {
       color: white;
-      width: 155px;
+      width: 100%;
       position: absolute;
       bottom: 0;
-      height: 62px;
+      height: 16.03333333%;
       font-weight: 500;
       .bar-graph {
         height: 25px;
@@ -89,12 +85,13 @@
       }
     }
     button[type="submit"] {
-      height: 200px;
+      height: 100%;
       cursor: pointer;
       width: 100%;
       background: none;
       border: none;
       position: relative;
+      padding: 0;
       &:focus {
         outline: 0;
       }
@@ -105,16 +102,14 @@
         height: 90px;
       }
       .text {
-        margin-top: 55px;
-        margin-left: -6px;
         color: white;
         background: rgba(0, 0, 0, 0.5);
         font-size: 20px;
-        height: 32px;
-        width: 155px;
+        height: 16.03333333%;
+        width: 100%;
         position: absolute;
         text-align: center;
-        padding: 15px 0;
+        padding: 12.913334% 0 0 0;
       }
     }
   }
@@ -147,32 +142,41 @@
       margin-left: 40%;
       margin-top: 15%;
     }
+    #bellow-buttons {
+      height: 16.666666667%;
+    }
     #between-buttons {
+      height: 72.222222222%;
       background: #F1F3F2;
-      padding: 6px;
+      padding: 0 2.12121212%;
     }
     #between-button-content {
+      padding: 0 !important;
       background: white;
+      height: 100%;
       font-size: 0;
     }
     .image-choice {
       position: absolute;
     }
     .overlay {
+      height: 100% !important;
+      width: 100% !important;
       bottom: 0;
     }
-    form {
-    }
     button[type="submit"], .image-choice {
+      &:nth-child(2n+1):not(#multiple-choice-submit) {
+        margin-right: 1.85%;
+      }
       &:focus {
         outline: 0;
       }
       background: none;
       position: relative;
       border: none;
-      height: 99px;
+      height: 52.853005%;
       padding: 0;
-      width: 155px;
+      width: 49.0505555555%;
       .text {
         padding-top: 5px;
         font-family: Roboto, Helvetica, sans-serif;
@@ -199,4 +203,13 @@
     font-weight: 500;
     width: 100% !important;
   }
+
+  #below-buttons {
+    height: 16%;
+    margin-top: 3.3%;
+    form, .bar, #multiple-choice-submit {
+      height: 100% !important;
+    }
+  }
+
 }

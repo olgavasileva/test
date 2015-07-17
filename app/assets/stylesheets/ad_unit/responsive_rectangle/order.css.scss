@@ -3,10 +3,12 @@
     margin-bottom: 2px;
   }
   font-weight: 500;
-  height: 270px;
   font-family: 'Roboto', Helvetica, sans-serif;
+  #between-button-content {
+    height: 100%;
+  }
   #between-buttons {
-    height: 240px;
+    height: 91.6030534%;
     background: white;
     border: 0 solid #F1F3F2;
     border-right-width: 7px;
@@ -21,8 +23,8 @@
   }
   .bar-blue {
     position: relative;
-    height: 58px;
-    width: 44px;
+    height: 100%;
+    width: 20%;
     float: right;
     text-align: center;
     color: white;
@@ -30,43 +32,49 @@
   }
   .bar-graph {
     float: left;
-    height: 58px;
+    height: 100%;
     position: absolute;
   }
   #order-choice-sort {
+    height: 100%;
     .order-choice-bar {
-      height: 58px;
+      height: 24.1666666667%;
       margin-bottom: 1px;
       .order-choice-orderer {
-        float: right;
-        position: relative;
-        top: -48px;
+        position: absolute;
+        margin-top: 5%;
+        margin-left: 90%;
       }
       .overlay {
         position: absolute;
-        margin-top: -58px;
         background: white;
-        width: 330px;
+        height: 100% !important;
+        width: 100% !important;
         text-align: center;
         opacity: 0.5;
       }
       .order-choice-title {
         background: rgba(0, 0, 0, 0.5);
-        width: 100px;
-        height: 42px;
-        padding-top: 16px;
-        padding-left: 20px;
+        width: 30%;
+        height: 72%;
+        padding-top: 5%;
+        padding-left: 5%;
         color: white;
+        + div {
+          margin-top: -18%;
+          height: 100%;
+        }
       }
     }
   }
   #below-buttons {
-    height: 30px;
+    height: 100%;
     .bar {
-      height: 30px;
+      height: 100%;
+      position: relative;
     }
     form {
-      height: 30px;
+      height: 12.214%;
     }
     button[type="submit"] {
       &:focus {
@@ -75,8 +83,8 @@
       position: absolute;
       padding: 2px 0;
       background: transparent;
-      width: 330px;
-      height: 30px;
+      width: 100%;
+      height: 100%;
       border: none;
       color: white;
       font-size: 16px;

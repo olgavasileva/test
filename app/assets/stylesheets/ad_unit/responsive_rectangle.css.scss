@@ -9,13 +9,37 @@
 //= require ./responsive_rectangle/tooltipster
 //= require ./thank_you
 
+
+html, body {
+  height: 122.7272727273vw;
+  max-width: 660px;
+  min-width: 330px;
+  max-height: 810px;
+  min-height: 405px;
+}
+
+#question {
+  height: 72.7777778%;
+  #between-buttons {
+    border-width: 0
+  }
+  #between-button-content {
+    background-color: rgb(241, 243, 242);
+    padding: 0 2.12121212%;
+  }
+}
+
+#top-content {
+  height: 11.1111111111%;
+}
+
 .nav-button {
   display: none;
 }
 .responsive_rectangle {
   margin: 0;
-  width: 330px;
-  height: 405px;
+  //width: 330px;
+  //height: 405px;
 }
 
 #embed {
@@ -29,22 +53,24 @@
 #content {
   background-color: rgb(238, 238, 238);
   border-radius: 5px;
+  height: 88.88889%;
 }
 
 #title {
   h1 {
-    padding-top: 18px;
+    height: 100%;
+    padding-top: 4.4444444%;
     text-align: center;
     margin: 0;
   }
-  height: 60px;
+  height: 16.666667%;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
 
 #vote-block {
   background: none;
-  min-height: 45px;
+  height: 100%;
 }
 
 @keyframes tooltip-bouncing {
@@ -52,7 +78,7 @@
     margin-top: 0;
   }
   to {
-    margin-top: 10px;
+    margin-top: 1.2vmax;
   }
 }
 
@@ -114,10 +140,9 @@
 }
 
 #footer {
-  height: 24px;
-  padding: 3px 7px;
+  height: 6.555555556%;//24px;
+  padding: 3% 2.1212121212%;
   line-height: 1.4;
-  margin-top: -2px;
   perspective: 50px;
   .answers-count {
     position: relative;
@@ -231,6 +256,8 @@
   z-index: 500;
   width: 25px;
   height: 25px;
+  max-height: 25px;
+  max-width: 25px;
   position: absolute;
   display: none;
   background: white;
