@@ -7,6 +7,7 @@
 //= require ./responsive_rectangle/text_question
 //= require ./responsive_rectangle/embed
 //= require ./responsive_rectangle/tooltipster
+//= require ./responsive_rectangle/tumblr-overlay
 //= require ./thank_you
 
 
@@ -38,8 +39,6 @@ html, body {
 }
 .responsive_rectangle {
   margin: 0;
-  //width: 330px;
-  //height: 405px;
 }
 
 #embed {
@@ -54,6 +53,7 @@ html, body {
   background-color: rgb(238, 238, 238);
   border-radius: 5px;
   height: 88.88889%;
+  position: relative;
 }
 
 #title {
