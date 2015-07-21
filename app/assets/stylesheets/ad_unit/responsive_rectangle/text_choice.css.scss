@@ -11,7 +11,7 @@
     width: 100%;
   }
   #between-buttons {
-    height: 75.95419847%;
+    height: 76%;
   }
   #between-button-content {
     background-color: #fff;
@@ -113,19 +113,19 @@
     }
   }
   &.choices-3 {
-    #between-button-content {
-      height: 163px;
+    #between-buttons {
+      height: 63%;
     }
-    .main-image {
-      height: 163px;
+    #between-button-content {
+      height: 100%;
     }
   }
   &.choices-4 {
-    #between-button-content {
-      height: 130px;
+    #between-buttons {
+      height: 50%;
     }
-    .main-image {
-      height: 130px;
+    #between-button-content {
+      height: 100%;
     }
   }
 }

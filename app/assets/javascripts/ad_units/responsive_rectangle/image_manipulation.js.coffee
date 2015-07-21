@@ -32,8 +32,9 @@ $(document).ready ->
             'background-position': "#{data.meta.left * widthScale}px #{data.meta.top * heightScale}px"
 
           $el.css(resizeCssOpts)
-        window.onload = makeItResponsive
-        window.onresize = makeItResponsive
+        $(window).load makeItResponsive
+        $(window).resize makeItResponsive
+
         makeItResponsive()
 
       $el.css(cssOpts)
