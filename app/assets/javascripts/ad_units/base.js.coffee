@@ -3,7 +3,6 @@
 #= require jquery.cookie
 #= require Sortable.min
 #= require jquery.tooltipster.min.js
-#= require ./image_manipulation.coffee
 #= require ./overlay_feedback.coffee
 #= require ./response_animation.coffee
 $ ->
