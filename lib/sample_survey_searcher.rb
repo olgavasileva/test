@@ -11,7 +11,7 @@ class SampleSurveySearcher
   def search_surveys
     @sample_surveys = for_any_domain
     if @sample_surveys.length < @count
-      settings = Setting.fetch_values('thankyou_suggested_polls')
+      settings = Setting.fetch_values('thankyou_suggested_polls') || []
       if settings && !settings.empty?
         surveys_ids = settings.values.first.split ','
         count = @count - @sample_surveys.length
@@ -74,7 +74,10 @@ class SampleSurveySearcher
                     .and(responses[:original_referrer].matches('http%//%'))
                     .and(responses[:created_at].gteq(DateTime.now - 1.day)))
 
-    exclusions = Setting.fetch_value('related_survey_exclusions').split ','
+    exclusions = begin
+      set_values = Setting.fetch_value('related_survey_exclusions') || String.new
+      set_values.split ','
+    end
     exclusions.each do |exclusion|
       query.where responses[:original_referrer].does_not_match(exclusion)
     end
