@@ -58,8 +58,10 @@ html, body {
 
 #title {
   h1 {
+    padding-top: 7.5%;
+    width: 100%;
     height: 100%;
-    padding-top: 4.4444444%;
+    position: absolute;
     text-align: center;
     margin: 0;
   }
@@ -277,7 +279,7 @@ html, body {
   text-decoration: none;
 }
 .polls {
-  height: 340px;
+  height: 81%;
 }
 #thank-you {
   height: 375px;

@@ -59,7 +59,7 @@
         bottom: 0;
         text-align: center;
         padding: 12.913334% 0 0 0;
-        height: 16.03333333%;
+        height: 11.8%;
         font-size: 20px;
         font-weight: 500;
         width: 100%;
@@ -68,6 +68,7 @@
     }
     position: relative;
     .bar-blue {
+      opacity: 0.8;
       color: white;
       width: 100%;
       position: absolute;
@@ -135,6 +136,7 @@
       color: white;
     }
     .bar-blue {
+      opacity: 0.8;
       float: right;
       height: 30px;
       width: 60px;
