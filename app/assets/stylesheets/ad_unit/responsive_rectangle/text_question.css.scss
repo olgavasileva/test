@@ -30,17 +30,14 @@
     padding: 2%;
   }
   .textarea {
-    padding: 2%;
-    padding-bottom: 0;
-    // height: 63px;
+    padding: 2% 2% 0 2%;
   }
   #below-buttons {
     height: 100px;
-    padding: 7px;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: 0 7px 0 7px;
   }
   button[type="submit"] {
+    cursor: pointer;
     &:focus {
       outline: 0;
     }
