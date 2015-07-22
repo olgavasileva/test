@@ -38,6 +38,7 @@ html, body {
   display: none;
 }
 .responsive_rectangle {
+  position: relative;
   margin: 0;
 }
 
@@ -75,13 +76,46 @@ html, body {
   height: 100%;
 }
 
-@keyframes tooltip-bouncing {
-  from {
-    margin-top: 0;
+$i: 330;
+$j: 25;
+$k: 0;
+@while $i < 660 {
+  @if $k < 1 {
+    @media screen and (min-width: $i+px) {
+      @keyframes tooltip-bouncing {
+        to {
+          transform: translateY(percentage($j/100));
+        }
+      }
+    }
+    $k: 1;
   }
-  to {
-    margin-top: 1.2vmax;
+  @if $k == 1 {
+    $k: 0;
   }
+  $i: $i + 8.25;
+  $j: $j + 1;
+}
+
+@media screen and (min-width: 660px)  {
+  @keyframes tooltip-bouncing {
+    to {
+      transform: translateY(63%);
+    }
+  }
+}
+
+@media screen and (max-width: 330px)  {
+  @keyframes tooltip-bouncing {
+    to {
+      transform: translateY(25%);
+    }
+  }
+}
+
+
+#top-content {
+  animation: tooltip-bouncing linear 0.7s infinite alternate;
 }
 
 #vote-tooltip {
@@ -94,7 +128,6 @@ html, body {
   padding: 5px 5px 0 5px;
   height: 25px;
   color: white;
-  animation: tooltip-bouncing linear 0.7s infinite alternate;
 }
 
 #vote-tooltip:after {

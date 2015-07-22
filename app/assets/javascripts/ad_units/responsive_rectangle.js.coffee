@@ -4,7 +4,7 @@
 $ ->
   voteEl = $('#vote-tooltip')
   voteEl.text adUnitConfig.vote.text
-  voteEl.css 'animation-duration', "#{adUnitConfig.vote.duration}s"
+  $('#top-content').css 'animation-duration', "#{adUnitConfig.vote.duration}s"
 
   answersCountEl = $('.answers-count')
   answersCount = parseInt answersCountEl.text()
