@@ -1,0 +1,74 @@
+<form action="<%= admin_tumblr_reporters_path %>" method="GET">
+  <label>
+    Tumblr Post ID:
+    <input type="text" name="post_id">
+    <button type="submit">Go!</button>
+  </label>
+</form>
+<br>
+<% if @report %>
+  <div class="panel">
+    <div class="panel_contents">
+      <div class="attributes_table">
+        <table>
+          <tbody>
+          <% if @report[:errors] && @report[:errors].length > 0 %>
+            <tr class="row">
+              <th>Errors</th>
+              <td>
+                <ul>
+                  <% @report[:errors].each do |error| %>
+                    <li style="color: red"><%= error %></li>
+                  <% end %>
+                </ul>
+              </td>
+            </tr>
+          <% end %>
+          <tr class="row">
+            <th>Post Title</th>
+            <td><%= @report[:title] %></td>
+          </tr>
+          <tr class="row">
+            <th>Post ID</th>
+            <td><%= @report[:id] %></td>
+          </tr>
+          <tr class="row">
+            <th>Post URL</th>
+            <td><a href="<%= @report[:url] %>"><%= @report[:url] %></a></td>
+          </tr>
+          <tr class="row">
+            <th>Notes</th>
+            <td><%= @report[:note_count] %></td>
+          </tr>
+          <% if @report[:estimated] %>
+            <tr class="row">
+              <th>Estimated Likes</th>
+              <td><%= @report[:estimated][:likes] %> +-
+                <%= @report[:confidence_level] %>% at <%= @report[:confidence_rercentage] %>% CI
+              </td>
+            </tr>
+            <tr class="row">
+              <th>Estimated Reblogs</th>
+              <td><%= @report[:estimated][:reblogs] %> +-
+                <%= @report[:confidence_level] %>% at <%= @report[:confidence_rercentage] %>% CI
+              </td>
+            </tr>
+          <% end %>
+          <% if @report[:surveys] && @report[:surveys].length > 0 %>
+            <tr class="row">
+              <th>Surveys that may be on this article</th>
+              <td>
+                <ul>
+                  <% @report[:surveys].each do |survey| %>
+                    <li>ID: <%= survey[:id] %>, UUID: <%= survey[:uuid] %></li>
+                  <% end %>
+                </ul>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+<% end %>
