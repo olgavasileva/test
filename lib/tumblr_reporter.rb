@@ -1,5 +1,6 @@
 require 'nokogiri'
 require 'open-uri'
+require 'tumblr_client'
 class TumblrReporter
 
   attr_reader :errors
@@ -22,6 +23,7 @@ class TumblrReporter
         @post = TumblrReporter.client.posts('gostatisfy.tumblr.com',
                                             :id => @post_id,
                                             :notes_info => 1)['posts'].to_a.first
+        raise "Post #{@post_id} not found" unless @post
         report.merge!({
                           title: post['title'],
                           url: post_url,
@@ -103,6 +105,7 @@ class TumblrReporter
     surveys = []
     begin
       Nokogiri.HTML(open(post_url)).css('iframe').each do |iframe|
+        next unless iframe[:src]
         match = iframe[:src].match(IFRAME_REGEX)
         if match && match[1]
           uuid = match[1]
