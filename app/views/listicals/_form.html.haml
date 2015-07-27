@@ -6,10 +6,10 @@
           %li= error
     = f.text_field :title, placeholder: 'Title'
     %br
-    = f.button id: 'add-header', type: 'button', class: 'add-editor', onclick: 'showEditor(this)' do
+    = f.button id: 'add-header', type: 'button', class: "add-editor #{'hidden' if @listical.header.present?}", onclick: 'showEditor(this)' do
       %i.fa.fa-plus
       Add Header
-    = f.label :header, class: 'hidden' do
+    = f.label :header, class: ('hidden' if @listical.header.blank?) do
       Header
       = f.text_area :header, rel: 'tinymce'
     %br
@@ -33,10 +33,10 @@
       %i.fa.fa-plus
       Add item
     %br
-    = f.button id: 'add-footer', type: 'button', class: 'add-editor', onclick: 'showEditor(this)' do
+    = f.button id: 'add-footer', type: 'button', class: "add-editor #{'hidden' if @listical.footer.present?}", onclick: 'showEditor(this)' do
       %i.fa.fa-plus
       Add Footer
-    = f.label :footer, class: 'hidden' do
+    = f.label :footer, class: ('hidden' if @listical.footer.blank?) do
       Footer
       = f.text_area :footer, rel: 'tinymce'
     %br
