@@ -36,6 +36,7 @@ class ListicalsController < ApplicationController
   end
 
   def update
+    redirect_to listicals_path, only_path: true
   end
 
   def destroy
@@ -49,7 +50,7 @@ class ListicalsController < ApplicationController
   end
 
   def listical_params
-    params.require(:listical).permit :title, :header, :footer, :questions_attributes => [:title, :body]
+    params.require(:listical).permit :title, :header, :footer, :questions_attributes => [:title, :body, :_destroy]
   end
 
 end

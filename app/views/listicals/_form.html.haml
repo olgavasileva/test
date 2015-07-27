@@ -18,11 +18,12 @@
         = f.fields_for :questions, question do |ff|
           .item
             - unless question.new_record?
-              = ff.hidden_field :id
+              = ff.hidden_field :id, class: 'item-id-field'
             %fieldset{id: "#{index}_fieldset"}
               .title= "Item ##{index + 1}"
               %button.delete-item{type: 'button', onclick: 'removeItem(this)'}
                 %i.fa.fa-times
+                = ff.check_box :_destroy, value: 0, class: 'hidden'
               = ff.label :title
               = ff.text_field :title
               %br
