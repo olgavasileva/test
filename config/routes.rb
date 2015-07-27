@@ -112,6 +112,7 @@ LinkchatApp::Application.routes.draw do
       get :question_search
       get :account
       get :avatar
+      resources :listicals
     end
   end
 

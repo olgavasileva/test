@@ -48,6 +48,7 @@
 
 #= require_tree ./pixel_admin/pages
 #= require gritter
+#= require tinymce-jquery
 
 # Asyncronously load DOM elements from partials after page is loaded
 $(document).on "page:change", ->

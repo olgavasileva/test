@@ -1,0 +1,43 @@
+#new-listical
+  = form_for @listical do |f|
+    - if @listical.errors.any?
+      %ul.errors
+        - @listical.errors.full_messages.each do |error|
+          %li= error
+    = f.text_field :title, placeholder: 'Title'
+    %br
+    = f.button id: 'add-header', type: 'button', class: 'add-editor', onclick: 'showEditor(this)' do
+      %i.fa.fa-plus
+      Add Header
+    = f.label :header, class: 'hidden' do
+      Header
+      = f.text_area :header, rel: 'tinymce'
+    %br
+    - @listical.questions.each_with_index do |question,index|
+      .items
+        = f.fields_for :questions, question do |ff|
+          .item
+            - unless question.new_record?
+              = ff.hidden_field :id
+            %fieldset{id: "#{index}_fieldset"}
+              .title= "Item ##{index + 1}"
+              %button.delete-item{type: 'button', onclick: 'removeItem(this)'}
+                %i.fa.fa-times
+              = ff.label :title
+              = ff.text_field :title
+              %br
+              = ff.label :question do
+                = ff.text_area :body, rel: 'tinymce'
+    %br
+    = f.button id: 'add-item', type: 'button', class: 'add-editor', onclick: 'addItem()' do
+      %i.fa.fa-plus
+      Add item
+    %br
+    = f.button id: 'add-footer', type: 'button', class: 'add-editor', onclick: 'showEditor(this)' do
+      %i.fa.fa-plus
+      Add Footer
+    = f.label :footer, class: 'hidden' do
+      Footer
+      = f.text_area :footer, rel: 'tinymce'
+    %br
+    = f.submit 'Publish'

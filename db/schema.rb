@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150715064046) do
+ActiveRecord::Schema.define(version: 20150727094517) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -507,6 +507,19 @@ ActiveRecord::Schema.define(version: 20150715064046) do
 
   add_index "liked_comments", ["comment_id"], name: "index_liked_comments_on_comment_id", using: :btree
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
+
+  create_table "listical_questions", force: true do |t|
+    t.string  "title"
+    t.text    "body"
+    t.integer "listical_id"
+  end
+
+  create_table "listicals", force: true do |t|
+    t.string  "title"
+    t.text    "header"
+    t.integer "user_id"
+    t.text    "footer"
+  end
 
   create_table "localizations", force: true do |t|
     t.integer  "language_id"

@@ -61,6 +61,8 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :pro_question_packs, '<i class="menu-icon fa fa-file-code-o"></i><span class="mm-text">Question Packs</span>'.html_safe, [:publisher_question_packs, current_user]
     primary.item :pro_account, '<i class="menu-icon fa fa-cog"></i><span class="mm-text">Account Management</span>'.html_safe, [:account, current_user]
     primary.item :pro_create_question_pack, '<i class="menu-icon fa fa-plus-square"></i><span class="mm-text">Create Question Pack</span>'.html_safe, [:new_question, current_user]
+    primary.item :pro_listicals, '<i class="menu-icon fa fa-file-code-o"></i><span class="mm-text">Listicals</span>'.html_safe, listicals_path
+    primary.item :pro_create_listicals, '<i class="menu-icon fa fa-plus-square"></i><span class="mm-text">Create Listical</span>'.html_safe, new_listical_path(current_user)
     primary.item :pro_logout, '<i class="menu-icon fa fa-power-off"></i><span class="mm-text">Logout</span>'.html_safe, destroy_user_session_path, method: :delete
     primary.item :pro_home, '<i class="menu-icon fa fa-home"></i><span class="mm-text">Statisfy Home</span>'.html_safe, ENV['MAIN_APP_URL'] || root_url
   end
