@@ -42,3 +42,5 @@
       = f.text_area :footer, rel: 'tinymce'
     %br
     = f.submit 'Publish'
+  :javascript
+    window.tinymceImageUploadPath = "#{image_upload_listicals_path(current_user)}"

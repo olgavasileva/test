@@ -32,10 +32,37 @@
     width: 100%;
   }
   .mce-tinymce {
-    min-width: 500px;
-    max-width: 500px;
+    min-width: 540px;
+    max-width: 540px;
+    img {
+      max-width: 500px !important;
+    }
   }
   .hidden {
     display: none;
+  }
+}
+#listical-show {
+  max-width: 500px;
+  margin: 0 auto;
+  .voting {
+    width: 20px;
+    position: relative;
+    left: -100px;
+    bottom: -50px;
+    text-align: center;
+    .score {
+      color: #3EACE7;
+    }
+    .vote {
+      color: #B8E2F6;
+      cursor: pointer;
+    }
+    .vote:hover {
+      color: #3EACE7;
+    }
+    .vote:active {
+      color: #43B3EA;
+    }
   }
 }

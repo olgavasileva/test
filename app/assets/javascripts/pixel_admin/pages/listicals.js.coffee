@@ -1,4 +1,5 @@
 itemIdx = 0
+editorConfig = null
 itemTemplate = ->
   itemIdx += 1
 
@@ -11,16 +12,6 @@ itemTemplate = ->
     "<input id=\"listical_questions_attributes_#{itemIdx}_title\" name=\"listical[questions_attributes][#{itemIdx}][title]\" type=\"text\">" +
     "<br><label for=\"listical_questions_attributes_#{itemIdx}_question\"><textarea id=\"listical_questions_attributes_#{itemIdx}_body\" " +
     "name=\"listical[questions_attributes][#{itemIdx}][body]\" rel=\"tinymce\"></textarea></label></fieldset>"
-
-editorConfig =
-  theme: 'modern'
-  toolbar: 'bold,italic,underline,|,bullist,numlist,outdent,indent,|,undo,redo,|,pastetext,pasteword,selectall,|,uploadimage'
-  pagebreak_separator: '<p class=\'page-separator\'>&nbsp;</p>'
-  plugins: ['uploadimage']
-  relative_urls: false
-  remove_script_host: false
-  mode: 'exact'
-  document_base_url: (if !window.location.origin then window.location.protocol + '//' + window.location.host else window.location.origin) + '/'
 
 window.showEditor = (element) ->
   label = $(element).next('label')
@@ -41,6 +32,19 @@ window.removeItem = (el)->
     $el.parents('.item').addClass('hidden')
     $el.find('[type="checkbox"]').val(1)
 
-$ 'document:ready', ->
+ready = ->
   itemIdx = $('.item').length
-  $("[rel=tinymce]").tinymce(editorConfig);
+  editorConfig =
+    toolbar: 'bold,italic,underline,|,bullist,numlist,outdent,indent,|,undo,redo,|,pastetext,pasteword,selectall,|,uploadimage'
+    pagebreak_separator: '<p class=\'page-separator\'>&nbsp;</p>'
+    plugins: ['uploadimage']
+    relative_urls: false
+    remove_script_host: false
+    mode: 'exact'
+    uploadimage_form_url: window.tinymceImageUploadPath
+    document_base_url: (if !window.location.origin then window.location.protocol + '//' + window.location.host else window.location.origin) + '/'
+
+  $("[rel=tinymce]").tinymce(editorConfig)
+
+$ 'document:ready', ready
+$(document).on 'page:load', ready

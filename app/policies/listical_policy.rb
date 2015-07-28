@@ -10,5 +10,5 @@ class ListicalPolicy < ApplicationPolicy
   def update?; true; end
   def destroy?; true; end
   def index?; true; end
-
+  def image_upload?; true; end
 end

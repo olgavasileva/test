@@ -112,7 +112,9 @@ LinkchatApp::Application.routes.draw do
       get :question_search
       get :account
       get :avatar
-      resources :listicals
+      resources :listicals do
+        post 'image_upload' => 'listicals#image_upload', on: :collection
+      end
     end
   end
 

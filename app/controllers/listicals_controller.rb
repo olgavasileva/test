@@ -36,10 +36,23 @@ class ListicalsController < ApplicationController
   end
 
   def update
-    redirect_to listicals_path, only_path: true
+    redirect_to_index
   end
 
   def destroy
+    @listical.destroy
+    redirect_to_index
+  end
+
+  def image_upload
+    authorize Listical.new
+    uploader = ListicalQuestionImageUploader.new
+    uploader.store!(params[:file])
+    render json: {
+               image: {
+                   url: uploader.to_s
+               }
+           }, content_type: 'text/html'
   end
 
   private
@@ -53,4 +66,7 @@ class ListicalsController < ApplicationController
     params.require(:listical).permit :title, :header, :footer, :questions_attributes => [:title, :body, :_destroy]
   end
 
+  def redirect_to_index
+    redirect_to listicals_path, only_path: true
+  end
 end
