@@ -44,7 +44,7 @@ ready = ->
     uploadimage_form_url: window.tinymceImageUploadPath
     document_base_url: (if !window.location.origin then window.location.protocol + '//' + window.location.host else window.location.origin) + '/'
 
-  $("[rel=tinymce]").tinymce(editorConfig)
+  $('[rel="tinymce"]').tinymce(editorConfig)
 
 $ 'document:ready', ready
 $(document).on 'page:load', ready

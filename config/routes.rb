@@ -118,6 +118,8 @@ LinkchatApp::Application.routes.draw do
     end
   end
 
+  post 'answer_listical_question/:question_id/:is_up' => 'listicals#answer_question', as: :answer_listical_question
+
   resources :groups
 
   resources :group_members do

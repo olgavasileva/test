@@ -55,6 +55,13 @@ class ListicalsController < ApplicationController
            }, content_type: 'text/html'
   end
 
+  def answer_question
+    question = ListicalQuestion.find(params[:question_id])
+    authorize question.listical
+    question.responses.create(response_params.merge(:user_id => current_user.id))
+    redirect_to listical_path(question.listical), only_path: true
+  end
+
   private
 
   def load_and_authorize
@@ -68,5 +75,9 @@ class ListicalsController < ApplicationController
 
   def redirect_to_index
     redirect_to listicals_path, only_path: true
+  end
+
+  def response_params
+    params.permit :is_up
   end
 end

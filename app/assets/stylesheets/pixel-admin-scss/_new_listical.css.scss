@@ -42,8 +42,11 @@
     display: none;
   }
 }
+
 #listical-show {
   max-width: 500px;
+  padding-left: 100px;
+  overflow-x: hidden;
   margin: 0 auto;
   .voting {
     width: 20px;
@@ -53,6 +56,7 @@
     text-align: center;
     .score {
       color: #3EACE7;
+      font-weight: bold;
     }
     .vote {
       color: #B8E2F6;

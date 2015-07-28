@@ -1,4 +1,7 @@
 - @listicals.each do |listical|
-  = link_to listical.title, edit_listical_path(listical)
-  = link_to 'x', listical_path(listical), method: :delete, data: {confirm: 'Do you want to remove this listical?'}
+  = link_to listical.title, listical_path(listical)
+  = link_to edit_listical_path(listical) do
+    %i.fa.fa-pencil
+  = link_to listical_path(listical), method: :delete, data: {confirm: 'Do you want to remove this listical?'} do
+    %i.fa.fa-times{style: 'color: red'}
   %br

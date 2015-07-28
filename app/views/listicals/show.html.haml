@@ -4,11 +4,13 @@
   - if @listical.header.present?
     = @listical.header.html_safe
     %br
-  - @listical.questions.sort_by(&:score).each_with_index do |question, index|
+  - @listical.questions.sort_by(&:score).reverse.each_with_index do |question, index|
     .voting
-      .vote.fa.fa-chevron-up
+      = link_to answer_listical_question_path(question_id: question.id, is_up: 1), method: :post, class: 'vote' do
+        %i.fa.fa-chevron-up
       .score= question.score
-      .vote.fa.fa-chevron-down
+      = link_to answer_listical_question_path(question_id: question.id, is_up: 0), method: :post, class: 'vote' do
+        %i.fa.fa-chevron-down
     %strong= "#{index+1}. #{h question.title}"
     = h question.body.html_safe
     %br
