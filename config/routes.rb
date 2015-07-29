@@ -118,7 +118,8 @@ LinkchatApp::Application.routes.draw do
     end
   end
 
-  post 'answer_listical_question/:question_id/:is_up' => 'listicals#answer_question', as: :answer_listical_question
+  post 'answer_listical_question/:question_id' => 'listicals#answer_question', as: :answer_listical_question
+  get 'listical/:id' => 'listicals#embed', as: :show_listical
 
   resources :groups
 

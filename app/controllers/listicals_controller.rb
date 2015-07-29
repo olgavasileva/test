@@ -59,7 +59,13 @@ class ListicalsController < ApplicationController
     question = ListicalQuestion.find(params[:question_id])
     authorize question.listical
     question.responses.create(response_params.merge(:user_id => current_user.id))
-    redirect_to listical_path(question.listical), only_path: true
+    render json: {score: question.score}
+  end
+
+  def embed
+    @listical = Listical.find(params[:id])
+    authorize @listical
+    render :show, layout: 'listical_embed'
   end
 
   private

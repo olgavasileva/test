@@ -4,4 +4,6 @@
     %i.fa.fa-pencil
   = link_to listical_path(listical), method: :delete, data: {confirm: 'Do you want to remove this listical?'} do
     %i.fa.fa-times{style: 'color: red'}
+  Listical embed link:
+  = link_to show_listical_url(listical), show_listical_url(listical), target: '_blank'
   %br

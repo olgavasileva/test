@@ -12,4 +12,5 @@ class ListicalPolicy < ApplicationPolicy
   def index?; true; end
   def image_upload?; true; end
   def answer_question?; true ;end
+  def embed?; true; end
 end
