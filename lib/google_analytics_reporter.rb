@@ -1,0 +1,2 @@
+class GoogleAnalyticsReporter
+end
