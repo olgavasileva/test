@@ -18,10 +18,16 @@ window.showEditor = (element) ->
   label.removeClass 'hidden'
   $(element).hide()
 
+refreshIndexes = ->
+  $('.item').each (i, e)->
+    $(e).find('.title').text "Item ##{i+1}"
+
+
 window.addItem = ->
   $items = $('.items')
   $items.append('<div class="item">' + itemTemplate() + '</div>')
   $items.find('.item:last-child [rel=tinymce]').tinymce editorConfig
+  refreshIndexes()
 
 window.removeItem = (el)->
   $el = $(el)
@@ -31,6 +37,7 @@ window.removeItem = (el)->
   else
     $el.parents('.item').addClass('hidden')
     $el.find('[type="checkbox"]').val(1)
+  refreshIndexes()
 
 ready = ->
   itemIdx = $('.item').length
@@ -41,6 +48,7 @@ ready = ->
     relative_urls: false
     remove_script_host: false
     mode: 'exact'
+    statusbar: false
     uploadimage_form_url: window.tinymceImageUploadPath
     document_base_url: (if !window.location.origin then window.location.protocol + '//' + window.location.host else window.location.origin) + '/'
 
