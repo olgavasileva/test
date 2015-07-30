@@ -10,5 +10,7 @@ Listicles
           %i.fa.fa-pencil
         = link_to listical_path(listical), method: :delete, data: {confirm: 'Do you want to remove this listicle?'} do
           %i.fa.fa-times{style: 'color: red'}
-        = link_to show_listical_url(listical), target: '_blank' do
+        = link_to show_listical_url(listical), class: 'embed-code' do
           %i.fa.fa-file-code-o
+        = link_to show_listical_url(listical), class: 'preview-button' do
+          %i.fa.fa-eye

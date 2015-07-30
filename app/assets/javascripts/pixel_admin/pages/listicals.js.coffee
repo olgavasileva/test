@@ -20,7 +20,7 @@ window.showEditor = (element) ->
 
 refreshIndexes = ->
   $('.item').each (i, e)->
-    $(e).find('.title').text "Item ##{i+1}"
+    $(e).find('.title').text "Item ##{i + 1}"
 
 
 window.addItem = ->
@@ -44,7 +44,7 @@ ready = ->
   editorConfig =
     toolbar: 'fontselect,|,bold,italic,underline,|,formatselect,|,forecolor,backcolor,|,bullist,numlist,outdent,indent,|,undo,redo,|,pastetext,pasteword,selectall,|,uploadimage,media'
     pagebreak_separator: '<p class=\'page-separator\'>&nbsp;</p>'
-    extended_valid_elements : "iframe[src|frameborder|style|scrolling|class|width|height|name|align]"
+    extended_valid_elements: "iframe[src|frameborder|style|scrolling|class|width|height|name|align]"
     plugins: ['uploadimage', 'textcolor', 'media']
     relative_urls: false
     remove_script_host: false
@@ -54,6 +54,24 @@ ready = ->
     document_base_url: (if !window.location.origin then window.location.protocol + '//' + window.location.host else window.location.origin) + '/'
 
   $('[rel="tinymce"]').tinymce(editorConfig)
+
+  getCodeTemplate = (link, width = 600)->
+    '&lt;iframe width="' + width + '" height="480" src="' + link + '" frameborder="0"&gt;&lt;/iframe&gt;'
+
+  $('.embed-code').click (e)->
+    e.preventDefault()
+    e.stopPropagation()
+
+    $el = $(this)
+    href = $el.attr('href')
+
+    $("<pre>#{getCodeTemplate(href)}</pre>").dialog()
+
+  $('.preview-button').click (e)->
+    e.preventDefault()
+    e.stopPropagation()
+    window.open($(this).attr('href'), "_blank", "status=no, width=620, height=480, resizable=yes," +
+        " toolbar=no, menubar=no, scrollbars=yes, location=no, directories=no")
 
 $ 'document:ready', ready
 $(document).on 'page:load', ready
