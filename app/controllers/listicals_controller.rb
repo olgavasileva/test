@@ -67,6 +67,7 @@ class ListicalsController < ApplicationController
   end
 
   def embed
+    headers.delete 'X-Frame-Options'
     @listical = Listical.find(params[:id])
     authorize @listical
     render :show, layout: 'listical_embed'
@@ -89,7 +90,10 @@ class ListicalsController < ApplicationController
   end
 
   def store_eu_user(user_id)
-    cookies.permanent.signed["eu_user_#{Rails.env}"] = user_id
+    cookies.permanent.signed["eu_user_#{Rails.env}"] = {
+        value: user_id,
+        domain: request.host.split('.').last(2).join('.')
+    }
   end
 
   def load_and_authorize
