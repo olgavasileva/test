@@ -1,9 +1,14 @@
-- @listicals.each do |listical|
-  = link_to text_from_html(listical.title), listical_path(listical)
-  = link_to edit_listical_path(listical) do
-    %i.fa.fa-pencil
-  = link_to listical_path(listical), method: :delete, data: {confirm: 'Do you want to remove this listicle?'} do
-    %i.fa.fa-times{style: 'color: red'}
-  Listicle embed link:
-  = link_to show_listical_url(listical), show_listical_url(listical), target: '_blank'
-  %br
+Listicles
+#listicals
+  - @listicals.each do |listical|
+    .listical
+      = link_to text_from_html(listical.title), listical_path(listical)
+      .preview
+        %iframe{src: show_listical_url(listical), height: 600, width: 600, scrolling: 'no', frameborder: 0}
+      .listical-buttons
+        = link_to edit_listical_path(listical) do
+          %i.fa.fa-pencil
+        = link_to listical_path(listical), method: :delete, data: {confirm: 'Do you want to remove this listicle?'} do
+          %i.fa.fa-times{style: 'color: red'}
+        = link_to show_listical_url(listical), target: '_blank' do
+          %i.fa.fa-file-code-o
