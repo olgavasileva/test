@@ -10,9 +10,11 @@ votingFn = ->
       url: $el.attr('href')
       method: 'POST'
     .done (result)->
-      console.log result.score
       $el.parent().find('.score').text result.score
-    .fail((result)-> console.log(result))
+    .fail (response)->
+      responseData = JSON.parse(response.responseText)
+      if (responseData.error)
+        alert(responseData.error)
 
 $(document).ready votingFn
 $(document).on 'page:load', votingFn

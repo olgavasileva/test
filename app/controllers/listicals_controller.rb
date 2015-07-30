@@ -58,8 +58,12 @@ class ListicalsController < ApplicationController
   def answer_question
     question = ListicalQuestion.find(params[:question_id])
     authorize question.listical
-    question.responses.create(response_params.merge(:user_id => current_user.id))
-    render json: {score: question.score}
+    if question.responses.find_by(user_id: current_ad_unit_user.id)
+      render json: {error: 'You have already answered this question'}, status: :bad_request
+    else
+      question.responses.create!(response_params.merge(user_id: current_ad_unit_user.id))
+      render json: {score: question.score}
+    end
   end
 
   def embed
@@ -69,6 +73,24 @@ class ListicalsController < ApplicationController
   end
 
   private
+
+  def current_ad_unit_user
+    @ad_unit_user ||= begin
+      ad_unit_user = cookie_user || Anonymous.create!(auto_feed: false)
+      store_eu_user(ad_unit_user.id)
+      ad_unit_user
+    end
+  end
+
+  def cookie_user
+    @cookie_user ||= if cookies.signed["eu_user_#{Rails.env}"]
+                       Respondent.find_by(id: cookies.signed["eu_user_#{Rails.env}"])
+                     end
+  end
+
+  def store_eu_user(user_id)
+    cookies.permanent.signed["eu_user_#{Rails.env}"] = user_id
+  end
 
   def load_and_authorize
     @listical = current_user.listicals.find params[:id]
