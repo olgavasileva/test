@@ -42,9 +42,10 @@ window.removeItem = (el)->
 ready = ->
   itemIdx = $('.item').length
   editorConfig =
-    toolbar: 'fontselect,|,bold,italic,underline,|,formatselect,|,forecolor,backcolor,|,bullist,numlist,outdent,indent,|,undo,redo,|,pastetext,pasteword,selectall,|,uploadimage'
+    toolbar: 'fontselect,|,bold,italic,underline,|,formatselect,|,forecolor,backcolor,|,bullist,numlist,outdent,indent,|,undo,redo,|,pastetext,pasteword,selectall,|,uploadimage,media'
     pagebreak_separator: '<p class=\'page-separator\'>&nbsp;</p>'
-    plugins: ['uploadimage', 'textcolor']
+    extended_valid_elements : "iframe[src|frameborder|style|scrolling|class|width|height|name|align]"
+    plugins: ['uploadimage', 'textcolor', 'media']
     relative_urls: false
     remove_script_host: false
     mode: 'exact'
