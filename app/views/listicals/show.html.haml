@@ -1,5 +1,5 @@
 #listical-show
-  %strong= @listical.title
+  %strong= @listical.title.html_safe
   %br
   - if @listical.header.present?
     = @listical.header.html_safe

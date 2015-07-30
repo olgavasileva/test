@@ -35,9 +35,9 @@ window.removeItem = (el)->
 ready = ->
   itemIdx = $('.item').length
   editorConfig =
-    toolbar: 'bold,italic,underline,|,bullist,numlist,outdent,indent,|,undo,redo,|,pastetext,pasteword,selectall,|,uploadimage'
+    toolbar: 'fontselect,|,bold,italic,underline,|,formatselect,|,forecolor,backcolor,|,bullist,numlist,outdent,indent,|,undo,redo,|,pastetext,pasteword,selectall,|,uploadimage'
     pagebreak_separator: '<p class=\'page-separator\'>&nbsp;</p>'
-    plugins: ['uploadimage']
+    plugins: ['uploadimage', 'textcolor']
     relative_urls: false
     remove_script_host: false
     mode: 'exact'
@@ -48,3 +48,6 @@ ready = ->
 
 $ 'document:ready', ready
 $(document).on 'page:load', ready
+
+$(document).on 'page:receive', ->
+  tinymce.remove()

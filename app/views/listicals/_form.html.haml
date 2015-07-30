@@ -1,10 +1,11 @@
-#new-listical
+#listical-form
   = form_for @listical do |f|
     - if @listical.errors.any?
       %ul.errors
         - @listical.errors.full_messages.each do |error|
           %li= error
-    = f.text_field :title, placeholder: 'Title'
+    = f.label :title
+    = f.text_field :title, placeholder: 'Title', rel: 'tinymce'
     %br
     = f.button id: 'add-header', type: 'button', class: "add-editor #{'hidden' if @listical.header.present?}", onclick: 'showEditor(this)' do
       %i.fa.fa-plus

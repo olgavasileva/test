@@ -1,5 +1,5 @@
 - @listicals.each do |listical|
-  = link_to listical.title, listical_path(listical)
+  = link_to text_from_html(listical.title), listical_path(listical)
   = link_to edit_listical_path(listical) do
     %i.fa.fa-pencil
   = link_to listical_path(listical), method: :delete, data: {confirm: 'Do you want to remove this listicle?'} do
