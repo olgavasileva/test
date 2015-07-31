@@ -84,15 +84,15 @@ class ListicalsController < ApplicationController
   end
 
   def cookie_user
-    @cookie_user ||= if cookies.signed["eu_user_#{Rails.env}"]
-                       Respondent.find_by(id: cookies.signed["eu_user_#{Rails.env}"])
+    @cookie_user ||= if cookies.signed["listical_user_#{Rails.env}"]
+                       Respondent.find_by(id: cookies.signed["listical_user_#{Rails.env}"])
                      end
   end
 
   def store_eu_user(user_id)
-    cookies.permanent.signed["eu_user_#{Rails.env}"] = {
+    cookies.permanent.signed["listical_user_#{Rails.env}"] = {
         value: user_id,
-        domain: request.host.split('.').last(2).join('.')
+        domain: nil# request.host.split('.').last(2).join('.')
     }
   end
 
