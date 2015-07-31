@@ -55,8 +55,8 @@ ready = ->
 
   $('[rel="tinymce"]').tinymce(editorConfig)
 
-  getCodeTemplate = (link, width = 600)->
-    '&lt;iframe width="' + width + '" height="600" src="' + link + '" frameborder="0"&gt;&lt;/iframe&gt;'
+  getCodeTemplate = (link, width = 600, height = 600)->
+    '&lt;iframe width="' + width + '" height="' + height + '" src="' + link + '" frameborder="0"&gt;&lt;/iframe&gt;'
 
   $('.embed-code').click (e)->
     e.preventDefault()
@@ -65,7 +65,19 @@ ready = ->
     $el = $(this)
     href = $el.attr('href')
 
-    $("<pre>#{getCodeTemplate(href)}</pre>").dialog()
+    $('#dialog').html "<div><label>Height: <input type='number' id='iframe-height' style='font-weight: normal; width: 70px' value='600'></label>" +
+        "&nbsp;<a href='" + href + "' id='preview-dialog'><i class='fa fa-eye'></i> Preview</a>" +
+        "<br><br><pre id='iframe-code'>#{getCodeTemplate(href)}</pre></div>"
+
+    $('#preview-dialog').click (e)->
+      e.preventDefault()
+      e.stopPropagation()
+      window.open($(this).attr('href'), "_blank", "status=no, width=620, height=" + $('#iframe-height').val() + ", resizable=yes," +
+          " toolbar=no, menubar=no, scrollbars=yes, location=no, directories=no")
+
+    $('#dialog').dialog()
+    $("#iframe-height").keyup ->
+      $('#iframe-code').html getCodeTemplate(href, 600, $(this).val())
 
   $('.preview-button').click (e)->
     e.preventDefault()
