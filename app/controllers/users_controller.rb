@@ -127,20 +127,48 @@ class UsersController < ApplicationController
   end
 
   def publisher_question_packs
-    @surveys = @user.surveys
-    render layout: "pixel_admin"
+    question_ids = {}
+    @surveys = @user.surveys.reject do |x|
+      reject = x.question_ids.empty?
+      question_ids[x.id] = x.question_ids unless reject
+      reject
+    end
+    @analytics = {}
+    @surveys.each do |survey|
+      @analytics[survey.id] = GoogleAnalyticsReporter.new(@user, question_ids: question_ids[survey.id]).report
+    end
+    render layout: 'pixel_admin'
   end
 
   def publisher_dashboard
-    completes = @user.questions.map { |q| q.response_count }.sum
-    shares = @user.questions.map { |q| q.share_count.to_i }.sum
+    google_reporter = GoogleAnalyticsReporter.new(@user)
+    report = google_reporter.report
 
     @campaign_data = [
-        {label: 'Views', value: 1000}, #TODO implement this
-        {label: 'Completes', value: completes},
-        {label: 'Shares', value: shares}
+        {label: 'Views', value: report[:views]},
+        {label: 'Completes', value: report[:completes]},
+        {label: 'Shares', value: report[:shares]},
+        {label: 'Additional Traffic', value: report[:traffic]},
+        {label: 'Additional Time on Site', value: report[:time]}
     ]
 
+    @daily_analytics = {
+        views: [],
+        completes: [],
+        shares: [],
+        traffic: [],
+        time: []
+    }
+    month_range = (0..7) # (0..29) TODO add this
+    month_range.each do |offset|
+      end_date = Date.today - offset.days
+      start_date = end_date - 1
+      report = google_reporter.between_dates(start_date, end_date).report
+
+      @daily_analytics.each_key do |key|
+        @daily_analytics[key] << {day: end_date.to_s, v: report[key]}
+      end
+    end
     render 'publisher_dashboard', layout: "pixel_admin"
   end
 

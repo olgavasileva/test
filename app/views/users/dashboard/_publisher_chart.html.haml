@@ -1,0 +1,35 @@
+.stat-panel
+  .stat-row
+    .stat-cell.col-sm-4.padding-sm-hr.bordered.no-border-r.valign-top
+      %h4.padding-sm.no-padding-t.padding-xs-hr
+        %i.fa.fa-cloud-upload.text-primary>
+        \&nbsp;&nbsp;Summary
+      %ul.list-group.no-margin
+        - @campaign_data.each do |data|
+          - color_class = data[:value].to_i < 1000 ? "label-danger" : "label-success"
+          %li.list-group-item.no-border-hr.padding-xs-hr.no-bg.no-border-radius
+            =data[:label]
+            %span.label.pull-right{class: color_class}=number_with_delimiter data[:value]
+    #publisher-hero-graphs.stat-cell.col-sm-8.col-sm-offset-4.bg-primary.padding-sm.valign-middle
+      %h4 Views
+      #views-graph.graph{style: "height: #{@daily_analytics.length * 40 + 40}px;", data:{points: @daily_analytics[:views].to_json}}
+  .stat-row{style: 'background: none'}
+    .col-sm-4.padding-sm-hr.bordered.no-border-r.valign-top{style: 'border: none'}
+    .stat-cell.col-sm-8.col-sm-offset-4.bg-primary.padding-sm.valign-middle
+      %h4 Completes
+      #completes-graph.graph{style: "height: #{@daily_analytics.length * 40 + 40}px;", data:{points: @daily_analytics[:completes].to_json}}
+  .stat-row{style: 'background: none'}
+    .col-sm-4.padding-sm-hr.bordered.no-border-r.valign-top{style: 'border: none'}
+    .stat-cell.col-sm-8.col-sm-offset-4.bg-primary.padding-sm.valign-middle
+      %h4 Shares
+      #shares-graph.graph{style: "height: #{@daily_analytics.length * 40 + 40}px;", data:{points: @daily_analytics[:shares].to_json}}
+  .stat-row{style: 'background: none'}
+    .col-sm-4.padding-sm-hr.bordered.no-border-r.valign-top{style: 'border: none'}
+    .stat-cell.col-sm-8.col-sm-offset-4.bg-primary.padding-sm.valign-middle
+      %h4 Additional Traffic
+      #traffic-graph.graph{style: "height: #{@daily_analytics.length * 40 + 40}px;", data:{points: @daily_analytics[:traffic].to_json}}
+  .stat-row{style: 'background: none'}
+    .col-sm-4.padding-sm-hr.bordered.no-border-r.valign-top{style: 'border: none'}
+    .stat-cell.col-sm-8.col-sm-offset-4.bg-primary.padding-sm.valign-middle
+      %h4 Additional Time on Site
+      #time-graph.graph{style: "height: #{@daily_analytics.length * 40 + 40}px;", data:{points: @daily_analytics[:time].to_json}}

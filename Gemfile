@@ -138,6 +138,7 @@ group :development do
 
   # Ignore asset logs
   gem 'quiet_assets'
+  gem 'rails-dev-tweaks'
 end
 
 group :development, :test do
