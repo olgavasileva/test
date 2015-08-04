@@ -29,7 +29,11 @@ class GoogleAnalyticsReporter
                             'filters' => "ga:eventAction==view;ga:eventCategory==webapp;ga:eventLabel=~#{question_ids.join('$|')}",
                             'metrics' => 'ga:totalEvents')
 
-    report[:views] = response.data['totalsForAllResults']['ga:totalEvents'].to_i
+    report[:views] = begin
+      response.data['totalsForAllResults']['ga:totalEvents'].to_i
+    rescue
+      0
+    end
 
     response = get_response('start-date' => start_date.to_s,
                             'end-date' => end_date.to_s,
@@ -37,7 +41,11 @@ class GoogleAnalyticsReporter
                             'filters' => "ga:eventAction==share;ga:eventCategory==webapp;ga:eventLabel=~#{question_ids.join('$|')}",
                             'metrics' => 'ga:totalEvents')
 
-    report[:shares] = response.data['totalsForAllResults']['ga:totalEvents'].to_i
+    report[:shares] = begin
+      response.data['totalsForAllResults']['ga:totalEvents'].to_i
+    rescue
+      0
+    end
 
     response = get_response('start-date' => start_date.to_s,
                             'end-date' => end_date.to_s,
@@ -45,7 +53,11 @@ class GoogleAnalyticsReporter
                             'filters' => "ga:eventAction==end;ga:eventCategory==webapp;ga:eventLabel=~#{survey_main_questions_ids.join('$|')}",
                             'metrics' => 'ga:totalEvents')
 
-    report[:completes] = response.data['totalsForAllResults']['ga:totalEvents'].to_i
+    report[:completes] = begin
+      response.data['totalsForAllResults']['ga:totalEvents'].to_i
+    rescue
+      0
+    end
 
     response = get_response('start-date' => start_date.to_s,
                             'end-date' => end_date.to_s,
@@ -53,7 +65,12 @@ class GoogleAnalyticsReporter
                             'filters' => "ga:eventCategory==webapp;ga:eventLabel=~#{question_ids.join('$|')}",
                             'metrics' => 'ga:sessions')
 
-    report[:traffic] = response.data['rows'].inject(0) { |result, x| result + x[2].to_i }
+    report[:traffic] = begin
+      response.data['rows'].inject(0) { |result, x| result + x[2].to_i }
+    rescue
+      0
+    end
+
     report[:time] = 0 #for now we are not tracking this parameter
     report
   end

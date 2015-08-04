@@ -134,9 +134,12 @@ class UsersController < ApplicationController
       reject
     end
     @analytics = {}
-    @surveys.each do |survey|
-      @analytics[survey.id] = GoogleAnalyticsReporter.new(@user, question_ids: question_ids[survey.id]).report
+    threads = @surveys.map do |survey|
+      Thread.new do
+        @analytics[survey.id] = GoogleAnalyticsReporter.new(@user, question_ids: question_ids[survey.id]).report
+      end
     end
+    threads.each { |t| t.join }
     render layout: 'pixel_admin'
   end
 
@@ -159,16 +162,19 @@ class UsersController < ApplicationController
         traffic: [],
         time: []
     }
-    month_range = (0..7) # (0..29) TODO add this
-    month_range.each do |offset|
-      end_date = Date.today - offset.days
-      start_date = end_date - 1
-      report = google_reporter.between_dates(start_date, end_date).report
+    month_range = (0..29)
+    threads = month_range.map do |offset|
+      Thread.new do
+        end_date = Date.today - offset.days
+        start_date = end_date - 1
+        report = google_reporter.between_dates(start_date, end_date).report
 
-      @daily_analytics.each_key do |key|
-        @daily_analytics[key] << {day: end_date.to_s, v: report[key]}
+        @daily_analytics.each_key do |key|
+          @daily_analytics[key] << {day: end_date.to_s, v: report[key]}
+        end
       end
     end
+    threads.each {|t| t.join}
     render 'publisher_dashboard', layout: "pixel_admin"
   end
 
