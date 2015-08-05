@@ -37,6 +37,25 @@ $(document).on 'page:change', ->
       xLabelFormat: (d)->
         ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov', 'Dec'][d.getMonth()] + ' ' + d.getDate()
 
+  if $('#publisher-hero-graphs').length
+    ['views', 'completes', 'shares', 'traffic', 'time'].forEach (elName)->
+      $el = $("##{elName}-graph")
+      Morris.Line
+        element: elName + '-graph'
+        data: $el.data().points
+        xkey: 'day'
+        ykeys: ['v']
+        labels: [$el.parent().find('h4').text()]
+        lineColors: ['#fff']
+        lineWidth: 2
+        pointSize: 4
+        gridLineColor: 'rgba(255,255,255,.5)'
+        resize: true
+        gridTextColor: '#fff'
+        xLabels: "day"
+        xLabelFormat: (d)->
+          ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov',
+           'Dec'][d.getMonth()] + ' ' + d.getDate()
 
   # Reach graph
   #
@@ -55,7 +74,6 @@ $(document).on 'page:change', ->
       highlightSpotColor: '#ffffff'
       highlightLineColor: '#ffffff'
       spotRadius: 4
-      highlightLineColor: '#ffffff'
 
   # Engagements bar Chart
   #

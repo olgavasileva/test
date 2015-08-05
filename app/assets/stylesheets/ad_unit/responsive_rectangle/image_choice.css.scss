@@ -159,7 +159,7 @@
     #between-buttons {
       height: 72.222222222%;
       background: #F1F3F2;
-      padding: 0 2.12121212%;
+      padding: 0 2.1222121%;
     }
     #between-button-content {
       padding: 0 !important;
@@ -198,9 +198,9 @@
       }
       position: relative;
       border: none;
-      height: 52.853005%;
+      height: 68.705%;
       padding: 0;
-      width: 49.0505555555%;
+      width: 49.0515555555%;
       .text {
         padding-top: 5px;
         font-family: Roboto, Helvetica, sans-serif;
@@ -223,6 +223,7 @@
     margin-left: 46% !important;
   }
   .image-choice {
+    height: 60.777% !important;
     cursor: pointer;
   }
   button[type="submit"] {
@@ -236,8 +237,8 @@
   }
 
   #below-buttons {
-    height: 16%;
-    margin-top: 3.3%;
+    height: 11.455%;
+    margin-top: 12.3%;
     form, .bar, #multiple-choice-submit {
       height: 100% !important;
     }

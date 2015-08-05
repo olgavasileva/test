@@ -1,0 +1,2 @@
+module ListicalsHelper
+end

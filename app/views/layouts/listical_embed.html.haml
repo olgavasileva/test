@@ -1,0 +1,26 @@
+!!!
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+:plain
+  <!--[if gt IE 9] -->
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %title= full_title(yield(:title))
+
+    %meta{"http-equiv" => "Content-Type", content: "text/html; charset=utf-8"}
+
+    = csrf_meta_tags
+
+    / Open Sans font from Google CDN
+    %link{href: 'http://fonts.googleapis.com/css?family=Roboto:400,500', rel: 'stylesheet', type: 'text/css'}/
+    %link{href: 'http://fonts.googleapis.com/css?family=Roboto+Condensed:700', rel: 'stylesheet', type: 'text/css'}/
+
+    %base{target: "_blank"}
+
+    = stylesheet_link_tag 'listical_unit', media: 'all'
+    = javascript_include_tag 'listical_unit'
+  %body.embed_listical
+    = yield
+
+    = debug(params) if Rails.env.development?

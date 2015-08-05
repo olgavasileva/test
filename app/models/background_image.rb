@@ -5,6 +5,7 @@ class BackgroundImage < ActiveRecord::Base
   has_many :ad_unit_infos,
     class_name: "BackgroundImagesAdUnit",
     dependent: :delete_all
+  has_many :listical_questions
 
   attr_accessor :meta_data
   attr_accessor :meta_data_json

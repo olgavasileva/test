@@ -100,4 +100,8 @@ class UserPolicy < ApplicationPolicy
   def new_question?
     is_owner? && (is_pro? || publisher?)
   end
+
+  def new_listical?
+    is_owner? && (is_pro? || publisher?)
+  end
 end

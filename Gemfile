@@ -138,6 +138,7 @@ group :development do
 
   # Ignore asset logs
   gem 'quiet_assets'
+  gem 'rails-dev-tweaks'
 end
 
 group :development, :test do
@@ -168,3 +169,5 @@ gem 'searchbing', '0.2.3'
 gem 'maxminddb'
 gem 'tooltipster-rails'
 gem 'tumblr_client'
+gem 'tinymce-rails-imageupload', '~> 4.0.0.beta'
+gem 'google-api-client'

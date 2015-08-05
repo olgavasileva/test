@@ -82,6 +82,10 @@ GEM
     arel (5.0.1.20140414130214)
     attribute_defaults (0.3)
       activerecord (>= 3.1.0)
+    autoparse (0.3.3)
+      addressable (>= 2.3.1)
+      extlib (>= 0.9.15)
+      multi_json (>= 1.0.0)
     autoprefixer-rails (2.2.0.20140727)
       execjs
     aws-sdk (1.60.2)
@@ -182,6 +186,7 @@ GEM
     eventmachine (1.0.3)
     excon (0.39.3)
     execjs (2.2.1)
+    extlib (0.9.16)
     factory_girl (4.4.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.4.1)
@@ -225,6 +230,16 @@ GEM
     formtastic (2.3.1)
       actionpack (>= 3.0)
     geocoder (1.2.4)
+    google-api-client (0.8.2)
+      activesupport (>= 3.2)
+      addressable (~> 2.3)
+      autoparse (~> 0.3)
+      extlib (~> 0.9)
+      faraday (~> 0.9)
+      launchy (~> 2.4)
+      multi_json (~> 1.10)
+      retriable (~> 1.4)
+      signet (~> 0.6)
     grape (0.9.0)
       activesupport
       builder
@@ -304,6 +319,8 @@ GEM
       faraday
       multi_json
     kramdown (1.4.0)
+    launchy (2.4.3)
+      addressable (~> 2.3)
     lazy_high_charts (1.5.4)
       bundler (>= 1.0)
       hash-deep-merge
@@ -397,6 +414,9 @@ GEM
       bundler (>= 1.3.0, < 2.0)
       railties (= 4.1.8)
       sprockets-rails (~> 2.0)
+    rails-dev-tweaks (1.2.0)
+      actionpack (>= 3.1)
+      railties (>= 3.1)
     rails-observers (0.1.2)
       activemodel (~> 4.0)
     rails_12factor (0.0.2)
@@ -447,6 +467,7 @@ GEM
       redis (~> 3.0)
       resque (~> 1.25)
       rufus-scheduler (~> 3.0)
+    retriable (1.4.1)
     rmagick (2.13.3)
     rolify (3.4.0)
     roo (1.13.2)
@@ -499,6 +520,12 @@ GEM
       websocket (~> 1.0.4)
     shoulda-matchers (2.8.0)
       activesupport (>= 3.0.0)
+    signet (0.6.0)
+      addressable (~> 2.3)
+      extlib (~> 0.9)
+      faraday (~> 0.9)
+      jwt (~> 1.0)
+      multi_json (~> 1.10)
     simple-navigation (3.13.0)
       activesupport (>= 2.3.2)
     simple_oauth (0.3.1)
@@ -550,6 +577,11 @@ GEM
       jbuilder
       tilt (<= 1.5.0)
     tins (1.3.3)
+    tinymce-rails (4.2.1)
+      railties (>= 3.1.1)
+    tinymce-rails-imageupload (4.0.16.beta)
+      railties (>= 3.2, < 5)
+      tinymce-rails (~> 4.0)
     toastr-rails (1.0.3)
       railties (>= 3.1.0)
     tooltipster-rails (3.2.6)
@@ -647,6 +679,7 @@ DEPENDENCIES
   fog
   font-awesome-rails
   geocoder
+  google-api-client
   grape (~> 0.9)
   grape-jbuilder
   grape-rabl
@@ -680,6 +713,7 @@ DEPENDENCIES
   quiet_assets
   rack-cors
   rails (= 4.1.8)
+  rails-dev-tweaks
   rails-observers
   rails_12factor
   rakismet
@@ -711,6 +745,7 @@ DEPENDENCIES
   squeel
   therubyracer
   thin
+  tinymce-rails-imageupload (~> 4.0.0.beta)
   toastr-rails
   tooltipster-rails
   touchpunch-rails
@@ -725,4 +760,4 @@ DEPENDENCIES
   xray-rails
 
 BUNDLED WITH
-   1.10.5
+   1.10.6

@@ -1,0 +1,40 @@
+.panel
+  .panel-heading
+    %h2.panel-title
+      .row
+        .col-sm-6 LISTICLES MANAGEMENT
+        .col-sm-6.text-right-not-xs
+          =link_to new_listical_path(current_user), class: %w(btn btn-sm btn-primary btn-labeled) do
+            %span.btn-label.fa.fa-plus
+            Create Listicle
+.table-primary
+  %table.table.table-striped.table-bordered#campaigns{cellpadding:0, cellspacing:0, border:0}
+    %thead
+      %tr
+        %th.bg-success{colspan:3} These are all of your listicles
+        %th.bg-default{colspan:4} Engagements
+      %tr
+        %th Listicles
+        %th Additional Time on Site
+        %th Additional Traffic
+        %th Shares
+        %th Views
+        %th Completes
+        %th
+    %tbody
+#listicals
+  - @listicals.each do |listical|
+    .listical
+      = link_to text_from_html(listical.title), listical_path(listical)
+      .preview
+        %iframe{src: show_listical_url(listical), height: 600, width: 600, scrolling: 'no', frameborder: 0}
+      .listical-buttons
+        = link_to edit_listical_path(listical) do
+          %i.fa.fa-pencil
+        = link_to listical_path(listical), method: :delete, data: {confirm: 'Do you want to remove this listicle?'} do
+          %i.fa.fa-times{style: 'color: red'}
+        = link_to show_listical_url(listical), class: 'embed-code' do
+          %i.fa.fa-file-code-o
+        = link_to show_listical_url(listical), class: 'preview-button' do
+          %i.fa.fa-eye
+  #dialog
