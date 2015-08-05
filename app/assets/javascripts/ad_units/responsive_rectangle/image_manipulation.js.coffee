@@ -21,9 +21,10 @@ $(document).ready ->
           'background-size': "#{bgWidth}px #{bgHeight}px"
           'background-position': "#{data.meta.left}px #{data.meta.top}px"
 
-        makeItResponsive = ->
-          $body = $('.responsive_rectangle')
+        timeoutCheck = null
+        $body = $('.responsive_rectangle')
 
+        makeItResponsive = ->
           widthScale = parseInt($body.css('width'))/330
           heightScale = parseInt($body.css('height'))/405
 
@@ -32,10 +33,7 @@ $(document).ready ->
             'background-position': "#{data.meta.left * widthScale}px #{data.meta.top * heightScale}px"
 
           $el.css(resizeCssOpts)
-        $(window).load makeItResponsive
-        $(window).resize makeItResponsive
-
-        makeItResponsive()
+        timeoutCheck = setTimeout makeItResponsive, 50
 
       $el.css(cssOpts)
 
