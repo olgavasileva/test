@@ -12,12 +12,23 @@
 
 
 html, body {
-  height: 122.7272727273vw;
+  height: 405px;
   max-width: 660px;
   min-width: 330px;
   max-height: 810px;
   min-height: 405px;
 }
+
+$i: 330;
+@while $i < 660 {
+  @media screen and (min-width: $i+px) {
+    html, body {
+      height: 1.227272727273*$i+px;
+    }
+  }
+  $i: $i + 1;
+}
+
 
 #question {
   height: 72.7777778%;
