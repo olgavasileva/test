@@ -56,7 +56,7 @@ ready = ->
   $('[rel="tinymce"]').tinymce(editorConfig)
 
   getCodeTemplate = (link, width = 600, height = 600)->
-    '&lt;iframe width="' + width + '" height="' + height + '" src="' + link + '" frameborder="0"&gt;&lt;/iframe&gt;'
+    "&lt;div style=\"height: #{height}px; width: #{width}px;\"&gt;&lt;iframe width=\"#{width}\" height=\"#{height}\" src=\"#{link}\" frameborder='0' &gt;&lt;/iframe&gt;&lt;div&gt;"
 
   $('.embed-code').click (e)->
     e.preventDefault()
