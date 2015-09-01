@@ -4,7 +4,7 @@
       .row
         .col-sm-6 LISTICLES MANAGEMENT
         .col-sm-6.text-right-not-xs
-          =link_to new_listical_path(current_user), class: %w(btn btn-sm btn-primary btn-labeled) do
+          =link_to new_listicle_path(current_user), class: %w(btn btn-sm btn-primary btn-labeled) do
             %span.btn-label.fa.fa-plus
             Create Listicle
 .table-primary
@@ -22,19 +22,19 @@
         %th Completes
         %th
     %tbody
-#listicals
-  - @listicals.each do |listical|
-    .listical
-      = link_to text_from_html(listical.title), listical_path(listical)
+#listicles
+  - @listicles.each do |listicle|
+    .listicle
+      = link_to text_from_html(listicle.title), listicle_path(listicle)
       .preview
-        %iframe{src: show_listical_url(listical), height: 600, width: 600, scrolling: 'no', frameborder: 0}
-      .listical-buttons
-        = link_to edit_listical_path(listical) do
+        %iframe{src: show_listicle_url(listicle), height: 600, width: 600, scrolling: 'no', frameborder: 0}
+      .listicle-buttons
+        = link_to edit_listicle_path(listicle) do
           %i.fa.fa-pencil
-        = link_to listical_path(listical), method: :delete, data: {confirm: 'Do you want to remove this listicle?'} do
+        = link_to listicle_path(listicle), method: :delete, data: {confirm: 'Do you want to remove this listicle?'} do
           %i.fa.fa-times{style: 'color: red'}
-        = link_to show_listical_url(listical), class: 'embed-code' do
+        = link_to show_listicle_url(listicle), class: 'embed-code' do
           %i.fa.fa-file-code-o
-        = link_to show_listical_url(listical), class: 'preview-button' do
+        = link_to show_listicle_url(listicle), class: 'preview-button' do
           %i.fa.fa-eye
   #dialog

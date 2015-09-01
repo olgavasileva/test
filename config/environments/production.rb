@@ -65,7 +65,7 @@ LinkchatApp::Application.configure do
   config.assets.precompile += %w( embeddable_unit.css embeddable_unit.js )
   config.assets.precompile += %w( ad_unit/responsive_rectangle.css ad_units/responsive_rectangle.js )
   config.assets.precompile += %w( ad_unit/medium_rectangle.css ad_units/medium_rectangle.js )
-  config.assets.precompile += %w( listical_unit.css listical_unit.js )
+  config.assets.precompile += %w( listicle_unit.css listicle_unit.js )
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.

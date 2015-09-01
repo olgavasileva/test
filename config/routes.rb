@@ -112,14 +112,14 @@ LinkchatApp::Application.routes.draw do
       get :question_search
       get :account
       get :avatar
-      resources :listicals do
-        post 'image_upload' => 'listicals#image_upload', on: :collection
+      resources :listicles do
+        post 'image_upload' => 'listicles#image_upload', on: :collection
       end
     end
   end
 
-  post 'answer_listical_question/:question_id' => 'listicals#answer_question', as: :answer_listical_question
-  get 'listical/:id' => 'listicals#embed', as: :show_listical
+  post 'answer_listicle_question/:question_id' => 'listicles#answer_question', as: :answer_listicle_question
+  get 'listicle/:id' => 'listicles#embed', as: :show_listicle
 
   resources :groups
 

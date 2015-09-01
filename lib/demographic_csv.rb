@@ -62,7 +62,7 @@ class DemographicCSV
     question.responses.each do |response|
       respondent = response.user
       demographic = respondent.demographic_summary
-      unless options[:us_only] && demographic && demographic.country != "US"
+      if should_add_rows(demographic)
         line = [nil]
         line += if demographic
           DEMOGRAPHICS.map{|key,label| demographic.send key}
@@ -102,7 +102,7 @@ class DemographicCSV
 
     lines = []
 
-    unless options[:us_only] && demographic && demographic.country != "US"
+    if should_add_rows(demographic)
       line = [comment.body]
       line += if demographic
         DEMOGRAPHICS.map{|key,label| demographic.send key}
@@ -136,5 +136,9 @@ class DemographicCSV
         choice.try(:web_image_url)
       ])
     end
+  end
+
+  def should_add_rows(demographics)
+    demographics && demographics.country == 'US'
   end
 end
