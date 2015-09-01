@@ -101,7 +101,7 @@ class ListicalsController < ApplicationController
   end
 
   def listical_params
-    params.require(:listical).permit :title, :header, :footer, :questions_attributes => [:title, :body, :_destroy]
+    params.require(:listical).permit :title, :header, :footer, :questions_attributes => [:title, :body, :_destroy, :id]
   end
 
   def redirect_to_index

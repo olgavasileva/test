@@ -36,7 +36,7 @@ window.removeItem = (el)->
     $el.parents('.item').remove()
   else
     $el.parents('.item').addClass('hidden')
-    $el.find('[type="checkbox"]').val(1)
+    $el.find('[type="hidden"]').val(1)
   refreshIndexes()
 
 ready = ->
