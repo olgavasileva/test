@@ -36,6 +36,7 @@ class ListicalsController < ApplicationController
   end
 
   def update
+    @listical.update(listical_params)
     redirect_to_index
   end
 
