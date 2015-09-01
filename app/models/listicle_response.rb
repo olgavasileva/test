@@ -1,5 +1,5 @@
-class ListicalResponse < ActiveRecord::Base
-  belongs_to :question, class_name: 'ListicalQuestion'
+class ListicleResponse < ActiveRecord::Base
+  belongs_to :question, class_name: 'ListicleQuestion'
   belongs_to :user, class_name: 'Respondent'
 
   validates_presence_of :user, :question

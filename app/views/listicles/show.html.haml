@@ -1,0 +1,22 @@
+:javascript
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+  }
+#listicle-show
+  %strong= @listicle.title.html_safe
+  %br
+  - if @listicle.header.present?
+    = @listicle.header.html_safe
+    %br
+  - @listicle.questions.sort_by(&:score).reverse.each_with_index do |question, index|
+    .voting
+      = link_to answer_listicle_question_path(question_id: question.id, is_up: 1), method: :post, class: 'vote' do
+        %i.fa.fa-chevron-up
+      .score= question.score
+      = link_to answer_listicle_question_path(question_id: question.id, is_up: 0), method: :post, class: 'vote' do
+        %i.fa.fa-chevron-down
+    %strong= "#{index+1}. #{h question.title}"
+    = h question.body.html_safe
+    %br
+  - if @listicle.footer.present?
+    = @listicle.footer.html_safe

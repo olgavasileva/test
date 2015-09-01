@@ -82,7 +82,7 @@ class Respondent < ActiveRecord::Base
   has_many :surveys, foreign_key: :user_id
   has_many :embeddable_units, through: :surveys
   has_many :embeddable_unit_themes, foreign_key: :user_id
-  has_many :listicals, foreign_key: :user_id
+  has_many :listicles, foreign_key: :user_id
 
   VALID_USERNAME_REGEX ||= /\A[a-z0-9\-_]{4,50}\z/i
   validates :username,

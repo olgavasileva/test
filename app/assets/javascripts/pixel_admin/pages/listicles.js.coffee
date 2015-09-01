@@ -5,13 +5,13 @@ itemTemplate = ->
 
   "<fieldset id=\"#{itemIdx - 1}_fieldset\"><div class=\"title\">Item ##{itemIdx}</div><br>" +
     '<button class="delete-item" onclick=\"removeItem(this)\" type="button"><i class="fa fa-times"></i></button>' +
-    "<input name=\"listical[questions_attributes][#{itemIdx}][_destroy]\" type=\"hidden\" value=\"0\">" +
-    "<input class=\"hidden\" id=\"listical_questions_attributes_#{itemIdx}__destroy\" " +
-    " name=\"listical[questions_attributes][#{itemIdx}][_destroy]\" type=\"checkbox\" value=\"1\">" +
-    "<label for=\"listical_questions_attributes_#{itemIdx}_title\">Title</label>" +
-    "<input id=\"listical_questions_attributes_#{itemIdx}_title\" name=\"listical[questions_attributes][#{itemIdx}][title]\" type=\"text\">" +
-    "<br><label for=\"listical_questions_attributes_#{itemIdx}_question\"><textarea id=\"listical_questions_attributes_#{itemIdx}_body\" " +
-    "name=\"listical[questions_attributes][#{itemIdx}][body]\" rel=\"tinymce\"></textarea></label></fieldset>"
+    "<input name=\"listicle[questions_attributes][#{itemIdx}][_destroy]\" type=\"hidden\" value=\"0\">" +
+    "<input class=\"hidden\" id=\"listicle_questions_attributes_#{itemIdx}__destroy\" " +
+    " name=\"listicle[questions_attributes][#{itemIdx}][_destroy]\" type=\"checkbox\" value=\"1\">" +
+    "<label for=\"listicle_questions_attributes_#{itemIdx}_title\">Title</label>" +
+    "<input id=\"listicle_questions_attributes_#{itemIdx}_title\" name=\"listicle[questions_attributes][#{itemIdx}][title]\" type=\"text\">" +
+    "<br><label for=\"listicle_questions_attributes_#{itemIdx}_question\"><textarea id=\"listicle_questions_attributes_#{itemIdx}_body\" " +
+    "name=\"listicle[questions_attributes][#{itemIdx}][body]\" rel=\"tinymce\"></textarea></label></fieldset>"
 
 window.showEditor = (element) ->
   label = $(element).next('label')

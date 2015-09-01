@@ -1,4 +1,4 @@
-class ListicalPolicy < ApplicationPolicy
+class ListiclePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope

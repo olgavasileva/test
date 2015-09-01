@@ -1,4 +1,4 @@
-class ListicalsController < ApplicationController
+class ListiclesController < ApplicationController
 
   before_action :load_and_authorize, only: [:show, :edit, :update, :destroy]
 
@@ -9,45 +9,45 @@ class ListicalsController < ApplicationController
   layout 'pixel_admin'
 
   def index
-    @listicals = current_user.listicals
-    policy_scope @listicals
+    @listicles = current_user.listicles
+    policy_scope @listicles
   end
 
   def show
   end
 
   def new
-    @listical = Listical.new
-    @listical.questions.build
-    authorize @listical
+    @listicle = Listicle.new
+    @listicle.questions.build
+    authorize @listicle
   end
 
   def edit
   end
 
   def create
-    @listical = current_user.listicals.new listical_params
-    authorize @listical
-    if @listical.save
-      redirect_to listicals_path, only_path: true
+    @listicle = current_user.listicles.new listicle_params
+    authorize @listicle
+    if @listicle.save
+      redirect_to listicles_path, only_path: true
     else
       render :new
     end
   end
 
   def update
-    @listical.update(listical_params)
+    @listicle.update(listicle_params)
     redirect_to_index
   end
 
   def destroy
-    @listical.destroy
+    @listicle.destroy
     redirect_to_index
   end
 
   def image_upload
-    authorize Listical.new
-    uploader = ListicalQuestionImageUploader.new
+    authorize Listicle.new
+    uploader = ListicleQuestionImageUploader.new
     uploader.store!(params[:file])
     render json: {
                image: {
@@ -57,8 +57,8 @@ class ListicalsController < ApplicationController
   end
 
   def answer_question
-    question = ListicalQuestion.find(params[:question_id])
-    authorize question.listical
+    question = ListicleQuestion.find(params[:question_id])
+    authorize question.listicle
     answer = question.responses.find_by(user_id: current_ad_unit_user.id)
     answer.destroy if answer.present?
     question.responses.create!(response_params.merge(user_id: current_ad_unit_user.id))
@@ -67,9 +67,9 @@ class ListicalsController < ApplicationController
 
   def embed
     headers.delete 'X-Frame-Options'
-    @listical = Listical.find(params[:id])
-    authorize @listical
-    render :show, layout: 'listical_embed'
+    @listicle = Listicle.find(params[:id])
+    authorize @listicle
+    render :show, layout: 'listicle_embed'
   end
 
   private
@@ -83,29 +83,29 @@ class ListicalsController < ApplicationController
   end
 
   def cookie_user
-    @cookie_user ||= if cookies.signed["listical_user_#{Rails.env}"]
-                       Respondent.find_by(id: cookies.signed["listical_user_#{Rails.env}"])
+    @cookie_user ||= if cookies.signed["listicle_user_#{Rails.env}"]
+                       Respondent.find_by(id: cookies.signed["listicle_user_#{Rails.env}"])
                      end
   end
 
   def store_eu_user(user_id)
-    cookies.permanent.signed["listical_user_#{Rails.env}"] = {
+    cookies.permanent.signed["listicle_user_#{Rails.env}"] = {
         value: user_id,
         domain: nil # request.host.split('.').last(2).join('.')
     }
   end
 
   def load_and_authorize
-    @listical = current_user.listicals.find params[:id]
-    authorize @listical
+    @listicle = current_user.listicles.find params[:id]
+    authorize @listicle
   end
 
-  def listical_params
-    params.require(:listical).permit :title, :header, :footer, :questions_attributes => [:title, :body, :_destroy, :id]
+  def listicle_params
+    params.require(:listicle).permit :title, :header, :footer, :questions_attributes => [:title, :body, :_destroy, :id]
   end
 
   def redirect_to_index
-    redirect_to listicals_path, only_path: true
+    redirect_to listicles_path, only_path: true
   end
 
   def response_params
