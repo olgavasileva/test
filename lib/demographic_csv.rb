@@ -145,6 +145,15 @@ class DemographicCSV
   end
 
   def should_add_rows(demographics)
-    demographics && demographics.country == 'US' || true#should be fixed!
+    demographics && demographics_from_us?(demographics)
+  end
+
+  private
+
+  def demographics_from_us?(demographics)
+    ["US", "", nil].each do |country_name|
+      return true if demographics.country == country_name
+    end
+    false
   end
 end
