@@ -63,15 +63,18 @@ class DemographicCSV
       respondent = response.user
       demographic = respondent.demographic_summary
       if should_add_rows(demographic)
-        line = [nil]
-        line += if demographic
-          DEMOGRAPHICS.map{|key,label| demographic.send key}
-        else
-          Array.new(DEMOGRAPHICS.keys.count)
-        end
-        line += response.csv_data
+        begin
+          line = [nil]
+          line += if demographic
+            DEMOGRAPHICS.map{|key,label| demographic.send key}
+          else
+            Array.new(DEMOGRAPHICS.keys.count)
+          end
+          line += response.csv_data
 
-        csv << line
+          csv << line
+        rescue
+        end
       end
     end
   end
@@ -103,16 +106,19 @@ class DemographicCSV
     lines = []
 
     if should_add_rows(demographic)
-      line = [comment.body]
-      line += if demographic
-        DEMOGRAPHICS.map{|key,label| demographic.send key}
-      else
-        Array.new(DEMOGRAPHICS.keys.count)
-      end
+      begin
+        line = [comment.body]
+        line += if demographic
+          DEMOGRAPHICS.map{|key,label| demographic.send key}
+        else
+          Array.new(DEMOGRAPHICS.keys.count)
+        end
 
-      lines << line
-      comment.comments.find_each do |c|
-        lines += comment_lines c
+        lines << line
+        comment.comments.find_each do |c|
+          lines += comment_lines c
+        end
+      rescue
       end
     end
 
@@ -139,6 +145,6 @@ class DemographicCSV
   end
 
   def should_add_rows(demographics)
-    demographics && demographics.country == 'US'
+    demographics && demographics.country == 'US' || true#should be fixed!
   end
 end
