@@ -3,18 +3,19 @@
 
 votingFn = ->
   $('a.vote').click (e)->
+    $el = $(this)
     e.preventDefault()
     e.stopPropagation()
-    $el = $(this)
+    return if ($el.hasClass('disabled'))
+    removeDisabledClasses = ->
+      $el.parent().find('a').removeClass('disabled')
     $.ajax
       url: $el.attr('href')
       method: 'POST'
     .done (result)->
       $el.parent().find('.score').text result.score
-    .fail (response)->
-      responseData = JSON.parse(response.responseText)
-      if (responseData.error)
-        alert(responseData.error)
+      removeDisabledClasses()
+      $el.addClass('disabled')
 
 $(document).ready votingFn
 $(document).on 'page:load', votingFn
