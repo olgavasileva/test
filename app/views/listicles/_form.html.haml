@@ -1,20 +1,20 @@
-#listical-form
-  = form_for @listical do |f|
-    - if @listical.errors.any?
+#listicle-form
+  = form_for @listicle do |f|
+    - if @listicle.errors.any?
       %ul.errors
-        - @listical.errors.full_messages.each do |error|
+        - @listicle.errors.full_messages.each do |error|
           %li= error
     = f.label :title
     = f.text_field :title, placeholder: 'Title', rel: 'tinymce'
     %br
-    = f.button id: 'add-header', type: 'button', class: "add-editor #{'hidden' if @listical.header.present?}", onclick: 'showEditor(this)' do
+    = f.button id: 'add-header', type: 'button', class: "add-editor #{'hidden' if @listicle.header.present?}", onclick: 'showEditor(this)' do
       %i.fa.fa-plus
       Add Header
-    = f.label :header, class: ('hidden' if @listical.header.blank?) do
+    = f.label :header, class: ('hidden' if @listicle.header.blank?) do
       Header
       = f.text_area :header, rel: 'tinymce'
     %br
-    - @listical.questions.each_with_index do |question,index|
+    - @listicle.questions.each_with_index do |question,index|
       .items
         = f.fields_for :questions, question do |ff|
           .item
@@ -35,13 +35,13 @@
       %i.fa.fa-plus
       Add item
     %br
-    = f.button id: 'add-footer', type: 'button', class: "add-editor #{'hidden' if @listical.footer.present?}", onclick: 'showEditor(this)' do
+    = f.button id: 'add-footer', type: 'button', class: "add-editor #{'hidden' if @listicle.footer.present?}", onclick: 'showEditor(this)' do
       %i.fa.fa-plus
       Add Footer
-    = f.label :footer, class: ('hidden' if @listical.footer.blank?) do
+    = f.label :footer, class: ('hidden' if @listicle.footer.blank?) do
       Footer
       = f.text_area :footer, rel: 'tinymce'
     %br
     = f.submit 'Publish'
   :javascript
-    window.tinymceImageUploadPath = "#{image_upload_listicals_path(current_user)}"
+    window.tinymceImageUploadPath = "#{image_upload_listicles_path(current_user)}"

@@ -62,16 +62,19 @@ class DemographicCSV
     question.responses.each do |response|
       respondent = response.user
       demographic = respondent.demographic_summary
-      unless options[:us_only] && demographic && demographic.country != "US"
-        line = [nil]
-        line += if demographic
-          DEMOGRAPHICS.map{|key,label| demographic.send key}
-        else
-          Array.new(DEMOGRAPHICS.keys.count)
-        end
-        line += response.csv_data
+      if should_add_rows(demographic)
+        begin
+          line = [nil]
+          line += if demographic
+            DEMOGRAPHICS.map{|key,label| demographic.send key}
+          else
+            Array.new(DEMOGRAPHICS.keys.count)
+          end
+          line += response.csv_data
 
-        csv << line
+          csv << line
+        rescue
+        end
       end
     end
   end
@@ -102,17 +105,20 @@ class DemographicCSV
 
     lines = []
 
-    unless options[:us_only] && demographic && demographic.country != "US"
-      line = [comment.body]
-      line += if demographic
-        DEMOGRAPHICS.map{|key,label| demographic.send key}
-      else
-        Array.new(DEMOGRAPHICS.keys.count)
-      end
+    if should_add_rows(demographic)
+      begin
+        line = [comment.body]
+        line += if demographic
+          DEMOGRAPHICS.map{|key,label| demographic.send key}
+        else
+          Array.new(DEMOGRAPHICS.keys.count)
+        end
 
-      lines << line
-      comment.comments.find_each do |c|
-        lines += comment_lines c
+        lines << line
+        comment.comments.find_each do |c|
+          lines += comment_lines c
+        end
+      rescue
       end
     end
 
@@ -136,5 +142,18 @@ class DemographicCSV
         choice.try(:web_image_url)
       ])
     end
+  end
+
+  def should_add_rows(demographics)
+    demographics && demographics_from_us?(demographics)
+  end
+
+  private
+
+  def demographics_from_us?(demographics)
+    ["US", "", nil].each do |country_name|
+      return true if demographics.country == country_name
+    end
+    false
   end
 end

@@ -1,4 +1,4 @@
-class ListicalQuestionImageUploader < UploaderBase
+class ListicleQuestionImageUploader < UploaderBase
   include CarrierWave::RMagick
 
   def extension_white_list

@@ -1,4 +1,4 @@
-#listical-form {
+#listicle-form {
   width: 540px;
   margin: 0 auto;
   .title {
@@ -43,7 +43,7 @@
   }
 }
 
-#listical-show {
+#listicle-show {
   max-width: 500px;
   padding-left: 100px;
   overflow-x: hidden;
@@ -72,8 +72,8 @@
   }
 }
 
-#listicals {
-  .listical {
+#listicles {
+  .listicle {
     margin: 20px;
     display: inline-block;
     width: 150px;
@@ -88,7 +88,7 @@
   iframe {
     margin-left: -105px;
   }
-  .listical-buttons {
+  .listicle-buttons {
     font-size: 20px;
   }
 }

@@ -18,9 +18,9 @@
 
     %base{target: "_blank"}
 
-    = stylesheet_link_tag 'listical_unit', media: 'all'
-    = javascript_include_tag 'listical_unit'
-  %body.embed_listical
+    = stylesheet_link_tag 'listicle_unit', media: 'all'
+    = javascript_include_tag 'listicle_unit'
+  %body.embed_listicle
     = yield
 
     = debug(params) if Rails.env.development?
