@@ -2,9 +2,9 @@ ActiveAdmin.register Survey do
   menu parent: 'Surveys'
 
   permit_params :name, :username, :thank_you_markdown, :thank_you_html, :theme_id, contest_ids: []
-
   filter :id
   filter :user_username, as: :string, label: "Username"
+  filter :name
   filter :uuid
   filter :created_at
   filter :updated_at
@@ -73,7 +73,7 @@ ActiveAdmin.register Survey do
           total_responses = survey.questions.map{|q|q.response_count}.sum
           x << OpenStruct.new(id: nil, title: "TOTAL", type: nil,  view_count: total_views,  response_count: total_responses)
           table_for x do
-            column :id
+       	    column :id       
             column(:title) { |q| q.id ? link_to(q.title, admin_question_path(q)) : q.title  }
             column(:type) { |q| status_tag q.type, :ok if q.id }
             column(:views, class: 'aa-number') { |q| number_with_delimiter q.view_count }
