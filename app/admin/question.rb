@@ -106,6 +106,42 @@ ActiveAdmin.register Question do
         end
       end if question.choices.size > 0
     end
+
+    require 'logger'
+    require 'pp'
+    ## Table of the responses
+    panel 'Question Responses' do
+#	logger.error( "----------------------------------------- BEGIN" )
+#	listofresponses ||= Array.new
+#	a = Question.includes( :responses, :choices ).find_by_id( 2177 )
+#	a.responses.each do | this_response |
+#		logger.error( this_response.id )
+#		logger.error( this_response.choice.id )
+#		logger.error( this_response.choice.title )
+#		listofresponses.push( :id => this_response.id, :choice_id => this_response.choice.id, :choice_title => this_response.choice.title )
+#	end
+#	logger.error( "----------------------------------------- END" )
+#
+#	#table_for listofresponses do
+	#table_for Question.includes( :responses, :choices ).find_by_id( question.id ).responses.order( "created_at ASC" ) do | row |
+	table_for Question.includes( :responses, :choices ).find_by_id( question.id ).responses.order(
+(params[:order] ? params[:order] : '').gsub('_asc', ' asc').gsub('_desc', ' desc')
+), sortable: true do
+
+    		column "Response ID", sortable: :id do |q|
+      			q.id
+    		end
+		column "Choice ID", sortable: :choice_id do |q|
+			q.choice_id
+		end
+		column "Choice Title", sortable: :choice_title do |q|
+			q.choice.title
+		end
+		column "CREATED AT", sortable: :created_at do |q|
+			q.created_at
+		end
+    	end
+    end
   end
 
   form do |f|
