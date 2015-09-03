@@ -74,6 +74,7 @@ ActiveAdmin.register Survey do
           x << OpenStruct.new(id: nil, title: "TOTAL", type: nil,  view_count: total_views,  response_count: total_responses)
           table_for x do
             column :id
+            column :uuid 
             column(:title) { |q| q.id ? link_to(q.title, admin_question_path(q)) : q.title  }
             column(:type) { |q| status_tag q.type, :ok if q.id }
             column(:views, class: 'aa-number') { |q| number_with_delimiter q.view_count }
