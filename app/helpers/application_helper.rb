@@ -38,4 +38,8 @@ module ApplicationHelper
   def get_the_app_path
     "https://itunes.apple.com/us/app/statisfy/id918625793?mt=8"
   end
+
+  def time_from_seconds(seconds)
+    DateTime.new.since(seconds)
+  end
 end

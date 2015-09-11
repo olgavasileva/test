@@ -26,7 +26,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def recent_responses?
-    is_owner? && is_pro?
+    is_owner? && (is_pro? || publisher?)
   end
 
   def recent_comments?

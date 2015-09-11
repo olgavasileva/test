@@ -1,0 +1,38 @@
+%i.fa.fa-cog
+Behavioural
+%table
+  %tr
+    %td
+      Sessions
+    %td
+      = report[:sessions]
+  %tr
+    %td
+      Time Per Session
+    %td
+      = time_from_seconds(report[:time_per_session]).strftime('%T')
+  %tr
+    %td
+      Total Session Time
+    %td
+      = "#{report[:total_session_time].div 1.hour}:#{time_from_seconds(report[:total_session_time]).strftime('%M:%S')}"
+  %tr
+    %td
+      Views
+    %td
+      = report[:views]
+  %tr
+    %td
+      Interaction Rate
+    %td
+      = report[:interaction_rate].round(2)
+  %tr
+    %td
+      Total Engagements
+    %td
+      = report[:engagements]
+  %tr
+    %td
+      Total Insights
+    %td
+      = report[:insights]

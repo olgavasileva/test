@@ -136,6 +136,7 @@ class UsersController < ApplicationController
     @analytics = {}
     threads = @surveys.map do |survey|
       Thread.new do
+        # TODO rewrite this to new Report!!!
         @analytics[survey.id] = GoogleAnalyticsReporter.new(@user, question_ids: question_ids[survey.id]).report
       end
     end
@@ -144,37 +145,18 @@ class UsersController < ApplicationController
   end
 
   def publisher_dashboard
-    google_reporter = GoogleAnalyticsReporter.new(@user)
-    report = google_reporter.report
-
-    @campaign_data = [
-        {label: 'Views', value: report[:views]},
-        {label: 'Completes', value: report[:completes]},
-        {label: 'Shares', value: report[:shares]},
-        {label: 'Additional Traffic', value: report[:traffic]},
-        {label: 'Additional Time on Site', value: report[:time]}
-    ]
-
-    @daily_analytics = {
-        views: [],
-        completes: [],
-        shares: [],
-        traffic: [],
-        time: []
+    @days_ago = if params[:days_ago]
+                  params[:days_ago].to_i
+                else
+                  30 # month
+                end
+    date_range = DateRange.new(Date.today - @days_ago.days)
+    emotional_report = EmotionalReport.new(date_range, current_user)
+    behavioural_report = BehaviouralReport.new(date_range, current_user, emotional_report)
+    @report = {
+        emotional: emotional_report,
+        behavioural: behavioural_report
     }
-    month_range = (0..29)
-    threads = month_range.map do |offset|
-      Thread.new do
-        end_date = Date.today - offset.days
-        start_date = end_date - 1
-        report = google_reporter.between_dates(start_date, end_date).report
-
-        @daily_analytics.each_key do |key|
-          @daily_analytics[key] << {day: end_date.to_s, v: report[key]}
-        end
-      end
-    end
-    threads.each {|t| t.join}
     render 'publisher_dashboard', layout: "pixel_admin"
   end
 

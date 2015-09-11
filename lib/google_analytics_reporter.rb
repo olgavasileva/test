@@ -7,19 +7,6 @@ class GoogleAnalyticsReporter
   PATH_TO_KEY_FILE = (Rails.root.join 'certs', 'StatisfyAnalyticsAPIClient-4b494c30b250.p12').freeze
   PROFILE = 'ga:96256016'.freeze
 
-  QUESTIONS_LIMIT = 10
-
-  def initialize(user, params = {})
-    @user = user
-    @start_date = params[:start_date] || Date.today - 5.years
-    @end_date = params[:end_date] || Date.today
-    @question_ids = params[:question_ids]
-
-    if @question_ids
-      @survey_main_questions_ids = @question_ids
-    end
-  end
-
   def report
     report = {}
 
@@ -80,21 +67,6 @@ class GoogleAnalyticsReporter
     self
   end
 
-  private
-
-  def question_ids
-    @question_ids ||= @user.questions.limit(QUESTIONS_LIMIT).pluck(:id)
-  end
-
-  def survey_main_questions_ids
-    @survey_main_questions_ids ||= @user.surveys.limit(QUESTIONS_LIMIT)
-                                       .map { |survey| survey.questions.first }.compact.map(&:id)
-  end
-
-  def get_response(params)
-    query_params = {api_method: api_method}.merge(parameters: params.merge('ids' => PROFILE))
-    client.execute(query_params)
-  end
 
   def client
     self.class.client
@@ -123,6 +95,23 @@ class GoogleAnalyticsReporter
 
   def self.api_method
     @api_method ||= client.discovered_api('analytics', 'v3').data.ga.get
+  end
+
+  def get_response(params)
+    Rails.logger.info('GOOGLE ANALYTICS QUERY: ' + params.inspect)
+    query_params = {api_method: api_method}.merge(parameters: params.merge('ids' => PROFILE))
+    client.execute(query_params)
+  end
+
+  private
+
+  def question_ids
+    @question_ids ||= @user.questions.limit(QUESTIONS_LIMIT).pluck(:id)
+  end
+
+  def survey_main_questions_ids
+    @survey_main_questions_ids ||= @user.surveys.limit(QUESTIONS_LIMIT)
+                                       .map { |survey| survey.questions.first }.compact.map(&:id)
   end
 
 end

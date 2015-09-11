@@ -1,0 +1,28 @@
+%i.fa.fa-cog
+Emotional
+%table
+  %tr
+    %td
+      Reach
+    %td
+      = report[:reach]
+  %tr
+    %td
+      Notes
+    %td
+      = report[:notes]
+  %tr
+    %td
+      Likes
+    %td
+      = report[:likes]
+  %tr
+    %td
+      Share (Reblogs)
+    %td
+      = report[:reblogs]
+  %tr
+    %td
+      Share Rate
+    %td
+      = "#{report[:share_rate].round(2)} %"
