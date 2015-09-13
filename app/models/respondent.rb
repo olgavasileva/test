@@ -228,6 +228,11 @@ class Respondent < ActiveRecord::Base
     false
   end
 
+  def valid_surveys(reload = false)
+    @valid_surveys = nil if reload
+    @valid_surveys ||= surveys.includes(:questions).reject { |survey| survey.questions.empty? }
+  end
+
   private
     def ensure_username
       if username.nil?

@@ -127,20 +127,8 @@ class UsersController < ApplicationController
   end
 
   def publisher_question_packs
-    question_ids = {}
-    @surveys = @user.surveys.reject do |x|
-      reject = x.question_ids.empty?
-      question_ids[x.id] = x.question_ids unless reject
-      reject
-    end
-    @analytics = {}
-    threads = @surveys.map do |survey|
-      Thread.new do
-        # TODO rewrite this to new Report!!!
-        @analytics[survey.id] = GoogleAnalyticsReporter.new(@user, question_ids: question_ids[survey.id]).report
-      end
-    end
-    threads.each { |t| t.join }
+    @surveys = current_user.valid_surveys
+    @analytics = QuestionPackReport.new(DateRange.from_project_start, current_user)
     render layout: 'pixel_admin'
   end
 
@@ -153,11 +141,13 @@ class UsersController < ApplicationController
     date_range = DateRange.new(Date.today - @days_ago.days)
     emotional_report = EmotionalReport.new(date_range, current_user)
     behavioural_report = BehaviouralReport.new(date_range, current_user, emotional_report)
+    cognitive_report = CognitiveReport.new(date_range, current_user)
     @report = {
         emotional: emotional_report,
-        behavioural: behavioural_report
+        behavioural: behavioural_report,
+        cognitive: cognitive_report
     }
-    render 'publisher_dashboard', layout: "pixel_admin"
+    render 'publisher_dashboard', layout: 'pixel_admin'
   end
 
   def new_campaign

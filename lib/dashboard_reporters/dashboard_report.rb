@@ -7,19 +7,28 @@ class DashboardReport
     @google_reporter = GoogleAnalyticsReporter.new
   end
 
-  def get_report
-    raise StandardError, 'Not Implemented'
+  def [](key)
+    set_report
+    @report[key]
   end
 
-  def [](key)
+  def to_h
+    set_report
+  end
+
+  def set_report
     unless @report
       @report = {}
       get_report
     end
-    @report[key]
+    @report
   end
 
   private
+
+  def get_report
+    raise StandardError, 'Not Implemented'
+  end
 
   def get_google_response(params)
     @google_reporter.get_response(params)
@@ -30,7 +39,7 @@ class DashboardReport
   end
 
   def join_regex_rules(elements)
-    '^' + elements.join('$|^').chomp
+    '^' + elements.join('$|^') + '$'
   end
 
   def start_date

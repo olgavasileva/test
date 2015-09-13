@@ -1,4 +1,6 @@
 class EmotionalReport < DashboardReport
+  private
+
   def get_report
     @report[:reach] = reach
     if tumblr_posts_urls.length > 0
@@ -10,8 +12,6 @@ class EmotionalReport < DashboardReport
       @report.merge!({notes: 0, likes: 0, reblogs: 0, share_rate: 0})
     end
   end
-
-  private
 
   def reach
     @user.questions.sum(:view_count)
@@ -47,23 +47,16 @@ class EmotionalReport < DashboardReport
   def tumblr_post_infos
     return @tumblr_post_infos if @tumblr_post_infos
     @tumblr_post_infos = []
-    mutex = Mutex.new
     tumblr_url_regex = /(\w+).tumblr.com\/post\/(\d+)\/?.*/
-    threads = tumblr_posts_urls.map do |url|
-      Thread.new {
-        origin, post_id = url.match(tumblr_url_regex).captures
-        begin
-          response = tumblr_client.posts("#{origin}.tumblr.com", id: post_id, notes_info: true)
-          post = response['posts'].first
-          mutex.synchronize {
-            @tumblr_post_infos << post
-          }
-        rescue
-          # do not add not existing post info
-        end
-      }
+    tumblr_posts_urls.each do |url|
+      origin, post_id = url.match(tumblr_url_regex).captures
+      begin
+        response = tumblr_client.posts("#{origin}.tumblr.com", id: post_id, notes_info: true)
+        post = response['posts'].first
+        @tumblr_post_infos << post
+      rescue
+      end
     end
-    threads.each(&:join)
 
     @tumblr_post_infos
   end

@@ -6,4 +6,8 @@ class DateRange
   def initialize(start_date, end_date = Date.today)
     @start_date, @end_date = start_date, end_date
   end
+
+  def self.from_project_start
+    new(PROJECT_START_DATE)
+  end
 end
