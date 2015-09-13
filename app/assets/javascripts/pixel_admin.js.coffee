@@ -49,6 +49,9 @@
 #= require_tree ./pixel_admin/pages
 #= require gritter
 #= require tinymce-jquery
+#= require redactor/redactor
+#= require redactor/plugins/imagemanager
+#= require redactor/plugins/video
 #= require listicle_unit
 
 # Asyncronously load DOM elements from partials after page is loaded

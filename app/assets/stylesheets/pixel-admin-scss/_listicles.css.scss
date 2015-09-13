@@ -31,12 +31,12 @@
     margin-bottom: 10px;
     width: 100%;
   }
-  .mce-tinymce {
+  .redactor-box {
     min-width: 540px;
     max-width: 540px;
-    img {
-      max-width: 500px !important;
-    }
+  }
+  .redactor-editor {
+    font-weight: initial;
   }
   .hidden {
     display: none;

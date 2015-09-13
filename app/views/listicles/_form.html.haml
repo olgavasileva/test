@@ -5,14 +5,14 @@
         - @listicle.errors.full_messages.each do |error|
           %li= error
     = f.label :title
-    = f.text_field :title, placeholder: 'Title', rel: 'tinymce'
+    = f.text_area :title, placeholder: 'Title', rel: 'redactor'
     %br
     = f.button id: 'add-header', type: 'button', class: "add-editor #{'hidden' if @listicle.header.present?}", onclick: 'showEditor(this)' do
       %i.fa.fa-plus
       Add Header
     = f.label :header, class: ('hidden' if @listicle.header.blank?) do
       Header
-      = f.text_area :header, rel: 'tinymce'
+      = f.text_area :header, rel: 'redactor'
     %br
     - @listicle.questions.each_with_index do |question,index|
       .items
@@ -29,7 +29,7 @@
               = ff.text_field :title
               %br
               = ff.label :question do
-                = ff.text_area :body, rel: 'tinymce'
+                = ff.text_area :body, rel: 'redactor'
     %br
     = f.button id: 'add-item', type: 'button', class: 'add-editor', onclick: 'addItem()' do
       %i.fa.fa-plus
@@ -40,7 +40,7 @@
       Add Footer
     = f.label :footer, class: ('hidden' if @listicle.footer.blank?) do
       Footer
-      = f.text_area :footer, rel: 'tinymce'
+      = f.text_area :footer, rel: 'redactor'
     %br
     = f.submit 'Publish'
   :javascript

@@ -5,12 +5,35 @@ class ListiclePolicy < ApplicationPolicy
     end
   end
 
-  def create?; true; end
-  def new?; true; end
-  def update?; true; end
-  def destroy?; true; end
-  def index?; true; end
-  def image_upload?; true; end
-  def answer_question?; true ;end
-  def embed?; true; end
+  def create?
+    user.publisher?
+  end
+
+  def new?
+    user.publisher?
+  end
+
+  def update?
+    user.publisher?
+  end
+
+  def destroy?
+    user.publisher?
+  end
+
+  def index?
+    user.publisher?
+  end
+
+  def image_upload?
+    user.publisher?
+  end
+
+  def answer_question?;
+    true;
+  end
+
+  def embed?
+    true
+  end
 end
