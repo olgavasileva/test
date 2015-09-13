@@ -11,7 +11,7 @@ itemTemplate = ->
     "<label for=\"listicle_questions_attributes_#{itemIdx}_title\">Title</label>" +
     "<input id=\"listicle_questions_attributes_#{itemIdx}_title\" name=\"listicle[questions_attributes][#{itemIdx}][title]\" type=\"text\">" +
     "<br><label for=\"listicle_questions_attributes_#{itemIdx}_question\"><textarea id=\"listicle_questions_attributes_#{itemIdx}_body\" " +
-    "name=\"listicle[questions_attributes][#{itemIdx}][body]\" rel=\"tinymce\"></textarea></label></fieldset>"
+    "name=\"listicle[questions_attributes][#{itemIdx}][body]\" rel=\"redactor\"></textarea></label></fieldset>"
 
 window.showEditor = (element) ->
   label = $(element).next('label')
@@ -26,7 +26,7 @@ refreshIndexes = ->
 window.addItem = ->
   $items = $('.items')
   $items.append('<div class="item">' + itemTemplate() + '</div>')
-  $items.find('.item:last-child [rel=tinymce]').tinymce editorConfig
+  $items.find('.item:last-child [rel=redactor]').redactor editorConfig
   refreshIndexes()
 
 window.removeItem = (el)->
@@ -40,21 +40,13 @@ window.removeItem = (el)->
   refreshIndexes()
 
 ready = ->
-  itemIdx = $('.item').length
   editorConfig =
-    toolbar: 'fontselect,|,bold,italic,underline,|,formatselect,|,forecolor,backcolor,|,bullist,numlist,outdent,indent,|,undo,redo,|,pastetext,pasteword,selectall,|,uploadimage,media'
-    pagebreak_separator: '<p class=\'page-separator\'>&nbsp;</p>'
-    extended_valid_elements: "iframe[src|frameborder|style|scrolling|class|width|height|name|align]"
-    plugins: ['uploadimage', 'textcolor', 'media']
-    relative_urls: false
-    remove_script_host: false
-    mode: 'exact'
-    statusbar: false
-    uploadimage_form_url: window.tinymceImageUploadPath
-    document_base_url: (if !window.location.origin then window.location.protocol + '//' + window.location.host else window.location.origin) + '/'
+    plugins: ['imagemanager', 'video', 'table', 'fontcolor', 'fontfamily', 'fontsize'],
+    imageUpload: window.imageUploadPath
 
-  $('[rel="tinymce"]').tinymce(editorConfig)
+  $('[rel=redactor]').redactor editorConfig
 
+  itemIdx = $('.item').length
   getCodeTemplate = (link, width = 600, height = 600)->
     "&lt;div style=\"height: #{height}px; width: #{width}px;\"&gt;&lt;iframe width=\"#{width}\" height=\"#{height}\" src=\"#{link}\" frameborder='0' &gt;&lt;/iframe&gt;&lt;div&gt;"
 
@@ -88,5 +80,5 @@ ready = ->
 $ 'document:ready', ready
 $(document).on 'page:load', ready
 
-$(document).on 'page:receive', ->
-  tinymce.remove()
+#$(document).on 'page:receive', ->
+#  tinymce.remove()
