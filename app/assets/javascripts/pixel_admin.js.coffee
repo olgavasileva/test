@@ -52,6 +52,10 @@
 #= require redactor/redactor
 #= require redactor/plugins/imagemanager
 #= require redactor/plugins/video
+#= require redactor/plugins/fontcolor
+#= require redactor/plugins/fontfamily
+#= require redactor/plugins/fontsize
+#= require redactor/plugins/table
 #= require listicle_unit
 
 # Asyncronously load DOM elements from partials after page is loaded

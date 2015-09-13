@@ -41,10 +41,10 @@ window.removeItem = (el)->
 
 ready = ->
   editorConfig =
-    plugins: ['imagemanager'],
-    imageUpload: window.tinymceImageUploadPath
+    plugins: ['imagemanager', 'video', 'table', 'fontcolor', 'fontfamily', 'fontsize'],
+    imageUpload: window.imageUploadPath
 
-  console.log window.tinymceImageUploadPath
+  console.log window.imageUploadPath
 
   $('[rel=redactor]').redactor editorConfig
 
