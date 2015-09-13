@@ -1,6 +1,7 @@
 class ListiclesController < ApplicationController
 
   before_action :load_and_authorize, only: [:show, :edit, :update, :destroy]
+  skip_before_action :verify_authenticity_token, only: [:image_upload]
 
   rescue_from ActiveRecord::RecordNotFound do
     head 404
@@ -50,9 +51,7 @@ class ListiclesController < ApplicationController
     uploader = ListicleQuestionImageUploader.new
     uploader.store!(params[:file])
     render json: {
-               image: {
-                   url: uploader.to_s
-               }
+               filelink: uploader.to_s
            }, content_type: 'text/html'
   end
 

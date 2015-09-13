@@ -44,8 +44,6 @@ ready = ->
     plugins: ['imagemanager', 'video', 'table', 'fontcolor', 'fontfamily', 'fontsize'],
     imageUpload: window.imageUploadPath
 
-  console.log window.imageUploadPath
-
   $('[rel=redactor]').redactor editorConfig
 
   itemIdx = $('.item').length
