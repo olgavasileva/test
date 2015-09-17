@@ -11,12 +11,13 @@
   - @listicle.questions.sort_by(&:score).reverse.each_with_index do |question, index|
     .voting
       = link_to answer_listicle_question_path(question_id: question.id, is_up: 1), method: :post, class: 'vote' do
-        %i.fa.fa-chevron-up
+        %i.fa.fa-chevron-up.fa-2x
       .score= question.score
       = link_to answer_listicle_question_path(question_id: question.id, is_up: 0), method: :post, class: 'vote' do
-        %i.fa.fa-chevron-down
+        %i.fa.fa-chevron-down.fa-2x
     %strong= "#{index+1}. #{h question.title}"
     = h question.body.html_safe
     %br
+    %hr
   - if @listicle.footer.present?
     = @listicle.footer.html_safe

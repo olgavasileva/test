@@ -57,6 +57,7 @@
     text-align: center;
     .score {
       color: #3EACE7;
+      margin-left: 10px;
       font-weight: bold;
     }
     .vote {
@@ -73,7 +74,7 @@
 }
 
 #listicles {
-  a {
+  a.listicle-title {
     max-height: 18px;
     display: block;
     overflow: hidden;
