@@ -4,16 +4,16 @@ class DashboardReport
 
   def initialize(date_range, user)
     @date_range, @user = date_range, user
-    @google_reporter = GoogleAnalyticsReporter.new
+    @google_reporter = GoogleAnalyticReporter.new
+    set_report
   end
 
   def [](key)
-    set_report
     @report[key]
   end
 
   def to_h
-    set_report
+    @report
   end
 
   def set_report

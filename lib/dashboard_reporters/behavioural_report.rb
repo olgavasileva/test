@@ -1,8 +1,8 @@
 class BehaviouralReport < DashboardReport
 
   def initialize(date_range, user, emotional_report)
-    super(date_range, user)
     @emotional_report = emotional_report
+    super(date_range, user)
   end
 
   private
@@ -12,9 +12,8 @@ class BehaviouralReport < DashboardReport
     @report[:time_per_session] = time_per_session
     @report[:total_session_time] = @sessions_duration
     @report[:views] = views
-    @report[:insights] = 0 #not implemented
-    @report[:engagements] = @report[:insights] + @emotional_report[:notes] +
-        @emotional_report[:reblogs] + @emotional_report[:reblogs]
+    @report[:insights] = insights
+    @report[:engagements] = @report[:insights] + @emotional_report[:notes] + @emotional_report[:reblogs]
     @report[:interaction_rate] = @report[:sessions] > 0 ? @report[:engagements].to_f / @report[:sessions] : 0
   end
 
@@ -27,7 +26,7 @@ class BehaviouralReport < DashboardReport
                                      'filters' => "ga:eventLabel=~#{join_regex_rules(question_ids)}",
                                      'metrics' => 'ga:sessions')
       count += begin
-        response.data['rows'].inject(0) { |result, x| result + x[2].to_i }
+        response.data['rows'].inject(0) { |result, x| result + x[2].to_i }.to_i
       rescue
         0
       end
@@ -46,12 +45,12 @@ class BehaviouralReport < DashboardReport
                                      'filters' => "ga:eventLabel=~#{join_regex_rules(question_ids)}",
                                      'metrics' => 'ga:sessions,ga:sessionsDuration')
       session_count += begin
-        response.data['rows'].inject(0) { |result, x| result + x[1].to_i }
+        response.data['rows'].inject(0) { |result, x| result + x[1].to_i }.to_i
       rescue
         0
       end
       @sessions_duration += begin
-        response.data['rows'].inject(0) { |result, x| result + x[2].to_i }
+        response.data['rows'].inject(0) { |result, x| result + x[2].to_i }.to_i
       rescue
         0
       end
@@ -69,13 +68,18 @@ class BehaviouralReport < DashboardReport
                                      'filters' => "ga:eventLabel=~#{join_regex_rules(question_ids)}",
                                      'metrics' => 'ga:pageviews')
       views += begin
-        response.data['rows'].inject(0) { |result, x| result + x[1].to_i }
+        response.data['rows'].inject(0) { |result, x| result + x[1].to_i }.to_i
       rescue
         0
       end
     end
 
     views
+  end
+
+  def insights
+    @user.surveys.includes(:questions => :responses)
+        .flat_map { |survey| survey.questions.flat_map(&:responses) }.length
   end
 
 end

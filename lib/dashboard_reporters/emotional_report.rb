@@ -18,15 +18,15 @@ class EmotionalReport < DashboardReport
   end
 
   def notes
-    tumblr_post_infos.map { |post_info| post_info['note_count'].to_i }.inject(:+)
+    tumblr_post_infos.map { |post_info| post_info['note_count'].to_i }.inject(:+).to_i
   end
 
   def likes
-    notes_infos.map { |note| note['type'] == 'like' ? 1 : 0 }.inject(:+)
+    notes_infos.map { |note| note['type'] == 'like' ? 1 : 0 }.inject(:+).to_i
   end
 
   def reblogs
-    notes_infos.map { |note| note['type'] == 'reblog' ? 1 : 0 }.inject(:+)
+    notes_infos.map { |note| note['type'] == 'reblog' ? 1 : 0 }.inject(:+).to_i
   end
 
   def notes_infos
