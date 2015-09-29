@@ -21,8 +21,10 @@
   - @listicles.each do |listicle|
     .listicle
       = link_to text_from_html(listicle.get_intro), show_listicle_url(listicle), target: '_blank', class: 'listicle-title'
-      = link_to edit_listicle_path(listicle), class: 'preview' do
-        %iframe{src: show_listicle_url(listicle), height: 600, width: 600, scrolling: 'no', frameborder: 0}
+      %a.preview{href: edit_listicle_path(listicle), target: '_blank'}
+        = listicle.get_intro.html_safe
+        - listicle.questions.sort_by(&:score).reverse.each do |question|
+          = h question.body.html_safe
       .listicle-buttons
         = link_to edit_listicle_path(listicle) do
           %i.fa.fa-pencil

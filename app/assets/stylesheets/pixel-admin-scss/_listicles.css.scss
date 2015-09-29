@@ -6,6 +6,7 @@
     bottom: -50px;
     position: relative;
     font-weight: bold;
+    font-size: 14px;
   }
   .delete-item {
     left: -110px;
@@ -13,6 +14,8 @@
     border: none;
     bottom: -30px;
     position: relative;
+    font-size: 11px;
+    color: #9d9d9d;
   }
   .add-editor {
     margin: 10px auto;
@@ -96,6 +99,8 @@
     overflow: hidden;
   }
   .preview {
+    display: block;
+    color: initial;
     height: 150px;
     width: 150px;
     max-height: 150px;
