@@ -15,8 +15,8 @@
       .score= question.score
       = link_to answer_listicle_question_path(question_id: question.id, is_up: 0), method: :post, class: 'vote' do
         %i.fa.fa-chevron-down.fa-2x
-    %strong= "#{index+1}. #{h question.title}"
-    = h question.body.html_safe
+    .item-content
+      = h question.body.html_safe
     %br
     %hr
   - if @listicle.footer.present?
