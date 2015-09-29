@@ -9,7 +9,6 @@ class ListicleQuestion < ActiveRecord::Base
   has_many :responses, class_name: 'ListicleResponse', foreign_key: :question_id
 
   def score
-    score = responses.positive.count - responses.negative.count
-    [score, 0].max
+    responses.positive.count - responses.negative.count
   end
 end
