@@ -11,22 +11,17 @@
   %table.table.table-striped.table-bordered#campaigns{cellpadding:0, cellspacing:0, border:0}
     %thead
       %tr
-        %th.bg-success{colspan:3} These are all of your listicles
-        %th.bg-default{colspan:4} Engagements
-      %tr
-        %th Listicles
-        %th Additional Time on Site
-        %th Additional Traffic
-        %th Shares
-        %th Views
-        %th Completes
-        %th
-    %tbody
+        %th.bg-success These are all of your listicles
 #listicles
+  .listicle
+    =link_to new_listicle_path, id: 'new-listicle' do
+      %i.fa.fa-2x.fa-plus
+      %br
+      New Listicle
   - @listicles.each do |listicle|
     .listicle
-      = link_to text_from_html(listicle.get_intro), listicle_path(listicle), class: 'listicle-title'
-      .preview
+      = link_to text_from_html(listicle.get_intro), show_listicle_url(listicle), target: '_blank', class: 'listicle-title'
+      = link_to edit_listicle_path(listicle), class: 'preview' do
         %iframe{src: show_listicle_url(listicle), height: 600, width: 600, scrolling: 'no', frameborder: 0}
       .listicle-buttons
         = link_to edit_listicle_path(listicle) do

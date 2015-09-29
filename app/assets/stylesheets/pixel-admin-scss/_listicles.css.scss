@@ -8,14 +8,11 @@
     font-weight: bold;
   }
   .delete-item {
-    right: -50px;
+    left: -110px;
     background: none;
     border: none;
-    bottom: -25px;
+    bottom: -30px;
     position: relative;
-    float: right;
-    color: red;
-    font-size: 26px;
   }
   .add-editor {
     margin: 10px auto;
@@ -74,6 +71,15 @@
 }
 
 #listicles {
+  #new-listicle {
+    color: black;
+    i {
+      margin-left: 27px;
+    }
+    display: block;
+    width: 75px;
+    margin: 40% auto;
+  }
   a.listicle-title {
     max-height: 18px;
     display: block;

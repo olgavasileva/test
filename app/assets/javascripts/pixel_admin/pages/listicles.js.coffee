@@ -3,8 +3,8 @@ editorConfig = null
 itemTemplate = ->
   itemIdx += 1
 
-  "<fieldset id=\"#{itemIdx - 1}_fieldset\"><div class=\"title\">Item ##{itemIdx}</div><br>" +
-    '<button class="delete-item" onclick=\"removeItem(this)\" type="button"><i class="fa fa-times"></i></button>' +
+  "<fieldset id=\"#{itemIdx - 1}_fieldset\"><div class='left-side'><div class=\"title\">Item ##{itemIdx}</div><br>" +
+    '<button class="delete-item" onclick=\"removeItem(this)\" type="button">[X] Remove Item</button></div>' +
     "<input name=\"listicle[questions_attributes][#{itemIdx}][_destroy]\" type=\"hidden\" value=\"0\">" +
     "<input class=\"hidden\" id=\"listicle_questions_attributes_#{itemIdx}__destroy\" " +
     " name=\"listicle[questions_attributes][#{itemIdx}][_destroy]\" type=\"checkbox\" value=\"1\">" +
