@@ -4,18 +4,12 @@
       %ul.errors
         - @listicle.errors.full_messages.each do |error|
           %li= error
-    = f.label :title
-    = f.text_area :title, placeholder: 'Title', rel: 'redactor'
+    = f.label :intro do
+      Intro
+      = f.text_area :intro, rel: 'redactor'
     %br
-    = f.button id: 'add-header', type: 'button', class: "add-editor #{'hidden' if @listicle.header.present?}", onclick: 'showEditor(this)' do
-      %i.fa.fa-plus
-      Add Header
-    = f.label :header, class: ('hidden' if @listicle.header.blank?) do
-      Header
-      = f.text_area :header, rel: 'redactor'
-    %br
-    - @listicle.questions.each_with_index do |question,index|
-      .items
+    .items
+      - @listicle.questions.each_with_index do |question,index|
         = f.fields_for :questions, question do |ff|
           .item
             - unless question.new_record?
@@ -25,7 +19,6 @@
               %button.delete-item{type: 'button', onclick: 'removeItem(this)'}
                 %i.fa.fa-times
                 = ff.check_box :_destroy, value: 0, class: 'hidden'
-              %br
               = ff.label :question do
                 = ff.text_area :body, rel: 'redactor'
     %br

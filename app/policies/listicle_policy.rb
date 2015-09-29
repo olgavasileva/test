@@ -29,8 +29,8 @@ class ListiclePolicy < ApplicationPolicy
     user.publisher?
   end
 
-  def answer_question?;
-    true;
+  def answer_question?
+    true
   end
 
   def embed?

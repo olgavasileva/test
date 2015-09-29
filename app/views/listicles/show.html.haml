@@ -3,12 +3,8 @@
     obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
   }
 #listicle-show
-  %strong= @listicle.title.html_safe
-  %br
-  - if @listicle.header.present?
-    = @listicle.header.html_safe
-    %br
-  - @listicle.questions.sort_by(&:score).reverse.each_with_index do |question, index|
+  = @listicle.get_intro.html_safe
+  - @listicle.questions.sort_by(&:score).reverse.each do |question|
     .voting
       = link_to answer_listicle_question_path(question_id: question.id, is_up: 1), method: :post, class: 'vote' do
         %i.fa.fa-chevron-up.fa-2x

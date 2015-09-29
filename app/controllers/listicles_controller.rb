@@ -100,7 +100,7 @@ class ListiclesController < ApplicationController
   end
 
   def listicle_params
-    params.require(:listicle).permit :title, :header, :footer, :questions_attributes => [:title, :body, :_destroy, :id]
+    params.require(:listicle).permit :intro, :footer, :questions_attributes => [:body, :_destroy, :id]
   end
 
   def redirect_to_index

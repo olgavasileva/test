@@ -25,7 +25,7 @@
 #listicles
   - @listicles.each do |listicle|
     .listicle
-      = link_to text_from_html(listicle.title), listicle_path(listicle), class: 'listicle-title'
+      = link_to text_from_html(listicle.get_intro), listicle_path(listicle), class: 'listicle-title'
       .preview
         %iframe{src: show_listicle_url(listicle), height: 600, width: 600, scrolling: 'no', frameborder: 0}
       .listicle-buttons

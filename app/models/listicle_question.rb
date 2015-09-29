@@ -1,6 +1,6 @@
 class ListicleQuestion < ActiveRecord::Base
 
-  validates_presence_of :body, :title
+  validates_presence_of :body
 
   belongs_to :listicle, class_name: 'Listicle'
 

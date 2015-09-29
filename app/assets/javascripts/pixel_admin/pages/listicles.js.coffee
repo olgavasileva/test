@@ -8,9 +8,7 @@ itemTemplate = ->
     "<input name=\"listicle[questions_attributes][#{itemIdx}][_destroy]\" type=\"hidden\" value=\"0\">" +
     "<input class=\"hidden\" id=\"listicle_questions_attributes_#{itemIdx}__destroy\" " +
     " name=\"listicle[questions_attributes][#{itemIdx}][_destroy]\" type=\"checkbox\" value=\"1\">" +
-    "<label for=\"listicle_questions_attributes_#{itemIdx}_title\">Title</label>" +
-    "<input id=\"listicle_questions_attributes_#{itemIdx}_title\" name=\"listicle[questions_attributes][#{itemIdx}][title]\" type=\"text\">" +
-    "<br><label for=\"listicle_questions_attributes_#{itemIdx}_question\"><textarea id=\"listicle_questions_attributes_#{itemIdx}_body\" " +
+    "<label for=\"listicle_questions_attributes_#{itemIdx}_question\"><textarea id=\"listicle_questions_attributes_#{itemIdx}_body\" " +
     "name=\"listicle[questions_attributes][#{itemIdx}][body]\" rel=\"redactor\"></textarea></label></fieldset>"
 
 window.showEditor = (element) ->
@@ -24,9 +22,9 @@ refreshIndexes = ->
 
 
 window.addItem = ->
-  $items = $('.items')
-  $items.append('<div class="item">' + itemTemplate() + '</div>')
-  $items.find('.item:last-child [rel=redactor]').redactor editorConfig
+  $el = $('<div class="item">' + itemTemplate() + '</div>')
+  $('.items').append($el)
+  $el.find('[rel=redactor]').redactor editorConfig
   refreshIndexes()
 
 window.removeItem = (el)->
