@@ -49,8 +49,8 @@ class EmotionalReport < DashboardReport
     @tumblr_post_infos = []
     tumblr_url_regex = /(\w+).tumblr.com\/post\/(\d+)\/?.*/
     tumblr_posts_urls.each do |url|
-      origin, post_id = url.match(tumblr_url_regex).captures
       begin
+        origin, post_id = url.match(tumblr_url_regex).captures
         response = tumblr_client.posts("#{origin}.tumblr.com", id: post_id, notes_info: true)
         post = response['posts'].first
         @tumblr_post_infos << post
