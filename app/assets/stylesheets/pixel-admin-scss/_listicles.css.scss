@@ -87,7 +87,6 @@
   }
   a.listicle-title {
     max-height: 18px;
-    display: block;
     overflow: hidden;
     max-width: 150px;
   }
@@ -112,9 +111,6 @@
   }
   iframe {
     margin-left: -105px;
-  }
-  .panel-heading-controls {
-    margin-top: -20px;
   }
   .panel-body {
     height: 220px;
