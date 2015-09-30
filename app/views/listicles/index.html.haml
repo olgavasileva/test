@@ -13,25 +13,51 @@
       %tr
         %th.bg-success These are all of your listicles
 #listicles
-  .listicle
-    =link_to new_listicle_path, id: 'new-listicle' do
-      %i.fa.fa-2x.fa-plus
-      %br
-      New Listicle
-  - @listicles.each do |listicle|
-    .listicle
-      = link_to text_from_html(listicle.get_intro), show_listicle_url(listicle), target: '_blank', class: 'listicle-title'
-      %a.preview{href: edit_listicle_path(listicle), target: '_blank'}
-        = listicle.get_intro.html_safe
-        - listicle.questions.sort_by(&:score).reverse.each do |question|
-          = h question.body.html_safe
-      .listicle-buttons
-        = link_to edit_listicle_path(listicle) do
-          %i.fa.fa-pencil
-        = link_to listicle_path(listicle), method: :delete, data: {confirm: 'Do you want to remove this listicle?'} do
-          %i.fa.fa-times{style: 'color: red'}
-        = link_to show_listicle_url(listicle), class: 'embed-code' do
-          %i.fa.fa-file-code-o
-        = link_to show_listicle_url(listicle), class: 'preview-button' do
-          %i.fa.fa-eye
+  - @listicles = [nil] + @listicles.to_a
+  - @listicles.each_slice(3).each_with_index do |listicles, i|
+    .row
+      - listicles.each_with_index do |listicle, j|
+        .col-md-3
+          .panel
+            - if i == 0 && j == 0
+              .panel-heading
+                %span.panel-title
+                  &nbsp;
+              .panel-body
+                = link_to new_listicle_path, id: 'new-listicle' do
+                  %i.fa.fa-2x.fa-plus
+                  %br
+                  New Listicle
+            - else
+              .panel-heading
+                %span.panel-title
+                  = link_to text_from_html(listicle.get_intro),
+                  show_listicle_url(listicle), target: '_blank', class: 'listicle-title'
+                .panel-heading-controls
+                  .btn-group.btn-group-xs
+                    %button.btn.btn-info.dropdown-toggle{type: 'button', 'data-toggle' => 'dropdown'}
+                      %i.fa.fa-gear
+                    %ul.dropdown-menu.dropdown-menu-right
+                      %li.dropdown-header
+                        Menu
+                      %li.divider
+                      %li
+                        = link_to 'Edit', edit_listicle_path(listicle)
+                      %li
+                        = link_to 'View', show_listicle_url(listicle), class: 'preview-button'
+                      %li
+                        = link_to 'Get Code', show_listicle_url(listicle), class: 'embed-code'
+                      %li
+                        = link_to 'Delete', listicle_path(listicle), method: :delete, data: {confirm: 'Do you want to remove this listicle?'}
+              .panel-body
+                %a.preview{href: edit_listicle_path(listicle), target: '_blank'}
+                = listicle.get_intro.html_safe
+                - listicle.questions.sort_by(&:score).reverse.each do |question|
+                  = h question.body.html_safe
+    -#.listicle
+    -#  = link_to text_from_html(listicle.get_intro), show_listicle_url(listicle), target: '_blank', class: 'listicle-title'
+      -#%a.preview{href: edit_listicle_path(listicle), target: '_blank'}
+      -#  = listicle.get_intro.html_safe
+      -#  - listicle.questions.sort_by(&:score).reverse.each do |question|
+      -#    = h question.body.html_safe
   #dialog

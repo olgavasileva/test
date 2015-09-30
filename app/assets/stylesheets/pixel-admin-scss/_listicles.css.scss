@@ -74,6 +74,8 @@
 }
 
 #listicles {
+  margin: 0 auto;
+  width: 80%;
   #new-listicle {
     color: black;
     i {
@@ -81,7 +83,7 @@
     }
     display: block;
     width: 75px;
-    margin: 40% auto;
+    margin: 60px auto 0;
   }
   a.listicle-title {
     max-height: 18px;
@@ -105,10 +107,19 @@
     width: 150px;
     max-height: 150px;
     overflow: hidden;
+    position: absolute;
+    margin-top: 5px;
   }
   iframe {
     margin-left: -105px;
   }
+  .panel-heading-controls {
+    margin-top: -20px;
+  }
+  .panel-body {
+    height: 220px;
+  }
+
   .listicle-buttons {
     font-size: 20px;
   }
