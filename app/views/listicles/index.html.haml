@@ -17,7 +17,7 @@
   - @listicles.each_slice(3).each_with_index do |listicles, i|
     .row
       - listicles.each_with_index do |listicle, j|
-        .col-md-3
+        .col-md-4
           .panel
             - if i == 0 && j == 0
               .panel-heading
@@ -31,7 +31,7 @@
             - else
               .panel-heading
                 %span.panel-title
-                  = link_to text_from_html(listicle.get_intro),
+                  = link_to text_or_empty_symbol(limit_text(text_from_html(listicle.get_intro), 25)),
                   show_listicle_url(listicle), target: '_blank', class: 'listicle-title'
                 .panel-heading-controls
                   .btn-group.btn-group-xs
@@ -53,10 +53,4 @@
                 %a.preview{href: edit_listicle_path(listicle), target: '_blank'}
                 - listicle.questions.sort_by(&:score).reverse.each do |question|
                   = h question.body.html_safe
-    -#.listicle
-    -#  = link_to text_from_html(listicle.get_intro), show_listicle_url(listicle), target: '_blank', class: 'listicle-title'
-      -#%a.preview{href: edit_listicle_path(listicle), target: '_blank'}
-      -#  = listicle.get_intro.html_safe
-      -#  - listicle.questions.sort_by(&:score).reverse.each do |question|
-      -#    = h question.body.html_safe
   #dialog
