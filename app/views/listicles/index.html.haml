@@ -51,7 +51,6 @@
                         = link_to 'Delete', listicle_path(listicle), method: :delete, data: {confirm: 'Do you want to remove this listicle?'}
               .panel-body
                 %a.preview{href: edit_listicle_path(listicle), target: '_blank'}
-                = listicle.get_intro.html_safe
                 - listicle.questions.sort_by(&:score).reverse.each do |question|
                   = h question.body.html_safe
     -#.listicle
