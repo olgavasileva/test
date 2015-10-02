@@ -56,18 +56,24 @@ ready = ->
     href = $el.attr('href')
 
     $('#dialog').html "<div><label>Height: <input type='number' id='iframe-height' style='font-weight: normal; width: 70px' value='600'></label>" +
+        "<div><label>Width: <input type='number' id='iframe-width' style='font-weight: normal; width: 70px' value='600'></label><br />" +
         "&nbsp;<a href='" + href + "' id='preview-dialog'><i class='fa fa-eye'></i> Preview</a>" +
         "<br><br><pre id='iframe-code'>#{getCodeTemplate(href)}</pre></div>"
 
     $('#preview-dialog').click (e)->
       e.preventDefault()
       e.stopPropagation()
-      window.open($(this).attr('href'), "_blank", "status=no, width=620, height=" + $('#iframe-height').val() + ", resizable=yes," +
+      width = (parseInt($('#iframe-width').val()) + 20)
+      height = $('#iframe-height').val()
+      window.open($(this).attr('href'), "_blank", "status=no, width=" + width + ", height=" + height + ", resizable=yes," +
           " toolbar=no, menubar=no, scrollbars=yes, location=no, directories=no")
 
     $('#dialog').dialog()
-    $("#iframe-height").keyup ->
-      $('#iframe-code').html getCodeTemplate(href, 600, $(this).val())
+
+    changeCode = ->
+      $('#iframe-code').html getCodeTemplate(href, $('#iframe-width').val(), $('#iframe-height').val())
+    $("#iframe-height").change(changeCode)
+    $("#iframe-width").change(changeCode)
 
   $('.preview-button').click (e)->
     e.preventDefault()
