@@ -1,7 +1,6 @@
 .panel
   .panel-heading
-    %h2.panel-title
-      .row
-        .col-sm-6
-          = "Edit Listicle: #{text_from_html(@listicle.get_intro)}"
-= render partial: 'form', listicle: @listicle
+    .panel-title
+      %span= "Edit Listicle: #{text_from_html(@listicle.get_intro)}"
+  .panel-body{style: 'padding-top: 20px'}
+    = render partial: 'form', listicle: @listicle

@@ -24,7 +24,7 @@
                 %span.panel-title
                   &nbsp;
               .panel-body
-                = link_to new_listicle_path, id: 'new-listicle' do
+                = link_to new_listicle_path(current_user), id: 'new-listicle' do
                   %i.fa.fa-2x.fa-plus
                   %br
                   New Listicle
@@ -42,15 +42,15 @@
                         Menu
                       %li.divider
                       %li
-                        = link_to 'Edit', edit_listicle_path(listicle)
+                        = link_to 'Edit', edit_listicle_path(current_user, listicle)
                       %li
                         = link_to 'View', show_listicle_url(listicle), class: 'preview-button'
                       %li
                         = link_to 'Get Code', show_listicle_url(listicle), class: 'embed-code'
                       %li
-                        = link_to 'Delete', listicle_path(listicle), method: :delete, data: {confirm: 'Do you want to remove this listicle?'}
+                        = link_to 'Delete', listicle_path(current_user, listicle), method: :delete, data: {confirm: 'Do you want to remove this listicle?'}
               .panel-body
-                %a.preview{href: edit_listicle_path(listicle), target: '_blank'}
+                %a.preview{href: edit_listicle_path(current_user, listicle), target: '_blank'}
                 - listicle.questions.sort_by(&:score).reverse.each do |question|
                   = h question.body.html_safe
   #dialog

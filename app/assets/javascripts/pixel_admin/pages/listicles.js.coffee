@@ -37,12 +37,12 @@ window.removeItem = (el)->
     $el.find('[type="hidden"]').val(1)
   refreshIndexes()
 
-ready = ->
-  editorConfig =
-    plugins: ['imagemanager', 'video', 'table', 'fontcolor', 'fontfamily', 'fontsize'],
-    imageUpload: window.imageUploadPath
+window.editorConfig =
+  plugins: ['imagemanager', 'video', 'table', 'fontcolor', 'fontfamily', 'fontsize'],
+  imageUpload: window.imageUploadPath
 
-  $('[rel=redactor]').redactor editorConfig
+ready = ->
+  $('[rel=redactor]').redactor window.editorConfig
 
   itemIdx = $('.item').length
   getCodeTemplate = (link, width = 600, height = 600)->

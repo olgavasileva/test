@@ -18,7 +18,7 @@ class ListiclesController < ApplicationController
   end
 
   def new
-    @listicle = Listicle.new
+    @listicle = current_user.listicles.new
     @listicle.questions.build
     authorize @listicle
   end
@@ -34,6 +34,18 @@ class ListiclesController < ApplicationController
     else
       render :new
     end
+  end
+
+  def basic_form
+    if params[:listicle_id]
+      @listicle = current_user.listicles.find(params[:listicle_id])
+    else
+      @listicle = current_user.listicles.build
+      @listicle.questions.build
+    end
+
+    authorize @listicle
+    render partial: 'basic_form'
   end
 
   def update

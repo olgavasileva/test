@@ -1,6 +1,6 @@
 .panel
   .panel-heading
-    %h2.panel-title
-      .row
-        .col-sm-6 Create New Listicle
-= render partial: 'form', listicle: @listicle
+    .panel-title
+      %span Create New Listicle
+  .panel-body{style: 'padding-top: 20px'}
+    = render partial: 'form', listicle: @listicle

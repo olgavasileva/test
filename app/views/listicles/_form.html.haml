@@ -1,41 +1,14 @@
-#listicle-form
-  = form_for @listicle do |f|
-    - if @listicle.errors.any?
-      %ul.errors
-        - @listicle.errors.full_messages.each do |error|
-          %li= error
-    = f.label :intro do
-      Intro
-      = f.text_area :intro, rel: 'redactor'
-    %br
-    .items
-      - @listicle.questions.each_with_index do |question,index|
-        = f.fields_for :questions, question do |ff|
-          .item
-            - unless question.new_record?
-              = ff.hidden_field :id, class: 'item-id-field'
-            %fieldset{id: "#{index}_fieldset"}
-              .left-side
-                .title
-                  = "Item ##{index + 1}"
-                %br
-                %button.delete-item{type: 'button', onclick: 'removeItem(this)'}
-                  [X] Remove Item
-                  = ff.check_box :_destroy, value: 0, class: 'hidden'
-              = ff.label :question do
-                = ff.text_area :body, rel: 'redactor'
-    %br
-    = f.button id: 'add-item', type: 'button', class: 'add-editor', onclick: 'addItem()' do
-      %i.fa.fa-plus
-      Add item
-    %br
-    = f.button id: 'add-footer', type: 'button', class: "add-editor #{'hidden' if @listicle.footer.present?}", onclick: 'showEditor(this)' do
-      %i.fa.fa-plus
-      Add Footer
-    = f.label :footer, class: ('hidden' if @listicle.footer.blank?) do
-      Footer
-      = f.text_area :footer, rel: 'redactor'
-    %br
-    = f.submit 'Publish'
-  :javascript
-    window.imageUploadPath = "#{image_upload_listicles_path(current_user)}"
+-##listicle-id= @listicle.id
+%ul.nav.nav-tabs
+  %li.active
+    = link_to 'Basic', '#listicle-form', 'data-toggle' => 'tab', id: 'listicle-form-tab'
+  %li
+    = link_to 'Advanced', '#advanced-listicle-form', 'data-toggle' => 'tab', id: 'advanced-listicle-form-tab'
+.tab-content.tab-content-bordered
+  #listicle-form.tab-pane.active
+    = render partial: 'basic_form', locals: {listicle: @listicle}
+  #advanced-listicle-form.tab-pane
+    -#= render partial: 'advanced_form', locals: {listicle: @listicle}
+= javascript_include_tag 'listicles_form'
+:javascript
+  window.imageUploadPath = "#{image_upload_listicles_path(current_user)}"

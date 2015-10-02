@@ -36,4 +36,8 @@ class ListiclePolicy < ApplicationPolicy
   def embed?
     true
   end
+
+  def basic_form?
+    user.publisher?
+  end
 end

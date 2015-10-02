@@ -15,4 +15,11 @@ module ListicleHelper
   def text_or_empty_symbol(text)
     text.nil? || text.empty? ? '&nbsp;' : text
   end
+
+  def advanced_template_text(listicle)
+    template_text = "=intro\n#{listicle.get_intro.html_safe}\n"
+    listicle.questions.each { |q| template_text += "=item(#{q.id})\n#{q.body.html_safe}\n" }
+    template_text += "=footer\n#{listicle.footer.html_safe}"
+    template_text
+  end
 end
