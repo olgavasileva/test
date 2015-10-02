@@ -62,5 +62,6 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :pro_segments, '<i class="menu-icon fa fa-cubes"></i><span class="mm-text">Segments</span>'.html_safe, [current_user, :segments]
     primary.item :pro_analytics, '<i class="menu-icon fa fa-bar-chart-o"></i><span class="mm-text">Analytics</span>'.html_safe, [:analytics, current_user]
     primary.item :pro_create_campaign, '<i class="menu-icon fa fa-plus-square"></i><span class="mm-text">Create Campaign</span>'.html_safe, [:new_question, current_user]
+    primary.item :pro_listicles, '<i class="menu-icon fa fa-file-code-o"></i><span class="mm-text">Listicles</span>'.html_safe, listicles_path
   end
 end
