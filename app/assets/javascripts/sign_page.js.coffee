@@ -18,5 +18,5 @@ $(document).ready ->
       $img.css
         height: '100%'
         width: 'auto'
-  resizeBg()
   $(window).on 'resize', resizeBg
+  $(window).resize()

@@ -1,23 +1,23 @@
+- content_for :title do
+  Sign In - Statisfy
 .signin-container
   .signin-info
     = link_to root_path, class: 'logo' do
       = image_tag asset_path('statisfy-logo-white.png')
-       
   .signin-form
     = devise_error_messages!
-    = form_for resource, as: resource_name, url: session_path(resource_name), id: 'signin-form_id', :novalidate => "novalidate" do |f|
+    = form_for resource, as: resource_name, url: session_path(resource_name), id: 'signin-form_id', novalidate: 'novalidate' do |f|
       .signin-text
         %span Sign In to your account
       .form-group.w-icon
-        = f.text_field :login, autofocus: true, placeholder:"Username or Email", class: %w{form-control input-lg}, id: 'username_id', :autocomplete => "off"
+        = f.text_field :login, autofocus: true, placeholder: 'Username or Email', class: 'form-control input-lg', id: 'username_id', autocomplete: 'off'
         %span.fa.fa-user.signin-form-icon
       .form-group.w-icon
-        = f.password_field :password, autocomplete: "off", placeholder: "Password", class:%w{form-control input-lg}, id: 'password_id'
+        = f.password_field :password, autocomplete: 'off', placeholder: 'Password', class: 'form-control input-lg', id: 'password_id'
         %span.fa.fa-lock.signin-form-icon
       .form-actions
         = f.submit 'SIGN IN', class: 'signin-btn bg-primary'
         %a#forgot-password-link.forgot-password{:href => '#'} Forgot your password?
-    -#= link_to 'Forgot your password?', new_user_password_path, id: 'forgot-password-link', class: 'forgot-password'
     / "Sign In with" block
     .signin-with
     / Facebook
