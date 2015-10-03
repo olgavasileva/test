@@ -84,7 +84,14 @@ class ApplicationController < ActionController::Base
       if devise_controller?
         case resource_name
         when :user
-          "clean_canvas"
+          case params[:action]
+            when 'new'
+              'sign_page'
+            when 'create'
+              'sign_page'
+            else
+              'clean_canvas'
+        end
         when :partner
           "pixel_admin"
         end

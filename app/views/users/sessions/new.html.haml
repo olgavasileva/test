@@ -1,21 +1,43 @@
-#sign_in2
-  .container
-    .section_header
-      %h3
-    .row.login
-      .col-sm-6.col-sm-push-3.signin_box
-        .box
-          .box_cont
-            .section_header
-              %h3 Sign In
-            .form
-              = form_for resource, as: resource_name, url: session_path(resource_name), class: "form-inline" do |f|
-                = devise_error_messages!
-                = f.text_field :login, autofocus: true, placeholder:"Username or Email", class:%w{form-control input-lg}
-                = f.password_field :password, autocomplete: "off", placeholder: "Password", class:%w{form-control input-lg}
-                = f.submit "sign in"
-                .forgot
-                  %span Don’t have an account?
-                  =link_to "Sign up", new_user_registration_path
-                  %br
-                  =link_to "Forgot your password?", new_user_password_path
+.signin-info
+  = link_to root_path, class: 'logo' do
+    = image_tag asset_path('statisfy-logo-white.png')
+     
+.signin-form
+  = devise_error_messages!
+  = form_for resource, as: resource_name, url: session_path(resource_name), id: 'signin-form_id', :novalidate => "novalidate" do |f|
+    .signin-text
+      %span Sign In to your account
+    .form-group.w-icon
+      = f.text_field :login, autofocus: true, placeholder:"Username or Email", class: %w{form-control input-lg}, id: 'username_id', :autocomplete => "off"
+      %span.fa.fa-user.signin-form-icon
+    .form-group.w-icon
+      = f.password_field :password, autocomplete: "off", placeholder: "Password", class:%w{form-control input-lg}, id: 'password_id'
+      %span.fa.fa-lock.signin-form-icon
+    .form-actions
+      = f.submit 'SIGN IN', class: 'signin-btn bg-primary'
+      %a#forgot-password-link.forgot-password{:href => '#'} Forgot your password?
+  -#= link_to 'Forgot your password?', new_user_password_path, id: 'forgot-password-link', class: 'forgot-password'
+  / "Sign In with" block
+  .signin-with
+  / Facebook
+  -#%a.signin-with-btn{:href => "index.html", :style => "background:#4f6faa;background:rgba(79, 111, 170, .8);"}
+      Sign In with
+      %span Facebook
+  / / "Sign In with" block
+  #password-reset-form.password-reset-form
+    .header
+      .signin-text
+        %span Password reset
+        .close ×
+    =form_for resource, as: resource_name, url: password_path(resource_name),
+      html: { novalidate: 'novalidate', method: :post, id: 'password-reset-form_id'} do |f|
+      = devise_error_messages!
+      .form-group.w-icon
+        = f.text_field :login, autofocus: true, placeholder: 'Username or Email', class: 'form-control input-lg', autocomplete: 'off'
+        %span.fa.fa-envelope.signin-form-icon
+      .form-actions
+        = f.submit 'SEND PASSWORD RESET LINK', class: 'signin-btn bg-primary'
+  - content_for :sign_up do
+    .not-a-member
+      Not a member?
+      =link_to 'Sign up now', new_user_registration_path
