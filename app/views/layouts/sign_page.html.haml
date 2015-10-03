@@ -20,8 +20,7 @@
   %body.theme-default.page-signin{:style => ""}
     #page-signin-bg
       .overlay
-      %img{:alt => "", :src => "http://infinite-woodland-5276.herokuapp.com/assets/demo/signin-bg-1.jpg", :style => "height: 100%; width: auto;"}/
-    .signin-container
-      = yield
-    - if content_for?(:sign_up)
-      = yield(:sign_up)
+      = image_tag asset_path 'signin-bg-1.jpg', style: 'height: 100%; width: auto;'
+    = yield
+    - if content_for?(:additional)
+      = yield(:additional)

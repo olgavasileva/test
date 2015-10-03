@@ -12,9 +12,11 @@ $(document).ready ->
   $ph = $('#page-signin-bg')
   $img = $ph.find('> img');
 
-  $(window).on 'resize', ->
+  resizeBg = ->
     $img.attr('style', '')
     if ($img.height() < $ph.height())
       $img.css
         height: '100%'
         width: 'auto'
+  resizeBg()
+  $(window).on 'resize', resizeBg
