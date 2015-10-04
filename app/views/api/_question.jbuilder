@@ -21,16 +21,16 @@ json.rotate question.rotate if question.kind_of? ChoiceQuestion
 
 json.(question, :min_responses, :max_responses) if question.kind_of? MultipleChoiceQuestion
 
-json.partial! 'background_image', image: question.background_image
+json.partial! 'api/background_image', image: question.background_image
 
 json.(question, :text_type, :min_characters, :max_characters) if question.kind_of? TextQuestion
 
 json.choices question.ordered_choices_for(current_user) do |choice|
   json.choice do
-    json.(choice, :id, :title, :rotate)
+    json.(choice, :id, :title, :rotate, :targeting_script)
 
     if choice.respond_to?(:background_image)
-      json.partial! 'background_image', image: choice.background_image
+      json.partial! 'api/background_image', image: choice.background_image
     end
 
     json.(choice, :muex) if question.kind_of? MultipleChoiceQuestion
@@ -47,6 +47,6 @@ json.member_community_ids question.user.membership_communities.pluck(:id)
 json.user_answered @answered_questions[question.id] if @answered_questions
 if @answered_questions
   json.summary do
-    json.partial! 'question_summary', question: question
+    json.partial! 'api/question_summary', question: question
   end
 end

@@ -9,3 +9,19 @@ $(document).on 'page:change', ->
     params = {}
     params[$(this).attr("name")] = this.checked
     $.post url, params
+
+  $('.edit-question').click (e)->
+    e.preventDefault()
+    e.stopPropagation()
+    $el = $(@)
+    $dialog = $('#dialog')
+    $.ajax
+      method: 'GET'
+      url: $el.data('url')
+      success: (html)->
+        $dialog.html(html).dialog
+          height: 600
+          width: 600
+          modal: true
+        $dialog.find('input[type="submit"]').click ->
+          $dialog.dialog('close')

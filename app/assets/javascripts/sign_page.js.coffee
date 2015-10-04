@@ -19,4 +19,4 @@ $(document).ready ->
         height: '100%'
         width: 'auto'
   $(window).on 'resize', resizeBg
-  $(window).resize()
+  setTimeout $(window).resize, 0

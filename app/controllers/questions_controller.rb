@@ -1,19 +1,20 @@
 class QuestionsController < ApplicationController
+
+  before_action :find_and_authorize, except: [:index, :new, :new_response_from_uuid]
+
   def index
     if ENV['REDIRECT_QUESTIONS_NEW_TO_WEBAPP'].true? && @embeddable_unit.nil?
-      policy_scope(Question)  # satisfy authorization check
+      policy_scope(Question) # satisfy authorization check
       redirect_to ENV['WEB_APP_URL']
     else
       per_page = 8
       @questions = policy_scope(Question).latest.kpage(params[:page]).per(per_page)
-      @questions.each{|q| q.viewed!}
+      @questions.each { |q| q.viewed! }
     end
   end
 
   def summary
-    @question = Question.find params[:id]
     @commentable = @question
-    authorize @question
 
     @next_question = next_question @question
   end
@@ -24,16 +25,14 @@ class QuestionsController < ApplicationController
   end
 
   def preview
-    @question = Question.find(params[:id])
-    authorize @question
 
     @response = @question.responses.new(user: current_user)
     @response.build_comment(user: current_user)
   end
 
   def new_response_from_uuid
-    @question = Question.find_by uuid:params[:uuid]
-    @question ||= Question.find_by id:params[:uuid]   # 11/4/14 temporary fix for device using ID in stead of UUID in links
+    @question = Question.find_by uuid: params[:uuid]
+    @question ||= Question.find_by id: params[:uuid] # 11/4/14 temporary fix for device using ID in stead of UUID in links
 
 
     if @question.present?
@@ -53,17 +52,13 @@ class QuestionsController < ApplicationController
   end
 
   def update_targetable
-    @question = Question.find params[:id]
-    authorize @question
 
     @question.update_attribute :currently_targetable, update_targetable_params[:currently_targetable] != 'false'
 
-    render text:"OK"
+    render text: "OK"
   end
 
   def skip
-    @question = Question.find params[:id]
-    authorize @question
     @question.skipped! current_user
 
     next_q = next_question @question
@@ -75,13 +70,29 @@ class QuestionsController < ApplicationController
   end
 
   def results
-    @question = Question.find params[:id]
-    authorize @question
+  end
+
+  def edit
+    render layout: false
+  end
+
+  def update
+    @question.update question_attributes
+    render 'api/question', status: :accepted
   end
 
   private
-    def update_targetable_params
-      params.require(:question).permit(:currently_targetable)
-    end
 
+  def update_targetable_params
+    params.require(:question).permit(:currently_targetable)
+  end
+
+  def question_attributes
+    params.require(:question).permit(:title, :choices_attributes => [:id, :title, :targeting_script])
+  end
+
+  def find_and_authorize
+    @question = Question.find params[:id]
+    authorize @question
+  end
 end

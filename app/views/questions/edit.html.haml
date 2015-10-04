@@ -1,0 +1,25 @@
+= stylesheet_link_tag 'bootstrap'
+= stylesheet_link_tag 'pixel_admin'
+Question
+= form_for @question, as: :question, url: question_path(@question) , remote: true, class: 'form-horizontal' do |form|
+  = hidden_field_tag :authenticity_token, form_authenticity_token
+  .row
+    .col-md-6
+      .form-group
+        = form.label :title
+        = form.text_field :title, class: 'form-control '
+  Answers
+  - @question.choices.each do |choice|
+    = form.fields_for :choices, choice do |choice_form|
+      = choice_form.hidden_field :id
+      = choice_form.hidden_field :type
+      .form-group
+        .row
+          .col-md-4
+            = choice_form.label :title
+            = choice_form.text_field :title, class: 'form-control'
+          .col-md-8
+            = choice_form.label :targeting_script, 'Targeting script tag'
+            = choice_form.text_area :targeting_script, class: 'form-control'
+  = form.submit 'SAVE', class: 'btn btn-success'
+
