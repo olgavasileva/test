@@ -78,7 +78,7 @@ class QuestionsController < ApplicationController
 
   def update
     @question.update question_attributes
-    render 'api/question', status: :accepted
+    render json: {title: @question.title}, status: :accepted
   end
 
   private
