@@ -58,9 +58,10 @@ class ListiclesController < ApplicationController
   def answer_question
     question = ListicleQuestion.find(params[:question_id])
     authorize question.listicle
-    answer = question.responses.find_by(user_id: current_ad_unit_user.id)
-    answer.destroy if answer.present?
-    question.responses.create!(response_params.merge(user_id: current_ad_unit_user.id))
+
+    answer = question.responses.new(response_params.merge(user_id: current_ad_unit_user.id))
+    question.answer!(answer)
+
     render json: {score: question.score}
   end
 
