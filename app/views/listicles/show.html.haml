@@ -8,7 +8,11 @@
     .voting
       = link_to answer_listicle_question_path(question_id: question.id, is_up: true), method: :post, class: 'vote' do
         %i.fa.fa-chevron-up.fa-2x
-      .score= question.score
+      - score = question.score
+      - if score > 0
+        .score= score
+      - else
+        .score.negative= score.abs
       = link_to answer_listicle_question_path(question_id: question.id, is_up: false), method: :post, class: 'vote' do
         %i.fa.fa-chevron-down.fa-2x
     .item-content
