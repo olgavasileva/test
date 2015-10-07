@@ -111,9 +111,10 @@ class ApplicationController < ActionController::Base
       ENV['MAIN_APP_URL'] || root_path
     end
 
-    def after_sign_in_path_for(resource_or_scope)
-      if user_signed_in? && current_user.publisher? || current_user.is_pro?
-        dashboard_user_path(current_user)
+    def after_sign_in_path_for(resource)
+      return admin_dashboard_path if resource.is_a?(AdminUser)
+      if user_signed_in? && resource.publisher? || resource.is_pro?
+        dashboard_user_path(resource)
       else
         ENV['WEB_APP_URL']
       end
