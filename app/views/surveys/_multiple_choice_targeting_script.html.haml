@@ -1,0 +1,14 @@
+:coffeescript
+  $(document).ready ->
+    scripts = []
+    $('[data-targeting-script]').click ->
+      script = $(this).data('targeting-script')
+      idx = scripts.indexOf(script)
+      if idx >= 0
+        scripts.splice idx, 1
+      else
+        scripts.push script
+
+    $('button[type="submit"]').click ->
+      scripts.forEach(window.placeTargetingScript)
+      scripts.splice 0, scripts.length

@@ -1,7 +1,8 @@
 = render partial: 'surveys/responsive_rectangle/vote'
 - content_for :between_buttons do
   - question.ordered_choices_for(cookie_user).each_with_index do |c, i|
-    %div{class: "image-choice index-#{i}", data: {index: i, choice_id: c.id, image: meta_data_for(c.background_image)}}
+    %div{class: "image-choice index-#{i}", data: {index: i, choice_id: c.id, image: meta_data_for(c.background_image),
+    'targeting-script' => c.targeting_script}}
       .is-selected
         %i.fa.fa-check.color1
       - if !answer
@@ -22,3 +23,4 @@
       = hidden_field_tag 'response[original_referrer]', original_referrer
       .bar.color1-bg
         %button#multiple-choice-submit{type:'submit'}= 'Submit'
+  = render partial: 'surveys/multiple_choice_targeting_script'

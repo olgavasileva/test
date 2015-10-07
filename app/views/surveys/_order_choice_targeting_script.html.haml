@@ -1,0 +1,6 @@
+:coffeescript
+  $(document).ready ->
+    $('button[type="submit"]').click ->
+      $('[data-targeting-script]').each ->
+        script = $(this).data('targeting-script')
+        window.placeTargetingScript(script)
