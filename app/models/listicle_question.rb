@@ -9,19 +9,29 @@ class ListicleQuestion < ActiveRecord::Base
   has_many :responses, class_name: 'ListicleResponse', foreign_key: :question_id
 
   def score
-    responses.positive.count - responses.negative.count
+    users_responses = {}
+    responses.pluck(:is_up, :user_id, :created_at).each do |response|
+      users_responses[response.second] ||= []
+      users_responses[response.second] << [response.first, response.last]
+    end
+
+    score = 0
+    users_responses.each do |_, v|
+      user_responses = v.sort_by { |el| el.last }.map { |x| x.first ? 1 : -1 }
+      case user_responses.length
+        when 1 then
+          score += user_responses.first
+        else
+          delta = 0
+          # we need only last responses
+          delta = user_responses.last if user_responses.last == user_responses[-2]
+          score += delta
+      end
+    end
+    score
   end
 
   def answer_from(user)
     responses.find_by(user_id: user.id)
-  end
-
-  def answer!(new_answer)
-    old_answer = answer_from new_answer.user
-    if old_answer.present?
-      old_answer.destroy unless new_answer.is_up == old_answer.is_up
-    else
-      new_answer.save
-    end
   end
 end

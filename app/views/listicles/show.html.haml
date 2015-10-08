@@ -9,7 +9,7 @@
       = link_to answer_listicle_question_path(question_id: question.id, is_up: true), method: :post, class: 'vote' do
         %i.fa.fa-chevron-up.fa-2x
       - score = question.score
-      - if score > 0
+      - if score >= 0
         .score= score
       - else
         .score.negative= score.abs
