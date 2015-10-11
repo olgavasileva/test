@@ -11,7 +11,8 @@ if user.kind_of?(User)
 
   if user.is_pro? || user.publisher?
     urls = Rails.application.routes.url_helpers
-    json.pro_dashboard_url urls.dashboard_user_url(user, auth_token: @instance.auth_token)
+    json.pro_dashboard_url urls.dashboard_user_url(user, auth_token: @instance.auth_token,
+                                                   host: Rails.env.production? ? 'api.statisfy.co' : Rails.application.default_url_options[:host])
   end
 
   if current_user.id == user.id
