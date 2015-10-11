@@ -1,6 +1,11 @@
 #= require jquery
 #= require jquery_ujs
 
+csrfToken = null
+qd = $.Deferred();
+window.qr = (r)-> qd.resolve(r.segments)
+sendDemograhics = ->
+
 votingFn = ->
   $('a.vote').click (e)->
     $el = $(this)
@@ -18,5 +23,16 @@ votingFn = ->
         $scoreEl.addClass('negative')
       $scoreEl.text Math.abs(result.score)
 
-$(document).ready votingFn
-$(document).on 'page:load', votingFn
+readyFn = ->
+  csrfToken = $('meta[name="csrf-token"]').attr('content')
+
+  qd.then (d)->
+    $.ajax (window.location + '/quantcast'), {
+      type: 'POST',
+      dataType: 'json',
+      data: {quantcast: JSON.stringify(d)},
+      headers: {'X-CSRF-Token': csrfToken}
+    }
+    votingFn()
+$(document).ready readyFn
+$(document).on 'page:load', readyFn

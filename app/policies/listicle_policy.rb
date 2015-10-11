@@ -37,6 +37,10 @@ class ListiclePolicy < ApplicationPolicy
     true
   end
 
+  def quantcast?
+    true
+  end
+
   private
 
   def user_authorized?
