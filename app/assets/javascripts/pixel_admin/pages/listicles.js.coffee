@@ -40,7 +40,8 @@ window.removeItem = (el)->
 ready = ->
   editorConfig =
     plugins: ['imagemanager', 'video', 'table', 'fontcolor', 'fontfamily', 'fontsize'],
-    imageUpload: window.imageUploadPath
+    imageUpload: window.imageUploadPath,
+    imageSearch: window.imageSearchPath
 
   $('[rel=redactor]').redactor editorConfig
 

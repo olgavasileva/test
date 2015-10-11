@@ -119,4 +119,8 @@ class ApplicationController < ActionController::Base
         ENV['WEB_APP_URL']
       end
     end
+
+    def skip_authorization
+      @_policy_authorized = true
+    end
 end

@@ -115,6 +115,7 @@ LinkchatApp::Application.routes.draw do
       resources :listicles do
         post 'image_upload' => 'listicles#image_upload', on: :collection
       end
+      resources :image_search, only: [:create]
     end
   end
 
