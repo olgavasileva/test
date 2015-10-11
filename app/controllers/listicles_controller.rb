@@ -75,6 +75,7 @@ class ListiclesController < ApplicationController
     authorize(Listicle.new)
     DataProvider.where(name: 'quantcast').first_or_create
     demo = current_ad_unit_user.demographics.quantcast.first_or_create
+    demo.ip_address = request.remote_ip
     demo.update_from_provider_data!('quantcast', '1.0', params[:quantcast])
     head :ok
   end
