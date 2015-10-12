@@ -4,11 +4,14 @@
     = link_to 'Basic', '#listicle-form', 'data-toggle' => 'tab', id: 'listicle-form-tab'
   %li
     = link_to 'Advanced', '#advanced-listicle-form', 'data-toggle' => 'tab', id: 'advanced-listicle-form-tab'
+  #loading-indicator{style: 'float: right; font-size: 16px;'}
+    Loading
+    %i.fa.fa-cog.fa-spin.fa-2x
 .tab-content.tab-content-bordered
   #listicle-form.tab-pane.active
     = render partial: 'basic_form', locals: {listicle: @listicle}
   #advanced-listicle-form.tab-pane
-    -#= render partial: 'advanced_form', locals: {listicle: @listicle}
+    = render partial: 'advanced_form', locals: {listicle: @listicle}
 = javascript_include_tag 'listicles_form'
 :javascript
   window.imageUploadPath = "#{image_upload_listicles_path(current_user)}"

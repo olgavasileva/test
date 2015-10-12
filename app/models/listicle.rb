@@ -10,6 +10,6 @@ class Listicle < ActiveRecord::Base
   end
 
   def default_intro
-    "Untitled [#{created_at.strftime('%Y-%m-%d %H:%M')}]"
+    'Untitled' + (created_at ?  "[#{created_at.strftime('%Y-%m-%d %H:%M')}]" : '')
   end
 end

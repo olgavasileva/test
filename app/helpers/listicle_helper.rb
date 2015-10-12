@@ -13,13 +13,14 @@ module ListicleHelper
   end
 
   def text_or_empty_symbol(text)
-    text.nil? || text.empty? ? '&nbsp;' : text
+    text.nil? || text.empty? ? '' : text
   end
 
   def advanced_template_text(listicle)
     template_text = "=intro\n#{listicle.get_intro.html_safe}\n"
-    listicle.questions.each { |q| template_text += "=item(#{q.id})\n#{q.body.html_safe}\n" }
-    template_text += "=footer\n#{listicle.footer.html_safe}"
-    template_text
+    listicle.questions.each do |q|
+      template_text += '=item' + (q.id.present? ? "(#{q.id})" : '') + "\n#{q.body.try(:html_safe)}\n"
+    end
+    template_text + "=footer\n#{listicle.footer.try(:html_safe)}"
   end
 end
