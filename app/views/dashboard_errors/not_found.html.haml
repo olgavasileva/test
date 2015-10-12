@@ -1,0 +1,11 @@
+%body.page-404
+  .header
+    = link_to root_path, class: 'logo' do
+      = image_tag asset_path 'statisfy-logo.png'
+  .error-code 404
+  .error-text
+    %span.oops OOPS!
+    %br
+    %span.hr
+    %br
+    SOMETHING WENT WRONG, OR THAT PAGE DOESN'T EXIST... YET

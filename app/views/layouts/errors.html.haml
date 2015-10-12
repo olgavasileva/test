@@ -1,0 +1,39 @@
+!!!
+/[if IE 8] <html class="ie8">
+/[if IE 9] <html class="ie9 gt-ie8">
+:plain
+  <!--[if gt IE 9] -->
+%html.gt-ie8.gt-ie9.not-ie
+  / <![endif]
+  %head
+    %title= full_title(yield(:title))
+
+    %meta{"http-equiv" => "Content-Type", content: "text/html; charset=utf-8"}
+    %meta{name: :viewport, content: "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"}/
+    %meta{name:"apple-itunes-app", content: "app-id=#{ENV['app_store_id']}"}
+    = yield :meta if content_for :meta
+    = csrf_meta_tags
+
+    %link{href: "http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic", rel: "stylesheet", type: "text/css"}/
+    %link{href: "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin", rel: "stylesheet", type: "text/css"}/
+
+    = stylesheet_link_tag "clean_canvas", media: 'all'
+    :sass
+      #main-wrapper, #content-wrapper
+        padding: 0
+
+      .navbar.sticky
+        z-index: 1062
+
+
+    /[if lt IE 9]
+      = javascript_include_tag 'pixel_admin/ie.min'
+  %body#clean-canvas.pull_top
+    #main-wrapper
+      #content-wrapper
+        = render 'layouts/shared/header'
+        #undertop.container
+          = yield
+        = render 'layouts/shared/footer'
+    = render 'layouts/shared/analytics'
+    = render 'layouts/shared/tag_manager'

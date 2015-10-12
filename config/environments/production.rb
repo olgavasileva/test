@@ -61,7 +61,7 @@ LinkchatApp::Application.configure do
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
   config.assets.precompile += %w( docs.js docs.css )
   config.assets.precompile += %w( clean_canvas.css clean_canvas.js )
-  config.assets.precompile += %w( pixel_admin.css pixel_admin.js pixel_admin/ie.min.js )
+  config.assets.precompile += %w( pixel_admin.css pixel_admin.js pixel_admin/ie.min.js pixel_admin/pages.css )
   config.assets.precompile += %w( embeddable_unit.css embeddable_unit.js )
   config.assets.precompile += %w( ad_unit/responsive_rectangle.css ad_units/responsive_rectangle.js )
   config.assets.precompile += %w( ad_unit/medium_rectangle.css ad_units/medium_rectangle.js )

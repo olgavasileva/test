@@ -3,12 +3,13 @@
   .row
     .col-xs-6.col-xs-offset-3
       .infobox.error-message
-        = image_tag '500-error-low.gif', width: 493, height: 300
+        = image_tag '404-error-low.gif', style: 'width: 100%'
         %h1
-          Something went wrong, but
+          We could not find what you were looking for, and neither could
           = link_to 'Liable Intern', 'https://vine.co/u/1147609975988879360', target: '_blank'
-          is on it. We're only a few hammer strokes away from solving your problem.
-          Check back later once it's fixed! Or leave us your email once we've fixed it.
+          so you know something is seriously wrong. Click
+          = link_to 'here', root_path
+          to find your way out of this mess.
         %div
           Find this hilarious? Share the pain!
           = social_share_button_tag

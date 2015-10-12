@@ -1,0 +1,13 @@
+%body.page-500
+  .header
+    = link_to root_path, class: 'logo' do
+      = image_tag asset_path 'statisfy-logo.png'
+  .error-code 500
+  .error-text
+    %span.oops OUCH!
+    %br
+    %span.hr
+    %br
+    SOMETHING IS NOT QUITE RIGHT
+    %br
+    %span.solve We hope to solve it shortly
