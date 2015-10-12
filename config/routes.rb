@@ -1,8 +1,6 @@
 require 'resque/server'
 
 LinkchatApp::Application.routes.draw do
-  match "/404" => "errors#error404", via: [ :get, :post, :patch, :delete ]
-  match "/500" => "errors#error500", via: [ :get, :post, :patch, :delete ]
 
   # iOS Application Redirect
   if ENV['IOS_DOWNLOAD_TRACKING_URL']
