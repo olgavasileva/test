@@ -6,11 +6,7 @@ class Listicle < ActiveRecord::Base
   accepts_nested_attributes_for :questions, allow_destroy: true
 
   def get_intro
-    if intro.nil? || intro.empty?
-      default_intro
-    else
-      intro
-    end
+    intro.present? ? intro : default_intro
   end
 
   def default_intro

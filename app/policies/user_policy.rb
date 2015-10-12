@@ -50,7 +50,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def analytics?
-    is_owner? && is_pro?
+    is_owner? && is_pro? || publisher?
   end
 
   def question_analytics?

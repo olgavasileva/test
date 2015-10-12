@@ -6,27 +6,27 @@ class ListiclePolicy < ApplicationPolicy
   end
 
   def create?
-    user.publisher?
+    user_authorized?
   end
 
   def new?
-    user.publisher?
+    user_authorized?
   end
 
   def update?
-    user.publisher?
+    user_authorized?
   end
 
   def destroy?
-    user.publisher?
+    user_authorized?
   end
 
   def index?
-    user.publisher?
+    user_authorized?
   end
 
   def image_upload?
-    user.publisher?
+    user_authorized?
   end
 
   def answer_question?
@@ -39,5 +39,15 @@ class ListiclePolicy < ApplicationPolicy
 
   def basic_form?
     user.publisher?
+  end
+
+  def quantcast?
+    true
+  end
+
+  private
+
+  def user_authorized?
+    user.publisher? || user.is_pro?
   end
 end

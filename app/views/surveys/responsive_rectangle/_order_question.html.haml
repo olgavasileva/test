@@ -7,7 +7,8 @@
       - choices = question.ordered_choices_for(cookie_user)
 
     - choices.each_with_index do |c, i|
-      .order-choice-bar{data: {choice_id: c.id, image: meta_data_for(c.background_image)}}
+      .order-choice-bar{data: {choice_id: c.id, image: meta_data_for(c.background_image),
+      'targeting-script' => c.targeting_script}}
         .order-choice-title.tooltip{title: c.title}= c.title
         - if answer
           - ratio = (c.response_ratio * 100).to_i
@@ -22,7 +23,6 @@
               = image_tag 'ad_units/prioritizer.png'
 
 
-
 - unless answer.present?
   - content_for :below_buttons do
     - url = qp_create_response_url(@survey.uuid, @ad_unit.name, question)
@@ -33,3 +33,4 @@
 
       .bar.color1-bg
         %button#order-choice-submit{type:'submit'}= 'Submit'
+  = render partial: 'surveys/order_choice_targeting_script'

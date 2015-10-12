@@ -1,52 +1,51 @@
-#sign_up2
-  .container
-    .row.login
-      .col-sm-6.col-sm-push-3.signin_box
-        .box
-          .box_cont
-            .section_header
-              %h3 Join Now!
-            .form
-              = form_for resource, as: resource_name, url: registration_path(resource_name), class: "form-inline" do |f|
-                = devise_error_messages!
-                .form-group.w-icon
-                  = f.text_field :username, placeholder: "Username", class:%w{form-control input-lg}
-                .form-group.w-icon
-                  = f.email_field :email, placeholder: "E-mail", class:%w{form-control input-lg}
-                .form-group.w-icon
-                  = f.password_field :password, autocomplete: "off", placeholder: "Password", class:%w{form-control input-lg}
-                .form-group.w-icon
-                  = f.password_field :password_confirmation, autocomplete: "off", placeholder: "Repeat Password", class:%w{form-control input-lg}
-                .form-group.w-icon
-                  = f.label :birthdate, class: 'col-sm-3 input-lg'
-                  .col-sm-7
-                    = f.text_field :birthdate, placeholder: "YYYY-MM-DD", class: 'form-control input-lg'
-                  .col-sm-2
-                    = link_to 'javascript:void(0)', data: { toggle: 'popover', placement: 'top', content: "Providing your birthday helps make sure you get the right Facebook experience for your age. We will not share your information with public." } do
-                      %span.fa.fa-info-circle{ style: 'font-size: 48px' }
-                  .clearfix
-                .form-group.w-icon
-                  =f.label :gender, class: 'col-sm-3 input-lg'
-                  .col-sm-7
-                    .btn-group{ data: { toggle: 'buttons' } }
-                      %label.btn.btn-default.btn-lg
-                        = f.radio_button :gender, 'male'
-                        Male
-                      %label.btn.btn-default.btn-lg
-                        = f.radio_button :gender, 'female'
-                        Female
-                  .clearfix
-                .forgot.subtext
-                  %span Already have an account?
-                  = link_to "Sign In", new_user_session_path
-                .form-group.w-icon
-                  = f.submit "sign up"
-                  %p.subtext
-                    By clicking
-                    %em Sign Up
-                    , you agree to the
-                    = link_to "Privacy Policy", "http://about.statisfy.co/tos/"
-                    and
-                    = link_to "Terms and Conditions", "http://about.statisfy.co/tos/"
-                    \.
-
+- content_for :title do
+  Sign Up - Statisfy
+.page-signup
+  .signup-container
+    / Header
+    .signup-header
+      = link_to root_path do
+        = image_tag asset_path 'statisfy-logo-white.png'
+    -#.slogan
+    -#  Simple. Flexible. Powerful.
+    / / .slogan
+    / / Header
+    / Form
+    .signup-form
+      = devise_error_messages!
+      = form_for resource, as: resource_name, url: registration_path(resource_name), class: 'form-inline', id: 'signup-form_id' do |f|
+        .signup-text
+          %span Create an account
+        .form-group.w-icon
+          = f.text_field :username, placeholder: 'Username', class: 'form-control input-lg'
+          %span.fa.fa-info.signup-form-icon
+        .form-group.w-icon
+          = f.email_field :email, placeholder: 'E-mail', class: 'form-control input-lg'
+          %span.fa.fa-envelope.signup-form-icon
+        .form-group.w-icon
+          = f.password_field :password, autocomplete: 'off', placeholder: 'Password', class: 'form-control input-lg'
+          %span.fa.fa-user.signup-form-icon
+        .form-group.w-icon
+          = f.password_field :password_confirmation, autocomplete: 'off', placeholder: 'Repeat Password', class: 'form-control input-lg'
+          %span.fa.fa-lock.signup-form-icon
+        .form-group{style: 'margin-top: 20px; margin-bottom: 20px;'}
+          By clicking
+          %em Sign Up
+          , you agree to the
+          = link_to 'Privacy Policy', 'http://about.statisfy.co/tos/', target: '_blank'
+          and
+          = link_to 'Terms and Conditions', 'http://about.statisfy.co/tos/', target: '_blank'
+        .form-actions
+          = f.submit 'SIGN UP', class: 'signup-btn bg-primary'
+      / / Form
+      / "Sign In with" block
+      .signup-with
+  -#  / Facebook
+  -#  %a.signup-with-btn{:href => "index.html", :style => "background:#4f6faa;background:rgba(79, 111, 170, .8);"}
+  -#    Sign Up with
+  -#    %span Facebook
+  / / "Sign In with" block
+  / Right side
+  .have-account
+    Already have an account?
+    = link_to 'Sign In', new_user_session_path

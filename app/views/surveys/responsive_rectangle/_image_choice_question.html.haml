@@ -17,9 +17,12 @@
 
     - else
       - url = qp_create_response_url(@survey.uuid, @ad_unit.name, question)
-      = button_to url, form: {target: '_self', data: {image: meta}, class: "image-choice index-#{i}"}, params: {'response[choice_id]' => c.id, 'response[original_referrer]' => original_referrer} do
+      = button_to url, form: {target: '_self', data: {image: meta}, class: "image-choice index-#{i}"},
+        params: {'response[choice_id]' => c.id, 'response[original_referrer]' => original_referrer},
+        'data-targeting-script' => c.targeting_script do
         .is-selected
           %i.fa.fa-check.color1
         .overlay
         .spacer
         .text.tooltip{title: c.title}= c.title
+  = render partial: 'surveys/single_choice_targeting_script'

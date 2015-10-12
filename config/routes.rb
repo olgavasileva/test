@@ -118,11 +118,13 @@ LinkchatApp::Application.routes.draw do
         get 'basic_form' => 'listicles#basic_form', on: :member
         get 'basic_form' => 'listicles#basic_form', on: :collection
       end
+      resources :image_search, only: [:create]
     end
   end
 
   post 'answer_listicle_question/:question_id' => 'listicles#answer_question', as: :answer_listicle_question
   get 'listicle/:id' => 'listicles#embed', as: :show_listicle
+  post 'listicle/:id/quantcast' => 'listicles#quantcast', as: :listicle_quantcast
 
   resources :groups
 

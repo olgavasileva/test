@@ -14,12 +14,13 @@
   %table.table.table-striped.table-bordered#campaigns{cellpadding:0, cellspacing:0, border:0}
     %thead
       %tr
-        %th.bg-success{colspan:3} These are all of your campaigns
+        %th.bg-success{colspan:4} These are all of your campaigns
         %th.bg-default{colspan:4} Engagements
       %tr
         %th Question
         %th Creation Date
         %th Start / Stop Campaign
+        %th Edit
         %th Views
         %th Completes
         %th
@@ -29,6 +30,9 @@
           %td= link_to q.title, "/#/app/questions/#{q.id}", target: '_blank'
           %td=q.created_at
           %td.text-center=check_box_tag "question[currently_targetable]", q.id, q.currently_targetable?, class:%w(switcher switcher-success), data:{active_switcher:true, url:update_targetable_question_path(q)}
+          %td.text-center
+            .btn.btn-success.edit-question{'data-url' => edit_question_path(q)} Edit
           %td.text-right=q.view_count
           %td.text-right=q.response_count
           %td=link_to "Analytics", analytics_user_path(@user, q)
+#dialog

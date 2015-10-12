@@ -17,7 +17,7 @@
 # Theme files
 #
 
-#x require ./pixel_admin/main
+#= require ./pixel_admin/main
 
 ## Morris js
 #= require raphael
@@ -64,5 +64,20 @@ $(document).on "page:change", ->
     $.getScript $(this).data().lazy
 
   $(".datepicker").datepicker
-    changeMonth:true
-    changeYear:true
+    changeMonth: true
+    changeYear: true
+
+  PixelAdmin.addInitializer ->
+    PixelAdmin.initPlugin 'main_menu', new PixelAdmin.MainMenu
+  PixelAdmin.addInitializer ->
+    PixelAdmin.initPlugin 'main_navbar', new PixelAdmin.MainNavbar
+  PixelAdmin.start([])
+
+  $body = $('body')
+
+  $('#main-menu-toggle').click ->
+    isToggled = $body.hasClass('mmc')
+    if isToggled
+      $body.removeClass('mmc')
+    else
+      $body.addClass('mmc')

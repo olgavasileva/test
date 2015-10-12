@@ -13,8 +13,10 @@
     - else
       - url = qp_create_response_url(@survey.uuid, @ad_unit.name, @question)
       = button_to url, form: {target: '_self', class: 'bar-blue color1-bg'},
-        params: {'response[choice_id]' => c.id, 'response[original_referrer]' => original_referrer} do
+        params: {'response[choice_id]' => c.id, 'response[original_referrer]' => original_referrer},
+        'data-targeting-script' => c.targeting_script do
         .is-selected
           %i.fa.fa-check.color1
         .bar-title.tooltip{title: c.title}= c.title
         .bar-overlay.overlay
+  = render partial: 'surveys/single_choice_targeting_script'

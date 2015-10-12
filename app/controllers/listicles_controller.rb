@@ -1,7 +1,7 @@
 class ListiclesController < ApplicationController
 
   before_action :load_and_authorize, only: [:show, :edit, :update, :destroy]
-  skip_before_action :verify_authenticity_token, only: [:image_upload]
+  skip_before_action :verify_authenticity_token, only: [:image_upload] # TODO fix this
 
   rescue_from ActiveRecord::RecordNotFound do
     head 404
@@ -70,9 +70,9 @@ class ListiclesController < ApplicationController
   def answer_question
     question = ListicleQuestion.find(params[:question_id])
     authorize question.listicle
-    answer = question.responses.find_by(user_id: current_ad_unit_user.id)
-    answer.destroy if answer.present?
-    question.responses.create!(response_params.merge(user_id: current_ad_unit_user.id))
+
+    question.responses.create(response_params.merge(user_id: current_ad_unit_user.id))
+
     render json: {score: question.score}
   end
 
@@ -81,6 +81,15 @@ class ListiclesController < ApplicationController
     @listicle = Listicle.find(params[:id])
     authorize @listicle
     render :show, layout: 'listicle_embed'
+  end
+
+  def quantcast
+    authorize(Listicle.new)
+    DataProvider.where(name: 'quantcast').first_or_create
+    demo = current_ad_unit_user.demographics.quantcast.first_or_create
+    demo.ip_address = request.remote_ip
+    demo.update_from_provider_data!('quantcast', '1.0', params[:quantcast])
+    head :ok
   end
 
   private

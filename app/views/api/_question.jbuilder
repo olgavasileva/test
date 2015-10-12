@@ -27,7 +27,7 @@ json.(question, :text_type, :min_characters, :max_characters) if question.kind_o
 
 json.choices question.ordered_choices_for(current_user) do |choice|
   json.choice do
-    json.(choice, :id, :title, :rotate)
+    json.(choice, :id, :title, :rotate, :targeting_script)
 
     if choice.respond_to?(:background_image)
       json.partial! 'background_image', image: choice.background_image

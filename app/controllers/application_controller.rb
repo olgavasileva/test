@@ -84,7 +84,14 @@ class ApplicationController < ActionController::Base
       if devise_controller?
         case resource_name
         when :user
-          "clean_canvas"
+          case params[:action]
+            when 'new'
+              'sign_page'
+            when 'create'
+              'sign_page'
+            else
+              'clean_canvas'
+        end
         when :partner
           "pixel_admin"
         end
@@ -102,5 +109,18 @@ class ApplicationController < ActionController::Base
 
     def after_sign_out_path_for(resource_or_scope)
       ENV['MAIN_APP_URL'] || root_path
+    end
+
+    def after_sign_in_path_for(resource)
+      return admin_dashboard_path if resource.is_a?(AdminUser)
+      if user_signed_in? && resource.publisher? || resource.is_pro?
+        dashboard_user_path(resource)
+      else
+        ENV['WEB_APP_URL']
+      end
+    end
+
+    def skip_authorization
+      @_policy_authorized = true
     end
 end

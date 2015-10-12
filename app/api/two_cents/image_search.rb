@@ -18,11 +18,7 @@ class TwoCents::ImageSearch < Grape::API
            ] do
       validate_user!
 
-      bing_searcher = Bing.new(BING_ACCOUNT_KEY, params[:per_page], 'Image')
-      offset = (params[:page] - 1) * params[:per_page]
-      images = bing_searcher.search(params[:search], offset).first[:Image]
-
-      images.map { |image| {media_url: image[:MediaUrl], thumbnail: image[:Thumbnail][:MediaUrl]} }
+      ImageSearcher.new(params[:search], params[:page], params[:per_page]).search
     end
 
     desc 'return image data in base64', {

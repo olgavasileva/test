@@ -82,6 +82,8 @@ class Question < ActiveRecord::Base
 
   delegate :rate, to: :trend, prefix: true, allow_nil: true
 
+  accepts_nested_attributes_for :choices, allow_destroy: true
+
   default share_count: 0
   default view_count: 1   # Creator has "viewed" it
   default :trend do |q|

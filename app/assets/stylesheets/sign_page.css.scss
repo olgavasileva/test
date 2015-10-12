@@ -1,0 +1,15 @@
+//= require font-awesome.css.erb
+//= require pixel_admin/bootstrap
+//= require pixel_admin/pixel-admin
+//= require pixel_admin/pages
+//= require pixel_admin/rtl
+//= require pixel_admin/themes
+
+.overlay {
+  display: block;
+  z-index: initial;
+}
+
+.page-signup .signup-header {
+  background-color: rgba(29, 137, 207, 0.8)
+}

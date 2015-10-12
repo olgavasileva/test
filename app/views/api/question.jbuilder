@@ -1,3 +1,3 @@
 json.question do
-  json.partial! 'question', question:@question
+  json.partial! 'question', question: @question
 end

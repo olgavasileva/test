@@ -16,11 +16,29 @@
     text-align: center;
     .score {
       color: #3EACE7;
+      text-align: center;
       font-weight: bold;
+      font-size: 1.5em;
+      &.negative {
+        &:before {
+          position: absolute;
+          margin-left: -8px;
+          content: '-'
+        }
+      }
     }
     .vote {
+      display: block;
+      width: auto;
+      margin: 0 auto;
       color: #B8E2F6;
       cursor: pointer;
+      i.fa {
+        text-align: center;
+        display: inline-block;
+        width: 100%;
+        margin: 0 auto;
+      }
     }
     .vote:hover {
       color: #3EACE7;
