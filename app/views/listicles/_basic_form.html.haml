@@ -1,4 +1,6 @@
-= form_for @listicle do |f|
+= form_for :listicle, controller: 'listicles',
+  action: @listicle.new_record? ? 'create' : 'update',
+  method: @listicle.new_record? ? 'POST' : 'PATCH' do |f|
   - if @listicle.errors.any?
     %ul.errors
       - @listicle.errors.full_messages.each do |error|
@@ -6,10 +8,12 @@
   = f.label :intro do
     Intro
     = f.text_area :intro, rel: 'redactor'
+  - unless @listicle.new_record?
+    = hidden_field_tag :listicle_id, @listicle.id
   %br
   .items
     - @listicle.questions.each_with_index do |question,index|
-      = f.fields_for :questions, question do |ff|
+      = f.fields_for :questions_attributes, question do |ff|
         .item
           - unless question.new_record?
             = ff.hidden_field :id, class: 'item-id-field'

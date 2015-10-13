@@ -1,12 +1,10 @@
 class ListicleQuestion < ActiveRecord::Base
 
-  validates_presence_of :body
-
   belongs_to :listicle, class_name: 'Listicle'
 
   delegate :user, to: :listicle, allow_nil: false
 
-  has_many :responses, class_name: 'ListicleResponse', foreign_key: :question_id
+  has_many :responses, class_name: 'ListicleResponse', foreign_key: :question_id, dependent: :destroy
 
   def score
     users_responses = {}

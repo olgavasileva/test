@@ -17,7 +17,7 @@ module ListicleHelper
   end
 
   def advanced_template_text(listicle)
-    template_text = "=intro\n#{listicle.get_intro.html_safe}\n"
+    template_text = "=intro\n#{listicle.intro.try(:html_safe)}\n"
     listicle.questions.each do |q|
       template_text += '=item' + (q.id.present? ? "(#{q.id})" : '') + "\n#{q.body.try(:html_safe)}\n"
     end

@@ -10,7 +10,7 @@ class ListiclesController < ApplicationController
   layout 'pixel_admin'
 
   def index
-    @listicles = current_user.listicles
+    @listicles = current_user.listicles.order :created_at => :desc
     policy_scope @listicles
   end
 
@@ -29,20 +29,27 @@ class ListiclesController < ApplicationController
   def create
     @listicle = current_user.listicles.new listicle_params
     authorize @listicle
-    if @listicle.save
-      redirect_to listicles_path, only_path: true
-    else
-      render :new
+    respond_to do |format|
+      format.html do
+        if @listicle.save
+          redirect_to listicles_path, only_path: true
+        else
+          render :new
+        end
+      end
+      format.json do
+        if @listicle.save
+          render json: {form: render_to_string(partial: 'listicles/advanced_form', layout: false, formats: :html)}, status: :created
+        else
+          render json: {errors: @listicle.errors.full_messages}, status: :bad_request
+        end
+      end
     end
   end
 
   def basic_form
-    if params[:listicle_id]
-      @listicle = current_user.listicles.find(params[:listicle_id])
-    else
-      @listicle = current_user.listicles.build
-      @listicle.questions.build
-    end
+    # return render nothing: true, status: :not_found unless params[:listicle_id]
+    @listicle = current_user.listicles.find(params[:listicle_id])
 
     authorize @listicle
     render partial: 'basic_form'
@@ -50,7 +57,9 @@ class ListiclesController < ApplicationController
 
   def update
     @listicle.update(listicle_params)
-    redirect_to_index
+    respond_to do |format|
+      format.json { render json: {form: render_to_string(partial: 'listicles/advanced_form', layout: false, formats: :html)}, status: :ok}
+    end
   end
 
   def destroy
@@ -116,7 +125,7 @@ class ListiclesController < ApplicationController
   end
 
   def load_and_authorize
-    @listicle = current_user.listicles.find params[:id]
+    @listicle = current_user.listicles.find params[:listicle_id]
     authorize @listicle
   end
 

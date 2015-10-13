@@ -1,3 +1,4 @@
-= form_for @listicle do
+= form_for :listicle, controller: 'advanced_listicles', action: 'update', method: 'PATCH' do
+  = hidden_field_tag :listicle_id, @listicle.id
   = text_area_tag :advanced_text, advanced_template_text(@listicle), rel: 'redactor'
   = submit_tag 'Save Changes', class: 'btn btn-primary'

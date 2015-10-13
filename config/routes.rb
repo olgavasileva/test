@@ -111,10 +111,10 @@ LinkchatApp::Application.routes.draw do
       get :account
       get :avatar
       resources :listicles, param: :listicle_id do
-        resources :advanced, only: [:new, :create, :update, :edit], controller: 'advanced_listicles'
+        patch 'advanced_form' => 'advanced_listicles#update', on: :member
+        get 'advanced_form' => 'advanced_listicles#show', on: :member
         post 'image_upload' => 'listicles#image_upload', on: :collection
         get 'basic_form' => 'listicles#basic_form', on: :member
-        get 'basic_form' => 'listicles#basic_form', on: :collection
       end
       resources :image_search, only: [:create]
     end
