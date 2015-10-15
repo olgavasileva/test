@@ -92,8 +92,6 @@ class Survey < ActiveRecord::Base
   end
 
   def referrer
-    responses = Response.arel_table
-    question_ids = questions.map(&:id)
     return unless question_ids
     query = responses.where(responses[:question_id].in(question_ids)
                                 .and(responses[:original_referrer].not_eq(nil))
@@ -105,8 +103,8 @@ class Survey < ActiveRecord::Base
       query.where responses[:original_referrer].does_not_match(exclusion)
     end
     query = query.group(responses[:original_referrer])
-                 .order(responses[:original_referrer].count(true).desc)
-                 .project(responses[:original_referrer])
+                .order(responses[:original_referrer].count(true).desc)
+                .project(responses[:original_referrer])
 
     response_array = Response.find_by_sql(query.to_sql).to_a
     response_array.map(&:original_referrer).each do |referrer|
@@ -118,6 +116,12 @@ class Survey < ActiveRecord::Base
       end
     end
     response_array.first
+  end
+
+  def distributions
+    Response.where(id: question_ids).pluck(:original_referrer).reject do |referrer|
+      referrer.nil? || referrer.length == 0 || !referrer =~ /\Ahttps?:\/\/.*\z/
+    end
   end
 
   def script request, ad_unit

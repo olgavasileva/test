@@ -121,11 +121,6 @@ class UsersController < ApplicationController
       .per(5)
   end
 
-  def campaigns
-    @questions = @user.questions
-    render layout: "pixel_admin"
-  end
-
   def publisher_question_packs
     @surveys = current_user.valid_surveys
     @analytics = QuestionPackReport.new(DateRange.from_project_start, current_user)

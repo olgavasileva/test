@@ -40,7 +40,7 @@ class EmotionalReport < DashboardReport
   TUMBLR_REGEX = '^https?:\/\/.*\.tumblr\.com\/.*$'
 
   def tumblr_posts_urls
-    @tumblr_posts_urls ||= Response.where(question_id: @user.question_ids)
+    @tumblr_posts_urls ||= Response.where(question_id: @question_ids)
                                .where('original_referrer REGEXP ?', TUMBLR_REGEX).pluck(:original_referrer).uniq
   end
 

@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized,  except: :index, unless: :devise_controller?
   after_action :verify_policy_scoped, only: :index, unless: :devise_controller?
 
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  # rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -121,6 +121,7 @@ class ApplicationController < ActionController::Base
     end
 
     def skip_authorization
+      @_policy_scoped = true
       @_policy_authorized = true
     end
 end

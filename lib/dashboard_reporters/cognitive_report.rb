@@ -17,7 +17,7 @@ class CognitiveReport < DashboardReport
 
   def views
     views = 0
-    @user.question_ids.each_slice(QUESTIONS_LIMIT).each do |question_ids|
+    @question_ids.each_slice(QUESTIONS_LIMIT).each do |question_ids|
       response = get_google_response('start-date' => start_date.to_s,
                                      'end-date' => end_date.to_s,
                                      'dimensions' => 'ga:eventLabel',
@@ -40,7 +40,7 @@ class CognitiveReport < DashboardReport
 
   def shares
     shares = 0
-    @user.question_ids.each_slice(QUESTIONS_LIMIT).each do |question_ids|
+    @question_ids.each_slice(QUESTIONS_LIMIT).each do |question_ids|
       response = get_google_response('start-date' => start_date.to_s,
                                      'end-date' => end_date.to_s,
                                      'dimensions' => 'ga:socialInteractionTarget,socialInteractionAction',
