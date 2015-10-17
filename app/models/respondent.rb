@@ -238,7 +238,7 @@ class Respondent < ActiveRecord::Base
     instance = Instance.create_null_instance(self) if instance.nil?
     instance.auth_token
     instance.uuid
-    "#{ENV['WEB_APP_URL']}/#{path}?auth_token=#{instance.auth_token}" +
+    "#{ENV['WEB_APP_URL']}/#/#{path}?auth_token=#{instance.auth_token}" +
         "&instance_token=#{instance.uuid}&registered_user=#{username}"
   end
 
