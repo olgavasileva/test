@@ -233,6 +233,15 @@ class Respondent < ActiveRecord::Base
     @valid_surveys ||= surveys.includes(:questions).reject { |survey| survey.questions.empty? }
   end
 
+  def web_app_url_with_auth(path='')
+    instance = instances.last
+    instance = Instance.create_null_instance(self) if instance.nil?
+    instance.auth_token
+    instance.uuid
+    "#{ENV['WEB_APP_URL']}/#{path}?auth_token=#{instance.auth_token}" +
+        "&instance_token=#{instance.uuid}&registered_user=#{username}"
+  end
+
   private
     def ensure_username
       if username.nil?

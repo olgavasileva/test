@@ -229,9 +229,6 @@ class UsersController < ApplicationController
   end
 
   def new_question
-    instance = current_user.instances.last
-    @auth_token = instance.auth_token
-    @instance_token = instance.uuid
     render layout: 'pixel_admin'
   end
 

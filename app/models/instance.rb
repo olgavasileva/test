@@ -52,6 +52,10 @@ class Instance < ActiveRecord::Base
     end
   end
 
+  def self.create_null_instance(user)
+    create! device: Device.new, user: user
+  end
+
   private
     def ensure_uuid
       self.uuid ||= "I"+UUID.new.generate
