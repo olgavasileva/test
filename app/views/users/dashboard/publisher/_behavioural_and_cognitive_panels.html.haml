@@ -1,0 +1,71 @@
+.col-md-4.panel
+  - report = @report[:behavioural]
+  %i.fa.fa-cog
+  Behavioural
+  %table
+    %tr
+      %td
+        Sessions
+      %td(align="center")
+        = report[:sessions]
+    %tr
+      %td
+        %i.fa.fa-clock-o
+        Time Per Session
+      %td(align="center")
+        = time_from_seconds(report[:time_per_session]).strftime('%T')
+    %tr
+      %td
+        %i.fa.fa-clock-o
+        Total Session Time
+      %td(align="center")
+        = "#{report[:total_session_time].div 1.hour}:#{time_from_seconds(report[:total_session_time]).strftime('%M:%S')}"
+    %tr
+      %td
+        Views
+      %td(align="center")
+        = report[:views]
+    %tr
+      %td
+        Interaction Rate
+      %td(align="center")
+        = report[:interaction_rate].round(2)
+    %tr
+      %td
+        Total Engagements
+      %td(align="center")
+        = report[:engagements]
+    %tr
+      %td
+        Total Insights
+      %td(align="center")
+        = report[:insights]
+.col-md-4.panel
+  - report = @report[:emotional]
+  %i.fa.fa-cog
+  Emotional
+  %table
+    %tr
+      %td
+        %i.fa.fa-flag-checkered
+        Reach
+      %td(align="center")
+        = report[:reach]
+    %tr
+      %td
+        %i.fa.fa-pencil-square-o
+        Notes
+      %td(align="center")
+        = report[:notes]
+    %tr
+      %td
+        %i.fa.fa-thumbs-o-up
+        Likes
+      %td(align="center")
+        = report[:likes]
+    %tr
+      %td
+        %i.fa.fa-share-square-o
+        Share (Reblogs)
+      %td(align="center")
+        = report[:reblogs]

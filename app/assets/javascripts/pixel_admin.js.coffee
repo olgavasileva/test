@@ -63,6 +63,16 @@ $(document).on "page:change", ->
   $('[data-lazy]').each ->
     $.getScript $(this).data().lazy
 
+  $('[data-lazy-template]').each ->
+    $el = $(this)
+    $.ajax
+      url: $el.data('lazy-template')
+      method: 'GET'
+      success: (response)->
+        console.log(response)
+        $el.html(response)
+      error: -> $el.html('<p>Some error occured</p>')
+
   $(".datepicker").datepicker
     changeMonth: true
     changeYear: true

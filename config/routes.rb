@@ -113,6 +113,8 @@ LinkchatApp::Application.routes.draw do
       resources :listicles do
         post 'image_upload' => 'listicles#image_upload', on: :collection
       end
+      get :behavioural_report, as: :behavioural_report
+      get :cognitive_report, as: :cognitive_report
       resources :campaigns, param: :survey_id, only: [:index, :show]
       resources :image_search, only: [:create]
     end

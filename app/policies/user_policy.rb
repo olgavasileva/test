@@ -97,6 +97,14 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def cognitive_report?
+    publisher?
+  end
+
+  def behavioural_report?
+    publisher?
+  end
+
   def new_question?
     is_owner? && (is_pro? || publisher?)
   end

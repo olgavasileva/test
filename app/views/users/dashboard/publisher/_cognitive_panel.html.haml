@@ -1,13 +1,14 @@
-%i.fa.fa-cog
-Cognitive
-%table
-  %tr
-    %td
-      Repeat Visit Rate
-    %td(align="center")
-      = "#{report[:revisit_rate].round(2)} %"
-  %tr
-    %td
-      Viral Factor / K-Factor
-    %td(align="center")
-      = report[:viral_factor]
+.col-md-4.panel
+  %i.fa.fa-cog
+  Cognitive
+  %table
+    %tr
+      %td
+        Repeat Visit Rate
+      %td(align="center")
+        = "#{report[:revisit_rate].round(2)} %"
+    %tr
+      %td
+        Viral Factor / K-Factor
+      %td(align="center")
+        = report[:viral_factor]

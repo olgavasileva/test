@@ -8,6 +8,7 @@ class UsersController < ApplicationController
     only: [:analytics, :question_analytics, :demographics]
   before_action :find_question,
     only: [:analytics, :question_analytics, :demographics]
+  before_action :set_days_ago, only: [:behavioural_report, :cognitive_report, :publisher_dashboard]
 
   def profile
     @user = current_user
@@ -127,21 +128,19 @@ class UsersController < ApplicationController
     render layout: 'pixel_admin'
   end
 
+  def behavioural_report
+    emotional_report = EmotionalReport.new(@date_range, current_user)
+    behavioural_report = BehaviouralReport.new(@date_range, current_user, emotional_report)
+    @report = {emotional: emotional_report, behavioural: behavioural_report}
+    render partial: 'users/dashboard/publisher/behavioural_and_cognitive_panels', layout: false
+  end
+
+  def cognitive_report
+    cognitive_report = CognitiveReport.new(@date_range, current_user)
+    render partial: 'users/dashboard/publisher/cognitive_panel', locals: {report: cognitive_report}
+  end
+
   def publisher_dashboard
-    @days_ago = if params[:days_ago]
-                  params[:days_ago].to_i
-                else
-                  30 # month
-                end
-    date_range = DateRange.new(Date.today - @days_ago.days)
-    emotional_report = EmotionalReport.new(date_range, current_user)
-    behavioural_report = BehaviouralReport.new(date_range, current_user, emotional_report)
-    cognitive_report = CognitiveReport.new(date_range, current_user)
-    @report = {
-        emotional: emotional_report,
-        behavioural: behavioural_report,
-        cognitive: cognitive_report
-    }
     render 'publisher_dashboard', layout: 'pixel_admin'
   end
 
@@ -260,5 +259,14 @@ class UsersController < ApplicationController
 
     def read_all_messages
       @user.read_all_messages
+    end
+
+    def set_days_ago
+      @days_ago = if params[:days_ago]
+                    params[:days_ago].to_i
+                  else
+                    30 # month
+                  end
+      @date_range = DateRange.new(Date.today - @days_ago.days)
     end
 end
