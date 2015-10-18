@@ -1,1 +1,6 @@
+:coffeescript
+  window.placeTargetingScript = (script)->
+    if script && script.length
+      $('body').append $(script)
+
 = render "surveys/question", question: @question, response: @response, original_referrer: @original_referrer
