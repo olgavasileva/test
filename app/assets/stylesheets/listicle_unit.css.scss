@@ -40,7 +40,7 @@
         margin: 0 auto;
       }
     }
-    .vote:hover {
+    .vote:hover, .vote.clicked {
       color: #3EACE7;
     }
     .vote:active {

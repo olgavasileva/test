@@ -16,6 +16,9 @@
     function onResponse() {
       ga('send', 'event', 'listicle', 'response', '#{@listicle.id}');
     }
+- else
+  :javascript
+    function onResponse() {}
 %script(src="//segapi.quantserve.com/api/segments.json?a=#{ENV['QUANTCAST_P_CODE']}&callback=qr"))
 #listicle-show
   = @listicle.get_intro.html_safe

@@ -11,6 +11,9 @@ votingFn = ->
     $el = $(this)
     e.preventDefault()
     e.stopPropagation()
+    setClickedArrow = ->
+      $('a.vote').removeClass 'clicked'
+      $el.addClass 'clicked'
     $.ajax
       url: $el.attr('href')
       method: 'POST'
@@ -22,6 +25,7 @@ votingFn = ->
       else
         $scoreEl.addClass('negative')
       $scoreEl.text Math.abs(result.score)
+      setClickedArrow()
 
 readyFn = ->
   csrfToken = $('meta[name="csrf-token"]').attr('content')
