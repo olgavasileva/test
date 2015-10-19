@@ -70,6 +70,7 @@ ready = ->
           " toolbar=no, menubar=no, scrollbars=yes, location=no, directories=no")
 
     $('#dialog').dialog()
+    $('.ui-dialog-titlebar-close').text('X')
 
     changeCode = ->
       $('#iframe-code').html getCodeTemplate(href, $('#iframe-width').val(), $('#iframe-height').val())
