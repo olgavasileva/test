@@ -22,6 +22,15 @@
             '<div style="margin-top: 20px" id="images-container"></div></div>')
 
       $('#redactor-modal-image-droparea').addClass('redactor-tab redactor-tab2').hide()
+
+      $('[rel="tab2"]').click ->
+        $newStandartUploadTemplate = $('<div>Drop file here<br/>Or, if you prefer ... ' +
+          ' <button type="button" id="browse-files" class="btn btn-default">upload a file</button>' +
+            '</div>').append($('#redactor-droparea-placeholder input').hide());
+        $newStandartUploadTemplate.find('button').click (e)->
+          $newStandartUploadTemplate.find('input').click()
+        $('#redactor-modal-image-droparea #redactor-droparea-placeholder').html $newStandartUploadTemplate
+
       $modal.append $imageSearchTemplate
 
       self = @
