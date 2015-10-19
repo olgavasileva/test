@@ -16,6 +16,11 @@
             %h2.panel-title Engagement Unit Details
           .panel-body
             %table.table
+              %thead
+                %tr
+                  %th Name
+                  %th UUID
+                  %th Theme
               %tbody
                 %tr
                   %td
@@ -47,10 +52,15 @@
                 .col-sm-6.text-right-not-xs
                   = link_to 'Download .csv', 'javscript:void(0)', class: 'btn btn-primary', id: 'distribution-csv'
           .panel-body
-            %ul#distributions(style="list-style:none")
-              - @survey.distributions.each do |distribution|
-                %li
-                  = link_to distribution, distribution
+            %table.table#distributions
+              %thead
+                %tr
+                  %th URL
+              %tbody
+                - @survey.distributions.each do |distribution|
+                  %tr
+                    %td
+                      = link_to distribution, distribution, target: '_blank'
     .row
       .col-md-12
         .panel
@@ -76,7 +86,7 @@
                     -##TODO check what is engagements
                     %td= question.responses.count
                     %td
-                      = link_to 'View', "#{ENV['WEB_APP_URL']}/#/app/questions/#{question.id}", class:'btn btn-primary show-question', target: '_blank'
+                      = link_to 'View', "#{ENV['WEB_APP_URL']}/#/app/question/#{question.id}", class:'btn btn-primary show-question', target: '_blank'
                       \|
                       .btn.btn-success.edit-question{'data-url' => edit_question_path(question)} Edit
     .row
@@ -119,6 +129,6 @@
           $dialog.dialog('close')
   $('#distribution-csv').click ->
     csvContent = "data:text/csv;charset=utf-8,"
-    $('#distributions li a').each (_, el)-> csvContent += $(el).attr('href') + '\n'
+    $('#distributions td a').each (_, el)-> csvContent += $(el).attr('href') + '\n'
     encodedUri = encodeURI(csvContent);
     window.open(encodedUri);
