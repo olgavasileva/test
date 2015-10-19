@@ -66,7 +66,7 @@
 
       return
     insert: (e) ->
-      @image.insert '<img src="' + $(e.target).attr('rel') + '" alt="' + $(e.target).attr('title') + '">'
+      @image.insert '<img src="' + $(e.target).attr('rel') + '" alt="' + $(e.target).attr('title') + '" width="540">'
       return
 
     }

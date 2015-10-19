@@ -69,7 +69,6 @@ $(document).on "page:change", ->
       url: $el.data('lazy-template')
       method: 'GET'
       success: (response)->
-        console.log(response)
         $el.html(response)
       error: -> $el.html('<p>Some error occured</p>')
 
