@@ -92,6 +92,7 @@ class Survey < ActiveRecord::Base
   end
 
   def referrer
+    responses = Response.arel_table
     return unless question_ids
     query = responses.where(responses[:question_id].in(question_ids)
                                 .and(responses[:original_referrer].not_eq(nil))
