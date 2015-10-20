@@ -237,7 +237,10 @@ class Respondent < ActiveRecord::Base
   def web_app_url_with_auth(path='')
     instance = instances.last
     instance = Instance.create_null_instance(self) if instance.nil?
-    instance.refresh_auth_token
+    unless instance.auth_token.present?
+      instance.refresh_auth_token
+      instance.save
+    end
     "#{ENV['WEB_APP_URL']}/#/#{path}?auth_token=#{instance.auth_token}" +
         "&instance_token=#{instance.uuid}&registered_user=#{username}"
   end
