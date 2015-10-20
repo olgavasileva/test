@@ -10,6 +10,10 @@ class UsersController < ApplicationController
     only: [:analytics, :question_analytics, :demographics]
   before_action :set_days_ago, only: [:behavioural_report, :cognitive_report, :publisher_dashboard]
 
+  rescue_from Pundit::NotAuthorizedError do
+    head :unauthorized
+  end
+
   def profile
     @user = current_user
     authorize @user
