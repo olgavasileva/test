@@ -1,3 +1,4 @@
+require 'nokogiri'
 class ListicleQuestion < ActiveRecord::Base
 
   validates_presence_of :body
@@ -29,6 +30,10 @@ class ListicleQuestion < ActiveRecord::Base
       end
     end
     score
+  end
+
+  def title(length = 15)
+    Nokogiri::HTML(body).text.slice(0..length)
   end
 
   def answer_from(user)

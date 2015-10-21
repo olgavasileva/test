@@ -111,7 +111,13 @@ LinkchatApp::Application.routes.draw do
       get :account
       get :avatar
       resources :listicles do
-        post 'image_upload' => 'listicles#image_upload', on: :collection
+        collection do
+          post 'image_upload' => 'listicles#image_upload'
+        end
+        member do
+          get 'details' => 'listicles#details', as: :details
+        end
+        resources :questions, only: [:update, :edit], param: :question_id, controller: :listicle_questions
       end
       get :behavioural_report, as: :behavioural_report
       get :cognitive_report, as: :cognitive_report

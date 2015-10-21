@@ -83,6 +83,18 @@ ready = ->
     window.open($(this).attr('href'), "_blank", "status=no, width=620, height=480, resizable=yes," +
         " toolbar=no, menubar=no, scrollbars=yes, location=no, directories=no")
 
+
+  $('.add-script-button').click (e)->
+    e.preventDefault()
+    e.stopPropagation()
+    $.ajax
+      url: $(this).attr('href')
+      method: 'GET'
+      success: (response)->
+        $('#dialog').html(response).dialog({minWidth: 620})
+        $('.ui-dialog-titlebar-close').text('X')
+
+
 $ 'document:ready', ready
 $(document).on 'page:load', ready
 

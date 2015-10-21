@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151019075614) do
+ActiveRecord::Schema.define(version: 20151021124935) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -514,6 +514,7 @@ ActiveRecord::Schema.define(version: 20151019075614) do
     t.integer  "listicle_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "script"
   end
 
   create_table "listicle_responses", force: true do |t|
