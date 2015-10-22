@@ -22,7 +22,7 @@
 %script(src="//segapi.quantserve.com/api/segments.json?a=#{ENV['QUANTCAST_P_CODE']}&callback=qr"))
 #listicle-show
   = @listicle.intro.html_safe
-  - @listicle.questions.sort_by{|question| question.created_at}.each do |question|
+  - @listicle.questions.each do |question|
     .voting
       = link_to answer_listicle_question_path(question_id: question.id, is_up: true), method: :post, class: 'vote', onclick: 'onResponse()' do
         %i.fa.fa-chevron-up.fa-2x
