@@ -70,7 +70,7 @@ ready = ->
           " toolbar=no, menubar=no, scrollbars=yes, location=no, directories=no")
 
     $('#dialog').dialog()
-    $('.ui-dialog-titlebar-close').text('X')
+    $('.ui-dialog-titlebar-close').html('<i class="fa fa-times"></i>')
 
     changeCode = ->
       $('#iframe-code').html getCodeTemplate(href, $('#iframe-width').val(), $('#iframe-height').val())
@@ -92,7 +92,7 @@ ready = ->
       method: 'GET'
       success: (response)->
         $('#dialog').html(response).dialog({minWidth: 620})
-        $('.ui-dialog-titlebar-close').text('X')
+        $('.ui-dialog-titlebar-close').html('<i class="fa fa-times"></i>')
 
 
 $ 'document:ready', ready
