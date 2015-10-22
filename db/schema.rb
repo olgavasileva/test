@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151021124935) do
+ActiveRecord::Schema.define(version: 20151022051632) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -242,6 +242,7 @@ ActiveRecord::Schema.define(version: 20151021124935) do
     t.integer  "data_provider_id"
     t.string   "ip_address"
     t.string   "country"
+    t.string   "user_agent"
   end
 
   add_index "demographics", ["country"], name: "index_demographics_on_country", using: :btree

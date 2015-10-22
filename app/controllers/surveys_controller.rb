@@ -79,6 +79,8 @@ class SurveysController < ApplicationController
   def quantcast
     DataProvider.where(name: 'quantcast').first_or_create
     demographic = current_ad_unit_user.demographics.quantcast.first_or_create
+    demographic.ip_address = request.remote_ip
+    demographic.user_agent = request.env['HTTP_USER_AGENT']
     demographic.update_from_provider_data!('quantcast', '1.0', quantcast_data)
     head :ok
   end
