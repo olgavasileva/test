@@ -9,17 +9,11 @@
             %br
             %span.text-semibold=current_user.username
           =gravatar_tag current_user.email, default: :identicon
-        / .btn-group
-        /   =link_to '#', class:%w(btn btn-xs btn-primary btn-outline dark) do
-        /     %i.fa.fa-envelope
-        /   =link_to '#', class:%w(btn btn-xs btn-primary btn-outline dark) do
-        /     %i.fa.fa-user
-        /   =link_to '#', class:%w(btn btn-xs btn-primary btn-outline dark) do
-        /     %i.fa.fa-cig
-        /   =link_to '#', class:%w(btn btn-xs btn-primary btn-outline dark) do
-        /     %i.fa.fa-poser-off
-        /   =link_to '#', class: :close do
-        /     &times;
+          .btn-group
+            =link_to account_user_path(current_user), class: %w(btn btn-xs btn-primary btn-outline dark) do
+              %i.fa.fa-cog
+            = link_to destroy_user_session_path, class: %w(btn btn-xs btn-danger btn-outline dark), method: :delete, id: 'pro_logout' do
+              %i.fa.fa-power-off
 
       =render_navigation context: (current_user.has_role?(:publisher) ? :publisher : :pro)
       :javascript
