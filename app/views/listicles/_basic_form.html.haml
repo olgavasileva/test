@@ -1,6 +1,5 @@
-= form_for :listicle, controller: 'listicles',
-  action: @listicle.new_record? ? 'create' : 'update',
-  method: @listicle.new_record? ? 'POST' : 'PATCH' do |f|
+- url = @listicle.new_record? ? new_listicle_path(current_user) : listicle_path(current_user, @listicle)
+= form_for :listicle, url: url, method: @listicle.new_record? ? 'POST' : 'PATCH' do |f|
   - if @listicle.errors.any?
     %ul.errors
       - @listicle.errors.full_messages.each do |error|
@@ -12,8 +11,8 @@
     = hidden_field_tag :listicle_id, @listicle.id
   %br
   .items
-    - @listicle.questions.each_with_index do |question,index|
-      = f.fields_for :questions_attributes, question do |ff|
+    - @listicle.questions.each_with_index do |question, index|
+      = f.fields_for '[questions_attributes][]', question, index: index do |ff|
         .item
           - unless question.new_record?
             = ff.hidden_field :id, class: 'item-id-field'

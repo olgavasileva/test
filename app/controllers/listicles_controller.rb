@@ -27,7 +27,7 @@ class ListiclesController < ApplicationController
   end
 
   def create
-    @listicle = current_user.listicles.new listicle_params
+    @listicle = Listicle.new listicle_params.merge(user_id: current_user.id)
     authorize @listicle
     respond_to do |format|
       format.html do

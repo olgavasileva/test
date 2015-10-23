@@ -27,12 +27,12 @@ class BasicEditorActions extends EditorActions
   save: ->
     listicleId = getListicleId()
     formData = @getForm().serializeArray()
-    url = if listicleId then "./#{listicleId}/" else './'
+#    url = if listicleId then "./#{listicleId}/" else './'
     method = if listicleId then 'PATCH' else 'POST'
 
     console.log 'saving listicle basic'
     $.ajax
-      url: url
+      url: './'
       data: formData
       method: method
       dataType: 'json'
@@ -65,7 +65,7 @@ class AdvancedEditorActions extends EditorActions
     console.log 'saving listicle advanced'
     formData = @getForm().serializeArray()
     $.ajax
-      url: "./#{listicleId}/advanced_form"
+      url: "./advanced_form"
       data: formData
       method: 'PATCH'
       dataType: 'json'

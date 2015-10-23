@@ -22,7 +22,7 @@ describe AdvancedListicleParser do
     run_parser(@intro_indicator + '<a>blahblahblah<i>embedded tag</i></a>' + @item_indicator)
     expect(@listicle.intro).to eq '<a>blahblahblah<i>embedded tag</i></a>'
 
-    run_parser(@intro_indicator + '<a>blahblahblah<i>embedded tag</i></a>' + @item_indicator + '<p>another tag</p>' +@footer_indicator)
+    run_parser(@intro_indicator + '<a>blahblahblah<i>embedded tag</i></a>' + @item_indicator + '<p>another tag</p>' + @footer_indicator)
     expect(@listicle.intro).to eq '<a>blahblahblah<i>embedded tag</i></a>'
   end
 

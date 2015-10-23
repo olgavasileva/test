@@ -26,7 +26,4 @@ class AdvancedListiclesController < ApplicationController
     authorize @listicle
   end
 
-  def listicle_params
-    params.require(:listicle).permit :intro, :footer, :questions_attributes => [:body, :_destroy, :id]
-  end
 end
