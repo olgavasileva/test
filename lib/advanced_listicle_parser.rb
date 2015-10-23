@@ -2,9 +2,9 @@ require 'nokogiri'
 class AdvancedListicleParser
 
   INDICATORS = {
-      listicle_intro: '=intro',
-      item: '=item',
-      listicle_footer: '=footer'
+      listicle_intro: /\A=intro\z/,
+      item: /\A=item\(?\d*?\)?\z/,
+      listicle_footer: /\A=footer\z/
   }
 
   def initialize(text, listicle)
@@ -14,27 +14,75 @@ class AdvancedListicleParser
 
   def parse
     @listicle.intro = find_intro
+    @listicle.questions = find_questions
+    # @listicle
   end
 
   private
 
   def find_intro
     intro = nil
-    intro_el_found = false
-    @doc.children.each do |el|
-      if el.text == INDICATORS[:listicle_intro]
-        intro_el_found = true
-        next
-      end
-      if intro_el_found
-        if el.text != INDICATORS[:item] && el.text != INDICATORS[:listicle_footer]
-          intro ||= ''
-          intro += el.to_xhtml
-        else
-          break
+    (0...root_elements.length).each do |i|
+      el = root_elements[i]
+      if INDICATORS[:listicle_intro].match(el.text)
+        (i+1...root_elements.length).each do |j|
+          next_el = root_elements[j]
+          if !INDICATORS[:item].match(next_el.text) && !INDICATORS[:listicle_footer].match(next_el.text)
+            intro ||= ''
+            intro += element_html(next_el)
+          else
+            break
+          end
         end
+        break
       end
     end
     intro
+  end
+
+  def find_questions
+    questions = []
+    (0...root_elements.length).each do |i|
+      el = root_elements[i]
+      if INDICATORS[:item].match(el.text)
+        item = get_item(el)
+        item.body ||= ''
+        (i+1...root_elements.length).each do |j|
+          next_el = root_elements[j]
+          if !INDICATORS[:item].match(next_el.text) && !INDICATORS[:listicle_footer].match(next_el.text)
+            item.body += element_html(next_el)
+          else
+            break
+          end
+        end
+        questions << item
+      end
+    end
+    questions
+  end
+
+  def get_item(item_el)
+    regex = /\A=item\((\d+)\)\z/
+    match = regex.match(item_el)
+    if match
+      id = match[1].to_i
+      begin
+        @listicle.questions.find(id)
+      rescue ActiveRecord::NotFoundError
+        ListicleQuestion.new
+      end
+    else
+      ListicleQuestion.new
+    end
+  end
+
+  private
+
+  def element_html(element)
+    element.to_s.gsub(/\n/, '')
+  end
+
+  def root_elements
+    @doc.children
   end
 end
