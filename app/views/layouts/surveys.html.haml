@@ -58,3 +58,9 @@
       = render partial: 'footer'
 
     = debug(params) if Rails.env.development?
+  :javascript
+    window.placeTargetingScript = function (script) {
+      if (script && script.length) {
+        $('body').append($(script));
+      }
+    };
