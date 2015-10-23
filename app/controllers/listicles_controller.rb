@@ -82,6 +82,9 @@ class ListiclesController < ApplicationController
   end
 
   def details
+    date_range = DateRange.new DateRange::PROJECT_START_DATE
+    @listicle_details_report = ListicleDetailsReport.new(date_range, current_user,
+                                                         question_ids: @listicle.questions.map(&:id))
   end
 
   private

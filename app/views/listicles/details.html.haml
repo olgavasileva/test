@@ -21,7 +21,7 @@
           %tr
             %td= question.id
             %td{id: "question-#{question.id}-title"}= question.body.present? ? question.title : "Item #{idx + 1}"
-            %td ///TODO add views(maybe from Google)
+            %td= @listicle_details_report[:views][question.id]
             %td= positive_responses
             %td= negative_responses
             %td= negative_responses + positive_responses
