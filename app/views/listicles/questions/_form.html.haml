@@ -1,0 +1,32 @@
+= form_for question, url: listicle_question_path(current_user.id, question.listicle_id, question.id), html: {class: 'listicle-form'} do |f|
+  %div(style='max-height: 400px; max-width: 600px; overflow: scroll')
+    = f.hidden_field :id
+    .form-group
+      = f.label :body
+      = f.text_area :body, rel: 'redactor'
+    .form-group
+      = f.label :script
+      = f.text_area :script, class: 'form-control'
+    %br
+    .form-actions
+      = f.submit 'Save', class: 'btn btn-success', id: 'listicle-question-form-submit'
+
+:coffeescript
+  $form = $('.listicle-form')
+  $form.find('[rel="redactor"]').redactor
+    plugins: ['imagemanager', 'video', 'table', 'fontcolor', 'fontfamily', 'fontsize'],
+    imageUpload: window.imageUploadPath,
+    imageSearch: window.imageSearchPath
+  $form.find('#listicle-question-form-submit').click (e)->
+    e.preventDefault()
+    e.stopPropagation()
+    $.ajax
+      url: $form.attr('action') + '.json'
+      method: 'PATCH'
+      data:
+        question:
+          body: $form.find('#listicle_question_body').val()
+          script: $form.find('#listicle_question_script').val()
+      success: (response)->
+        $('#question-' + response.question.id + '-title').text(response.question.title)
+        $('.ui-dialog-titlebar-close').click()

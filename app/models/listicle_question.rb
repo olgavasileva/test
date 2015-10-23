@@ -1,3 +1,4 @@
+require 'nokogiri'
 class ListicleQuestion < ActiveRecord::Base
 
   belongs_to :listicle, class_name: 'Listicle'
@@ -27,6 +28,10 @@ class ListicleQuestion < ActiveRecord::Base
       end
     end
     score
+  end
+
+  def title(length = 15)
+    Nokogiri::HTML(body).text.slice(0..length)
   end
 
   def answer_from(user)

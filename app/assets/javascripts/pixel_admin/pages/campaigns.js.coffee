@@ -27,3 +27,4 @@ $(document).on 'page:change', ->
           $dialog.find('form').on 'ajax:success', (e, data) ->
             $el.parent().parent().find('td:first-child a').text(data.title)
           $dialog.dialog('close')
+        $('.ui-dialog-titlebar-close').html('<i class="fa fa-times"></i>')

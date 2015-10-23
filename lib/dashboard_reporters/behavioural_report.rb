@@ -1,8 +1,8 @@
 class BehaviouralReport < DashboardReport
 
-  def initialize(date_range, user, emotional_report)
+  def initialize(date_range, user, emotional_report, options = {})
     @emotional_report = emotional_report
-    super(date_range, user)
+    super(date_range, user, options)
   end
 
   private
@@ -19,7 +19,7 @@ class BehaviouralReport < DashboardReport
 
   def sessions_count
     count = 0
-    @user.question_ids.each_slice(QUESTIONS_LIMIT).each do |question_ids|
+    @question_ids.each_slice(QUESTIONS_LIMIT).each do |question_ids|
       response = get_google_response('start-date' => start_date.to_s,
                                      'end-date' => end_date.to_s,
                                      'dimensions' => 'ga:eventLabel',
@@ -38,7 +38,7 @@ class BehaviouralReport < DashboardReport
   def time_per_session
     session_count = 0
     @sessions_duration = 0
-    @user.question_ids.each_slice(QUESTIONS_LIMIT).each do |question_ids|
+    @question_ids.each_slice(QUESTIONS_LIMIT).each do |question_ids|
       response = get_google_response('start-date' => start_date.to_s,
                                      'end-date' => end_date.to_s,
                                      'dimensions' => 'ga:eventLabel',
@@ -61,7 +61,7 @@ class BehaviouralReport < DashboardReport
 
   def views
     views = 0
-    @user.question_ids.each_slice(QUESTIONS_LIMIT).each do |question_ids|
+    @question_ids.each_slice(QUESTIONS_LIMIT).each do |question_ids|
       response = get_google_response('start-date' => start_date.to_s,
                                      'end-date' => end_date.to_s,
                                      'dimensions' => 'ga:eventLabel',
@@ -78,7 +78,7 @@ class BehaviouralReport < DashboardReport
   end
 
   def insights
-    @user.surveys.includes(:questions => :responses)
+    @surveys.includes(:questions => :responses)
         .flat_map { |survey| survey.questions.flat_map(&:responses) }.length
   end
 

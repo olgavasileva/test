@@ -2,8 +2,15 @@ class DashboardReport
 
   QUESTIONS_LIMIT = 10
 
-  def initialize(date_range, user)
-    @date_range, @user = date_range, user
+  def initialize(date_range, user, options = {})
+    @date_range = date_range
+    @user = user
+    @question_ids = options[:question_ids]
+    @surveys = options[:surveys]
+
+    @question_ids = @user.question_ids unless @question_ids
+    @surveys = @user.surveys unless @surveys
+
     @google_reporter = GoogleAnalyticReporter.new
     set_report
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151004122529) do
+ActiveRecord::Schema.define(version: 20151022051632) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -242,6 +242,7 @@ ActiveRecord::Schema.define(version: 20151004122529) do
     t.integer  "data_provider_id"
     t.string   "ip_address"
     t.string   "country"
+    t.string   "user_agent"
   end
 
   add_index "demographics", ["country"], name: "index_demographics_on_country", using: :btree
@@ -510,8 +511,11 @@ ActiveRecord::Schema.define(version: 20151004122529) do
   add_index "liked_comments", ["user_id"], name: "index_liked_comments_on_user_id", using: :btree
 
   create_table "listicle_questions", force: true do |t|
-    t.text    "body"
-    t.integer "listicle_id"
+    t.text     "body"
+    t.integer  "listicle_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "script"
   end
 
   create_table "listicle_responses", force: true do |t|

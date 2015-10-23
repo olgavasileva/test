@@ -1,6 +1,6 @@
 class ListiclesController < ApplicationController
 
-  before_action :load_and_authorize, only: [:show, :edit, :update, :destroy]
+  before_action :load_and_authorize, only: [:show, :edit, :update, :destroy, :details]
   skip_before_action :verify_authenticity_token, only: [:image_upload] # TODO fix this
 
   rescue_from ActiveRecord::RecordNotFound do
@@ -97,8 +97,12 @@ class ListiclesController < ApplicationController
     DataProvider.where(name: 'quantcast').first_or_create
     demo = current_ad_unit_user.demographics.quantcast.first_or_create
     demo.ip_address = request.remote_ip
+    demo.user_agent = request.env['HTTP_USER_AGENT']
     demo.update_from_provider_data!('quantcast', '1.0', params[:quantcast])
     head :ok
+  end
+
+  def details
   end
 
   private

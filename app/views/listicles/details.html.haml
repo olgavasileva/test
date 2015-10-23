@@ -1,0 +1,35 @@
+.panel
+  .panel-heading
+    %h2.panel-title
+      Listicle Details
+  .panel-body
+    %table.table
+      %thead
+        %tr
+          %th Item ID
+          %th Item Title
+          %th Views
+          %th Upvotes
+          %th Downvotes
+          %th Total Votes
+          %th Net Votes
+          %th
+      %tbody
+        - @listicle.questions.each_with_index do |question, idx|
+          - positive_responses = question.responses.positive.count
+          - negative_responses = question.responses.negative.count
+          %tr
+            %td= question.id
+            %td{id: "question-#{question.id}-title"}= question.body.present? ? question.title : "Item #{idx + 1}"
+            %td ///TODO add views(maybe from Google)
+            %td= positive_responses
+            %td= negative_responses
+            %td= negative_responses + positive_responses
+            %td= positive_responses - negative_responses
+            %td
+              = link_to 'Add script', edit_listicle_question_path(current_user, @listicle, question),
+              class: 'btn btn-success add-script-button'
+
+#dialog
+
+

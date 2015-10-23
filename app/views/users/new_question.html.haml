@@ -1,2 +1,2 @@
-%div{style: 'margin: 0 auto; width: 500px'}
-  %iframe{width: 500, height: 700, src: "#{ENV['WEB_APP_URL']}/#/app/questions/new", frameborder: 0}
+%div{style: 'margin: 50px auto 0; width: 500px'}
+  %iframe{width: 500, height: 700, frameborder: 0, src: current_user.web_app_url_with_auth('app/questions/new')}

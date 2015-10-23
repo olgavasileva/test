@@ -1,0 +1,134 @@
+.panel
+  .panel-heading
+    %h2.panel-title
+      .row
+        .col-sm-6 ENGAGEMENT DETAILS
+        .col-sm-6.text-right-not-xs
+          =link_to [:new_question, current_user], class: %w(btn btn-sm btn-primary btn-labeled) do
+            %span.btn-label.fa.fa-plus
+            Create Campaign
+  %br
+  .panel-body
+    .row
+      .col-md-12
+        .panel
+          .panel-heading
+            %h2.panel-title Engagement Unit Details
+          .panel-body
+            %table.table
+              %thead
+                %tr
+                  %th Name
+                  %th UUID
+                  %th Theme
+              %tbody
+                %tr
+                  %td
+                    = @survey.questions.first.try(:title)
+                  %td
+                    = @survey.uuid
+                  %td
+                    = @survey.theme.title
+    .row
+      .col-md-4
+        .panel
+          .panel-body
+            = render partial: 'users/dashboard/publisher/behavioural_panel', locals: {report: @report[:behavioural]}
+      .col-md-4
+        .panel
+          .panel-body
+            = render partial: 'users/dashboard/publisher/emotional_panel', locals: {report: @report[:emotional]}
+      .col-md-4
+        .panel
+          .panel-body
+            = render partial: 'users/dashboard/publisher/cognitive_panel', locals: {report: @report[:cognitive]}
+    .row
+      .col-md-12
+        .panel
+          .panel-heading
+            %h2.panel-title
+              .row
+                .col-sm-6 Distribution
+                .col-sm-6.text-right-not-xs
+                  = link_to 'Download .csv', 'javscript:void(0)', class: 'btn btn-primary', id: 'distribution-csv'
+          .panel-body
+            %table.table#distributions
+              %thead
+                %tr
+                  %th URL
+              %tbody
+                - @survey.distributions.each do |distribution|
+                  %tr
+                    %td
+                      = link_to distribution, distribution, target: '_blank'
+    .row
+      .col-md-12
+        .panel
+          .panel-heading
+            %h2.panel-title Survey Questions
+          .panel-body
+            %table.table
+              %thead
+                %tr
+                  %th ID
+                  %th Title
+                  %th Type
+                  %th Engagements
+                  %th Responses
+                  %th View | Edit
+              %tbody
+                - @survey.questions.each do |question|
+                  %tr
+                    %td=question.id
+                    %td=question.title
+                    %td=question.type
+                    %td
+                    -##TODO check what is engagements
+                    %td= question.responses.count
+                    %td
+                      = link_to 'View', "#{ENV['WEB_APP_URL']}/#/app/question/#{question.id}", class:'btn btn-primary show-question', target: '_blank'
+                      \|
+                      .btn.btn-success.edit-question{'data-url' => edit_question_path(question)} Edit
+    .row
+      .col-md-12
+        .panel
+          .panel-heading
+            %h2.panel-title Embeddables
+          .panel-body
+            .row
+              .col-md-6(style="word-break: break-all")
+                %br
+                %iframe{src: qp_start_path(@survey.uuid, :medium_rectangle), width: '300', height: '250', frameborder: '0'}
+                %br
+                Code:
+                = iframe_code(@survey, :medium_rectangle)
+              .col-md-6(style="word-break: break-all")
+                %br
+                %iframe{src: qp_start_path(@survey.uuid, :responsive_rectangle), width: '330', height: '405', frameborder: '0'}
+                %br
+                Code:
+                = iframe_code(@survey, :responsive_rectangle)
+#dialog
+:coffeescript
+  $dialog = $('#dialog')
+  $('.edit-question').click (e)->
+    e.preventDefault()
+    e.stopPropagation()
+    $el = $(@)
+    $.ajax
+      method: 'GET'
+      url: $el.data('url')
+      success: (html)->
+        $dialog.html(html).dialog
+          height: 600
+          width: 600
+          modal: true
+        $dialog.find('input[type="submit"]').click ->
+          $dialog.find('form').on 'ajax:success', (e, data) ->
+            $el.parent().parent().find('td:first-child a').text(data.title)
+          $dialog.dialog('close')
+  $('#distribution-csv').click ->
+    csvContent = "data:text/csv;charset=utf-8,"
+    $('#distributions td a').each (_, el)-> csvContent += $(el).attr('href') + '\n'
+    encodedUri = encodeURI(csvContent);
+    window.open(encodedUri);

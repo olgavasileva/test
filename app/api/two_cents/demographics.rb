@@ -20,6 +20,7 @@ class TwoCents::Demographics < Grape::API
         DataProvider.where(name:'quantcast').first_or_create
         demographic = current_user.demographics.quantcast.first_or_create
         demographic.ip_address = env['REMOTE_ADDR']
+        demographic.user_agent = env['HTTP_USER_AGENT']
         demographic.update_from_provider_data! declared_params[:provider], declared_params[:version], declared_params[:raw_data]
       end
     end

@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized,  except: :index, unless: :devise_controller?
   after_action :verify_policy_scoped, only: :index, unless: :devise_controller?
 
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  # rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -113,14 +113,15 @@ class ApplicationController < ActionController::Base
 
     def after_sign_in_path_for(resource)
       return admin_dashboard_path if resource.is_a?(AdminUser)
-      if user_signed_in? && resource.publisher? || resource.is_pro?
+      if resource.publisher? || resource.is_pro?
         dashboard_user_path(resource)
       else
-        ENV['WEB_APP_URL']
+        current_user.web_app_url_with_auth
       end
     end
 
     def skip_authorization
+      @_policy_scoped = true
       @_policy_authorized = true
     end
 end

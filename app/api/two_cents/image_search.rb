@@ -18,7 +18,7 @@ class TwoCents::ImageSearch < Grape::API
            ] do
       validate_user!
 
-      ImageSearcher.new(params[:search], params[:page], params[:per_page]).search
+      ImageSearcher.new(params[:search], params[:per_page], params[:page]).search
     end
 
     desc 'return image data in base64', {

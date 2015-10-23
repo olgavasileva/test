@@ -28,7 +28,7 @@ LinkchatApp::Application.routes.draw do
   ActiveAdmin.routes(self)
 
   root 'pages#welcome'
-  get '/home' => 'pages#welcome', defaults: { new_web_app: true }
+  get '/home' => 'pages#welcome', defaults: {new_web_app: true}
   get '/community(/:community_id)' => 'communities#join'
   get '/q/:uuid' => 'questions#new_response_from_uuid', as: :question_sharing
   get '/test' => 'pages#test' if Rails.env.development?
@@ -57,7 +57,7 @@ LinkchatApp::Application.routes.draw do
     post '/q/:question_id/viewed', action: :question_viewed, as: :qp_question_viewed
   end
 
-  resources :questions, shallow:true do
+  resources :questions, shallow: true do
     get :preview, on: :member
     get :summary, on: :member
     get :share, on: :member
@@ -99,23 +99,32 @@ LinkchatApp::Application.routes.draw do
       get :dashboard
       get :recent_responses
       get :recent_comments
-      get :campaigns
+      # get :campaigns
       get :publisher_question_packs
       get :publisher_dashboard
       get :new_campaign
       get :new_question
-      get 'analytics/(:question_id)', to:'users#analytics', as: :analytics
-      get 'question_analytics/:question_id', to:'users#question_analytics', as: :question_analytics
-      get 'demographics/:question_id/(:choice_id)', to:'users#demographics', as: :demographics
+      get 'analytics/(:question_id)', to: 'users#analytics', as: :analytics
+      get 'question_analytics/:question_id', to: 'users#question_analytics', as: :question_analytics
+      get 'demographics/:question_id/(:choice_id)', to: 'users#demographics', as: :demographics
       get :question_search
       get :account
       get :avatar
       resources :listicles, param: :listicle_id do
-        patch 'advanced_form' => 'advanced_listicles#update', on: :member
-        get 'advanced_form' => 'advanced_listicles#show', on: :member
-        post 'image_upload' => 'listicles#image_upload', on: :collection
-        get 'basic_form' => 'listicles#basic_form', on: :member
+        collection do
+          post 'image_upload' => 'listicles#image_upload'
+        end
+        member do
+          get 'advanced_form' => 'advanced_listicles#show'
+          patch 'advanced_form' => 'advanced_listicles#update'
+          get 'basic_form' => 'listicles#basic_form'
+          get 'details' => 'listicles#details', as: :details
+        end
+        resources :questions, only: [:update, :edit], param: :question_id, controller: :listicle_questions
       end
+      get :behavioural_report, as: :behavioural_report
+      get :cognitive_report, as: :cognitive_report
+      resources :campaigns, param: :survey_id, only: [:index, :show]
       resources :image_search, only: [:create]
     end
   end
@@ -182,7 +191,7 @@ LinkchatApp::Application.routes.draw do
   resources :order_choice_images
 
 
-  mount TwoCents::API =>'/'
+  mount TwoCents::API => '/'
   mount GrapeSwaggerRails::Engine => '/docs'
 
   authenticate :admin_user do

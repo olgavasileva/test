@@ -83,6 +83,7 @@ class Respondent < ActiveRecord::Base
   has_many :embeddable_units, through: :surveys
   has_many :embeddable_unit_themes, foreign_key: :user_id
   has_many :listicles, foreign_key: :user_id
+  has_many :listicle_responses, foreign_key: :user_id
 
   VALID_USERNAME_REGEX ||= /\A[a-z0-9\-_]{4,50}\z/i
   validates :username,
@@ -231,6 +232,17 @@ class Respondent < ActiveRecord::Base
   def valid_surveys(reload = false)
     @valid_surveys = nil if reload
     @valid_surveys ||= surveys.includes(:questions).reject { |survey| survey.questions.empty? }
+  end
+
+  def web_app_url_with_auth(path='')
+    instance = instances.last
+    instance = Instance.create_null_instance(self) if instance.nil?
+    unless instance.auth_token.present?
+      instance.refresh_auth_token
+      instance.save
+    end
+    "#{ENV['WEB_APP_URL']}/#/#{path}?auth_token=#{instance.auth_token}" +
+        "&instance_token=#{instance.uuid}&registered_user=#{username}"
   end
 
   private

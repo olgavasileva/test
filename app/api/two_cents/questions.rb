@@ -1105,6 +1105,8 @@ class TwoCents::Questions < Grape::API
       version = "1.0"
       DataProvider.where(name:provider).first_or_create
       demographic = @response.user.demographics.quantcast.first_or_create
+      demographic.ip_address = request.remote_ip
+      demographic.user_agent = request.env['HTTP_USER_AGENT']
       demographic.update_from_provider_data! provider, version, raw_data
 
       # Redirect to the web app's question result page

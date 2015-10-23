@@ -84,7 +84,3 @@ $ ->
           $("#index-#{index}").val(id)
 
         $submit.attr('disabled', false)
-
-  window.placeTargetingScript = (script)->
-    if script && script.length
-      $('body').append $(script)

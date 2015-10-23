@@ -1,1 +1,10 @@
+:javascript
+  function placeTargetingScript(script) {
+    if (script && script.length) {
+      $('body').append($(script));
+    }
+  }
+
+  window.placeTargetingScript = placeTargetingScript;
+
 = render "surveys/question", question: @question, response: @response, original_referrer: @original_referrer

@@ -7,11 +7,11 @@
     load: ->
       $modal = @modal.getModal()
       @modal.createTabber $modal
-      @modal.addTab 1, 'Upload', 'active'
-      @modal.addTab 2, 'Image Search'
+      @modal.addTab 1, 'Image Search', 'active'
+      @modal.addTab 2, 'Upload'
 
       $imageSearchTemplate =
-        $('<div id="redactor-image-manager-box" class="redactor-tab redactor-tab2">' +
+        $('<div id="redactor-image-manager-box" class="redactor-tab redactor-tab1">' +
             '<div id="images-loading">Loading...</div>' +
             '<button type="button" data-action="prev" class="btn btn-default"><i class="fa fa-chevron-left"></i> Previous page</button>' +
             '<button type="button" data-action="next" style="float: right;" class="btn btn-default">Next page ' +
@@ -19,8 +19,18 @@
             '<form><label for="image_search_query">Find image:</label>' +
             '<input type="text" class="form-control" id="image_search_query" name="query"><br>' +
             '<button type="submit" class="btn btn-primary">Search</button></form>' +
-            '<div style="margin-top: 20px" id="images-container"></div></div>').hide()
-      $('#redactor-modal-image-droparea').addClass 'redactor-tab redactor-tab1'
+            '<div style="margin-top: 20px" id="images-container"></div></div>')
+
+      $('#redactor-modal-image-droparea').addClass('redactor-tab redactor-tab2').hide()
+
+      $('[rel="tab2"]').click ->
+        $newStandartUploadTemplate = $('<div>Drop file here<br/>Or, if you prefer ... ' +
+          ' <button type="button" id="browse-files" class="btn btn-default">upload a file</button>' +
+            '</div>').append($('#redactor-droparea-placeholder input').hide());
+        $newStandartUploadTemplate.find('button').click (e)->
+          $newStandartUploadTemplate.find('input').click()
+        $('#redactor-modal-image-droparea #redactor-droparea-placeholder').html $newStandartUploadTemplate
+
       $modal.append $imageSearchTemplate
 
       self = @
@@ -66,7 +76,7 @@
 
       return
     insert: (e) ->
-      @image.insert '<img src="' + $(e.target).attr('rel') + '" alt="' + $(e.target).attr('title') + '">'
+      @image.insert '<img src="' + $(e.target).attr('rel') + '" alt="' + $(e.target).attr('title') + '" width="540">'
       return
 
     }

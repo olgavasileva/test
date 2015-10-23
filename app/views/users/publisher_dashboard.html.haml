@@ -10,12 +10,14 @@
     = select_tag :days_ago, options_for_select([7, 14, 30], @days_ago)
     = submit_tag :apply, class: 'btn btn-labeled btn-success'
   .row
-    .col-md-4.panel
-      = render partial: 'users/dashboard/publisher/behavioural_panel', locals: {report: @report[:behavioural]}
-    .col-md-4.panel
-      = render partial: 'users/dashboard/publisher/emotional_panel', locals: {report: @report[:emotional]}
+    #behavioural-emotional-report{data: {lazy_template: behavioural_report_user_path(current_user)}}
+      %i.fa.fa-gear.fa-spin
+      Loading behavioural and emotional reports...
   .row
-    .col-md-4.panel
-      = render partial: 'users/dashboard/publisher/cognitive_panel', locals: {report: @report[:cognitive]}
-    #recent_responses.col-md-6{data:{lazy:recent_responses_user_path(@user)}} Loading...
+    #cognitive-report.col-md-4.panel{data: {lazy_template: cognitive_report_user_path(current_user)}}
+      %i.fa.fa-gear.fa-spin
+      Loading cognitive report...
+    #recent_responses.col-md-6{data:{lazy:recent_responses_user_path(@user)}}
+      %i.fa.fa-gear.fa-spin
+      Loading recent responses...
   %hr.no-grid-gutter-h.grid-gutter-margin-b.no-margin-t/

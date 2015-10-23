@@ -69,6 +69,7 @@ ready = ->
           " toolbar=no, menubar=no, scrollbars=yes, location=no, directories=no")
 
     $('#dialog').dialog()
+    $('.ui-dialog-titlebar-close').html('<i class="fa fa-times"></i>')
 
     changeCode = ->
       $('#iframe-code').html getCodeTemplate(href, $('#iframe-width').val(), $('#iframe-height').val())
@@ -80,6 +81,18 @@ ready = ->
     e.stopPropagation()
     window.open($(this).attr('href'), "_blank", "status=no, width=620, height=480, resizable=yes," +
         " toolbar=no, menubar=no, scrollbars=yes, location=no, directories=no")
+
+
+  $('.add-script-button').click (e)->
+    e.preventDefault()
+    e.stopPropagation()
+    $.ajax
+      url: $(this).attr('href')
+      method: 'GET'
+      success: (response)->
+        $('#dialog').html(response).dialog({minWidth: 620})
+        $('.ui-dialog-titlebar-close').html('<i class="fa fa-times"></i>')
+
 
 $ 'document:ready', ready
 $(document).on 'page:load', ready

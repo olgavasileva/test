@@ -45,6 +45,10 @@ class ListiclePolicy < ApplicationPolicy
     true
   end
 
+  def details?
+    user_authorized?
+  end
+
   private
 
   def user_authorized?
