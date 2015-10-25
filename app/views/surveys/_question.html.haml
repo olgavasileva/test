@@ -4,8 +4,12 @@
 
 #viewed.hidden{data: {url: qp_question_viewed_url(@survey.uuid, @ad_unit.name, @question)}}
 :coffee
-  $ ->
-    $.post $("#viewed").data().url
+  interval = setInterval ->
+      if window.jQuery
+        $ ->
+          $.post $("#viewed").data().url
+        clearInterval(interval)
+    , 50
 
 - content_for :script do
   - if ENV['GOOGLE_ANALYTICS_ID'].present?

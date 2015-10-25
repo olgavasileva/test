@@ -1,9 +1,13 @@
 - content_for :script do
   :coffee
-    $ ->
-      info = $('#statisfyinfo').data()
-      localStorage[info.thankyouUuid] = info.thankyouHtml
-      $.cookie['original_referrer'] = info.originalReferrer
+    interval = setInterval ->
+        if window.jQuery
+          $ ->
+            info = $('#statisfyinfo').data()
+            localStorage[info.thankyouUuid] = info.thankyouHtml
+            $.cookie['original_referrer'] = info.originalReferrer
+          clearInterval(interval)
+      , 50
 
 = render "surveys/question", question: @question, response: @response, original_referrer: @original_referrer
 .hidden#statisfyinfo{data: {original_referrer: @original_referrer, thankyou: {uuid: @survey.uuid, html: @thank_you_html}}}

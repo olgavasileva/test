@@ -1,5 +1,9 @@
 :coffeescript
-  $(document).ready ->
-    $('[data-targeting-script]').click ->
-      script = $(this).data('targeting-script')
-      window.placeTargetingScript(script)
+  interval = setInterval ->
+      if window.jQuery
+        $(document).ready ->
+          $('[data-targeting-script]').click ->
+            script = $(this).data('targeting-script')
+            window.placeTargetingScript(script)
+        clearInterval(interval)
+    , 50
