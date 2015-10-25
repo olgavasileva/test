@@ -59,7 +59,7 @@ class ListiclesController < ApplicationController
     question = ListicleQuestion.find(params[:question_id])
     authorize question.listicle
 
-    question.responses.create(response_params.merge(user_id: current_ad_unit_user.id))
+    question.answer(response_params, current_ad_unit_user)
 
     render json: {score: question.score}
   end
@@ -124,6 +124,6 @@ class ListiclesController < ApplicationController
   end
 
   def response_params
-    params.permit :is_up
+    {is_up: params[:is_up] == 'true'}
   end
 end

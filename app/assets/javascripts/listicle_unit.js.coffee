@@ -12,7 +12,7 @@ votingFn = ->
     e.preventDefault()
     e.stopPropagation()
     setClickedArrow = ->
-      $('a.vote').removeClass 'clicked'
+      $el.parent().find('a.vote').removeClass 'clicked'
       $el.addClass 'clicked'
     $.ajax
       url: $el.attr('href')

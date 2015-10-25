@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151022051632) do
+ActiveRecord::Schema.define(version: 20151025140341) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -521,9 +521,10 @@ ActiveRecord::Schema.define(version: 20151022051632) do
   create_table "listicle_responses", force: true do |t|
     t.integer  "user_id",                     null: false
     t.integer  "question_id",                 null: false
-    t.boolean  "is_up",       default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_up",       default: false
+    t.integer  "score",       default: 0,     null: false
   end
 
   create_table "listicles", force: true do |t|
