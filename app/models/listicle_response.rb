@@ -5,8 +5,8 @@ class ListicleResponse < ActiveRecord::Base
   validates_presence_of :user, :question
   before_save :ensure_valid_score
 
-  scope :positive, -> { where is_up: true }
-  scope :negative, -> { where is_up: false }
+  scope :positive, -> { where score: 1 }
+  scope :negative, -> { where score: -1 }
 
   private
 

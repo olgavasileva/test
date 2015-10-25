@@ -16,8 +16,8 @@
           %th
       %tbody
         - @listicle.questions.each_with_index do |question, idx|
-          - positive_responses = question.responses.positive.count
-          - negative_responses = question.responses.negative.count
+          - negative_responses = question.down_votes.count
+          - positive_responses = question.up_votes.count
           %tr
             %td= question.id
             %td{id: "question-#{question.id}-title"}= question.body.present? ? question.title : "Item #{idx + 1}"

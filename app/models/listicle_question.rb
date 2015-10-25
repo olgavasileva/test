@@ -26,4 +26,13 @@ class ListicleQuestion < ActiveRecord::Base
   def answer_from(user)
     responses.find_by(user_id: user.id)
   end
+
+  def up_votes
+    responses.positive
+  end
+
+  def down_votes
+    responses.negative
+  end
+
 end
