@@ -8,8 +8,6 @@ class ListicleResponse < ActiveRecord::Base
   scope :positive, -> { where score: 1 }
   scope :negative, -> { where score: -1 }
 
-  private
-
   def ensure_valid_score
     if score > 0
       self.score = 1

@@ -14,8 +14,11 @@ class ListicleQuestion < ActiveRecord::Base
   end
 
   def answer(answer, user)
-    response = responses.find_or_create_by(user_id: user.id)
+    response = responses.find_or_initialize_by(user_id: user.id)
+    old_score = response.score
     response.score += answer[:is_up] ? 1 : -1
+    response.ensure_valid_score
+    response.vote_count += 1 if !response.new_record? && old_score != response.score
     response.save
   end
 
@@ -27,12 +30,20 @@ class ListicleQuestion < ActiveRecord::Base
     responses.find_by(user_id: user.id)
   end
 
-  def up_votes
-    responses.positive
+  def total_votes
+    up_votes_count + down_votes_count
   end
 
-  def down_votes
-    responses.negative
+  def net_votes
+    up_votes_count - down_votes_count
+  end
+
+  def up_votes_count
+    responses.positive.count
+  end
+
+  def down_votes_count
+    responses.negative.count
   end
 
 end
