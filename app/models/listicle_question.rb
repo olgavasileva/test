@@ -14,7 +14,10 @@ class ListicleQuestion < ActiveRecord::Base
   end
 
   def answer(answer, user)
-    response = responses.find_or_initialize_by(user_id: user.id)
+    response = responses.where(user_id: user.id).order(:created_at => :desc).first
+    if response.nil? || Time.zone.now - response.updated_at >= 30.minutes
+      response = responses.new(user_id: user.id)
+    end
     old_score = response.score
     response.score += answer[:is_up] ? 1 : -1
     response.ensure_valid_score
