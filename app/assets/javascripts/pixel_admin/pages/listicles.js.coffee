@@ -6,7 +6,7 @@ itemTemplate = ->
   "<fieldset id=\"#{itemIdx - 1}_fieldset\"><div class='left-side'><div class=\"title\">Item ##{itemIdx}</div><br>" +
     '<button class="delete-item" onclick=\"removeItem(this)\" type="button">[X] Remove Item</button></div>' +
     "<input name=\"listicle[questions_attributes][#{itemIdx}][_destroy]\" type=\"hidden\" value=\"0\">" +
-    "<input class=\"hidden\" id=\"listicle_questions_attributes_#{itemIdx}__destroy\" " +
+    "<input class=\"hidden\" id=\"listicle_questions_attributes_#{itemIdx}__dÎestroy\" " +
     " name=\"listicle[questions_attributes][#{itemIdx}][_destroy]\" type=\"checkbox\" value=\"1\">" +
     "<label for=\"listicle_questions_attributes_#{itemIdx}_question\"><textarea id=\"listicle_questions_attributes_#{itemIdx}_body\" " +
     "name=\"listicle[questions_attributes][#{itemIdx}][body]\" rel=\"redactor\"></textarea></label></fieldset>"

@@ -1,6 +1,12 @@
 #listicle-form {
+  font-family: Lato;
   width: 540px;
   margin: 0 auto;
+  label[for="listicle_intro"] {
+    display: inherit;
+    margin-left: -100px;
+    margin-bottom: -20px;
+  }
   .title {
     left: -100px;
     bottom: -50px;
@@ -36,6 +42,7 @@
     max-width: 540px;
   }
   .redactor-editor {
+    font-family: Lato;
     font-weight: initial;
   }
   .hidden {
