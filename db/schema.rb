@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151022051632) do
+ActiveRecord::Schema.define(version: 20151026073704) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -242,7 +242,7 @@ ActiveRecord::Schema.define(version: 20151022051632) do
     t.integer  "data_provider_id"
     t.string   "ip_address"
     t.string   "country"
-    t.string   "user_agent"
+    t.text     "user_agent"
   end
 
   add_index "demographics", ["country"], name: "index_demographics_on_country", using: :btree
@@ -521,9 +521,11 @@ ActiveRecord::Schema.define(version: 20151022051632) do
   create_table "listicle_responses", force: true do |t|
     t.integer  "user_id",                     null: false
     t.integer  "question_id",                 null: false
-    t.boolean  "is_up",       default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_up",       default: false
+    t.integer  "score",       default: 0,     null: false
+    t.integer  "vote_count",  default: 1,     null: false
   end
 
   create_table "listicles", force: true do |t|

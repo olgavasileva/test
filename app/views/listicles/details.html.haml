@@ -15,17 +15,15 @@
           %th Net Votes
           %th
       %tbody
-        - @listicle.questions.each_with_index do |question, idx|
-          - positive_responses = question.responses.positive.count
-          - negative_responses = question.responses.negative.count
+        - @listicle.questions.sort_by{|q| -q.net_votes}.each_with_index do |question, idx|
           %tr
             %td= question.id
             %td{id: "question-#{question.id}-title"}= question.body.present? ? question.title : "Item #{idx + 1}"
             %td= @listicle_details_report[:views][question.id]
-            %td= positive_responses
-            %td= negative_responses
-            %td= negative_responses + positive_responses
-            %td= positive_responses - negative_responses
+            %td= question.up_votes_count
+            %td= question.down_votes_count
+            %td= question.total_votes
+            %td= question.net_votes
             %td
               = link_to 'Add script', edit_listicle_question_path(current_user, @listicle, question),
               class: 'btn btn-success add-script-button'

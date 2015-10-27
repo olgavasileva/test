@@ -10,26 +10,16 @@ class ListicleQuestion < ActiveRecord::Base
   has_many :responses, class_name: 'ListicleResponse', foreign_key: :question_id
 
   def score
-    users_responses = {}
-    responses.pluck(:is_up, :user_id, :created_at).each do |response|
-      users_responses[response.second] ||= []
-      users_responses[response.second] << [response.first, response.last]
-    end
+    responses.pluck(:score).sum
+  end
 
-    score = 0
-    users_responses.each do |_, v|
-      user_responses = v.sort_by { |el| el.last }.map { |x| x.first ? 1 : -1 }
-      case user_responses.length
-        when 1 then
-          score += user_responses.first
-        else
-          delta = 0
-          # we need only last responses
-          delta = user_responses.last if user_responses.last == user_responses[-2]
-          score += delta
-      end
-    end
-    score
+  def answer(answer, user)
+    response = responses.find_or_initialize_by(user_id: user.id)
+    old_score = response.score
+    response.score += answer[:is_up] ? 1 : -1
+    response.ensure_valid_score
+    response.vote_count += 1 if !response.new_record? && old_score != response.score
+    response.save
   end
 
   def title(length = 15)
@@ -39,4 +29,21 @@ class ListicleQuestion < ActiveRecord::Base
   def answer_from(user)
     responses.find_by(user_id: user.id)
   end
+
+  def total_votes
+    up_votes_count + down_votes_count
+  end
+
+  def net_votes
+    up_votes_count - down_votes_count
+  end
+
+  def up_votes_count
+    responses.positive.count
+  end
+
+  def down_votes_count
+    responses.negative.count
+  end
+
 end

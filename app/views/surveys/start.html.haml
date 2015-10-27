@@ -5,7 +5,7 @@
           $ ->
             info = $('#statisfyinfo').data()
             localStorage[info.thankyouUuid] = info.thankyouHtml
-            $.cookie['original_referrer'] = info.originalReferrer
+            Cookies.set('original_referrer', info.originalReferrer)
           clearInterval(interval)
       , 50
 
