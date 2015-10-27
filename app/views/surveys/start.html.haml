@@ -3,7 +3,7 @@
     $ ->
       info = $('#statisfyinfo').data()
       localStorage[info.thankyouUuid] = info.thankyouHtml
-      $.cookie['original_referrer'] = info.originalReferrer
+      Cookies.set('original_referrer', info.originalReferrer)
 
 = render "surveys/question", question: @question, response: @response, original_referrer: @original_referrer
 .hidden#statisfyinfo{data: {original_referrer: @original_referrer, thankyou: {uuid: @survey.uuid, html: @thank_you_html}}}
