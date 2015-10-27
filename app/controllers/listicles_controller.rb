@@ -68,6 +68,7 @@ class ListiclesController < ApplicationController
     headers.delete 'X-Frame-Options'
     @listicle = Listicle.find(params[:id])
     authorize @listicle
+    @listicle.update(view_count: @listicle.view_count + 1)
     render :show, layout: 'listicle_embed'
   end
 
@@ -88,9 +89,6 @@ class ListiclesController < ApplicationController
       return head 404
     end
     authorize @listicle
-    date_range = DateRange.new DateRange::PROJECT_START_DATE
-    @listicle_details_report = ListicleDetailsReport.new(date_range, current_user,
-                                                         question_ids: @listicle.questions.map(&:id))
   end
 
   private
