@@ -58,6 +58,7 @@ class ListiclesController < ApplicationController
   def update
     @listicle.update(listicle_params)
     respond_to do |format|
+      format.html { redirect_to action: :index }
       format.json { render json: {form: render_to_string(partial: 'listicles/advanced_form', layout: false, formats: :html)}, status: :ok}
     end
   end

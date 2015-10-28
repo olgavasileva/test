@@ -12,10 +12,11 @@ class AdvancedListicleParser
     @doc = Nokogiri::HTML(@text).css('body').first
   end
 
-  def parse
+  def parse_and_save
     @listicle.intro = find_intro
     @listicle.questions = find_questions
     @listicle.footer = find_footer
+    @listicle.save
   end
 
   private
@@ -46,7 +47,6 @@ class AdvancedListicleParser
       el = root_elements[i]
       if INDICATORS[:item].match(el.text)
         item = get_item(el)
-        item.body ||= ''
         (i+1...root_elements.length).each do |j|
           next_el = root_elements[j]
           if !INDICATORS[:item].match(next_el.text) && !INDICATORS[:listicle_footer].match(next_el.text)
@@ -55,6 +55,7 @@ class AdvancedListicleParser
             break
           end
         end
+        item.save
         questions << item
       end
     end
@@ -67,7 +68,9 @@ class AdvancedListicleParser
     if match
       id = match[1].to_i
       begin
-        @listicle.questions.find(id)
+        item = @listicle.questions.find(id)
+        item.body = ''
+        item
       rescue ActiveRecord::NotFoundError
         ListicleQuestion.new
       end

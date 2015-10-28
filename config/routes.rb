@@ -115,8 +115,7 @@ LinkchatApp::Application.routes.draw do
           post 'image_upload' => 'listicles#image_upload'
         end
         member do
-          get 'advanced_form' => 'advanced_listicles#show'
-          patch 'advanced_form' => 'advanced_listicles#update'
+          patch 'advanced_form' => 'advanced_listicles#update', as: :advanced_form
           get 'basic_form' => 'listicles#basic_form'
           get 'details' => 'listicles#details', as: :details
           resources :questions, only: [:update, :edit], param: :question_id, controller: :listicle_questions
