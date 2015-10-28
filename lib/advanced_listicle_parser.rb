@@ -15,7 +15,7 @@ class AdvancedListicleParser
   def parse
     @listicle.intro = find_intro
     @listicle.questions = find_questions
-    # @listicle
+    @listicle.footer = find_footer
   end
 
   private
@@ -74,6 +74,19 @@ class AdvancedListicleParser
     else
       ListicleQuestion.new
     end
+  end
+
+  def find_footer
+    is_footer = false
+    footer = ''
+    root_elements.each do |el|
+      if INDICATORS[:listicle_footer].match(el.text)
+        is_footer = true
+        next
+      end
+      footer += element_html(el) if is_footer
+    end
+    footer
   end
 
   private

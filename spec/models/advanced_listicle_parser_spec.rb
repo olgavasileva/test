@@ -75,7 +75,10 @@ describe AdvancedListicleParser do
   end
 
   it 'parse footer' do
+    run_parser intro_indicator + 'intro' + item_indicator + '<a href="hello">hello</a><ul><li>text</li></ul>' +
+                   item_indicator + 'another item' + footer_indicator + '<p>footer <i>text</i></p>'
 
+    expect(@listicle.footer).to eq '<p>footer <i>text</i></p>'
   end
 
   def item_indicator(id=nil)
