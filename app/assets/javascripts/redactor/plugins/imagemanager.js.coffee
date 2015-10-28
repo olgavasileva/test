@@ -45,14 +45,14 @@
               '" height="100" rel="' + image.media_url + '">')
           $image.click $.proxy(self.imagemanager.insert, self)
           $container.append $image
-
+      self = @
       loadImages = (e)->
         e.preventDefault()
         e.stopPropagation()
         query = $imageSearchTemplate.find('input').val()
         return if !query || query.length < 1
         $loading.show();
-        $.ajax '../image_search',
+        $.ajax self.opts.imageSearch,
           method: 'POST'
           data:
             query: query

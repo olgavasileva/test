@@ -1,12 +1,12 @@
 itemIdx = 0
-editorConfig = null
+window.editorConfig = null
 itemTemplate = ->
   itemIdx += 1
 
   "<fieldset id=\"#{itemIdx - 1}_fieldset\"><div class='left-side'><div class=\"title\">Item ##{itemIdx}</div><br>" +
     '<button class="delete-item" onclick=\"removeItem(this)\" type="button">[X] Remove Item</button></div>' +
     "<input name=\"listicle[questions_attributes][#{itemIdx}][_destroy]\" type=\"hidden\" value=\"0\">" +
-    "<input class=\"hidden\" id=\"listicle_questions_attributes_#{itemIdx}__dÎestroy\" " +
+    "<input class=\"hidden\" id=\"listicle_questions_attributes_#{itemIdx}__destroy\" " +
     " name=\"listicle[questions_attributes][#{itemIdx}][_destroy]\" type=\"checkbox\" value=\"1\">" +
     "<label for=\"listicle_questions_attributes_#{itemIdx}_question\"><textarea id=\"listicle_questions_attributes_#{itemIdx}_body\" " +
     "name=\"listicle[questions_attributes][#{itemIdx}][body]\" rel=\"redactor\"></textarea></label></fieldset>"
@@ -24,7 +24,7 @@ refreshIndexes = ->
 window.addItem = ->
   $el = $('<div class="item">' + itemTemplate() + '</div>')
   $('.items').append($el)
-  $el.find('[rel=redactor]').redactor editorConfig
+  $el.find('[rel=redactor]').redactor window.editorConfig
   refreshIndexes()
 
 window.removeItem = (el)->
@@ -38,11 +38,12 @@ window.removeItem = (el)->
   refreshIndexes()
 
 ready = ->
-  editorConfig =
+  window.editorConfig =
     plugins: ['imagemanager', 'video', 'table', 'fontcolor', 'fontfamily', 'fontsize'],
     imageUpload: window.imageUploadPath,
     imageSearch: window.imageSearchPath
-  $('[rel=redactor]').redactor editorConfig
+  console.log($('[rel=redactor]'), window.editorConfig)
+  $('[rel=redactor]').redactor window.editorConfig
 
   itemIdx = $('.item').length
   getCodeTemplate = (link, width = 600, height = 600)->

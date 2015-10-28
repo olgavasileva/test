@@ -1,3 +1,6 @@
+:javascript
+  window.imageUploadPath = "#{image_upload_listicles_path(current_user)}"
+  window.imageSearchPath = "#{image_search_index_path(current_user)}"
 %ul.nav.nav-tabs
   %li.active
     = link_to 'Basic', 'javascript:void(0)', id: 'listicle-form-tab'
@@ -10,5 +13,3 @@
   #listicle-form.tab-pane.active
     = render partial: 'basic_form', locals: {listicle: @listicle}
 = javascript_include_tag 'listicles_form'
-:javascript
-  window.imageUploadPath = "#{image_upload_listicles_path(current_user)}"
