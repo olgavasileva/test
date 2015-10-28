@@ -1,24 +1,46 @@
 //= require font-awesome
 .embed_listicle {
   .item-content {
-    margin-top: -25px;
+    margin-top: -40px;
   }
-  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-family: Lato;
+  font-size: 18pt;
   max-width: 500px;
   padding-left: 100px;
   overflow-x: scroll;
   //font-size: 2.5em;
+  .separator {
+    height: 8px;
+    border-style: none;
+    background-color: #c9c9c9;
+    margin: 0;
+    width: 540px;
+  }
+  .question-index {
+    font-weight: bold;
+    background-color: #c9c9c9;
+    text-align: center;
+    width: 45px;
+    height: 25px;
+    display: block;
+    color: white;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    font-size: 14pt;
+  }
   .voting {
     width: 50px;
     position: relative;
     left: -100px;
     bottom: -50px;
+    margin-top: -60px;
     text-align: center;
     .score {
+      font-family: Verdana, Arial, Helvetica, sans-serif;
       color: #3EACE7;
       text-align: center;
       font-weight: bold;
-      font-size: 1.5em;
+      font-size: 24px;
       &.negative {
         &:before {
           position: absolute;
@@ -33,11 +55,13 @@
       margin: 0 auto;
       color: #B8E2F6;
       cursor: pointer;
+      font-size: 14px;
       i.fa {
         text-align: center;
         display: inline-block;
         width: 100%;
         margin: 0 auto;
+        font-size: 36px;
       }
     }
     .vote:hover, .vote.clicked {

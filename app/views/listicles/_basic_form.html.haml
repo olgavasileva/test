@@ -4,9 +4,8 @@
     %ul.errors
       - @listicle.errors.full_messages.each do |error|
         %li= error
-  = f.label :intro do
-    Intro
-    = f.text_area :intro, rel: 'redactor'
+  = f.label :intro, 'Intro/Title'
+  = f.text_area :intro, rel: 'redactor'
   - unless @listicle.new_record?
     = hidden_field_tag :listicle_id, @listicle.id
   %br
@@ -38,5 +37,5 @@
     Footer
     = f.text_area :footer, rel: 'redactor'
   %br
-  = f.submit 'Publish', class: 'btn btn-primary'
+  = f.submit 'Save', class: 'btn btn-success', style: 'margin: 20px auto 20px; display: block; width: 150px'
 

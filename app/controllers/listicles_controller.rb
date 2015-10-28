@@ -1,6 +1,6 @@
 class ListiclesController < ApplicationController
 
-  before_action :load_and_authorize, only: [:show, :edit, :update, :destroy, :details]
+  before_action :load_and_authorize, only: [:show, :edit, :update, :destroy]
   skip_before_action :verify_authenticity_token, only: [:image_upload] # TODO fix this
 
   rescue_from ActiveRecord::RecordNotFound do
@@ -80,7 +80,7 @@ class ListiclesController < ApplicationController
     question = ListicleQuestion.find(params[:question_id])
     authorize question.listicle
 
-    question.responses.create(response_params.merge(user_id: current_ad_unit_user.id))
+    question.answer(response_params, current_ad_unit_user)
 
     render json: {score: question.score}
   end
@@ -89,6 +89,7 @@ class ListiclesController < ApplicationController
     headers.delete 'X-Frame-Options'
     @listicle = Listicle.find(params[:id])
     authorize @listicle
+    @listicle.update(view_count: @listicle.view_count + 1)
     render :show, layout: 'listicle_embed'
   end
 
@@ -103,6 +104,12 @@ class ListiclesController < ApplicationController
   end
 
   def details
+    @listicle = current_user.listicles.where(id: params[:id]).includes(:questions => [:responses]).first
+    unless @listicle
+      skip_authorization
+      return head 404
+    end
+    authorize @listicle
   end
 
   private
@@ -142,6 +149,6 @@ class ListiclesController < ApplicationController
   end
 
   def response_params
-    params.permit :is_up
+    {is_up: params[:is_up] == 'true'}
   end
 end

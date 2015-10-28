@@ -1,30 +1,41 @@
 <% content_for :script do %>
   <script type="text/javascript">
-    var qd = $.Deferred();
-    window.qr = function(r){qd.resolve(r.segments)};
+    var interval = setInterval(function () {
+      if (window.jQuery) {
+        var qd = $.Deferred();
+        window.qr = function (r) {
+          qd.resolve(r.segments)
+        };
 
-    $(document).ready(function() {
-      var $n = $('#next-button'), qt, click;
+        $(document).ready(function () {
+          var $n = $('#next-button'), qt, click;
 
-      click = function(e) {
-        e.preventDefault();
-        return false;
-      }
+          click = function (e) {
+            e.preventDefault();
+            return false;
+          };
 
-      $n.on('click', click);
-      qt = setTimeout(function(){qd.reject()}, 500);
-      qd.then(function(d) {
-        $.ajax(<%= qp_quantcast_url(@survey.uuid, @ad_unit.name).to_json.html_safe %>, {
-          type: 'POST', dataType: 'json', data: {quantcast: JSON.stringify(d)},
-          headers: {'X-CSRF-Token': <%= form_authenticity_token.to_json.html_safe %>}
+          $n.on('click', click);
+          qt = setTimeout(function () {
+            qd.reject()
+          }, 500);
+          qd.then(function (d) {
+            $.ajax(<%= qp_quantcast_url(@survey.uuid, @ad_unit.name).to_json.html_safe %>, {
+              type: 'POST', dataType: 'json', data: {quantcast: JSON.stringify(d)},
+              headers: {'X-CSRF-Token': <%= form_authenticity_token.to_json.html_safe %>}
+            });
+          }).always(function () {
+            $n.off('click', click);
+            clearTimeout(qt);
+          });
+          var quantcastCode = "<%= ENV['QUANTCAST_P_CODE'] %>";
+          var el = document.createElement('script');
+          el.src = "//segapi.quantserve.com/api/segments.json?a=" + quantcastCode + "&callback=qr";
+          $(document).append(el);
         });
-      }).always(function() {
-        $n.off('click', click);
-        clearTimeout(qt);
-      });
-    });
+        clearInterval(interval);
+      }
+    }, 50);
   </script>
 
-  <% qCode = ENV['QUANTCAST_P_CODE'] %>
-  <script src="//segapi.quantserve.com/api/segments.json?a=<%= qCode %>&callback=qr"></script>
 <% end %>

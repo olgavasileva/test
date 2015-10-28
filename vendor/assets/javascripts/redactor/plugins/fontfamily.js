@@ -5,7 +5,7 @@
 		return {
 			init: function ()
 			{
-				var fonts = [ 'Arial', 'Helvetica', 'Georgia', 'Times New Roman', 'Monospace' ];
+				var fonts = [ 'Lato', 'Arial', 'Helvetica', 'Georgia', 'Times New Roman', 'Monospace' ];
 				var that = this;
 				var dropdown = {};
 
