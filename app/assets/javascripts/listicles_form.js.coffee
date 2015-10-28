@@ -1,4 +1,4 @@
-currentTab = 'basic'
+currentTab = 'Basic'
 
 getListicleId = -> $('input[name="listicle_id"]').val()
 setListicleId = ->
@@ -7,87 +7,74 @@ setListicleId = ->
 class EditorActions
   constructor: ->
     @listicleForm = $('#listicle-form')
-    @advancedListicleForm = $('#advanced-listicle-form')
     @loadingEl = $('#loading-indicator').hide()
-#  getForm: ->
-#    $('form')
-#    form = $('form.edit_listicle')
-#    if form.length
-#      return form
-#    else
-#      return $('form.new_listicle')
+  getForm: ->
+    @listicleForm.find('form')
   showLoading: ->
     @loadingEl.show()
   hideLoading: ->
     @loadingEl.hide()
+  setForm: (form)->
+    @listicleForm.html(form)
+    @listicleForm.find('[rel=redactor]').redactor window.editorConfig
+    setListicleId()
+  setCurrentTab: (tabName)->
+    currentTab = tabName
+    navBarItems = $('ul.nav.nav-tabs li')
+    navBarItems.removeClass('active')
+    navBarItems.each((i, el)->
+      if $(el).text().trim() == tabName
+        $(el).addClass('active')
+    )
+  getUrl: ->
+    listicleId = getListicleId()
+    editActionRegex = /\/edit$/
+    prefix = if window.location.pathname.match(editActionRegex) then '../' else './'
+
+    if listicleId
+        prefix + listicleId + '/'
+    else
+      prefix
 
 class BasicEditorActions extends EditorActions
-  getForm: ->
-    @listicleForm.find('form')
   save: ->
     listicleId = getListicleId()
     formData = @getForm().serializeArray()
-#    url = if listicleId then "./#{listicleId}/" else './'
     method = if listicleId then 'PATCH' else 'POST'
 
     console.log 'saving listicle basic'
     $.ajax
-      url: './'
+      url: @getUrl()
       data: formData
       method: method
       dataType: 'json'
   changeTab: ->
-    return if currentTab == 'advanced'
+    return if currentTab == 'Advanced'
     self = @
     @showLoading()
     @save().then((response)->
-      self.advancedListicleForm.html response.form
-      self.advancedListicleForm.find('[rel=redactor]').redactor window.editorConfig
-      setListicleId()
-      currentTab = 'advanced'
+      self.setForm(response.form)
+      self.setCurrentTab('Advanced')
     ).always -> self.hideLoading()
-#      $.ajax
-#        url: "#{getListicleId()}/advanced_form"
-#        method: 'GET'
-#        success: (response)->
-#          self.listicleForm.html response
-#          self.listicleForm.find('[rel=redactor]').redactor window.editorConfig
-#        complete: ->
-#          setListicleId()
-#          self.hideLoading()
-#          currentTab = 'advanced'
 
 class AdvancedEditorActions extends EditorActions
-  getForm: ->
-    @advancedListicleForm.find('form')
   save: ->
     listicleId = getListicleId()
     console.log 'saving listicle advanced'
     formData = @getForm().serializeArray()
     $.ajax
-      url: "./advanced_form"
+      url: "./#{@getUrl()}advanced_form"
       data: formData
       method: 'PATCH'
       dataType: 'json'
   changeTab: ->
-    return if currentTab == 'basic'
+    return if currentTab == 'Basic'
     self = @
     @showLoading()
     @save().done((response)->
-      self.listicleForm.html response.form
-      self.listicleForm.find('[rel=redactor]').redactor window.editorConfig
-      setListicleId()
-      currentTab = 'basic'
+      self.setForm(response.form)
+      self.setCurrentTab('Basic')
     ).always -> self.hideLoading()
-#      $.ajax
-#        url: getListicleId() + '/basic_form'
-#        success: (response)->
-#          self.listicleForm.html response
-#          $('#listicle-form').find('[rel=redactor]').redactor window.editorConfig
-#        complete: ->
-#          self.hideLoading()
-#          setListicleId()
-#          currentTab = 'basic'
 
 $(document).ready ->
   basicEditorActions = new BasicEditorActions()

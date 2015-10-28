@@ -63,7 +63,7 @@ describe AdvancedListicleParser do
                    item_indicator + 'another item' + footer_indicator
     expect(@listicle.intro).to eq 'intro'
     expect(@listicle.questions.length).to eq 2
-    expect(@listicle.questions.first.bodgy).to eq '<a href="hello">hello</a><ul><li>text</li></ul>'
+    expect(@listicle.questions.first.body).to eq '<a href="hello">hello</a><ul><li>text</li></ul>'
     expect(@listicle.questions.last.body).to eq 'another item'
 
     #with empty items
