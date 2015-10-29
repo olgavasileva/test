@@ -65,18 +65,14 @@ class AdvancedListicleParser
   def get_item(item_el)
     regex = /\A=item\((\d+)\)\z/
     match = regex.match(item_el)
-    if match
+    item = ListicleQuestion.new
+    begin
       id = match[1].to_i
-      begin
-        item = @listicle.questions.find(id)
-        item.body = ''
-        item
-      rescue ActiveRecord::NotFoundError
-        ListicleQuestion.new
-      end
-    else
-      ListicleQuestion.new
+      item = @listicle.questions.find(id)
+    rescue Exception
     end
+    item.body = ''
+    item
   end
 
   def find_footer
