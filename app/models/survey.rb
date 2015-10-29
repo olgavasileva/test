@@ -120,9 +120,14 @@ class Survey < ActiveRecord::Base
   end
 
   def distributions
-    Response.where(id: question_ids).pluck(:original_referrer).reject do |referrer|
-      referrer.nil? || referrer.length == 0 || !referrer =~ /\Ahttps?:\/\/.*\z/
+    distributions = {}
+    Response.where(id: question_ids).pluck(:original_referrer).each do |referrer|
+      if !referrer.blank? && referrer =~ /\Ahttps?:\/\/.*\z/
+        distributions[referrer] ||= 0
+        distributions[referrer] += 1
+      end
     end
+    distributions
   end
 
   def script request, ad_unit

@@ -18,9 +18,9 @@
             %table.table
               %thead
                 %tr
-                  %th Name
+                  %th Question / Question Pack
                   %th UUID
-                  %th Theme
+                  %th Theme/type
               %tbody
                 %tr
                   %td
@@ -56,11 +56,12 @@
               %thead
                 %tr
                   %th URL
+                  %th Count
               %tbody
-                - @survey.distributions.each do |distribution|
+                - @survey.distributions.each do |link, count|
                   %tr
-                    %td
-                      = link_to distribution, distribution, target: '_blank'
+                    %td= link_to link, link, target: '_blank'
+                    %td= count
     .row
       .col-md-12
         .panel
@@ -75,20 +76,27 @@
                   %th Type
                   %th Engagements
                   %th Responses
-                  %th View | Edit
+                  %th View | Edit | Analytics
               %tbody
                 - @survey.questions.each do |question|
                   %tr
                     %td=question.id
                     %td=question.title
                     %td=question.type
-                    %td
-                    -##TODO check what is engagements
+                    %td=question.view_count.to_i
                     %td= question.responses.count
                     %td
-                      = link_to 'View', "#{ENV['WEB_APP_URL']}/#/app/question/#{question.id}", class:'btn btn-primary show-question', target: '_blank'
-                      \|
-                      .btn.btn-success.edit-question{'data-url' => edit_question_path(question)} Edit
+                      = link_to "#{ENV['WEB_APP_URL']}/#/app/question/#{question.id}", class:'btn btn-primary show-question', target: '_blank' do
+                        %i.fa.fa-eye
+                        View
+                      |
+                      .btn.btn-success.edit-question{'data-url' => edit_question_path(question)}
+                        %i.fa.fa-pencil-square-o
+                        Edit
+                      |
+                      = link_to analytics_user_path(current_user, question), class: 'btn', target: '_blank' do
+                        %i.fa.fa-bar-chart
+                        Analytics
     .row
       .col-md-12
         .panel
@@ -100,14 +108,14 @@
                 %br
                 %iframe{src: qp_start_path(@survey.uuid, :medium_rectangle), width: '300', height: '250', frameborder: '0'}
                 %br
-                Code:
-                = iframe_code(@survey, :medium_rectangle)
+                = text_area_tag :medium_rectangle_code, iframe_code(@survey, :medium_rectangle), class: 'form-control',
+                style: 'width: 100%; height: 200px'
               .col-md-6(style="word-break: break-all")
                 %br
-                %iframe{src: qp_start_path(@survey.uuid, :responsive_rectangle), width: '330', height: '405', frameborder: '0'}
+                %iframe{src: qp_start_path(@survey.uuid, :responsive_rectangle), width: '330', height: '450', frameborder: '0'}
                 %br
-                Code:
-                = iframe_code(@survey, :responsive_rectangle)
+                = text_area_tag :responsive_rectangle_code, iframe_code(@survey, :responsive_rectangle), class: 'form-control',
+                 style: 'width: 100%; height: 200px'
 #dialog
 :coffeescript
   $dialog = $('#dialog')
