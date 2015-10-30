@@ -120,6 +120,10 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def after_sign_up_path_for(resource)
+      dashboard_user_path(resource)
+    end
+
     def skip_authorization
       @_policy_scoped = true
       @_policy_authorized = true

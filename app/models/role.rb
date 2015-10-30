@@ -3,4 +3,13 @@ class Role < ActiveRecord::Base
   belongs_to :resource, :polymorphic => true
   
   scopify
+
+  def self.publisher
+    find_by name: 'publisher'
+  end
+
+  def self.pro
+    find_by name: 'pro'
+  end
+
 end

@@ -93,6 +93,7 @@ class Respondent < ActiveRecord::Base
               uniqueness: { case_sensitive: false }
 
   before_validation :ensure_username
+  before_create :set_default_role
 
   # respondents with responses or skips within the last n days
   def self.active n = 10
@@ -285,5 +286,9 @@ class Respondent < ActiveRecord::Base
                                   follower_id: message.follower_id }
         end
       end
+    end
+
+    def set_default_role
+      self.roles << Role.publisher
     end
 end
