@@ -1,5 +1,7 @@
 class Anonymous < Respondent
 
+  has_and_belongs_to_many :roles, foreign_key: :user_id, :join_table => :users_roles
+
   def promote!(data={})
     User.transaction do
       self.update!(type: 'User')
