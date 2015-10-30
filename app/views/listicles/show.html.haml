@@ -24,8 +24,7 @@
   = @listicle.intro.html_safe
   - @listicle.questions.sort_by{|q| -q.score}.each_with_index do |question, index|
     %hr.separator
-    - unless index == 0
-      %span.question-index= index + 1
+    %span.question-index= index + 1
     .voting
       = link_to answer_listicle_question_path(question_id: question.id, is_up: true), method: :post, class: 'vote', onclick: 'onResponse()' do
         %i.fa.fa-chevron-up.fa-2x
