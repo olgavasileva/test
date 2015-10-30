@@ -105,7 +105,7 @@ class ListiclesController < ApplicationController
   end
 
   def details
-    @listicle = current_user.listicles.where(id: params[:id]).includes(:questions => [:responses]).first
+    @listicle = current_user.listicles.where(id: params[:listicle_id]).includes(:questions => [:responses]).first
     unless @listicle
       skip_authorization
       return head 404

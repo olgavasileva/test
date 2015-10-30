@@ -118,8 +118,8 @@ LinkchatApp::Application.routes.draw do
           patch 'advanced_form' => 'advanced_listicles#update', as: :advanced_form
           get 'basic_form' => 'listicles#basic_form'
           get 'details' => 'listicles#details', as: :details
-          resources :questions, only: [:update, :edit], param: :question_id, controller: :listicle_questions
         end
+        resources :questions, only: [:update, :edit], param: :question_id, controller: :listicle_questions
       end
       get :behavioural_report, as: :behavioural_report
       get :cognitive_report, as: :cognitive_report
