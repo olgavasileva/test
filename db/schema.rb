@@ -10,8 +10,7 @@
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended that you check this file into your version control system.
-
-ActiveRecord::Schema.define(version: 20151030040648) do
+ActiveRecord::Schema.define(version: 20151027120547) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
