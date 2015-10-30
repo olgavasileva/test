@@ -289,6 +289,6 @@ class Respondent < ActiveRecord::Base
     end
 
     def set_default_role
-      self.roles << Role.publisher
+      self.roles << Role.publisher if type != 'Anonymous'
     end
 end
