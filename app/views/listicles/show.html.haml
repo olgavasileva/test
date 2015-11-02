@@ -19,6 +19,22 @@
 - else
   :javascript
     function onResponse() {}
+:css
+  .vote:hover {
+    color: #{color(@listicle, :arrows_on_hover)} !important;
+  }
+  .vote.clicked {
+    color: #{color(@listicle, :arrows_selected)} !important;
+  }
+  .vote {
+    color: #{color(@listicle, :arrows_default)} !important;
+  }
+  .score {
+    color: #{color(@listicle, :vote_count)} !important;
+  }
+  .separator, .question-index {
+    background-color: #{color(@listicle, :item_separator)} !important;
+  }
 %script(src="//segapi.quantserve.com/api/segments.json?a=#{ENV['QUANTCAST_P_CODE']}&callback=qr"))
 #listicle-show
   = @listicle.intro.html_safe

@@ -23,4 +23,24 @@ module ListicleHelper
     end
     template_text + "=footer\n#{listicle.footer.try(:html_safe)}"
   end
+
+  DEFAULT_COLORS = {
+      item_separator: '#C9C9C9',
+      vote_count: '#3EACE7',
+      arrows_default: '#B8E2F6',
+      arrows_on_hover: '#3EACE7',
+      arrows_selected: '#3EACE7'
+  }
+
+  def color(listicle, property)
+    if listicle.respond_to?(property.to_s + '_color')
+      color = listicle.send(property.to_s + '_color')
+      if color.present?
+        color
+      else
+        DEFAULT_COLORS[property]
+      end
+    end
+  end
+
 end

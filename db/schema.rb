@@ -10,7 +10,8 @@
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended that you check this file into your version control system.
-ActiveRecord::Schema.define(version: 20151027120547) do
+
+ActiveRecord::Schema.define(version: 20151102082237) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -533,7 +534,12 @@ ActiveRecord::Schema.define(version: 20151027120547) do
     t.text     "footer"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "view_count", default: 0, null: false
+    t.integer  "view_count",            default: 0, null: false
+    t.string   "item_separator_color"
+    t.string   "vote_count_color"
+    t.string   "arrows_default_color"
+    t.string   "arrows_on_hover_color"
+    t.string   "arrows_selected_color"
   end
 
   create_table "localizations", force: true do |t|
