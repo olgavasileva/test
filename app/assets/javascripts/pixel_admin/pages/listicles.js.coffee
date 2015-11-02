@@ -42,7 +42,6 @@ ready = ->
     plugins: ['imagemanager', 'video', 'table', 'fontcolor', 'fontfamily', 'fontsize'],
     imageUpload: window.imageUploadPath,
     imageSearch: window.imageSearchPath
-  console.log($('[rel=redactor]'), window.editorConfig)
   $('[rel=redactor]').redactor window.editorConfig
 
   itemIdx = $('.item').length

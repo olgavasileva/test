@@ -1,5 +1,6 @@
 - url = @listicle.new_record? ? new_listicle_path(current_user) : listicle_path(current_user, @listicle)
 = form_for :listicle, url: url, method: @listicle.new_record? ? 'POST' : 'PATCH' do |f|
+  = render partial: 'listicles/theme_editor', locals: {form: f, listicle: @listicle}
   - if @listicle.errors.any?
     %ul.errors
       - @listicle.errors.full_messages.each do |error|
@@ -38,4 +39,3 @@
     = f.text_area :footer, rel: 'redactor'
   %br
   = f.submit 'Save', class: 'btn btn-success', style: 'margin: 20px auto 20px; display: block; width: 150px'
-

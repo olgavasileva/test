@@ -59,7 +59,7 @@ class ListiclesController < ApplicationController
     @listicle.update(listicle_params)
     respond_to do |format|
       format.html { redirect_to action: :index }
-      format.json { render json: {form: render_to_string(partial: 'listicles/advanced_form', layout: false, formats: :html)}, status: :ok}
+      format.json { render json: {form: render_to_string(partial: 'listicles/advanced_form', layout: false, formats: :html)}, status: :ok }
     end
   end
 
@@ -142,7 +142,9 @@ class ListiclesController < ApplicationController
   end
 
   def listicle_params
-    params.require(:listicle).permit :intro, :footer, :questions_attributes => [:body, :_destroy, :id]
+    params.require(:listicle).permit :intro, :footer, :item_separator_color, :vote_count_color, :arrows_default_color,
+                                     :arrows_on_hover_color, :arrows_selected_color,
+                                     :questions_attributes => [:body, :_destroy, :id]
   end
 
   def redirect_to_index
