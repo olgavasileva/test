@@ -108,7 +108,7 @@ class ApplicationController < ActionController::Base
     end
 
     def after_sign_out_path_for(resource_or_scope)
-      ENV['MAIN_APP_URL'] || root_path
+      Rails.env.development? ? root_path : 'http://www.statisfy.co'
     end
 
     def after_sign_in_path_for(resource)
