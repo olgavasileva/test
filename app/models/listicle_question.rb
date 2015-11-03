@@ -12,8 +12,14 @@ class ListicleQuestion < ActiveRecord::Base
   end
 
   def answer(answer, user)
+    session_timeout = Setting.fetch_value('listicle_session_timeout')
+    if session_timeout.nil?
+      session_timeout = 30.minutes
+    else
+      session_timeout = (session_timeout.to_i / 1000).seconds
+    end
     response = responses.where(user_id: user.id).order(:created_at => :desc).first
-    if response.nil? || Time.zone.now - response.updated_at >= 30.minutes
+    if response.nil? || Time.zone.now - response.updated_at >= session_timeout
       response = responses.new(user_id: user.id)
     end
     old_score = response.score
