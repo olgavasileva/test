@@ -1,4 +1,4 @@
-- url = @listicle.new_record? ? new_listicle_path(current_user) : listicle_path(current_user, @listicle)
+- url = @listicle.new_record? ? listicles_path(current_user) : listicle_path(current_user, @listicle)
 = form_for :listicle, url: url, method: @listicle.new_record? ? 'POST' : 'PATCH' do |f|
   = render partial: 'listicles/theme_editor', locals: {form: f, listicle: @listicle}
   - if @listicle.errors.any?
