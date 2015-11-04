@@ -110,7 +110,7 @@ LinkchatApp::Application.routes.draw do
       get :question_search
       get :account
       get :avatar
-      resources :listicles, param: :listicle_id do
+      resources :listicles do
         collection do
           post 'image_upload' => 'listicles#image_upload'
         end
