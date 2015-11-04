@@ -1,4 +1,4 @@
-= form_for :listicle, url: advanced_form_listicle_path, method: 'PATCH' do |form|
+= form_for :listicle, url: advanced_form_listicle_path(current_user, @listicle), method: 'PATCH' do |form|
   = hidden_field_tag :listicle_id, @listicle.id
   = render partial: 'listicles/theme_editor', locals: {form: form, listicle: @listicle}
   = text_area_tag :advanced_text, advanced_template_text(@listicle), rel: 'redactor'
