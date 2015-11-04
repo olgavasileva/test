@@ -136,8 +136,22 @@
     margin-left: -105px;
   }
   .panel-body {
-    height: 220px;
+    height: 180px;
     overflow: hidden;
+  }
+  .panel-heading {
+    &.bottom a {
+      color: #646464;
+      display: inline-block;
+      width: 16.6667%;
+      &:visited {
+        text-decoration: none;
+      }
+      text-decoration: none;
+      &:hover {
+        color:#9d9d9d;
+      }
+    }
   }
 
   .listicle-buttons {

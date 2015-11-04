@@ -1,4 +1,31 @@
 //= require font-awesome
+//= require jquery-ui
+.top-panel {
+  margin-top: -20px;
+  padding: 22px 10px 10px;
+  position: fixed;
+  height: 22px;
+  background-color: rgb(251, 251, 251);
+  width: 100%;
+  border-bottom: 2px solid rgb(230, 230, 230);
+  a {
+    color: #646464;
+    width: 25px;
+    margin-right: 7px;
+    &:visited {
+      text-decoration: none;
+    }
+    text-decoration: none;
+    &:hover {
+      color:#9d9d9d;
+    }
+  }
+}
+#listicle-show {
+  width: 540px;
+  padding-left: 100px;
+  margin: 0 auto;
+}
 .embed_listicle {
   .item-content {
     margin-top: -40px;
@@ -6,7 +33,6 @@
   font-family: Lato;
   font-size: 12pt;
   max-width: 500px;
-  padding-left: 100px;
   overflow-x: scroll;
   //font-size: 2.5em;
   .separator {

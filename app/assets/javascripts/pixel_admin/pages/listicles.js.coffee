@@ -1,3 +1,4 @@
+#= require jquery-ui
 itemIdx = 0
 window.editorConfig = null
 itemTemplate = ->
@@ -79,7 +80,7 @@ ready = ->
   $('.preview-button').click (e)->
     e.preventDefault()
     e.stopPropagation()
-    window.open($(this).attr('href'), "_blank", "status=no, width=620, height=480, resizable=yes," +
+    window.open($(this).attr('href'), "_blank", "status=no, width=660, height=480, resizable=yes," +
         " toolbar=no, menubar=no, scrollbars=yes, location=no, directories=no")
 
 

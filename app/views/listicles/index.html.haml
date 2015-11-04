@@ -19,7 +19,7 @@
               .panel-heading
                 %span.panel-title
                   &nbsp;
-              .panel-body
+              .panel-body(style="height: 220px;")
                 = link_to new_listicle_path(current_user), id: 'new-listicle' do
                   %i.fa.fa-2x.fa-plus
                   %br
@@ -28,27 +28,23 @@
               .panel-heading
                 %span.panel-title
                   = link_to text_or_empty_symbol(limit_text(text_from_html(listicle.get_intro), 25)),
-                  show_listicle_url(listicle), target: '_blank', class: 'listicle-title'
-                .panel-heading-controls
-                  .btn-group.btn-group-xs
-                    %button.btn.btn-info.dropdown-toggle{type: 'button', 'data-toggle' => 'dropdown'}
-                      %i.fa.fa-gear
-                    %ul.dropdown-menu.dropdown-menu-right
-                      %li.dropdown-header
-                        Menu
-                      %li.divider
-                      %li
-                        = link_to 'Edit', edit_listicle_path(current_user, listicle)
-                      %li
-                        = link_to 'View', show_listicle_url(listicle), class: 'preview-button'
-                      %li
-                        = link_to 'Get Code', show_listicle_url(listicle), class: 'embed-code'
-                      %li
-                        = link_to 'Show details', details_listicle_path(current_user, listicle)
-                      %li
-                        = link_to 'Delete', listicle_path(current_user, listicle), method: :delete, data: {confirm: 'Do you want to remove this listicle?'}
+                  show_listicle_url(listicle, preview: true), target: '_blank', class: 'listicle-title preview-button'
               .panel-body
-                %a.preview{href: edit_listicle_path(current_user, listicle), target: '_blank'}
-                - listicle.questions.each do |question|
-                  = h question.body.html_safe
+                = link_to show_listicle_url(listicle, preview: true), target: '_blank', class: 'preview preview-button' do
+                  - listicle.questions.each do |question|
+                    = h question.body.html_safe
+              .panel-heading.bottom
+                = link_to edit_listicle_path(current_user, listicle) do
+                  %i.fa.fa-pencil.fa-lg
+                = link_to show_listicle_url(listicle, preview: true), class: 'preview-button' do
+                  %i.fa.fa-eye.fa-lg
+                = link_to show_listicle_url(listicle), class: 'embed-code' do
+                  %i.fa.fa-code.fa-lg
+                = link_to details_listicle_path(current_user, listicle) do
+                  %i.fa.fa-info.fa-lg
+                -#TODO add analytics for listicles
+                = link_to details_listicle_path(current_user, listicle) do
+                  %i.fa.fa-pie-chart.fa-lg
+                = link_to listicle_path(current_user, listicle), method: :delete, data: {confirm: 'Do you want to remove this listicle?'} do
+                  %i.fa.fa-trash-o.fa-lg
   #dialog
