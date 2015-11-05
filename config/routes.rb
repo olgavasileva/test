@@ -110,7 +110,7 @@ LinkchatApp::Application.routes.draw do
       get :question_search
       get :account
       get :avatar
-      resources :listicles do
+      resources :listicles, param: :listicle_id do
         collection do
           post 'image_upload' => 'listicles#image_upload'
         end
@@ -118,9 +118,9 @@ LinkchatApp::Application.routes.draw do
           patch 'advanced_form' => 'advanced_listicles#update', as: :advanced_form
           get 'basic_form' => 'listicles#basic_form'
           get 'details' => 'listicles#details', as: :details
+          resource :analytics, only: [:show], controller: :listicle_analytics, as: :analytics
+          resources :questions, only: [:update, :edit], param: :question_id, controller: :listicle_questions
         end
-        resource :analytics, only: [:show], controller: :listicle_analytics, as: :analytics
-        resources :questions, only: [:update, :edit], param: :question_id, controller: :listicle_questions
       end
       get :behavioural_report, as: :behavioural_report
       get :cognitive_report, as: :cognitive_report

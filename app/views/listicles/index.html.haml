@@ -42,8 +42,7 @@
                   %i.fa.fa-code.fa-lg
                 = link_to details_listicle_path(current_user, listicle) do
                   %i.fa.fa-info.fa-lg
-                -#TODO add analytics for listicles
-                = link_to details_listicle_path(current_user, listicle) do
+                = link_to listicle_analytics_path(current_user, listicle) do
                   %i.fa.fa-pie-chart.fa-lg
                 = link_to listicle_path(current_user, listicle), method: :delete, data: {confirm: 'Do you want to remove this listicle?'} do
                   %i.fa.fa-trash-o.fa-lg
