@@ -43,4 +43,8 @@ module ListicleHelper
     end
   end
 
+  def show_item_bar?(listicle, preview)
+    current_user == listicle.user && preview
+  end
+
 end

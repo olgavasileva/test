@@ -1,3 +1,4 @@
+#= require jquery-ui
 itemIdx = 0
 window.editorConfig = null
 itemTemplate = ->
@@ -55,17 +56,18 @@ ready = ->
     $el = $(this)
     href = $el.attr('href')
 
-    $('#dialog').html "<div><label>Height: <input type='number' id='iframe-height' style='font-weight: normal; width: 70px' value='600'></label>" +
+    $dialog = $('#dialog')
+    $dialog.html "<div><label>Height: <input type='number' id='iframe-height' style='font-weight: normal; width: 70px' value='600'></label>" +
         "<div><label>Width: <input type='number' id='iframe-width' style='font-weight: normal; width: 70px' value='600'></label><br />" +
         "&nbsp;<a href='" + href + "' id='preview-dialog'><i class='fa fa-eye'></i> Preview</a>" +
         "<br><br><pre id='iframe-code'>#{getCodeTemplate(href)}</pre></div>"
 
-    $('#preview-dialog').click (e)->
+    $dialog.find('#preview-dialog').click (e)->
       e.preventDefault()
       e.stopPropagation()
       width = (parseInt($('#iframe-width').val()) + 20)
       height = $('#iframe-height').val()
-      window.open($(this).attr('href'), "_blank", "status=no, width=" + width + ", height=" + height + ", resizable=yes," +
+      window.open($(this).attr('href') + '?preview=true', "_blank", "status=no, width=" + width + ", height=" + height + ", resizable=yes," +
           " toolbar=no, menubar=no, scrollbars=yes, location=no, directories=no")
 
     $('#dialog').dialog()
@@ -79,7 +81,7 @@ ready = ->
   $('.preview-button').click (e)->
     e.preventDefault()
     e.stopPropagation()
-    window.open($(this).attr('href'), "_blank", "status=no, width=620, height=480, resizable=yes," +
+    window.open($(this).attr('href'), "_blank", "status=no, width=660, height=480, resizable=yes," +
         " toolbar=no, menubar=no, scrollbars=yes, location=no, directories=no")
 
 

@@ -33,13 +33,55 @@ readyFn = ->
   csrfToken = $('meta[name="csrf-token"]').attr('content')
 
   qd.then (d)->
-    $.ajax (window.location + '/quantcast'), {
+    $.ajax (window.location.pathname + '/quantcast'), {
       type: 'POST',
       dataType: 'json',
       data: {quantcast: JSON.stringify(d)},
       headers: {'X-CSRF-Token': csrfToken}
     }
     votingFn()
+  getCodeTemplate = (link, width = 600, height = 600)->
+    "&lt;div style=\"height: #{height}px; width: #{width}px;\"&gt;&lt;iframe width=\"#{width}\" height=\"#{height}\" src=\"#{link}\" frameborder='0' &gt;&lt;/iframe&gt;&lt;div&gt;"
+
+  $('.embed-code').click (e)->
+    e.preventDefault()
+    e.stopPropagation()
+
+    $el = $(this)
+    href = $el.attr('href')
+
+    $dialog = $('#dialog')
+    $dialog.html "<div><label>Height: <input type='number' id='iframe-height' style='font-weight: normal; width: 70px' value='600'></label>" +
+        "<div><label>Width: <input type='number' id='iframe-width' style='font-weight: normal; width: 70px' value='600'></label><br />" +
+        "&nbsp;<a href='" + href + "' id='preview-dialog'><i class='fa fa-eye'></i> Preview</a>" +
+        "<br><br><pre id='iframe-code' style='word-break: break-word'>#{getCodeTemplate(href)}</pre></div>"
+
+    $dialog.find('#preview-dialog').click (e)->
+      e.preventDefault()
+      e.stopPropagation()
+      width = (parseInt($('#iframe-width').val()) + 20)
+      height = $('#iframe-height').val()
+      window.open($(this).attr('href') + '?preview=true', "_blank", "status=no, width=" + width + ", height=" + height + ", resizable=yes," +
+          " toolbar=no, menubar=no, scrollbars=yes, location=no, directories=no")
+
+    changeCode = ->
+      $('#iframe-code').html getCodeTemplate(href, $('#iframe-width').val(), $('#iframe-height').val())
+
+    $dialog.find("#iframe-height").change(changeCode)
+    $dialog.find("#iframe-width").change(changeCode)
+    $dialog.dialog()
+
+  $('#delete-listicle').click (e)->
+    e.preventDefault()
+    e.stopPropagation()
+    href = $(this).attr('href')
+    if window.confirm('Do you want to remove this listicle?')
+      $.ajax
+        url: href
+        dataType: 'json'
+        method: 'DELETE'
+        complete: -> window.close()
+
 $(document).ready readyFn
 $(document).on 'page:load', readyFn
 $(window).unload ->

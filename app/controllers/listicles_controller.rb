@@ -64,7 +64,10 @@ class ListiclesController < ApplicationController
 
   def destroy
     @listicle.destroy
-    redirect_to_index
+    respond_to do |f|
+      f.html { redirect_to_index }
+      f.json { render nothing: true, status: :ok }
+    end
   end
 
   def image_upload
@@ -86,6 +89,7 @@ class ListiclesController < ApplicationController
   end
 
   def embed
+    @preview = params[:preview]
     headers.delete 'X-Frame-Options'
     @listicle = Listicle.find(params[:id])
     authorize @listicle

@@ -36,7 +36,25 @@
     background-color: #{color(@listicle, :item_separator)} !important;
   }
 %script(src="//segapi.quantserve.com/api/segments.json?a=#{ENV['QUANTCAST_P_CODE']}&callback=qr"))
-#listicle-show
+- if show_item_bar?(@listicle, @preview)
+  .top-panel
+    = link_to '#' do
+      %i.fa.fa-arrow-left.fa-lg
+    = link_to edit_listicle_path(current_user, @listicle) do
+      %i.fa.fa-pencil.fa-lg
+    = link_to show_listicle_url(@listicle), class: 'embed-code' do
+      %i.fa.fa-code.fa-lg
+    = link_to details_listicle_path(current_user, @listicle) do
+      %i.fa.fa-info.fa-lg
+    -#TODO add analytics for listicles
+    = link_to details_listicle_path(current_user, @listicle) do
+      %i.fa.fa-pie-chart.fa-lg
+    = link_to listicle_path(current_user, @listicle), id: 'delete-listicle' do
+      %i.fa.fa-trash-o.fa-lg
+    = link_to 'javascript:window.close()', style: 'float: right; margin-right: 20px' do
+      %i.fa.fa-times.fa-lg
+    #dialog
+#listicle-show{style: "padding-top: #{show_item_bar?(@listicle, @preview) ? '40px' : 0}"}
   = @listicle.intro.html_safe
   - @listicle.questions.sort_by{|q| -q.score}.each_with_index do |question, index|
     %hr.separator
