@@ -1,0 +1,25 @@
+.panel.panel-default
+  .panel-heading
+    %h2.panel-title Listicle Analytics
+  .panel-body
+    .row
+      .listicle-question-list
+        - @listicle.questions.each_with_index do |question, index|
+          .question-title
+            - if question.body.blank?
+              = "Listicle item #{index + 1}"
+            - else
+              = question.title
+          %div
+            %span= "Upvotes: #{question.up_votes_count}"
+            &nbsp;
+            %span= "Downvotes: #{question.down_votes_count}"
+            &nbsp;
+            %span= "Total: #{question.score}"
+            &nbsp;
+            %span= "Net: #{question.total_votes}"
+            %span.percentage
+              - if question.total_votes > 0
+                = number_to_percentage 100 * question.score.to_f / question.total_votes , precision: 0
+              - else
+                = number_to_percentage 0, precision: 0

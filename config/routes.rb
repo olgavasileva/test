@@ -113,12 +113,13 @@ LinkchatApp::Application.routes.draw do
       resources :listicles, param: :listicle_id do
         collection do
           post 'image_upload' => 'listicles#image_upload'
+          get 'search' => 'listicles#search', as: :search
         end
         member do
           patch 'advanced_form' => 'advanced_listicles#update', as: :advanced_form
           get 'basic_form' => 'listicles#basic_form'
           get 'details' => 'listicles#details', as: :details
-          resource :analytics, only: [:show], controller: :listicle_analytics, as: :analytics
+          resource :analytics, only: [:show], controller: :listicle_analytics, as: :listicle_analytics
           resources :questions, only: [:update, :edit], param: :question_id, controller: :listicle_questions
         end
       end

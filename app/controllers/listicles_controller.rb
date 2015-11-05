@@ -64,6 +64,7 @@ class ListiclesController < ApplicationController
 
   def destroy
     @listicle.destroy
+
     respond_to do |f|
       f.html { redirect_to_index }
       f.json { render nothing: true, status: :ok }
@@ -79,11 +80,18 @@ class ListiclesController < ApplicationController
            }, content_type: 'text/html'
   end
 
+  def search
+    skip_authorization
+    query = params[:term]
+    listicles = current_user.listicles #.where('intro LIKE ?', "%#{query}%")
+    render json: listicles.map { |listicle| {load_url: listicle_analytics_url(current_user, listicle), id: listicle.id, title: listicle.get_intro} }
+  end
+
   def answer_question
     question = ListicleQuestion.find(params[:question_id])
     authorize question.listicle
 
-    question.answer(response_params, current_ad_unit_user)
+    question.answer(response_params, current_ad_unit_user, request)
 
     render json: {score: question.score}
   end

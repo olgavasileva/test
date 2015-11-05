@@ -11,7 +11,7 @@ class ListicleQuestion < ActiveRecord::Base
     responses.pluck(:score).sum
   end
 
-  def answer(answer, user)
+  def answer(answer, user, request)
     session_timeout = Setting.fetch_value('listicle_session_timeout')
     if session_timeout.nil?
       session_timeout = 30.minutes
@@ -22,6 +22,7 @@ class ListicleQuestion < ActiveRecord::Base
     if response.nil? || Time.zone.now - response.updated_at >= session_timeout
       response = responses.new(user_id: user.id)
     end
+    response.original_referrer = request.referrer
     old_score = response.score
     response.score += answer[:is_up] ? 1 : -1
     response.ensure_valid_score
@@ -51,6 +52,10 @@ class ListicleQuestion < ActiveRecord::Base
 
   def down_votes_count
     responses.negative.count
+  end
+
+  def csv_columns
+    [body, script]
   end
 
 end

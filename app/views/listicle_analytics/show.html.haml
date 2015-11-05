@@ -8,11 +8,30 @@
         .input-group
           %span.input-group-addon
             %span.glyphicon.glyphicon-search
-          -#TODO add search
-          -#=search_field_tag :search, "", id: :question_search, data:{callback: question_search_user_url(current_user, @segment)}, placeholder: "Search for a question", class: %w(form-control)
+          = search_field_tag :search, '', id: :listicle_search, data: {callback: search_listicles_url(current_user)},
+            placeholder: 'Search for a listicle', class: %w(form-control)
 
     %br
     .row
       .col-sm-12
         #search_results
-          = render partial: "users/question_analytics", question: @question
+        .row#question_analytics
+          .col-sm-4
+            = render partial: 'questions', locals: {question: @question}
+            = render partial: 'statistics', locals: {question: @question, listicle: @listicle}
+          .col-sm-8
+            - if @demographics
+              #demographics
+                = render partial: 'demographics', locals: {demographics: @demographics, listicle: @listicle}
+  :coffeescript
+    $(document).on 'page:change', ->
+      $("#listicle_search").autocomplete
+        delay: 500
+        minLength: 2
+        source: (request, response)->
+          $.get $("#listicle_search").data().callback, {term: request.term}, (data) ->
+            result = $.map data, (hash, index) ->
+              {value: hash.title, id: hash.id, url: hash.load_url}
+            response result
+        select: (event, ui) ->
+          window.location = ui.item.url

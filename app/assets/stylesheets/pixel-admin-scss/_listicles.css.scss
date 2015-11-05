@@ -149,12 +149,27 @@
       }
       text-decoration: none;
       &:hover {
-        color:#9d9d9d;
+        color: #9d9d9d;
       }
     }
   }
 
   .listicle-buttons {
     font-size: 20px;
+  }
+}
+
+.listicle-question-list {
+  .question-title {
+    padding: 10px;
+    color: white;
+    background-color: rgb(39, 125, 185);
+  }
+  span {
+    font-style: italic;
+    &.percentage {
+      float: right;
+      color: lightgrey;
+    }
   }
 }

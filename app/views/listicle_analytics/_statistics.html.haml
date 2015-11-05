@@ -1,0 +1,22 @@
+.panel.panel-default
+  .panel-heading
+    %h2.panel-title
+      %i.menu-icon.fa.fa-bar-chart-o
+      %span.mm-text Statistics
+  .panel-body
+    %table.table
+      %tr
+        %td Views
+        %td.text-right= listicle.view_count.to_i
+      %tr
+        %td Viral Distribution
+        %td.text-right= listicle.viral_distribution
+      %tr
+        %td Virality Rate
+        %td.text-right= number_to_percentage 100 * listicle.virality_rate.to_f, precision: 1
+      %tr
+        %td Completes
+        %td.text-right= listicle.response_count
+      %tr
+        %td Complete Rate
+        %td.text-right= number_to_percentage 100 * listicle.complete_rate.to_f, precision: 1

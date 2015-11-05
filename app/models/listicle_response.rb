@@ -17,4 +17,8 @@ class ListicleResponse < ActiveRecord::Base
       self.score = -1
     end
   end
+
+  def csv_data
+    [score]
+  end
 end
