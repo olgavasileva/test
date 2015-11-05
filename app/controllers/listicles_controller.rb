@@ -48,7 +48,6 @@ class ListiclesController < ApplicationController
   end
 
   def basic_form
-    # return render nothing: true, status: :not_found unless params[:listicle_id]
     @listicle = current_user.listicles.find(params[:listicle_id])
 
     authorize @listicle

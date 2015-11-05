@@ -119,6 +119,7 @@ LinkchatApp::Application.routes.draw do
           get 'basic_form' => 'listicles#basic_form'
           get 'details' => 'listicles#details', as: :details
         end
+        resource :analytics, only: [:show], controller: :listicle_analytics, as: :analytics
         resources :questions, only: [:update, :edit], param: :question_id, controller: :listicle_questions
       end
       get :behavioural_report, as: :behavioural_report
