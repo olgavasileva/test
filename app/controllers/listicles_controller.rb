@@ -117,6 +117,20 @@ class ListiclesController < ApplicationController
 
   def details
     @listicle = current_user.listicles.where(id: params[:listicle_id]).includes(:questions => [:responses]).first
+    options = {
+        question_ids: @listicle.question_ids,
+        event_category: 'listicle'
+    }
+    date_range = DateRange.from_project_start
+    emotional_report = EmotionalReport.new(date_range, current_user, options)
+    behavioural_report = BehaviouralReport.new(date_range, current_user, emotional_report, options)
+    cognitive_report = CognitiveReport.new(date_range, current_user, options)
+    @report = {
+        emotional: emotional_report,
+        behavioural: behavioural_report,
+        cognitive: cognitive_report
+    }
+
     unless @listicle
       skip_authorization
       return head 404

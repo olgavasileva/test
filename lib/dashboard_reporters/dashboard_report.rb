@@ -1,12 +1,16 @@
 class DashboardReport
 
   QUESTIONS_LIMIT = 10
+  DEFAULT_EVENT_CATEGORY = 'webapp'
+
+  attr_reader :event_category
 
   def initialize(date_range, user, options = {})
     @date_range = date_range
     @user = user
     @question_ids = options[:question_ids]
     @surveys = options[:surveys]
+    @event_category = options[:category] || DEFAULT_EVENT_CATEGORY
 
     @question_ids = @user.question_ids unless @question_ids
     @surveys = @user.surveys unless @surveys

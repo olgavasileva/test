@@ -20,8 +20,8 @@
                 %span.panel-title
                   &nbsp;
               .panel-body(style="height: 220px;")
-                = link_to new_listicle_path(current_user), id: 'new-listicle' do
-                  %i.fa.fa-2x.fa-plus
+                = link_to new_listicle_path(current_user), id: 'new-listicle', style: 'width: 75px' do
+                  %i.fa.fa-2x.fa-plus(style="margin-left: 27px")
                   %br
                   New Listicle
             - else

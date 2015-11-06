@@ -12,7 +12,7 @@ class ListicleDetailsReport < DashboardReport
       response = get_google_response('start-date' => start_date.to_s,
                                      'end-date' => end_date.to_s,
                                      'dimensions' => 'ga:eventLabel,ga:eventCategory,ga:eventAction',
-                                     'filters' => "ga:eventAction==view;ga:eventCategory==listicle;ga:eventLabel=~#{join_regex_rules(question_ids)}",
+                                     'filters' => "ga:eventCategory==#{event_category};ga:eventAction==view;ga:eventCategory==listicle;ga:eventLabel=~#{join_regex_rules(question_ids)}",
                                      'metrics' => 'ga:sessions')
       response.data['rows'].each do |r|
         views[r[0].to_i] = r[3].to_i

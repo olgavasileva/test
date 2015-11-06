@@ -22,8 +22,8 @@ class BehaviouralReport < DashboardReport
     @question_ids.each_slice(QUESTIONS_LIMIT).each do |question_ids|
       response = get_google_response('start-date' => start_date.to_s,
                                      'end-date' => end_date.to_s,
-                                     'dimensions' => 'ga:eventLabel',
-                                     'filters' => "ga:eventLabel=~#{join_regex_rules(question_ids)}",
+                                     'dimensions' => 'ga:eventLabel,ga:eventCategory',
+                                     'filters' => "ga:eventCategory==#{event_category};ga:eventLabel=~#{join_regex_rules(question_ids)}",
                                      'metrics' => 'ga:sessions')
       count += begin
         response.data['rows'].inject(0) { |result, x| result + x[2].to_i }.to_i
@@ -41,8 +41,8 @@ class BehaviouralReport < DashboardReport
     @question_ids.each_slice(QUESTIONS_LIMIT).each do |question_ids|
       response = get_google_response('start-date' => start_date.to_s,
                                      'end-date' => end_date.to_s,
-                                     'dimensions' => 'ga:eventLabel',
-                                     'filters' => "ga:eventLabel=~#{join_regex_rules(question_ids)}",
+                                     'dimensions' => 'ga:eventLabel,ga:eventCategory',
+                                     'filters' => "ga:eventCategory==#{event_category};ga:eventLabel=~#{join_regex_rules(question_ids)}",
                                      'metrics' => 'ga:sessions,ga:sessionsDuration')
       session_count += begin
         response.data['rows'].inject(0) { |result, x| result + x[1].to_i }.to_i
@@ -64,11 +64,11 @@ class BehaviouralReport < DashboardReport
     @question_ids.each_slice(QUESTIONS_LIMIT).each do |question_ids|
       response = get_google_response('start-date' => start_date.to_s,
                                      'end-date' => end_date.to_s,
-                                     'dimensions' => 'ga:eventLabel',
-                                     'filters' => "ga:eventLabel=~#{join_regex_rules(question_ids)}",
+                                     'dimensions' => 'ga:eventLabel,ga:eventCategory',
+                                     'filters' => "ga:eventCategory==#{event_category};ga:eventLabel=~#{join_regex_rules(question_ids)}",
                                      'metrics' => 'ga:pageviews')
       views += begin
-        response.data['rows'].inject(0) { |result, x| result + x[1].to_i }.to_i
+        response.data['rows'].inject(0) { |result, x| result + x[2].to_i }.to_i
       rescue
         0
       end
