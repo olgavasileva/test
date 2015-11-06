@@ -4,9 +4,9 @@ class SurveysController < ApplicationController
   skip_before_action :authenticate_user!, :find_recent_questions
 
   before_action :set_expiration_headers, only: [:start]
-  before_action :migrate_user_cookie, except: [:question_viewed]
-  before_action :preload_and_authorize
-  after_action :allow_iframe, except: [:question_viewed]
+  before_action :migrate_user_cookie, except: [:question_viewed, :destroy]
+  before_action :preload_and_authorize, except: [:destroy]
+  after_action :allow_iframe, except: [:question_viewed, :destroy]
 
   protect_from_forgery with: :null_session
 
@@ -23,9 +23,18 @@ class SurveysController < ApplicationController
     render :invalid_survey
   end
 
+  rescue_from(ActiveRecord::RecordNotFound) { render :invalid_survey }
+
   rescue_from(ActiveRecord::ActiveRecordError) do |ex|
     Airbrake.notify_or_ignore(ex)
     render :invalid_survey, layout: false
+  end
+
+  def destroy
+    @survey = current_user.surveys.find_by(uuid: params[:uuid])
+    skip_authorization
+    @survey.destroy
+    redirect_to campaigns_path(current_user)
   end
 
   def question_viewed

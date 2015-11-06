@@ -2,31 +2,54 @@
   .panel-heading
     %h2.panel-title
       .row
-        .col-sm-6 CAMPAIGN MANAGEMENT
+        .col-sm-6 Engagement Units Management
         .col-sm-6.text-right-not-xs
-          =link_to '#', class: %w(btn btn-sm btn-success btn-labeled) do
-            %span.btn-label.glyphicon.glyphicon-download-alt
-            Export to .csv
           =link_to [:new_question, current_user], class: %w(btn btn-sm btn-primary btn-labeled) do
             %span.btn-label.fa.fa-plus
-            Create Campaign
-.table-primary
-  %table.table.table-striped.table-bordered#campaigns{cellpadding:0, cellspacing:0, border:0}
-    %thead
-      %tr
-        %th Title of first question of survey
-        %th UUID
-        %th # Questions
-        %th Show | Edit
-    %tbody
-      - @surveys.each do |survey|
-        - question = survey.questions.first
-        %tr
-          %td= link_to question.title, "#{ENV['WEB_APP_URL']}/#/app/questions/#{question.id}", target: '_blank'
-          %td= survey.uuid
-          %td= survey.questions.length
-          %td.text-center
-            = link_to 'View', campaign_path(current_user, survey), class:'btn btn-primary'
-            \|
-            .btn.btn-success.edit-question{'data-url' => edit_question_path(question)} Edit
+            New Engagement Unit
+#listicles
+  .row
+    .col-md-11
+      - if @page > 1
+        = link_to 'Previous', campaigns_path(current_user, page: @page - 1), class: 'btn'
+    .col-md-1
+      - if @max_count > @page * @per_page
+        = link_to 'Next', campaigns_path(current_user, page: @page + 1), class: 'btn'
+    %br
+    %br
+  - @surveys = [nil] + @surveys.to_a
+  - @surveys.each_slice(3).each do |surveys|
+    .row
+      - surveys.each do |survey|
+        .col-md-4
+          .panel
+            - if survey.nil?
+              .panel-heading
+                %span.panel-title
+                  &nbsp;
+              .panel-body(style="height: 290px;")
+                = link_to new_question_user_path(current_user), id: 'new-listicle' do
+                  %i.fa.fa-2x.fa-plus
+                  %br
+                  New Engagement Unit
+            - else
+              - question = survey.questions.first
+              .panel-heading
+                %span.panel-title
+                  = link_to question.title, webapp_question_link(question), target: '_blank'
+              .panel-body{style: 'padding: 0; height: 250px'}
+                = link_to webapp_question_link(question), target: '_blank' do
+                  %iframe{height: 250, width: 300, frameborder: 0, style: 'margin-left: 0',
+                  src: qp_start_path(survey_uuid: survey.uuid, unit_name: :medium_rectangle)}
+              .panel-heading.bottom
+                = link_to qp_start_path(survey_uuid: survey.uuid, unit_name: :medium_rectangle), class: 'preview-button' do
+                  %i.fa.fa-eye.fa-lg
+                = link_to qp_start_path(survey_uuid: survey.uuid, unit_name: :medium_rectangle), data: {width: 300, height: 250},class: 'unit-code' do
+                  %i.fa.fa-code.fa-lg
+                = link_to campaign_path(current_user, survey) do
+                  %i.fa.fa-info.fa-lg
+                = link_to analytics_user_path(current_user, question) do
+                  %i.fa.fa-pie-chart.fa-lg
+                = link_to user_survey_path(current_user, uuid: survey.uuid), method: :delete, data: {confirm: 'Do you want to remove this survey?'} do
+                  %i.fa.fa-trash-o.fa-lg
 #dialog

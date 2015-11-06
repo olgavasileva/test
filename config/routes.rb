@@ -82,6 +82,7 @@ LinkchatApp::Application.routes.draw do
 
   resources :inquiries
   resources :users do
+    resources :surveys, only: [:destroy], param: :uuid
     resources :scenes, only: [:index, :new, :create]
     resources :studios, only: [:show]
     resources :segments do
@@ -120,7 +121,7 @@ LinkchatApp::Application.routes.draw do
           get 'basic_form' => 'listicles#basic_form'
           get 'details' => 'listicles#details', as: :details
           resource :analytics, only: [:show], controller: :listicle_analytics, as: :listicle_analytics
-          resources :questions, only: [:update, :edit], param: :question_id, controller: :listicle_questions
+          resources :questions, only: [:update, :edit], param: :question_id, controller: :listicle_questions, as: :listicle_questions
         end
       end
       get :behavioural_report, as: :behavioural_report

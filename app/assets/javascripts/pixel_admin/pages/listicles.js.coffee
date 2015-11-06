@@ -70,7 +70,7 @@ ready = ->
       window.open($(this).attr('href') + '?preview=true', "_blank", "status=no, width=" + width + ", height=" + height + ", resizable=yes," +
           " toolbar=no, menubar=no, scrollbars=yes, location=no, directories=no")
 
-    $('#dialog').dialog()
+    $dialog.dialog()
     $('.ui-dialog-titlebar-close').html('<i class="fa fa-times"></i>')
 
     changeCode = ->

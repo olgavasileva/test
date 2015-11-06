@@ -80,13 +80,13 @@
               %tbody
                 - @survey.questions.each do |question|
                   %tr
-                    %td=question.id
-                    %td=question.title
-                    %td=question.type
-                    %td=question.view_count.to_i
+                    %td= question.id
+                    %td= question.title
+                    %td= question.type
+                    %td= question.view_count.to_i
                     %td= question.responses.count
                     %td
-                      = link_to "#{ENV['WEB_APP_URL']}/#/app/question/#{question.id}", class:'btn btn-primary show-question', target: '_blank' do
+                      = link_to webapp_question_link(question), class:'btn btn-primary show-question', target: '_blank' do
                         %i.fa.fa-eye
                         View
                       |

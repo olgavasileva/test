@@ -23,10 +23,14 @@ class Listicle < ActiveRecord::Base
   end
 
   def deployment_count
+    deployments.count
+  end
+
+  def deployments
     unique_referrers.map do |r|
       matches = r.match(/https?:\/\/([^\/]+)\/.*/)
       matches ? matches[1] : nil
-    end.uniq.count
+    end.uniq
   end
 
   def response_count

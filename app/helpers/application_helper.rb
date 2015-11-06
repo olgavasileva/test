@@ -42,4 +42,23 @@ module ApplicationHelper
   def time_from_seconds(seconds)
     DateTime.new.since(seconds)
   end
+
+  def limit_text(text, length = 15, suffix = '...')
+    return '' unless text
+    if text.length > length
+      text[0, length - suffix.length] + suffix
+    else
+      text
+    end
+  end
+
+  def webapp_question_link(question)
+    "#{ENV['WEB_APP_URL']}/#/app/question/#{question.id}"
+  end
+
+  def survey_question_template(ad_unit_name, question, prefix = 'surveys')
+    template = question.class.name.underscore
+    template = 'multiple_choice_question' if question.min_responses.to_i > 1
+    "#{prefix}/#{ad_unit_name}/#{template}"
+  end
 end

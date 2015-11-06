@@ -3,7 +3,14 @@ class CampaignsController < ApplicationController
   before_action :load_and_authorize_user
 
   def index
-    @surveys = current_user.valid_surveys
+    @surveys = current_user.valid_surveys.to_a
+    @page = 1
+    @per_page = 8
+    @max_count = @surveys.length / @per_page
+    if params[:page]
+      @page = params[:page].to_i
+    end
+    @surveys = @surveys.slice((@page-1) * @per_page, @per_page)
     render 'users/campaigns/index', layout: 'pixel_admin'
   end
 

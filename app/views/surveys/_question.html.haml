@@ -22,8 +22,6 @@
 
 = render partial: 'quantcast_js' if response && current_ad_unit_user.quantcast_demographic_required?
 
-- template = question.class.name.underscore
-- template = 'multiple_choice_question' if question.min_responses.to_i > 1
 :css
   .main-color {
     color: #{@survey.theme.main_color} !important;
@@ -43,4 +41,4 @@
   .color2-bg {
     background-color: #{@survey.theme.color2} !important;
   }
-= render "surveys/#{@ad_unit.name}/#{template}", answer: response, question: question, original_referrer: original_referrer
+= render survey_question_template(@ad_unit.name, question), answer: response, question: question, original_referrer: original_referrer

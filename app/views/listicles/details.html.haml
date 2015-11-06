@@ -1,7 +1,44 @@
 .panel
   .panel-heading
     %h2.panel-title
-      Listicle Details
+      .row
+        .col-sm-6
+          Listicle Details
+        .col-sm-6.text-right-not-xs
+          = link_to 'Analytics', listicle_analytics_path(current_user, @listicle), class: %w(btn btn-sm btn-success btn-labeled)
+          = link_to new_listicle_path(current_user), class: %w(btn btn-sm btn-primary btn-labeled) do
+            %span.btn-label.fa.fa-plus
+            Create Listicle
+  .panel-body
+    %table.table
+      %thead
+        %tr
+          %th
+            LISTICLE ID
+          %th
+            NAME
+      %tbody
+        %tr
+          %td= @listicle.id
+          %td= limit_text text_from_html(@listicle.get_intro)
+.panel
+  .panel-heading
+    %h2.panel-title
+      Distribution
+  .panel-body
+    %table.table
+      %thead
+        %tr
+          %th
+            URL
+      %tbody
+        - @listicle.deployments.each do |distribution|
+          %tr
+            %td= link_to distribution, distribution
+.panel
+  .panel-heading
+    %h2.panel-title
+      Listicle Item Details
   .panel-body
     %table.table
       %thead
