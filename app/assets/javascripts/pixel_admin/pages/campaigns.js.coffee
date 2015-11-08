@@ -19,15 +19,13 @@ $(document).on 'page:change', ->
       method: 'GET'
       url: $el.data('url')
       success: (html)->
-        $dialog.html(html).dialog
-          height: 600
-          width: 600
-          modal: true
+        $dialog.find('.modal-body').html(html)
+        $dialog.modal()
+
         $dialog.find('input[type="submit"]').click ->
           $dialog.find('form').on 'ajax:success', (e, data) ->
             $el.parent().parent().find('td:first-child a').text(data.title)
-          $dialog.dialog('close')
-        $('.ui-dialog-titlebar-close').html('<i class="fa fa-times"></i>')
+          $dialog.modal('hide')
 
   $('.unit-code').click (e)->
     e.preventDefault()
@@ -39,8 +37,7 @@ $(document).on 'page:change', ->
     height = $el.data().height
 
     $dialog = $('#dialog')
-    $dialog.html('<pre>' +
+    $dialog.find('.modal-body').html('<pre>' +
         $('<div></div>').text("<iframe width=\"#{width}\" height=\"#{height}\" src=\"#{href}\" frameborder=\"0\"></iframe>").html() + '</pre>')
 
-    $dialog.dialog()
-    $('.ui-dialog-titlebar-close').html('<i class="fa fa-times"></i>')
+    $dialog.modal()
