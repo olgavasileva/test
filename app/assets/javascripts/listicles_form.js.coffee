@@ -76,26 +76,6 @@ class AdvancedEditorActions extends EditorActions
       self.setForm(response.form)
       self.setCurrentTab('Basic')
     ).always -> self.hideLoading()
-window.openThemeEditor = ->
-  $themeEditor = null
-
-  $('#theme-editor').click ->
-    if !$themeEditor
-      $themeEditor = $('#theme-editor-modal').dialog
-        width: 600
-        height: 600
-        modal: true
-        beforeClose: (event, ui)->
-          $form = $('form')
-          $(event.target).find('input').each (i, el)->
-            $form.find('input[name="' + $(el).attr('name') + '"]').val($(el).val())
-      $('.ui-dialog-titlebar-close').html('<i class="fa fa-times"></i>')
-    else
-      $themeEditor.dialog 'open'
-    $('input.minicolor-input').minicolors
-      position: 'bottom right'
-      theme: 'default'
-      show: null
 
 $(document).ready ->
   basicEditorActions = new BasicEditorActions()
@@ -104,4 +84,9 @@ $(document).ready ->
     advancedEditorActions.changeTab()
   $('#advanced-listicle-form-tab').click ->
     basicEditorActions.changeTab()
-  window.openThemeEditor()
+  $('#theme-editor').click ->
+    $('#theme-editor-modal').modal 'show'
+    $('input.minicolor-input').minicolors
+      position: 'bottom right'
+      theme: 'default'
+      show: null
