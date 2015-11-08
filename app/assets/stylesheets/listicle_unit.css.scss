@@ -1,5 +1,27 @@
 //= require font-awesome
 //= require jquery-ui
+.call-to-action {
+  color: #cb2226;
+  width: 60px;
+  font-family: Caveat;
+  font-style: italic;
+  font-size: 10pt;
+  position: absolute;
+  &:first-child {
+    margin-top: -23px;
+    .fa-reply {
+      transform: rotate(-114deg);
+      margin-left: -27px;
+    }
+  }
+  &:last-child {
+    margin-top: -4px;
+    .fa-reply {
+      transform: rotate(66deg);
+      margin-right: -8px;
+    }
+  }
+}
 .top-panel {
   margin-top: -20px;
   padding: 22px 10px 10px;
@@ -29,6 +51,7 @@
 .embed_listicle {
   .item-content {
     margin-top: -40px;
+    min-height: 70px;
   }
   font-family: Lato;
   font-size: 12pt;

@@ -59,6 +59,11 @@
     %hr.separator
     %span.question-index= index + 1
     .voting
+      - if index == 0
+        .call-to-action
+          Click me!
+          %br
+          %i.fa.fa-reply
       = link_to answer_listicle_question_path(question_id: question.id, is_up: true), method: :post, class: 'vote', onclick: 'onResponse()' do
         %i.fa.fa-chevron-up.fa-2x
       - score = question.score
@@ -68,6 +73,11 @@
         .score.negative= score.abs
       = link_to answer_listicle_question_path(question_id: question.id, is_up: false), method: :post, class: 'vote', onclick: 'onResponse()' do
         %i.fa.fa-chevron-down.fa-2x
+      - if index == 0
+        .call-to-action
+          %i.fa.fa-reply
+          %br
+          Vote!
     .item-content
       = h question.body.html_safe
     %br
