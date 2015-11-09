@@ -56,7 +56,7 @@
 #= require redactor/plugins/fontfamily
 #= require redactor/plugins/fontsize
 #= require redactor/plugins/table
-#= require listicle_unit
+#= require underscore
 
 # Asyncronously load DOM elements from partials after page is loaded
 $(document).on "page:change", ->

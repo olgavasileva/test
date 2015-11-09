@@ -57,7 +57,8 @@ ready = ->
     href = $el.attr('href')
 
     $dialog = $('#dialog')
-    $dialog.html "<div><label>Height: <input type='number' id='iframe-height' style='font-weight: normal; width: 70px' value='600'></label>" +
+    $dialog.find('.modal-body').html "<div><label>Height: <input type='number' id='iframe-height' " +
+        "style='font-weight: normal; width: 70px' value='600'></label>" +
         "<div><label>Width: <input type='number' id='iframe-width' style='font-weight: normal; width: 70px' value='600'></label><br />" +
         "&nbsp;<a href='" + href + "' id='preview-dialog'><i class='fa fa-eye'></i> Preview</a>" +
         "<br><br><pre id='iframe-code'>#{getCodeTemplate(href)}</pre></div>"
@@ -70,8 +71,7 @@ ready = ->
       window.open($(this).attr('href') + '?preview=true', "_blank", "status=no, width=" + width + ", height=" + height + ", resizable=yes," +
           " toolbar=no, menubar=no, scrollbars=yes, location=no, directories=no")
 
-    $dialog.dialog()
-    $('.ui-dialog-titlebar-close').html('<i class="fa fa-times"></i>')
+    $dialog.modal()
 
     changeCode = ->
       $('#iframe-code').html getCodeTemplate(href, $('#iframe-width').val(), $('#iframe-height').val())
@@ -92,8 +92,8 @@ ready = ->
       url: $(this).attr('href')
       method: 'GET'
       success: (response)->
-        $('#dialog').html(response).dialog({minWidth: 620})
-        $('.ui-dialog-titlebar-close').html('<i class="fa fa-times"></i>')
+        $('#dialog .modal-body').html(response)
+        $('#dialog').modal()
 
 
 $ 'document:ready', ready

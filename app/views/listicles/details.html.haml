@@ -110,4 +110,10 @@
       Listicle Preview
   .panel-body
     %iframe{width: 640, height: 600, src: show_listicle_path(@listicle), frameborder: 0, id: 'listicle-preview'}
-#dialog
+#dialog.modal.fade(role="dialog" style="display: none;" tabindex="-1")
+  %div.modal-dialog.modal-sm.animated.pulse
+    .modal-content
+      .modal-header
+        %button.close{'aria-hidden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} ×
+        %h4.modal-title Edit Listicle Item
+      .modal-body
