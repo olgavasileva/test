@@ -1,0 +1,85 @@
+<form action="<%= admin_regressions_path %>" method="GET">
+  <label>
+	From: 
+	<script type="text.javascript">
+		$(document).ready(function(){
+		$("#datepicker").datepicker(
+		{
+		showtrigger: true
+			});
+				});
+	</script>
+	<input type="date" id="datepicker" name="date_from"/> &nbsp;	
+
+	To:
+	<script type="text.javascript">
+		$(document).ready(function(){
+		$("#datepicker").datepicker(
+		{
+		showtrigger: true
+			});
+				});
+	</script>
+	<input type="date" id="datepicker" name="date_to"/> &nbsp;
+
+
+<button type="submit" name="action" value = "Table">Table</button> &nbsp;	
+<!--button type="submit" name = "action" value = "Graph" onclick="buildGraph()">Graph</button-->	
+  </label>
+</form>
+
+
+<br>
+<!-- if @questions -->
+<!-- if ($_POST['action'] == 'Table')%-->
+<% if @date_from %>
+
+  <div class="panel">
+    <div class="panel_contents">
+      <div class="attributes_table">
+        <table>
+
+          <tbody>
+
+        <tr class = "row">
+<th>Date </th><th> Questions Answered</th><th>Listicle Answered</th><th>Total Insights</th><th>Average</th><th>St. deviation</th><th>Users</th><th>Question Views</th></tr>
+
+	<tr class = "row">
+<% (@date_from..@date_to).each do |date| %>
+<% date = date.to_s %>
+<td><p><%= date%></td>
+ 
+	<td> <%= qu = @q[date]['q_answered'] %> </td>
+	<td> <%= li = @l[date]['vote_count'] %> </td>
+	<td> <%= @total_row[date] %> </td>
+<!--td><= @hash_question></td-->
+
+	<td><%= @average %></td>
+	<td><%= @stdev %></td>
+	<td><%= @a[date]['ga:users']%></td><td><%=@a[date]['ga:totalEvents'] %></p></td></tr>
+<% end %>
+         
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+<% end %>
+<!-- end %-->
+
+<!-- if ($_POST['action'] == 'Graph') 
+
+  
+ 
+      <div class="attributes_table">
+        <table>
+
+          <tbody>
+<th> hc </th>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+< end >
+
