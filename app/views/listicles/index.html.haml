@@ -52,7 +52,7 @@
                 = link_to listicle_path(current_user, listicle), class: 'toggle', method: :delete, data: {confirm: 'Do you want to remove this listicle?'}, 'data-toggle' => 'tooltip', 'data-placement' => 'bottom', 'title' => 'Delete' do
                   %i.fa.fa-trash-o.fa-lg
   #dialog.modal.fade(role="dialog" style="display: none;" tabindex="-1")
-    %div.modal-dialog.modal-lg.animated.pulse
+    %div.modal-dialog.modal-sm.animated.pulse
       .modal-content
         .modal-header
           %button.close{'aria-hidden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} ×
