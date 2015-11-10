@@ -355,6 +355,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
+    newrelic_rpm (3.14.0.305)
     nokogiri (1.6.2.1)
       mini_portile (= 0.6.0)
     oauth (0.4.7)
@@ -706,6 +707,7 @@ DEPENDENCIES
   maxminddb
   morrisjs-rails
   mysql2
+  newrelic_rpm
   omniauth
   omniauth-facebook
   omniauth-twitter
