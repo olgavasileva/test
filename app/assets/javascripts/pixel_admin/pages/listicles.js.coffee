@@ -84,6 +84,8 @@ ready = ->
     window.open($(this).attr('href'), "_blank", "status=no, width=660, height=480, resizable=yes," +
         " toolbar=no, menubar=no, scrollbars=yes, location=no, directories=no")
 
+  $('.re-icon.re-image').click ->
+    $('#redactor-modal').addClass('pulse animated')
 
   $('.add-script-button').click (e)->
     e.preventDefault()

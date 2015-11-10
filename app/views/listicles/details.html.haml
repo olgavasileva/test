@@ -109,9 +109,14 @@
     %h2.panel-title
       Listicle Preview
   .panel-body
-    %iframe{width: 640, height: 600, src: show_listicle_path(@listicle), frameborder: 0, id: 'listicle-preview'}
+    = link_to show_listicle_path(@listicle), class: 'preview-button' do
+      Preview
+      &nbsp;
+      %i.fa.fa-eye
+    %pre
+      = "<div style=\"height: 600px; width: 640px;\"><iframe width=\"640\" height=\"600\" src=\"#{show_listicle_path(@listicle)}\" frameborder='0' ></iframe></div>"
 #dialog.modal.fade(role="dialog" style="display: none;" tabindex="-1")
-  %div.modal-dialog.modal-sm.animated.pulse
+  %div.modal-dialog.modal-lg.animated.pulse
     .modal-content
       .modal-header
         %button.close{'aria-hidden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} ×

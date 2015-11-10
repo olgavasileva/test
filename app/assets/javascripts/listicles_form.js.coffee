@@ -4,6 +4,16 @@ getListicleId = -> $('input[name="listicle_id"]').val()
 setListicleId = ->
   listicleId = getListicleId()
 
+window.openThemeEditor = ->
+  $themeEditor = $('#theme-editor-modal')
+
+  $('#theme-editor').click ->
+    $themeEditor.modal()
+    $('input.minicolor-input').minicolors
+      position: 'bottom right'
+      theme: 'default'
+      show: null
+
 class EditorActions
   constructor: ->
     @listicleForm = $('#listicle-form')
