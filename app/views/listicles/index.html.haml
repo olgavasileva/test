@@ -19,6 +19,7 @@
               .panel-heading
                 %span.panel-title
                   &nbsp;
+
               .panel-body(style="height: 220px;")
                 = link_to new_listicle_path(current_user), id: 'new-listicle', style: 'width: 75px' do
                   %i.fa.fa-2x.fa-plus(style="margin-left: 27px")
@@ -34,17 +35,21 @@
                   - listicle.questions.each do |question|
                     = h question.body.html_safe
               .panel-heading.bottom
-                = link_to edit_listicle_path(current_user, listicle) do
+                :javascript
+                  $(document).ready(function() {
+                    $('.toggle').tooltip();
+                  } );
+                = link_to edit_listicle_path(current_user, listicle), class: 'toggle', 'data-toggle' => 'tooltip', 'data-placement' => 'bottom', 'title'=>'Edit' do
                   %i.fa.fa-pencil.fa-lg
-                = link_to show_listicle_url(listicle, preview: true), class: 'preview-button' do
+                = link_to show_listicle_url(listicle, preview: true), class: ('preview-button toggle'), 'data-toggle' => 'tooltip', 'data-placement' => 'bottom', 'title' => 'Preview' do
                   %i.fa.fa-eye.fa-lg
-                = link_to show_listicle_url(listicle), class: 'embed-code' do
+                = link_to show_listicle_url(listicle), class: ('embed-code toggle'), 'data-toggle' => 'tooltip', 'data-placement' => 'bottom', 'title' => 'Get Code' do
                   %i.fa.fa-code.fa-lg
-                = link_to details_listicle_path(current_user, listicle) do
+                = link_to details_listicle_path(current_user, listicle), class: 'toggle', 'data-toggle' => 'tooltip', 'data-placement' => 'bottom', 'title' => 'Details' do
                   %i.fa.fa-info.fa-lg
-                = link_to listicle_analytics_path(current_user, listicle) do
+                = link_to listicle_analytics_path(current_user, listicle), class: 'toggle', 'data-toggle' => 'tooltip', 'data-placement' => 'bottom', 'title' => 'Analytics' do
                   %i.fa.fa-pie-chart.fa-lg
-                = link_to listicle_path(current_user, listicle), method: :delete, data: {confirm: 'Do you want to remove this listicle?'} do
+                = link_to listicle_path(current_user, listicle), class: 'toggle', method: :delete, data: {confirm: 'Do you want to remove this listicle?'}, 'data-toggle' => 'tooltip', 'data-placement' => 'bottom', 'title' => 'Delete' do
                   %i.fa.fa-trash-o.fa-lg
   #dialog.modal.fade(role="dialog" style="display: none;" tabindex="-1")
     %div.modal-dialog.modal-sm.animated.pulse
