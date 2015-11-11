@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151105101853) do
+ActiveRecord::Schema.define(version: 20151111062402) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -529,6 +529,9 @@ ActiveRecord::Schema.define(version: 20151105101853) do
     t.string   "original_referrer"
   end
 
+  add_index "listicle_responses", ["created_at"], name: "index_listicle_responses_on_created_at", using: :btree
+  add_index "listicle_responses", ["original_referrer"], name: "index_listicle_responses_on_original_referrer", length: {"original_referrer"=>200}, using: :btree
+
   create_table "listicles", force: true do |t|
     t.text     "intro"
     t.integer  "user_id"
@@ -764,6 +767,8 @@ ActiveRecord::Schema.define(version: 20151105101853) do
 
   add_index "responses", ["choice_id"], name: "index_responses_on_choice_id", using: :btree
   add_index "responses", ["comment_id"], name: "index_responses_on_comment_id", using: :btree
+  add_index "responses", ["created_at"], name: "index_responses_on_created_at", using: :btree
+  add_index "responses", ["original_referrer"], name: "index_responses_on_original_referrer", length: {"original_referrer"=>200}, using: :btree
   add_index "responses", ["question_id"], name: "index_responses_on_question_id", using: :btree
   add_index "responses", ["source"], name: "index_responses_on_source", using: :btree
   add_index "responses", ["type", "question_id"], name: "index_responses_on_type_and_question_id", using: :btree

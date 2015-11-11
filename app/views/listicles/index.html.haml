@@ -9,6 +9,10 @@
       %tr
         %th.bg-success These are all of your listicles
 #listicles
+  :javascript
+    window.setOptimalIframeHeight = function(height) {
+      $('#optimal-height').text('Optimal height is: ' + height)
+    }
   - @listicles = [nil] + @listicles.to_a
   - @listicles.each_slice(3).each_with_index do |listicles, i|
     .row

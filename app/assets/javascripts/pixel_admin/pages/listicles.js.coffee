@@ -57,7 +57,7 @@ ready = ->
     href = $el.attr('href')
 
     $dialog = $('#dialog')
-    $dialog.find('.modal-body').html "<div><label>Height: <input type='number' id='iframe-height' " +
+    $dialog.find('.modal-body').html "<div id='optimal-height'></div><div><label>Height: <input type='number' id='iframe-height' " +
         "style='font-weight: normal; width: 70px' value='600'></label>" +
         "<div><label>Width: <input type='number' id='iframe-width' style='font-weight: normal; width: 70px' value='600'></label><br />" +
         "&nbsp;<a href='" + href + "' id='preview-dialog'><i class='fa fa-eye'></i> Preview</a>" +
