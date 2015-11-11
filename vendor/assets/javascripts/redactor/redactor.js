@@ -120,7 +120,7 @@
 		maxHeight: false,
 
 		linebreaks: false,
-		replaceDivs: true,
+		replaceDivs: false,
 		paragraphize: true,
 		cleanStyleOnEnter: false,
 		enterKey: true,
@@ -190,10 +190,10 @@
 
 		tabifier: true,
 
-		deniedTags: ['script', 'style'],
+		deniedTags: [],//['script', 'style'],
 		allowedTags: false, // or array
 
-		paragraphizeBlocks: ['table', 'div', 'pre', 'form', 'ul', 'ol', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'dl', 'blockquote', 'figcaption',
+		paragraphizeBlocks: ['table', 'pre', 'form', 'ul', 'ol', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'dl', 'blockquote', 'figcaption',
 							'address', 'section', 'header', 'footer', 'aside', 'article', 'object', 'style', 'script', 'iframe', 'select', 'input', 'textarea',
 							'button', 'option', 'map', 'area', 'math', 'hr', 'fieldset', 'legend', 'hgroup', 'nav', 'figure', 'details', 'menu', 'summary', 'p'],
 
@@ -214,7 +214,7 @@
 		allowedAttr: false, // or multi array
 
 		removeWithoutAttr: ['span'], // or false
-		removeEmpty: ['p'], // or false;
+		removeEmpty: ['p', 'div'], // or false;
 
 		activeButtons: ['deleted', 'italic', 'bold', 'underline', 'unorderedlist', 'orderedlist',
 						'alignleft', 'aligncenter', 'alignright', 'justify'],
