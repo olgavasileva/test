@@ -78,3 +78,10 @@ namespace :deploy do
   after :finished, 'airbrake:deploy'
 
 end
+
+
+
+Dir["config/deploy/extras/*.rb"].each { |file| load file }
+
+set :notify_emails, ["webops@statisfy.co"]
+after "deploy", "deploy:notify"
